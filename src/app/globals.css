@@ -1,16 +1,42 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
 
 :root {
-  --bg-dark: #020617;
-  --panel-bg: rgba(15, 23, 42, 0.65);
-  --accent-blue: #3b82f6;
-  --accent-purple: #a855f7;
-  --root-red: #ef4444;
-  --chord-amber: #f59e0b;
+  /* RGB tokens (Tailwind /opacity 지원용) */
+  --bg-dark: 2 6 23;
+  /* #020617 */
+  --panel-bg: 15 23 42;
+  /* #0f172a */
+  --stroke: 255 255 255;
+  /* white */
+
+  --text-primary: 248 250 252;
+  /* #f8fafc */
+  --text-secondary: 148 163 184;
+  /* #94a3b8 */
+
+  --accent-blue: 59 130 246;
+  /* #3b82f6 */
+  --accent-amber: 245 158 11;
+  /* #f59e0b */
+
+  /* globals.css에서 쓰는데 정의가 없던 것들(권장) */
+  --root-red: 239 68 68;
+  /* red-500 */
+  --chord-amber: 245 158 11;
+  /* amber-500 */
+  --accent-purple: 168 85 247;
+  /* purple-500 */
+
+  /* Effects / Radius는 기존 그대로 둬도 됨 */
+  --shadow-outer: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+  --shadow-inner: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.5rem;
+  --radius-full: 9999px;
 }
 
 body {
@@ -28,7 +54,7 @@ body {
 */
 /* Glassmorphism Styling */
 .glass-panel {
-  background: var(--panel-bg);
+  background: rgb(var(--panel-bg));
   backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
@@ -140,28 +166,28 @@ body {
 }
 
 .note-root {
-  background: var(--root-red);
+  background: rgb(var(--root-red));
   color: white;
-  box-shadow: 0 0 25px var(--root-red);
+  box-shadow: 0 0 25px rgb(var(--root-red));
   border-color: white;
 }
 
 .note-chord {
-  background: var(--chord-amber);
+  background: rgb(var(--chord-amber));
   color: #000;
-  box-shadow: 0 0 15px var(--chord-amber);
+  box-shadow: 0 0 15px rgb(var(--chord-amber));
 }
 
 .note-normal {
-  background: var(--accent-blue);
+  background: rgb(var(--accent-blue));
   color: white;
   opacity: 0.95;
 }
 
 .note-modifier {
-  background: var(--accent-purple);
+  background: rgb(var(--accent-purple));
   color: white;
-  box-shadow: 0 0 20px var(--accent-purple);
+  box-shadow: 0 0 20px rgb(var(--accent-purple));
   animation: pulse 2s infinite;
 }
 
@@ -205,7 +231,7 @@ body {
 }
 
 .tab-item.active {
-  background: var(--accent-blue);
+  background: rgb(var(--accent-blue));
   color: white;
   box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
 }
@@ -224,7 +250,7 @@ body {
 }
 
 .key-btn.active {
-  background: var(--accent-blue);
+  background: rgb(var(--accent-blue));
   border-color: white;
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(59, 130, 246, 0.5);
@@ -244,19 +270,5 @@ body {
   border-radius: 10px;
 }
 
-/* === CRITICAL: BROWSER RESET & FOUC PREVENTION === */
-/* Force removal of default browser styling for form elements */
-select,
-button {
-  -webkit-appearance: none !important;
-  -moz-appearance: none !important;
-  appearance: none !important;
-  background-color: transparent;
-  /* Reset default bg */
-}
-
-/* Force dark background on select options to prevent white box */
-select option {
-  background-color: #0f172a !important;
-  color: white !important;
-}
+/* === BROWSER RESET REMOVED PER USER REQUEST === */
+/* Component-level styles should handle appearance. */
