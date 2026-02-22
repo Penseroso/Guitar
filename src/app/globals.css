@@ -1,26 +1,262 @@
-@import "tailwindcss";
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --bg-dark: #020617;
+  --panel-bg: rgba(15, 23, 42, 0.65);
+  --accent-blue: #3b82f6;
+  --accent-purple: #a855f7;
+  --root-red: #ef4444;
+  --chord-amber: #f59e0b;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: radial-gradient(circle at top left, #1e293b, #020617);
+  color: #f1f5f9;
+  font-family: 'Pretendard', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  letter-spacing: -0.025em;
+}
+
+/* 
+   === CRITICAL: DO NOT EDIT GLASSMORPHISM STYLES === 
+   Design Freeze: Maintains UI consistency 
+*/
+/* Glassmorphism Styling */
+.glass-panel {
+  background: var(--panel-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* 
+   === CRITICAL: DO NOT EDIT FRETBOARD DIMENSIONS === 
+   Design Freeze: Fixed width (100px) required for note alignment 
+*/
+/* Fretboard - Fixed Width */
+.fretboard-scroll {
+  width: 100%;
+  overflow-x: auto;
+  padding: 40px 0;
+  scrollbar-width: thin;
+  scrollbar-color: #334155 transparent;
+}
+
+.fretboard {
+  display: flex;
+  position: relative;
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  border-top: 4px solid #334155;
+  border-bottom: 4px solid #334155;
+  min-width: 2500px;
+  height: 300px;
+  margin: 0 auto;
+}
+
+.fret {
+  position: relative;
+  height: 100%;
+  border-right: 2px solid #475569;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100px;
+  /* Fixed Width */
+  flex-shrink: 0;
+}
+
+.fret-0 {
+  width: 100px;
+  border-right: 14px solid #cbd5e1;
+  background: #020617;
+}
+
+/* Metallic Strings */
+.strings-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.string {
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(180deg, #f1f5f9 0%, #94a3b8 50%, #475569 100%);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.string-4 {
+  height: 3px;
+}
+
+.string-5 {
+  height: 4px;
+}
+
+.string-6 {
+  height: 6px;
+}
+
+/* High-fidelity Notes */
+.note {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 900;
+  z-index: 20;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+.note.hidden {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.6);
+  pointer-events: none;
+}
+
+.note:hover {
+  transform: translate(-50%, -50%) scale(1.15);
+  z-index: 30;
+}
+
+.note-root {
+  background: var(--root-red);
+  color: white;
+  box-shadow: 0 0 25px var(--root-red);
+  border-color: white;
+}
+
+.note-chord {
+  background: var(--chord-amber);
+  color: #000;
+  box-shadow: 0 0 15px var(--chord-amber);
+}
+
+.note-normal {
+  background: var(--accent-blue);
+  color: white;
+  opacity: 0.95;
+}
+
+.note-modifier {
+  background: var(--accent-purple);
+  color: white;
+  box-shadow: 0 0 20px var(--accent-purple);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Markers & Inlays */
+.inlay {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+}
+
+.double-inlay-group {
+  display: flex;
+  flex-direction: column;
+  gap: 52px;
+}
+
+/* Controls */
+.tab-item {
+  padding: 12px 32px;
+  border-radius: 999px;
+  font-weight: 800;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.tab-item.active {
+  background: var(--accent-blue);
+  color: white;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+}
+
+.key-btn {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  font-weight: 900;
+  transition: all 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(30, 41, 59, 0.4);
+}
+
+.key-btn.active {
+  background: var(--accent-blue);
+  border-color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.5);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 10px;
+}
+
+/* === CRITICAL: BROWSER RESET & FOUC PREVENTION === */
+/* Force removal of default browser styling for form elements */
+select,
+button {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  background-color: transparent;
+  /* Reset default bg */
+}
+
+/* Force dark background on select options to prevent white box */
+select option {
+  background-color: #0f172a !important;
+  color: white !important;
 }
