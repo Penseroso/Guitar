@@ -14,12 +14,11 @@ export const SelectPill: React.FC<SelectPillProps> = ({ value, onChange, options
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
                 className={[
-                    "w-full appearance-none rounded-2xl px-6 py-4 pr-12",
-                    "text-white font-black text-lg",
-                    "bg-white/5 border border-white/10",
-                    "shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-14px_22px_rgba(0,0,0,0.35)]",
-                    "hover:border-white/18 hover:bg-white/7 transition-colors",
-                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue/25 focus-visible:border-white/18",
+                    "w-full appearance-none rounded-xl px-4 py-3 pr-12",
+                    "text-white font-mono text-xs uppercase tracking-widest",
+                    "bg-[#050505] border border-white/5",
+                    "hover:border-white/20 hover:bg-[#0a0a0a] transition-all",
+                    "focus:outline-none focus-visible:ring-1 focus-visible:ring-white/20",
                     "cursor-pointer"
                 ].join(" ")}
             >
@@ -30,8 +29,8 @@ export const SelectPill: React.FC<SelectPillProps> = ({ value, onChange, options
                 ))}
             </select>
 
-            {/* chevron (텍스트 ▼ 대신) */}
-            <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-accent-blue/80">
+            {/* chevron */}
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white/50">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                     <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>

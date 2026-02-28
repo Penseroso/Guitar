@@ -1,12 +1,12 @@
-import React from 'react';
-import { NOTES, SCALES, COMMON_PROGRESSIONS, CHORD_SHAPES, PROGRESSION_LIBRARY } from '../../utils/guitar/theory';
+import React, { useState } from 'react';
+import { Zap, Target, Compass, Activity, Layers, Disc } from 'lucide-react';
+import { NOTES, SCALES, CHORD_SHAPES, PROGRESSION_LIBRARY } from '../../utils/guitar/theory';
 import { getChordFromDegree, getNoteName } from '../../utils/guitar/logic';
-import { GlassPanel } from '../ui/design-system/GlassPanel';
-import { SectionLabel } from '../ui/design-system/SectionLabel';
 import { TabsRail } from '../ui/design-system/TabsRail';
 import { KeyButton } from '../ui/design-system/KeyButton';
 import { SelectPill } from '../ui/design-system/SelectPill';
 import { TogglePill } from '../ui/design-system/TogglePill';
+import { CircleOfFifths } from './CircleOfFifths';
 
 interface ControlsProps {
     selectedKey: number;
@@ -25,15 +25,12 @@ interface ControlsProps {
     onToggleSixthNote: () => void;
     secondNote: boolean;
     onToggleSecondNote: () => void;
-    // Double Stop Props
     isDoubleStopActive: boolean;
     onToggleDoubleStop: () => void;
     doubleStopInterval: number;
     onDoubleStopIntervalChange: (interval: number) => void;
     doubleStopStrings: [number, number];
     onDoubleStopStringsChange: (strings: [number, number]) => void;
-
-    // Chord Props
     mode: 'scale' | 'chord' | 'progression';
     onModeChange: (mode: 'scale' | 'chord' | 'progression') => void;
     chordType: string;
@@ -42,7 +39,6 @@ interface ControlsProps {
     onVoicingChange: (idx: number) => void;
     availableVoicingsCount: number;
     voicingLabels: string[];
-    // Progression Props
     progressionName: string;
     onProgressionChange: (name: string) => void;
     currentStepIndex: number;
@@ -78,71 +74,15 @@ export const Controls: React.FC<ControlsProps> = ({
     onModeChange,
     chordType,
     onChordTypeChange,
-    voicingIndex,
-    onVoicingChange,
-    availableVoicingsCount,
-    voicingLabels,
     progressionName,
     onProgressionChange,
-    currentStepIndex,
-    onStepChange,
-    isPlaying,
-    onTogglePlay
 }) => {
+    const [rootViewMode, setRootViewMode] = useState<'orbit' | 'matrix'>('orbit');
 
-    // --- Block 1: Header + Tabs (Hero Rhythm) ---
-    const HeroBlock = (
-        <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
-            <div className="flex flex-col">
-                <h1 className="text-4xl md:text-5xl font-black italic tracking-tighter text-white">
-                    GUITAR <span className="text-accent-blue">HUB</span>
-                </h1>
-                <span className="text-xs font-bold tracking-[0.3em] text-secondary/60 uppercase mt-1">
-                    Professional Navigator
-                </span>
-            </div>
-            <TabsRail
-                tabs={[
-                    { id: 'scale', label: 'Scale' },
-                    { id: 'chord', label: 'Chord' },
-                    { id: 'progression', label: 'Prog' }
-                ]}
-                activeId={mode}
-                onChange={(id) => onModeChange(id as any)}
-            />
-        </div>
-    );
-
-    // --- Block 2: Root Key Panel (Fixed Grid -> Rail) ---
-    const RootKeyBlock = (
-        <GlassPanel className="p-10 rounded-lg mb-8">
-            <SectionLabel text="Select Root Key" className="relative -top-5 -left-4" />
-
-            {/* 
-                User Request: 
-                - flex gap-4 overflow-x-auto py-6
-                - No wrap
-                - Centered if possible (justify-center for large)
-                - Scrollable on small
-            */}
-            <div className="flex gap-4 overflow-x-auto py-6 justify-start md:justify-center no-scrollbar">
-                {NOTES.map((note, idx) => (
-                    <KeyButton
-                        key={note}
-                        note={note}
-                        isActive={selectedKey === idx}
-                        onClick={() => onKeyChange(idx)}
-                    />
-                ))}
-            </div>
-        </GlassPanel>
-    );
-
-    // --- Block 3: Mode Specific Controls (Control Deck) ---
     const scaleOptions = Object.entries(SCALES).flatMap(([group, scales]) =>
         Object.keys(scales).map(name => ({
             value: `${group}|${name}`,
-            label: `${group} - ${name}` // e.g., "Diatonic - Ionian (Major)"
+            label: `${group} - ${name}`
         }))
     );
 
@@ -151,7 +91,6 @@ export const Controls: React.FC<ControlsProps> = ({
         label: prog.title
     }));
 
-    // Helper function to calculate actual chord name from Roman degree
     const getChordName = (degree: string) => {
         const { interval, type } = getChordFromDegree(degree);
         const rootNoteIdx = (selectedKey + interval) % 12;
@@ -160,236 +99,216 @@ export const Controls: React.FC<ControlsProps> = ({
         return `${rootText}${suffix}`;
     };
 
-    const ControlDeck = (
-        <div className={`grid grid-cols-1 gap-8 items-start ${mode === 'chord' ? 'lg:grid-cols-1' : 'lg:grid-cols-2'}`}>
-            {/* Left Deck: Primary Selection */}
-            <GlassPanel className={`p-10 rounded-lg flex flex-col w-full`}>
-                <SectionLabel text="Mode Configuration" className="relative -top-5 -left-4" />
-
-                {mode === 'scale' && (
-                    <SelectPill
-                        value={`${selectedScaleGroup}|${selectedScaleName}`}
-                        onChange={(val) => {
-                            const [g, n] = val.split('|');
-                            onScaleChange(g, n);
-                        }}
-                        options={scaleOptions}
+    return (
+        <>
+            {/* LEFT RACK: LOGIC & NAVIGATOR */}
+            <div className="col-span-1 lg:col-span-8 flex flex-col w-full h-full">
+                <header className="flex justify-between items-end border-b border-white/5 pb-8 mb-8">
+                    <div className="flex flex-col gap-1">
+                        <h1 className="text-4xl font-black tracking-tighter text-white flex items-baseline gap-1">
+                            <span className="font-extralight opacity-40 uppercase text-lg tracking-[0.3em]">the</span> MODUS
+                        </h1>
+                        <span className="text-[10px] font-mono tracking-[0.4em] uppercase opacity-30 flex items-center gap-2 mt-1">
+                            <Zap size={10} /> Harmonic Workstation
+                        </span>
+                    </div>
+                    <TabsRail
+                        tabs={[
+                            { id: 'scale', label: 'Scale' },
+                            { id: 'chord', label: 'Chord' },
+                            { id: 'progression', label: 'Prog' }
+                        ]}
+                        activeId={mode}
+                        onChange={(id) => onModeChange(id as any)}
                     />
-                )}
+                </header>
 
-                {mode === 'chord' && (
-                    <div className="flex flex-col gap-4">
-                        {/* Chord Type Groups */}
-                        <div className="flex flex-col gap-1 w-full">
+                <div className="bg-[#0a0a0a] border border-white/5 rounded-[2.5rem] p-10 min-h-[580px] relative overflow-hidden shadow-[inset_0_0_80px_rgba(0,0,0,0.5)]">
+                    <div className="absolute top-8 left-10 flex flex-col gap-3 z-20">
+                        <div className="flex items-center gap-2 opacity-30">
+                            <Disc size={12} fill="currentColor" />
+                            <span className="text-[9px] font-mono tracking-[0.3em] uppercase text-white">Root Navigator</span>
+                        </div>
+                        <div className="flex bg-black/60 p-1 rounded-full border border-white/5 backdrop-blur-md w-fit shadow-inner">
+                            <button
+                                onClick={() => setRootViewMode('orbit')}
+                                className={`flex items-center gap-2 px-5 py-2 rounded-full transition-all duration-300 text-[10px] font-black tracking-widest uppercase ${rootViewMode === 'orbit' ? 'bg-white text-black shadow-lg' : 'text-white/20 hover:text-white/40'
+                                    }`}
+                            >
+                                <Compass size={12} /> ORBIT
+                            </button>
+                            <button
+                                onClick={() => setRootViewMode('matrix')}
+                                className={`flex items-center gap-2 px-5 py-2 rounded-full transition-all duration-300 text-[10px] font-black tracking-widest uppercase ${rootViewMode === 'matrix' ? 'bg-white text-black shadow-lg' : 'text-white/20 hover:text-white/40'
+                                    }`}
+                            >
+                                <Target size={12} /> MATRIX
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="flex-1 mt-12 flex items-center justify-center w-full min-h-[400px]">
+                        {rootViewMode === 'orbit' ? (
+                            <div className="w-[420px] h-[420px] animate-in fade-in zoom-in-95 duration-700 drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)] flex justify-center items-center">
+                                <CircleOfFifths selectedKey={selectedKey} onKeySelect={onKeyChange} />
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-4 gap-3 max-w-lg animate-in fade-in slide-in-from-bottom-4 duration-500 w-full">
+                                {NOTES.map((note, index) => (
+                                    <KeyButton
+                                        key={`key-${index}`}
+                                        note={note}
+                                        isActive={selectedKey === index}
+                                        onClick={() => onKeyChange(index)}
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            {/* RIGHT RACK: PARAMETERS */}
+            <div className="col-span-1 lg:col-span-4 flex flex-col gap-6 w-full h-full lg:mt-[116px]">
+                {/* System Status Panel */}
+                <div className="bg-[#0a0a0a] border border-white/5 rounded-3xl p-8 flex flex-col gap-6 shadow-2xl relative overflow-hidden">
+                    <div className="absolute -top-4 -right-4 p-4 opacity-[0.03] pointer-events-none text-white">
+                        <Activity size={120} strokeWidth={1} />
+                    </div>
+                    <div className="flex flex-col items-center justify-center relative z-10 py-2">
+                        <div className="flex items-baseline gap-2">
+                            <h2 className="text-6xl font-black text-white tracking-tighter leading-none">
+                                {getNoteName(selectedKey)}
+                            </h2>
+                            <span className="text-xl font-light text-white/20 tracking-widest uppercase italic leading-none">Active</span>
+                        </div>
+                    </div>
+                    <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-white/10 to-transparent my-1" />
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-1">
+                            <span className="text-[8px] font-mono uppercase text-white/30 tracking-widest">Frequency</span>
+                            <span className="text-xs font-bold text-white/70 tracking-wider">440.0 Hz</span>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <span className="text-[8px] font-mono uppercase text-white/30 tracking-widest">Mode Status</span>
+                            <span className="text-xs font-bold text-white/70 tracking-wider uppercase">{mode}</span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Matrix Engines Panel */}
+                <div className="bg-[#0a0a0a] border border-white/5 rounded-3xl p-8 flex flex-col gap-6 shadow-2xl relative overflow-hidden flex-1 w-full">
+                    <div className="flex items-center gap-2 border-b border-white/5 pb-4">
+                        <Layers size={14} className="text-white/40" />
+                        <span className="text-[10px] font-mono uppercase text-white/40 tracking-[0.3em]">Matrix Engines</span>
+                    </div>
+
+                    {mode === 'scale' && (
+                        <div className="flex flex-col gap-4">
+                            <SelectPill
+                                value={`${selectedScaleGroup}|${selectedScaleName}`}
+                                onChange={(val) => {
+                                    const [g, n] = val.split('|');
+                                    onScaleChange(g, n);
+                                }}
+                                options={scaleOptions}
+                            />
+                            <div className="h-[1px] w-full bg-white/5 my-2" />
+                            <TogglePill label={showIntervals ? "Mode: Note" : "Mode: Interval"} isActive={showIntervals} onToggle={onToggleIntervals} hideDot={true} />
+                            <TogglePill label="Chord Tones" isActive={showChordTones} onToggle={onToggleChordTones} />
+                            {isPentatonic && (
+                                <div className="flex flex-col gap-2 mt-2 border-t border-white/5 pt-4">
+                                    <TogglePill label="Add Blue Note" isActive={blueNote} onToggle={onToggleBlueNote} />
+                                    {selectedScaleName === "Minor Pentatonic" && (
+                                        <>
+                                            <TogglePill label="Add 2 (9th)" isActive={secondNote} onToggle={onToggleSecondNote} />
+                                            <TogglePill label="Add 6th Note" isActive={sixthNote} onToggle={onToggleSixthNote} />
+                                        </>
+                                    )}
+                                </div>
+                            )}
+                            <div className="h-[1px] w-full bg-white/5 my-2" />
+                            <TogglePill label="Double Stops" isActive={isDoubleStopActive} onToggle={onToggleDoubleStop} />
+                            {isDoubleStopActive && (
+                                <div className="flex flex-col gap-3 p-4 bg-black/40 rounded-xl border border-white/5 mt-2 animate-in slide-in-from-top-2 duration-300">
+                                    <div className="flex flex-col gap-2">
+                                        <span className="text-[9px] font-mono text-white/30 uppercase tracking-widest">Interval</span>
+                                        <div className="flex gap-2">
+                                            {[3, 4, 6].map(int => (
+                                                <button key={int} onClick={() => { onDoubleStopIntervalChange(int); onDoubleStopStringsChange(int === 6 ? [0, 2] : [0, 1]); }}
+                                                    className={`px-3 py-1.5 text-[10px] font-mono rounded-md border transition-all ${doubleStopInterval === int ? 'bg-white/10 text-white border-white/30' : 'border-white/5 text-white/40 hover:text-white'}`}>
+                                                    {int}{int === 3 ? 'rd' : 'th'}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {mode === 'chord' && (
+                        <div className="flex flex-col gap-6 overflow-y-auto max-h-[400px] pr-2 custom-scrollbar">
                             {[
                                 { category: "Triads", types: ["Major", "Minor", "Power (5)"] },
                                 { category: "7th Chords", types: ["Major 7", "Minor 7", "Dominant 7", "m7b5 (Half Dim)", "Diminished 7"] },
-                                { category: "Extended (9/13)", types: ["Major 9", "Minor 9", "Dominant 9", "13"] },
+                                { category: "Extended", types: ["Major 9", "Minor 9", "Dominant 9", "13"] },
                                 { category: "Altered & Sus", types: ["sus2", "sus4", "7#9 (Hendrix)", "7b9"] }
                             ].map(group => (
-                                <div key={group.category} className="mb-4 last:mb-0">
-                                    <h3 className="text-sm font-bold text-secondary mb-2 uppercase tracking-wider">{group.category}</h3>
+                                <div key={group.category} className="flex flex-col gap-3">
+                                    <span className="text-[9px] font-mono text-white/20 uppercase tracking-[0.2em] border-l border-white/20 pl-2">{group.category}</span>
                                     <div className="flex gap-2 flex-wrap">
-                                        {group.types.map(type => {
-                                            if (!CHORD_SHAPES[type]) return null;
-                                            return (
-                                                <button
-                                                    key={type}
-                                                    onClick={() => onChordTypeChange(type)}
-                                                    className={`py-2 px-3 rounded-lg text-sm font-bold border ${chordType === type ? 'bg-accent-blue/20 border-accent-blue text-accent-blue' : 'border-stroke text-secondary hover:text-white hover:border-slate-500 transition-colors'}`}
-                                                >
-                                                    {type}
-                                                </button>
-                                            );
-                                        })}
+                                        {group.types.map(type => CHORD_SHAPES[type] && (
+                                            <button key={type} onClick={() => onChordTypeChange(type)}
+                                                className={`px-3 py-1.5 text-[10px] font-mono rounded-md border transition-all ${chordType === type ? 'bg-white/10 text-white border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.05)]' : 'border-white/5 text-white/40 hover:border-white/20 hover:text-white'}`}>
+                                                {type}
+                                            </button>
+                                        ))}
                                     </div>
                                 </div>
                             ))}
                         </div>
+                    )}
 
+                    {mode === 'progression' && (
+                        <div className="flex flex-col gap-4">
+                            <SelectPill value={progressionName} onChange={onProgressionChange} options={progressionOptions} />
+                        </div>
+                    )}
+                </div>
+            </div>
 
-                    </div>
-                )}
-
-                {mode === 'progression' && (
-                    <div className="flex flex-col gap-4">
-                        <SelectPill
-                            value={progressionName}
-                            onChange={(val) => onProgressionChange(val)}
-                            options={progressionOptions}
-                        />
-                        {/* We removed Playback buttons as per instructions */}
-                    </div>
-                )}
-            </GlassPanel>
-
-            {/* Right Deck: Visual Targeting / Extras */}
-            {mode !== 'chord' && (
-                <GlassPanel className="p-10 rounded-lg flex flex-col">
-                    <SectionLabel text="Visual Targeting" className="relative -top-5 -left-4" />
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <TogglePill
-                            label={showIntervals ? "Change to Note" : "Change to Interval"}
-                            isActive={showIntervals}
-                            onToggle={onToggleIntervals}
-                            hideDot={true}
-                        />
-                        <TogglePill
-                            label={<>Chord Tones (1,3,5,7/<span className="lowercase">b</span>7)</>}
-                            isActive={showChordTones}
-                            onToggle={onToggleChordTones}
-                        />
-
-                        {/* Pentatonic Extras if applicable */}
-                        {isPentatonic && mode === 'scale' && (
-                            <>
-                                <TogglePill
-                                    label="Add Blue Note (b5)"
-                                    isActive={blueNote}
-                                    onToggle={onToggleBlueNote}
-                                    colorTheme="indigo"
-                                />
-                                {selectedScaleName === "Minor Pentatonic" && (
-                                    <>
-                                        <TogglePill
-                                            label="Add 2 (9th)"
-                                            isActive={secondNote}
-                                            onToggle={onToggleSecondNote}
-                                            colorTheme="amber"
-                                        />
-                                        <TogglePill
-                                            label="Add 6th Note"
-                                            isActive={sixthNote}
-                                            onToggle={onToggleSixthNote}
-                                            colorTheme="purple"
-                                        />
-                                    </>
-                                )}
-                            </>
-                        )}
-
-                        {/* Double Stops Configuration */}
-                        {mode === 'scale' && (
-                            <div className="flex flex-col xl:flex-row w-full items-start gap-6 mt-4">
-                                {/* 메인 토글 영역: 넓이 고정으로 크기 변동 방지 */}
-                                <div className="w-full xl:w-64 flex-shrink-0">
-                                    <TogglePill
-                                        label="Double Stops"
-                                        isActive={isDoubleStopActive}
-                                        onToggle={onToggleDoubleStop}
-                                        colorTheme="amber"
-                                        className="h-[60px]"
-                                    />
-                                </div>
-
-                                {/* 상세 설정 영역: 활성화 시 우측(또는 하단)으로 가로 전개 */}
-                                {isDoubleStopActive && (
-                                    <div className="flex-1 flex flex-col gap-4 p-5 rounded-xl bg-slate-900/40 border border-white/5 w-full">
-                                        {/* 1층: Interval 설정 */}
-                                        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                                            <span className="text-xs font-bold text-secondary uppercase tracking-wider w-16">Interval</span>
-                                            <div className="flex flex-row flex-wrap gap-2">
-                                                {[3, 4, 6].map(int => (
-                                                    <button
-                                                        key={`ds-int-${int}`}
-                                                        onClick={() => {
-                                                            onDoubleStopIntervalChange(int);
-                                                            if (int === 6) {
-                                                                onDoubleStopStringsChange([0, 2]);
-                                                            } else {
-                                                                onDoubleStopStringsChange([0, 1]);
-                                                            }
-                                                        }}
-                                                        className={`px-3 py-1.5 rounded-lg text-sm font-bold border transition-colors ${doubleStopInterval === int ? 'bg-accent-amber/20 border-accent-amber text-accent-amber' : 'border-stroke text-secondary hover:text-white hover:border-slate-500'}`}
-                                                    >
-                                                        {int}{int === 3 ? 'rd' : 'th'}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        {/* 시각적 구분선: 전체 너비를 차지하는 가로선으로 변경 */}
-                                        <div className="w-full h-[1px] bg-white/10 my-1" />
-
-                                        {/* 2층: Strings 설정 */}
-                                        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                                            <span className="text-xs font-bold text-secondary uppercase tracking-wider w-16">Strings</span>
-                                            <div className="flex flex-row flex-wrap gap-2">
-                                                {(doubleStopInterval === 6
-                                                    ? [[0, 2], [1, 3], [2, 4], [3, 5]]
-                                                    : [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]]
-                                                ).map(pair => {
-                                                    const isSelected = doubleStopStrings[0] === pair[0] && doubleStopStrings[1] === pair[1];
-                                                    return (
-                                                        <button
-                                                            key={`ds-str-${pair[0]}-${pair[1]}`}
-                                                            onClick={() => onDoubleStopStringsChange(pair as [number, number])}
-                                                            className={`px-3 py-1.5 rounded-lg text-sm font-bold border transition-colors ${isSelected ? 'bg-accent-amber/20 border-accent-amber text-accent-amber' : 'border-stroke text-secondary hover:text-white hover:border-slate-500'}`}
-                                                        >
-                                                            {pair[0] + 1}-{pair[1] + 1}
-                                                        </button>
-                                                    );
-                                                })}
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </div>
-                </GlassPanel>
-            )}
-        </div>
-    );
-
-    return (
-        <div className="w-full max-w-screen-xl mx-auto mb-12 relative">
-            {HeroBlock}
-            {RootKeyBlock}
-            {mode !== 'progression' && ControlDeck}
-
-            {/* PROGRESSION DASHBOARD */}
+            {/* PROGRESSION DASHBOARD (FULL WIDTH) */}
             {mode === 'progression' && (
-                <div className="mt-8 relative z-10 w-full">
-                    <div className="flex items-center justify-between mb-6">
-                        <h2 className="text-2xl font-bold text-white tracking-tight">Progression Gallery</h2>
-                        <span className="text-sm font-medium text-secondary bg-slate-800/50 py-1 px-3 rounded-full border border-stroke">Key of {getNoteName(selectedKey)}</span>
+                <div className="col-span-1 lg:col-span-12 w-full border-t border-white/5 pt-12 mt-12 animate-in fade-in duration-700">
+                    <div className="flex items-center gap-3 mb-8">
+                        <Activity size={16} className="text-white/40" />
+                        <h2 className="text-lg font-mono uppercase tracking-[0.3em] text-white/40">Progression Matrix</h2>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {PROGRESSION_LIBRARY.map(prog => (
-                            <GlassPanel key={prog.id} className="p-6 rounded-2xl flex flex-col hover:border-accent-blue/50 transition-colors cursor-pointer" onClick={() => onProgressionChange(prog.id)}>
-                                <div className="flex justify-between items-start mb-4">
-                                    <h3 className="text-lg font-bold text-white">{prog.title}</h3>
-                                    <span className="text-xs font-bold text-accent-amber bg-accent-amber/10 py-1 px-2 rounded uppercase tracking-wider">{prog.genre}</span>
+                            <div key={prog.id} onClick={() => onProgressionChange(prog.id)}
+                                className="bg-[#0a0a0a] border border-white/5 p-8 rounded-[2rem] flex flex-col hover:border-white/20 transition-all cursor-pointer group shadow-lg">
+                                <div className="flex justify-between items-start mb-6 border-b border-white/5 pb-4">
+                                    <h3 className="text-sm font-bold tracking-widest uppercase text-white/70 group-hover:text-white">{prog.title}</h3>
+                                    <span className="text-[8px] font-mono uppercase text-white/30 bg-white/5 py-1 px-2 rounded border border-white/5">{prog.genre}</span>
                                 </div>
-                                <div className="flex items-center gap-2 mb-6">
-                                    {prog.degrees.map((deg, i) => (
-                                        <React.Fragment key={i}>
-                                            <span className="text-sm font-medium text-secondary">{deg}</span>
-                                            {i < prog.degrees.length - 1 && <span className="text-secondary/50">-</span>}
-                                        </React.Fragment>
-                                    ))}
-                                </div>
-                                <div className="flex-1 flex items-center justify-center py-8 bg-slate-900/40 rounded-xl border border-stroke/50 mb-6">
-                                    <div className="flex items-center gap-3 flex-wrap justify-center">
+                                <div className="flex items-center justify-center py-8 bg-black rounded-2xl border border-white/5 mb-6 group-hover:border-white/10 transition-colors">
+                                    <div className="flex items-center gap-2 flex-wrap justify-center">
                                         {prog.degrees.map((deg, i) => (
-                                            <React.Fragment key={`chord-${i}`}>
-                                                <span className="text-3xl font-black text-accent-blue tracking-tighter">
-                                                    {getChordName(deg)}
-                                                </span>
-                                                {i < prog.degrees.length - 1 && <span className="text-xl text-secondary/40 font-bold mx-1">→</span>}
+                                            <React.Fragment key={i}>
+                                                <span className="text-2xl font-black text-white/80 group-hover:text-white">{getChordName(deg)}</span>
+                                                {i < prog.degrees.length - 1 && <span className="text-white/10 mx-1">→</span>}
                                             </React.Fragment>
                                         ))}
                                     </div>
                                 </div>
-                                <p className="text-sm text-secondary leading-relaxed">{prog.description}</p>
-                            </GlassPanel>
+                                <p className="text-[10px] font-mono text-white/30 leading-relaxed uppercase">{prog.description}</p>
+                            </div>
                         ))}
                     </div>
                 </div>
             )}
-        </div>
+        </>
     );
 };
-

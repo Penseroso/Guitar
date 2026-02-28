@@ -13,8 +13,7 @@ interface TabsRailProps {
 
 export const TabsRail: React.FC<TabsRailProps> = ({ tabs, activeId, onChange }) => {
     return (
-        <div className="flex p-1 rounded-full bg-white/5 ring-1 ring-white/10
-        shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-14px_22px_rgba(0,0,0,0.35)]">
+        <div className="flex bg-white/5 p-1 rounded-xl border border-white/5 backdrop-blur-xl w-fit">
             {tabs.map((tab) => {
                 const isActive = activeId === tab.id;
                 return (
@@ -22,12 +21,12 @@ export const TabsRail: React.FC<TabsRailProps> = ({ tabs, activeId, onChange }) 
                         key={tab.id}
                         onClick={() => onChange(tab.id)}
                         className={[
-                            "px-6 py-2 rounded-full text-[11px] font-black uppercase tracking-[0.35em]",
+                            "px-8 py-2 text-[11px] font-bold tracking-widest rounded-lg",
                             "transition-all duration-300",
-                            "focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue/25",
+                            "focus:outline-none",
                             isActive
-                                ? "bg-accent-blue/80 text-white border border-white/20 shadow-[0_10px_22px_rgba(59,130,246,0.22),inset_0_1px_0_rgba(255,255,255,0.18)]"
-                                : "text-secondary/80 hover:text-primary hover:bg-white/6"
+                                ? "bg-white/10 text-white shadow-[0_0_20px_rgba(255,255,255,0.05)]"
+                                : "text-white/40 hover:text-white/60 bg-transparent"
                         ].join(" ")}
                     >
                         {tab.label}

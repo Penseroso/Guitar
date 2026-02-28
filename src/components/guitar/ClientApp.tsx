@@ -273,78 +273,99 @@ export default function ClientApp() {
     }, [mode, fingering, voicingIndex, selectedKey]);
 
     return (
-        <div className="relative z-10 space-y-8 pb-48">
-            {/* 1. Controls (Moved to Top) */}
-            <Controls
-                selectedKey={selectedKey}
-                onKeyChange={setSelectedKey}
-                selectedScaleGroup={scaleGroup}
-                selectedScaleName={scaleName}
-                onScaleChange={(g, n) => { setScaleGroup(g); setScaleName(n); }}
-                showChordTones={showChordTones}
-                onToggleChordTones={() => setShowChordTones(p => !p)}
-                showIntervals={showIntervals}
-                onToggleIntervals={() => setShowIntervals(p => !p)}
-                isPentatonic={scaleName.includes('Pentatonic')}
-                blueNote={blueNote}
-                onToggleBlueNote={() => setBlueNote(p => !p)}
-                sixthNote={sixthNote}
-                onToggleSixthNote={() => setSixthNote(p => !p)}
-                secondNote={secondNote}
-                onToggleSecondNote={() => setSecondNote(p => !p)}
-
-                isDoubleStopActive={isDoubleStopActive}
-                onToggleDoubleStop={() => setIsDoubleStopActive(p => !p)}
-                doubleStopInterval={doubleStopInterval}
-                onDoubleStopIntervalChange={setDoubleStopInterval}
-                doubleStopStrings={doubleStopStrings}
-                onDoubleStopStringsChange={setDoubleStopStrings}
-
-                mode={mode}
-                onModeChange={setMode}
-
-                chordType={chordType}
-                onChordTypeChange={setChordType}
-                voicingIndex={voicingIndex}
-                onVoicingChange={setVoicingIndex}
-                availableVoicingsCount={availableVoicings.length}
-                voicingLabels={availableVoicings.map(v => v.name)}
-
-                progressionName={progressionName}
-                onProgressionChange={setProgressionName}
-                currentStepIndex={currentStepIndex}
-                onStepChange={setCurrentStepIndex}
-                isPlaying={isPlaying}
-                onTogglePlay={togglePlay}
-            />
-
-            {/* 2. Visualizations (Moved to Bottom) */}
-            {mode === 'scale' && (
-                <div className="glass-panel p-1 rounded-[2rem] w-full max-w-[95vw] mx-auto overflow-hidden shadow-2xl bg-[#0f172a]">
-                    <div ref={fretboardContainerRef} className="overflow-x-auto custom-scrollbar relative">
-                        <Fretboard
-                            tuning={TUNING}
-                            activeNotes={activeNotes}
-                            rootNote={rootNote}
-                            chordTones={currentChordTones}
-                            modifierNotes={modifierNotes}
-                            showChordTones={showChordTones}
-                            showIntervals={showIntervals}
-                            fingering={fingering}
-                            doubleStops={playableDoubleStops}
-                        />
-                    </div>
-                </div>
-            )}
-
-            {mode === 'chord' && (
-                <ChordGallery
-                    availableVoicings={availableVoicings}
+        <div className="min-h-screen bg-[#050505] text-[#a0a0a0] selection:bg-white/20 p-8 flex flex-col items-center gap-12 overflow-x-hidden font-sans">
+            <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                {/* 1. Controls (Left & Right Racks handled internally) */}
+                <Controls
                     selectedKey={selectedKey}
+                    onKeyChange={setSelectedKey}
+                    selectedScaleGroup={scaleGroup}
+                    selectedScaleName={scaleName}
+                    onScaleChange={(g, n) => { setScaleGroup(g); setScaleName(n); }}
+                    showChordTones={showChordTones}
+                    onToggleChordTones={() => setShowChordTones(p => !p)}
+                    showIntervals={showIntervals}
+                    onToggleIntervals={() => setShowIntervals(p => !p)}
+                    isPentatonic={scaleName.includes('Pentatonic')}
+                    blueNote={blueNote}
+                    onToggleBlueNote={() => setBlueNote(p => !p)}
+                    sixthNote={sixthNote}
+                    onToggleSixthNote={() => setSixthNote(p => !p)}
+                    secondNote={secondNote}
+                    onToggleSecondNote={() => setSecondNote(p => !p)}
+
+                    isDoubleStopActive={isDoubleStopActive}
+                    onToggleDoubleStop={() => setIsDoubleStopActive(p => !p)}
+                    doubleStopInterval={doubleStopInterval}
+                    onDoubleStopIntervalChange={setDoubleStopInterval}
+                    doubleStopStrings={doubleStopStrings}
+                    onDoubleStopStringsChange={setDoubleStopStrings}
+
+                    mode={mode}
+                    onModeChange={setMode}
+
+                    chordType={chordType}
+                    onChordTypeChange={setChordType}
                     voicingIndex={voicingIndex}
                     onVoicingChange={setVoicingIndex}
+                    availableVoicingsCount={availableVoicings.length}
+                    voicingLabels={availableVoicings.map(v => v.name)}
+
+                    progressionName={progressionName}
+                    onProgressionChange={setProgressionName}
+                    currentStepIndex={currentStepIndex}
+                    onStepChange={setCurrentStepIndex}
+                    isPlaying={isPlaying}
+                    onTogglePlay={togglePlay}
                 />
-            )}
-        </div >
+
+                {/* 2. Visualizations (Footer Rack) */}
+                <div className="col-span-1 lg:col-span-12 bg-[#0a0a0a] border border-white/5 rounded-[3rem] p-12 relative group shadow-2xl overflow-hidden mt-4">
+                    {/* Decorative Grid */}
+                    <div
+                        className="absolute inset-0 opacity-[0.02] pointer-events-none"
+                        style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '20px 20px' }}
+                    />
+
+                    {mode === 'scale' && (
+                        <div className="relative z-10 w-full">
+                            <div className="border-y border-white/5 mt-10 py-10 flex items-center justify-center relative">
+                                <div ref={fretboardContainerRef} className="overflow-x-auto custom-scrollbar relative w-full h-full flex justify-center">
+                                    <Fretboard
+                                        tuning={TUNING}
+                                        activeNotes={activeNotes}
+                                        rootNote={rootNote}
+                                        chordTones={currentChordTones}
+                                        modifierNotes={modifierNotes}
+                                        showChordTones={showChordTones}
+                                        showIntervals={showIntervals}
+                                        fingering={fingering}
+                                        doubleStops={playableDoubleStops}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {mode === 'chord' && (
+                        <div className="relative z-10 w-full mt-4">
+                            <ChordGallery
+                                availableVoicings={availableVoicings}
+                                selectedKey={selectedKey}
+                                voicingIndex={voicingIndex}
+                                onVoicingChange={setVoicingIndex}
+                            />
+                        </div>
+                    )}
+
+                    {/* Bottom Metrics */}
+                    <div className="relative z-10 flex justify-end items-center gap-10 mt-12 w-full pr-4">
+                        <span className="text-[10px] font-bold tracking-[0.2em] uppercase opacity-15">MODUS ENGINE V2.2</span>
+                        <div className="w-16 h-[1px] bg-white/40 opacity-15" />
+                        <span className="text-[10px] font-bold tracking-[0.2em] uppercase opacity-15">SYSTEM NOMINAL</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 }

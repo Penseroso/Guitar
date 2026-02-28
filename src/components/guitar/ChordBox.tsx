@@ -176,8 +176,8 @@ export const ChordBox: React.FC<ChordBoxProps> = ({ fingering, labelMode, isMagn
                     const isRoot = f.label === 'R' || f.label === '•' && f.noteIdx !== undefined; // Adjust depending on actual logic for root
                     const isRootByLabel = f.label === 'R';
 
-                    const fill = isRootByLabel ? "#3b82f6" : "#0f172a";
-                    const stroke = "#3b82f6";
+                    const fill = isRootByLabel ? "#fff" : "#050505";
+                    const stroke = isRootByLabel ? "#fff" : "#475569";
 
                     let displayText = "";
                     if (labelMode === 'interval') {
@@ -200,9 +200,10 @@ export const ChordBox: React.FC<ChordBoxProps> = ({ fingering, labelMode, isMagn
                                 <text
                                     x={cx}
                                     y={cy + (isMagnified ? 1 : 0)}
-                                    fill={isRootByLabel ? "#fff" : "#e2e8f0"}
+                                    fill={isRootByLabel ? "#000" : "#e2e8f0"}
                                     fontSize={isMagnified ? "12" : "8"}
                                     fontWeight="bold"
+                                    fontFamily="monospace"
                                     textAnchor="middle"
                                     alignmentBaseline="central"
                                 >
