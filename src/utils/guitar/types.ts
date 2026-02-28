@@ -15,6 +15,7 @@ export interface FretboardProps {
     showChordTones: boolean;
     showIntervals?: boolean;
     fingering?: Fingering[];
+    doubleStops?: PlayableDoubleStop[];
 }
 
 export interface Fingering {
@@ -22,4 +23,18 @@ export interface Fingering {
     fret: number;
     noteIdx: number;
     label?: string;
+}
+
+export interface DoubleStopPair {
+    rootNoteIdx: number;
+    targetNoteIdx: number;
+    interval: number;
+}
+
+export interface PlayableDoubleStop {
+    string1: number;
+    fret1: number;
+    string2: number;
+    fret2: number;
+    pair: DoubleStopPair;
 }

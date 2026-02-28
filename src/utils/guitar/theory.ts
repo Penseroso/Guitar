@@ -11,6 +11,7 @@ export interface ProgressionData {
 export const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 export const NOTES_FLAT = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 export const TUNING = [4, 11, 7, 2, 9, 4]; // E2, B3, G3, D3, A2, E2 (High to Low strings 1-6)
+export const STRING_MIDI_PITCHES = [64, 59, 55, 50, 45, 40]; // Absolute MIDI pitches for standard tuning (High E to Low E)
 
 export const SCALES: Record<string, Record<string, number[]>> = {
     "Diatonic": {
@@ -42,17 +43,17 @@ export const CHORD_SHAPES: Record<string, ChordShape[]> = {
     // baseRootString is the index of the string (0-5) that holds the Root note
     // === 1. Triads (기본 3화음) ===
     "Major": [
-        { name: "Root 5 (E Shape)", baseRootString: 5, offsets: [0, 0, 1, 2, 2, 0] },
-        { name: "Root 4 (A Shape)", baseRootString: 4, offsets: [0, 2, 2, 2, 0, null] },
-        { name: "Root 3 (D Shape)", baseRootString: 3, offsets: [2, 3, 2, 0, null, null] },
-        { name: "Root 5 (G Shape)", baseRootString: 5, offsets: [0, -3, -3, -3, -1, 0] },
-        { name: "Root 4 (C Shape)", baseRootString: 4, offsets: [-3, -2, -3, -1, 0, null] }
+        { name: "Root 6 (E Shape)", baseRootString: 5, offsets: [0, 0, 1, 2, 2, 0] },
+        { name: "Root 5 (A Shape)", baseRootString: 4, offsets: [0, 2, 2, 2, 0, null] },
+        { name: "Root 4 (D Shape)", baseRootString: 3, offsets: [2, 3, 2, 0, null, null] },
+        { name: "Root 6 (G Shape)", baseRootString: 5, offsets: [0, -3, -3, -3, -1, 0] },
+        { name: "Root 5 (C Shape)", baseRootString: 4, offsets: [-3, -2, -3, -1, 0, null] }
     ],
     "Minor": [
-        { name: "Root 5 (Em Shape)", baseRootString: 5, offsets: [0, 0, 0, 2, 2, 0] },
-        { name: "Root 4 (Am Shape)", baseRootString: 4, offsets: [0, 1, 2, 2, 0, null] },
-        { name: "Root 3 (Dm Shape)", baseRootString: 3, offsets: [1, 3, 2, 0, null, null] },
-        { name: "Root 4 (Cm Shape)", baseRootString: 4, offsets: [-3, -2, -3, -2, 0, null] }
+        { name: "Root 6 (Em Shape)", baseRootString: 5, offsets: [0, 0, 0, 2, 2, 0] },
+        { name: "Root 5 (Am Shape)", baseRootString: 4, offsets: [0, 1, 2, 2, 0, null] },
+        { name: "Root 4 (Dm Shape)", baseRootString: 3, offsets: [1, 3, 2, 0, null, null] },
+        { name: "Root 5 (Cm Shape)", baseRootString: 4, offsets: [-3, -2, -3, -2, 0, null] }
     ],
 
     // === 2. 7th Chords (7화음) ===
@@ -70,7 +71,7 @@ export const CHORD_SHAPES: Record<string, ChordShape[]> = {
         { name: "Root 6 (Drop 3)", baseRootString: 5, offsets: [null, 0, 1, 0, null, 0] }, // (x-x-0-1-0-0)
         { name: "Root 5 (Drop 2)", baseRootString: 4, offsets: [null, 2, 0, 2, 0, null] }, // (x-0-2-0-2-x)
         { name: "Root 4 (Drop 2)", baseRootString: 3, offsets: [2, 1, 2, 0, null, null] }, // (x-x-0-2-1-2)
-        { name: "Root 4 (C7 Shape)", baseRootString: 4, offsets: [-3, -2, 0, -1, 0, null] }         // (x-3-2-3-1-0)
+        { name: "Root 5 (C7 Shape)", baseRootString: 4, offsets: [-3, -2, 0, -1, 0, null] }         // (x-3-2-3-1-0)
     ],
     "m7b5 (Half Dim)": [
         { name: "Root 6 (Drop 3)", baseRootString: 5, offsets: [null, -1, 0, 0, null, 0] },// (x-x-0-0--1-0)
@@ -110,13 +111,13 @@ export const CHORD_SHAPES: Record<string, ChordShape[]> = {
         { name: "Root 6", baseRootString: 5, offsets: [null, -3, -1, -1, null, 0] }         // (0-x--1--1--3-x)
     ],
     "sus4": [
-        { name: "Root 5 (E Shape)", baseRootString: 5, offsets: [0, 0, 2, 2, 2, 0] },
-        { name: "Root 4 (A Shape)", baseRootString: 4, offsets: [0, 3, 2, 2, 0, null] },
-        { name: "Root 3 (D Shape)", baseRootString: 3, offsets: [3, 3, 2, 0, null, null] }
+        { name: "Root 6 (E Shape)", baseRootString: 5, offsets: [0, 0, 2, 2, 2, 0] },
+        { name: "Root 5 (A Shape)", baseRootString: 4, offsets: [0, 3, 2, 2, 0, null] },
+        { name: "Root 4 (D Shape)", baseRootString: 3, offsets: [3, 3, 2, 0, null, null] }
     ],
     "sus2": [
-        { name: "Root 4 (A Shape)", baseRootString: 4, offsets: [0, 0, 2, 2, 0, null] },
-        { name: "Root 3 (D Shape)", baseRootString: 3, offsets: [0, 3, 2, 0, null, null] }
+        { name: "Root 5 (A Shape)", baseRootString: 4, offsets: [0, 0, 2, 2, 0, null] },
+        { name: "Root 4 (D Shape)", baseRootString: 3, offsets: [0, 3, 2, 0, null, null] }
     ],
     "Power (5)": [
         { name: "Root 6 (Standard)", baseRootString: 5, offsets: [null, null, null, 2, 2, 0] },

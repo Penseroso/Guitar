@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Fretboard } from '../Fretboard';
 import { Controls } from './Controls';
+import { ChordGallery } from './ChordGallery';
 import {
     NOTES,
     TUNING,
@@ -13,7 +14,10 @@ import {
 import {
     getChordFromDegree,
     getChordTones,
-    getChordFingering
+    getChordFingering,
+    getSortedVoicings,
+    getDiatonicDoubleStops,
+    getPlayableDoubleStopsOnStrings
 } from '../../utils/guitar/logic';
 import { Mode } from '../../utils/guitar/types';
 
@@ -35,6 +39,11 @@ export default function ClientApp() {
     // --- State: Chord Mode ---
     const [chordType, setChordType] = useState('Major'); // 'Major', 'Minor', '7'
     const [voicingIndex, setVoicingIndex] = useState(0);
+
+    // --- State: Double Stops (Scale Mode Feature) ---
+    const [isDoubleStopActive, setIsDoubleStopActive] = useState(false);
+    const [doubleStopInterval, setDoubleStopInterval] = useState(3);
+    const [doubleStopStrings, setDoubleStopStrings] = useState<[number, number]>([1, 2]);
 
     // --- State: Progression Mode ---
     const [progressionName, setProgressionName] = useState('Classic 2-5-1 (Major)');
@@ -77,8 +86,9 @@ export default function ClientApp() {
 
     // --- Derived Data: Chords ---
     const availableVoicings = useMemo(() => {
-        return CHORD_SHAPES[chordType] || CHORD_SHAPES['Major'];
-    }, [chordType]);
+        const shapes = CHORD_SHAPES[chordType] || CHORD_SHAPES['Major'];
+        return getSortedVoicings(shapes, selectedKey, TUNING);
+    }, [chordType, selectedKey]);
 
     const currentVoicingShape = useMemo(() => {
         return availableVoicings[voicingIndex] || availableVoicings[0];
@@ -197,6 +207,15 @@ export default function ClientApp() {
         return [];
     }, [mode, scaleNotes, modifierNotes, fingering, selectedKey]);
 
+    // --- Derived Data: Double Stops ---
+    const playableDoubleStops = useMemo(() => {
+        if (mode !== 'scale' || !isDoubleStopActive) return [];
+
+        // Use active scale notes (without modifiers) to find diatonic pairs
+        const diatonicPairs = getDiatonicDoubleStops(scaleNotes, doubleStopInterval);
+        return getPlayableDoubleStopsOnStrings(diatonicPairs, selectedKey, TUNING, doubleStopStrings);
+    }, [mode, isDoubleStopActive, scaleNotes, doubleStopInterval, doubleStopStrings, selectedKey]);
+
     // --- Chord Tone Highlighting ---
     const currentChordTones = useMemo(() => {
         if (mode === 'scale') {
@@ -254,7 +273,7 @@ export default function ClientApp() {
     }, [mode, fingering, voicingIndex, selectedKey]);
 
     return (
-        <div className="relative z-10 space-y-8">
+        <div className="relative z-10 space-y-8 pb-48">
             {/* 1. Controls (Moved to Top) */}
             <Controls
                 selectedKey={selectedKey}
@@ -274,6 +293,13 @@ export default function ClientApp() {
                 secondNote={secondNote}
                 onToggleSecondNote={() => setSecondNote(p => !p)}
 
+                isDoubleStopActive={isDoubleStopActive}
+                onToggleDoubleStop={() => setIsDoubleStopActive(p => !p)}
+                doubleStopInterval={doubleStopInterval}
+                onDoubleStopIntervalChange={setDoubleStopInterval}
+                doubleStopStrings={doubleStopStrings}
+                onDoubleStopStringsChange={setDoubleStopStrings}
+
                 mode={mode}
                 onModeChange={setMode}
 
@@ -292,8 +318,8 @@ export default function ClientApp() {
                 onTogglePlay={togglePlay}
             />
 
-            {/* 2. Fretboard Visualization (Moved to Bottom) */}
-            {mode !== 'progression' && (
+            {/* 2. Visualizations (Moved to Bottom) */}
+            {mode === 'scale' && (
                 <div className="glass-panel p-1 rounded-[2rem] w-full max-w-[95vw] mx-auto overflow-hidden shadow-2xl bg-[#0f172a]">
                     <div ref={fretboardContainerRef} className="overflow-x-auto custom-scrollbar relative">
                         <Fretboard
@@ -305,9 +331,19 @@ export default function ClientApp() {
                             showChordTones={showChordTones}
                             showIntervals={showIntervals}
                             fingering={fingering}
+                            doubleStops={playableDoubleStops}
                         />
                     </div>
                 </div>
+            )}
+
+            {mode === 'chord' && (
+                <ChordGallery
+                    availableVoicings={availableVoicings}
+                    selectedKey={selectedKey}
+                    voicingIndex={voicingIndex}
+                    onVoicingChange={setVoicingIndex}
+                />
             )}
         </div >
     );

@@ -25,6 +25,14 @@ interface ControlsProps {
     onToggleSixthNote: () => void;
     secondNote: boolean;
     onToggleSecondNote: () => void;
+    // Double Stop Props
+    isDoubleStopActive: boolean;
+    onToggleDoubleStop: () => void;
+    doubleStopInterval: number;
+    onDoubleStopIntervalChange: (interval: number) => void;
+    doubleStopStrings: [number, number];
+    onDoubleStopStringsChange: (strings: [number, number]) => void;
+
     // Chord Props
     mode: 'scale' | 'chord' | 'progression';
     onModeChange: (mode: 'scale' | 'chord' | 'progression') => void;
@@ -60,6 +68,12 @@ export const Controls: React.FC<ControlsProps> = ({
     onToggleSixthNote,
     secondNote,
     onToggleSecondNote,
+    isDoubleStopActive,
+    onToggleDoubleStop,
+    doubleStopInterval,
+    onDoubleStopIntervalChange,
+    doubleStopStrings,
+    onDoubleStopStringsChange,
     mode,
     onModeChange,
     chordType,
@@ -147,9 +161,9 @@ export const Controls: React.FC<ControlsProps> = ({
     };
 
     const ControlDeck = (
-        <div className={`grid grid-cols-1 gap-8 items-start ${mode === 'chord' ? 'lg:grid-cols-3' : 'lg:grid-cols-2'}`}>
+        <div className={`grid grid-cols-1 gap-8 items-start ${mode === 'chord' ? 'lg:grid-cols-1' : 'lg:grid-cols-2'}`}>
             {/* Left Deck: Primary Selection */}
-            <GlassPanel className={`p-10 rounded-lg flex flex-col ${mode === 'chord' ? 'lg:col-span-2' : ''}`}>
+            <GlassPanel className={`p-10 rounded-lg flex flex-col w-full`}>
                 <SectionLabel text="Mode Configuration" className="relative -top-5 -left-4" />
 
                 {mode === 'scale' && (
@@ -193,15 +207,7 @@ export const Controls: React.FC<ControlsProps> = ({
                             ))}
                         </div>
 
-                        {/* Voicing Switcher */}
-                        <div className="flex items-center justify-between w-full bg-slate-900/50 p-4 rounded-xl border border-stroke mt-2">
-                            <button onClick={() => onVoicingChange((voicingIndex - 1 + availableVoicingsCount) % availableVoicingsCount)} className="text-secondary hover:text-accent-blue px-4 transition-colors">←</button>
-                            <div className="flex flex-col items-center justify-center text-center flex-1 px-2">
-                                <span className="text-white font-bold whitespace-normal leading-tight">{voicingLabels[voicingIndex] || `Voicing ${voicingIndex + 1}`}</span>
-                                <span className="text-xs text-secondary mt-1">{voicingIndex + 1} / {availableVoicingsCount}</span>
-                            </div>
-                            <button onClick={() => onVoicingChange((voicingIndex + 1) % availableVoicingsCount)} className="text-secondary hover:text-accent-blue px-4 transition-colors">→</button>
-                        </div>
+
                     </div>
                 )}
 
@@ -218,53 +224,122 @@ export const Controls: React.FC<ControlsProps> = ({
             </GlassPanel>
 
             {/* Right Deck: Visual Targeting / Extras */}
-            <GlassPanel className={`p-10 rounded-lg flex flex-col ${mode === 'chord' ? 'lg:col-span-1' : ''}`}>
-                <SectionLabel text="Visual Targeting" className="relative -top-5 -left-4" />
+            {mode !== 'chord' && (
+                <GlassPanel className="p-10 rounded-lg flex flex-col">
+                    <SectionLabel text="Visual Targeting" className="relative -top-5 -left-4" />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <TogglePill
-                        label={showIntervals ? "Change to Note" : "Change to Interval"}
-                        isActive={showIntervals}
-                        onToggle={onToggleIntervals}
-                        hideDot={true}
-                    />
-                    {mode !== 'chord' && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <TogglePill
+                            label={showIntervals ? "Change to Note" : "Change to Interval"}
+                            isActive={showIntervals}
+                            onToggle={onToggleIntervals}
+                            hideDot={true}
+                        />
                         <TogglePill
                             label={<>Chord Tones (1,3,5,7/<span className="lowercase">b</span>7)</>}
                             isActive={showChordTones}
                             onToggle={onToggleChordTones}
                         />
-                    )}
 
-                    {/* Pentatonic Extras if applicable */}
-                    {isPentatonic && mode === 'scale' && (
-                        <>
-                            <TogglePill
-                                label="Add Blue Note (b5)"
-                                isActive={blueNote}
-                                onToggle={onToggleBlueNote}
-                                colorTheme="indigo"
-                            />
-                            {selectedScaleName === "Minor Pentatonic" && (
-                                <>
+                        {/* Pentatonic Extras if applicable */}
+                        {isPentatonic && mode === 'scale' && (
+                            <>
+                                <TogglePill
+                                    label="Add Blue Note (b5)"
+                                    isActive={blueNote}
+                                    onToggle={onToggleBlueNote}
+                                    colorTheme="indigo"
+                                />
+                                {selectedScaleName === "Minor Pentatonic" && (
+                                    <>
+                                        <TogglePill
+                                            label="Add 2 (9th)"
+                                            isActive={secondNote}
+                                            onToggle={onToggleSecondNote}
+                                            colorTheme="amber"
+                                        />
+                                        <TogglePill
+                                            label="Add 6th Note"
+                                            isActive={sixthNote}
+                                            onToggle={onToggleSixthNote}
+                                            colorTheme="purple"
+                                        />
+                                    </>
+                                )}
+                            </>
+                        )}
+
+                        {/* Double Stops Configuration */}
+                        {mode === 'scale' && (
+                            <div className="flex flex-col xl:flex-row w-full items-start gap-6 mt-4">
+                                {/* 메인 토글 영역: 넓이 고정으로 크기 변동 방지 */}
+                                <div className="w-full xl:w-64 flex-shrink-0">
                                     <TogglePill
-                                        label="Add 2 (9th)"
-                                        isActive={secondNote}
-                                        onToggle={onToggleSecondNote}
+                                        label="Double Stops"
+                                        isActive={isDoubleStopActive}
+                                        onToggle={onToggleDoubleStop}
                                         colorTheme="amber"
+                                        className="h-[60px]"
                                     />
-                                    <TogglePill
-                                        label="Add 6th Note"
-                                        isActive={sixthNote}
-                                        onToggle={onToggleSixthNote}
-                                        colorTheme="purple"
-                                    />
-                                </>
-                            )}
-                        </>
-                    )}
-                </div>
-            </GlassPanel>
+                                </div>
+
+                                {/* 상세 설정 영역: 활성화 시 우측(또는 하단)으로 가로 전개 */}
+                                {isDoubleStopActive && (
+                                    <div className="flex-1 flex flex-col gap-4 p-5 rounded-xl bg-slate-900/40 border border-white/5 w-full">
+                                        {/* 1층: Interval 설정 */}
+                                        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                                            <span className="text-xs font-bold text-secondary uppercase tracking-wider w-16">Interval</span>
+                                            <div className="flex flex-row flex-wrap gap-2">
+                                                {[3, 4, 6].map(int => (
+                                                    <button
+                                                        key={`ds-int-${int}`}
+                                                        onClick={() => {
+                                                            onDoubleStopIntervalChange(int);
+                                                            if (int === 6) {
+                                                                onDoubleStopStringsChange([0, 2]);
+                                                            } else {
+                                                                onDoubleStopStringsChange([0, 1]);
+                                                            }
+                                                        }}
+                                                        className={`px-3 py-1.5 rounded-lg text-sm font-bold border transition-colors ${doubleStopInterval === int ? 'bg-accent-amber/20 border-accent-amber text-accent-amber' : 'border-stroke text-secondary hover:text-white hover:border-slate-500'}`}
+                                                    >
+                                                        {int}{int === 3 ? 'rd' : 'th'}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* 시각적 구분선: 전체 너비를 차지하는 가로선으로 변경 */}
+                                        <div className="w-full h-[1px] bg-white/10 my-1" />
+
+                                        {/* 2층: Strings 설정 */}
+                                        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                                            <span className="text-xs font-bold text-secondary uppercase tracking-wider w-16">Strings</span>
+                                            <div className="flex flex-row flex-wrap gap-2">
+                                                {(doubleStopInterval === 6
+                                                    ? [[0, 2], [1, 3], [2, 4], [3, 5]]
+                                                    : [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]]
+                                                ).map(pair => {
+                                                    const isSelected = doubleStopStrings[0] === pair[0] && doubleStopStrings[1] === pair[1];
+                                                    return (
+                                                        <button
+                                                            key={`ds-str-${pair[0]}-${pair[1]}`}
+                                                            onClick={() => onDoubleStopStringsChange(pair as [number, number])}
+                                                            className={`px-3 py-1.5 rounded-lg text-sm font-bold border transition-colors ${isSelected ? 'bg-accent-amber/20 border-accent-amber text-accent-amber' : 'border-stroke text-secondary hover:text-white hover:border-slate-500'}`}
+                                                        >
+                                                            {pair[0] + 1}-{pair[1] + 1}
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </GlassPanel>
+            )}
         </div>
     );
 

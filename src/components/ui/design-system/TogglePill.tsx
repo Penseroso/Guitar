@@ -6,9 +6,10 @@ interface TogglePillProps {
     onToggle: () => void;
     colorTheme?: 'amber' | 'indigo' | 'purple';
     hideDot?: boolean;
+    className?: string;
 }
 
-export const TogglePill: React.FC<TogglePillProps> = ({ label, isActive, onToggle, colorTheme = 'amber', hideDot = false }) => {
+export const TogglePill: React.FC<TogglePillProps> = ({ label, isActive, onToggle, colorTheme = 'amber', hideDot = false, className = '' }) => {
     let borderBgClass = "";
     let dotClass = "bg-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.10),inset_0_-6px_10px_rgba(0,0,0,0.45)]";
 
@@ -29,19 +30,20 @@ export const TogglePill: React.FC<TogglePillProps> = ({ label, isActive, onToggl
         <button
             onClick={onToggle}
             className={[
-                "flex items-center w-full",
-                hideDot ? "justify-center" : "justify-between",
+                "w-full flex items-center",
+                hideDot ? "justify-center" : "justify-between gap-4",
                 "rounded-2xl px-6 py-4 transition-all duration-200 group",
                 "border border-white/10",
                 "bg-white/5",
                 "shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-14px_22px_rgba(0,0,0,0.35)]",
                 "hover:border-white/18 hover:bg-white/7",
                 "focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue/25",
-                borderBgClass
+                borderBgClass,
+                className
             ].join(" ")}
         >
             <span className={[
-                "text-[12px] font-black uppercase tracking-[0.25em] transition-colors",
+                "text-[12px] font-black uppercase tracking-[0.25em] transition-colors text-left",
                 isActive || hideDot ? "text-white" : "text-secondary/85 group-hover:text-primary"
             ].join(" ")}>
                 {label}
@@ -49,7 +51,7 @@ export const TogglePill: React.FC<TogglePillProps> = ({ label, isActive, onToggl
 
             {!hideDot && (
                 <div className={[
-                    "w-4 h-4 rounded-full transition-all duration-300",
+                    "w-4 h-4 rounded-full shrink-0 transition-all duration-300",
                     dotClass
                 ].join(" ")} />
             )}

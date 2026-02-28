@@ -21,7 +21,8 @@ export const Fretboard: React.FC<FretboardProps> = ({
     modifierNotes,
     showChordTones,
     showIntervals = false,
-    fingering
+    fingering,
+    doubleStops = []
 }) => {
     // Generate fret indices [0...24]
     const frets = useMemo(() => Array.from({ length: 25 }, (_, i) => i), []);
@@ -29,6 +30,26 @@ export const Fretboard: React.FC<FretboardProps> = ({
 
     // Grid Template Columns: string of pixel values
     const gridTemplateColumns = FRET_WIDTHS.map(w => `${w}px`).join(' ');
+
+    // Coordinate Math Helper for SVG connections
+    const getNoteCoordinates = (stringIdx: number, fretIdx: number) => {
+        let x = 0;
+        // Sum widths up to the fret before the target
+        for (let i = 0; i < fretIdx; i++) {
+            x += FRET_WIDTHS[i];
+        }
+        // Add half of the target fret width to reach the center
+        x += FRET_WIDTHS[fretIdx] / 2;
+
+        // Y coordinate is row-based. 6 rows of 60px each, plus some padding from container.
+        // Actually, css grid template rows is repeat(6, 60px). 
+        // We know exactly what top/left is relative to the board grid.
+        // strings 0-5. Row height is 60px.
+        // Y center = (stringIdx * 60) + 30
+        const y = (stringIdx * 60) + 30;
+
+        return { x, y };
+    };
 
     return (
         <div className={styles.fretboardContainer}>
@@ -44,6 +65,37 @@ export const Fretboard: React.FC<FretboardProps> = ({
                 </div>
 
                 <div className={styles.fretboardGrid} style={{ gridTemplateColumns }}>
+
+                    {/* SVG Connections Layer (For Double Stops) */}
+                    <svg
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            pointerEvents: 'none',
+                            zIndex: 15
+                        }}
+                    >
+                        {doubleStops.map((ds, idx) => {
+                            const pt1 = getNoteCoordinates(ds.string1, ds.fret1);
+                            const pt2 = getNoteCoordinates(ds.string2, ds.fret2);
+                            return (
+                                <line
+                                    key={`ds-conn-${idx}`}
+                                    x1={pt1.x}
+                                    y1={pt1.y}
+                                    x2={pt2.x}
+                                    y2={pt2.y}
+                                    stroke="rgba(255, 255, 255, 0.4)"
+                                    strokeWidth="3"
+                                    strokeDasharray="4 4"
+                                />
+                            );
+                        })}
+                    </svg>
+
                     {/* Background Wood Texture */}
                     <div className={styles.woodTexture} />
 
@@ -158,7 +210,7 @@ export const Fretboard: React.FC<FretboardProps> = ({
                     </div>
 
                     {/* Notes Layer (Overlay on Grid - Z-Index 20 - TOP) */}
-                    <div className={styles.notesLayer} style={{ gridTemplateColumns }}>
+                    <div className={`${styles.notesLayer} ${doubleStops.length > 0 ? styles.faded : ''}`} style={{ gridTemplateColumns }}>
                         {strings.map((s) => (
                             <React.Fragment key={`note-row-${s}`}>
                                 {frets.map((f) => {
@@ -204,7 +256,15 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                             }
                                         }
                                     } else {
-                                        if (isRoot) dotClass = styles.noteRoot;
+                                        const isDoubleStop = doubleStops.some(ds => (ds.string1 === s && ds.fret1 === f) || (ds.string2 === s && ds.fret2 === f));
+
+                                        if (isDoubleStop) {
+                                            dotClass = styles.noteDoubleStop;
+
+                                            // Enforce label to be Interval if not Root, to clearly identify the Double Stop relation
+                                            const intervalIdx = (noteIdx - rootNote + 12) % 12;
+                                            label = INTERVAL_NAMES[intervalIdx];
+                                        } else if (isRoot) dotClass = styles.noteRoot;
                                         else if (showChordTones && isChordTone) dotClass = styles.noteChordTone;
                                         else if (isModifier) {
                                             const diff = (noteIdx - rootNote + 12) % 12;
