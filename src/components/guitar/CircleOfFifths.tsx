@@ -5,8 +5,8 @@ import { getCircleOfFifthsOrder, getRelativeMinor } from '../../utils/guitar/log
 const polarToCartesian = (centerX: number, centerY: number, radius: number, angleInDegrees: number) => {
     const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
     return {
-        x: centerX + (radius * Math.cos(angleInRadians)),
-        y: centerY + (radius * Math.sin(angleInRadians))
+        x: Number((centerX + (radius * Math.cos(angleInRadians))).toFixed(4)),
+        y: Number((centerY + (radius * Math.sin(angleInRadians))).toFixed(4))
     };
 };
 
