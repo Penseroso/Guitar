@@ -27,8 +27,22 @@ const ROMAN_NUMERAL_CHORDS: Record<string, { interval: number; type: string }> =
     'vi': { interval: 9, type: 'Minor' },
     'VI': { interval: 9, type: 'Major' },
     'bVII': { interval: 10, type: 'Major' },
+    'bvii': { interval: 10, type: 'Minor' },
     'VII': { interval: 11, type: 'Major' },
-    'vii': { interval: 11, type: 'Minor' }
+    'vii': { interval: 11, type: 'Minor' },
+
+    // Diminished & Augmented Chords (Harmonic/Melodic/Altered Scales)
+    'i°': { interval: 0, type: 'Diminished' },
+    'ii°': { interval: 2, type: 'Diminished' },
+    'iii°': { interval: 4, type: 'Diminished' },
+    '#iv°': { interval: 6, type: 'Diminished' },
+    'v°': { interval: 7, type: 'Diminished' },
+    'vi°': { interval: 9, type: 'Diminished' },
+    'vii°': { interval: 11, type: 'Diminished' },
+    'bvii°': { interval: 10, type: 'Diminished' },
+
+    'bIII+': { interval: 3, type: 'Augmented' },
+    'bVI+': { interval: 8, type: 'Augmented' }
 };
 
 const INTERVAL_LABELS: Record<number, string> = {
@@ -54,6 +68,8 @@ export function getChordTones(chordType: string, root: number): number[] {
     const chordIntervals: Record<string, number[]> = {
         "Major": [0, 4, 7],
         "Minor": [0, 3, 7],
+        "Diminished": [0, 3, 6],
+        "Augmented": [0, 4, 8],
         "Major 7": [0, 4, 7, 11],
         "Dominant 7": [0, 4, 7, 10],
         "Minor 7": [0, 3, 7, 10],

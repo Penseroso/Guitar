@@ -198,7 +198,12 @@ export const Controls: React.FC<ControlsProps> = ({
                                     transition={{ duration: 0.4, ease: "easeOut" }}
                                     className="w-[420px] h-[420px] drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)] flex justify-center items-center"
                                 >
-                                    <CircleOfFifths selectedKey={selectedKey} onKeySelect={onKeyChange} />
+                                    <CircleOfFifths
+                                        selectedKey={selectedKey}
+                                        onKeySelect={onKeyChange}
+                                        selectedScaleGroup={selectedScaleGroup}
+                                        selectedScaleName={selectedScaleName}
+                                    />
                                 </motion.div>
                             ) : (
                                 <motion.div
