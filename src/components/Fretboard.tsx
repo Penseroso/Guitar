@@ -185,14 +185,17 @@ export const Fretboard: React.FC<FretboardProps> = ({
                     {DOUBLE_INLAYS.map(f => (
                         <div
                             key={`dbl-inlay-${f}`}
-                            className={styles.doubleInlay}
+                            className={styles.doubleInlayWrapper}
                             style={{
                                 gridColumn: f + 1,
-                                gridRow: '1 / -1'
+                                gridRow: '1 / -1', /* 세로 전체 확장 */
                             }}
                         >
-                            <div className={styles.inlay} style={{ position: 'static', transform: 'none' }} />
-                            <div className={styles.inlay} style={{ position: 'static', transform: 'none' }} />
+                            {/* Dot 1: 2번과 3번 줄 사이 정확한 좌표 (Y=120) */}
+                            <div className={styles.doubleInlayDot} style={{ top: '110px' }} />
+
+                            {/* Dot 2: 4번과 5번 줄 사이 정확한 좌표 (Y=240) */}
+                            <div className={styles.doubleInlayDot} style={{ top: '230px' }} />
                         </div>
                     ))}
 

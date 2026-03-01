@@ -99,6 +99,45 @@ export const Controls: React.FC<ControlsProps> = ({
         return `${rootText}${suffix}`;
     };
 
+    const getStructureDisplay = () => {
+        const INTERVAL_NAMES = ['1', 'b2', '2', 'b3', '3', '4', 'b5', '5', 'b6', '6', 'b7', '7'];
+
+        if (mode === 'scale') {
+            const arr = SCALES[selectedScaleGroup]?.[selectedScaleName] || [];
+            return arr.map((i: number) => INTERVAL_NAMES[i]).join(' · ');
+        } else if (mode === 'chord') {
+            const chordIntervals: Record<string, number[]> = {
+                "Major": [0, 4, 7],
+                "Minor": [0, 3, 7],
+                "Major 7": [0, 4, 7, 11],
+                "Minor 7": [0, 3, 7, 10],
+                "Dominant 7": [0, 4, 7, 10],
+                "m7b5 (Half Dim)": [0, 3, 6, 10],
+                "Diminished 7": [0, 3, 6, 9],
+                "Major 9": [0, 4, 7, 11, 2],
+                "Minor 9": [0, 3, 7, 10, 2],
+                "Dominant 9": [0, 4, 7, 10, 2],
+                "13": [0, 4, 7, 10, 2, 9],
+                "7#9 (Hendrix)": [0, 4, 7, 10, 3],
+                "7b9": [0, 4, 7, 10, 1],
+                "sus4": [0, 5, 7],
+                "sus2": [0, 2, 7],
+                "Power (5)": [0, 7]
+            };
+            const arr = chordIntervals[chordType] || [];
+
+            if (chordType === "7#9 (Hendrix)") return ['1', '3', '5', 'b7', '#9'].join(' · ');
+            if (chordType === "7b9") return ['1', '3', '5', 'b7', 'b9'].join(' · ');
+            if (chordType === "Major 9") return ['1', '3', '5', '7', '9'].join(' · ');
+            if (chordType === "Minor 9") return ['1', 'b3', '5', 'b7', '9'].join(' · ');
+            if (chordType === "Dominant 9") return ['1', '3', '5', 'b7', '9'].join(' · ');
+            if (chordType === "13") return ['1', '3', '5', 'b7', '9', '13'].join(' · ');
+
+            return arr.map((i: number) => INTERVAL_NAMES[i]).join(' · ');
+        }
+        return '-';
+    };
+
     return (
         <>
             {/* LEFT RACK: LOGIC & NAVIGATOR */}
@@ -108,7 +147,7 @@ export const Controls: React.FC<ControlsProps> = ({
                         <h1 className="text-4xl font-black tracking-tighter text-white flex items-baseline gap-1">
                             <span className="font-extralight opacity-40 uppercase text-lg tracking-[0.3em]">the</span> MODUS
                         </h1>
-                        <span className="text-[10px] font-mono tracking-[0.4em] uppercase opacity-30 flex items-center gap-2 mt-1">
+                        <span className="text-[10px] font-black tracking-[0.4em] uppercase opacity-30 flex items-center gap-2 mt-1">
                             <Zap size={10} /> Harmonic Workstation
                         </span>
                     </div>
@@ -127,7 +166,7 @@ export const Controls: React.FC<ControlsProps> = ({
                     <div className="absolute top-8 left-10 flex flex-col gap-3 z-20">
                         <div className="flex items-center gap-2 opacity-30">
                             <Disc size={12} fill="currentColor" />
-                            <span className="text-[9px] font-mono tracking-[0.3em] uppercase text-white">Root Navigator</span>
+                            <span className="text-[9px] font-black tracking-[0.3em] uppercase text-white">Root Navigator</span>
                         </div>
                         <div className="flex bg-black/60 p-1 rounded-full border border-white/5 backdrop-blur-md w-fit shadow-inner">
                             <button
@@ -169,7 +208,7 @@ export const Controls: React.FC<ControlsProps> = ({
             </div>
 
             {/* RIGHT RACK: PARAMETERS */}
-            <div className="col-span-1 lg:col-span-4 flex flex-col gap-6 w-full h-full lg:mt-[116px]">
+            <div className="col-span-1 lg:col-span-4 flex flex-col gap-6 w-full h-full lg:mt-[116px] relative z-50">
                 {/* System Status Panel */}
                 <div className="bg-[#0a0a0a] border border-white/5 rounded-3xl p-8 flex flex-col gap-6 shadow-2xl relative overflow-hidden">
                     <div className="absolute -top-4 -right-4 p-4 opacity-[0.03] pointer-events-none text-white">
@@ -186,21 +225,24 @@ export const Controls: React.FC<ControlsProps> = ({
                     <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-white/10 to-transparent my-1" />
                     <div className="grid grid-cols-2 gap-4">
                         <div className="flex flex-col gap-1">
-                            <span className="text-[8px] font-mono uppercase text-white/30 tracking-widest">Frequency</span>
-                            <span className="text-xs font-bold text-white/70 tracking-wider">440.0 Hz</span>
+                            <span className="text-[8px] font-black uppercase text-white/30 tracking-widest">Mode Status</span>
+                            <span className="text-xs font-bold text-white/70 tracking-wider uppercase">
+                                {mode === 'scale' ? selectedScaleName : mode === 'chord' ? chordType : mode}
+                            </span>
                         </div>
                         <div className="flex flex-col gap-1">
-                            <span className="text-[8px] font-mono uppercase text-white/30 tracking-widest">Mode Status</span>
-                            <span className="text-xs font-bold text-white/70 tracking-wider uppercase">{mode}</span>
+                            <span className="text-[8px] font-black uppercase text-white/30 tracking-widest">Structure/Degrees</span>
+                            <span className="text-xs font-black text-white/70 tracking-normal">
+                                {getStructureDisplay()}
+                            </span>
                         </div>
                     </div>
                 </div>
 
-                {/* Matrix Engines Panel */}
-                <div className="bg-[#0a0a0a] border border-white/5 rounded-3xl p-8 flex flex-col gap-6 shadow-2xl relative overflow-hidden flex-1 w-full">
+                <div className="bg-[#0a0a0a] border border-white/5 rounded-3xl p-8 flex flex-col gap-6 shadow-2xl relative w-full h-fit">
                     <div className="flex items-center gap-2 border-b border-white/5 pb-4">
                         <Layers size={14} className="text-white/40" />
-                        <span className="text-[10px] font-mono uppercase text-white/40 tracking-[0.3em]">Matrix Engines</span>
+                        <span className="text-[10px] font-black uppercase text-white/40 tracking-[0.3em]">Matrix Engines</span>
                     </div>
 
                     {mode === 'scale' && (
@@ -213,37 +255,6 @@ export const Controls: React.FC<ControlsProps> = ({
                                 }}
                                 options={scaleOptions}
                             />
-                            <div className="h-[1px] w-full bg-white/5 my-2" />
-                            <TogglePill label={showIntervals ? "Mode: Note" : "Mode: Interval"} isActive={showIntervals} onToggle={onToggleIntervals} hideDot={true} />
-                            <TogglePill label="Chord Tones" isActive={showChordTones} onToggle={onToggleChordTones} />
-                            {isPentatonic && (
-                                <div className="flex flex-col gap-2 mt-2 border-t border-white/5 pt-4">
-                                    <TogglePill label="Add Blue Note" isActive={blueNote} onToggle={onToggleBlueNote} />
-                                    {selectedScaleName === "Minor Pentatonic" && (
-                                        <>
-                                            <TogglePill label="Add 2 (9th)" isActive={secondNote} onToggle={onToggleSecondNote} />
-                                            <TogglePill label="Add 6th Note" isActive={sixthNote} onToggle={onToggleSixthNote} />
-                                        </>
-                                    )}
-                                </div>
-                            )}
-                            <div className="h-[1px] w-full bg-white/5 my-2" />
-                            <TogglePill label="Double Stops" isActive={isDoubleStopActive} onToggle={onToggleDoubleStop} />
-                            {isDoubleStopActive && (
-                                <div className="flex flex-col gap-3 p-4 bg-black/40 rounded-xl border border-white/5 mt-2 animate-in slide-in-from-top-2 duration-300">
-                                    <div className="flex flex-col gap-2">
-                                        <span className="text-[9px] font-mono text-white/30 uppercase tracking-widest">Interval</span>
-                                        <div className="flex gap-2">
-                                            {[3, 4, 6].map(int => (
-                                                <button key={int} onClick={() => { onDoubleStopIntervalChange(int); onDoubleStopStringsChange(int === 6 ? [0, 2] : [0, 1]); }}
-                                                    className={`px-3 py-1.5 text-[10px] font-mono rounded-md border transition-all ${doubleStopInterval === int ? 'bg-white/10 text-white border-white/30' : 'border-white/5 text-white/40 hover:text-white'}`}>
-                                                    {int}{int === 3 ? 'rd' : 'th'}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
                         </div>
                     )}
 
@@ -256,11 +267,11 @@ export const Controls: React.FC<ControlsProps> = ({
                                 { category: "Altered & Sus", types: ["sus2", "sus4", "7#9 (Hendrix)", "7b9"] }
                             ].map(group => (
                                 <div key={group.category} className="flex flex-col gap-3">
-                                    <span className="text-[9px] font-mono text-white/20 uppercase tracking-[0.2em] border-l border-white/20 pl-2">{group.category}</span>
+                                    <span className="text-[9px] font-black text-white/20 uppercase tracking-[0.2em] border-l border-white/20 pl-2">{group.category}</span>
                                     <div className="flex gap-2 flex-wrap">
                                         {group.types.map(type => CHORD_SHAPES[type] && (
                                             <button key={type} onClick={() => onChordTypeChange(type)}
-                                                className={`px-3 py-1.5 text-[10px] font-mono rounded-md border transition-all ${chordType === type ? 'bg-white/10 text-white border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.05)]' : 'border-white/5 text-white/40 hover:border-white/20 hover:text-white'}`}>
+                                                className={`px-3 py-1.5 text-[10px] font-black rounded-md border transition-all ${chordType === type ? 'bg-white/10 text-white border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.05)]' : 'border-white/5 text-white/40 hover:border-white/20 hover:text-white'}`}>
                                                 {type}
                                             </button>
                                         ))}
@@ -283,7 +294,7 @@ export const Controls: React.FC<ControlsProps> = ({
                 <div className="col-span-1 lg:col-span-12 w-full border-t border-white/5 pt-12 mt-12 animate-in fade-in duration-700">
                     <div className="flex items-center gap-3 mb-8">
                         <Activity size={16} className="text-white/40" />
-                        <h2 className="text-lg font-mono uppercase tracking-[0.3em] text-white/40">Progression Matrix</h2>
+                        <h2 className="text-lg font-black uppercase tracking-[0.3em] text-white/40">Progression Matrix</h2>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {PROGRESSION_LIBRARY.map(prog => (
@@ -291,7 +302,7 @@ export const Controls: React.FC<ControlsProps> = ({
                                 className="bg-[#0a0a0a] border border-white/5 p-8 rounded-[2rem] flex flex-col hover:border-white/20 transition-all cursor-pointer group shadow-lg">
                                 <div className="flex justify-between items-start mb-6 border-b border-white/5 pb-4">
                                     <h3 className="text-sm font-bold tracking-widest uppercase text-white/70 group-hover:text-white">{prog.title}</h3>
-                                    <span className="text-[8px] font-mono uppercase text-white/30 bg-white/5 py-1 px-2 rounded border border-white/5">{prog.genre}</span>
+                                    <span className="text-[8px] font-black uppercase text-white/30 bg-white/5 py-1 px-2 rounded border border-white/5">{prog.genre}</span>
                                 </div>
                                 <div className="flex items-center justify-center py-8 bg-black rounded-2xl border border-white/5 mb-6 group-hover:border-white/10 transition-colors">
                                     <div className="flex items-center gap-2 flex-wrap justify-center">
@@ -303,7 +314,7 @@ export const Controls: React.FC<ControlsProps> = ({
                                         ))}
                                     </div>
                                 </div>
-                                <p className="text-[10px] font-mono text-white/30 leading-relaxed uppercase">{prog.description}</p>
+                                <p className="text-[10px] font-black text-white/30 leading-relaxed uppercase">{prog.description}</p>
                             </div>
                         ))}
                     </div>

@@ -4,6 +4,8 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Fretboard } from '../Fretboard';
 import { Controls } from './Controls';
 import { ChordGallery } from './ChordGallery';
+import { TogglePill } from '../ui/design-system/TogglePill';
+import { SlidersHorizontal } from 'lucide-react';
 import {
     NOTES,
     TUNING,
@@ -328,9 +330,50 @@ export default function ClientApp() {
                     />
 
                     {mode === 'scale' && (
-                        <div className="relative z-10 w-full">
-                            <div className="border-y border-white/5 mt-10 py-10 flex items-center justify-center relative">
-                                <div ref={fretboardContainerRef} className="overflow-x-auto custom-scrollbar relative w-full h-full flex justify-center">
+                        <div className="relative z-10 w-full flex flex-col gap-6">
+                            {/* Visualizer Controls Dashboard */}
+                            <div className="flex flex-col gap-4 bg-[#050505]/50 border border-white/5 rounded-3xl p-6 backdrop-blur-sm animate-in fade-in slide-in-from-top-4 duration-500">
+                                <div className="flex items-center gap-2 border-b border-white/5 pb-3 mb-2">
+                                    <SlidersHorizontal size={14} className="text-white/40" />
+                                    <span className="text-[10px] font-black uppercase text-white/40 tracking-[0.3em]">Visualization Overrides</span>
+                                </div>
+
+                                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                                    <TogglePill label={showIntervals ? "Mode: Note" : "Mode: Interval"} isActive={showIntervals} onToggle={() => setShowIntervals(p => !p)} hideDot={true} />
+                                    <TogglePill label="Chord Tones" isActive={showChordTones} onToggle={() => setShowChordTones(p => !p)} />
+
+                                    {isPentatonic && (
+                                        <TogglePill label="Add Blue Note" isActive={blueNote} onToggle={() => setBlueNote(p => !p)} />
+                                    )}
+                                    {isPentatonic && scaleName === "Minor Pentatonic" && (
+                                        <>
+                                            <TogglePill label="Add 2 (9th)" isActive={secondNote} onToggle={() => setSecondNote(p => !p)} />
+                                            <TogglePill label="Add 6th Note" isActive={sixthNote} onToggle={() => setSixthNote(p => !p)} />
+                                        </>
+                                    )}
+
+                                    <div className="flex flex-col gap-2">
+                                        <TogglePill label="Double Stops" isActive={isDoubleStopActive} onToggle={() => setIsDoubleStopActive(p => !p)} />
+                                        {isDoubleStopActive && (
+                                            <div className="flex gap-2 mt-2">
+                                                {[3, 4, 6].map(int => (
+                                                    <button key={int}
+                                                        onClick={() => {
+                                                            setDoubleStopInterval(int);
+                                                            setDoubleStopStrings(int === 6 ? [0, 2] : [0, 1]);
+                                                        }}
+                                                        className={`flex-1 py-1.5 text-[9px] font-black rounded-lg border transition-all ${doubleStopInterval === int ? 'bg-white/10 text-white border-white/30' : 'border-white/5 text-white/30 hover:text-white/70'}`}>
+                                                        {int}{int === 3 ? 'rd' : 'th'}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="border-y border-white/5 py-8 flex items-center justify-center relative overflow-hidden bg-white/[0.01]">
+                                <div ref={fretboardContainerRef} className="overflow-x-auto overflow-y-hidden custom-scrollbar relative w-full flex justify-center py-2">
                                     <Fretboard
                                         tuning={TUNING}
                                         activeNotes={activeNotes}

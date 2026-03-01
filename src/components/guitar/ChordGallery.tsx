@@ -39,8 +39,8 @@ export const ChordGallery: React.FC<ChordGalleryProps> = ({
     return (
         <div className="flex flex-col relative w-full pt-4">
             <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-mono uppercase tracking-widest text-[#a0a0a0]">Voicing Matrix</h2>
-                <span className="text-[10px] font-mono uppercase text-[#a0a0a0] bg-[#1e293b] py-1 px-3 rounded-md border border-[#334155] tracking-widest">
+                <h2 className="text-2xl font-black uppercase tracking-widest text-[#a0a0a0]">Voicing Matrix</h2>
+                <span className="text-[10px] font-black uppercase text-[#a0a0a0] bg-[#1e293b] py-1 px-3 rounded-md border border-[#334155] tracking-widest">
                     {availableVoicings.length} Positions Available
                 </span>
             </div>
@@ -54,7 +54,7 @@ export const ChordGallery: React.FC<ChordGalleryProps> = ({
                         onClick={() => handleBoxClick(idx)}
                     >
                         <div className="mb-4 text-center">
-                            <h3 className={`text-xs font-mono uppercase tracking-widest transition-colors ${idx === voicingIndex ? 'text-white' : 'text-secondary/50 group-hover:text-white'}`}>
+                            <h3 className={`text-xs font-black uppercase tracking-widest transition-colors ${idx === voicingIndex ? 'text-white' : 'text-secondary/50 group-hover:text-white'}`}>
                                 {item.shape.name}
                             </h3>
                         </div>
@@ -83,24 +83,24 @@ export const ChordGallery: React.FC<ChordGalleryProps> = ({
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                         </button>
 
-                        <h2 className="text-3xl font-mono uppercase tracing-widest text-white mb-2">{selectedVoicing.shape.name}</h2>
-                        <p className="text-secondary/50 text-[10px] mb-8 uppercase tracking-[0.3em] font-mono">Magnified View</p>
+                        <h2 className="text-3xl font-black uppercase tracing-widest text-white mb-2">{selectedVoicing.shape.name}</h2>
+                        <p className="text-secondary/50 text-[10px] mb-8 uppercase tracking-[0.3em] font-black">Magnified View</p>
 
                         <div className="inline-flex items-center justify-center gap-1 mb-8 bg-[#050505] p-1.5 rounded-xl border border-white/5 w-fit">
                             <button
-                                className={`w-28 flex items-center justify-center py-1.5 rounded-lg text-xs font-mono tracking-widest transition-colors ${labelMode === 'dot' ? 'bg-[#1e293b] border border-[#334155] text-white' : 'text-secondary/50 hover:text-white border border-transparent'}`}
+                                className={`w-28 flex items-center justify-center py-1.5 rounded-lg text-xs font-black tracking-widest transition-colors ${labelMode === 'dot' ? 'bg-[#1e293b] border border-[#334155] text-white' : 'text-secondary/50 hover:text-white border border-transparent'}`}
                                 onClick={() => setLabelMode('dot')}
                             >
                                 Dot
                             </button>
                             <button
-                                className={`w-28 flex items-center justify-center py-1.5 rounded-lg text-xs font-mono tracking-widest transition-colors ${labelMode === 'interval' ? 'bg-[#1e293b] border border-[#334155] text-white' : 'text-secondary/50 hover:text-white border border-transparent'}`}
+                                className={`w-28 flex items-center justify-center py-1.5 rounded-lg text-xs font-black tracking-widest transition-colors ${labelMode === 'interval' ? 'bg-[#1e293b] border border-[#334155] text-white' : 'text-secondary/50 hover:text-white border border-transparent'}`}
                                 onClick={() => setLabelMode('interval')}
                             >
                                 Interval
                             </button>
                             <button
-                                className={`w-28 flex items-center justify-center py-1.5 rounded-lg text-xs font-mono tracking-widest transition-colors ${labelMode === 'note' ? 'bg-[#1e293b] border border-[#334155] text-white' : 'text-secondary/50 hover:text-white border border-transparent'}`}
+                                className={`w-28 flex items-center justify-center py-1.5 rounded-lg text-xs font-black tracking-widest transition-colors ${labelMode === 'note' ? 'bg-[#1e293b] border border-[#334155] text-white' : 'text-secondary/50 hover:text-white border border-transparent'}`}
                                 onClick={() => setLabelMode('note')}
                             >
                                 Note

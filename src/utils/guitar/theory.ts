@@ -36,7 +36,7 @@ export const SCALES: Record<string, Record<string, number[]>> = {
 };
 
 export const INLAYS = [3, 5, 7, 9, 15, 17, 19, 21];
-export const DOUBLE_INLAYS = [12, 24];
+export const DOUBLE_INLAYS = [12];
 
 export const CHORD_SHAPES: Record<string, ChordShape[]> = {
     // Offsets are defined from High E (String 1) to Low E (String 6) index 0-5

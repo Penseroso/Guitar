@@ -30,7 +30,7 @@ export const TogglePill: React.FC<TogglePillProps> = ({ label, isActive, onToggl
         >
             <span className={[
                 "text-[10px] font-black tracking-widest uppercase transition-colors text-left",
-                isActive || hideDot ? "text-white/80" : "text-white/40 group-hover:text-white/80"
+                isActive || hideDot ? "text-white/80" : "text-white/40 group-hover:text-white/60"
             ].join(" ")}>
                 {label}
             </span>
