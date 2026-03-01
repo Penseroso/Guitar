@@ -213,7 +213,7 @@ export const Fretboard: React.FC<FretboardProps> = ({
                     </div>
 
                     {/* Notes Layer (Overlay on Grid - Z-Index 20 - TOP) */}
-                    <div className={`${styles.notesLayer} ${doubleStops.length > 0 ? styles.faded : ''}`} style={{ gridTemplateColumns }}>
+                    <div className={styles.notesLayer} style={{ gridTemplateColumns }}>
                         {strings.map((s) => (
                             <React.Fragment key={`note-row-${s}`}>
                                 {frets.map((f) => {
@@ -230,6 +230,8 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                     else shouldShow = isActive || isModifier;
 
                                     if (!shouldShow) return null;
+
+                                    const isDoubleStop = doubleStops.some(ds => (ds.string1 === s && ds.fret1 === f) || (ds.string2 === s && ds.fret2 === f));
 
                                     // Determine Style
                                     let dotClass = styles.noteScale;
@@ -259,14 +261,8 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                             }
                                         }
                                     } else {
-                                        const isDoubleStop = doubleStops.some(ds => (ds.string1 === s && ds.fret1 === f) || (ds.string2 === s && ds.fret2 === f));
-
                                         if (isDoubleStop) {
                                             dotClass = styles.noteDoubleStop;
-
-                                            // Enforce label to be Interval if not Root, to clearly identify the Double Stop relation
-                                            const intervalIdx = (noteIdx - rootNote + 12) % 12;
-                                            label = INTERVAL_NAMES[intervalIdx];
                                         } else if (isRoot) dotClass = styles.noteRoot;
                                         else if (showChordTones && isChordTone) dotClass = styles.noteChordTone;
                                         else if (isModifier) {
@@ -284,7 +280,7 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                             className={styles.noteCell}
                                             style={{ gridRow: s + 1, gridColumn: f + 1 }}
                                         >
-                                            <div className={`${styles.noteDot} ${dotClass}`}>
+                                            <div className={`${styles.noteDot} ${dotClass} ${(!isDoubleStop && doubleStops.length > 0) ? styles.faded : ''}`}>
                                                 {label}
                                             </div>
                                         </div>

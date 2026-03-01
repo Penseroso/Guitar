@@ -353,20 +353,45 @@ export default function ClientApp() {
                                         </>
                                     )}
 
-                                    <div className="flex flex-col gap-2">
-                                        <TogglePill label="Double Stops" isActive={isDoubleStopActive} onToggle={() => setIsDoubleStopActive(p => !p)} />
+                                    <div className="flex flex-col gap-2 col-span-2">
+                                        <div className="flex items-center justify-between">
+                                            <TogglePill label="Double Stops" isActive={isDoubleStopActive} onToggle={() => setIsDoubleStopActive(p => !p)} />
+                                        </div>
                                         {isDoubleStopActive && (
-                                            <div className="flex gap-2 mt-2">
-                                                {[3, 4, 6].map(int => (
-                                                    <button key={int}
-                                                        onClick={() => {
-                                                            setDoubleStopInterval(int);
-                                                            setDoubleStopStrings(int === 6 ? [0, 2] : [0, 1]);
-                                                        }}
-                                                        className={`flex-1 py-1.5 text-[9px] font-black rounded-lg border transition-all ${doubleStopInterval === int ? 'bg-white/10 text-white border-white/30' : 'border-white/5 text-white/30 hover:text-white/70'}`}>
-                                                        {int}{int === 3 ? 'rd' : 'th'}
-                                                    </button>
-                                                ))}
+                                            <div className="flex flex-col gap-3 mt-1 p-3 bg-white/[0.03] border border-white/5 rounded-2xl animate-in fade-in duration-300">
+                                                <div className="flex flex-col gap-2">
+                                                    <span className="text-[8px] font-black uppercase text-white/30 tracking-widest">Interval</span>
+                                                    <div className="flex gap-2">
+                                                        {[3, 4, 6].map(int => (
+                                                            <button key={int}
+                                                                onClick={() => {
+                                                                    setDoubleStopInterval(int);
+                                                                    setDoubleStopStrings(int === 6 ? [0, 2] : [0, 1]);
+                                                                }}
+                                                                className={`flex-1 py-1.5 text-[9px] font-black rounded-lg border transition-all ${doubleStopInterval === int ? 'bg-white/10 text-white border-white/30 shadow-lg' : 'border-white/5 text-white/30 hover:text-white/70'}`}>
+                                                                {int}{int === 3 ? 'rd' : 'th'}
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex flex-col gap-2 border-t border-white/5 pt-2">
+                                                    <span className="text-[8px] font-black uppercase text-white/30 tracking-widest">String Pair</span>
+                                                    <div className="flex gap-2 flex-wrap">
+                                                        {(doubleStopInterval === 6
+                                                            ? [[0, 2], [1, 3], [2, 4], [3, 5]]
+                                                            : [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]]
+                                                        ).map(([s1, s2]) => (
+                                                            <button
+                                                                key={`${s1}-${s2}`}
+                                                                onClick={() => setDoubleStopStrings([s1, s2] as [number, number])}
+                                                                className={`px-2 py-1.5 text-[9px] font-black rounded-lg border transition-all ${doubleStopStrings[0] === s1 && doubleStopStrings[1] === s2 ? 'bg-white/10 text-white border-white/30 shadow-lg' : 'border-white/5 text-white/30 hover:text-white/70'}`}
+                                                            >
+                                                                {s1 + 1}-{s2 + 1}
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                </div>
                                             </div>
                                         )}
                                     </div>
