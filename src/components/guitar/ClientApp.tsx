@@ -30,8 +30,8 @@ export default function ClientApp() {
     const [showIntervals, setShowIntervals] = useState(false);
 
     // --- State: Scale Mode ---
-    const [scaleGroup, setScaleGroup] = useState('Diatonic');
-    const [scaleName, setScaleName] = useState('Ionian');
+    const [scaleGroup, setScaleGroup] = useState('Major Modes');
+    const [scaleName, setScaleName] = useState('Major / Ionian');
     const [showChordTones, setShowChordTones] = useState(false); // In scale mode, shows Triad of root
     const [isPentatonic, setIsPentatonic] = useState(false);
     const [blueNote, setBlueNote] = useState(false);
@@ -58,7 +58,7 @@ export default function ClientApp() {
 
     // --- Derived Data: Scales ---
     const activeScaleIntervals = useMemo(() => {
-        return SCALES[scaleGroup]?.[scaleName] || SCALES['Diatonic']['Ionian'];
+        return SCALES[scaleGroup]?.[scaleName] || SCALES['Major Modes']['Major / Ionian'];
     }, [scaleGroup, scaleName]);
 
     const scaleNotes = useMemo(() => {
@@ -203,7 +203,7 @@ export default function ClientApp() {
             return [];
         }
         if (mode === 'progression') {
-            const majorScale = SCALES['Diatonic']['Ionian'];
+            const majorScale = SCALES['Major Modes']['Major / Ionian'];
             return majorScale.map(i => (selectedKey + i) % 12);
         }
         return [];

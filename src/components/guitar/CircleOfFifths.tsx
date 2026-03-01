@@ -1,6 +1,7 @@
 import React from 'react';
 import { NOTES } from '../../utils/guitar/theory';
 import { getCircleOfFifthsOrder, getRelativeMinor } from '../../utils/guitar/logic';
+import { generateModeData } from '../../utils/guitar/scales';
 
 const polarToCartesian = (centerX: number, centerY: number, radius: number, angleInDegrees: number) => {
     const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
@@ -35,40 +36,18 @@ interface CircleOfFifthsProps {
 export const CircleOfFifths: React.FC<CircleOfFifthsProps> = ({ selectedKey, onKeySelect, selectedScaleGroup, selectedScaleName }) => {
     const fifthsOrder = getCircleOfFifthsOrder();
 
-    // --- [MODUS v2.5] Scale Dictionary Pattern ---
-    // 수학적인 Ionian 상대 변환을 폐기하고, 각 스케일 그룹/모드별 절대적인 모달 인터벌과 역할을 매핑합니다.
-    const SCALE_DEFINITIONS: Record<string, Record<string, Record<number, { role: string; color: string }>>> = {
-        'Diatonic': {
-            'Ionian': { 0: { role: 'I', color: '#fde047' }, 2: { role: 'ii', color: '#7dd3fc' }, 4: { role: 'iii', color: '#7dd3fc' }, 5: { role: 'IV', color: '#86efac' }, 7: { role: 'V', color: '#86efac' }, 9: { role: 'vi', color: '#7dd3fc' }, 11: { role: 'vii°', color: '#fca5a5' } },
-            'Dorian': { 0: { role: 'i', color: '#fde047' }, 2: { role: 'ii', color: '#7dd3fc' }, 3: { role: 'bIII', color: '#86efac' }, 5: { role: 'IV', color: '#86efac' }, 7: { role: 'v', color: '#7dd3fc' }, 9: { role: 'vi°', color: '#fca5a5' }, 10: { role: 'bVII', color: '#86efac' } },
-            'Phrygian': { 0: { role: 'i', color: '#fde047' }, 1: { role: 'bII', color: '#86efac' }, 3: { role: 'bIII', color: '#86efac' }, 5: { role: 'iv', color: '#7dd3fc' }, 7: { role: 'v°', color: '#fca5a5' }, 8: { role: 'bVI', color: '#86efac' }, 10: { role: 'bvii', color: '#7dd3fc' } },
-            'Lydian': { 0: { role: 'I', color: '#fde047' }, 2: { role: 'II', color: '#86efac' }, 4: { role: 'iii', color: '#7dd3fc' }, 6: { role: '#iv°', color: '#fca5a5' }, 7: { role: 'V', color: '#86efac' }, 9: { role: 'vi', color: '#7dd3fc' }, 11: { role: 'vii', color: '#7dd3fc' } },
-            'Mixolydian': { 0: { role: 'I', color: '#fde047' }, 2: { role: 'ii', color: '#7dd3fc' }, 4: { role: 'iii°', color: '#fca5a5' }, 5: { role: 'IV', color: '#86efac' }, 7: { role: 'v', color: '#7dd3fc' }, 9: { role: 'vi', color: '#7dd3fc' }, 10: { role: 'bVII', color: '#86efac' } },
-            'Aeolian': { 0: { role: 'i', color: '#fde047' }, 2: { role: 'ii°', color: '#fca5a5' }, 3: { role: 'bIII', color: '#86efac' }, 5: { role: 'iv', color: '#7dd3fc' }, 7: { role: 'v', color: '#7dd3fc' }, 8: { role: 'bVI', color: '#86efac' }, 10: { role: 'bVII', color: '#86efac' } },
-            'Locrian': { 0: { role: 'i°', color: '#fde047' }, 1: { role: 'bII', color: '#86efac' }, 3: { role: 'biii', color: '#7dd3fc' }, 5: { role: 'iv', color: '#7dd3fc' }, 6: { role: 'bV', color: '#86efac' }, 8: { role: 'bVI', color: '#86efac' }, 10: { role: 'bvii', color: '#7dd3fc' } }
-        },
-        'Pentatonic': {
-            'Major Pentatonic': {
-                0: { role: 'I', color: '#fde047' }, 2: { role: 'ii', color: '#7dd3fc' }, 4: { role: 'iii', color: '#7dd3fc' }, 7: { role: 'V', color: '#86efac' }, 9: { role: 'vi', color: '#7dd3fc' }
-            },
-            'Minor Pentatonic': {
-                0: { role: 'i', color: '#fde047' }, 3: { role: 'bIII', color: '#86efac' }, 5: { role: 'iv', color: '#7dd3fc' }, 7: { role: 'v', color: '#7dd3fc' }, 10: { role: 'bVII', color: '#86efac' }
-            }
-        },
-        'Harmonic/Melodic': {
-            'Harmonic Minor': { 0: { role: 'i', color: '#fde047' }, 2: { role: 'ii°', color: '#fca5a5' }, 3: { role: 'bIII+', color: '#fca5a5' }, 5: { role: 'iv', color: '#7dd3fc' }, 7: { role: 'V', color: '#86efac' }, 8: { role: 'bVI', color: '#86efac' }, 11: { role: 'vii°', color: '#fca5a5' } },
-            'Melodic Minor': { 0: { role: 'i', color: '#fde047' }, 2: { role: 'ii', color: '#7dd3fc' }, 3: { role: 'bIII+', color: '#fca5a5' }, 5: { role: 'IV', color: '#86efac' }, 7: { role: 'V', color: '#86efac' }, 9: { role: 'vi°', color: '#fca5a5' }, 11: { role: 'vii°', color: '#fca5a5' } },
-            'Phrygian Dom': { 0: { role: 'I', color: '#fde047' }, 1: { role: 'bII', color: '#86efac' }, 4: { role: 'iii°', color: '#fca5a5' }, 5: { role: 'iv', color: '#7dd3fc' }, 7: { role: 'v°', color: '#fca5a5' }, 8: { role: 'bVI+', color: '#fca5a5' }, 10: { role: 'bvii', color: '#7dd3fc' } },
-            'Altered': { 0: { role: 'i°', color: '#fde047' }, 1: { role: 'bII', color: '#86efac' }, 3: { role: 'biii', color: '#7dd3fc' }, 4: { role: 'bIII+', color: '#fca5a5' }, 6: { role: 'bV', color: '#86efac' }, 8: { role: 'bVI', color: '#86efac' }, 10: { role: 'bvii', color: '#7dd3fc' } }
-        }
-    };
+    // --- [MODUS v2.5] Dynamic Algorithm Pattern ---
+    // 하드코딩된 SCALE_DEFINITIONS 객체를 완전히 폐기하고,
+    // 부모 스케일 역학에 기반한 순환 인터벌 제너레이터를 호출하여 데이터를 렌더링합니다.
+    const modeData = React.useMemo(() => {
+        const group = selectedScaleGroup || 'Major Modes';
+        const name = selectedScaleName || 'N Minor / Aeolian';
+        return generateModeData(group, name);
+    }, [selectedScaleGroup, selectedScaleName]);
 
     const getDiatonicRole = (targetKey: number, rootKey: number) => {
         const diffFromRoot = (targetKey - rootKey + 12) % 12;
-        // 선택된 스케일 그룹과 이름이 없으면 기본값인 Aeolian 모드로 렌더링
-        const group = selectedScaleGroup || 'Diatonic';
-        const name = selectedScaleName || 'Aeolian';
-        return SCALE_DEFINITIONS[group]?.[name]?.[diffFromRoot] || null;
+        return modeData[diffFromRoot] || null;
     };
 
     // MODUS Design: 얇고 투명한 그리드 라인
