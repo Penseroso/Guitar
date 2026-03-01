@@ -135,6 +135,9 @@ export const Controls: React.FC<ControlsProps> = ({
             if (chordType === "13") return ['1', '3', '5', 'b7', '9', '13'].join(' · ');
 
             return arr.map((i: number) => INTERVAL_NAMES[i]).join(' · ');
+        } else if (mode === 'progression') {
+            const steps = PROGRESSION_LIBRARY.find(p => p.title === progressionName)?.degrees || [];
+            return steps.join(' · ');
         }
         return '-';
     };
