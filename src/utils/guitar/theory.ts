@@ -139,14 +139,6 @@ export const CHORD_SHAPES: Record<string, ChordShape[]> = {
     ]
 };
 
-export const COMMON_PROGRESSIONS: Record<string, string[]> = {
-    "Classic 2-5-1 (Major)": ["ii", "V", "I"],
-    "Doo-Wop (1-6-4-5)": ["I", "vi", "IV", "V"],
-    "Pop Punk (1-5-6-4)": ["I", "V", "vi", "IV"],
-    "Minor 2-5-1": ["ii", "V", "i"],
-    "Andalusian (Minor)": ["i", "bVII", "bVI", "V"],
-};
-
 export const PROGRESSION_LIBRARY: ProgressionData[] = [
     // === Pop & Rock ===
     {

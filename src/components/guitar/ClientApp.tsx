@@ -10,8 +10,8 @@ import {
     NOTES,
     TUNING,
     SCALES,
+    PROGRESSION_LIBRARY,
     CHORD_SHAPES,
-    COMMON_PROGRESSIONS,
 } from '../../utils/guitar/theory';
 import {
     getChordFromDegree,
@@ -48,7 +48,7 @@ export default function ClientApp() {
     const [doubleStopStrings, setDoubleStopStrings] = useState<[number, number]>([1, 2]);
 
     // --- State: Progression Mode ---
-    const [progressionName, setProgressionName] = useState('Classic 2-5-1 (Major)');
+    const [progressionName, setProgressionName] = useState('pop-punk');
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
 
@@ -176,7 +176,8 @@ export default function ClientApp() {
     const progressionData = useMemo(() => {
         if (mode !== 'progression') return null;
 
-        const steps = COMMON_PROGRESSIONS[progressionName] || COMMON_PROGRESSIONS['Classic 2-5-1 (Major)'];
+        const progDef = PROGRESSION_LIBRARY.find(p => p.id === progressionName) || PROGRESSION_LIBRARY[0];
+        const steps = progDef.degrees;
         const currentStepDegree = steps[currentStepIndex % steps.length];
 
         const { interval, type } = getChordFromDegree(currentStepDegree);

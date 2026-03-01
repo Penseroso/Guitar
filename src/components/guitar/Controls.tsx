@@ -136,8 +136,8 @@ export const Controls: React.FC<ControlsProps> = ({
 
             return arr.map((i: number) => INTERVAL_NAMES[i]).join(' · ');
         } else if (mode === 'progression') {
-            const steps = PROGRESSION_LIBRARY.find(p => p.title === progressionName)?.degrees || [];
-            return steps.join(' · ');
+            const steps = PROGRESSION_LIBRARY.find(p => p.id === progressionName)?.degrees || [];
+            return steps.map(deg => getChordName(deg)).join(' · ');
         }
         return '-';
     };
@@ -252,7 +252,9 @@ export const Controls: React.FC<ControlsProps> = ({
                         <div className="flex flex-col gap-1">
                             <span className="text-[8px] font-black uppercase text-white/30 tracking-widest">Mode Status</span>
                             <span className="text-xs font-bold text-white/70 tracking-wider uppercase">
-                                {mode === 'scale' ? selectedScaleName : mode === 'chord' ? chordType : mode}
+                                {mode === 'scale' ? selectedScaleName :
+                                    mode === 'chord' ? chordType :
+                                        mode === 'progression' ? (PROGRESSION_LIBRARY.find(p => p.id === progressionName)?.degrees.join(' · ') || mode) : mode}
                             </span>
                         </div>
                         <div className="flex flex-col gap-1">
