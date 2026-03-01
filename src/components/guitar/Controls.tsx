@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Zap, Target, Compass, Activity, Layers, Disc } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { NOTES, SCALES, CHORD_SHAPES, PROGRESSION_LIBRARY } from '../../utils/guitar/theory';
 import { getChordFromDegree, getNoteName } from '../../utils/guitar/logic';
 import { TabsRail } from '../ui/design-system/TabsRail';
@@ -186,23 +187,39 @@ export const Controls: React.FC<ControlsProps> = ({
                         </div>
                     </div>
 
-                    <div className="flex-1 mt-12 flex items-center justify-center w-full min-h-[400px]">
-                        {rootViewMode === 'orbit' ? (
-                            <div className="w-[420px] h-[420px] animate-in fade-in zoom-in-95 duration-700 drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)] flex justify-center items-center">
-                                <CircleOfFifths selectedKey={selectedKey} onKeySelect={onKeyChange} />
-                            </div>
-                        ) : (
-                            <div className="grid grid-cols-4 gap-3 max-w-lg animate-in fade-in slide-in-from-bottom-4 duration-500 w-full">
-                                {NOTES.map((note, index) => (
-                                    <KeyButton
-                                        key={`key-${index}`}
-                                        note={note}
-                                        isActive={selectedKey === index}
-                                        onClick={() => onKeyChange(index)}
-                                    />
-                                ))}
-                            </div>
-                        )}
+                    <div className="flex-1 mt-24 flex items-center justify-center w-full min-h-[420px]">
+                        <AnimatePresence mode="wait">
+                            {rootViewMode === 'orbit' ? (
+                                <motion.div
+                                    key="orbit"
+                                    initial={{ opacity: 0, scale: 0.95, filter: "blur(4px)" }}
+                                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                                    exit={{ opacity: 0, scale: 0.95, filter: "blur(4px)" }}
+                                    transition={{ duration: 0.4, ease: "easeOut" }}
+                                    className="w-[420px] h-[420px] drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)] flex justify-center items-center"
+                                >
+                                    <CircleOfFifths selectedKey={selectedKey} onKeySelect={onKeyChange} />
+                                </motion.div>
+                            ) : (
+                                <motion.div
+                                    key="matrix"
+                                    initial={{ opacity: 0, scale: 0.95, filter: "blur(4px)" }}
+                                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                                    exit={{ opacity: 0, scale: 0.95, filter: "blur(4px)" }}
+                                    transition={{ duration: 0.4, ease: "easeOut" }}
+                                    className="grid grid-cols-4 gap-3 max-w-lg w-full"
+                                >
+                                    {NOTES.map((note, index) => (
+                                        <KeyButton
+                                            key={`key-${index}`}
+                                            note={note}
+                                            isActive={selectedKey === index}
+                                            onClick={() => onKeyChange(index)}
+                                        />
+                                    ))}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
                 </div>
             </div>
