@@ -30,7 +30,8 @@ import {
     getSortedVoicings,
     getDiatonicDoubleStops,
     getPlayableDoubleStopsOnStrings,
-    getNoteName
+    getNoteName,
+    degreeToChordName,
 } from '../../utils/guitar/logic';
 import { Mode, HarmonicFunction, Measure, ChordNode } from '../../utils/guitar/types';
 import { useProgression } from '../../hooks/useProgression';
@@ -163,6 +164,7 @@ type DraggableNodeProps = {
     node: ChordNode;
     measureId: string;
     isFocused: boolean;
+    selectedKey: number;
     addSecondaryDominant: (id: string) => void;
     addTritoneSubstitution: (id: string) => void;
     removeNode: (id: string) => void;
@@ -181,6 +183,7 @@ function DraggableNode({
     measureId, 
     isFocused, 
     onClick, 
+    selectedKey,
     addSecondaryDominant, 
     addTritoneSubstitution,
     removeNode,
@@ -192,6 +195,7 @@ function DraggableNode({
     resizePreview,
     setResizePreview,
 }: DraggableNodeProps) {
+    const chordName = degreeToChordName(node.displayDegree, node.coreDegree, selectedKey);
     const isResizing = resizePreview?.nodeId === node.id;
     const isAnyNodeResizing = resizePreview !== null;
     const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
@@ -344,7 +348,8 @@ function DraggableNode({
                 {...attributes}
                 className="relative z-10 flex flex-col items-center justify-center flex-1 w-full overflow-hidden"
             >
-                <span className={`text-lg font-black whitespace-nowrap ${node.isSecondary ? 'text-amber-500/80' : 'text-white/80'}`}>{node.displayDegree}</span>
+                <span className={`text-base font-black whitespace-nowrap ${node.isSecondary ? 'text-amber-500/80' : 'text-white/80'}`}>{node.displayDegree}</span>
+                <span className={`text-[9px] font-semibold whitespace-nowrap ${node.isSecondary ? 'text-amber-400/60' : 'text-white/40'}`}>{chordName}</span>
             </div>
             <div className="relative z-10 w-full flex justify-center pb-1 pointer-events-none overflow-hidden">
                 <span className="text-[8px] tracking-widest text-white/30 whitespace-nowrap">{displayDuration} beats</span>
@@ -986,6 +991,7 @@ export default function ClientApp() {
                                                                     node={node}
                                                                     measureId={measure.id}
                                                                     isFocused={focusedNodeId === node.id}
+                                                                    selectedKey={selectedKey}
                                                                     onClick={() => {
                                                                         setFocusedNodeId(prev => prev === node.id ? null : node.id);
                                                                     }}
@@ -1020,49 +1026,57 @@ export default function ClientApp() {
                                 </div>
 
                                 {/* Inspector Panel */}
-                                {focusedNode && (
-                                    <div 
-                                        ref={inspectorPanelRef}
-                                        className="flex items-center justify-between bg-[#0a0a0a] border border-white/10 rounded-2xl p-4 mt-6 shadow-lg animate-in fade-in slide-in-from-bottom-4"
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            {!focusedNode.isSecondary && focusedNode.durationInBeats >= 2 && (
-                                                <>
-                                                    <button
-                                                        onClick={() => addSecondaryDominant(focusedNode.id)}
-                                                        className="px-5 py-2.5 text-[11px] font-black tracking-widest text-amber-500 hover:bg-amber-500/10 rounded-xl border border-amber-500/20 transition-all flex items-center gap-2 uppercase"
-                                                    >
-                                                        <Zap size={12} /> + V7/{focusedNode.coreDegree}
-                                                    </button>
-                                                    <button
-                                                        onClick={() => addTritoneSubstitution(focusedNode.id)}
-                                                        className="px-5 py-2.5 text-[11px] font-black tracking-widest text-fuchsia-400 hover:bg-fuchsia-500/10 rounded-xl border border-fuchsia-500/20 transition-all flex items-center gap-2 uppercase"
-                                                    >
-                                                        <Compass size={12} /> + subV7/{focusedNode.coreDegree}
-                                                    </button>
-                                                </>
-                                            )}
-                                        </div>
+                                {focusedNode && (() => {
+                                    const chordName = degreeToChordName(focusedNode.displayDegree, focusedNode.coreDegree, selectedKey);
+                                    const v7Name = degreeToChordName(`V7/${focusedNode.coreDegree}`, focusedNode.coreDegree, selectedKey);
+                                    const subV7Name = degreeToChordName(`subV7/${focusedNode.coreDegree}`, focusedNode.coreDegree, selectedKey);
+                                    return (
+                                        <div
+                                            ref={inspectorPanelRef}
+                                            className="flex items-center justify-between bg-[#0a0a0a] border border-white/10 rounded-2xl p-4 mt-6 shadow-lg animate-in fade-in slide-in-from-bottom-4"
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                {!focusedNode.isSecondary && focusedNode.durationInBeats >= 1 && (
+                                                    <>
+                                                        <button
+                                                            onClick={() => addSecondaryDominant(focusedNode.id)}
+                                                            className="px-5 py-2.5 text-[11px] font-black tracking-widest text-amber-500 hover:bg-amber-500/10 rounded-xl border border-amber-500/20 transition-all flex items-center gap-2"
+                                                        >
+                                                            <Zap size={12} /> + {v7Name}
+                                                            <span className="text-amber-500/50 text-[9px]">V7/{focusedNode.coreDegree}</span>
+                                                        </button>
+                                                        <button
+                                                            onClick={() => addTritoneSubstitution(focusedNode.id)}
+                                                            className="px-5 py-2.5 text-[11px] font-black tracking-widest text-fuchsia-400 hover:bg-fuchsia-500/10 rounded-xl border border-fuchsia-500/20 transition-all flex items-center gap-2"
+                                                        >
+                                                            <Compass size={12} /> + {subV7Name}
+                                                            <span className="text-fuchsia-400/50 text-[9px]">subV7/{focusedNode.coreDegree}</span>
+                                                        </button>
+                                                    </>
+                                                )}
+                                            </div>
 
-                                        <div className="flex flex-col items-center">
-                                            <span className="text-2xl font-black text-white tracking-widest uppercase">{focusedNode.displayDegree}</span>
-                                            <div className="flex items-center gap-2 opacity-40">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-white/40" />
-                                                <span className="text-[10px] uppercase tracking-widest font-black">{focusedNode.durationInBeats} Beats</span>
-                                                <div className="w-1.5 h-1.5 rounded-full bg-white/40" />
+                                            <div className="flex flex-col items-center">
+                                                <span className="text-2xl font-black text-white tracking-widest">{focusedNode.displayDegree}</span>
+                                                <span className="text-sm font-bold text-white/60 tracking-wide">{chordName}</span>
+                                                <div className="flex items-center gap-2 opacity-40 mt-0.5">
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-white/40" />
+                                                    <span className="text-[10px] tracking-widest font-black">{focusedNode.durationInBeats} Beats</span>
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-white/40" />
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center">
+                                                <button
+                                                    onClick={() => removeNode(focusedNode.id)}
+                                                    className="px-5 py-2.5 text-red-500 hover:bg-red-500/10 font-black text-[11px] tracking-widest rounded-xl transition-all flex items-center gap-2 border border-red-500/10 hover:border-red-500/30"
+                                                >
+                                                    <Trash2 size={14} /> Delete Node
+                                                </button>
                                             </div>
                                         </div>
-
-                                        <div className="flex items-center">
-                                            <button
-                                                onClick={() => removeNode(focusedNode.id)}
-                                                className="px-5 py-2.5 text-red-500 hover:bg-red-500/10 font-black text-[11px] tracking-widest rounded-xl transition-all flex items-center gap-2 border border-red-500/10 hover:border-red-500/30 uppercase"
-                                            >
-                                                <Trash2 size={14} /> Delete Node
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
+                                    );
+                                })()}
 
                             </div>
                         </DndContext>

@@ -114,9 +114,9 @@ export const injectTritoneSubstitution = (doc: ProgressionDocument, targetNodeId
         const targetIdx = measure.nodes.findIndex(n => n.id === targetNodeId);
         if (targetIdx !== -1) {
             const targetNode = measure.nodes[targetIdx];
-            if (targetNode.durationInBeats < 2) return { newDoc: doc, newNodeId: null };
+            if (targetNode.durationInBeats < 1) return { newDoc: doc, newNodeId: null };
             
-            const splitDuration = Math.ceil(targetNode.durationInBeats / 2);
+            const splitDuration = Math.max(0.5, targetNode.durationInBeats / 2);
             targetNode.durationInBeats -= splitDuration;
             
             const subV7Node = createNode(
@@ -143,9 +143,9 @@ export const injectSecondaryDominant = (doc: ProgressionDocument, targetNodeId: 
         const targetIdx = measure.nodes.findIndex(n => n.id === targetNodeId);
         if (targetIdx !== -1) {
             const targetNode = measure.nodes[targetIdx];
-            if (targetNode.durationInBeats < 2) return { newDoc: doc, newNodeId: null };
+            if (targetNode.durationInBeats < 1) return { newDoc: doc, newNodeId: null };
             
-            const splitDuration = Math.ceil(targetNode.durationInBeats / 2);
+            const splitDuration = Math.max(0.5, targetNode.durationInBeats / 2);
             targetNode.durationInBeats -= splitDuration;
             
             const secDomNode = createNode(

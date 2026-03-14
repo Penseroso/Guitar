@@ -64,6 +64,48 @@ export function getChordFromDegree(degree: string): { interval: number; type: st
     return ROMAN_NUMERAL_CHORDS[degree] || { interval: 0, type: 'Major' };
 }
 
+const CHORD_TYPE_SUFFIX: Record<string, string> = {
+    'Major': '',
+    'Minor': 'm',
+    'Diminished': '°',
+    'Augmented': '+',
+    'Dominant 7': '7',
+};
+
+/** Converts a displayDegree + coreDegree to a real chord name, e.g. 'Am', 'G7', 'Ab7' */
+export function degreeToChordName(displayDegree: string, coreDegree: string, rootKey: number): string {
+    const NOTES_SHARP = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const NOTES_FLAT_LOCAL = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+
+    // Handle V7/x — secondary dominant
+    if (displayDegree.startsWith('V7/')) {
+        const { interval } = getChordFromDegree(coreDegree) || { interval: 0 };
+        const chordRoot = (rootKey + interval + 7) % 12; // V of the target = a 5th above target
+        const noteName = NOTES_FLAT_LOCAL[chordRoot];
+        return `${noteName}7`;
+    }
+
+    // Handle subV7/x — tritone substitution (b2 of target)
+    if (displayDegree.startsWith('subV7/')) {
+        const { interval } = getChordFromDegree(coreDegree) || { interval: 0 };
+        const chordRoot = (rootKey + interval + 1) % 12; // b2 of target
+        const noteName = NOTES_FLAT_LOCAL[chordRoot];
+        return `${noteName}7`;
+    }
+
+    // Plain diatonic degree
+    const degreeData = ROMAN_NUMERAL_CHORDS[displayDegree];
+    if (!degreeData) return displayDegree;
+
+    const chordRoot = (rootKey + degreeData.interval) % 12;
+    // Use flats for minor/flat degrees, sharps otherwise
+    const useFlat = displayDegree.startsWith('b') || degreeData.type === 'Minor';
+    const noteName = useFlat ? NOTES_FLAT_LOCAL[chordRoot] : NOTES_SHARP[chordRoot];
+    const suffix = CHORD_TYPE_SUFFIX[degreeData.type] ?? '';
+    return `${noteName}${suffix}`;
+}
+
+
 export function getChordTones(chordType: string, root: number): number[] {
     const chordIntervals: Record<string, number[]> = {
         "Major": [0, 4, 7],
