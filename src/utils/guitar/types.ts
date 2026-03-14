@@ -38,3 +38,26 @@ export interface PlayableDoubleStop {
     fret2: number;
     pair: DoubleStopPair;
 }
+
+export type HarmonicFunction = 'Tonic' | 'Subdominant' | 'Dominant' | 'Applied_Dominant' | 'Tritone_Substitute' | 'Modal_Interchange';
+
+export interface ChordNode {
+    id: string;
+    displayDegree: string;       // UI 표시용 (예: "V7/vi")
+    coreDegree: string;          // 연산용 핵심 도수 (예: "III")
+    durationInBeats: number;     // 박자 수 (기본 4)
+    harmonicFunction: HarmonicFunction;
+    targetNodeId?: string;       // 꾸며주는 타겟 노드 ID (화살표 렌더링용)
+    isSecondary: boolean;        // true일 경우 메인 노드 상단/하단에 작게 기생하여 렌더링
+}
+
+export interface Measure {
+    id: string;
+    index: number;
+    timeSignature: [number, number]; // [4, 4]
+    nodes: ChordNode[];
+}
+
+export interface ProgressionDocument {
+    measures: Measure[];
+}

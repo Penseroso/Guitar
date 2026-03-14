@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Zap, Target, Compass, Activity, Layers, Disc } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NOTES, SCALES, CHORD_SHAPES, PROGRESSION_LIBRARY } from '../../utils/guitar/theory';
-import { getChordFromDegree, getNoteName } from '../../utils/guitar/logic';
+import { getChordFromDegree, getNoteName, injectSecondaryDominants } from '../../utils/guitar/logic';
 import { TabsRail } from '../ui/design-system/TabsRail';
 import { KeyButton } from '../ui/design-system/KeyButton';
 import { SelectPill } from '../ui/design-system/SelectPill';
@@ -42,10 +42,6 @@ interface ControlsProps {
     voicingLabels: string[];
     progressionName: string;
     onProgressionChange: (name: string) => void;
-    currentStepIndex: number;
-    onStepChange: (index: number) => void;
-    isPlaying: boolean;
-    onTogglePlay: () => void;
 }
 
 export const Controls: React.FC<ControlsProps> = ({
@@ -93,10 +89,18 @@ export const Controls: React.FC<ControlsProps> = ({
     }));
 
     const getChordName = (degree: string) => {
+        if (degree.startsWith('V7 of ')) {
+            const targetDegree = degree.replace('V7 of ', '');
+            const targetInfo = getChordFromDegree(targetDegree);
+            const targetRoot = (selectedKey + targetInfo.interval) % 12;
+            const stepRoot = (targetRoot + 7) % 12;
+            return `${getNoteName(stepRoot)}7`;
+        }
+
         const { interval, type } = getChordFromDegree(degree);
         const rootNoteIdx = (selectedKey + interval) % 12;
         const rootText = getNoteName(rootNoteIdx);
-        const suffix = type === 'Minor' ? 'm' : '';
+        const suffix = type === 'Minor' ? 'm' : type === 'Diminished' ? 'dim' : type === 'Augmented' ? 'aug' : '';
         return `${rootText}${suffix}`;
     };
 
@@ -136,7 +140,8 @@ export const Controls: React.FC<ControlsProps> = ({
 
             return arr.map((i: number) => INTERVAL_NAMES[i]).join(' · ');
         } else if (mode === 'progression') {
-            const steps = PROGRESSION_LIBRARY.find(p => p.id === progressionName)?.degrees || [];
+            const prog = PROGRESSION_LIBRARY.find(p => p.id === progressionName);
+            const steps = prog ? prog.degrees : [];
             return steps.map(deg => getChordName(deg)).join(' · ');
         }
         return '-';
@@ -234,37 +239,125 @@ export const Controls: React.FC<ControlsProps> = ({
 
             {/* RIGHT RACK: PARAMETERS */}
             <div className="col-span-1 lg:col-span-4 flex flex-col gap-6 w-full h-full lg:mt-[116px] relative z-50">
-                {/* System Status Panel */}
-                <div className="bg-[#0a0a0a] border border-white/5 rounded-3xl p-8 flex flex-col gap-6 shadow-2xl relative overflow-hidden">
-                    <div className="absolute -top-4 -right-4 p-4 opacity-[0.03] pointer-events-none text-white">
-                        <Activity size={120} strokeWidth={1} />
-                    </div>
-                    <div className="flex flex-col items-center justify-center relative z-10 py-2">
-                        <div className="flex items-baseline gap-2">
-                            <h2 className="text-6xl font-black text-white tracking-tighter leading-none">
-                                {getNoteName(selectedKey)}
-                            </h2>
-                            <span className="text-xl font-light text-white/20 tracking-widest uppercase italic leading-none">Active</span>
-                        </div>
-                    </div>
-                    <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-white/10 to-transparent my-1" />
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="flex flex-col gap-1">
-                            <span className="text-[8px] font-black uppercase text-white/30 tracking-widest">Mode Status</span>
-                            <span className="text-xs font-bold text-white/70 tracking-wider uppercase">
-                                {mode === 'scale' ? selectedScaleName :
-                                    mode === 'chord' ? chordType :
-                                        mode === 'progression' ? (PROGRESSION_LIBRARY.find(p => p.id === progressionName)?.degrees.join(' · ') || mode) : mode}
-                            </span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <span className="text-[8px] font-black uppercase text-white/30 tracking-widest">Structure/Degrees</span>
-                            <span className="text-xs font-black text-white/70 tracking-normal">
-                                {getStructureDisplay()}
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                {/* Context-Aware Info Panel */}
+                <AnimatePresence mode="wait">
+                    {mode === 'progression' ? (
+                        <motion.div 
+                            key="mode-wheel"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="bg-[#0a0a0a] border border-white/5 rounded-3xl p-8 flex flex-col items-center justify-center shadow-2xl relative overflow-hidden min-h-[380px]"
+                        >
+                            <div className="absolute inset-0 opacity-[0.03] pointer-events-none flex items-center justify-center">
+                                <Activity size={320} strokeWidth={0.5} />
+                            </div>
+                            
+                            {/* The Wheel Container */}
+                            <div className="relative w-full h-full flex items-center justify-center aspect-square max-w-[300px]">
+                                {/* Center: Tonic */}
+                                <div className="relative z-20 flex flex-col items-center justify-center">
+                                    <motion.h2 
+                                        key={selectedKey}
+                                        initial={{ scale: 0.5, opacity: 0 }}
+                                        animate={{ scale: 1, opacity: 1 }}
+                                        className="text-7xl font-black text-white tracking-tighter leading-none drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                                    >
+                                        {getNoteName(selectedKey)}
+                                    </motion.h2>
+                                    <span className="text-[10px] font-black tracking-[0.4em] text-white/20 uppercase mt-2">Tonic</span>
+                                </div>
+
+                                {/* Orbiting Modes */}
+                                {[
+                                    { label: 'Ionian', technical: 'Major / Ionian' },
+                                    { label: 'Dorian', technical: 'Dorian' },
+                                    { label: 'Phrygian', technical: 'Phrygian' },
+                                    { label: 'Lydian', technical: 'Lydian' },
+                                    { label: 'Mixolydian', technical: 'Mixolydian' },
+                                    { label: 'Aeolian', technical: 'N Minor / Aeolian' },
+                                    { label: 'Locrian', technical: 'Locrian' },
+                                ].map((m, i) => {
+                                    const angle = (i * 360) / 7;
+                                    const radius = 115; // Orbital radius
+                                    const isActive = selectedScaleName === m.technical && selectedScaleGroup === 'Major Modes';
+                                    
+                                    return (
+                                        <motion.button
+                                            key={m.label}
+                                            initial={false}
+                                            animate={{ 
+                                                x: radius * Math.sin((angle * Math.PI) / 180),
+                                                y: -radius * Math.cos((angle * Math.PI) / 180),
+                                                scale: isActive ? 1.1 : 1,
+                                            }}
+                                            whileHover={{ scale: 1.15, transition: { duration: 0.2 } }}
+                                            onClick={() => onScaleChange('Major Modes', m.technical)}
+                                            className={`absolute w-14 h-14 rounded-full border flex flex-col items-center justify-center transition-all duration-500 shadow-lg ${
+                                                isActive 
+                                                    ? 'bg-white border-white text-black shadow-[0_0_30px_rgba(255,255,255,0.3)] z-30' 
+                                                    : 'bg-black/40 border-white/10 text-white/40 hover:border-white/40 hover:text-white z-10 backdrop-blur-sm'
+                                            }`}
+                                        >
+                                            <span className="text-[7px] font-black uppercase tracking-tighter opacity-60 mb-0.5">{(i + 1)}</span>
+                                            <span className="text-[8px] font-black uppercase tracking-widest">{m.label.slice(0, 3)}</span>
+                                            {isActive && (
+                                                <motion.div 
+                                                    layoutId="glow"
+                                                    className="absolute inset-0 rounded-full bg-white/20 blur-md -z-10"
+                                                    initial={{ opacity: 0 }}
+                                                    animate={{ opacity: 1 }}
+                                                />
+                                            )}
+                                        </motion.button>
+                                    );
+                                })}
+
+                                {/* Connection Lines (Aesthetics) */}
+                                <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.05]">
+                                    <circle cx="50%" cy="50%" r="115" fill="none" stroke="white" strokeWidth="1" strokeDasharray="4 8" />
+                                </svg>
+                            </div>
+                        </motion.div>
+                    ) : (
+                        <motion.div 
+                            key="status-panel"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="bg-[#0a0a0a] border border-white/5 rounded-3xl p-8 flex flex-col gap-6 shadow-2xl relative overflow-hidden"
+                        >
+                            <div className="absolute -top-4 -right-4 p-4 opacity-[0.03] pointer-events-none text-white">
+                                <Activity size={120} strokeWidth={1} />
+                            </div>
+                            <div className="flex flex-col items-center justify-center relative z-10 py-2">
+                                <div className="flex items-baseline gap-2">
+                                    <h2 className="text-6xl font-black text-white tracking-tighter leading-none">
+                                        {getNoteName(selectedKey)}
+                                    </h2>
+                                    <span className="text-xl font-light text-white/20 tracking-widest uppercase italic leading-none">Active</span>
+                                </div>
+                            </div>
+                            <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-white/10 to-transparent my-1" />
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="flex flex-col gap-1">
+                                    <span className="text-[8px] font-black uppercase text-white/30 tracking-widest">Mode Status</span>
+                                    <span className="text-xs font-bold text-white/70 tracking-wider uppercase">
+                                        {mode === 'scale' ? selectedScaleName :
+                                            mode === 'chord' ? chordType :
+                                                mode === 'progression' ? (PROGRESSION_LIBRARY.find(p => p.id === progressionName)?.degrees.join(' · ') || mode) : mode}
+                                    </span>
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <span className="text-[8px] font-black uppercase text-white/30 tracking-widest">Structure / Degrees</span>
+                                    <span className="text-xs font-black text-white/70 tracking-normal">
+                                        {getStructureDisplay()}
+                                    </span>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
                 <div className="bg-[#0a0a0a] border border-white/5 rounded-3xl p-8 flex flex-col gap-6 shadow-2xl relative w-full h-fit">
                     <div className="flex items-center gap-2 border-b border-white/5 pb-4">
@@ -310,43 +403,13 @@ export const Controls: React.FC<ControlsProps> = ({
 
                     {mode === 'progression' && (
                         <div className="flex flex-col gap-4">
+                            <span className="text-[10px] font-black uppercase text-white/40 tracking-[0.3em]">Presets</span>
                             <SelectPill value={progressionName} onChange={onProgressionChange} options={progressionOptions} />
                         </div>
                     )}
                 </div>
             </div>
 
-            {/* PROGRESSION DASHBOARD (FULL WIDTH) */}
-            {mode === 'progression' && (
-                <div className="col-span-1 lg:col-span-12 w-full border-t border-white/5 pt-12 mt-12 animate-in fade-in duration-700">
-                    <div className="flex items-center gap-3 mb-8">
-                        <Activity size={16} className="text-white/40" />
-                        <h2 className="text-lg font-black uppercase tracking-[0.3em] text-white/40">Progression Matrix</h2>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {PROGRESSION_LIBRARY.map(prog => (
-                            <div key={prog.id} onClick={() => onProgressionChange(prog.id)}
-                                className="bg-[#0a0a0a] border border-white/5 p-8 rounded-[2rem] flex flex-col hover:border-white/20 transition-all cursor-pointer group shadow-lg">
-                                <div className="flex justify-between items-start mb-6 border-b border-white/5 pb-4">
-                                    <h3 className="text-sm font-bold tracking-widest uppercase text-white/70 group-hover:text-white">{prog.title}</h3>
-                                    <span className="text-[8px] font-black uppercase text-white/30 bg-white/5 py-1 px-2 rounded border border-white/5">{prog.genre}</span>
-                                </div>
-                                <div className="flex items-center justify-center py-8 bg-black rounded-2xl border border-white/5 mb-6 group-hover:border-white/10 transition-colors">
-                                    <div className="flex items-center gap-2 flex-wrap justify-center">
-                                        {prog.degrees.map((deg, i) => (
-                                            <React.Fragment key={i}>
-                                                <span className="text-2xl font-black text-white/80 group-hover:text-white">{getChordName(deg)}</span>
-                                                {i < prog.degrees.length - 1 && <span className="text-white/10 mx-1">→</span>}
-                                            </React.Fragment>
-                                        ))}
-                                    </div>
-                                </div>
-                                <p className="text-[10px] font-black text-white/30 leading-relaxed uppercase">{prog.description}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
         </>
     );
 };

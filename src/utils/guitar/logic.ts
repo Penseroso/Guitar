@@ -292,3 +292,19 @@ export function getDiatonicCluster(rootKey: number): number[] {
 
     return [...majorKeys, ...minorKeys];
 }
+
+/**
+ * Injects Secondary Dominant chords into a Roman numeral progression array.
+ * If the target chord is not 'I', 'i', or a diminished chord ('°'),
+ * it inserts a "V7 of [Target]" string immediately before it.
+ */
+export function injectSecondaryDominants(degrees: string[]): string[] {
+    const injected: string[] = [];
+    for (const target of degrees) {
+        if (target !== 'I' && target !== 'i' && !target.includes('°')) {
+            injected.push(`V7 of ${target}`);
+        }
+        injected.push(target);
+    }
+    return injected;
+}

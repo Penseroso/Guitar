@@ -1,17 +1,27 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { 
+    DndContext, 
+    useDraggable, 
+    useDroppable, 
+    DragOverEvent, 
+    DragEndEvent,
+    PointerSensor,
+    useSensor,
+    useSensors
+} from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities';
 import { Fretboard } from '../Fretboard';
 import { Controls } from './Controls';
 import { ChordGallery } from './ChordGallery';
 import { TogglePill } from '../ui/design-system/TogglePill';
 import { SlidersHorizontal } from 'lucide-react';
 import {
-    NOTES,
     TUNING,
     SCALES,
-    PROGRESSION_LIBRARY,
     CHORD_SHAPES,
+    generateModeData,
 } from '../../utils/guitar/theory';
 import {
     getChordFromDegree,
@@ -19,9 +29,378 @@ import {
     getChordFingering,
     getSortedVoicings,
     getDiatonicDoubleStops,
-    getPlayableDoubleStopsOnStrings
+    getPlayableDoubleStopsOnStrings,
+    getNoteName
 } from '../../utils/guitar/logic';
-import { Mode } from '../../utils/guitar/types';
+import { Mode, HarmonicFunction, Measure, ChordNode } from '../../utils/guitar/types';
+import { useProgression } from '../../hooks/useProgression';
+
+
+
+const clampIndex = (value: number, max: number) => Math.max(0, Math.min(value, max));
+
+type ResizePreview = {
+    nodeId: string;
+    measureId: string;
+    nodeIndex: number;
+    direction: 'left' | 'right';
+    delta: number;
+};
+
+type DraggablePaletteItemProps = {
+    degree: string;
+    selectedKey: number;
+    color?: string;
+};
+
+function DraggablePaletteItem({ degree, selectedKey, color }: DraggablePaletteItemProps) {
+    let harmonicFunction: HarmonicFunction = 'Tonic';
+    if (['V', 'vii°'].includes(degree)) harmonicFunction = 'Dominant';
+    if (['IV', 'ii'].includes(degree)) harmonicFunction = 'Subdominant';
+
+    const { interval, type } = getChordFromDegree(degree);
+    const rootNoteIdx = (selectedKey + interval) % 12;
+    const rootText = getNoteName(rootNoteIdx);
+    const suffix = type === 'Minor' ? 'm' : type === 'Diminished' ? 'dim' : '';
+    const displayName = `${rootText}${suffix}`;
+
+    const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+        id: degree,
+        data: {
+            type: 'new',
+            coreDegree: degree,
+            harmonicFunction,
+        },
+    });
+
+    const style = {
+        transform: CSS.Translate.toString(transform),
+    };
+
+    return (
+        <button
+            ref={setNodeRef}
+            style={style}
+            {...listeners}
+            {...attributes}
+            className={`px-6 py-3 rounded-xl border text-white flex flex-col items-center gap-1 touch-none group ${
+                isDragging
+                    ? 'border-[#00ff88]/50 bg-[#00ff88]/10 shadow-[0_0_24px_rgba(0,255,136,0.18)] opacity-80'
+                    : 'border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/30 transition-all'
+            }`}
+        >
+            <span className="text-sm font-bold" style={{ color: !isDragging && color ? color : undefined }}>{displayName}</span>
+            <span className="text-[9px] font-black text-white/40 group-hover:text-white/60 transition-colors">{degree}</span>
+            {isActiveScaleItem && (
+                <div className="absolute -bottom-1 w-1 h-1 rounded-full bg-white/50" />
+            )}
+        </button>
+    );
+}
+
+// Helper to determine if a chord is part of the current scale (aesthetic only)
+const isActiveScaleItem = false; 
+
+
+type DroppableMeasureProps = {
+    measure: Measure;
+    children: React.ReactNode;
+    isOver?: boolean;
+};
+
+function DroppableMeasure({ measure, children, isOver }: DroppableMeasureProps) {
+    const { setNodeRef } = useDroppable({
+        id: measure.id,
+        data: {
+            type: 'measure',
+            measureId: measure.id
+        }
+    });
+
+    return (
+        <div 
+            ref={setNodeRef} 
+            className={`flex flex-col gap-2 p-3 rounded-2xl border transition-all group/measure relative ${
+                isOver ? 'bg-white/[0.04] border-white/20 shadow-[0_0_20px_rgba(255,255,255,0.05)]' : 'bg-white/[0.02] border-white/5 hover:border-white/10'
+            }`}
+        >
+            {children}
+        </div>
+    );
+}
+
+type DropIndicatorProps = {
+    index: number;
+    measure: Measure;
+};
+
+function DropIndicator({ index, measure }: DropIndicatorProps) {
+    const totalBeats = measure.timeSignature[0];
+    const nodes = measure.nodes;
+
+    let leftPosition = 0;
+    if (index > 0) {
+        const beatsBefore = nodes.slice(0, index).reduce((sum, node) => sum + node.durationInBeats, 0);
+        leftPosition = (beatsBefore / totalBeats) * 100;
+    }
+
+    if (index === nodes.length) {
+        leftPosition = 100;
+    }
+
+    return (
+        <div
+            className="absolute top-0 bottom-0 w-1 bg-[#00ff88] shadow-[0_0_10px_rgba(0,255,136,0.5)] z-30 rounded-full animate-pulse"
+            style={{ 
+                left: `${leftPosition}%`, 
+                transform: leftPosition >= 100 ? 'translateX(-100%)' : (leftPosition <= 0 ? 'none' : 'translateX(-50%)') 
+            }}
+        />
+    );
+}
+
+type DraggableNodeProps = {
+    node: ChordNode;
+    measureId: string;
+    isFocused: boolean;
+    addSecondaryDominant: (id: string) => void;
+    removeNode: (id: string) => void;
+    updateNodeDuration: (id: string, direction: 'left' | 'right', delta: number) => void;
+    index: number;
+    totalNodes: number;
+    prevNodeDuration?: number;
+    nextNodeDuration?: number;
+    resizePreview: ResizePreview | null;
+    setResizePreview: React.Dispatch<React.SetStateAction<ResizePreview | null>>;
+    onClick: () => void;
+};
+
+function DraggableNode({ 
+    node, 
+    measureId, 
+    isFocused, 
+    onClick, 
+    addSecondaryDominant, 
+    removeNode,
+    updateNodeDuration,
+    index,
+    totalNodes,
+    prevNodeDuration,
+    nextNodeDuration,
+    resizePreview,
+    setResizePreview,
+}: DraggableNodeProps) {
+    const isResizing = resizePreview?.nodeId === node.id;
+    const isAnyNodeResizing = resizePreview !== null;
+    const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+        id: node.id,
+        disabled: isAnyNodeResizing,
+        data: {
+            type: 'move',
+            node,
+            sourceMeasureId: measureId
+        }
+    });
+
+    const { setNodeRef: setBeforeDroppableRef } = useDroppable({
+        id: `drop-${node.id}-before`,
+        data: {
+            type: 'node',
+            measureId,
+            nodeIndex: index,
+            insertIndex: index
+        }
+    });
+
+    const { setNodeRef: setAfterDroppableRef } = useDroppable({
+        id: `drop-${node.id}-after`,
+        data: {
+            type: 'node',
+            measureId,
+            nodeIndex: index,
+            insertIndex: index + 1
+        }
+    });
+
+    const combinedRef = (element: HTMLElement | null) => {
+        setNodeRef(element);
+    };
+
+    // Calculate dynamic duration based on global resizing state
+    let displayDuration = node.durationInBeats;
+    if (resizePreview && resizePreview.measureId === measureId) {
+        if (node.id === resizePreview.nodeId) {
+            displayDuration = node.durationInBeats + resizePreview.delta;
+        } else {
+            // Check if this node is the affected neighbor in the same measure
+            if (resizePreview.direction === 'right' && index === resizePreview.nodeIndex + 1) {
+                displayDuration = node.durationInBeats - resizePreview.delta;
+            }
+            else if (resizePreview.direction === 'left' && index === resizePreview.nodeIndex - 1) {
+                displayDuration = node.durationInBeats - resizePreview.delta;
+            }
+        }
+    }
+
+    const style = {
+        transform: isAnyNodeResizing ? undefined : CSS.Translate.toString(transform),
+        gridColumn: `span ${Math.max(1, Math.round(displayDuration * 2))}`
+    };
+
+    const startX = useRef(0);
+    const lastDeltaRef = useRef(0);
+
+    const clampResizeDelta = (direction: 'left' | 'right', delta: number) => {
+        if (direction === 'right') {
+            if (nextNodeDuration === undefined) return 0;
+            return Math.max(-node.durationInBeats + 0.5, Math.min(nextNodeDuration - 0.5, delta));
+        }
+        if (prevNodeDuration === undefined) return 0;
+        return Math.max(-node.durationInBeats + 0.5, Math.min(prevNodeDuration - 0.5, delta));
+    };
+
+    const handleResizeStart = (e: React.PointerEvent<HTMLDivElement>, direction: 'left' | 'right') => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (e.currentTarget.hasPointerCapture?.(e.pointerId) === false) {
+            e.currentTarget.setPointerCapture(e.pointerId);
+        }
+
+        startX.current = e.clientX;
+        lastDeltaRef.current = 0;
+        setResizePreview({
+            nodeId: node.id,
+            measureId,
+            nodeIndex: index,
+            direction,
+            delta: 0,
+        });
+
+        const onPointerMove = (moveEvent: PointerEvent) => {
+            moveEvent.preventDefault();
+            const deltaX = moveEvent.clientX - startX.current;
+            const container = document.querySelector(`[data-measure-id="${measureId}"]`);
+            if (container) {
+                const totalWidth = container.clientWidth;
+                const beatsPerMeasure = 4; 
+                const pixelsPerBeat = totalWidth / beatsPerMeasure;
+                
+                let beatDelta = Math.round((deltaX / pixelsPerBeat) * 2) / 2; 
+                if (direction === 'left') beatDelta = -beatDelta;
+                const clampedDelta = clampResizeDelta(direction, beatDelta);
+                if (clampedDelta !== lastDeltaRef.current) {
+                    lastDeltaRef.current = clampedDelta;
+                    setResizePreview({
+                        nodeId: node.id,
+                        measureId,
+                        nodeIndex: index,
+                        direction,
+                        delta: clampedDelta,
+                    });
+                }
+            }
+        };
+
+        const onPointerUp = () => {
+            if (lastDeltaRef.current !== 0) {
+                updateNodeDuration(node.id, direction, lastDeltaRef.current);
+            }
+            setResizePreview(null);
+            
+            window.removeEventListener('pointermove', onPointerMove);
+            window.removeEventListener('pointerup', onPointerUp);
+        };
+
+        window.addEventListener('pointermove', onPointerMove, { passive: false });
+        window.addEventListener('pointerup', onPointerUp);
+    };
+
+    return (
+        <div
+            ref={combinedRef}
+            style={style}
+            onClick={(e) => {
+                e.stopPropagation();
+                if (isAnyNodeResizing) return;
+                onClick();
+            }}
+            className={`relative h-full min-w-0 rounded-xl border flex flex-col justify-center items-center group touch-none ${
+                'cursor-pointer'
+            } ${
+                !isAnyNodeResizing && !isDragging ? 'transition-all duration-200' : ''
+            } ${
+                isFocused
+                    ? 'border-amber-500/50 bg-amber-500/10 shadow-[0_0_20px_rgba(245,158,11,0.2)] z-10'
+                    : 'border-white/10 bg-white/5 hover:bg-white/10'
+            } ${node.isSecondary ? 'scale-[0.85] border-dashed border-amber-500/30 -mx-1' : ''} ${isResizing && isFocused ? 'ring-1 ring-amber-500/50 z-20 transition-none' : ''}`}
+        >
+            <div ref={setBeforeDroppableRef} className="absolute inset-y-0 left-0 w-1/2" />
+            <div ref={setAfterDroppableRef} className="absolute inset-y-0 right-0 w-1/2" />
+
+            <div
+                {...listeners}
+                {...attributes}
+                className="relative z-10 flex flex-col items-center justify-center flex-1 w-full overflow-hidden"
+            >
+                <span className={`text-lg font-black whitespace-nowrap ${node.isSecondary ? 'text-amber-500/80' : 'text-white/80'}`}>{node.displayDegree}</span>
+            </div>
+            <div className="relative z-10 w-full flex justify-center pb-1 pointer-events-none overflow-hidden">
+                <span className="text-[8px] tracking-widest text-white/30 whitespace-nowrap">{displayDuration} beats</span>
+            </div>
+
+            {/* Resize Handles */}
+            {isFocused && totalNodes > 1 && (
+                <>
+                    {/* Left Handle: available if not the first node */}
+                    {index > 0 && (
+                        <div 
+                            onPointerDown={(e) => handleResizeStart(e, 'left')}
+                            className="absolute left-0 top-0 bottom-0 w-3 cursor-ew-resize hover:bg-amber-500/30 rounded-l-xl transition-colors z-20 flex items-center justify-center group/h"
+                        >
+                            <div className="w-1 h-4 bg-amber-500/20 group-hover/h:bg-amber-500/40 rounded-full" />
+                        </div>
+                    )}
+                    
+                    {/* Right Handle: available if not the last node */}
+                    {index < totalNodes - 1 && (
+                        <div 
+                            onPointerDown={(e) => handleResizeStart(e, 'right')}
+                            className="absolute right-0 top-0 bottom-0 w-3 cursor-ew-resize hover:bg-amber-500/30 rounded-r-xl transition-colors z-20 flex items-center justify-center group/h"
+                        >
+                            <div className="w-1 h-4 bg-amber-500/20 group-hover/h:bg-amber-500/40 rounded-full" />
+                        </div>
+                    )}
+                </>
+            )}
+
+            {/* Context Menu */}
+            {isFocused && (
+                <div 
+                    onPointerDown={(e) => e.stopPropagation()}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    className="absolute -top-12 bg-black border border-white/20 rounded-lg p-1 z-50 flex items-center gap-1 shadow-2xl animate-in fade-in slide-in-from-bottom-2 cursor-default"
+                >
+                    {!node.isSecondary && node.durationInBeats >= 2 && (
+                        <button
+                            onClick={(e) => { e.stopPropagation(); addSecondaryDominant(node.id); }}
+                            onPointerDown={(e) => e.stopPropagation()}
+                            className="px-3 py-1.5 text-[9px] font-black text-amber-500 hover:bg-white/10 rounded"
+                        >
+                            + V7/{node.coreDegree}
+                        </button>
+                    )}
+                    <button
+                        onClick={(e) => { e.stopPropagation(); removeNode(node.id); }}
+                        onPointerDown={(e) => e.stopPropagation()}
+                        className="px-3 py-1.5 text-[9px] font-black text-red-500 hover:bg-white/10 rounded"
+                    >
+                        DEL
+                    </button>
+                </div>
+            )}
+        </div>
+    );
+}
 
 export default function ClientApp() {
     // --- State: Global ---
@@ -33,7 +412,6 @@ export default function ClientApp() {
     const [scaleGroup, setScaleGroup] = useState('Major Modes');
     const [scaleName, setScaleName] = useState('Major / Ionian');
     const [showChordTones, setShowChordTones] = useState(false); // In scale mode, shows Triad of root
-    const [isPentatonic, setIsPentatonic] = useState(false);
     const [blueNote, setBlueNote] = useState(false);
     const [sixthNote, setSixthNote] = useState(false);
     const [secondNote, setSecondNote] = useState(false);
@@ -47,32 +425,49 @@ export default function ClientApp() {
     const [doubleStopInterval, setDoubleStopInterval] = useState(3);
     const [doubleStopStrings, setDoubleStopStrings] = useState<[number, number]>([1, 2]);
 
-    // --- State: Progression Mode ---
-    const [progressionName, setProgressionName] = useState('pop-punk');
-    const [currentStepIndex, setCurrentStepIndex] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
+    const {
+        progressionName,
+        progressionDoc,
+        focusedNodeId,
+        setFocusedNodeId,
+        handleDragEnd,
+        addSecondaryDominant,
+        removeNode,
+        removeMeasure,
+        clearMeasure,
+        clearAllNodes,
+        appendMeasure,
+        applyPreset,
+        updateNodeDuration,
+    } = useProgression();
 
-    // --- Refs ---
-    const fretboardContainerRef = useRef<HTMLDivElement>(null);
-    const playbackTimerRef = useRef<NodeJS.Timeout | null>(null);
-
+    // --- Effect: Auto-reset progression on Key/Mode change ---
+    useEffect(() => {
+        if (mode === 'progression') {
+            clearAllNodes();
+        }
+    }, [selectedKey, scaleName, mode]); // Also reset when entering progression mode? 
+    // Actually the user said "시" (when changing), so watching key/scale is correct.
+    // Adding `mode` ensures it resets if they change mode/key while in prog mode.
     // --- Derived Data: Scales ---
     const activeScaleIntervals = useMemo(() => {
         return SCALES[scaleGroup]?.[scaleName] || SCALES['Major Modes']['Major / Ionian'];
+    }, [scaleGroup, scaleName]);
+
+    const diatonicChords = useMemo(() => {
+        const modeData = generateModeData(scaleGroup, scaleName);
+        return Object.entries(modeData).map(([interval, data]) => ({
+            degree: data.role,
+            color: data.color,
+            interval: parseInt(interval)
+        })).sort((a, b) => a.interval - b.interval);
     }, [scaleGroup, scaleName]);
 
     const scaleNotes = useMemo(() => {
         return activeScaleIntervals.map(interval => (selectedKey + interval) % 12);
     }, [selectedKey, activeScaleIntervals]);
 
-    // Update isPentatonic flag for UI
-    useEffect(() => {
-        setIsPentatonic(scaleName.includes('Pentatonic'));
-        // 스케일이 변경될 때 활성화된 애드 노트들을 모두 초기화
-        setBlueNote(false);
-        setSixthNote(false);
-        setSecondNote(false);
-    }, [scaleName]);
+    const isPentatonic = scaleName.includes('Pentatonic');
 
     const modifierNotes = useMemo(() => {
         const mods = [];
@@ -127,15 +522,7 @@ export default function ClientApp() {
         // High E = 0. B = 0. G = 1. D = 2. A = 2. Low E = 0.
         // This looks like E Major! (0 2 2 1 0 0) - but reversed.
         // Low E (0) -> High E (0).
-        // So `offsets` in theory.ts seem to be High E to Low E order?
-        // Let's check `E Shape`: `offsets: [0, 0, 1, 2, 2, 0]`.
-        // String 0 (High E): 0 (E).
-        // String 1 (B): 0 (B).
-        // String 2 (G): 1 (G#).
-        // String 3 (D): 2 (E).
-        // String 4 (A): 2 (B).
-        // String 5 (Low E): 0 (E).
-        // This forms E Major chord! So yes, offsets are High E -> Low E.
+        // So `offsets` in theory.ts seem to be High E -> Low E.
 
         // rootString is 5 (Low E).
 
@@ -178,25 +565,49 @@ export default function ClientApp() {
 
     // --- Derived Data: Progression ---
     const progressionData = useMemo(() => {
-        if (mode !== 'progression') return null;
+        if (mode !== 'progression' || !focusedNodeId) return null;
 
-        const progDef = PROGRESSION_LIBRARY.find(p => p.id === progressionName) || PROGRESSION_LIBRARY[0];
-        const steps = progDef.degrees;
-        const currentStepDegree = steps[currentStepIndex % steps.length];
+        // Find the focused node
+        let currentStepDegree = '';
+        let isSec = false;
+        let cCore = '';
 
-        const { interval, type } = getChordFromDegree(currentStepDegree);
-        const stepRoot = (selectedKey + interval) % 12;
+        for (const measure of progressionDoc.measures) {
+            const tempNode = measure.nodes.find(n => n.id === focusedNodeId);
+            if (tempNode) {
+                currentStepDegree = tempNode.displayDegree;
+                isSec = tempNode.isSecondary;
+                cCore = tempNode.coreDegree;
+                break;
+            }
+        }
 
-        const tones = getChordTones(type, stepRoot);
+        if (!currentStepDegree) return null;
+
+        let stepRoot: number;
+        let type: string;
+        let tones: number[];
+
+        if (isSec || currentStepDegree.startsWith('V7/')) { // V7/vi
+            const targetInfo = getChordFromDegree(cCore);
+            const targetRoot = (selectedKey + targetInfo.interval) % 12;
+            stepRoot = (targetRoot + 7) % 12;
+            type = 'Dominant 7';
+            tones = getChordTones(type, stepRoot);
+        } else {
+            const info = getChordFromDegree(cCore || currentStepDegree);
+            stepRoot = (selectedKey + info.interval) % 12;
+            type = info.type;
+            tones = getChordTones(type, stepRoot);
+        }
 
         return {
-            steps,
             currentStepDegree,
             stepRoot,
             tones,
             type
         };
-    }, [mode, progressionName, currentStepIndex, selectedKey]);
+    }, [mode, progressionDoc, focusedNodeId, selectedKey]);
 
     // --- Active Notes Calculation ---
     const activeNotes = useMemo(() => {
@@ -244,7 +655,7 @@ export default function ClientApp() {
             return progressionData?.tones || [];
         }
         return [];
-    }, [mode, showChordTones, selectedKey, progressionData]);
+    }, [mode, showChordTones, selectedKey, progressionData, activeScaleIntervals]);
 
     const rootNote = useMemo(() => {
         if (mode === 'progression') {
@@ -254,10 +665,78 @@ export default function ClientApp() {
     }, [mode, progressionData, selectedKey]);
 
     // --- Handlers ---
-    const togglePlay = () => setIsPlaying(p => !p);
+    // (Progression handlers extracted to useProgression hook)
+    const timelineContainerRef = useRef<HTMLDivElement>(null);
+    const fretboardContainerRef = useRef<HTMLDivElement>(null);
+    const [activeOverId, setActiveOverId] = useState<string | null>(null);
+    const [activeOverData, setActiveOverData] = useState<{ type?: 'measure' | 'node'; measureId?: string; nodeIndex?: number; insertIndex?: number } | null>(null);
+    const [resizePreview, setResizePreview] = useState<ResizePreview | null>(null);
+
+    const handleDragOver = (event: DragOverEvent) => {
+        const { over } = event;
+        if (!over) {
+            setActiveOverId(null);
+            setActiveOverData(null);
+            return;
+        }
+
+        const overData = over.data.current as { type?: 'measure' | 'node'; measureId?: string; nodeIndex?: number; insertIndex?: number } | undefined;
+        const measureId = overData?.measureId || (typeof over.id === 'string' && over.id.startsWith('m-') ? String(over.id) : undefined);
+        setActiveOverId(measureId ?? String(over.id));
+        
+        if (overData?.type === 'node' && measureId) {
+            const insertIndex = clampIndex(
+                overData.insertIndex ?? overData.nodeIndex ?? 0,
+                progressionDoc.measures.find((measure) => measure.id === measureId)?.nodes.length ?? 0
+            );
+            setActiveOverData({
+                ...overData,
+                measureId,
+                insertIndex,
+            });
+        } else if (measureId) {
+            const measure = progressionDoc.measures.find((item) => item.id === measureId);
+            setActiveOverData({
+                ...overData,
+                measureId,
+                insertIndex: measure?.nodes.length ?? 0,
+            });
+        } else {
+            setActiveOverData(null);
+        }
+    };
+
+    const wrapHandleDragEnd = (event: DragEndEvent) => {
+        handleDragEnd(event);
+        setActiveOverId(null);
+        setActiveOverData(null);
+    };
+
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                distance: 10,
+            },
+        })
+    );
 
     // --- Effects ---
-    // Playback and progression logic was removed as progression is now just a static gallery
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (timelineContainerRef.current && !timelineContainerRef.current.contains(event.target as Node)) {
+                setFocusedNodeId(null);
+            }
+        };
+
+        if (focusedNodeId) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [focusedNodeId, setFocusedNodeId]);
 
     // FIXME: Auto-Scroll - This depends on Fretboard structure. 
     // With grid, Fret 0 is at left. 
@@ -288,7 +767,13 @@ export default function ClientApp() {
                     onKeyChange={setSelectedKey}
                     selectedScaleGroup={scaleGroup}
                     selectedScaleName={scaleName}
-                    onScaleChange={(g, n) => { setScaleGroup(g); setScaleName(n); }}
+                    onScaleChange={(g, n) => {
+                        setScaleGroup(g);
+                        setScaleName(n);
+                        setBlueNote(false);
+                        setSixthNote(false);
+                        setSecondNote(false);
+                    }}
                     showChordTones={showChordTones}
                     onToggleChordTones={() => setShowChordTones(p => !p)}
                     showIntervals={showIntervals}
@@ -319,11 +804,7 @@ export default function ClientApp() {
                     voicingLabels={availableVoicings.map(v => v.name)}
 
                     progressionName={progressionName}
-                    onProgressionChange={setProgressionName}
-                    currentStepIndex={currentStepIndex}
-                    onStepChange={setCurrentStepIndex}
-                    isPlaying={isPlaying}
-                    onTogglePlay={togglePlay}
+                    onProgressionChange={applyPreset}
                 />
 
                 {/* 2. Visualizations (Footer Rack) */}
@@ -429,6 +910,118 @@ export default function ClientApp() {
                                 onVoicingChange={setVoicingIndex}
                             />
                         </div>
+                    )}
+
+                    {mode === 'progression' && (
+                        <DndContext sensors={sensors} onDragOver={handleDragOver} onDragEnd={wrapHandleDragEnd}>
+                            <div className="relative z-10 w-full flex flex-col gap-8 animate-in fade-in duration-500">
+                                {/* Upper Layer: Diatonic Palette */}
+                                <div className="flex flex-col gap-4 bg-[#050505]/50 border border-white/5 rounded-3xl p-6 backdrop-blur-sm">
+                                    <div className="flex items-center gap-2 border-b border-white/5 pb-3">
+                                        <span className="text-[10px] font-black uppercase text-white/40 tracking-[0.3em]">Diatonic Palette</span>
+                                    </div>
+                                    <div className="flex gap-2 flex-wrap">
+                                        {diatonicChords.map((chord) => (
+                                            <DraggablePaletteItem 
+                                                key={chord.degree} 
+                                                degree={chord.degree} 
+                                                selectedKey={selectedKey} 
+                                                color={chord.color}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Middle Layer: Timeline Canvas */}
+                                <div className="flex flex-col gap-4 bg-[#0a0a0a] border border-white/10 rounded-3xl p-6 shadow-inner" ref={timelineContainerRef}>
+                                    <div className="flex justify-between items-center border-b border-white/5 pb-3 mb-2">
+                                        <span className="text-[10px] font-black uppercase text-white/40 tracking-[0.3em]">Timeline Canvas</span>
+                                        <button
+                                            onClick={appendMeasure}
+                                            className="px-3 py-1.5 rounded-lg border border-white/10 bg-white/5 text-[9px] font-black tracking-widest text-white/60 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all"
+                                        >
+                                            + MEASURE
+                                        </button>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pb-4 w-full">
+                                        {progressionDoc.measures.map((measure) => {
+                                            const measureSubdivisions = measure.timeSignature[0] * 2;
+                                            const usedSubdivisions = measure.nodes.reduce((sum, node) => {
+                                                return sum + Math.round(node.durationInBeats * 2);
+                                            }, 0);
+
+                                            // Determine if this measure is being hovered and where
+                                            return (
+                                                <DroppableMeasure 
+                                                    key={measure.id} 
+                                                    measure={measure} 
+                                                    isOver={activeOverId === measure.id}
+                                                >
+                                                    <div className="flex justify-between items-center px-2 opacity-30 group-hover/measure:opacity-100 transition-opacity">
+                                                        <span className="text-[9px] font-black tracking-widest">M.{measure.index + 1}</span>
+                                                        <div className="flex items-center gap-3">
+                                                            <button
+                                                                onClick={() => removeMeasure(measure.id)}
+                                                                className="text-[9px] font-black text-red-500/50 hover:text-red-500"
+                                                            >
+                                                                DEL
+                                                            </button>
+                                                            {measure.nodes.length > 0 && (
+                                                                <button
+                                                                    onClick={() => clearMeasure(measure.id)}
+                                                                    className="text-[9px] font-black text-orange-500/50 hover:text-orange-500"
+                                                                >
+                                                                    CLEAR
+                                                                </button>
+                                                            )}
+                                                            <span className="text-[9px] font-black">{measure.timeSignature[0]}/{measure.timeSignature[1]}</span>
+                                                        </div>
+                                                        </div>
+                                                        <div
+                                                            className="flex-1 grid grid-rows-1 grid-flow-col gap-1 h-20 relative"
+                                                            style={{ gridTemplateColumns: `repeat(${measureSubdivisions}, minmax(0, 1fr))` }}
+                                                            data-measure-id={measure.id}
+                                                        >
+                                                            {measure.nodes.map((node, nIdx) => (
+                                                                <DraggableNode
+                                                                    key={node.id}
+                                                                    node={node}
+                                                                    measureId={measure.id}
+                                                                    isFocused={focusedNodeId === node.id}
+                                                                    onClick={() => {
+                                                                        setFocusedNodeId(prev => prev === node.id ? null : node.id);
+                                                                    }}
+                                                                    addSecondaryDominant={addSecondaryDominant}
+                                                                    removeNode={removeNode}
+                                                                    updateNodeDuration={updateNodeDuration}
+                                                                    index={nIdx}
+                                                                    totalNodes={measure.nodes.length}
+                                                                    prevNodeDuration={measure.nodes[nIdx - 1]?.durationInBeats}
+                                                                    nextNodeDuration={measure.nodes[nIdx + 1]?.durationInBeats}
+                                                                    resizePreview={resizePreview}
+                                                                    setResizePreview={setResizePreview}
+                                                                />
+                                                            ))}
+                                                            {Array.from({ length: Math.max(0, measureSubdivisions - usedSubdivisions) }).map((_, i) => (
+                                                                <div key={`empty-${i}`} className="border border-white/5 rounded-xl bg-white/[0.01]" />
+                                                            ))}
+                                                            
+                                                            {/* Drop Indicator Logic */}
+                                                            {activeOverData?.measureId === measure.id && typeof activeOverData.insertIndex === 'number' && (
+                                                                <DropIndicator 
+                                                                    index={activeOverData.insertIndex} 
+                                                                    measure={measure} 
+                                                                />
+                                                            )}
+                                                        </div>
+                                                </DroppableMeasure>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </DndContext>
                     )}
 
                     {/* Bottom Metrics */}
