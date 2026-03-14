@@ -68,6 +68,10 @@ export default function ClientApp() {
     // Update isPentatonic flag for UI
     useEffect(() => {
         setIsPentatonic(scaleName.includes('Pentatonic'));
+        // 스케일이 변경될 때 활성화된 애드 노트들을 모두 초기화
+        setBlueNote(false);
+        setSixthNote(false);
+        setSecondNote(false);
     }, [scaleName]);
 
     const modifierNotes = useMemo(() => {
