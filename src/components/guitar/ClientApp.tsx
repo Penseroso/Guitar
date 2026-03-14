@@ -348,8 +348,8 @@ function DraggableNode({
                 {...attributes}
                 className="relative z-10 flex flex-col items-center justify-center flex-1 w-full overflow-hidden"
             >
-                <span className={`text-base font-black whitespace-nowrap ${node.isSecondary ? 'text-amber-500/80' : 'text-white/80'}`}>{node.displayDegree}</span>
-                <span className={`text-[9px] font-semibold whitespace-nowrap ${node.isSecondary ? 'text-amber-400/60' : 'text-white/40'}`}>{chordName}</span>
+                <span className={`text-base font-black whitespace-nowrap ${node.isSecondary ? 'text-amber-500/90' : 'text-white/90'}`}>{chordName}</span>
+                <span className={`text-[9px] font-semibold whitespace-nowrap ${node.isSecondary ? 'text-amber-400/40' : 'text-white/30'}`}>{node.displayDegree}</span>
             </div>
             <div className="relative z-10 w-full flex justify-center pb-1 pointer-events-none overflow-hidden">
                 <span className="text-[8px] tracking-widest text-white/30 whitespace-nowrap">{displayDuration} beats</span>
@@ -1042,27 +1042,25 @@ export default function ClientApp() {
                                                             onClick={() => addSecondaryDominant(focusedNode.id)}
                                                             className="px-5 py-2.5 text-[11px] font-black tracking-widest text-amber-500 hover:bg-amber-500/10 rounded-xl border border-amber-500/20 transition-all flex items-center gap-2"
                                                         >
-                                                            <Zap size={12} /> + {v7Name}
-                                                            <span className="text-amber-500/50 text-[9px]">V7/{focusedNode.coreDegree}</span>
+                                                            <Zap size={12} /> + V7/{focusedNode.coreDegree}
                                                         </button>
                                                         <button
                                                             onClick={() => addTritoneSubstitution(focusedNode.id)}
                                                             className="px-5 py-2.5 text-[11px] font-black tracking-widest text-fuchsia-400 hover:bg-fuchsia-500/10 rounded-xl border border-fuchsia-500/20 transition-all flex items-center gap-2"
                                                         >
-                                                            <Compass size={12} /> + {subV7Name}
-                                                            <span className="text-fuchsia-400/50 text-[9px]">subV7/{focusedNode.coreDegree}</span>
+                                                            <Compass size={12} /> + subV7/{focusedNode.coreDegree}
                                                         </button>
                                                     </>
                                                 )}
                                             </div>
 
                                             <div className="flex flex-col items-center">
-                                                <span className="text-2xl font-black text-white tracking-widest">{focusedNode.displayDegree}</span>
-                                                <span className="text-sm font-bold text-white/60 tracking-wide">{chordName}</span>
-                                                <div className="flex items-center gap-2 opacity-40 mt-0.5">
-                                                    <div className="w-1.5 h-1.5 rounded-full bg-white/40" />
-                                                    <span className="text-[10px] tracking-widest font-black">{focusedNode.durationInBeats} Beats</span>
-                                                    <div className="w-1.5 h-1.5 rounded-full bg-white/40" />
+                                                <span className="text-2xl font-black text-white tracking-wide">{chordName}</span>
+                                                <span className="text-[11px] font-semibold text-white/30 tracking-widest">{focusedNode.displayDegree}</span>
+                                                <div className="flex items-center gap-2 opacity-30 mt-0.5">
+                                                    <div className="w-1 h-1 rounded-full bg-white/40" />
+                                                    <span className="text-[9px] tracking-widest font-bold">{focusedNode.durationInBeats} beats</span>
+                                                    <div className="w-1 h-1 rounded-full bg-white/40" />
                                                 </div>
                                             </div>
 
