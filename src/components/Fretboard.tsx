@@ -142,11 +142,21 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                     if (specificFinger.label === 'R' || (showIntervals && label === 'R')) {
                                         dotClass = styles.noteRoot;
                                     } else {
-                                        dotClass = styles.noteChordTone;
+                                        const diff = (noteIdx - rootNote + 12) % 12;
+                                        if (diff === 3 || diff === 4) dotClass = styles.note3rd;
+                                        else if (diff === 7) dotClass = styles.note5th;
+                                        else if (diff === 10 || diff === 11) dotClass = styles.note7th;
+                                        else dotClass = styles.noteChordTone;
                                     }
                                 } else {
                                     if (isRoot) dotClass = styles.noteRoot;
-                                    else if (showChordTones && isChordTone) dotClass = styles.noteChordTone;
+                                    else if (showChordTones && isChordTone) {
+                                        const diff = (noteIdx - rootNote + 12) % 12;
+                                        if (diff === 3 || diff === 4) dotClass = styles.note3rd;
+                                        else if (diff === 7) dotClass = styles.note5th;
+                                        else if (diff === 10 || diff === 11) dotClass = styles.note7th;
+                                        else dotClass = styles.noteChordTone;
+                                    }
                                     else if (isModifier) {
                                         const diff = (noteIdx - rootNote + 12) % 12;
                                         if (diff === 2) dotClass = styles.note2nd;
@@ -257,14 +267,24 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                             if (specificFinger.label === 'R' || (showIntervals && label === 'R')) {
                                                 dotClass = styles.noteRoot;
                                             } else {
-                                                dotClass = styles.noteChordTone;
+                                                const diff = (noteIdx - rootNote + 12) % 12;
+                                                if (diff === 3 || diff === 4) dotClass = styles.note3rd;
+                                                else if (diff === 7) dotClass = styles.note5th;
+                                                else if (diff === 10 || diff === 11) dotClass = styles.note7th;
+                                                else dotClass = styles.noteChordTone;
                                             }
                                         }
                                     } else {
                                         if (isDoubleStop) {
                                             dotClass = styles.noteDoubleStop;
                                         } else if (isRoot) dotClass = styles.noteRoot;
-                                        else if (showChordTones && isChordTone) dotClass = styles.noteChordTone;
+                                        else if (showChordTones && isChordTone) {
+                                            const diff = (noteIdx - rootNote + 12) % 12;
+                                            if (diff === 3 || diff === 4) dotClass = styles.note3rd;
+                                            else if (diff === 7) dotClass = styles.note5th;
+                                            else if (diff === 10 || diff === 11) dotClass = styles.note7th;
+                                            else dotClass = styles.noteChordTone;
+                                        }
                                         else if (isModifier) {
                                             const diff = (noteIdx - rootNote + 12) % 12;
                                             if (diff === 2) dotClass = styles.note2nd;

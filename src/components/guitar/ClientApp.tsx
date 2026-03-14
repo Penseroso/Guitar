@@ -345,7 +345,7 @@ export default function ClientApp() {
 
                                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
                                     <TogglePill label={showIntervals ? "Mode: Note" : "Mode: Interval"} isActive={showIntervals} onToggle={() => setShowIntervals(p => !p)} hideDot={true} />
-                                    <TogglePill label="Chord Tones" isActive={showChordTones} onToggle={() => setShowChordTones(p => !p)} />
+                                    <TogglePill label="Chord Tones" isActive={showChordTones} onToggle={() => setShowChordTones(p => !p)} colorTheme="chord-tones" />
 
                                     {isPentatonic && (
                                         <TogglePill label="Add Blue Note" isActive={blueNote} onToggle={() => setBlueNote(p => !p)} />

@@ -216,6 +216,27 @@
     box-shadow: 0 0 15px rgba(245, 158, 11, 0.7);
 }
 
+.note3rd {
+    background-color: #10b981;
+    /* Emerald 500 */
+    border-color: #6ee7b7;
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.7);
+}
+
+.note5th {
+    background-color: #38bdf8;
+    /* Sky 400 - comfortable calm blue */
+    border-color: #bae6fd;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.7);
+}
+
+.note7th {
+    background-color: #f97316;
+    /* Orange 500 */
+    border-color: #fdba74;
+    box-shadow: 0 0 15px rgba(249, 115, 22, 0.7);
+}
+
 .noteScale {
     background-color: #3b82f6;
     /* Blue 500 */

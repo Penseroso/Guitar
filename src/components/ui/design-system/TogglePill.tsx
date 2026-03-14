@@ -4,7 +4,7 @@ interface TogglePillProps {
     label: React.ReactNode;
     isActive: boolean;
     onToggle: () => void;
-    colorTheme?: 'amber' | 'indigo' | 'purple';
+    colorTheme?: 'amber' | 'indigo' | 'purple' | 'chord-tones';
     hideDot?: boolean;
     className?: string;
 }
@@ -14,7 +14,12 @@ export const TogglePill: React.FC<TogglePillProps> = ({ label, isActive, onToggl
     let toggleDotClass = "bg-white/10";
 
     if (isActive) {
-        togglePillBgClass = "bg-white/90 shadow-[0_0_15px_rgba(255,255,255,0.2)]";
+        if (colorTheme === 'chord-tones') {
+            // A gradient representing Root (Red), 3rd (Emerald), 5th (Sky Blue/Amber), 7th (Orange)
+            togglePillBgClass = "bg-gradient-to-r from-red-500 via-emerald-500 to-orange-500 shadow-[0_0_15px_rgba(255,255,255,0.2)] border-white/20";
+        } else {
+            togglePillBgClass = "bg-white/90 shadow-[0_0_15px_rgba(255,255,255,0.2)]";
+        }
         toggleDotClass = "bg-black ml-auto";
     }
 
