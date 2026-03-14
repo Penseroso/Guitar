@@ -16,7 +16,7 @@ import { Fretboard } from '../Fretboard';
 import { Controls } from './Controls';
 import { ChordGallery } from './ChordGallery';
 import { TogglePill } from '../ui/design-system/TogglePill';
-import { SlidersHorizontal } from 'lucide-react';
+import { SlidersHorizontal, Zap, Compass, Trash2 } from 'lucide-react';
 import {
     TUNING,
     SCALES,
@@ -164,6 +164,7 @@ type DraggableNodeProps = {
     measureId: string;
     isFocused: boolean;
     addSecondaryDominant: (id: string) => void;
+    addTritoneSubstitution: (id: string) => void;
     removeNode: (id: string) => void;
     updateNodeDuration: (id: string, direction: 'left' | 'right', delta: number) => void;
     index: number;
@@ -181,6 +182,7 @@ function DraggableNode({
     isFocused, 
     onClick, 
     addSecondaryDominant, 
+    addTritoneSubstitution,
     removeNode,
     updateNodeDuration,
     index,
@@ -373,31 +375,7 @@ function DraggableNode({
                 </>
             )}
 
-            {/* Context Menu */}
-            {isFocused && (
-                <div 
-                    onPointerDown={(e) => e.stopPropagation()}
-                    onMouseDown={(e) => e.stopPropagation()}
-                    className="absolute -top-12 bg-black border border-white/20 rounded-lg p-1 z-50 flex items-center gap-1 shadow-2xl animate-in fade-in slide-in-from-bottom-2 cursor-default"
-                >
-                    {!node.isSecondary && node.durationInBeats >= 2 && (
-                        <button
-                            onClick={(e) => { e.stopPropagation(); addSecondaryDominant(node.id); }}
-                            onPointerDown={(e) => e.stopPropagation()}
-                            className="px-3 py-1.5 text-[9px] font-black text-amber-500 hover:bg-white/10 rounded"
-                        >
-                            + V7/{node.coreDegree}
-                        </button>
-                    )}
-                    <button
-                        onClick={(e) => { e.stopPropagation(); removeNode(node.id); }}
-                        onPointerDown={(e) => e.stopPropagation()}
-                        className="px-3 py-1.5 text-[9px] font-black text-red-500 hover:bg-white/10 rounded"
-                    >
-                        DEL
-                    </button>
-                </div>
-            )}
+            {/* Removed floating Context Menu - replaced by Inspector Panel */}
         </div>
     );
 }
@@ -432,6 +410,7 @@ export default function ClientApp() {
         setFocusedNodeId,
         handleDragEnd,
         addSecondaryDominant,
+        addTritoneSubstitution,
         removeNode,
         removeMeasure,
         clearMeasure,
@@ -594,6 +573,12 @@ export default function ClientApp() {
             stepRoot = (targetRoot + 7) % 12;
             type = 'Dominant 7';
             tones = getChordTones(type, stepRoot);
+        } else if (currentStepDegree.startsWith('subV7/')) {
+            const targetInfo = getChordFromDegree(cCore);
+            const targetRoot = (selectedKey + targetInfo.interval) % 12;
+            stepRoot = (targetRoot + 1) % 12; // Half-step above target
+            type = 'Dominant 7';
+            tones = getChordTones(type, stepRoot);
         } else {
             const info = getChordFromDegree(cCore || currentStepDegree);
             stepRoot = (selectedKey + info.interval) % 12;
@@ -608,6 +593,15 @@ export default function ClientApp() {
             type
         };
     }, [mode, progressionDoc, focusedNodeId, selectedKey]);
+
+    const focusedNode = useMemo(() => {
+        if (!focusedNodeId) return null;
+        for (const m of progressionDoc.measures) {
+            const node = m.nodes.find(n => n.id === focusedNodeId);
+            if (node) return node;
+        }
+        return null;
+    }, [focusedNodeId, progressionDoc]);
 
     // --- Active Notes Calculation ---
     const activeNotes = useMemo(() => {
@@ -668,6 +662,7 @@ export default function ClientApp() {
     // (Progression handlers extracted to useProgression hook)
     const timelineContainerRef = useRef<HTMLDivElement>(null);
     const fretboardContainerRef = useRef<HTMLDivElement>(null);
+    const inspectorPanelRef = useRef<HTMLDivElement>(null);
     const [activeOverId, setActiveOverId] = useState<string | null>(null);
     const [activeOverData, setActiveOverData] = useState<{ type?: 'measure' | 'node'; measureId?: string; nodeIndex?: number; insertIndex?: number } | null>(null);
     const [resizePreview, setResizePreview] = useState<ResizePreview | null>(null);
@@ -724,7 +719,10 @@ export default function ClientApp() {
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            if (timelineContainerRef.current && !timelineContainerRef.current.contains(event.target as Node)) {
+            const isInsideTimeline = timelineContainerRef.current && timelineContainerRef.current.contains(event.target as Node);
+            const isInsideInspector = inspectorPanelRef.current && inspectorPanelRef.current.contains(event.target as Node);
+            
+            if (!isInsideTimeline && !isInsideInspector) {
                 setFocusedNodeId(null);
             }
         };
@@ -992,6 +990,7 @@ export default function ClientApp() {
                                                                         setFocusedNodeId(prev => prev === node.id ? null : node.id);
                                                                     }}
                                                                     addSecondaryDominant={addSecondaryDominant}
+                                                                    addTritoneSubstitution={addTritoneSubstitution}
                                                                     removeNode={removeNode}
                                                                     updateNodeDuration={updateNodeDuration}
                                                                     index={nIdx}
@@ -1019,6 +1018,51 @@ export default function ClientApp() {
                                         })}
                                     </div>
                                 </div>
+
+                                {/* Inspector Panel */}
+                                {focusedNode && (
+                                    <div 
+                                        ref={inspectorPanelRef}
+                                        className="flex items-center justify-between bg-[#0a0a0a] border border-white/10 rounded-2xl p-4 mt-6 shadow-lg animate-in fade-in slide-in-from-bottom-4"
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            {!focusedNode.isSecondary && focusedNode.durationInBeats >= 2 && (
+                                                <>
+                                                    <button
+                                                        onClick={() => addSecondaryDominant(focusedNode.id)}
+                                                        className="px-5 py-2.5 text-[11px] font-black tracking-widest text-amber-500 hover:bg-amber-500/10 rounded-xl border border-amber-500/20 transition-all flex items-center gap-2 uppercase"
+                                                    >
+                                                        <Zap size={12} /> + V7/{focusedNode.coreDegree}
+                                                    </button>
+                                                    <button
+                                                        onClick={() => addTritoneSubstitution(focusedNode.id)}
+                                                        className="px-5 py-2.5 text-[11px] font-black tracking-widest text-fuchsia-400 hover:bg-fuchsia-500/10 rounded-xl border border-fuchsia-500/20 transition-all flex items-center gap-2 uppercase"
+                                                    >
+                                                        <Compass size={12} /> + subV7/{focusedNode.coreDegree}
+                                                    </button>
+                                                </>
+                                            )}
+                                        </div>
+
+                                        <div className="flex flex-col items-center">
+                                            <span className="text-2xl font-black text-white tracking-widest uppercase">{focusedNode.displayDegree}</span>
+                                            <div className="flex items-center gap-2 opacity-40">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-white/40" />
+                                                <span className="text-[10px] uppercase tracking-widest font-black">{focusedNode.durationInBeats} Beats</span>
+                                                <div className="w-1.5 h-1.5 rounded-full bg-white/40" />
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center">
+                                            <button
+                                                onClick={() => removeNode(focusedNode.id)}
+                                                className="px-5 py-2.5 text-red-500 hover:bg-red-500/10 font-black text-[11px] tracking-widest rounded-xl transition-all flex items-center gap-2 border border-red-500/10 hover:border-red-500/30 uppercase"
+                                            >
+                                                <Trash2 size={14} /> Delete Node
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
 
                             </div>
                         </DndContext>

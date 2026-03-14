@@ -105,3 +105,61 @@ export const parsePresetToMeasures = (presetId: string, library: ProgressionData
         };
     });
 };
+
+export const injectTritoneSubstitution = (doc: ProgressionDocument, targetNodeId: string): { newDoc: ProgressionDocument, newNodeId: string | null } => {
+    const newDoc = cloneDoc(doc);
+    let newNodeId: string | null = null;
+    
+    for (const measure of newDoc.measures) {
+        const targetIdx = measure.nodes.findIndex(n => n.id === targetNodeId);
+        if (targetIdx !== -1) {
+            const targetNode = measure.nodes[targetIdx];
+            if (targetNode.durationInBeats < 2) return { newDoc: doc, newNodeId: null };
+            
+            const splitDuration = Math.ceil(targetNode.durationInBeats / 2);
+            targetNode.durationInBeats -= splitDuration;
+            
+            const subV7Node = createNode(
+                `subV7/${targetNode.coreDegree}`,
+                targetNode.coreDegree,
+                'Tritone_Substitute',
+                splitDuration,
+                true
+            );
+            
+            newNodeId = subV7Node.id;
+            measure.nodes.splice(targetIdx, 0, subV7Node);
+            break;
+        }
+    }
+    return { newDoc, newNodeId };
+};
+
+export const injectSecondaryDominant = (doc: ProgressionDocument, targetNodeId: string): { newDoc: ProgressionDocument, newNodeId: string | null } => {
+    const newDoc = cloneDoc(doc);
+    let newNodeId: string | null = null;
+    
+    for (const measure of newDoc.measures) {
+        const targetIdx = measure.nodes.findIndex(n => n.id === targetNodeId);
+        if (targetIdx !== -1) {
+            const targetNode = measure.nodes[targetIdx];
+            if (targetNode.durationInBeats < 2) return { newDoc: doc, newNodeId: null };
+            
+            const splitDuration = Math.ceil(targetNode.durationInBeats / 2);
+            targetNode.durationInBeats -= splitDuration;
+            
+            const secDomNode = createNode(
+                `V7/${targetNode.coreDegree}`,
+                targetNode.coreDegree,
+                'Applied_Dominant',
+                splitDuration,
+                true
+            );
+            
+            newNodeId = secDomNode.id;
+            measure.nodes.splice(targetIdx, 0, secDomNode);
+            break;
+        }
+    }
+    return { newDoc, newNodeId };
+};

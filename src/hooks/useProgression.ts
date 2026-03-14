@@ -7,7 +7,9 @@ import {
     clampIndex, 
     createNode, 
     insertNodeIntoMeasure, 
-    parsePresetToMeasures 
+    parsePresetToMeasures,
+    injectSecondaryDominant,
+    injectTritoneSubstitution
 } from '../utils/guitar/progression';
 
 export const useProgression = () => {
@@ -119,30 +121,16 @@ export const useProgression = () => {
 
     const addSecondaryDominant = (targetNodeId: string) => {
         setProgressionDoc(prev => {
-            const newDoc = cloneDoc(prev);
-            
-            for (const measure of newDoc.measures) {
-                const targetIdx = measure.nodes.findIndex(n => n.id === targetNodeId);
-                if (targetIdx !== -1) {
-                    const targetNode = measure.nodes[targetIdx];
-                    if (targetNode.durationInBeats < 2) return prev;
-                    
-                    const splitDuration = Math.ceil(targetNode.durationInBeats / 2);
-                    targetNode.durationInBeats -= splitDuration;
-                    
-                    const secDomNode = createNode(
-                        `V7/${targetNode.coreDegree}`,
-                        targetNode.coreDegree,
-                        'Applied_Dominant',
-                        splitDuration,
-                        true
-                    );
-                    
-                    measure.nodes.splice(targetIdx, 0, secDomNode);
-                    setFocusedNodeId(secDomNode.id);
-                    break;
-                }
-            }
+            const { newDoc, newNodeId } = injectSecondaryDominant(prev, targetNodeId);
+            if (newNodeId) setFocusedNodeId(newNodeId);
+            return newDoc;
+        });
+    };
+
+    const addTritoneSubstitution = (targetNodeId: string) => {
+        setProgressionDoc(prev => {
+            const { newDoc, newNodeId } = injectTritoneSubstitution(prev, targetNodeId);
+            if (newNodeId) setFocusedNodeId(newNodeId);
             return newDoc;
         });
     };
@@ -249,6 +237,7 @@ export const useProgression = () => {
         setFocusedNodeId,
         handleDragEnd,
         addSecondaryDominant,
+        addTritoneSubstitution,
         removeNode,
         removeMeasure,
         clearMeasure,
