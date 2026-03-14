@@ -13,41 +13,11 @@ export const NOTES_FLAT = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A',
 export const TUNING = [4, 11, 7, 2, 9, 4]; // E2, B3, G3, D3, A2, E2 (High to Low strings 1-6)
 export const STRING_MIDI_PITCHES = [64, 59, 55, 50, 45, 40]; // Absolute MIDI pitches for standard tuning (High E to Low E)
 
-export const SCALES: Record<string, Record<string, number[]>> = {
-    'Major Modes': {
-        'Major / Ionian': [0, 2, 4, 5, 7, 9, 11],
-        'Dorian': [0, 2, 3, 5, 7, 9, 10],
-        'Phrygian': [0, 1, 3, 5, 7, 8, 10],
-        'Lydian': [0, 2, 4, 6, 7, 9, 11],
-        'Mixolydian': [0, 2, 4, 5, 7, 9, 10],
-        'N Minor / Aeolian': [0, 2, 3, 5, 7, 8, 10],
-        'Locrian': [0, 1, 3, 5, 6, 8, 10]
-    },
-    'Harmonic Minor Modes': {
-        'Harmonic Minor': [0, 2, 3, 5, 7, 8, 11],
-        'Locrian #6': [0, 1, 3, 5, 6, 9, 10],
-        'Ionian #5': [0, 2, 4, 5, 8, 9, 11],
-        'Dorian #4': [0, 2, 3, 6, 7, 9, 10],
-        'Phrygian Dominant': [0, 1, 4, 5, 7, 8, 10],
-        'Lydian #2': [0, 3, 4, 6, 7, 9, 11],
-        'Superlocrian': [0, 1, 3, 4, 6, 8, 9] // Altered bb7
-    },
-    'Jazz Minor Modes': {
-        'Jazz Minor': [0, 2, 3, 5, 7, 9, 11],
-        'Assyrian': [0, 1, 3, 5, 7, 9, 10], // Dorian b2
-        'Lydian Augmented': [0, 2, 4, 6, 8, 9, 11],
-        'Lydian Dominant': [0, 2, 4, 6, 7, 9, 10],
-        'Mixolydian b6': [0, 2, 4, 5, 7, 8, 10],
-        'Locrian ♮2': [0, 2, 3, 5, 6, 8, 10],
-        'Altered scale': [0, 1, 3, 4, 6, 8, 10] // Superlocrian
-    },
-    'Symmetric & Others': {
-        'Diminished': [0, 2, 3, 5, 6, 8, 9, 11], // WH
-        'Whole Tone': [0, 2, 4, 6, 8, 10],
-        'Major Pentatonic': [0, 2, 4, 7, 9],
-        'Minor Pentatonic': [0, 3, 5, 7, 10]
-    }
-};
+import { SCALES } from './scales';
+
+// The dynamically generated SCALES cache is re-exported here as a Single Source of Truth
+// to maintain backward compatibility with components that import it from theory.ts.
+export { SCALES };
 
 export const INLAYS = [3, 5, 7, 9, 15, 17, 19, 21];
 export const DOUBLE_INLAYS = [12];

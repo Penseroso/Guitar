@@ -67,6 +67,45 @@ const INTERVAL_TO_ROMAN: Record<number, string> = {
 };
 
 /**
+ * Calculates absolute intervals for any given mode based on its parent scale.
+ * Handles generic modulo operation based on the parent's length (N)
+ * and filters out notes via intersection if a subset is provided.
+ */
+function calculateScaleIntervals(parentIntervals: number[], rootOffsetIndex: number, subset?: number[]): number[] {
+    const N = parentIntervals.length;
+    const rootOffset = parentIntervals[rootOffsetIndex];
+    const rotatedIntervals: number[] = [];
+
+    for (let i = 0; i < N; i++) {
+        let interval = parentIntervals[(rootOffsetIndex + i) % N] - rootOffset;
+        if (interval < 0) interval += 12;
+        
+        // If a subset is defined (e.g., Pentatonic [0,3,5,7,10]), only include the interval if it exists in the subset definition.
+        if (!subset || subset.includes(interval)) {
+            rotatedIntervals.push(interval);
+        }
+    }
+    return rotatedIntervals;
+}
+
+/**
+ * Singleton cache of pre-calculated scale intervals.
+ * Resolves Single Source of Truth issue by dynamically generating all scales on load.
+ */
+export const SCALES: Record<string, Record<string, number[]>> = {};
+
+// Initialize the cache dynamically at module load time
+for (const group in SCALE_REGISTRY) {
+    SCALES[group] = {};
+    for (const mode in SCALE_REGISTRY[group]) {
+        const info = SCALE_REGISTRY[group][mode];
+        const parent = PARENT_SCALES[info.parent];
+        SCALES[group][mode] = calculateScaleIntervals(parent, info.rootOffsetIndex, info.subset);
+    }
+}
+
+
+/**
  * 동적 다이아토닉 모드 제너레이터 (Dynamic Scale Generator)
  * 
  * 부모 7음계(Parent Scale)를 순환 이동(Rotation)시켜 모드를 도출하고,
@@ -78,25 +117,21 @@ export function generateModeData(groupName: string, modeName: string): ScaleDict
     const modeInfo = registryGroup[modeName] || SCALE_REGISTRY['Major Modes']['N Minor / Aeolian'];
 
     const parentIntervals = PARENT_SCALES[modeInfo.parent];
-    const N = parentIntervals.length; // 7-note parent scale
+    const N = parentIntervals.length; // Dynamic N-note parent scale
 
-    // 1단계: 부모 스케일 순환시켜 모드 절대 인터벌 배열 도출
-    const rootOffset = parentIntervals[modeInfo.rootOffsetIndex];
-    const rotatedIntervals: number[] = [];
-
-    for (let i = 0; i < N; i++) {
-        let interval = parentIntervals[(modeInfo.rootOffsetIndex + i) % N] - rootOffset;
-        if (interval < 0) interval += 12;
-        rotatedIntervals.push(interval);
-    }
+    // 1단계: 부모 스케일 순환시켜 모드 절대 인터벌 배열 도출 (subset 필터 적용)
+    const rotatedIntervals = calculateScaleIntervals(parentIntervals, modeInfo.rootOffsetIndex, modeInfo.subset);
+    // 화음(Triad) 계산 로직을 돌리기 위해서는 subset이 빠진 풀(Full) 모드 배열이 필요할 수 있습니다.
+    // 하지만 현재 구조상 subset이 빠진 배열에서도 3도씩 쌓아 화음을 구성하려고 시도합니다.
+    const fullRotatedIntervals = calculateScaleIntervals(parentIntervals, modeInfo.rootOffsetIndex);
 
     const modeData: ScaleDictionary = {};
 
     // 2단계: 모드의 각 도수(Degree)별 3화음 성질(Quality) 계산
     for (let d = 0; d < N; d++) {
-        const rootInterval = rotatedIntervals[d];
+        const rootInterval = fullRotatedIntervals[d];
 
-        // 부분집합(Subset) 필터: 펜타토닉 등 7음계 미만의 경우 불필요한 노드 제외
+        // 부분집합(Subset) 필터: 펜타토닉 등 N음계 미만의 경우 불필요한 노드 제외
         if (modeInfo.subset && !modeInfo.subset.includes(rootInterval)) {
             continue;
         }
@@ -105,8 +140,8 @@ export function generateModeData(groupName: string, modeName: string): ScaleDict
         const thirdNodeIndex = (d + 2) % N;
         const fifthNodeIndex = (d + 4) % N;
 
-        const thirdInterval = rotatedIntervals[thirdNodeIndex] + (thirdNodeIndex < d ? 12 : 0);
-        const fifthInterval = rotatedIntervals[fifthNodeIndex] + (fifthNodeIndex < d ? 12 : 0);
+        const thirdInterval = fullRotatedIntervals[thirdNodeIndex] + (thirdNodeIndex < d ? 12 : 0);
+        const fifthInterval = fullRotatedIntervals[fifthNodeIndex] + (fifthNodeIndex < d ? 12 : 0);
 
         const int3 = thirdInterval - rootInterval;
         const int5 = fifthInterval - rootInterval;
