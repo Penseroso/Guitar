@@ -163,3 +163,75 @@ export const injectSecondaryDominant = (doc: ProgressionDocument, targetNodeId: 
     }
     return { newDoc, newNodeId };
 };
+
+export const injectSubdominantMinor = (doc: ProgressionDocument, targetNodeId: string): ProgressionDocument => {
+    const newDoc = cloneDoc(doc);
+
+    for (const measure of newDoc.measures) {
+        const targetIdx = measure.nodes.findIndex(n => n.id === targetNodeId);
+        if (targetIdx !== -1) {
+            const targetNode = measure.nodes[targetIdx];
+            if (targetNode.durationInBeats < 2) return doc; // Need at least 2 beats to split
+
+            const splitDuration = Math.max(1, Math.floor(targetNode.durationInBeats / 2));
+            targetNode.durationInBeats -= splitDuration;
+
+            const sdmNode = createNode(
+                'iv',
+                'iv',
+                'Modal_Interchange',
+                splitDuration,
+                true
+            );
+
+            // Insert AFTER the target node (SDM follows IV)
+            measure.nodes.splice(targetIdx + 1, 0, sdmNode);
+            break;
+        }
+    }
+    return newDoc;
+};
+
+export const togglePicardyThird = (doc: ProgressionDocument, targetNodeId: string): ProgressionDocument => {
+    const newDoc = cloneDoc(doc);
+
+    for (const measure of newDoc.measures) {
+        const targetNode = measure.nodes.find(n => n.id === targetNodeId);
+        if (targetNode) {
+            targetNode.displayDegree = 'I';
+            targetNode.coreDegree = 'I';
+            targetNode.harmonicFunction = 'Tonic';
+            break;
+        }
+    }
+    return newDoc;
+};
+
+// Shared helper for all "split and insert modal chord after target" operations
+const injectModalChordAfter = (
+    doc: ProgressionDocument,
+    targetNodeId: string,
+    displayDegree: string,
+    coreDegree: string
+): ProgressionDocument => {
+    const newDoc = cloneDoc(doc);
+    for (const measure of newDoc.measures) {
+        const targetIdx = measure.nodes.findIndex(n => n.id === targetNodeId);
+        if (targetIdx !== -1) {
+            const targetNode = measure.nodes[targetIdx];
+            if (targetNode.durationInBeats < 2) return doc;
+            const splitDuration = Math.max(1, Math.floor(targetNode.durationInBeats / 2));
+            targetNode.durationInBeats -= splitDuration;
+            const newNode = createNode(displayDegree, coreDegree, 'Modal_Interchange', splitDuration, true);
+            measure.nodes.splice(targetIdx + 1, 0, newNode);
+            break;
+        }
+    }
+    return newDoc;
+};
+
+export const injectFlatSix = (doc: ProgressionDocument, targetNodeId: string): ProgressionDocument =>
+    injectModalChordAfter(doc, targetNodeId, 'bVI', 'bVI');
+
+export const injectFlatSeven = (doc: ProgressionDocument, targetNodeId: string): ProgressionDocument =>
+    injectModalChordAfter(doc, targetNodeId, 'bVII', 'bVII');

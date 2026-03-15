@@ -9,7 +9,11 @@ import {
     insertNodeIntoMeasure, 
     parsePresetToMeasures,
     injectSecondaryDominant,
-    injectTritoneSubstitution
+    injectTritoneSubstitution,
+    injectSubdominantMinor,
+    togglePicardyThird,
+    injectFlatSix,
+    injectFlatSeven
 } from '../utils/guitar/progression';
 
 export const useProgression = () => {
@@ -135,6 +139,14 @@ export const useProgression = () => {
         });
     };
 
+    const addSubdominantMinor = (id: string) => setProgressionDoc(prev => injectSubdominantMinor(prev, id));
+
+    const applyPicardyThird = (id: string) => setProgressionDoc(prev => togglePicardyThird(prev, id));
+
+    const addFlatSix = (id: string) => setProgressionDoc(prev => injectFlatSix(prev, id));
+
+    const addFlatSeven = (id: string) => setProgressionDoc(prev => injectFlatSeven(prev, id));
+
     const removeNode = (nodeId: string) => {
         setProgressionDoc(prev => {
             const newDoc = cloneDoc(prev);
@@ -238,6 +250,10 @@ export const useProgression = () => {
         handleDragEnd,
         addSecondaryDominant,
         addTritoneSubstitution,
+        addSubdominantMinor,
+        applyPicardyThird,
+        addFlatSix,
+        addFlatSeven,
         removeNode,
         removeMeasure,
         clearMeasure,

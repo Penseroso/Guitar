@@ -416,6 +416,10 @@ export default function ClientApp() {
         handleDragEnd,
         addSecondaryDominant,
         addTritoneSubstitution,
+        addSubdominantMinor,
+        applyPicardyThird,
+        addFlatSix,
+        addFlatSeven,
         removeNode,
         removeMeasure,
         clearMeasure,
@@ -556,12 +560,14 @@ export default function ClientApp() {
         let isSec = false;
         let cCore = '';
 
+        let harmonicFunc = '';
         for (const measure of progressionDoc.measures) {
             const tempNode = measure.nodes.find(n => n.id === focusedNodeId);
             if (tempNode) {
                 currentStepDegree = tempNode.displayDegree;
                 isSec = tempNode.isSecondary;
                 cCore = tempNode.coreDegree;
+                harmonicFunc = tempNode.harmonicFunction;
                 break;
             }
         }
@@ -572,7 +578,10 @@ export default function ClientApp() {
         let type: string;
         let tones: number[];
 
-        if (isSec || currentStepDegree.startsWith('V7/')) { // V7/vi
+        // Modal interchange nodes (iv from SDM) should be treated as plain diatonic chords
+        const isModalInterchange = harmonicFunc === 'Modal_Interchange';
+
+        if (!isModalInterchange && (isSec || currentStepDegree.startsWith('V7/'))) { // V7/vi
             const targetInfo = getChordFromDegree(cCore);
             const targetRoot = (selectedKey + targetInfo.interval) % 12;
             stepRoot = (targetRoot + 7) % 12;
@@ -606,6 +615,24 @@ export default function ClientApp() {
             if (node) return node;
         }
         return null;
+    }, [focusedNodeId, progressionDoc]);
+
+    // --- Derived: Minor Mode detection for Picardy Third condition ---
+    const isMinorMode = useMemo(() => {
+        const minorKeywords = ['Minor', 'Aeolian', 'Dorian', 'Phrygian', 'Locrian'];
+        return minorKeywords.some(kw => scaleName.includes(kw));
+    }, [scaleName]);
+
+    // --- Derived: Cadence position (focused node is last in whole progression) ---
+    const isCadencePosition = useMemo(() => {
+        if (!focusedNodeId) return false;
+        const allNodes: string[] = [];
+        for (const m of progressionDoc.measures) {
+            for (const n of m.nodes) {
+                allNodes.push(n.id);
+            }
+        }
+        return allNodes.length > 0 && allNodes[allNodes.length - 1] === focusedNodeId;
     }, [focusedNodeId, progressionDoc]);
 
     // --- Active Notes Calculation ---
@@ -1051,6 +1078,42 @@ export default function ClientApp() {
                                                             <Compass size={12} /> + subV7/{focusedNode.coreDegree}
                                                         </button>
                                                     </>
+                                                )}
+                                                {/* SDM button: only for IV or IVmaj7 */}
+                                                {!focusedNode.isSecondary && (focusedNode.coreDegree === 'IV' || focusedNode.coreDegree === 'IVmaj7') && focusedNode.durationInBeats >= 2 && (
+                                                    <button
+                                                        onClick={() => addSubdominantMinor(focusedNode.id)}
+                                                        className="px-5 py-2.5 text-[11px] font-black tracking-widest text-blue-400 hover:bg-blue-500/10 rounded-xl border border-blue-500/20 transition-all flex items-center gap-2"
+                                                    >
+                                                        + SDM (iv)
+                                                    </button>
+                                                )}
+                                                {/* bVII button: Backdoor Dominant — only for IV nodes */}
+                                                {!focusedNode.isSecondary && (focusedNode.coreDegree === 'IV' || focusedNode.coreDegree === 'IVmaj7') && focusedNode.durationInBeats >= 2 && (
+                                                    <button
+                                                        onClick={() => addFlatSeven(focusedNode.id)}
+                                                        className="px-5 py-2.5 text-[11px] font-black tracking-widest text-blue-400 hover:bg-blue-500/10 rounded-xl border border-blue-500/20 transition-all flex items-center gap-2"
+                                                    >
+                                                        + bVII
+                                                    </button>
+                                                )}
+                                                {/* bVI button: Modal colour — only for I nodes */}
+                                                {!focusedNode.isSecondary && (focusedNode.coreDegree === 'I' || focusedNode.coreDegree === 'Imaj7') && focusedNode.durationInBeats >= 2 && (
+                                                    <button
+                                                        onClick={() => addFlatSix(focusedNode.id)}
+                                                        className="px-5 py-2.5 text-[11px] font-black tracking-widest text-blue-400 hover:bg-blue-500/10 rounded-xl border border-blue-500/20 transition-all flex items-center gap-2"
+                                                    >
+                                                        + bVI
+                                                    </button>
+                                                )}
+                                                {/* Picardy Third: minor tonic + minor scale context + cadence position */}
+                                                {(focusedNode.coreDegree === 'i' || focusedNode.coreDegree === 'im7') && isMinorMode && isCadencePosition && (
+                                                    <button
+                                                        onClick={() => applyPicardyThird(focusedNode.id)}
+                                                        className="px-5 py-2.5 text-[11px] font-black tracking-widest text-yellow-400 hover:bg-yellow-500/10 rounded-xl border border-yellow-500/20 transition-all flex items-center gap-2"
+                                                    >
+                                                        Picardy (I)
+                                                    </button>
                                                 )}
                                             </div>
 
