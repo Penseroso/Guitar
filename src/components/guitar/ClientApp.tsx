@@ -16,7 +16,8 @@ import { Fretboard } from '../Fretboard';
 import { Controls } from './Controls';
 import { ChordGallery } from './ChordGallery';
 import { TogglePill } from '../ui/design-system/TogglePill';
-import { SlidersHorizontal, Zap, Compass, Trash2 } from 'lucide-react';
+import { SlidersHorizontal, Zap, Compass, Trash2, Volume2 } from 'lucide-react';
+import { useAudio } from '../../hooks/useAudio';
 import {
     TUNING,
     SCALES,
@@ -428,6 +429,8 @@ export default function ClientApp() {
         applyPreset,
         updateNodeDuration,
     } = useProgression();
+
+    const { triggerChordPlay } = useAudio();
 
     // --- Effect: Auto-reset progression on Key/Mode change ---
     useEffect(() => {
@@ -1117,14 +1120,26 @@ export default function ClientApp() {
                                                 )}
                                             </div>
 
-                                            <div className="flex flex-col items-center">
-                                                <span className="text-2xl font-black text-white tracking-wide">{chordName}</span>
-                                                <span className="text-[11px] font-semibold text-white/30 tracking-widest">{focusedNode.displayDegree}</span>
-                                                <div className="flex items-center gap-2 opacity-30 mt-0.5">
-                                                    <div className="w-1 h-1 rounded-full bg-white/40" />
-                                                    <span className="text-[9px] tracking-widest font-bold">{focusedNode.durationInBeats} beats</span>
-                                                    <div className="w-1 h-1 rounded-full bg-white/40" />
+                                            <div className="flex items-center gap-3">
+                                                <div className="flex flex-col items-center">
+                                                    <span className="text-2xl font-black text-white tracking-wide">{chordName}</span>
+                                                    <span className="text-[11px] font-semibold text-white/30 tracking-widest">{focusedNode.displayDegree}</span>
+                                                    <div className="flex items-center gap-2 opacity-30 mt-0.5">
+                                                        <div className="w-1 h-1 rounded-full bg-white/40" />
+                                                        <span className="text-[9px] tracking-widest font-bold">{focusedNode.durationInBeats} beats</span>
+                                                        <div className="w-1 h-1 rounded-full bg-white/40" />
+                                                    </div>
                                                 </div>
+                                                {/* Play button */}
+                                                {progressionData && (
+                                                    <button
+                                                        onClick={() => triggerChordPlay(progressionData.stepRoot, progressionData.tones)}
+                                                        className="p-2.5 rounded-xl border border-[#00ff88]/20 bg-[#00ff88]/5 text-[#00ff88] hover:bg-[#00ff88]/15 hover:border-[#00ff88]/40 transition-all flex items-center gap-1.5 text-[11px] font-black tracking-widest"
+                                                        title="Play chord"
+                                                    >
+                                                        <Volume2 size={14} /> Play
+                                                    </button>
+                                                )}
                                             </div>
 
                                             <div className="flex items-center">
