@@ -80,7 +80,10 @@ function parseIntervalLabel(interval: string): number {
         4: 5,
         5: 7,
         6: 9,
-        7: 11
+        7: 11,
+        9: 2,
+        11: 5,
+        13: 9
     };
 
     const base = baseSemitones[degree];
@@ -138,7 +141,7 @@ export const SCALE_DISPLAY_FORMULAS: Record<string, ScaleFormulaGroup> = {
         'Lydian Dominant': toIntervalLabelMap(['1', '2', '3', '#4', '5', '6', 'b7']),
         'Mixolydian b6': toIntervalLabelMap(['1', '2', '3', '4', '5', 'b6', 'b7']),
         'Locrian ♮2': toIntervalLabelMap(['1', '2', 'b3', '4', 'b5', 'b6', 'b7']),
-        'Altered scale': toIntervalLabelMap(['1', 'b2', '#2', '3', 'b5', '#5', 'b7'])
+        'Altered scale': toIntervalLabelMap(['1', 'b9', '#9', '3', '#11', 'b13', 'b7'])
     },
     'Symmetric & Others': {
         'Diminished': toIntervalLabelMap(['1', '2', 'b3', '4', 'b5', 'b6', '6', '7']),

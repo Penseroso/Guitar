@@ -16,8 +16,10 @@ import { Fretboard } from '../Fretboard';
 import { Controls } from './Controls';
 import { ChordGallery } from './ChordGallery';
 import { TogglePill } from '../ui/design-system/TogglePill';
-import { SlidersHorizontal, Zap, Compass, Trash2, Volume2 } from 'lucide-react';
-import { useAudio } from '../../hooks/useAudio';
+import { SlidersHorizontal } from 'lucide-react';
+import { ProgressionInspector } from '../../features/progression/components/ProgressionInspector';
+import { useProgressionAudio } from '../../features/progression/hooks/useProgressionAudio';
+import { getProgressionPlaybackData } from '../../features/progression/utils/getProgressionPlaybackData';
 import {
     TUNING,
     SCALES,
@@ -27,7 +29,6 @@ import {
 } from '../../utils/guitar/theory';
 import {
     getChordFromDegree,
-    getChordTones,
     getChordFingering,
     getSortedVoicings,
     getDiatonicDoubleStops,
@@ -431,7 +432,7 @@ export default function ClientApp() {
         updateNodeDuration,
     } = useProgression();
 
-    const { triggerChordPlay } = useAudio();
+    const { playProgressionChord } = useProgressionAudio();
 
     // --- Effect: Auto-reset progression on Key/Mode change ---
     useEffect(() => {
@@ -439,6 +440,7 @@ export default function ClientApp() {
             clearAllNodes();
         }
     }, [selectedKey, scaleName, mode]); // Also reset when entering progression mode? 
+
     // Actually the user said "시" (when changing), so watching key/scale is correct.
     // Adding `mode` ensures it resets if they change mode/key while in prog mode.
     // --- Derived Data: Scales ---
@@ -561,59 +563,8 @@ export default function ClientApp() {
 
     // --- Derived Data: Progression ---
     const progressionData = useMemo(() => {
-        if (mode !== 'progression' || !focusedNodeId) return null;
-
-        // Find the focused node
-        let currentStepDegree = '';
-        let isSec = false;
-        let cCore = '';
-
-        let harmonicFunc = '';
-        for (const measure of progressionDoc.measures) {
-            const tempNode = measure.nodes.find(n => n.id === focusedNodeId);
-            if (tempNode) {
-                currentStepDegree = tempNode.displayDegree;
-                isSec = tempNode.isSecondary;
-                cCore = tempNode.coreDegree;
-                harmonicFunc = tempNode.harmonicFunction;
-                break;
-            }
-        }
-
-        if (!currentStepDegree) return null;
-
-        let stepRoot: number;
-        let type: string;
-        let tones: number[];
-
-        // Modal interchange nodes (iv from SDM) should be treated as plain diatonic chords
-        const isModalInterchange = harmonicFunc === 'Modal_Interchange';
-
-        if (!isModalInterchange && (isSec || currentStepDegree.startsWith('V7/'))) { // V7/vi
-            const targetInfo = getChordFromDegree(cCore);
-            const targetRoot = (selectedKey + targetInfo.interval) % 12;
-            stepRoot = (targetRoot + 7) % 12;
-            type = 'Dominant 7';
-            tones = getChordTones(type, stepRoot);
-        } else if (currentStepDegree.startsWith('subV7/')) {
-            const targetInfo = getChordFromDegree(cCore);
-            const targetRoot = (selectedKey + targetInfo.interval) % 12;
-            stepRoot = (targetRoot + 1) % 12; // Half-step above target
-            type = 'Dominant 7';
-            tones = getChordTones(type, stepRoot);
-        } else {
-            const info = getChordFromDegree(cCore || currentStepDegree);
-            stepRoot = (selectedKey + info.interval) % 12;
-            type = info.type;
-            tones = getChordTones(type, stepRoot);
-        }
-
-        return {
-            currentStepDegree,
-            stepRoot,
-            tones,
-            type
-        };
+        if (mode !== 'progression') return null;
+        return getProgressionPlaybackData(progressionDoc, focusedNodeId, selectedKey);
     }, [mode, progressionDoc, focusedNodeId, selectedKey]);
 
     const focusedNode = useMemo(() => {
@@ -816,7 +767,7 @@ export default function ClientApp() {
                     onToggleChordTones={() => setShowChordTones(p => !p)}
                     showIntervals={showIntervals}
                     onToggleIntervals={() => setShowIntervals(p => !p)}
-                    isPentatonic={scaleName.includes('Pentatonic')}
+                    isPentatonic={isPentatonic}
                     blueNote={blueNote}
                     onToggleBlueNote={() => setBlueNote(p => !p)}
                     sixthNote={sixthNote}
@@ -1061,104 +1012,24 @@ export default function ClientApp() {
                                     </div>
                                 </div>
 
-                                {/* Inspector Panel */}
-                                {focusedNode && (() => {
-                                    const chordName = degreeToChordName(focusedNode.displayDegree, focusedNode.coreDegree, selectedKey);
-                                    const v7Name = degreeToChordName(`V7/${focusedNode.coreDegree}`, focusedNode.coreDegree, selectedKey);
-                                    const subV7Name = degreeToChordName(`subV7/${focusedNode.coreDegree}`, focusedNode.coreDegree, selectedKey);
-                                    return (
-                                        <div
-                                            ref={inspectorPanelRef}
-                                            className="flex items-center justify-between bg-[#0a0a0a] border border-white/10 rounded-2xl p-4 mt-6 shadow-lg animate-in fade-in slide-in-from-bottom-4"
-                                        >
-                                            <div className="flex items-center gap-3">
-                                                {!focusedNode.isSecondary && focusedNode.durationInBeats >= 1 && (
-                                                    <>
-                                                        <button
-                                                            onClick={() => addSecondaryDominant(focusedNode.id)}
-                                                            className="px-5 py-2.5 text-[11px] font-black tracking-widest text-amber-500 hover:bg-amber-500/10 rounded-xl border border-amber-500/20 transition-all flex items-center gap-2"
-                                                        >
-                                                            <Zap size={12} /> + V7/{focusedNode.coreDegree}
-                                                        </button>
-                                                        <button
-                                                            onClick={() => addTritoneSubstitution(focusedNode.id)}
-                                                            className="px-5 py-2.5 text-[11px] font-black tracking-widest text-fuchsia-400 hover:bg-fuchsia-500/10 rounded-xl border border-fuchsia-500/20 transition-all flex items-center gap-2"
-                                                        >
-                                                            <Compass size={12} /> + subV7/{focusedNode.coreDegree}
-                                                        </button>
-                                                    </>
-                                                )}
-                                                {/* SDM button: only for IV or IVmaj7 */}
-                                                {!focusedNode.isSecondary && (focusedNode.coreDegree === 'IV' || focusedNode.coreDegree === 'IVmaj7') && focusedNode.durationInBeats >= 2 && (
-                                                    <button
-                                                        onClick={() => addSubdominantMinor(focusedNode.id)}
-                                                        className="px-5 py-2.5 text-[11px] font-black tracking-widest text-blue-400 hover:bg-blue-500/10 rounded-xl border border-blue-500/20 transition-all flex items-center gap-2"
-                                                    >
-                                                        + SDM (iv)
-                                                    </button>
-                                                )}
-                                                {/* bVII button: Backdoor Dominant — only for IV nodes */}
-                                                {!focusedNode.isSecondary && (focusedNode.coreDegree === 'IV' || focusedNode.coreDegree === 'IVmaj7') && focusedNode.durationInBeats >= 2 && (
-                                                    <button
-                                                        onClick={() => addFlatSeven(focusedNode.id)}
-                                                        className="px-5 py-2.5 text-[11px] font-black tracking-widest text-blue-400 hover:bg-blue-500/10 rounded-xl border border-blue-500/20 transition-all flex items-center gap-2"
-                                                    >
-                                                        + bVII
-                                                    </button>
-                                                )}
-                                                {/* bVI button: Modal colour — only for I nodes */}
-                                                {!focusedNode.isSecondary && (focusedNode.coreDegree === 'I' || focusedNode.coreDegree === 'Imaj7') && focusedNode.durationInBeats >= 2 && (
-                                                    <button
-                                                        onClick={() => addFlatSix(focusedNode.id)}
-                                                        className="px-5 py-2.5 text-[11px] font-black tracking-widest text-blue-400 hover:bg-blue-500/10 rounded-xl border border-blue-500/20 transition-all flex items-center gap-2"
-                                                    >
-                                                        + bVI
-                                                    </button>
-                                                )}
-                                                {/* Picardy Third: minor tonic + minor scale context + cadence position */}
-                                                {(focusedNode.coreDegree === 'i' || focusedNode.coreDegree === 'im7') && isMinorMode && isCadencePosition && (
-                                                    <button
-                                                        onClick={() => applyPicardyThird(focusedNode.id)}
-                                                        className="px-5 py-2.5 text-[11px] font-black tracking-widest text-yellow-400 hover:bg-yellow-500/10 rounded-xl border border-yellow-500/20 transition-all flex items-center gap-2"
-                                                    >
-                                                        Picardy (I)
-                                                    </button>
-                                                )}
-                                            </div>
-
-                                            <div className="flex items-center gap-3">
-                                                <div className="flex flex-col items-center">
-                                                    <span className="text-2xl font-black text-white tracking-wide">{chordName}</span>
-                                                    <span className="text-[11px] font-semibold text-white/30 tracking-widest">{focusedNode.displayDegree}</span>
-                                                    <div className="flex items-center gap-2 opacity-30 mt-0.5">
-                                                        <div className="w-1 h-1 rounded-full bg-white/40" />
-                                                        <span className="text-[9px] tracking-widest font-bold">{focusedNode.durationInBeats} beats</span>
-                                                        <div className="w-1 h-1 rounded-full bg-white/40" />
-                                                    </div>
-                                                </div>
-                                                {/* Play button */}
-                                                {progressionData && (
-                                                    <button
-                                                        onClick={() => triggerChordPlay(progressionData.stepRoot, progressionData.tones)}
-                                                        className="p-2.5 rounded-xl border border-[#00ff88]/20 bg-[#00ff88]/5 text-[#00ff88] hover:bg-[#00ff88]/15 hover:border-[#00ff88]/40 transition-all flex items-center gap-1.5 text-[11px] font-black tracking-widest"
-                                                        title="Play chord"
-                                                    >
-                                                        <Volume2 size={14} /> Play
-                                                    </button>
-                                                )}
-                                            </div>
-
-                                            <div className="flex items-center">
-                                                <button
-                                                    onClick={() => removeNode(focusedNode.id)}
-                                                    className="px-5 py-2.5 text-red-500 hover:bg-red-500/10 font-black text-[11px] tracking-widest rounded-xl transition-all flex items-center gap-2 border border-red-500/10 hover:border-red-500/30"
-                                                >
-                                                    <Trash2 size={14} /> Delete Node
-                                                </button>
-                                            </div>
-                                        </div>
-                                    );
-                                })()}
+                                {focusedNode && (
+                                    <ProgressionInspector
+                                        ref={inspectorPanelRef}
+                                        focusedNode={focusedNode}
+                                        playbackData={progressionData}
+                                        selectedKey={selectedKey}
+                                        isMinorMode={isMinorMode}
+                                        isCadencePosition={isCadencePosition}
+                                        addSecondaryDominant={addSecondaryDominant}
+                                        addTritoneSubstitution={addTritoneSubstitution}
+                                        addSubdominantMinor={addSubdominantMinor}
+                                        addFlatSix={addFlatSix}
+                                        addFlatSeven={addFlatSeven}
+                                        applyPicardyThird={applyPicardyThird}
+                                        removeNode={removeNode}
+                                        playProgressionChord={playProgressionChord}
+                                    />
+                                )}
 
                             </div>
                         </DndContext>
@@ -1175,4 +1046,3 @@ export default function ClientApp() {
         </div>
     );
 }
-
