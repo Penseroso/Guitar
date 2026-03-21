@@ -14,6 +14,7 @@ export interface FretboardProps {
     modifierNotes: number[];
     showChordTones: boolean;
     showIntervals?: boolean;
+    scaleIntervalLabels?: Partial<Record<number, string>>;
     fingering?: Fingering[];
     doubleStops?: PlayableDoubleStop[];
 }

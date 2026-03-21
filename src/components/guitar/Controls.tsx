@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Zap, Target, Compass, Activity, Layers, Disc } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { NOTES, SCALES, CHORD_SHAPES, PROGRESSION_LIBRARY } from '../../utils/guitar/theory';
+import { CHORD_SHAPES, GENERIC_SCALE_INTERVAL_LABELS, getScaleIntervalLabels, NOTES, PROGRESSION_LIBRARY, SCALES } from '../../utils/guitar/theory';
 import { getChordFromDegree, getNoteName, injectSecondaryDominants } from '../../utils/guitar/logic';
 import { TabsRail } from '../ui/design-system/TabsRail';
 import { KeyButton } from '../ui/design-system/KeyButton';
@@ -105,11 +105,10 @@ export const Controls: React.FC<ControlsProps> = ({
     };
 
     const getStructureDisplay = () => {
-        const INTERVAL_NAMES = ['1', 'b2', '2', 'b3', '3', '4', 'b5', '5', 'b6', '6', 'b7', '7'];
-
         if (mode === 'scale') {
             const arr = SCALES[selectedScaleGroup]?.[selectedScaleName] || [];
-            return arr.map((i: number) => INTERVAL_NAMES[i]).join(' · ');
+            const intervalLabels = getScaleIntervalLabels(selectedScaleGroup, selectedScaleName);
+            return arr.map((i: number) => intervalLabels[i] || GENERIC_SCALE_INTERVAL_LABELS[i]).join(' · ');
         } else if (mode === 'chord') {
             const chordIntervals: Record<string, number[]> = {
                 "Major": [0, 4, 7],
@@ -138,7 +137,7 @@ export const Controls: React.FC<ControlsProps> = ({
             if (chordType === "Dominant 9") return ['1', '3', '5', 'b7', '9'].join(' · ');
             if (chordType === "13") return ['1', '3', '5', 'b7', '9', '13'].join(' · ');
 
-            return arr.map((i: number) => INTERVAL_NAMES[i]).join(' · ');
+            return arr.map((i: number) => GENERIC_SCALE_INTERVAL_LABELS[i]).join(' · ');
         } else if (mode === 'progression') {
             const prog = PROGRESSION_LIBRARY.find(p => p.id === progressionName);
             const steps = prog ? prog.degrees : [];
@@ -275,7 +274,7 @@ export const Controls: React.FC<ControlsProps> = ({
                                     { label: 'Phrygian', technical: 'Phrygian' },
                                     { label: 'Lydian', technical: 'Lydian' },
                                     { label: 'Mixolydian', technical: 'Mixolydian' },
-                                    { label: 'Aeolian', technical: 'N Minor / Aeolian' },
+                                    { label: 'Aeolian', technical: 'Natural Minor / Aeolian' },
                                     { label: 'Locrian', technical: 'Locrian' },
                                 ].map((m, i) => {
                                     const angle = (i * 360) / 7;

@@ -21,6 +21,7 @@ export const Fretboard: React.FC<FretboardProps> = ({
     modifierNotes,
     showChordTones,
     showIntervals = false,
+    scaleIntervalLabels,
     fingering,
     doubleStops = []
 }) => {
@@ -49,6 +50,15 @@ export const Fretboard: React.FC<FretboardProps> = ({
         const y = (stringIdx * 60) + 30;
 
         return { x, y };
+    };
+
+    const getIntervalLabel = (noteIdx: number) => {
+        const intervalIdx = (noteIdx - rootNote + 12) % 12;
+        const scaleLabel = scaleIntervalLabels?.[intervalIdx];
+        if (scaleLabel) {
+            return intervalIdx === 0 ? 'R' : scaleLabel;
+        }
+        return INTERVAL_NAMES[intervalIdx];
     };
 
     return (
@@ -126,8 +136,7 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                 let label = NOTES[noteIdx];
 
                                 if (showIntervals) {
-                                    const intervalIdx = (noteIdx - rootNote + 12) % 12;
-                                    label = INTERVAL_NAMES[intervalIdx];
+                                    label = getIntervalLabel(noteIdx);
                                 }
 
                                 if (fingering && specificFinger) {
@@ -136,8 +145,7 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                     } else if (specificFinger.label && !showIntervals) {
                                         label = NOTES[noteIdx];
                                     } else if (showIntervals) {
-                                        const intervalIdx = (noteIdx - rootNote + 12) % 12;
-                                        label = INTERVAL_NAMES[intervalIdx];
+                                        label = getIntervalLabel(noteIdx);
                                     }
                                     if (specificFinger.label === 'R' || (showIntervals && label === 'R')) {
                                         dotClass = styles.noteRoot;
@@ -248,8 +256,7 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                     let label = NOTES[noteIdx];
 
                                     if (showIntervals) {
-                                        const intervalIdx = (noteIdx - rootNote + 12) % 12;
-                                        label = INTERVAL_NAMES[intervalIdx];
+                                        label = getIntervalLabel(noteIdx);
                                     }
 
                                     if (fingering && specificFinger) {
@@ -259,8 +266,7 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                         } else if (specificFinger.label && !showIntervals) {
                                             label = NOTES[noteIdx];
                                         } else if (showIntervals) {
-                                            const intervalIdx = (noteIdx - rootNote + 12) % 12;
-                                            label = INTERVAL_NAMES[intervalIdx];
+                                            label = getIntervalLabel(noteIdx);
                                         }
 
                                         if (label !== 'X') {

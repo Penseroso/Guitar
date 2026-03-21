@@ -6,6 +6,16 @@ export interface ModeData {
 }
 
 export type ScaleDictionary = Record<number, ModeData>;
+export type ScaleIntervalLabels = Partial<Record<number, string>>;
+
+interface ScaleRegistryEntry {
+    parent: string;
+    rootOffsetIndex: number;
+    subset?: number[];
+}
+
+type ScaleRegistryGroup = Record<string, ScaleRegistryEntry>;
+type ScaleFormulaGroup = Record<string, ScaleIntervalLabels>;
 
 const PARENT_SCALES: Record<string, number[]> = {
     'Major': [0, 2, 4, 5, 7, 9, 11],
@@ -15,14 +25,14 @@ const PARENT_SCALES: Record<string, number[]> = {
     'Whole Tone': [0, 2, 4, 6, 8, 10]        // Whole Tone (6음계)
 };
 
-export const SCALE_REGISTRY: Record<string, Record<string, { parent: string, rootOffsetIndex: number, subset?: number[] }>> = {
+export const SCALE_REGISTRY: Record<string, ScaleRegistryGroup> = {
     'Major Modes': {
         'Major / Ionian': { parent: 'Major', rootOffsetIndex: 0 },
         'Dorian': { parent: 'Major', rootOffsetIndex: 1 },
         'Phrygian': { parent: 'Major', rootOffsetIndex: 2 },
         'Lydian': { parent: 'Major', rootOffsetIndex: 3 },
         'Mixolydian': { parent: 'Major', rootOffsetIndex: 4 },
-        'N Minor / Aeolian': { parent: 'Major', rootOffsetIndex: 5 },
+        'Natural Minor / Aeolian': { parent: 'Major', rootOffsetIndex: 5 },
         'Locrian': { parent: 'Major', rootOffsetIndex: 6 }
     },
     'Harmonic Minor Modes': {
@@ -32,11 +42,11 @@ export const SCALE_REGISTRY: Record<string, Record<string, { parent: string, roo
         'Dorian #4': { parent: 'Harmonic Minor', rootOffsetIndex: 3 },
         'Phrygian Dominant': { parent: 'Harmonic Minor', rootOffsetIndex: 4 },
         'Lydian #2': { parent: 'Harmonic Minor', rootOffsetIndex: 5 },
-        'Superlocrian': { parent: 'Harmonic Minor', rootOffsetIndex: 6 } // Altered bb7
+        'Ultralocrian': { parent: 'Harmonic Minor', rootOffsetIndex: 6 }
     },
     'Jazz Minor Modes': {
         'Jazz Minor': { parent: 'Jazz Minor', rootOffsetIndex: 0 },
-        'Assyrian': { parent: 'Jazz Minor', rootOffsetIndex: 1 }, // Dorian b2
+        'Dorian b2 (Assyrian)': { parent: 'Jazz Minor', rootOffsetIndex: 1 },
         'Lydian Augmented': { parent: 'Jazz Minor', rootOffsetIndex: 2 },
         'Lydian Dominant': { parent: 'Jazz Minor', rootOffsetIndex: 3 },
         'Mixolydian b6': { parent: 'Jazz Minor', rootOffsetIndex: 4 },
@@ -50,6 +60,98 @@ export const SCALE_REGISTRY: Record<string, Record<string, { parent: string, roo
         'Minor Pentatonic': { parent: 'Major', rootOffsetIndex: 5, subset: [0, 3, 5, 7, 10] }
     }
 };
+
+const toIntervalLabelMap = (formula: readonly string[]): ScaleIntervalLabels =>
+    formula.reduce<ScaleIntervalLabels>((labels, interval, index) => {
+        labels[index === 0 ? 0 : parseIntervalLabel(interval)] = interval;
+        return labels;
+    }, {});
+
+function parseIntervalLabel(interval: string): number {
+    const normalized = interval.replace(/\s+/g, '');
+    const quality = normalized.match(/^[b#]+/)?.[0] ?? '';
+    const degreeText = normalized.slice(quality.length);
+    const degree = Number(degreeText);
+
+    const baseSemitones: Record<number, number> = {
+        1: 0,
+        2: 2,
+        3: 4,
+        4: 5,
+        5: 7,
+        6: 9,
+        7: 11
+    };
+
+    const base = baseSemitones[degree];
+    if (base === undefined) {
+        throw new Error(`Unsupported interval label: ${interval}`);
+    }
+
+    const accidentalOffset = [...quality].reduce((sum, accidental) => {
+        if (accidental === 'b') return sum - 1;
+        if (accidental === '#') return sum + 1;
+        return sum;
+    }, 0);
+
+    return (base + accidentalOffset + 12) % 12;
+}
+
+export const GENERIC_SCALE_INTERVAL_LABELS: Readonly<Record<number, string>> = {
+    0: '1',
+    1: 'b2',
+    2: '2',
+    3: 'b3',
+    4: '3',
+    5: '4',
+    6: 'b5',
+    7: '5',
+    8: 'b6',
+    9: '6',
+    10: 'b7',
+    11: '7'
+};
+
+export const SCALE_DISPLAY_FORMULAS: Record<string, ScaleFormulaGroup> = {
+    'Major Modes': {
+        'Major / Ionian': toIntervalLabelMap(['1', '2', '3', '4', '5', '6', '7']),
+        'Dorian': toIntervalLabelMap(['1', '2', 'b3', '4', '5', '6', 'b7']),
+        'Phrygian': toIntervalLabelMap(['1', 'b2', 'b3', '4', '5', 'b6', 'b7']),
+        'Lydian': toIntervalLabelMap(['1', '2', '3', '#4', '5', '6', '7']),
+        'Mixolydian': toIntervalLabelMap(['1', '2', '3', '4', '5', '6', 'b7']),
+        'Natural Minor / Aeolian': toIntervalLabelMap(['1', '2', 'b3', '4', '5', 'b6', 'b7']),
+        'Locrian': toIntervalLabelMap(['1', 'b2', 'b3', '4', 'b5', 'b6', 'b7'])
+    },
+    'Harmonic Minor Modes': {
+        'Harmonic Minor': toIntervalLabelMap(['1', '2', 'b3', '4', '5', 'b6', '7']),
+        'Locrian #6': toIntervalLabelMap(['1', 'b2', 'b3', '4', 'b5', '6', 'b7']),
+        'Ionian #5': toIntervalLabelMap(['1', '2', '3', '4', '#5', '6', '7']),
+        'Dorian #4': toIntervalLabelMap(['1', '2', 'b3', '#4', '5', '6', 'b7']),
+        'Phrygian Dominant': toIntervalLabelMap(['1', 'b2', '3', '4', '5', 'b6', 'b7']),
+        'Lydian #2': toIntervalLabelMap(['1', '#2', '3', '#4', '5', '6', '7']),
+        'Ultralocrian': toIntervalLabelMap(['1', 'b2', 'b3', 'b4', 'b5', 'b6', 'bb7'])
+    },
+    'Jazz Minor Modes': {
+        'Jazz Minor': toIntervalLabelMap(['1', '2', 'b3', '4', '5', '6', '7']),
+        'Dorian b2 (Assyrian)': toIntervalLabelMap(['1', 'b2', 'b3', '4', '5', '6', 'b7']),
+        'Lydian Augmented': toIntervalLabelMap(['1', '2', '3', '#4', '#5', '6', '7']),
+        'Lydian Dominant': toIntervalLabelMap(['1', '2', '3', '#4', '5', '6', 'b7']),
+        'Mixolydian b6': toIntervalLabelMap(['1', '2', '3', '4', '5', 'b6', 'b7']),
+        'Locrian ♮2': toIntervalLabelMap(['1', '2', 'b3', '4', 'b5', 'b6', 'b7']),
+        'Altered scale': toIntervalLabelMap(['1', 'b2', '#2', '3', 'b5', '#5', 'b7'])
+    },
+    'Symmetric & Others': {
+        'Diminished': toIntervalLabelMap(['1', '2', 'b3', '4', 'b5', 'b6', '6', '7']),
+        'Whole Tone': toIntervalLabelMap(['1', '2', '3', '#4', '#5', 'b7']),
+        'Major Pentatonic': toIntervalLabelMap(['1', '2', '3', '5', '6']),
+        'Minor Pentatonic': toIntervalLabelMap(['1', 'b3', '4', '5', 'b7'])
+    }
+};
+
+export function getScaleIntervalLabels(groupName: string, modeName: string): ScaleIntervalLabels {
+    return SCALE_DISPLAY_FORMULAS[groupName]?.[modeName]
+        || {};
+}
 
 const INTERVAL_TO_ROMAN: Record<number, string> = {
     0: 'I',
@@ -114,7 +216,7 @@ for (const group in SCALE_REGISTRY) {
  */
 export function generateModeData(groupName: string, modeName: string): ScaleDictionary {
     const registryGroup = SCALE_REGISTRY[groupName] || SCALE_REGISTRY['Major Modes'];
-    const modeInfo = registryGroup[modeName] || SCALE_REGISTRY['Major Modes']['N Minor / Aeolian'];
+    const modeInfo = registryGroup[modeName] || SCALE_REGISTRY['Major Modes']['Natural Minor / Aeolian'];
 
     const parentIntervals = PARENT_SCALES[modeInfo.parent];
     const N = parentIntervals.length; // Dynamic N-note parent scale

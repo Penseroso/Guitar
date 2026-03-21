@@ -41,7 +41,7 @@ export const CircleOfFifths: React.FC<CircleOfFifthsProps> = ({ selectedKey, onK
     // 부모 스케일 역학에 기반한 순환 인터벌 제너레이터를 호출하여 데이터를 렌더링합니다.
     const modeData = React.useMemo(() => {
         const group = selectedScaleGroup || 'Major Modes';
-        const name = selectedScaleName || 'N Minor / Aeolian';
+        const name = selectedScaleName || 'Natural Minor / Aeolian';
         return generateModeData(group, name);
     }, [selectedScaleGroup, selectedScaleName]);
 

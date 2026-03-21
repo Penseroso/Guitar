@@ -22,6 +22,7 @@ import {
     TUNING,
     SCALES,
     CHORD_SHAPES,
+    getScaleIntervalLabels,
     generateModeData,
 } from '../../utils/guitar/theory';
 import {
@@ -457,6 +458,10 @@ export default function ClientApp() {
     const scaleNotes = useMemo(() => {
         return activeScaleIntervals.map(interval => (selectedKey + interval) % 12);
     }, [selectedKey, activeScaleIntervals]);
+
+    const scaleIntervalLabels = useMemo(() => {
+        return getScaleIntervalLabels(scaleGroup, scaleName);
+    }, [scaleGroup, scaleName]);
 
     const isPentatonic = scaleName.includes('Pentatonic');
 
@@ -926,6 +931,7 @@ export default function ClientApp() {
                                         modifierNotes={modifierNotes}
                                         showChordTones={showChordTones}
                                         showIntervals={showIntervals}
+                                        scaleIntervalLabels={mode === 'scale' ? scaleIntervalLabels : undefined}
                                         fingering={fingering}
                                         doubleStops={playableDoubleStops}
                                     />
@@ -1169,3 +1175,4 @@ export default function ClientApp() {
         </div>
     );
 }
+
