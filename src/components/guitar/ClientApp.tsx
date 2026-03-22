@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { 
     DndContext, 
     useDraggable, 
@@ -455,19 +455,19 @@ export default function ClientApp() {
     const isPreviewingScale = (group: string, name: string) =>
         previewScaleGroup === group && previewScaleName === name;
 
-    const handleClearPreview = () => {
+    const handleClearPreview = useCallback(() => {
         setPreviewScaleGroup(null);
         setPreviewScaleName(null);
-    };
+    }, []);
 
-    const commitScaleSelection = (group: string, name: string) => {
+    const commitScaleSelection = useCallback((group: string, name: string) => {
         setScaleGroup(group);
         setScaleName(name);
         setBlueNote(false);
         setSixthNote(false);
         setSecondNote(false);
         handleClearPreview();
-    };
+    }, [handleClearPreview]);
 
     const handleRelatedPreviewToggle = (group: string, name: string) => {
         if (isPreviewingScale(group, name)) {
@@ -479,10 +479,10 @@ export default function ClientApp() {
         setPreviewScaleName(name);
     };
 
-    const handleApplyPreview = () => {
+    const handleApplyPreview = useCallback(() => {
         if (!previewScaleGroup || !previewScaleName) return;
         commitScaleSelection(previewScaleGroup, previewScaleName);
-    };
+    }, [commitScaleSelection, previewScaleGroup, previewScaleName]);
 
     // --- Derived Data: Scales ---
     const activeScaleIntervals = useMemo(() => {
@@ -819,16 +819,9 @@ export default function ClientApp() {
 
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
-                setPreviewScaleGroup(null);
-                setPreviewScaleName(null);
-            } else if (event.key === 'Enter' && previewScaleGroup && previewScaleName) {
-                setScaleGroup(previewScaleGroup);
-                setScaleName(previewScaleName);
-                setBlueNote(false);
-                setSixthNote(false);
-                setSecondNote(false);
-                setPreviewScaleGroup(null);
-                setPreviewScaleName(null);
+                handleClearPreview();
+            } else if (event.key === 'Enter') {
+                handleApplyPreview();
             }
         };
 
@@ -836,7 +829,7 @@ export default function ClientApp() {
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         };
-    }, [mode, hasPreview, previewScaleGroup, previewScaleName]);
+    }, [mode, hasPreview, handleApplyPreview, handleClearPreview]);
 
     return (
         <div className="min-h-screen bg-[#050505] text-[#a0a0a0] selection:bg-white/20 p-8 flex flex-col items-center gap-12 overflow-x-hidden font-sans">
