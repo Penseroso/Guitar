@@ -11,12 +11,12 @@ interface ProgressionModePanelProps {
 }
 
 const DIATONIC_ORBIT = [
-    { label: 'Ionian', technical: 'Major / Ionian' },
+    { label: 'Ionian', technical: 'Ionian' },
     { label: 'Dorian', technical: 'Dorian' },
     { label: 'Phrygian', technical: 'Phrygian' },
     { label: 'Lydian', technical: 'Lydian' },
     { label: 'Mixolydian', technical: 'Mixolydian' },
-    { label: 'Aeolian', technical: 'Natural Minor / Aeolian' },
+    { label: 'Aeolian', technical: 'Aeolian' },
     { label: 'Locrian', technical: 'Locrian' },
 ];
 
@@ -48,7 +48,7 @@ export const ProgressionModePanel: React.FC<ProgressionModePanelProps> = ({
                 {DIATONIC_ORBIT.map((mode, index) => {
                     const angle = (index * 360) / DIATONIC_ORBIT.length;
                     const radius = 115;
-                    const isActive = selectedScaleName === mode.technical && selectedScaleGroup === 'Major Modes';
+                    const isActive = selectedScaleName === mode.technical && selectedScaleGroup === 'Diatonic Modes';
 
                     return (
                         <motion.button
@@ -60,7 +60,7 @@ export const ProgressionModePanel: React.FC<ProgressionModePanelProps> = ({
                                 scale: isActive ? 1.1 : 1,
                             }}
                             whileHover={{ scale: 1.15, transition: { duration: 0.2 } }}
-                            onClick={() => onScaleChange('Major Modes', mode.technical)}
+                            onClick={() => onScaleChange('Diatonic Modes', mode.technical)}
                             className={`absolute w-14 h-14 rounded-full border flex flex-col items-center justify-center transition-all duration-500 shadow-lg ${
                                 isActive
                                     ? 'bg-white border-white text-black shadow-[0_0_30px_rgba(255,255,255,0.3)] z-30'

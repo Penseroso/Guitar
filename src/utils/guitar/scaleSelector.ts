@@ -1,11 +1,11 @@
 import { GENERIC_SCALE_INTERVAL_LABELS, SCALE_REGISTRY, SCALES, getScaleIntervalLabels } from './scales';
 
-export const SCALE_FAMILY_ORDER = ['Diatonic', 'Harmonic Minor', 'Jazz Minor', 'Symmetric', 'Pentatonic'] as const;
+export const SCALE_FAMILY_ORDER = ['Diatonic Modes', 'Harmonic Minor', 'Jazz Minor', 'Symmetric', 'Pentatonic'] as const;
 
 export type VisibleScaleFamily = typeof SCALE_FAMILY_ORDER[number];
 
 export const SCALE_FAMILY_GROUP_MAP: Record<VisibleScaleFamily, string> = {
-    Diatonic: 'Major Modes',
+    'Diatonic Modes': 'Diatonic Modes',
     'Harmonic Minor': 'Harmonic Minor Modes',
     'Jazz Minor': 'Jazz Minor Modes',
     Symmetric: 'Symmetric',
@@ -30,8 +30,6 @@ export interface ScaleRelation extends ScaleOption {
 }
 
 const SCALE_NAME_LABELS: Record<string, string> = {
-    'Major / Ionian': 'Ionian',
-    'Natural Minor / Aeolian': 'Aeolian',
     'Altered scale': 'Altered',
     'Dorian b2 (Assyrian)': 'Dorian b2',
     'Locrian ♮2': 'Locrian n2',
@@ -48,31 +46,31 @@ const SCALE_LOOKUP_BY_NAME = Object.entries(SCALES).reduce<Record<string, ScaleO
 }, {});
 
 const relationNames = {
-    'Major / Ionian': ['Lydian', 'Mixolydian', 'Major Pentatonic', 'Lydian Augmented'],
-    Dorian: ['Natural Minor / Aeolian', 'Jazz Minor', 'Dorian b2 (Assyrian)', 'Minor Pentatonic'],
-    Phrygian: ['Dorian b2 (Assyrian)', 'Phrygian Dominant', 'Natural Minor / Aeolian', 'Locrian'],
-    Lydian: ['Major / Ionian', 'Lydian Dominant', 'Lydian #2', 'Lydian Augmented'],
-    Mixolydian: ['Lydian Dominant', 'Mixolydian b6', 'Major / Ionian', 'Whole Tone'],
-    'Natural Minor / Aeolian': ['Dorian', 'Harmonic Minor', 'Jazz Minor', 'Minor Pentatonic'],
+    Ionian: ['Lydian', 'Mixolydian', 'Major Pentatonic', 'Lydian Augmented'],
+    Dorian: ['Aeolian', 'Jazz Minor', 'Dorian b2 (Assyrian)', 'Minor Pentatonic'],
+    Phrygian: ['Dorian b2 (Assyrian)', 'Phrygian Dominant', 'Aeolian', 'Locrian'],
+    Lydian: ['Ionian', 'Lydian Dominant', 'Lydian #2', 'Lydian Augmented'],
+    Mixolydian: ['Lydian Dominant', 'Mixolydian b6', 'Ionian', 'Whole Tone'],
+    Aeolian: ['Dorian', 'Harmonic Minor', 'Jazz Minor', 'Minor Pentatonic'],
     Locrian: ['Locrian ♮2', 'Ultralocrian', 'Altered scale', 'Phrygian'],
-    'Harmonic Minor': ['Natural Minor / Aeolian', 'Jazz Minor', 'Dorian', 'Minor Pentatonic'],
+    'Harmonic Minor': ['Aeolian', 'Jazz Minor', 'Dorian', 'Minor Pentatonic'],
     'Locrian #6': ['Locrian', 'Locrian ♮2', 'Ultralocrian', 'Dorian b2 (Assyrian)'],
-    'Ionian #5': ['Lydian Augmented', 'Major / Ionian', 'Whole Tone', 'Lydian #2'],
+    'Ionian #5': ['Lydian Augmented', 'Ionian', 'Whole Tone', 'Lydian #2'],
     'Dorian #4': ['Dorian', 'Jazz Minor', 'Harmonic Minor', 'Lydian Dominant'],
     'Phrygian Dominant': ['Mixolydian b6', 'Phrygian', 'Altered scale', 'Whole Tone'],
     'Lydian #2': ['Lydian', 'Lydian Augmented', 'Ionian #5', 'Whole Tone'],
     Ultralocrian: ['Altered scale', 'Locrian', 'Locrian ♮2', 'Diminished'],
-    'Jazz Minor': ['Dorian', 'Harmonic Minor', 'Natural Minor / Aeolian', 'Minor Pentatonic'],
+    'Jazz Minor': ['Dorian', 'Harmonic Minor', 'Aeolian', 'Minor Pentatonic'],
     'Dorian b2 (Assyrian)': ['Phrygian', 'Dorian', 'Locrian ♮2', 'Minor Pentatonic'],
     'Lydian Augmented': ['Ionian #5', 'Lydian', 'Whole Tone', 'Lydian #2'],
     'Lydian Dominant': ['Mixolydian', 'Whole Tone', 'Altered scale', 'Lydian'],
-    'Mixolydian b6': ['Phrygian Dominant', 'Mixolydian', 'Natural Minor / Aeolian', 'Altered scale'],
+    'Mixolydian b6': ['Phrygian Dominant', 'Mixolydian', 'Aeolian', 'Altered scale'],
     'Locrian ♮2': ['Locrian', 'Dorian b2 (Assyrian)', 'Ultralocrian', 'Altered scale'],
     'Altered scale': ['Lydian Dominant', 'Whole Tone', 'Ultralocrian', 'Diminished'],
     Diminished: ['Altered scale', 'Whole Tone', 'Lydian Dominant', 'Ultralocrian'],
     'Whole Tone': ['Lydian Dominant', 'Altered scale', 'Ionian #5', 'Lydian Augmented'],
-    'Major Pentatonic': ['Major / Ionian', 'Lydian', 'Mixolydian'],
-    'Minor Pentatonic': ['Natural Minor / Aeolian', 'Dorian', 'Harmonic Minor', 'Jazz Minor'],
+    'Major Pentatonic': ['Ionian', 'Lydian', 'Mixolydian'],
+    'Minor Pentatonic': ['Aeolian', 'Dorian', 'Harmonic Minor', 'Jazz Minor'],
 } satisfies Record<string, string[]>;
 
 export function buildScaleId(group: string, name: string) {
@@ -95,7 +93,7 @@ export const SCALE_RELATION_MAP: Record<string, string[]> = Object.entries(relat
 }, {} as Record<string, string[]>);
 
 export function getVisibleScaleFamily(group: string): VisibleScaleFamily {
-    return GROUP_TO_VISIBLE_FAMILY[group] || 'Diatonic';
+    return GROUP_TO_VISIBLE_FAMILY[group] || 'Diatonic Modes';
 }
 
 export function getVisibleScaleFamilyLabel(group: string) {

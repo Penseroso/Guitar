@@ -26,6 +26,8 @@ import {
     SCALES,
     CHORD_SHAPES,
     getScaleIntervalLabels,
+    getScaleEngineIntervalLabels,
+    isDoubleStopSupported,
     generateModeData,
 } from '../../utils/guitar/theory';
 import {
@@ -396,8 +398,8 @@ export default function ClientApp() {
     const [showIntervals, setShowIntervals] = useState(false);
 
     // --- State: Scale Mode ---
-    const [scaleGroup, setScaleGroup] = useState('Major Modes');
-    const [scaleName, setScaleName] = useState('Major / Ionian');
+    const [scaleGroup, setScaleGroup] = useState('Diatonic Modes');
+    const [scaleName, setScaleName] = useState('Ionian');
     const [showChordTones, setShowChordTones] = useState(false); // In scale mode, shows Triad of root
     const [blueNote, setBlueNote] = useState(false);
     const [sixthNote, setSixthNote] = useState(false);
@@ -446,7 +448,7 @@ export default function ClientApp() {
     // Adding `mode` ensures it resets if they change mode/key while in prog mode.
     // --- Derived Data: Scales ---
     const activeScaleIntervals = useMemo(() => {
-        return SCALES[scaleGroup]?.[scaleName] || SCALES['Major Modes']['Major / Ionian'];
+        return SCALES[scaleGroup]?.[scaleName] || SCALES['Diatonic Modes']['Ionian'];
     }, [scaleGroup, scaleName]);
 
     const diatonicChords = useMemo(() => {
@@ -465,6 +467,16 @@ export default function ClientApp() {
     const scaleIntervalLabels = useMemo(() => {
         return getScaleIntervalLabels(scaleGroup, scaleName);
     }, [scaleGroup, scaleName]);
+
+    const scaleEngineIntervalLabels = useMemo(() => {
+        return getScaleEngineIntervalLabels(scaleGroup, scaleName);
+    }, [scaleGroup, scaleName]);
+
+    const isDoubleStopAvailable = useMemo(() => {
+        return isDoubleStopSupported(scaleGroup, scaleName);
+    }, [scaleGroup, scaleName]);
+
+    const isDoubleStopVisible = isDoubleStopAvailable && isDoubleStopActive;
 
     const isPentatonic = scaleName.includes('Pentatonic');
 
@@ -605,8 +617,8 @@ export default function ClientApp() {
             return [];
         }
         if (mode === 'progression') {
-            const majorScale = SCALES['Major Modes']['Major / Ionian'];
-            return majorScale.map(i => (selectedKey + i) % 12);
+            const ionianScale = SCALES['Diatonic Modes']['Ionian'];
+            return ionianScale.map(i => (selectedKey + i) % 12);
         }
         return [];
     }, [mode, scaleNotes, modifierNotes, fingering, selectedKey]);
@@ -616,17 +628,17 @@ export default function ClientApp() {
         const intervals: HarmonicInterval[] = [3, 4, 6];
 
         return intervals.reduce<Record<HarmonicInterval, ReturnType<typeof getHarmonicDoubleStops>>>((acc, interval) => {
-            acc[interval] = getHarmonicDoubleStops(scaleNotes, scaleIntervalLabels, interval);
+            acc[interval] = getHarmonicDoubleStops(scaleNotes, scaleEngineIntervalLabels, interval);
             return acc;
         }, {
             3: [],
             4: [],
             6: [],
         });
-    }, [scaleNotes, scaleIntervalLabels]);
+    }, [scaleNotes, scaleEngineIntervalLabels]);
 
     const playableDoubleStops = useMemo(() => {
-        if (mode !== 'scale' || !isDoubleStopActive) return [];
+        if (mode !== 'scale' || !isDoubleStopVisible) return [];
 
         return getPlayableDoubleStopsOnStrings(
             harmonicDoubleStopPairsByInterval[doubleStopInterval],
@@ -634,7 +646,7 @@ export default function ClientApp() {
             TUNING,
             doubleStopStrings
         );
-    }, [mode, isDoubleStopActive, harmonicDoubleStopPairsByInterval, doubleStopInterval, doubleStopStrings, selectedKey]);
+    }, [mode, isDoubleStopVisible, harmonicDoubleStopPairsByInterval, doubleStopInterval, doubleStopStrings, selectedKey]);
 
     // --- Chord Tone Highlighting ---
     const currentChordTones = useMemo(() => {
@@ -855,55 +867,57 @@ export default function ClientApp() {
                                         </>
                                     )}
 
-                                    <div className="flex flex-col gap-2 col-span-2">
-                                        <div className="flex items-center justify-between">
-                                            <TogglePill label="Double Stops" isActive={isDoubleStopActive} onToggle={() => setIsDoubleStopActive(p => !p)} />
-                                        </div>
-                                        {isDoubleStopActive && (
-                                            <div className="flex flex-col gap-3 mt-1 p-3 bg-white/[0.03] border border-white/5 rounded-2xl animate-in fade-in duration-300">
-                                                <div className="flex flex-col gap-2">
-                                                    <span className="text-[8px] font-black uppercase text-white/30 tracking-widest">Interval</span>
-                                                    <div className="flex gap-2">
-                                                        {([3, 4, 6] as HarmonicInterval[]).map((int) => {
-                                                            const hasValidPairs = harmonicDoubleStopPairsByInterval[int].length > 0;
-
-                                                            return (
-                                                                <button
-                                                                    key={int}
-                                                                    disabled={!hasValidPairs}
-                                                                    onClick={() => {
-                                                                        setDoubleStopInterval(int);
-                                                                        setDoubleStopStrings(int === 6 ? [0, 2] : [0, 1]);
-                                                                    }}
-                                                                    className={`flex-1 py-1.5 text-[9px] font-black rounded-lg border transition-all ${!hasValidPairs ? 'border-white/5 text-white/15 cursor-not-allowed opacity-40' : doubleStopInterval === int ? 'bg-white/10 text-white border-white/30 shadow-lg' : 'border-white/5 text-white/30 hover:text-white/70'}`}
-                                                                >
-                                                                    {int}{int === 3 ? 'rd' : 'th'}
-                                                                </button>
-                                                            );
-                                                        })}
-                                                    </div>
-                                                </div>
-
-                                                <div className="flex flex-col gap-2 border-t border-white/5 pt-2">
-                                                    <span className="text-[8px] font-black uppercase text-white/30 tracking-widest">String Pair</span>
-                                                    <div className="flex gap-2 flex-wrap">
-                                                        {(doubleStopInterval === 6
-                                                            ? [[0, 2], [1, 3], [2, 4], [3, 5]]
-                                                            : [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]]
-                                                        ).map(([s1, s2]) => (
-                                                            <button
-                                                                key={`${s1}-${s2}`}
-                                                                onClick={() => setDoubleStopStrings([s1, s2] as [number, number])}
-                                                                className={`px-2 py-1.5 text-[9px] font-black rounded-lg border transition-all ${doubleStopStrings[0] === s1 && doubleStopStrings[1] === s2 ? 'bg-white/10 text-white border-white/30 shadow-lg' : 'border-white/5 text-white/30 hover:text-white/70'}`}
-                                                            >
-                                                                {s1 + 1}-{s2 + 1}
-                                                            </button>
-                                                        ))}
-                                                    </div>
-                                                </div>
+                                    {isDoubleStopAvailable && (
+                                        <div className="flex flex-col gap-2 col-span-2">
+                                            <div className="flex items-center justify-between">
+                                                <TogglePill label="Double Stops" isActive={isDoubleStopVisible} onToggle={() => setIsDoubleStopActive(p => !p)} />
                                             </div>
-                                        )}
-                                    </div>
+                                            {isDoubleStopVisible && (
+                                                <div className="flex flex-col gap-3 mt-1 p-3 bg-white/[0.03] border border-white/5 rounded-2xl animate-in fade-in duration-300">
+                                                    <div className="flex flex-col gap-2">
+                                                        <span className="text-[8px] font-black uppercase text-white/30 tracking-widest">Interval</span>
+                                                        <div className="flex gap-2">
+                                                            {([3, 4, 6] as HarmonicInterval[]).map((int) => {
+                                                                const hasValidPairs = harmonicDoubleStopPairsByInterval[int].length > 0;
+
+                                                                return (
+                                                                    <button
+                                                                        key={int}
+                                                                        disabled={!hasValidPairs}
+                                                                        onClick={() => {
+                                                                            setDoubleStopInterval(int);
+                                                                            setDoubleStopStrings(int === 6 ? [0, 2] : [0, 1]);
+                                                                        }}
+                                                                        className={`flex-1 py-1.5 text-[9px] font-black rounded-lg border transition-all ${!hasValidPairs ? 'border-white/5 text-white/15 cursor-not-allowed opacity-40' : doubleStopInterval === int ? 'bg-white/10 text-white border-white/30 shadow-lg' : 'border-white/5 text-white/30 hover:text-white/70'}`}
+                                                                    >
+                                                                        {int}{int === 3 ? 'rd' : 'th'}
+                                                                    </button>
+                                                                );
+                                                            })}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="flex flex-col gap-2 border-t border-white/5 pt-2">
+                                                        <span className="text-[8px] font-black uppercase text-white/30 tracking-widest">String Pair</span>
+                                                        <div className="flex gap-2 flex-wrap">
+                                                            {(doubleStopInterval === 6
+                                                                ? [[0, 2], [1, 3], [2, 4], [3, 5]]
+                                                                : [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]]
+                                                            ).map(([s1, s2]) => (
+                                                                <button
+                                                                    key={`${s1}-${s2}`}
+                                                                    onClick={() => setDoubleStopStrings([s1, s2] as [number, number])}
+                                                                    className={`px-2 py-1.5 text-[9px] font-black rounded-lg border transition-all ${doubleStopStrings[0] === s1 && doubleStopStrings[1] === s2 ? 'bg-white/10 text-white border-white/30 shadow-lg' : 'border-white/5 text-white/30 hover:text-white/70'}`}
+                                                                >
+                                                                    {s1 + 1}-{s2 + 1}
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 

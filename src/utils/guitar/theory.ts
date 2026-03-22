@@ -16,7 +16,15 @@ export const STRING_MIDI_PITCHES = [64, 59, 55, 50, 45, 40]; // Absolute MIDI pi
 import { SCALES } from './scales';
 
 export { SCALES };
-export { GENERIC_SCALE_INTERVAL_LABELS, generateModeData, getScaleIntervalLabels, SCALE_DISPLAY_FORMULAS } from './scales';
+export {
+    GENERIC_SCALE_INTERVAL_LABELS,
+    generateModeData,
+    getScaleIntervalLabels,
+    getScaleEngineIntervalLabels,
+    isDoubleStopSupported,
+    SCALE_DISPLAY_FORMULAS,
+    SCALE_ENGINE_FORMULAS
+} from './scales';
 
 export const INLAYS = [3, 5, 7, 9, 15, 17, 19, 21];
 export const DOUBLE_INLAYS = [12];

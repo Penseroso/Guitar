@@ -18,7 +18,7 @@ type ScaleRegistryGroup = Record<string, ScaleRegistryEntry>;
 type ScaleFormulaGroup = Record<string, ScaleIntervalLabels>;
 
 const PARENT_SCALES: Record<string, number[]> = {
-    'Major': [0, 2, 4, 5, 7, 9, 11],
+    'Ionian': [0, 2, 4, 5, 7, 9, 11],
     'Harmonic Minor': [0, 2, 3, 5, 7, 8, 11],
     'Jazz Minor': [0, 2, 3, 5, 7, 9, 11], // Melodic Minor
     'Diminished': [0, 2, 3, 5, 6, 8, 9, 11], // WH Diminished (8음계)
@@ -26,14 +26,14 @@ const PARENT_SCALES: Record<string, number[]> = {
 };
 
 export const SCALE_REGISTRY: Record<string, ScaleRegistryGroup> = {
-    'Major Modes': {
-        'Major / Ionian': { parent: 'Major', rootOffsetIndex: 0 },
-        'Dorian': { parent: 'Major', rootOffsetIndex: 1 },
-        'Phrygian': { parent: 'Major', rootOffsetIndex: 2 },
-        'Lydian': { parent: 'Major', rootOffsetIndex: 3 },
-        'Mixolydian': { parent: 'Major', rootOffsetIndex: 4 },
-        'Natural Minor / Aeolian': { parent: 'Major', rootOffsetIndex: 5 },
-        'Locrian': { parent: 'Major', rootOffsetIndex: 6 }
+    'Diatonic Modes': {
+        'Ionian': { parent: 'Ionian', rootOffsetIndex: 0 },
+        'Dorian': { parent: 'Ionian', rootOffsetIndex: 1 },
+        'Phrygian': { parent: 'Ionian', rootOffsetIndex: 2 },
+        'Lydian': { parent: 'Ionian', rootOffsetIndex: 3 },
+        'Mixolydian': { parent: 'Ionian', rootOffsetIndex: 4 },
+        'Aeolian': { parent: 'Ionian', rootOffsetIndex: 5 },
+        'Locrian': { parent: 'Ionian', rootOffsetIndex: 6 }
     },
     'Harmonic Minor Modes': {
         'Harmonic Minor': { parent: 'Harmonic Minor', rootOffsetIndex: 0 },
@@ -58,8 +58,8 @@ export const SCALE_REGISTRY: Record<string, ScaleRegistryGroup> = {
         'Whole Tone': { parent: 'Whole Tone', rootOffsetIndex: 0 }
     },
     'Pentatonic': {
-        'Major Pentatonic': { parent: 'Major', rootOffsetIndex: 0, subset: [0, 2, 4, 7, 9] },
-        'Minor Pentatonic': { parent: 'Major', rootOffsetIndex: 5, subset: [0, 3, 5, 7, 10] }
+        'Major Pentatonic': { parent: 'Ionian', rootOffsetIndex: 0, subset: [0, 2, 4, 7, 9] },
+        'Minor Pentatonic': { parent: 'Ionian', rootOffsetIndex: 5, subset: [0, 3, 5, 7, 10] }
     }
 };
 
@@ -118,13 +118,13 @@ export const GENERIC_SCALE_INTERVAL_LABELS: Readonly<Record<number, string>> = {
 };
 
 export const SCALE_DISPLAY_FORMULAS: Record<string, ScaleFormulaGroup> = {
-    'Major Modes': {
-        'Major / Ionian': toIntervalLabelMap(['1', '2', '3', '4', '5', '6', '7']),
+    'Diatonic Modes': {
+        'Ionian': toIntervalLabelMap(['1', '2', '3', '4', '5', '6', '7']),
         'Dorian': toIntervalLabelMap(['1', '2', 'b3', '4', '5', '6', 'b7']),
         'Phrygian': toIntervalLabelMap(['1', 'b2', 'b3', '4', '5', 'b6', 'b7']),
         'Lydian': toIntervalLabelMap(['1', '2', '3', '#4', '5', '6', '7']),
         'Mixolydian': toIntervalLabelMap(['1', '2', '3', '4', '5', '6', 'b7']),
-        'Natural Minor / Aeolian': toIntervalLabelMap(['1', '2', 'b3', '4', '5', 'b6', 'b7']),
+        'Aeolian': toIntervalLabelMap(['1', '2', 'b3', '4', '5', 'b6', 'b7']),
         'Locrian': toIntervalLabelMap(['1', 'b2', 'b3', '4', 'b5', 'b6', 'b7'])
     },
     'Harmonic Minor Modes': {
@@ -158,6 +158,30 @@ export const SCALE_DISPLAY_FORMULAS: Record<string, ScaleFormulaGroup> = {
 export function getScaleIntervalLabels(groupName: string, modeName: string): ScaleIntervalLabels {
     return SCALE_DISPLAY_FORMULAS[groupName]?.[modeName]
         || {};
+}
+
+export const SCALE_ENGINE_FORMULAS: Record<string, ScaleFormulaGroup> = {
+    ...SCALE_DISPLAY_FORMULAS,
+    'Jazz Minor Modes': {
+        ...SCALE_DISPLAY_FORMULAS['Jazz Minor Modes'],
+        'Altered scale': toIntervalLabelMap(['1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7'])
+    }
+};
+
+export function getScaleEngineIntervalLabels(groupName: string, modeName: string): ScaleIntervalLabels {
+    return SCALE_ENGINE_FORMULAS[groupName]?.[modeName]
+        || {};
+}
+
+export function isDoubleStopSupported(groupName: string, modeName: string): boolean {
+    if (groupName === 'Symmetric' && (modeName === 'Diminished' || modeName === 'Whole Tone')) {
+        return false;
+    }
+
+    return groupName === 'Diatonic Modes'
+        || groupName === 'Harmonic Minor Modes'
+        || groupName === 'Jazz Minor Modes'
+        || groupName === 'Pentatonic';
 }
 
 const INTERVAL_TO_ROMAN: Record<number, string> = {
@@ -222,8 +246,8 @@ for (const group in SCALE_REGISTRY) {
  * 펜타토닉 등 결손 음계는 `subset` 필드를 이용해 필터링합니다.
  */
 export function generateModeData(groupName: string, modeName: string): ScaleDictionary {
-    const registryGroup = SCALE_REGISTRY[groupName] || SCALE_REGISTRY['Major Modes'];
-    const modeInfo = registryGroup[modeName] || SCALE_REGISTRY['Major Modes']['Natural Minor / Aeolian'];
+    const registryGroup = SCALE_REGISTRY[groupName] || SCALE_REGISTRY['Diatonic Modes'];
+    const modeInfo = registryGroup[modeName] || SCALE_REGISTRY['Diatonic Modes']['Aeolian'];
 
     const parentIntervals = PARENT_SCALES[modeInfo.parent];
     const N = parentIntervals.length; // Dynamic N-note parent scale
