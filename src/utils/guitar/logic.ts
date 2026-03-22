@@ -1,5 +1,5 @@
 import { NOTES, NOTES_FLAT, STRING_MIDI_PITCHES } from './theory';
-import { ChordShape, Fingering, DoubleStopPair, PlayableDoubleStop } from './types';
+import { ChordShape, Fingering, DoubleStopPair, PlayableDoubleStop, HarmonicInterval } from './types';
 
 export function getNoteName(index: number, useFlats: boolean = false): string {
     return useFlats ? NOTES_FLAT[index % 12] : NOTES[index % 12];
@@ -196,34 +196,58 @@ export function getSortedVoicings(voicings: ChordShape[], rootKey: number, tunin
     });
 }
 
-/**
- * Calculates a diatonic double-stop pair (e.g., 3rd, 4th, 6th) for each note in a given scale.
- * Both the root and the target notes will belong to the provided scale.
- * 
- * @param scaleNotes An array of note indices representing a scale (e.g. [0, 2, 4, 5, 7, 9, 11] for Major).
- * @param intervalDegree The interval degree to calculate the double stop for (e.g., 3 for a 3rd, 6 for a 6th).
- * @returns An array of DoubleStopPair objects containing the root note, target note, and interval degree.
- */
-export function getDiatonicDoubleStops(scaleNotes: number[], intervalDegree: number): DoubleStopPair[] {
-    const pairs: DoubleStopPair[] = [];
-    const len = scaleNotes.length;
+function getGenericDegree(label: string): number | null {
+    const degreeText = label.replace(/^[b#]+/, '');
+    const parsedDegree = Number(degreeText);
 
-    if (len === 0 || intervalDegree < 1) return pairs;
-
-    for (let i = 0; i < len; i++) {
-        const rootNoteIdx = scaleNotes[i];
-        // Calculate the target relative index in a circular manner (modulo length)
-        const targetRelativeIdx = (i + intervalDegree - 1) % len;
-        const targetNoteIdx = scaleNotes[targetRelativeIdx];
-
-        pairs.push({
-            rootNoteIdx,
-            targetNoteIdx,
-            interval: intervalDegree
-        });
+    if (!Number.isFinite(parsedDegree) || parsedDegree < 1) {
+        return null;
     }
 
-    return pairs;
+    return ((parsedDegree - 1) % 7) + 1;
+}
+
+function getTargetGenericDegree(rootDegree: number, harmonicInterval: HarmonicInterval): number {
+    return ((rootDegree + harmonicInterval - 2) % 7) + 1;
+}
+
+export function getHarmonicDoubleStops(
+    scaleNotes: number[],
+    scaleIntervalLabels: Partial<Record<number, string>>,
+    harmonicInterval: HarmonicInterval
+): DoubleStopPair[] {
+    if (scaleNotes.length === 0) return [];
+
+    const tonic = scaleNotes[0];
+    const degreeToNote = new Map<number, number>();
+    const noteToDegree = new Map<number, number>();
+
+    for (const noteIdx of scaleNotes) {
+        const relativeInterval = (noteIdx - tonic + 12) % 12;
+        const label = scaleIntervalLabels[relativeInterval];
+        if (!label) continue;
+
+        const genericDegree = getGenericDegree(label);
+        if (genericDegree === null) continue;
+
+        degreeToNote.set(genericDegree, noteIdx);
+        noteToDegree.set(noteIdx, genericDegree);
+    }
+
+    return scaleNotes.flatMap((rootNoteIdx) => {
+        const rootDegree = noteToDegree.get(rootNoteIdx);
+        if (!rootDegree) return [];
+
+        const targetDegree = getTargetGenericDegree(rootDegree, harmonicInterval);
+        const targetNoteIdx = degreeToNote.get(targetDegree);
+        if (targetNoteIdx === undefined) return [];
+
+        return [{
+            rootNoteIdx,
+            targetNoteIdx,
+            interval: harmonicInterval
+        }];
+    });
 }
 
 /**

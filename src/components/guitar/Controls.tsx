@@ -10,6 +10,7 @@ import { ProgressionModePanel } from './panels/ProgressionModePanel';
 import { ScaleSelectorPanel } from './panels/ScaleSelectorPanel';
 import { ChordSelectorPanel } from './panels/ChordSelectorPanel';
 import { ProgressionPresetPanel } from './panels/ProgressionPresetPanel';
+import { HarmonicInterval } from '../../utils/guitar/types';
 
 interface ControlsProps {
     selectedKey: number;
@@ -30,8 +31,8 @@ interface ControlsProps {
     onToggleSecondNote: () => void;
     isDoubleStopActive: boolean;
     onToggleDoubleStop: () => void;
-    doubleStopInterval: number;
-    onDoubleStopIntervalChange: (interval: number) => void;
+    doubleStopInterval: HarmonicInterval;
+    onDoubleStopIntervalChange: (interval: HarmonicInterval) => void;
     doubleStopStrings: [number, number];
     onDoubleStopStringsChange: (strings: [number, number]) => void;
     mode: 'scale' | 'chord' | 'progression';

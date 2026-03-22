@@ -32,12 +32,12 @@ import {
     getChordFromDegree,
     getChordFingering,
     getSortedVoicings,
-    getDiatonicDoubleStops,
+    getHarmonicDoubleStops,
     getPlayableDoubleStopsOnStrings,
     getNoteName,
     degreeToChordName,
 } from '../../utils/guitar/logic';
-import { Mode, HarmonicFunction, Measure, ChordNode } from '../../utils/guitar/types';
+import { Mode, HarmonicFunction, Measure, ChordNode, HarmonicInterval } from '../../utils/guitar/types';
 import { useProgression } from '../../hooks/useProgression';
 
 
@@ -409,7 +409,7 @@ export default function ClientApp() {
 
     // --- State: Double Stops (Scale Mode Feature) ---
     const [isDoubleStopActive, setIsDoubleStopActive] = useState(false);
-    const [doubleStopInterval, setDoubleStopInterval] = useState(3);
+    const [doubleStopInterval, setDoubleStopInterval] = useState<HarmonicInterval>(3);
     const [doubleStopStrings, setDoubleStopStrings] = useState<[number, number]>([1, 2]);
 
     const {
@@ -612,13 +612,29 @@ export default function ClientApp() {
     }, [mode, scaleNotes, modifierNotes, fingering, selectedKey]);
 
     // --- Derived Data: Double Stops ---
+    const harmonicDoubleStopPairsByInterval = useMemo(() => {
+        const intervals: HarmonicInterval[] = [3, 4, 6];
+
+        return intervals.reduce<Record<HarmonicInterval, ReturnType<typeof getHarmonicDoubleStops>>>((acc, interval) => {
+            acc[interval] = getHarmonicDoubleStops(scaleNotes, scaleIntervalLabels, interval);
+            return acc;
+        }, {
+            3: [],
+            4: [],
+            6: [],
+        });
+    }, [scaleNotes, scaleIntervalLabels]);
+
     const playableDoubleStops = useMemo(() => {
         if (mode !== 'scale' || !isDoubleStopActive) return [];
 
-        // Use active scale notes (without modifiers) to find diatonic pairs
-        const diatonicPairs = getDiatonicDoubleStops(scaleNotes, doubleStopInterval);
-        return getPlayableDoubleStopsOnStrings(diatonicPairs, selectedKey, TUNING, doubleStopStrings);
-    }, [mode, isDoubleStopActive, scaleNotes, doubleStopInterval, doubleStopStrings, selectedKey]);
+        return getPlayableDoubleStopsOnStrings(
+            harmonicDoubleStopPairsByInterval[doubleStopInterval],
+            selectedKey,
+            TUNING,
+            doubleStopStrings
+        );
+    }, [mode, isDoubleStopActive, harmonicDoubleStopPairsByInterval, doubleStopInterval, doubleStopStrings, selectedKey]);
 
     // --- Chord Tone Highlighting ---
     const currentChordTones = useMemo(() => {
@@ -848,16 +864,23 @@ export default function ClientApp() {
                                                 <div className="flex flex-col gap-2">
                                                     <span className="text-[8px] font-black uppercase text-white/30 tracking-widest">Interval</span>
                                                     <div className="flex gap-2">
-                                                        {[3, 4, 6].map(int => (
-                                                            <button key={int}
-                                                                onClick={() => {
-                                                                    setDoubleStopInterval(int);
-                                                                    setDoubleStopStrings(int === 6 ? [0, 2] : [0, 1]);
-                                                                }}
-                                                                className={`flex-1 py-1.5 text-[9px] font-black rounded-lg border transition-all ${doubleStopInterval === int ? 'bg-white/10 text-white border-white/30 shadow-lg' : 'border-white/5 text-white/30 hover:text-white/70'}`}>
-                                                                {int}{int === 3 ? 'rd' : 'th'}
-                                                            </button>
-                                                        ))}
+                                                        {([3, 4, 6] as HarmonicInterval[]).map((int) => {
+                                                            const hasValidPairs = harmonicDoubleStopPairsByInterval[int].length > 0;
+
+                                                            return (
+                                                                <button
+                                                                    key={int}
+                                                                    disabled={!hasValidPairs}
+                                                                    onClick={() => {
+                                                                        setDoubleStopInterval(int);
+                                                                        setDoubleStopStrings(int === 6 ? [0, 2] : [0, 1]);
+                                                                    }}
+                                                                    className={`flex-1 py-1.5 text-[9px] font-black rounded-lg border transition-all ${!hasValidPairs ? 'border-white/5 text-white/15 cursor-not-allowed opacity-40' : doubleStopInterval === int ? 'bg-white/10 text-white border-white/30 shadow-lg' : 'border-white/5 text-white/30 hover:text-white/70'}`}
+                                                                >
+                                                                    {int}{int === 3 ? 'rd' : 'th'}
+                                                                </button>
+                                                            );
+                                                        })}
                                                     </div>
                                                 </div>
 

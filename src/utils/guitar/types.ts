@@ -26,10 +26,12 @@ export interface Fingering {
     label?: string;
 }
 
+export type HarmonicInterval = 3 | 4 | 6;
+
 export interface DoubleStopPair {
     rootNoteIdx: number;
     targetNoteIdx: number;
-    interval: number;
+    interval: HarmonicInterval;
 }
 
 export interface PlayableDoubleStop {
