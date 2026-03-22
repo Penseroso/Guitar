@@ -1,0 +1,37 @@
+import React from 'react';
+import { buildScaleId, getRelatedScales } from '../../../utils/guitar/scaleSelector';
+import { RelatedScaleChip } from './RelatedScaleChip';
+
+interface RelatedScalesRailProps {
+    selectedScaleGroup: string;
+    selectedScaleName: string;
+    onScaleChange: (group: string, name: string) => void;
+}
+
+export const RelatedScalesRail: React.FC<RelatedScalesRailProps> = ({
+    selectedScaleGroup,
+    selectedScaleName,
+    onScaleChange,
+}) => {
+    const relatedScales = getRelatedScales(buildScaleId(selectedScaleGroup, selectedScaleName));
+
+    return (
+        <div className="flex flex-col gap-3">
+            <div className="flex items-center justify-between gap-3">
+                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">Related Scales</span>
+                <span className="text-[9px] text-white/25">cross-family jumps</span>
+            </div>
+            <div className="flex gap-2 overflow-x-auto pb-1">
+                {relatedScales.map((scale) => (
+                    <RelatedScaleChip
+                        key={scale.scaleId}
+                        group={scale.group}
+                        name={scale.name}
+                        isActive={scale.group === selectedScaleGroup && scale.name === selectedScaleName}
+                        onClick={() => onScaleChange(scale.group, scale.name)}
+                    />
+                ))}
+            </div>
+        </div>
+    );
+};
