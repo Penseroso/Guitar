@@ -1,11 +1,12 @@
 import React from 'react';
 import { Layers } from 'lucide-react';
 import {
+    SCALE_FAMILY_ORDER,
     getDefaultScaleForFamily,
     getVisibleScaleFamily,
     type VisibleScaleFamily,
 } from '../../../utils/guitar/scaleSelector';
-import { ScaleFamilyRail } from '../scale-selector/ScaleFamilyRail';
+import { SelectPill } from '../../ui/design-system/SelectPill';
 import { ScaleOrbit } from '../scale-selector/ScaleOrbit';
 
 interface ScaleSelectorPanelProps {
@@ -24,9 +25,14 @@ export const ScaleSelectorPanel: React.FC<ScaleSelectorPanelProps> = ({
         const nextScale = getDefaultScaleForFamily(family);
         onScaleChange(nextScale.group, nextScale.name);
     };
+    const activeFamily = getVisibleScaleFamily(selectedScaleGroup);
+    const familyOptions = SCALE_FAMILY_ORDER.map((family) => ({
+        value: family,
+        label: family,
+    }));
 
     return (
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-[2rem] p-7 flex flex-col gap-6 shadow-2xl relative w-full overflow-hidden">
+        <div className="bg-[#0a0a0a] border border-white/5 rounded-[2rem] p-7 flex flex-col gap-6 shadow-2xl relative w-full overflow-visible">
             <div className="absolute inset-0 opacity-[0.04] pointer-events-none bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.11),_transparent_42%)]" />
 
             <div className="relative z-10 flex items-center gap-2">
@@ -41,8 +47,13 @@ export const ScaleSelectorPanel: React.FC<ScaleSelectorPanelProps> = ({
                     onScaleChange={onScaleChange}
                 />
 
-                <div className="rounded-[1.75rem] border border-white/5 bg-white/[0.025] px-5 py-4 backdrop-blur-sm">
-                    <ScaleFamilyRail selectedScaleGroup={selectedScaleGroup} onSelectFamily={handleFamilyChange} />
+                <div className="flex justify-center">
+                    <SelectPill
+                        value={activeFamily}
+                        onChange={(value) => handleFamilyChange(value as VisibleScaleFamily)}
+                        options={familyOptions}
+                        className="w-full max-w-[240px]"
+                    />
                 </div>
             </div>
         </div>
