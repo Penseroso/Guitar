@@ -400,6 +400,8 @@ export default function ClientApp() {
     // --- State: Scale Mode ---
     const [scaleGroup, setScaleGroup] = useState('Diatonic Modes');
     const [scaleName, setScaleName] = useState('Ionian');
+    const [previewScaleGroup, setPreviewScaleGroup] = useState<string | null>(null);
+    const [previewScaleName, setPreviewScaleName] = useState<string | null>(null);
     const [showChordTones, setShowChordTones] = useState(false); // In scale mode, shows Triad of root
     const [blueNote, setBlueNote] = useState(false);
     const [sixthNote, setSixthNote] = useState(false);
@@ -446,55 +448,91 @@ export default function ClientApp() {
 
     // Actually the user said "시" (when changing), so watching key/scale is correct.
     // Adding `mode` ensures it resets if they change mode/key while in prog mode.
+    const hasPreview = previewScaleGroup !== null && previewScaleName !== null;
+    const effectiveScaleGroup = previewScaleGroup ?? scaleGroup;
+    const effectiveScaleName = previewScaleName ?? scaleName;
+
+    const isPreviewingScale = (group: string, name: string) =>
+        previewScaleGroup === group && previewScaleName === name;
+
+    const handleClearPreview = () => {
+        setPreviewScaleGroup(null);
+        setPreviewScaleName(null);
+    };
+
+    const commitScaleSelection = (group: string, name: string) => {
+        setScaleGroup(group);
+        setScaleName(name);
+        setBlueNote(false);
+        setSixthNote(false);
+        setSecondNote(false);
+        handleClearPreview();
+    };
+
+    const handleRelatedPreviewToggle = (group: string, name: string) => {
+        if (isPreviewingScale(group, name)) {
+            handleClearPreview();
+            return;
+        }
+
+        setPreviewScaleGroup(group);
+        setPreviewScaleName(name);
+    };
+
+    const handleApplyPreview = () => {
+        if (!previewScaleGroup || !previewScaleName) return;
+        commitScaleSelection(previewScaleGroup, previewScaleName);
+    };
+
     // --- Derived Data: Scales ---
     const activeScaleIntervals = useMemo(() => {
-        return SCALES[scaleGroup]?.[scaleName] || SCALES['Diatonic Modes']['Ionian'];
-    }, [scaleGroup, scaleName]);
+        return SCALES[effectiveScaleGroup]?.[effectiveScaleName] || SCALES['Diatonic Modes']['Ionian'];
+    }, [effectiveScaleGroup, effectiveScaleName]);
 
     const diatonicChords = useMemo(() => {
-        const modeData = generateModeData(scaleGroup, scaleName);
+        const modeData = generateModeData(effectiveScaleGroup, effectiveScaleName);
         return Object.entries(modeData).map(([interval, data]) => ({
             degree: data.role,
             color: data.color,
             interval: parseInt(interval)
         })).sort((a, b) => a.interval - b.interval);
-    }, [scaleGroup, scaleName]);
+    }, [effectiveScaleGroup, effectiveScaleName]);
 
     const scaleNotes = useMemo(() => {
         return activeScaleIntervals.map(interval => (selectedKey + interval) % 12);
     }, [selectedKey, activeScaleIntervals]);
 
     const scaleIntervalLabels = useMemo(() => {
-        return getScaleIntervalLabels(scaleGroup, scaleName);
-    }, [scaleGroup, scaleName]);
+        return getScaleIntervalLabels(effectiveScaleGroup, effectiveScaleName);
+    }, [effectiveScaleGroup, effectiveScaleName]);
 
     const scaleEngineIntervalLabels = useMemo(() => {
-        return getScaleEngineIntervalLabels(scaleGroup, scaleName);
-    }, [scaleGroup, scaleName]);
+        return getScaleEngineIntervalLabels(effectiveScaleGroup, effectiveScaleName);
+    }, [effectiveScaleGroup, effectiveScaleName]);
 
     const isDoubleStopAvailable = useMemo(() => {
-        return isDoubleStopSupported(scaleGroup, scaleName);
-    }, [scaleGroup, scaleName]);
+        return isDoubleStopSupported(effectiveScaleGroup, effectiveScaleName);
+    }, [effectiveScaleGroup, effectiveScaleName]);
 
     const isDoubleStopVisible = isDoubleStopAvailable && isDoubleStopActive;
 
-    const isPentatonic = scaleName.includes('Pentatonic');
+    const isPentatonic = effectiveScaleName.includes('Pentatonic');
 
     const modifierNotes = useMemo(() => {
         const mods = [];
         if (mode === 'scale') {
-            if (blueNote) {
+            if (blueNote && effectiveScaleName.includes('Pentatonic')) {
                 mods.push((selectedKey + 6) % 12);
             }
-            if (sixthNote) {
+            if (sixthNote && effectiveScaleName === 'Minor Pentatonic') {
                 mods.push((selectedKey + 9) % 12);
             }
-            if (secondNote) {
+            if (secondNote && effectiveScaleName === 'Minor Pentatonic') {
                 mods.push((selectedKey + 2) % 12);
             }
         }
         return mods;
-    }, [mode, blueNote, sixthNote, secondNote, selectedKey]);
+    }, [mode, blueNote, sixthNote, secondNote, selectedKey, effectiveScaleName]);
 
     // --- Derived Data: Chords ---
     const availableVoicings = useMemo(() => {
@@ -592,8 +630,8 @@ export default function ClientApp() {
     // --- Derived: Minor Mode detection for Picardy Third condition ---
     const isMinorMode = useMemo(() => {
         const minorKeywords = ['Minor', 'Aeolian', 'Dorian', 'Phrygian', 'Locrian'];
-        return minorKeywords.some(kw => scaleName.includes(kw));
-    }, [scaleName]);
+        return minorKeywords.some(kw => effectiveScaleName.includes(kw));
+    }, [effectiveScaleName]);
 
     // --- Derived: Cadence position (focused node is last in whole progression) ---
     const isCadencePosition = useMemo(() => {
@@ -776,6 +814,30 @@ export default function ClientApp() {
         }
     }, [mode, fingering, voicingIndex, selectedKey]);
 
+    useEffect(() => {
+        if (mode !== 'scale' || !hasPreview) return;
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                setPreviewScaleGroup(null);
+                setPreviewScaleName(null);
+            } else if (event.key === 'Enter' && previewScaleGroup && previewScaleName) {
+                setScaleGroup(previewScaleGroup);
+                setScaleName(previewScaleName);
+                setBlueNote(false);
+                setSixthNote(false);
+                setSecondNote(false);
+                setPreviewScaleGroup(null);
+                setPreviewScaleName(null);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [mode, hasPreview, previewScaleGroup, previewScaleName]);
+
     return (
         <div className="min-h-screen bg-[#050505] text-[#a0a0a0] selection:bg-white/20 p-8 flex flex-col items-center gap-12 overflow-x-hidden font-sans">
             <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -785,13 +847,7 @@ export default function ClientApp() {
                     onKeyChange={setSelectedKey}
                     selectedScaleGroup={scaleGroup}
                     selectedScaleName={scaleName}
-                    onScaleChange={(g, n) => {
-                        setScaleGroup(g);
-                        setScaleName(n);
-                        setBlueNote(false);
-                        setSixthNote(false);
-                        setSecondNote(false);
-                    }}
+                    onScaleChange={commitScaleSelection}
                     showChordTones={showChordTones}
                     onToggleChordTones={() => setShowChordTones(p => !p)}
                     showIntervals={showIntervals}
@@ -837,12 +893,15 @@ export default function ClientApp() {
                         <div className="relative z-10 w-full flex flex-col gap-6">
                             <div className="px-6">
                                 <RelatedScalesStrip
-                                    selectedScaleGroup={scaleGroup}
-                                    selectedScaleName={scaleName}
-                                    onScaleChange={(g, n) => {
-                                        setScaleGroup(g);
-                                        setScaleName(n);
-                                    }}
+                                    sourceScaleGroup={effectiveScaleGroup}
+                                    sourceScaleName={effectiveScaleName}
+                                    committedScaleGroup={scaleGroup}
+                                    committedScaleName={scaleName}
+                                    previewScaleGroup={previewScaleGroup}
+                                    previewScaleName={previewScaleName}
+                                    onPreviewToggle={handleRelatedPreviewToggle}
+                                    onApplyPreview={handleApplyPreview}
+                                    onClearPreview={handleClearPreview}
                                 />
                             </div>
 
@@ -860,7 +919,7 @@ export default function ClientApp() {
                                     {isPentatonic && (
                                         <TogglePill label="Add Blue Note" isActive={blueNote} onToggle={() => setBlueNote(p => !p)} />
                                     )}
-                                    {isPentatonic && scaleName === "Minor Pentatonic" && (
+                                    {isPentatonic && effectiveScaleName === "Minor Pentatonic" && (
                                         <>
                                             <TogglePill label="Add 2 (9th)" isActive={secondNote} onToggle={() => setSecondNote(p => !p)} />
                                             <TogglePill label="Add 6th Note" isActive={sixthNote} onToggle={() => setSixthNote(p => !p)} />
