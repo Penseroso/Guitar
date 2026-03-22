@@ -53,9 +53,11 @@ export const SCALE_REGISTRY: Record<string, ScaleRegistryGroup> = {
         'Locrian ♮2': { parent: 'Jazz Minor', rootOffsetIndex: 5 },
         'Altered scale': { parent: 'Jazz Minor', rootOffsetIndex: 6 } // Superlocrian
     },
-    'Symmetric & Others': {
+    'Symmetric': {
         'Diminished': { parent: 'Diminished', rootOffsetIndex: 0 },
-        'Whole Tone': { parent: 'Whole Tone', rootOffsetIndex: 0 },
+        'Whole Tone': { parent: 'Whole Tone', rootOffsetIndex: 0 }
+    },
+    'Pentatonic': {
         'Major Pentatonic': { parent: 'Major', rootOffsetIndex: 0, subset: [0, 2, 4, 7, 9] },
         'Minor Pentatonic': { parent: 'Major', rootOffsetIndex: 5, subset: [0, 3, 5, 7, 10] }
     }
@@ -143,9 +145,11 @@ export const SCALE_DISPLAY_FORMULAS: Record<string, ScaleFormulaGroup> = {
         'Locrian ♮2': toIntervalLabelMap(['1', '2', 'b3', '4', 'b5', 'b6', 'b7']),
         'Altered scale': toIntervalLabelMap(['1', 'b9', '#9', '3', '#11', 'b13', 'b7'])
     },
-    'Symmetric & Others': {
+    'Symmetric': {
         'Diminished': toIntervalLabelMap(['1', '2', 'b3', '4', 'b5', 'b6', '6', '7']),
-        'Whole Tone': toIntervalLabelMap(['1', '2', '3', '#4', '#5', 'b7']),
+        'Whole Tone': toIntervalLabelMap(['1', '2', '3', '#4', '#5', 'b7'])
+    },
+    'Pentatonic': {
         'Major Pentatonic': toIntervalLabelMap(['1', '2', '3', '5', '6']),
         'Minor Pentatonic': toIntervalLabelMap(['1', 'b3', '4', '5', 'b7'])
     }

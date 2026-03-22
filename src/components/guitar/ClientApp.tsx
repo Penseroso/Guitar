@@ -15,6 +15,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { Fretboard } from '../Fretboard';
 import { Controls } from './Controls';
 import { ChordGallery } from './ChordGallery';
+import { RelatedScalesStrip } from './scale-selector/RelatedScalesStrip';
 import { TogglePill } from '../ui/design-system/TogglePill';
 import { SlidersHorizontal } from 'lucide-react';
 import { ProgressionInspector } from '../../features/progression/components/ProgressionInspector';
@@ -806,6 +807,15 @@ export default function ClientApp() {
 
                     {mode === 'scale' && (
                         <div className="relative z-10 w-full flex flex-col gap-6">
+                            <RelatedScalesStrip
+                                selectedScaleGroup={scaleGroup}
+                                selectedScaleName={scaleName}
+                                onScaleChange={(g, n) => {
+                                    setScaleGroup(g);
+                                    setScaleName(n);
+                                }}
+                            />
+
                             {/* Visualizer Controls Dashboard */}
                             <div className="flex flex-col gap-4 bg-[#050505]/50 border border-white/5 rounded-3xl p-6 backdrop-blur-sm animate-in fade-in slide-in-from-top-4 duration-500">
                                 <div className="flex items-center gap-2 border-b border-white/5 pb-3 mb-2">

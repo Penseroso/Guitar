@@ -2,13 +2,13 @@ import React from 'react';
 import { buildScaleId, getRelatedScales } from '../../../utils/guitar/scaleSelector';
 import { RelatedScaleChip } from './RelatedScaleChip';
 
-interface RelatedScalesRailProps {
+interface RelatedScalesStripProps {
     selectedScaleGroup: string;
     selectedScaleName: string;
     onScaleChange: (group: string, name: string) => void;
 }
 
-export const RelatedScalesRail: React.FC<RelatedScalesRailProps> = ({
+export const RelatedScalesStrip: React.FC<RelatedScalesStripProps> = ({
     selectedScaleGroup,
     selectedScaleName,
     onScaleChange,
