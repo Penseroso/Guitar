@@ -807,14 +807,16 @@ export default function ClientApp() {
 
                     {mode === 'scale' && (
                         <div className="relative z-10 w-full flex flex-col gap-6">
-                            <RelatedScalesStrip
-                                selectedScaleGroup={scaleGroup}
-                                selectedScaleName={scaleName}
-                                onScaleChange={(g, n) => {
-                                    setScaleGroup(g);
-                                    setScaleName(n);
-                                }}
-                            />
+                            <div className="px-6">
+                                <RelatedScalesStrip
+                                    selectedScaleGroup={scaleGroup}
+                                    selectedScaleName={scaleName}
+                                    onScaleChange={(g, n) => {
+                                        setScaleGroup(g);
+                                        setScaleName(n);
+                                    }}
+                                />
+                            </div>
 
                             {/* Visualizer Controls Dashboard */}
                             <div className="flex flex-col gap-4 bg-[#050505]/50 border border-white/5 rounded-3xl p-6 backdrop-blur-sm animate-in fade-in slide-in-from-top-4 duration-500">

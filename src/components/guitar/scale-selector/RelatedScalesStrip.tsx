@@ -17,9 +17,8 @@ export const RelatedScalesStrip: React.FC<RelatedScalesStripProps> = ({
 
     return (
         <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
                 <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">Related Scales</span>
-                <span className="text-[9px] text-white/25">cross-family jumps</span>
             </div>
             <div className="flex gap-2 overflow-x-auto pb-1">
                 {relatedScales.map((scale) => (
