@@ -31,3 +31,20 @@ export {
     getChordRegistryEntryBySymbol,
     getChordRegistryEntryByLegacyType,
 } from './registry';
+
+export type { BuildChordDefinitionOptions } from './helpers';
+
+export {
+    normalizePitchClass,
+    getChordRegistryEntryOrThrow,
+    resolveChordRegistryEntry,
+    buildChordDefinitionFromRegistryEntry,
+    buildChordDefinitionById,
+    buildChordTonesFromRegistryEntry,
+    buildChordTonesById,
+    getRequiredChordDegrees,
+    getOptionalChordDegrees,
+    getRequiredChordTones,
+    getOptionalChordTones,
+    getChordRegistryEntryFromLegacyTypeOrThrow,
+} from './helpers';
