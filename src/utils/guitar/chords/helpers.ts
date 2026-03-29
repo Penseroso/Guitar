@@ -132,7 +132,7 @@ function deriveChordToneRole(entry: ChordRegistryEntry, degree: string): ChordTo
     if (degree === '1') return 'root';
 
     if (entry.id === 'sus2' || entry.id === 'sus4') {
-        if (degree === '2' || degree === '4') return 'alteration';
+        if (degree === '2' || degree === '4') return 'suspension';
     }
 
     if (degree === 'b3' || degree === '3') return 'third';

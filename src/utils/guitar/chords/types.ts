@@ -6,7 +6,7 @@ export interface ChordTone {
     interval: number;
     pitchClass: PitchClass;
     isRequired?: boolean;
-    role?: 'root' | 'third' | 'fifth' | 'seventh' | 'extension' | 'alteration';
+    role?: 'root' | 'third' | 'fifth' | 'seventh' | 'extension' | 'alteration' | 'suspension';
 }
 
 export interface ChordTones {

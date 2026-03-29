@@ -78,7 +78,7 @@ function createChordRegistryEntry(config: {
                     interval,
                     pitchClass: (NORMALIZED_ROOT_PITCH_CLASS + interval) % 12,
                     isRequired: degree !== '5',
-                    role: getChordToneRole(degree),
+                    role: getChordToneRole(degree, config.id),
                 };
             }),
         },
@@ -87,8 +87,9 @@ function createChordRegistryEntry(config: {
     };
 }
 
-function getChordToneRole(degree: string): 'root' | 'third' | 'fifth' | 'seventh' | 'extension' | 'alteration' {
+function getChordToneRole(degree: string, chordId?: string): 'root' | 'third' | 'fifth' | 'seventh' | 'extension' | 'alteration' | 'suspension' {
     if (degree === '1') return 'root';
+    if ((chordId === 'sus2' || chordId === 'sus4') && (degree === '2' || degree === '4')) return 'suspension';
     if (degree === 'b3' || degree === '3' || degree === '2' || degree === '4') return 'third';
     if (degree === 'b5' || degree === '5' || degree === '#5') return 'fifth';
     if (degree === '6' || degree === 'b7' || degree === '7') return 'seventh';
