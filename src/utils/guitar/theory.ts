@@ -10,12 +10,16 @@ export interface ProgressionData {
 
 export const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 export const NOTES_FLAT = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
-export const TUNING = [4, 11, 7, 2, 9, 4]; // E2, B3, G3, D3, A2, E2 (High to Low strings 1-6)
-export const STRING_MIDI_PITCHES = [64, 59, 55, 50, 45, 40]; // Absolute MIDI pitches for standard tuning (High E to Low E)
 
 import { SCALES } from './scales';
 
 export { SCALES };
+export {
+    STANDARD_GUITAR_TUNING_PITCH_CLASSES,
+    STANDARD_GUITAR_STRING_MIDI_PITCHES,
+    TUNING,
+    STRING_MIDI_PITCHES,
+} from './tuning';
 export {
     GENERIC_SCALE_INTERVAL_LABELS,
     generateModeData,
