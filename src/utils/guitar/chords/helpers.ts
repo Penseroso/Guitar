@@ -1,4 +1,5 @@
 import { getChordRegistryEntry, getChordRegistryEntryByLegacyType, getChordRegistryEntryBySymbol, ChordRegistryEntry } from './registry';
+import { deriveChordToneRole, isRequiredChordDegree } from './semantics';
 import { ChordDefinition, ChordTone, ChordTones, PitchClass } from './types';
 
 export interface BuildChordDefinitionOptions {
@@ -107,39 +108,4 @@ export function getChordRegistryEntryFromLegacyTypeOrThrow(legacyType: string): 
     }
 
     return entry;
-}
-
-function isRequiredChordDegree(entry: ChordRegistryEntry, degree: string): boolean {
-    if (degree === '1') return true;
-
-    if (entry.id === 'power-5') {
-        return degree === '5';
-    }
-
-    if (entry.id === 'sus2' || entry.id === 'sus4') {
-        return degree !== '5';
-    }
-
-    if (degree === '3' || degree === 'b3' || degree === '2' || degree === '4') return true;
-    if (degree === '7' || degree === 'b7' || degree === '6') return true;
-
-    if (degree === 'b9' || degree === '#9') return true;
-
-    return false;
-}
-
-function deriveChordToneRole(entry: ChordRegistryEntry, degree: string): ChordTone['role'] {
-    if (degree === '1') return 'root';
-
-    if (entry.id === 'sus2' || entry.id === 'sus4') {
-        if (degree === '2' || degree === '4') return 'suspension';
-    }
-
-    if (degree === 'b3' || degree === '3') return 'third';
-    if (degree === '5' || degree === 'b5' || degree === '#5') return 'fifth';
-    if (degree === '6' || degree === 'b7' || degree === '7') return 'seventh';
-    if (degree === '9' || degree === '11' || degree === '13') return 'extension';
-    if (degree === '2' || degree === '4' || degree === 'b9' || degree === '#9') return 'alteration';
-
-    return 'alteration';
 }

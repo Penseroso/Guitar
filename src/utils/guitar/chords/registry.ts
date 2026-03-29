@@ -1,4 +1,5 @@
 import { ChordDefinition, ChordTones, GuitarStringIndex } from './types';
+import { buildNormalizedChordTonesForEntry } from './semantics';
 
 export type ChordFamilyId = 'triad' | 'seventh' | 'extended' | 'altered';
 
@@ -47,7 +48,7 @@ function createChordRegistryEntry(config: {
     voicingHint?: VoicingTemplateHint;
     tags?: string[];
 }): ChordRegistryEntry {
-    return {
+    const entry: ChordRegistryEntry = {
         id: config.id,
         symbol: config.symbol,
         displayName: config.displayName,
@@ -71,30 +72,15 @@ function createChordRegistryEntry(config: {
         normalizedTones: {
             rootPitchClass: NORMALIZED_ROOT_PITCH_CLASS,
             intervals: config.intervals,
-            tones: config.degrees.map((degree, index) => {
-                const interval = config.intervals[index];
-                return {
-                    degree,
-                    interval,
-                    pitchClass: (NORMALIZED_ROOT_PITCH_CLASS + interval) % 12,
-                    isRequired: degree !== '5',
-                    role: getChordToneRole(degree, config.id),
-                };
-            }),
+            tones: [],
         },
         voicingHint: config.voicingHint,
         tags: config.tags,
     };
-}
 
-function getChordToneRole(degree: string, chordId?: string): 'root' | 'third' | 'fifth' | 'seventh' | 'extension' | 'alteration' | 'suspension' {
-    if (degree === '1') return 'root';
-    if ((chordId === 'sus2' || chordId === 'sus4') && (degree === '2' || degree === '4')) return 'suspension';
-    if (degree === 'b3' || degree === '3' || degree === '2' || degree === '4') return 'third';
-    if (degree === 'b5' || degree === '5' || degree === '#5') return 'fifth';
-    if (degree === '6' || degree === 'b7' || degree === '7') return 'seventh';
-    if (degree === '9' || degree === '11' || degree === '13') return 'extension';
-    return 'alteration';
+    entry.normalizedTones.tones = buildNormalizedChordTonesForEntry(entry);
+
+    return entry;
 }
 
 export const CHORD_FAMILIES: ChordFamilyDefinition[] = [

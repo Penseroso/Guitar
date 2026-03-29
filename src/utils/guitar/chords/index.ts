@@ -48,3 +48,9 @@ export {
     getOptionalChordTones,
     getChordRegistryEntryFromLegacyTypeOrThrow,
 } from './helpers';
+
+export {
+    deriveChordToneRole,
+    isRequiredChordDegree,
+    buildNormalizedChordTonesForEntry,
+} from './semantics';
