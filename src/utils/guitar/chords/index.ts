@@ -54,3 +54,34 @@ export {
     isRequiredChordDegree,
     buildNormalizedChordTonesForEntry,
 } from './semantics';
+
+export {
+    buildVoicingTemplateFromLegacyShape,
+    getVoicingTemplatesForChord,
+    getVoicingTemplatesByLegacyType,
+} from './templates';
+
+export type { ResolveVoicingOptions } from './resolver';
+
+export {
+    resolveVoicingNote,
+    resolveVoicingTemplate,
+    resolveVoicingTemplates,
+    resolveVoicingTemplatesForChord,
+} from './resolver';
+
+export type {
+    VoicingScore,
+} from './ranking';
+
+export {
+    scoreResolvedVoicing,
+    buildVoicingCandidate,
+    rankVoicingCandidates,
+} from './ranking';
+
+export type { GetRankedVoicingsOptions } from './voicings';
+
+export {
+    getRankedVoicingsForChord,
+} from './voicings';
