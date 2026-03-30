@@ -15,6 +15,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { Fretboard } from '../Fretboard';
 import { Controls } from './Controls';
 import { ChordGallery } from './ChordGallery';
+import { ChordVoicingViewport } from './ChordVoicingViewport';
 import { RelatedScalesStrip } from './scale-selector/RelatedScalesStrip';
 import { TogglePill } from '../ui/design-system/TogglePill';
 import { SlidersHorizontal } from 'lucide-react';
@@ -993,7 +994,11 @@ export default function ClientApp() {
                     )}
 
                     {mode === 'chord' && (
-                        <div className="relative z-10 w-full mt-4">
+                        <div className="relative z-10 w-full mt-4 flex flex-col gap-8">
+                            <ChordVoicingViewport
+                                chordType={chordType}
+                                selectedKey={selectedKey}
+                            />
                             <ChordGallery
                                 availableVoicings={availableVoicings}
                                 selectedKey={selectedKey}

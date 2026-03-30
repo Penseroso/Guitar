@@ -70,10 +70,14 @@ export interface ResolvedVoicing {
     chord: ChordDefinition;
     template?: VoicingTemplate;
     notes: ResolvedVoicingNote[];
+    rootFret?: number;
+    positionIndex?: number;
     minFret: number;
     maxFret: number;
     span: number;
     playable: boolean;
+    missingRequiredDegrees?: string[];
+    omittedOptionalDegrees?: string[];
     omittedDegrees?: string[];
 }
 

@@ -64,17 +64,23 @@ export {
 export type { ResolveVoicingOptions } from './resolver';
 
 export {
+    getCandidateRootFretsForTemplate,
     resolveVoicingNote,
     resolveVoicingTemplate,
+    resolveVoicingTemplateAcrossPositions,
     resolveVoicingTemplates,
+    resolveVoicingTemplatesAcrossPositions,
     resolveVoicingTemplatesForChord,
+    resolveVoicingTemplatesAcrossPositionsForChord,
 } from './resolver';
 
 export type {
+    VoicingShapeMetrics,
     VoicingScore,
 } from './ranking';
 
 export {
+    getVoicingShapeMetrics,
     scoreResolvedVoicing,
     buildVoicingCandidate,
     rankVoicingCandidates,

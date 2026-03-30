@@ -19,6 +19,11 @@ export interface ResolveVoicingOptions {
     tuning?: PitchClass[];
     stringMidiPitches?: number[];
     constraints?: Partial<VoicingConstraints>;
+    rootFret?: number;
+    positionIndex?: number;
+    minRootFret?: number;
+    maxRootFret?: number;
+    maxPositionsPerTemplate?: number;
 }
 
 function buildTonePitchClassMap(tones: ChordTones): Map<number, ChordTones['tones'][number][]> {
@@ -60,12 +65,49 @@ function getRootFretForTemplate(
     return normalizePitchClass(rootPitchClass - tuning[rootString]);
 }
 
+function getTemplateRootString(template: VoicingTemplate): number {
+    return template.rootString ?? template.strings.find((stringValue) => stringValue.toneDegree === '1')?.string ?? 5;
+}
+
 function collectPlayedDegrees(notes: ResolvedVoicingNote[]): Set<string> {
     return new Set(
         notes
             .filter((note) => !note.isMuted && note.degree)
             .map((note) => note.degree as string)
     );
+}
+
+function getVoicingSignature(notes: ResolvedVoicingNote[]): string {
+    return notes
+        .map((note) => `${note.string}:${note.isMuted ? 'x' : note.fret}`)
+        .join('|');
+}
+
+export function getCandidateRootFretsForTemplate(
+    chord: ChordDefinition,
+    template: VoicingTemplate,
+    options: ResolveVoicingOptions = {}
+): number[] {
+    const tuning = options.tuning ?? STANDARD_GUITAR_TUNING_PITCH_CLASSES;
+    const minRootFret = options.minRootFret ?? 0;
+    const maxRootFret = options.maxRootFret ?? 15;
+    const maxPositionsPerTemplate = options.maxPositionsPerTemplate ?? Number.POSITIVE_INFINITY;
+    const baseRootFret = getRootFretForTemplate(chord.rootPitchClass, getTemplateRootString(template), tuning);
+    const rootFrets: number[] = [];
+
+    for (let rootFret = baseRootFret; rootFret <= maxRootFret; rootFret += 12) {
+        if (rootFret < minRootFret) {
+            continue;
+        }
+
+        rootFrets.push(rootFret);
+
+        if (rootFrets.length >= maxPositionsPerTemplate) {
+            break;
+        }
+    }
+
+    return rootFrets;
 }
 
 export function resolveVoicingNote(args: {
@@ -115,8 +157,8 @@ export function resolveVoicingTemplate(
 ): ResolvedVoicing {
     const tuning = options.tuning ?? STANDARD_GUITAR_TUNING_PITCH_CLASSES;
     const constraints = options.constraints ?? {};
-    const rootString = template.rootString ?? template.strings.find((stringValue) => stringValue.toneDegree === '1')?.string ?? 5;
-    const rootFret = getRootFretForTemplate(chord.rootPitchClass, rootString, tuning);
+    const rootString = getTemplateRootString(template);
+    const rootFret = options.rootFret ?? getRootFretForTemplate(chord.rootPitchClass, rootString, tuning);
     const tonePitchClassMap = buildTonePitchClassMap(tones);
     const notes = template.strings
         .map((templateString) =>
@@ -138,9 +180,15 @@ export function resolveVoicingTemplate(
     const maxFret = playedFrets.length > 0 ? Math.max(...playedFrets) : 0;
     const span = playedFrets.length > 0 ? maxFret - minFret : 0;
     const playedDegrees = collectPlayedDegrees(notes);
-    const omittedDegrees = tones.tones
+    const missingRequiredDegrees = tones.tones
+        .filter((tone) => tone.isRequired)
         .map((tone) => tone.degree)
         .filter((degree) => !playedDegrees.has(degree));
+    const omittedOptionalDegrees = tones.tones
+        .filter((tone) => !tone.isRequired)
+        .map((tone) => tone.degree)
+        .filter((degree) => !playedDegrees.has(degree));
+    const omittedDegrees = [...missingRequiredDegrees, ...omittedOptionalDegrees];
     const hasInvalidFrets = playedFrets.some((fret) => fret < 0);
     const violatesConstraintRange = (
         (constraints.minFret !== undefined && playedFrets.some((fret) => fret < constraints.minFret!)) ||
@@ -149,18 +197,26 @@ export function resolveVoicingTemplate(
         (constraints.allowOpenStrings === false && playedFrets.some((fret) => fret === 0)) ||
         (constraints.allowedRootsOnStrings !== undefined &&
             template.rootString !== undefined &&
-            !constraints.allowedRootsOnStrings.includes(template.rootString))
+            !constraints.allowedRootsOnStrings.includes(template.rootString)) ||
+        (constraints.requiredDegrees !== undefined &&
+            constraints.requiredDegrees.some((degree) => !playedDegrees.has(degree))) ||
+        (constraints.omittedDegrees !== undefined &&
+            constraints.omittedDegrees.some((degree) => playedDegrees.has(degree)))
     );
 
     return {
-        id: `${chord.id}:${chord.rootPitchClass}:${template.id}`,
+        id: `${chord.id}:${chord.rootPitchClass}:${template.id}:${rootFret}`,
         chord,
         template,
         notes,
+        rootFret,
+        positionIndex: options.positionIndex ?? 0,
         minFret,
         maxFret,
         span,
         playable: playedNotes.length > 0 && !hasInvalidFrets && !violatesConstraintRange,
+        missingRequiredDegrees,
+        omittedOptionalDegrees,
         omittedDegrees,
     };
 }
@@ -174,6 +230,44 @@ export function resolveVoicingTemplates(
     return templates.map((template) => resolveVoicingTemplate(chord, tones, template, options));
 }
 
+export function resolveVoicingTemplateAcrossPositions(
+    chord: ChordDefinition,
+    tones: ChordTones,
+    template: VoicingTemplate,
+    options: ResolveVoicingOptions = {}
+): ResolvedVoicing[] {
+    const rootFrets = getCandidateRootFretsForTemplate(chord, template, options);
+    const seen = new Set<string>();
+    const resolvedVoicings: ResolvedVoicing[] = [];
+
+    for (const [index, rootFret] of rootFrets.entries()) {
+        const resolved = resolveVoicingTemplate(chord, tones, template, {
+            ...options,
+            rootFret,
+            positionIndex: index,
+        });
+        const signature = getVoicingSignature(resolved.notes);
+
+        if (seen.has(signature)) {
+            continue;
+        }
+
+        seen.add(signature);
+        resolvedVoicings.push(resolved);
+    }
+
+    return resolvedVoicings;
+}
+
+export function resolveVoicingTemplatesAcrossPositions(
+    chord: ChordDefinition,
+    tones: ChordTones,
+    templates: VoicingTemplate[],
+    options: ResolveVoicingOptions = {}
+): ResolvedVoicing[] {
+    return templates.flatMap((template) => resolveVoicingTemplateAcrossPositions(chord, tones, template, options));
+}
+
 export function resolveVoicingTemplatesForChord(
     entry: ChordRegistryEntry,
     rootPitchClass: number,
@@ -184,4 +278,16 @@ export function resolveVoicingTemplatesForChord(
     const tones = buildChordTonesFromRegistryEntry(entry, rootPitchClass);
 
     return resolveVoicingTemplates(chord, tones, templates, options);
+}
+
+export function resolveVoicingTemplatesAcrossPositionsForChord(
+    entry: ChordRegistryEntry,
+    rootPitchClass: number,
+    templates: VoicingTemplate[],
+    options: ResolveVoicingOptions = {}
+): ResolvedVoicing[] {
+    const chord = buildChordDefinitionFromRegistryEntry(entry, rootPitchClass);
+    const tones = buildChordTonesFromRegistryEntry(entry, rootPitchClass);
+
+    return resolveVoicingTemplatesAcrossPositions(chord, tones, templates, options);
 }

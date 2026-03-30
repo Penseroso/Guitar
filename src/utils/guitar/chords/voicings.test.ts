@@ -1,8 +1,16 @@
 import { describe, expect, it } from 'vitest';
 
-import { resolveChordRegistryEntry } from './helpers';
-import { buildVoicingCandidate } from './ranking';
-import { resolveVoicingTemplate } from './resolver';
+import {
+    buildChordDefinitionFromRegistryEntry,
+    buildChordTonesFromRegistryEntry,
+    resolveChordRegistryEntry,
+} from './helpers';
+import { buildVoicingCandidate, rankVoicingCandidates } from './ranking';
+import {
+    getCandidateRootFretsForTemplate,
+    resolveVoicingTemplate,
+    resolveVoicingTemplateAcrossPositions,
+} from './resolver';
 import { getVoicingTemplatesForChord } from './templates';
 import { getRankedVoicingsForChord } from './voicings';
 
@@ -27,12 +35,8 @@ describe('voicing resolution', () => {
     it('resolves a barred C major shape into concrete fretboard notes', () => {
         const entry = resolveChordRegistryEntry('major');
         const template = getVoicingTemplatesForChord(entry)[0];
-        const chord = { ...entry.definition, rootPitchClass: 0 };
-        const tones = {
-            rootPitchClass: 0,
-            intervals: [...entry.formula.intervals],
-            tones: entry.normalizedTones.tones.map((tone) => ({ ...tone })),
-        };
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
         const resolved = resolveVoicingTemplate(chord, tones, template);
 
         expect(resolved.playable).toBe(true);
@@ -40,25 +44,48 @@ describe('voicing resolution', () => {
         expect(resolved.minFret).toBe(8);
         expect(resolved.maxFret).toBe(10);
         expect(resolved.span).toBe(2);
+        expect(resolved.missingRequiredDegrees).toEqual([]);
+        expect(resolved.omittedOptionalDegrees).toEqual([]);
         expect(resolved.omittedDegrees).toEqual([]);
     });
 
     it('marks invalid negative-fret resolutions as non-playable instead of hiding them', () => {
         const entry = resolveChordRegistryEntry('major');
         const template = getVoicingTemplatesForChord(entry)[4];
-        const chord = { ...entry.definition, rootPitchClass: 9 };
-        const tones = {
-            rootPitchClass: 9,
-            intervals: [...entry.formula.intervals],
-            tones: entry.normalizedTones.tones.map((tone) => ({
-                ...tone,
-                pitchClass: (tone.pitchClass + 9) % 12,
-            })),
-        };
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 9);
+        const tones = buildChordTonesFromRegistryEntry(entry, 9);
         const resolved = resolveVoicingTemplate(chord, tones, template);
 
         expect(resolved.playable).toBe(false);
         expect(resolved.notes.filter((note) => !note.isMuted).some((note) => note.fret < 0)).toBe(true);
+    });
+
+    it('generates multiple neck positions for the same template in bounded ascending order', () => {
+        const entry = resolveChordRegistryEntry('major');
+        const template = getVoicingTemplatesForChord(entry)[0];
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 7);
+        const tones = buildChordTonesFromRegistryEntry(entry, 7);
+        const rootFrets = getCandidateRootFretsForTemplate(chord, template, { maxRootFret: 15 });
+        const resolved = resolveVoicingTemplateAcrossPositions(chord, tones, template, { maxRootFret: 15 });
+
+        expect(rootFrets).toEqual([3, 15]);
+        expect(resolved.map((voicing) => voicing.rootFret)).toEqual([3, 15]);
+        expect(resolved.every((voicing) => voicing.playable)).toBe(true);
+    });
+
+    it('keeps invalid lower positions explicit without outranking valid higher positions', () => {
+        const entry = resolveChordRegistryEntry('major');
+        const template = getVoicingTemplatesForChord(entry)[4];
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 9);
+        const tones = buildChordTonesFromRegistryEntry(entry, 9);
+        const resolved = resolveVoicingTemplateAcrossPositions(chord, tones, template, { maxRootFret: 12 });
+        const ranked = rankVoicingCandidates(resolved, entry, tones);
+
+        expect(ranked).toHaveLength(2);
+        expect(ranked[0].voicing.playable).toBe(true);
+        expect(ranked[0].voicing.rootFret).toBe(12);
+        expect(ranked[1].voicing.playable).toBe(false);
+        expect(ranked[1].voicing.rootFret).toBe(0);
     });
 });
 
@@ -78,6 +105,25 @@ describe('voicing ranking orchestration', () => {
         expect(topPlayable).toBeDefined();
         expect(topPlayable?.missingRequiredDegrees).not.toContain('9');
         expect(topPlayable?.matchedRequiredDegrees).toContain('1');
+        expect(topPlayable?.voicing.missingRequiredDegrees).not.toContain('9');
+    });
+
+    it('separates omitted optional tones from missing required tones for extended chords', () => {
+        const candidates = getRankedVoicingsForChord('dominant-13', 0);
+        const candidateWithOptionalOmissions = candidates.find(
+            (candidate) => candidate.voicing.playable && (candidate.voicing.omittedOptionalDegrees?.length ?? 0) > 0
+        );
+
+        expect(candidateWithOptionalOmissions).toBeDefined();
+        expect(candidateWithOptionalOmissions?.voicing.missingRequiredDegrees).toEqual([]);
+        expect(candidateWithOptionalOmissions?.voicing.omittedOptionalDegrees?.length).toBeGreaterThan(0);
+    });
+
+    it('keeps suspended identity tones treated as required through ranked voicings', () => {
+        const topCandidate = getRankedVoicingsForChord('sus4', 0, { includeNonPlayableCandidates: false })[0];
+
+        expect(topCandidate.missingRequiredDegrees).not.toContain('4');
+        expect(topCandidate.voicing.notes.some((note) => note.degree === '4')).toBe(true);
     });
 
     it('returns human-readable scoring reasons', () => {
