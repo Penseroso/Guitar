@@ -11,7 +11,6 @@ import {
     resolveChordRegistryEntry,
     type HarmonicTonalContext,
     type ProgressionHandoffPayload,
-    type VoicingCandidate,
 } from '../../utils/guitar/chords';
 import { CompactVoicingDiagram } from './chord-preview/CompactVoicingDiagram';
 import { ChordProgressionHintsPanel } from './chord-preview/ChordProgressionHintsPanel';
@@ -75,7 +74,7 @@ function renderViewportShell(
     return (
         <div className="rounded-[2rem] border border-white/5 bg-[#050505] p-6 flex flex-col gap-5">
             <div className="flex flex-col gap-2">
-                <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Future Engine Chord Preview</span>
+                <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">코드 해석</span>
                 <h3 className="text-2xl font-black tracking-tight text-white">{title}</h3>
                 <p className="max-w-3xl text-sm text-white/55">{description}</p>
             </div>
@@ -84,18 +83,10 @@ function renderViewportShell(
     );
 }
 
-function buildSelectionSummary(
-    activeCandidate: VoicingCandidate,
-    activeIndex: number,
-    candidateCount: number
-): string {
-    const presentation = getVoicingPresentationMeta(activeCandidate.voicing.template);
-    const positionLabel = activeCandidate.voicing.rootFret !== undefined
-        ? `@ ${activeCandidate.voicing.rootFret}fr`
-        : 'open position';
-    const rankLabel = `#${activeIndex + 1} of ${candidateCount}`;
-
-    return `${presentation.primaryLabel} ${positionLabel} · ${rankLabel}`;
+function buildSelectionSummary(primaryLabel: string, rootFret?: number): string {
+    return rootFret !== undefined
+        ? `${primaryLabel} · ${rootFret}프렛 포지션`
+        : `${primaryLabel} · 오픈 포지션`;
 }
 
 export function ChordVoicingViewport({
@@ -109,13 +100,6 @@ export function ChordVoicingViewport({
     tonalContext,
 }: ChordVoicingViewportProps) {
     const selectionKey = useMemo(() => getBridgeSelectionKey(chordType, selectedKey), [chordType, selectedKey]);
-    const [internalSelection, setInternalSelection] = useState<{
-        selectionKey: string;
-        candidateId: string | null;
-    }>({
-        selectionKey,
-        candidateId: null,
-    });
 
     const { candidates, errorMessage } = useMemo(() => {
         try {
@@ -128,18 +112,15 @@ export function ChordVoicingViewport({
             };
         } catch (error) {
             return {
-                candidates: [] as VoicingCandidate[],
+                candidates: [],
                 errorMessage: error instanceof Error ? error.message : 'Unknown future-engine resolution error.',
             };
         }
     }, [chordType, selectedKey]);
 
-    const requestedCandidateId = activeCandidateId ?? (
-        internalSelection.selectionKey === selectionKey ? internalSelection.candidateId : null
-    );
     const selection = useMemo(
-        () => resolveBridgeSelection(candidates, requestedCandidateId),
-        [candidates, requestedCandidateId]
+        () => resolveBridgeSelection(candidates, activeCandidateId ?? null),
+        [activeCandidateId, candidates]
     );
 
     useEffect(() => {
@@ -183,9 +164,9 @@ export function ChordVoicingViewport({
     if (errorMessage) {
         return renderViewportShell(
             chordLabel,
-            'The future-engine preview could not resolve a ranked voicing set. The legacy gallery remains available below while this bridge surface fails closed.',
+            '선택한 코드에서 바로 연주 가능한 보이싱을 고르지 못했습니다. 아래의 기존 보이싱 참고 영역은 계속 사용할 수 있습니다.',
             <div className="rounded-[1.5rem] border border-rose-500/20 bg-rose-500/10 px-4 py-4 text-sm text-rose-100">
-                <span className="font-black uppercase tracking-[0.2em] text-[10px] text-rose-200/80">Preview Fallback</span>
+                <span className="font-black uppercase tracking-[0.2em] text-[10px] text-rose-200/80">보이싱 안내</span>
                 <p className="mt-2 text-rose-100/85">{errorMessage}</p>
             </div>
         );
@@ -194,9 +175,9 @@ export function ChordVoicingViewport({
     if (!selection.activeCandidate) {
         return renderViewportShell(
             chordLabel,
-            'No future-engine candidates are currently available for this chord. The legacy gallery below remains the active chord-mode browser while the preview has nothing ranked to inspect.',
+            '이 코드에서는 아직 바로 보여줄 보이싱이 없습니다. 다른 키나 코드 타입을 선택하거나 아래의 기존 보이싱 참고 영역을 확인해 보세요.',
             <div className="rounded-[1.5rem] border border-white/5 bg-white/[0.03] px-4 py-4 text-sm text-white/65">
-                Try another key or chord family to repopulate the preview surface.
+                보이싱 후보가 생기면 이 영역에 해석과 연결 정보가 다시 표시됩니다.
             </div>
         );
     }
@@ -205,34 +186,24 @@ export function ChordVoicingViewport({
     const activePresentation = getVoicingPresentationMeta(activeCandidate.voicing.template);
     const conciseReasons = getReasonPreview(activeCandidate.reasons, 3);
     const defaultSelectionLabel = selection.selectionSource === 'requested'
-        ? 'Manual future-preview selection'
+        ? '직접 고른 보이싱'
         : selection.selectionSource === 'first-playable'
-            ? 'Defaulted to first playable candidate'
-            : 'Defaulted to first ranked fallback';
-
-    const handleSelectCandidate = (candidateId: string) => {
-        if (activeCandidateId === undefined) {
-            setInternalSelection({ selectionKey, candidateId });
-        }
-    };
-
-    const handleScaleSelect = (scaleId: string) => {
-        onScaleSelect?.(scaleId);
-    };
+            ? '가장 바로 잡기 쉬운 보이싱으로 시작'
+            : '현재 조건에서 가장 자연스러운 기본 보이싱';
 
     return (
         <div className="rounded-[2rem] border border-white/5 bg-[#050505] p-6 flex flex-col gap-6">
             <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
                 <div className="flex flex-col gap-2">
-                    <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Future Engine Chord Workspace</span>
+                    <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">연주 해석 프레임</span>
                     <div className="flex flex-wrap items-end gap-x-3 gap-y-2">
-                        <h3 className="text-3xl font-black text-white tracking-tight">{chordLabel}</h3>
+                        <h3 className="text-2xl font-black text-white tracking-tight">{chordLabel}</h3>
                         <span className="pb-1 text-[10px] font-black uppercase tracking-[0.3em] text-white/30">
-                            {candidates.length} ranked voicings
+                            현재 보이싱 해석
                         </span>
                     </div>
                     <p className="max-w-3xl text-sm text-white/55">
-                        Future-engine ranking stays separate from the legacy gallery below. Root {harmonicInterpretation.chordRootNoteName} is interpreted against tonic {harmonicInterpretation.tonicNoteName} as {harmonicInterpretation.relativeDegree}.
+                        루트 {harmonicInterpretation.chordRootNoteName}를 중심으로 현재 톤 센터 {harmonicInterpretation.tonicNoteName} 안에서 이 보이싱이 어떤 역할을 하는지 정리했습니다.
                     </p>
                 </div>
 
@@ -242,134 +213,77 @@ export function ChordVoicingViewport({
                             ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
                             : 'border-amber-500/30 bg-amber-500/10 text-amber-200'
                     }`}>
-                        {activeCandidate.voicing.playable ? 'Playable' : 'Fallback Candidate'}
+                        {activeCandidate.voicing.playable ? '연주 가능' : '대체 보이싱'}
                     </span>
                     <span className="px-3 py-1.5 rounded-full border border-cyan-300/20 bg-cyan-400/[0.05] text-[9px] font-black uppercase tracking-[0.25em] text-cyan-100/80">
                         {harmonicInterpretation.roleLabel}
                     </span>
+                    {selection.selectionSource !== 'requested' && (
+                        <span className="px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.04] text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
+                            추천
+                        </span>
+                    )}
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 xl:grid-cols-[220px_minmax(0,1fr)] gap-6">
-                <div className="rounded-[1.5rem] border border-white/5 bg-[#0a0a0a] p-4 flex items-center justify-center">
-                    <CompactVoicingDiagram voicing={activeCandidate.voicing} />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="rounded-[1.5rem] border border-white/5 bg-white/[0.02] p-4 flex flex-col gap-4">
-                        <div className="flex items-start justify-between gap-3">
-                            <div className="flex flex-col gap-1">
-                                <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">Selected Voicing</span>
-                                <span className="text-sm font-black text-white">
-                                    {buildSelectionSummary(activeCandidate, selection.activeIndex, candidates.length)}
-                                </span>
-                                {activePresentation.secondaryLabel && (
-                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/35">
-                                        {activePresentation.secondaryLabel}
-                                    </span>
-                                )}
-                            </div>
-                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/45">
-                                Score {activeCandidate.score}
+            <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] gap-4">
+                <div className="rounded-[1.5rem] border border-white/5 bg-white/[0.02] p-4 flex flex-col gap-4">
+                    <div className="flex items-start justify-between gap-3">
+                        <div className="flex flex-col gap-1">
+                            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">현재 보이싱</span>
+                            <span className="text-sm font-black text-white">
+                                {buildSelectionSummary(activePresentation.primaryLabel, activeCandidate.voicing.rootFret)}
                             </span>
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div className="rounded-2xl border border-cyan-300/20 bg-cyan-400/[0.05] px-3 py-3">
-                                <span className="text-[8px] font-black uppercase tracking-[0.3em] text-cyan-100/70">Function</span>
-                                <div className="mt-1 text-sm font-semibold text-cyan-50">{harmonicInterpretation.relativeDegree} · {harmonicInterpretation.roleLabel}</div>
-                                <p className="mt-1 text-xs text-cyan-50/80">{harmonicInterpretation.summary}</p>
-                            </div>
-                            <div className="rounded-2xl border border-white/5 bg-black/20 px-3 py-3">
-                                <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">Selection Policy</span>
-                                <p className="mt-1 text-xs font-semibold text-white/70">{defaultSelectionLabel}</p>
-                            </div>
-                            {renderDegreeList('Missing Required', activeCandidate.voicing.missingRequiredDegrees, 'None', 'danger')}
-                            {renderDegreeList('Omitted Optional', activeCandidate.voicing.omittedOptionalDegrees, 'None', 'warning')}
-                            {renderDegreeList('Matched Required', activeCandidate.matchedRequiredDegrees, 'None')}
-                            <div className="flex flex-col gap-1 rounded-2xl border border-white/5 bg-black/20 px-3 py-3">
-                                <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">Shape</span>
-                                <span className="text-xs font-semibold text-white/75">
-                                    Span {activeCandidate.voicing.span} · {activePresentation.secondaryLabel ?? activePresentation.primaryLabel}
+                            {activePresentation.secondaryLabel && (
+                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/35">
+                                    {activePresentation.secondaryLabel}
                                 </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="rounded-[1.5rem] border border-white/5 bg-white/[0.02] p-4 flex flex-col gap-3">
-                        <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">Ranking Snapshot</span>
-                        <div className="flex flex-col gap-2">
-                            {conciseReasons.map((reason) => (
-                                <div key={reason} className="text-xs text-white/70 border border-white/5 bg-black/20 rounded-xl px-3 py-2">
-                                    {reason}
-                                </div>
-                            ))}
-                            {conciseReasons.length === 0 && (
-                                <div className="text-xs text-white/45 border border-white/5 bg-black/20 rounded-xl px-3 py-2">
-                                    No concise ranking notes were generated for this candidate.
-                                </div>
                             )}
                         </div>
+                        <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
+                            {defaultSelectionLabel}
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div className="rounded-2xl border border-cyan-300/20 bg-cyan-400/[0.05] px-3 py-3">
+                            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-cyan-100/70">기능</span>
+                            <div className="mt-1 text-sm font-semibold text-cyan-50">{harmonicInterpretation.relativeDegree} · {harmonicInterpretation.roleLabel}</div>
+                            <p className="mt-1 text-xs text-cyan-50/80">{harmonicInterpretation.summary}</p>
+                        </div>
+                        <div className="flex flex-col gap-1 rounded-2xl border border-white/5 bg-black/20 px-3 py-3">
+                            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">보이싱 정보</span>
+                            <span className="text-xs font-semibold text-white/75">
+                                {activePresentation.primaryLabel} · {activeCandidate.voicing.rootFret ?? 0}프렛 시작
+                            </span>
+                            <span className="text-xs text-white/55">
+                                프렛 간격 {activeCandidate.voicing.span}
+                            </span>
+                        </div>
+                        {renderDegreeList('빠진 필수 톤', activeCandidate.voicing.missingRequiredDegrees, '없음', 'danger')}
+                        {renderDegreeList('생략한 선택 톤', activeCandidate.voicing.omittedOptionalDegrees, '없음', 'warning')}
+                        {renderDegreeList('포함된 핵심 톤', activeCandidate.matchedRequiredDegrees, '없음')}
                     </div>
                 </div>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
-                {candidates.map((candidate, index) => {
-                    const isSelected = candidate.voicing.id === selection.activeCandidateId;
-                    const isDefaultCandidate = selection.selectionSource !== 'requested' && candidate.voicing.id === selection.activeCandidateId;
-                    const presentation = getVoicingPresentationMeta(candidate.voicing.template);
-
-                    return (
-                        <button
-                            key={candidate.voicing.id}
-                            onClick={() => handleSelectCandidate(candidate.voicing.id)}
-                            className={`text-left rounded-[1.25rem] border p-4 transition-all ${
-                                isSelected
-                                    ? 'border-white/30 bg-white/10'
-                                    : 'border-white/5 bg-white/[0.02] hover:border-white/15 hover:bg-white/[0.04]'
-                            }`}
-                        >
-                            <div className="flex items-start justify-between gap-3 mb-3">
-                                <div className="flex flex-col gap-1">
-                                    <span className="text-xs font-black text-white">{presentation.primaryLabel}</span>
-                                    {presentation.secondaryLabel && (
-                                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/35">
-                                            {presentation.secondaryLabel}
-                                        </span>
-                                    )}
-                                    <span className="text-[10px] font-black uppercase tracking-[0.25em] text-white/35">
-                                        {candidate.voicing.rootFret ?? 0}fr · #{index + 1}
-                                    </span>
-                                </div>
-                                <div className="flex flex-col items-end gap-1">
-                                    <span className="text-[10px] font-black text-white/60">{candidate.score}</span>
-                                    {index === 0 && (
-                                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white/35">Top ranked</span>
-                                    )}
-                                </div>
+                <div className="rounded-[1.5rem] border border-white/5 bg-white/[0.02] p-4 flex flex-col gap-3">
+                    <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">추천 이유</span>
+                    <div className="flex flex-col gap-2">
+                        {conciseReasons.map((reason) => (
+                            <div key={reason} className="text-xs text-white/70 border border-white/5 bg-black/20 rounded-xl px-3 py-2">
+                                {reason}
                             </div>
-
-                            <div className="flex flex-col gap-2 text-[11px] text-white/60">
-                                <span>
-                                    {(candidate.voicing.missingRequiredDegrees?.length ?? 0) > 0
-                                        ? `Missing ${candidate.voicing.missingRequiredDegrees?.join(', ')}`
-                                        : 'Required tones intact'}
-                                </span>
-                                <span>
-                                    {(candidate.voicing.omittedOptionalDegrees?.length ?? 0) > 0
-                                        ? `Optional omissions: ${candidate.voicing.omittedOptionalDegrees?.join(', ')}`
-                                        : 'No optional omissions'}
-                                </span>
-                                {isDefaultCandidate && (
-                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-300/80">
-                                        Bridge default
-                                    </span>
-                                )}
+                        ))}
+                        {conciseReasons.length === 0 && (
+                            <div className="text-xs text-white/45 border border-white/5 bg-black/20 rounded-xl px-3 py-2">
+                                이 보이싱을 고른 기준이 아직 충분히 정리되지 않았습니다.
                             </div>
-                        </button>
-                    );
-                })}
+                        )}
+                    </div>
+                    <div className="rounded-2xl border border-white/5 bg-black/20 p-3 flex items-center justify-center">
+                        <CompactVoicingDiagram voicing={activeCandidate.voicing} />
+                    </div>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
@@ -377,7 +291,7 @@ export function ChordVoicingViewport({
                     rootPitchClass={selectedKey}
                     suggestions={relatedScaleSuggestions}
                     activeScaleId={activeScaleId ?? null}
-                    onScaleSelect={handleScaleSelect}
+                    onScaleSelect={(scaleId) => onScaleSelect?.(scaleId)}
                 />
                 <ChordProgressionHintsPanel
                     context={progressionContext}
@@ -389,6 +303,3 @@ export function ChordVoicingViewport({
         </div>
     );
 }
-
-
-

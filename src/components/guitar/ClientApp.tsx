@@ -22,7 +22,13 @@ import { SlidersHorizontal } from 'lucide-react';
 import { ProgressionInspector } from '../../features/progression/components/ProgressionInspector';
 import { useProgressionAudio } from '../../features/progression/hooks/useProgressionAudio';
 import { getProgressionPlaybackData } from '../../features/progression/utils/getProgressionPlaybackData';
-import type { ProgressionHandoffPayload } from '../../utils/guitar/chords';
+import {
+    CHORD_REGISTRY_LIST,
+    getRankedVoicingsForChord,
+    resolveChordRegistryEntry,
+    type ProgressionHandoffPayload,
+    type ResolvedVoicing,
+} from '../../utils/guitar/chords';
 import {
     TUNING,
     SCALES,
@@ -41,13 +47,15 @@ import {
     getNoteName,
     degreeToChordName,
 } from '../../utils/guitar/logic';
-import { Mode, HarmonicFunction, Measure, ChordNode, HarmonicInterval } from '../../utils/guitar/types';
+import { Mode, HarmonicFunction, Measure, ChordNode, HarmonicInterval, Fingering } from '../../utils/guitar/types';
 import { useProgression } from '../../hooks/useProgression';
 import { applyDraftToProgressionDocument, type ProgressionDraftApplyMode } from '../../utils/guitar/progression';
 import {
     createHarmonicWorkspaceState,
     reduceHarmonicWorkspaceState,
 } from '../../features/harmonic-workspace/state';
+import { resolveBridgeSelection } from './chord-preview/bridge';
+import { getVoicingPresentationMeta } from './chord-preview/voicing-labels';
 
 
 
@@ -60,6 +68,54 @@ type ResizePreview = {
     direction: 'left' | 'right';
     delta: number;
 };
+
+const CHORD_TYPE_PRIORITY = [
+    'major',
+    'minor',
+    'major-7',
+    'minor-7',
+    'dominant-7',
+    'sus2',
+    'sus4',
+    'major-9',
+    'minor-9',
+    'dominant-9',
+    'dominant-13',
+    'power-5',
+    'half-diminished-7',
+    'diminished-7',
+    'hendrix-7-sharp-9',
+    'dominant-7-flat-9',
+] as const;
+
+const CHORD_SELECTOR_OPTIONS = CHORD_TYPE_PRIORITY.map((id) => {
+    const entry = CHORD_REGISTRY_LIST.find((item) => item.id === id);
+    if (!entry) {
+        return null;
+    }
+
+    return {
+        id: entry.id,
+        stateValue: entry.legacyType ?? entry.id,
+        label: entry.symbol || entry.displayName,
+        description: entry.displayName,
+    };
+}).filter((entry): entry is NonNullable<typeof entry> => entry !== null);
+
+function buildResolvedVoicingFingering(voicing?: ResolvedVoicing): Fingering[] | undefined {
+    if (!voicing) {
+        return undefined;
+    }
+
+    return voicing.notes
+        .filter((note) => !note.isMuted)
+        .map((note) => ({
+            string: note.string,
+            fret: note.fret,
+            noteIdx: note.pitchClass,
+            label: note.isRoot ? 'R' : note.degree,
+        }));
+}
 
 type DraggablePaletteItemProps = {
     degree: string;
@@ -570,6 +626,29 @@ export default function ClientApp() {
     const activeSelectedScaleId = harmonicWorkspace.selectedScaleId;
     const activeStagedProgression = harmonicWorkspace.stagedProgression;
     const activeDraftApplyMode = activeStagedProgression?.applyMode ?? 'replace';
+    const futureVoicingCandidates = useMemo(() => {
+        try {
+            return getRankedVoicingsForChord(chordType, selectedKey, {
+                maxRootFret: 15,
+                maxCandidates: 4,
+            });
+        } catch {
+            return [];
+        }
+    }, [chordType, selectedKey]);
+    const futureVoicingSelection = useMemo(
+        () => resolveBridgeSelection(futureVoicingCandidates, activeFutureVoicingId),
+        [activeFutureVoicingId, futureVoicingCandidates]
+    );
+    const activeFutureCandidate = futureVoicingSelection.activeCandidate;
+    const activeFutureVoicingFingering = useMemo(
+        () => buildResolvedVoicingFingering(activeFutureCandidate?.voicing),
+        [activeFutureCandidate]
+    );
+    const activeFuturePresentation = useMemo(
+        () => getVoicingPresentationMeta(activeFutureCandidate?.voicing.template),
+        [activeFutureCandidate]
+    );
 
     const handleFutureVoicingChange = useCallback(({ activeCandidateId, chordType, selectedKey }: {
         activeCandidateId: string | null;
@@ -582,6 +661,13 @@ export default function ClientApp() {
             candidateId: activeCandidateId,
         });
     }, []);
+    const handleSelectFutureVoicing = useCallback((candidateId: string) => {
+        dispatchHarmonicWorkspace({
+            type: 'select-candidate',
+            scopeKey: futureVoicingScopeKey,
+            candidateId,
+        });
+    }, [futureVoicingScopeKey]);
     const handleSelectWorkspaceScale = useCallback((scaleId: string) => {
         dispatchHarmonicWorkspace({
             type: 'select-scale',
@@ -634,6 +720,10 @@ export default function ClientApp() {
 
     const fingering = useMemo(() => {
         if (mode !== 'chord') return undefined;
+
+        if (activeFutureVoicingFingering && activeFutureVoicingFingering.length > 0) {
+            return activeFutureVoicingFingering;
+        }
 
         if (!currentVoicingShape) return undefined;
 
@@ -698,7 +788,7 @@ export default function ClientApp() {
         }
         */
 
-    }, [mode, currentVoicingShape, selectedKey]);
+    }, [activeFutureVoicingFingering, mode, currentVoicingShape, selectedKey]);
 
     // --- Derived Data: Progression ---
     const progressionData = useMemo(() => {
@@ -1082,6 +1172,149 @@ export default function ClientApp() {
 
                     {mode === 'chord' && (
                         <div className="relative z-10 w-full mt-4 flex flex-col gap-8">
+                            <div className="rounded-[2rem] border border-white/5 bg-[#050505] p-6 flex flex-col gap-6">
+                                <div className="flex flex-col gap-3">
+                                    <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">코드 선택</span>
+                                    <div className="flex flex-wrap gap-2">
+                                        {CHORD_SELECTOR_OPTIONS.map((option) => {
+                                            const isActive = chordType === option.stateValue;
+
+                                            return (
+                                                <button
+                                                    key={option.id}
+                                                    onClick={() => setChordType(option.stateValue)}
+                                                    className={`rounded-xl border px-4 py-3 text-left transition-all ${
+                                                        isActive
+                                                            ? 'border-cyan-200/50 bg-cyan-300/[0.12] text-cyan-50'
+                                                            : 'border-white/10 bg-white/[0.03] text-white/70 hover:border-white/20 hover:text-white'
+                                                    }`}
+                                                >
+                                                    <div className="text-sm font-black">{option.label}</div>
+                                                    <div className="text-[10px] font-black uppercase tracking-[0.18em] text-white/35">{option.description}</div>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                <div className="rounded-[2rem] border border-white/5 bg-white/[0.02] overflow-hidden">
+                                    <div className="px-6 py-5 flex flex-col gap-4 border-b border-white/5 xl:flex-row xl:items-end xl:justify-between">
+                                        <div className="flex flex-col gap-2">
+                                            <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">코드 보이싱</span>
+                                            <div className="flex flex-wrap items-end gap-x-3 gap-y-2">
+                                                <h3 className="text-3xl font-black text-white tracking-tight">
+                                                    {(() => {
+                                                        try {
+                                                            const entry = resolveChordRegistryEntry(chordType);
+                                                            const root = getNoteName(selectedKey);
+                                                            return entry.symbol ? `${root}${entry.symbol}` : `${root} ${entry.displayName}`;
+                                                        } catch {
+                                                            return `${getNoteName(selectedKey)} ${chordType}`;
+                                                        }
+                                                    })()}
+                                                </h3>
+                                                <span className="pb-1 text-[10px] font-black uppercase tracking-[0.28em] text-white/35">
+                                                    {activeFuturePresentation.primaryLabel}
+                                                </span>
+                                                {activeFuturePresentation.secondaryLabel && (
+                                                    <span className="pb-1 text-[10px] font-black uppercase tracking-[0.22em] text-white/28">
+                                                        {activeFuturePresentation.secondaryLabel}
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <p className="max-w-3xl text-sm text-white/55">
+                                                가장 먼저 손에 잡히는 보이싱을 보여주고, 아래에서 다른 포지션과 해석을 이어서 확인할 수 있습니다.
+                                            </p>
+                                        </div>
+
+                                        <div className="flex flex-wrap items-center gap-2">
+                                            {futureVoicingSelection.selectionSource !== 'requested' && activeFutureCandidate && (
+                                                <span className="px-3 py-1.5 rounded-full border border-emerald-400/25 bg-emerald-400/[0.08] text-[9px] font-black uppercase tracking-[0.25em] text-emerald-200">
+                                                    추천 보이싱
+                                                </span>
+                                            )}
+                                            {activeFutureCandidate && (
+                                                <span className={`px-3 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-[0.25em] ${
+                                                    activeFutureCandidate.voicing.playable
+                                                        ? 'border-cyan-300/20 bg-cyan-400/[0.05] text-cyan-100/80'
+                                                        : 'border-amber-500/30 bg-amber-500/10 text-amber-200'
+                                                }`}>
+                                                    {activeFutureCandidate.voicing.playable ? '연주 가능' : '대체 포지션'}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div className="border-y border-white/5 py-8 flex items-center justify-center relative overflow-hidden bg-white/[0.01]">
+                                        <div ref={fretboardContainerRef} className="overflow-x-auto overflow-y-hidden custom-scrollbar relative w-full flex justify-center py-2">
+                                            <Fretboard
+                                                tuning={TUNING}
+                                                activeNotes={activeNotes}
+                                                rootNote={rootNote}
+                                                chordTones={currentChordTones}
+                                                modifierNotes={modifierNotes}
+                                                showChordTones={showChordTones}
+                                                showIntervals={showIntervals}
+                                                fingering={fingering}
+                                                doubleStops={[]}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="px-6 py-5 flex flex-col gap-4">
+                                        <div className="flex items-center justify-between gap-3">
+                                            <div className="flex flex-col gap-1">
+                                                <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">보이싱 선택</span>
+                                                <span className="text-sm text-white/60">루트 줄과 포지션을 기준으로 바로 바꿔보세요.</span>
+                                            </div>
+                                            <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/25">
+                                                {futureVoicingCandidates.length} options
+                                            </span>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
+                                            {futureVoicingCandidates.map((candidate) => {
+                                                const presentation = getVoicingPresentationMeta(candidate.voicing.template);
+                                                const isActive = candidate.voicing.id === futureVoicingSelection.activeCandidateId;
+                                                const isRecommended = futureVoicingSelection.selectionSource !== 'requested'
+                                                    && candidate.voicing.id === futureVoicingSelection.activeCandidateId;
+
+                                                return (
+                                                    <button
+                                                        key={candidate.voicing.id}
+                                                        onClick={() => handleSelectFutureVoicing(candidate.voicing.id)}
+                                                        className={`text-left rounded-[1.25rem] border p-4 transition-all ${
+                                                            isActive
+                                                                ? 'border-white/30 bg-white/10'
+                                                                : 'border-white/5 bg-white/[0.02] hover:border-white/15 hover:bg-white/[0.04]'
+                                                        }`}
+                                                    >
+                                                        <div className="flex items-start justify-between gap-3">
+                                                            <div className="flex flex-col gap-1">
+                                                                <span className="text-sm font-black text-white">{presentation.primaryLabel}</span>
+                                                                {presentation.secondaryLabel && (
+                                                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/35">
+                                                                        {presentation.secondaryLabel}
+                                                                    </span>
+                                                                )}
+                                                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/28">
+                                                                    {candidate.voicing.rootFret ?? 0}프렛 · {candidate.voicing.playable ? '바로 연주' : '대체 포지션'}
+                                                                </span>
+                                                            </div>
+                                                            {isRecommended && (
+                                                                <span className="rounded-full border border-emerald-400/25 bg-emerald-400/[0.08] px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.18em] text-emerald-200">
+                                                                    추천
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <ChordVoicingViewport
                                 chordType={chordType}
                                 selectedKey={selectedKey}
@@ -1096,14 +1329,14 @@ export default function ClientApp() {
                                 <div className="rounded-[1.5rem] border border-emerald-400/15 bg-emerald-400/[0.05] px-5 py-4 flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
                                     <div className="flex flex-col gap-1">
                                         <span className="text-[9px] font-black uppercase tracking-[0.28em] text-emerald-200/70">
-                                            {activeStagedProgression?.applied ? 'Progression Draft Applied' : 'Progression Handoff Ready'}
+                                            {activeStagedProgression?.applied ? '진행 연결 적용됨' : '진행 연결 준비됨'}
                                         </span>
                                         <span className="text-sm font-semibold text-emerald-50">{activePreparedChordWorkspaceHandoff.title}</span>
                                         <span className="text-xs text-emerald-50/75">
                                             {activePreparedChordWorkspaceHandoff.degrees.join(' -> ')} · {activePreparedChordWorkspaceHandoff.summary}
                                         </span>
                                         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-100/55">
-                                            {activePreparedChordWorkspaceHandoff.relativeDegree} relative to tonic · {activePreparedChordWorkspaceHandoff.roleLabel}
+                                            토닉 기준 {activePreparedChordWorkspaceHandoff.relativeDegree} · {activePreparedChordWorkspaceHandoff.roleLabel}
                                         </span>
                                     </div>
                                     <div className="flex flex-col gap-3 xl:items-end">
@@ -1118,7 +1351,13 @@ export default function ClientApp() {
                                                             : 'border-white/10 bg-white/[0.03] text-white/60 hover:border-white/20 hover:text-white'
                                                     }`}
                                                 >
-                                                    {applyMode}
+                                                    {applyMode === 'replace'
+                                                        ? '교체'
+                                                        : applyMode === 'append'
+                                                            ? '뒤에 추가'
+                                                            : applyMode === 'insert-after-focus'
+                                                                ? '현재 뒤에 삽입'
+                                                                : '임시 보관'}
                                                 </button>
                                             ))}
                                         </div>
@@ -1128,31 +1367,42 @@ export default function ClientApp() {
                                                 className="rounded-xl border border-emerald-200/40 bg-emerald-200/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-50 transition-all hover:border-emerald-100/60 hover:bg-emerald-200/15"
                                             >
                                                 {activeDraftApplyMode === 'stage-only'
-                                                    ? 'Keep Staged'
-                                                    : (activeStagedProgression?.applied ? `Reapply ${activeDraftApplyMode}` : `Apply ${activeDraftApplyMode}`)}
+                                                    ? '임시 보관 유지'
+                                                    : (activeStagedProgression?.applied ? '다시 적용' : '진행에 적용')}
                                             </button>
                                             <button
                                                 onClick={handleOpenProgressionWorkspace}
                                                 className="rounded-xl border border-cyan-200/30 bg-cyan-200/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-cyan-50 transition-all hover:border-cyan-100/60 hover:bg-cyan-200/15"
                                             >
-                                                Open Progression
+                                                진행으로 열기
                                             </button>
                                             <button
                                                 onClick={handleClearPreparedChordWorkspaceHandoff}
                                                 className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/70 transition-all hover:border-white/20 hover:text-white"
                                             >
-                                                Clear
+                                                닫기
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                             )}
-                            <ChordGallery
-                                availableVoicings={availableVoicings}
-                                selectedKey={selectedKey}
-                                voicingIndex={voicingIndex}
-                                onVoicingChange={setVoicingIndex}
-                            />
+                            <details className="rounded-[1.5rem] border border-white/5 bg-white/[0.02] overflow-hidden">
+                                <summary className="cursor-pointer list-none px-5 py-4 flex items-center justify-between gap-4 text-white/70 hover:text-white transition-colors">
+                                    <div className="flex flex-col gap-1">
+                                        <span className="text-[9px] font-black uppercase tracking-[0.28em] text-white/30">기존 보이싱 참고</span>
+                                        <span className="text-sm font-semibold">레거시 갤러리 보기</span>
+                                    </div>
+                                    <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/30">fallback / reference</span>
+                                </summary>
+                                <div className="px-5 pb-5 pt-2 border-t border-white/5">
+                                    <ChordGallery
+                                        availableVoicings={availableVoicings}
+                                        selectedKey={selectedKey}
+                                        voicingIndex={voicingIndex}
+                                        onVoicingChange={setVoicingIndex}
+                                    />
+                                </div>
+                            </details>
                         </div>
                     )}
 
