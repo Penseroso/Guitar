@@ -411,6 +411,13 @@ export default function ClientApp() {
     // --- State: Chord Mode ---
     const [chordType, setChordType] = useState('Major'); // 'Major', 'Minor', '7'
     const [voicingIndex, setVoicingIndex] = useState(0);
+    const [futureVoicingSelection, setFutureVoicingSelection] = useState<{
+        scopeKey: string;
+        candidateId: string | null;
+    }>({
+        scopeKey: 'Major::0',
+        candidateId: null,
+    });
 
     // --- State: Double Stops (Scale Mode Feature) ---
     const [isDoubleStopActive, setIsDoubleStopActive] = useState(false);
@@ -544,6 +551,20 @@ export default function ClientApp() {
     const currentVoicingShape = useMemo(() => {
         return availableVoicings[voicingIndex] || availableVoicings[0];
     }, [availableVoicings, voicingIndex]);
+    const futureVoicingScopeKey = `${chordType}::${selectedKey}`;
+    const activeFutureVoicingId = futureVoicingSelection.scopeKey === futureVoicingScopeKey
+        ? futureVoicingSelection.candidateId
+        : null;
+    const handleFutureVoicingChange = useCallback(({ activeCandidateId, chordType, selectedKey }: {
+        activeCandidateId: string | null;
+        chordType: string;
+        selectedKey: number;
+    }) => {
+        setFutureVoicingSelection({
+            scopeKey: `${chordType}::${selectedKey}`,
+            candidateId: activeCandidateId,
+        });
+    }, []);
 
     const fingering = useMemo(() => {
         if (mode !== 'chord') return undefined;
@@ -998,6 +1019,8 @@ export default function ClientApp() {
                             <ChordVoicingViewport
                                 chordType={chordType}
                                 selectedKey={selectedKey}
+                                activeCandidateId={activeFutureVoicingId}
+                                onActiveVoicingChange={handleFutureVoicingChange}
                             />
                             <ChordGallery
                                 availableVoicings={availableVoicings}
