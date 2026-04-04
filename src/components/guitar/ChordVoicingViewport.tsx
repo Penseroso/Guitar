@@ -22,6 +22,7 @@ import {
     resolveBridgeSelection,
     type ActiveVoicingChangePayload,
 } from './chord-preview/bridge';
+import { getVoicingPresentationMeta } from './chord-preview/voicing-labels';
 
 interface ChordVoicingViewportProps {
     chordType: string;
@@ -88,13 +89,13 @@ function buildSelectionSummary(
     activeIndex: number,
     candidateCount: number
 ): string {
-    const templateLabel = activeCandidate.voicing.template?.label ?? 'Unnamed shape';
+    const presentation = getVoicingPresentationMeta(activeCandidate.voicing.template);
     const positionLabel = activeCandidate.voicing.rootFret !== undefined
         ? `@ ${activeCandidate.voicing.rootFret}fr`
         : 'open position';
     const rankLabel = `#${activeIndex + 1} of ${candidateCount}`;
 
-    return `${templateLabel} ${positionLabel} · ${rankLabel}`;
+    return `${presentation.primaryLabel} ${positionLabel} · ${rankLabel}`;
 }
 
 export function ChordVoicingViewport({
@@ -201,6 +202,7 @@ export function ChordVoicingViewport({
     }
 
     const activeCandidate = selection.activeCandidate;
+    const activePresentation = getVoicingPresentationMeta(activeCandidate.voicing.template);
     const conciseReasons = getReasonPreview(activeCandidate.reasons, 3);
     const defaultSelectionLabel = selection.selectionSource === 'requested'
         ? 'Manual future-preview selection'
@@ -261,6 +263,11 @@ export function ChordVoicingViewport({
                                 <span className="text-sm font-black text-white">
                                     {buildSelectionSummary(activeCandidate, selection.activeIndex, candidates.length)}
                                 </span>
+                                {activePresentation.secondaryLabel && (
+                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/35">
+                                        {activePresentation.secondaryLabel}
+                                    </span>
+                                )}
                             </div>
                             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/45">
                                 Score {activeCandidate.score}
@@ -283,7 +290,7 @@ export function ChordVoicingViewport({
                             <div className="flex flex-col gap-1 rounded-2xl border border-white/5 bg-black/20 px-3 py-3">
                                 <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">Shape</span>
                                 <span className="text-xs font-semibold text-white/75">
-                                    Span {activeCandidate.voicing.span} · {activeCandidate.voicing.template?.label ?? 'Unnamed template'}
+                                    Span {activeCandidate.voicing.span} · {activePresentation.secondaryLabel ?? activePresentation.primaryLabel}
                                 </span>
                             </div>
                         </div>
@@ -311,6 +318,7 @@ export function ChordVoicingViewport({
                 {candidates.map((candidate, index) => {
                     const isSelected = candidate.voicing.id === selection.activeCandidateId;
                     const isDefaultCandidate = selection.selectionSource !== 'requested' && candidate.voicing.id === selection.activeCandidateId;
+                    const presentation = getVoicingPresentationMeta(candidate.voicing.template);
 
                     return (
                         <button
@@ -324,7 +332,12 @@ export function ChordVoicingViewport({
                         >
                             <div className="flex items-start justify-between gap-3 mb-3">
                                 <div className="flex flex-col gap-1">
-                                    <span className="text-xs font-black text-white">{candidate.voicing.template?.label ?? 'Unnamed template'}</span>
+                                    <span className="text-xs font-black text-white">{presentation.primaryLabel}</span>
+                                    {presentation.secondaryLabel && (
+                                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/35">
+                                            {presentation.secondaryLabel}
+                                        </span>
+                                    )}
                                     <span className="text-[10px] font-black uppercase tracking-[0.25em] text-white/35">
                                         {candidate.voicing.rootFret ?? 0}fr · #{index + 1}
                                     </span>
