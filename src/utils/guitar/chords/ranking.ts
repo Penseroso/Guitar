@@ -367,7 +367,12 @@ export function scoreResolvedVoicing(
         reasons.push('Root string falls outside the registry hint.');
     }
 
-    if (voicing.descriptor.family === 'full' || voicing.descriptor.family === 'close') {
+    if (
+        voicing.descriptor.family === 'shell'
+        || voicing.descriptor.family === 'compact'
+        || voicing.descriptor.family === 'close'
+        || voicing.descriptor.family === 'full'
+    ) {
         score += profile.standardFamilyBonus;
         reasons.push(`Falls into a ${getVoicingFamilyLabel(voicing.descriptor.family).toLowerCase()} voicing family.`);
     }
@@ -393,19 +398,37 @@ export function scoreResolvedVoicing(
     }
 
     if (mode === 'upper-register') {
-        if (voicing.descriptor.family === 'upper-register' || voicing.descriptor.registerBand === 'upper') {
+        if (voicing.descriptor.family === 'upper-register') {
             score += profile.upperRegisterBonus;
-            reasons.push('Favours upper-string comping in this mode.');
+            reasons.push('Classifies cleanly as an upper-register voicing.');
+        } else if (voicing.descriptor.registerBand === 'upper') {
+            score += Math.max(2, profile.upperRegisterBonus - 4);
+            reasons.push('Sits in the upper register without the full upper-register profile.');
         } else {
             score -= profile.upperRegisterPenalty;
             reasons.push('Sits too low for upper-register focus.');
         }
-    } else if (mode === 'beginner' && (voicing.descriptor.family === 'compact' || voicing.descriptor.family === 'shell') && voicing.descriptor.registerBand !== 'high') {
-        score += 3;
-        reasons.push('Reads as an easier grip in beginner mode.');
-    } else if (mode === 'compact' && voicing.descriptor.family === 'compact') {
-        score += 4;
-        reasons.push('Classifies as compact in this mode.');
+    } else if (mode === 'beginner') {
+        if (
+            (voicing.descriptor.family === 'shell'
+                || voicing.descriptor.family === 'compact'
+                || voicing.descriptor.family === 'close')
+            && voicing.descriptor.registerBand !== 'high'
+        ) {
+            score += 5;
+            reasons.push('Uses a structurally approachable family for beginner mode.');
+        } else if (voicing.descriptor.family === 'spread' || voicing.descriptor.registerBand === 'high') {
+            score -= 4;
+            reasons.push('Leans wider or higher than ideal for beginner mode.');
+        }
+    } else if (mode === 'compact') {
+        if (voicing.descriptor.family === 'compact') {
+            score += 6;
+            reasons.push('Classifies as compact in this mode.');
+        } else if (voicing.descriptor.family === 'shell' || voicing.descriptor.family === 'close') {
+            score += 2;
+            reasons.push('Stays near the compact family profile.');
+        }
     }
 
     if (extraPitchClasses.length > 0) {

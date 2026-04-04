@@ -18,7 +18,7 @@ describe('voicing ranking modes', () => {
             tags: ['generated', 'generated-compact'],
             strings: [
                 { string: 0, fretOffset: null },
-                { string: 1, fretOffset: 0, toneDegree: '9', isOptional: true },
+                { string: 1, fretOffset: 0, toneDegree: '5', isOptional: true },
                 { string: 2, fretOffset: 1, toneDegree: '7' },
                 { string: 3, fretOffset: -1, toneDegree: '3' },
                 { string: 4, fretOffset: 0, toneDegree: '1' },
@@ -34,7 +34,7 @@ describe('voicing ranking modes', () => {
             tags: ['generated'],
             strings: [
                 { string: 0, fretOffset: null },
-                { string: 1, fretOffset: 7, toneDegree: '9', isOptional: true },
+                { string: 1, fretOffset: 7, toneDegree: '5', isOptional: true },
                 { string: 2, fretOffset: 1, toneDegree: '7' },
                 { string: 3, fretOffset: 4, toneDegree: '3' },
                 { string: 4, fretOffset: 0, toneDegree: '1' },
@@ -44,6 +44,8 @@ describe('voicing ranking modes', () => {
 
         const ranked = rankVoicingCandidates([wideVoicing, compactVoicing], entry, tones, { mode: 'compact' });
 
+        expect(compactVoicing.descriptor.family).toBe('compact');
+        expect(wideVoicing.descriptor.family).toBe('spread');
         expect(ranked[0].voicing.id).toBe(compactVoicing.id);
     });
 
@@ -128,6 +130,8 @@ describe('voicing ranking modes', () => {
 
         const ranked = rankVoicingCandidates([lowerVoicing, upperVoicing], entry, tones, { mode: 'upper-register' });
 
+        expect(lowerVoicing.descriptor.family).not.toBe('upper-register');
+        expect(upperVoicing.descriptor.family).toBe('upper-register');
         expect(ranked[0].voicing.id).toBe(upperVoicing.id);
     });
 });

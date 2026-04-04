@@ -7,7 +7,6 @@ import type {
     VoicingFamily,
     VoicingProvenance,
     VoicingRegisterBand,
-    VoicingTemplate,
 } from './types';
 
 function toTitleCase(value: string): string {
@@ -17,17 +16,21 @@ function toTitleCase(value: string): string {
         .join(' ');
 }
 
-function getTemplateProvenance(template?: VoicingTemplate): VoicingProvenance {
-    const sourceKind = template?.source === 'legacy-shape'
+export function buildVoicingProvenance(args: {
+    source?: 'legacy-shape' | 'generated' | 'curated';
+    seedId?: string;
+    debugLabel?: string;
+}): VoicingProvenance {
+    const sourceKind = args.source === 'legacy-shape'
         ? 'legacy-import'
-        : template?.source === 'curated'
+        : args.source === 'curated'
             ? 'curated'
             : 'generated';
 
     return {
         sourceKind,
-        seedId: template?.id,
-        debugLabel: template?.label,
+        seedId: args.seedId,
+        debugLabel: args.debugLabel,
     };
 }
 
@@ -37,6 +40,14 @@ function getPitchClassSet(notes: ResolvedVoicingNote[]): PitchClass[] {
             .filter((note) => !note.isMuted)
             .map((note) => note.pitchClass)
     ));
+}
+
+function getPlayedStringSpan(playedStrings: GuitarStringIndex[]): number {
+    if (playedStrings.length === 0) {
+        return 0;
+    }
+
+    return playedStrings[playedStrings.length - 1] - playedStrings[0];
 }
 
 function getRegisterBand(minFret: number, maxFret: number, playedStrings: GuitarStringIndex[]): VoicingRegisterBand {
@@ -73,41 +84,49 @@ function classifyVoicingFamily(args: {
         span,
         registerBand,
     } = args;
+    const playedStringSpan = getPlayedStringSpan(playedStrings);
+    const requiredCoverageCount = matchedRequiredDegrees.length;
+    const upperRegisterGrip = registerBand === 'upper' && noteCount <= 4 && playedStringSpan <= 3;
+    const shellLike = noteCount <= 4
+        && requiredCoverageCount >= Math.min(3, noteCount)
+        && optionalCoverageDegrees.length === 0
+        && playedStringSpan <= 3;
+    const spreadLike = span >= 5 || playedStringSpan >= 4;
+    const compactLike = noteCount <= 4 && span <= 2 && playedStringSpan <= 3;
+    const closeLike = noteCount <= 4 && span <= 4 && playedStringSpan <= 3;
+    const fullLike = noteCount >= 5
+        && requiredCoverageCount >= 3
+        && (optionalCoverageDegrees.length > 0 || playedStrings.length >= 5);
 
     if (!hasRoot) {
         return 'rootless';
     }
 
-    if (registerBand === 'upper' && noteCount <= 4) {
+    if (upperRegisterGrip) {
         return 'upper-register';
     }
 
-    const upperStringBias = playedStrings.length > 0 && playedStrings.every((string) => string <= 3);
-    if (upperStringBias && noteCount <= 4) {
-        return 'upper-register';
-    }
-
-    if (noteCount >= 5 && optionalCoverageDegrees.length > 0) {
-        return 'full';
-    }
-
-    if (noteCount <= 4 && matchedRequiredDegrees.length >= 3 && optionalCoverageDegrees.length === 0) {
+    if (shellLike) {
         return 'shell';
     }
 
-    if (span <= 3 && noteCount <= 4) {
+    if (fullLike && !spreadLike) {
+        return 'full';
+    }
+
+    if (compactLike) {
         return 'compact';
     }
 
-    if (span <= 4 && noteCount <= 4) {
+    if (closeLike) {
         return 'close';
     }
 
-    if (span >= 5 || playedStrings.length >= 5) {
+    if (spreadLike) {
         return 'spread';
     }
 
-    return noteCount >= 5 ? 'full' : 'compact';
+    return fullLike ? 'full' : 'close';
 }
 
 export function deriveVoicingDescriptor(args: {
@@ -116,7 +135,7 @@ export function deriveVoicingDescriptor(args: {
     slashBassPitchClass?: PitchClass;
     notes: ResolvedVoicingNote[];
     tones: ChordTones;
-    template?: VoicingTemplate;
+    provenance: VoicingProvenance;
     rootString?: GuitarStringIndex;
     span: number;
     minFret: number;
@@ -190,7 +209,7 @@ export function deriveVoicingDescriptor(args: {
         inversion,
         hasRoot,
         satisfiesSlashBass: args.satisfiesSlashBass,
-        provenance: getTemplateProvenance(args.template),
+        provenance: args.provenance,
     };
 }
 
@@ -204,6 +223,14 @@ export function getVoicingFamilyLabel(family: VoicingFamily): string {
 
 export function getVoicingRegisterLabel(registerBand: VoicingRegisterBand): string {
     return toTitleCase(registerBand);
+}
+
+function getRootStringLabel(rootString: GuitarStringIndex): string {
+    return `${rootString + 1}th-string root`;
+}
+
+function getNoteCountLabel(noteCount: number): string {
+    return `${noteCount}-note`;
 }
 
 export function getVoicingProvenanceLabel(provenance: VoicingProvenance): string {
@@ -222,27 +249,35 @@ export function getVoicingDisplayName(descriptor: VoicingDescriptor): string {
         return 'Rootless voicing';
     }
 
-    if (descriptor.rootString !== undefined) {
-        return `${descriptor.rootString + 1}th-string root`;
-    }
-
     if (descriptor.inversion === 'slash-bass') {
         return 'Slash-bass voicing';
     }
 
-    return `${descriptor.noteCount}-note voicing`;
+    if (descriptor.family === 'upper-register') {
+        return 'Upper-register voicing';
+    }
+
+    if (descriptor.rootString !== undefined) {
+        return getRootStringLabel(descriptor.rootString);
+    }
+
+    return `${getNoteCountLabel(descriptor.noteCount)} voicing`;
 }
 
 export function getVoicingDisplaySubtitle(descriptor: VoicingDescriptor): string | null {
-    const familyLabel = getVoicingFamilyLabel(descriptor.family);
+    const parts: string[] = [];
 
-    if (descriptor.inversion === 'slash-bass') {
-        return `${familyLabel} · slash bass`;
+    parts.push(getNoteCountLabel(descriptor.noteCount));
+
+    if (descriptor.family === 'upper-register' && descriptor.rootString !== undefined) {
+        parts.push(getRootStringLabel(descriptor.rootString));
+    } else if (descriptor.registerBand !== 'mid') {
+        parts.push(`${getVoicingRegisterLabel(descriptor.registerBand).toLowerCase()} register`);
     }
 
-    if (descriptor.inversion === 'rootless') {
-        return `${familyLabel} · no root`;
+    if (descriptor.inversion === 'inversion') {
+        parts.push('inversion');
     }
 
-    return familyLabel;
+    return parts.length > 0 ? parts.join(' · ') : null;
 }

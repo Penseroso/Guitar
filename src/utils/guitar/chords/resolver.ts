@@ -8,11 +8,12 @@ import {
     normalizePitchClass,
     type BuildChordDefinitionOptions,
 } from './helpers';
-import { deriveVoicingDescriptor } from './descriptor';
+import { buildVoicingProvenance, deriveVoicingDescriptor } from './descriptor';
 import type { ChordRegistryEntry } from './registry';
 import type {
     ChordDefinition,
     ChordTones,
+    GuitarStringIndex,
     PitchClass,
     ResolvedVoicing,
     ResolvedVoicingNote,
@@ -31,6 +32,17 @@ export interface ResolveVoicingOptions {
     minRootFret?: number;
     maxRootFret?: number;
     maxPositionsPerTemplate?: number;
+}
+
+interface ResolvedVoicingSeed {
+    id: string;
+    strings: VoicingTemplateString[];
+    rootString?: GuitarStringIndex;
+    provenanceSeed: {
+        source?: VoicingTemplate['source'];
+        seedId: string;
+        debugLabel?: string;
+    };
 }
 
 function getLowestPlayedNote(notes: ResolvedVoicingNote[]): ResolvedVoicingNote | undefined {
@@ -168,12 +180,30 @@ export function resolveVoicingTemplate(
     template: VoicingTemplate,
     options: ResolveVoicingOptions = {}
 ): ResolvedVoicing {
+    return resolveVoicingSeed(chord, tones, {
+        id: template.id,
+        strings: template.strings,
+        rootString: template.rootString,
+        provenanceSeed: {
+            source: template.source,
+            seedId: template.id,
+            debugLabel: template.label,
+        },
+    }, options);
+}
+
+function resolveVoicingSeed(
+    chord: ChordDefinition,
+    tones: ChordTones,
+    seed: ResolvedVoicingSeed,
+    options: ResolveVoicingOptions = {}
+): ResolvedVoicing {
     const tuning = options.tuning ?? STANDARD_GUITAR_TUNING_PITCH_CLASSES;
     const constraints = options.constraints ?? {};
-    const rootString = getTemplateRootString(template);
+    const rootString = seed.rootString ?? seed.strings.find((stringValue) => stringValue.toneDegree === '1')?.string ?? 5;
     const rootFret = options.rootFret ?? getRootFretForTemplate(chord.rootPitchClass, rootString, tuning);
     const tonePitchClassMap = buildTonePitchClassMap(tones);
-    const notes = template.strings
+    const notes = seed.strings
         .map((templateString) =>
             resolveVoicingNote({
                 templateString,
@@ -214,30 +244,26 @@ export function resolveVoicingTemplate(
         (constraints.maxReach !== undefined && span > constraints.maxReach) ||
         (constraints.allowOpenStrings === false && playedFrets.some((fret) => fret === 0)) ||
         (constraints.allowedRootsOnStrings !== undefined &&
-            template.rootString !== undefined &&
-            !constraints.allowedRootsOnStrings.includes(template.rootString)) ||
+            seed.rootString !== undefined &&
+            !constraints.allowedRootsOnStrings.includes(seed.rootString)) ||
         (constraints.requiredDegrees !== undefined &&
             constraints.requiredDegrees.some((degree) => !playedDegrees.has(degree))) ||
         (constraints.omittedDegrees !== undefined &&
             constraints.omittedDegrees.some((degree) => playedDegrees.has(degree)))
     );
-    const provenance = {
-        sourceKind: template.source === 'legacy-shape'
-            ? 'legacy-import'
-            : template.source === 'curated'
-                ? 'curated'
-                : 'generated',
-        seedId: template.id,
-        debugLabel: template.label,
-    } as const;
+    const provenance = buildVoicingProvenance({
+        source: seed.provenanceSeed.source,
+        seedId: seed.provenanceSeed.seedId,
+        debugLabel: seed.provenanceSeed.debugLabel,
+    });
     const descriptor = deriveVoicingDescriptor({
         chordId: chord.id,
         rootPitchClass: chord.rootPitchClass,
         slashBassPitchClass: chord.slashBassPitchClass,
         notes,
         tones,
-        template,
-        rootString: template.rootString,
+        provenance,
+        rootString: seed.rootString,
         span,
         minFret,
         maxFret,
@@ -246,10 +272,8 @@ export function resolveVoicingTemplate(
     });
 
     return {
-        id: `${chord.id}:${chord.rootPitchClass}:${template.id}:${rootFret}`,
+        id: `${chord.id}:${chord.rootPitchClass}:${seed.id}:${rootFret}`,
         chord,
-        template,
-        provenance,
         descriptor,
         notes,
         rootFret,

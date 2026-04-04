@@ -47,6 +47,10 @@ describe('voicing resolution', () => {
         expect(resolved.missingRequiredDegrees).toEqual([]);
         expect(resolved.omittedOptionalDegrees).toEqual([]);
         expect(resolved.omittedDegrees).toEqual([]);
+        expect(resolved.descriptor.provenance.seedId).toBe(template.id);
+        expect(resolved.descriptor.provenance.debugLabel).toBe(template.label);
+        expect(resolved).not.toHaveProperty('template');
+        expect(resolved).not.toHaveProperty('provenance');
     });
 
     it('marks invalid negative-fret resolutions as non-playable instead of hiding them', () => {

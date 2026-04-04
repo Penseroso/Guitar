@@ -104,8 +104,7 @@ export interface ResolvedVoicingNote {
 export interface ResolvedVoicing {
     id: string;
     chord: ChordDefinition;
-    template?: VoicingTemplate;
-    provenance: VoicingProvenance;
+    // Canonical voicing identity, family, register, inversion, and provenance live here.
     descriptor: VoicingDescriptor;
     notes: ResolvedVoicingNote[];
     rootFret?: number;

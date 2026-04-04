@@ -26,7 +26,7 @@ function getResolvedVoicingSignature(voicing: ResolvedVoicing): string {
 }
 
 function getTemplateSourcePriority(voicing: ResolvedVoicing): number {
-    switch (voicing.provenance.sourceKind) {
+    switch (voicing.descriptor.provenance.sourceKind) {
         case 'legacy-import':
             return 0;
         case 'curated':
