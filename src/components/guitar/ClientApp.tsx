@@ -1,32 +1,13 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef, useCallback, useReducer } from 'react';
-import { 
-    DndContext, 
-    useDraggable, 
-    useDroppable, 
-    DragOverEvent, 
-    DragEndEvent,
-    PointerSensor,
-    useSensor,
-    useSensors
-} from '@dnd-kit/core';
-import { CSS } from '@dnd-kit/utilities';
-import { Fretboard } from '../Fretboard';
 import { Controls } from './Controls';
-import { ChordGallery } from './ChordGallery';
-import { ChordVoicingViewport } from './ChordVoicingViewport';
-import { RelatedScalesStrip } from './scale-selector/RelatedScalesStrip';
-import { TogglePill } from '../ui/design-system/TogglePill';
-import { SlidersHorizontal } from 'lucide-react';
-import { ProgressionInspector } from '../../features/progression/components/ProgressionInspector';
 import { useProgressionAudio } from '../../features/progression/hooks/useProgressionAudio';
 import { getProgressionPlaybackData } from '../../features/progression/utils/getProgressionPlaybackData';
 import {
     CHORD_REGISTRY_LIST,
     getRankedVoicingsForChord,
     resolveChordRegistryEntry,
-    VOICING_RANKING_MODES,
     type ProgressionHandoffPayload,
     type ResolvedVoicing,
     type VoicingRankingMode,
@@ -41,15 +22,13 @@ import {
     generateModeData,
 } from '../../utils/guitar/theory';
 import {
-    getChordFromDegree,
     getChordFingering,
     getSortedVoicings,
     getHarmonicDoubleStops,
     getPlayableDoubleStopsOnStrings,
     getNoteName,
-    degreeToChordName,
 } from '../../utils/guitar/logic';
-import { Mode, HarmonicFunction, Measure, ChordNode, HarmonicInterval, Fingering } from '../../utils/guitar/types';
+import { Mode, HarmonicInterval, Fingering } from '../../utils/guitar/types';
 import { useProgression } from '../../hooks/useProgression';
 import { applyDraftToProgressionDocument, type ProgressionDraftApplyMode } from '../../utils/guitar/progression';
 import {
@@ -58,18 +37,9 @@ import {
 } from '../../features/harmonic-workspace/state';
 import { resolveBridgeSelection } from './chord-preview/bridge';
 import { getVoicingPresentationMeta } from './chord-preview/voicing-labels';
-
-
-
-const clampIndex = (value: number, max: number) => Math.max(0, Math.min(value, max));
-
-type ResizePreview = {
-    nodeId: string;
-    measureId: string;
-    nodeIndex: number;
-    direction: 'left' | 'right';
-    delta: number;
-};
+import { ScaleModeWorkspace } from './workspaces/ScaleModeWorkspace';
+import { ChordModeWorkspace } from './workspaces/ChordModeWorkspace';
+import { ProgressionModeWorkspace } from './workspaces/ProgressionModeWorkspace';
 
 const CHORD_TYPE_PRIORITY = [
     'major',
@@ -117,337 +87,6 @@ function buildResolvedVoicingFingering(voicing?: ResolvedVoicing): Fingering[] |
             noteIdx: note.pitchClass,
             label: note.isRoot ? 'R' : note.degree,
         }));
-}
-
-type DraggablePaletteItemProps = {
-    degree: string;
-    selectedKey: number;
-    color?: string;
-};
-
-function DraggablePaletteItem({ degree, selectedKey, color }: DraggablePaletteItemProps) {
-    let harmonicFunction: HarmonicFunction = 'Tonic';
-    if (['V', 'vii°'].includes(degree)) harmonicFunction = 'Dominant';
-    if (['IV', 'ii'].includes(degree)) harmonicFunction = 'Subdominant';
-
-    const { interval, type } = getChordFromDegree(degree);
-    const rootNoteIdx = (selectedKey + interval) % 12;
-    const rootText = getNoteName(rootNoteIdx);
-    const suffix = type === 'Minor' ? 'm' : type === 'Diminished' ? 'dim' : '';
-    const displayName = `${rootText}${suffix}`;
-
-    const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
-        id: degree,
-        data: {
-            type: 'new',
-            coreDegree: degree,
-            harmonicFunction,
-        },
-    });
-
-    const style = {
-        transform: CSS.Translate.toString(transform),
-    };
-
-    return (
-        <button
-            ref={setNodeRef}
-            style={style}
-            {...listeners}
-            {...attributes}
-            className={`px-6 py-3 rounded-xl border text-white flex flex-col items-center gap-1 touch-none group ${
-                isDragging
-                    ? 'border-[#00ff88]/50 bg-[#00ff88]/10 shadow-[0_0_24px_rgba(0,255,136,0.18)] opacity-80'
-                    : 'border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/30 transition-all'
-            }`}
-        >
-            <span className="text-sm font-bold" style={{ color: !isDragging && color ? color : undefined }}>{displayName}</span>
-            <span className="text-[9px] font-black text-white/40 group-hover:text-white/60 transition-colors">{degree}</span>
-            {isActiveScaleItem && (
-                <div className="absolute -bottom-1 w-1 h-1 rounded-full bg-white/50" />
-            )}
-        </button>
-    );
-}
-
-// Helper to determine if a chord is part of the current scale (aesthetic only)
-const isActiveScaleItem = false; 
-
-
-type DroppableMeasureProps = {
-    measure: Measure;
-    children: React.ReactNode;
-    isOver?: boolean;
-};
-
-function DroppableMeasure({ measure, children, isOver }: DroppableMeasureProps) {
-    const { setNodeRef } = useDroppable({
-        id: measure.id,
-        data: {
-            type: 'measure',
-            measureId: measure.id
-        }
-    });
-
-    return (
-        <div 
-            ref={setNodeRef} 
-            className={`flex flex-col gap-2 p-3 rounded-2xl border transition-all group/measure relative ${
-                isOver ? 'bg-white/[0.04] border-white/20 shadow-[0_0_20px_rgba(255,255,255,0.05)]' : 'bg-white/[0.02] border-white/5 hover:border-white/10'
-            }`}
-        >
-            {children}
-        </div>
-    );
-}
-
-type DropIndicatorProps = {
-    index: number;
-    measure: Measure;
-};
-
-function DropIndicator({ index, measure }: DropIndicatorProps) {
-    const totalBeats = measure.timeSignature[0];
-    const nodes = measure.nodes;
-
-    let leftPosition = 0;
-    if (index > 0) {
-        const beatsBefore = nodes.slice(0, index).reduce((sum, node) => sum + node.durationInBeats, 0);
-        leftPosition = (beatsBefore / totalBeats) * 100;
-    }
-
-    if (index === nodes.length) {
-        leftPosition = 100;
-    }
-
-    return (
-        <div
-            className="absolute top-0 bottom-0 w-1 bg-[#00ff88] shadow-[0_0_10px_rgba(0,255,136,0.5)] z-30 rounded-full animate-pulse"
-            style={{ 
-                left: `${leftPosition}%`, 
-                transform: leftPosition >= 100 ? 'translateX(-100%)' : (leftPosition <= 0 ? 'none' : 'translateX(-50%)') 
-            }}
-        />
-    );
-}
-
-type DraggableNodeProps = {
-    node: ChordNode;
-    measureId: string;
-    isFocused: boolean;
-    selectedKey: number;
-    updateNodeDuration: (id: string, direction: 'left' | 'right', delta: number) => void;
-    index: number;
-    totalNodes: number;
-    prevNodeDuration?: number;
-    nextNodeDuration?: number;
-    resizePreview: ResizePreview | null;
-    setResizePreview: React.Dispatch<React.SetStateAction<ResizePreview | null>>;
-    onClick: () => void;
-};
-
-function DraggableNode({ 
-    node, 
-    measureId, 
-    isFocused, 
-    onClick, 
-    selectedKey,
-    updateNodeDuration,
-    index,
-    totalNodes,
-    prevNodeDuration,
-    nextNodeDuration,
-    resizePreview,
-    setResizePreview,
-}: DraggableNodeProps) {
-    const chordName = degreeToChordName(node.displayDegree, node.coreDegree, selectedKey);
-    const isResizing = resizePreview?.nodeId === node.id;
-    const isAnyNodeResizing = resizePreview !== null;
-    const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
-        id: node.id,
-        disabled: isAnyNodeResizing,
-        data: {
-            type: 'move',
-            node,
-            sourceMeasureId: measureId
-        }
-    });
-
-    const { setNodeRef: setBeforeDroppableRef } = useDroppable({
-        id: `drop-${node.id}-before`,
-        data: {
-            type: 'node',
-            measureId,
-            nodeIndex: index,
-            insertIndex: index
-        }
-    });
-
-    const { setNodeRef: setAfterDroppableRef } = useDroppable({
-        id: `drop-${node.id}-after`,
-        data: {
-            type: 'node',
-            measureId,
-            nodeIndex: index,
-            insertIndex: index + 1
-        }
-    });
-
-    const combinedRef = (element: HTMLElement | null) => {
-        setNodeRef(element);
-    };
-
-    // Calculate dynamic duration based on global resizing state
-    let displayDuration = node.durationInBeats;
-    if (resizePreview && resizePreview.measureId === measureId) {
-        if (node.id === resizePreview.nodeId) {
-            displayDuration = node.durationInBeats + resizePreview.delta;
-        } else {
-            // Check if this node is the affected neighbor in the same measure
-            if (resizePreview.direction === 'right' && index === resizePreview.nodeIndex + 1) {
-                displayDuration = node.durationInBeats - resizePreview.delta;
-            }
-            else if (resizePreview.direction === 'left' && index === resizePreview.nodeIndex - 1) {
-                displayDuration = node.durationInBeats - resizePreview.delta;
-            }
-        }
-    }
-
-    const style = {
-        transform: isAnyNodeResizing ? undefined : CSS.Translate.toString(transform),
-        gridColumn: `span ${Math.max(1, Math.round(displayDuration * 2))}`
-    };
-
-    const startX = useRef(0);
-    const lastDeltaRef = useRef(0);
-
-    const clampResizeDelta = (direction: 'left' | 'right', delta: number) => {
-        if (direction === 'right') {
-            if (nextNodeDuration === undefined) return 0;
-            return Math.max(-node.durationInBeats + 0.5, Math.min(nextNodeDuration - 0.5, delta));
-        }
-        if (prevNodeDuration === undefined) return 0;
-        return Math.max(-node.durationInBeats + 0.5, Math.min(prevNodeDuration - 0.5, delta));
-    };
-
-    const handleResizeStart = (e: React.PointerEvent<HTMLDivElement>, direction: 'left' | 'right') => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (e.currentTarget.hasPointerCapture?.(e.pointerId) === false) {
-            e.currentTarget.setPointerCapture(e.pointerId);
-        }
-
-        startX.current = e.clientX;
-        lastDeltaRef.current = 0;
-        setResizePreview({
-            nodeId: node.id,
-            measureId,
-            nodeIndex: index,
-            direction,
-            delta: 0,
-        });
-
-        const onPointerMove = (moveEvent: PointerEvent) => {
-            moveEvent.preventDefault();
-            const deltaX = moveEvent.clientX - startX.current;
-            const container = document.querySelector(`[data-measure-id="${measureId}"]`);
-            if (container) {
-                const totalWidth = container.clientWidth;
-                const beatsPerMeasure = 4; 
-                const pixelsPerBeat = totalWidth / beatsPerMeasure;
-                
-                let beatDelta = Math.round((deltaX / pixelsPerBeat) * 2) / 2; 
-                if (direction === 'left') beatDelta = -beatDelta;
-                const clampedDelta = clampResizeDelta(direction, beatDelta);
-                if (clampedDelta !== lastDeltaRef.current) {
-                    lastDeltaRef.current = clampedDelta;
-                    setResizePreview({
-                        nodeId: node.id,
-                        measureId,
-                        nodeIndex: index,
-                        direction,
-                        delta: clampedDelta,
-                    });
-                }
-            }
-        };
-
-        const onPointerUp = () => {
-            if (lastDeltaRef.current !== 0) {
-                updateNodeDuration(node.id, direction, lastDeltaRef.current);
-            }
-            setResizePreview(null);
-            
-            window.removeEventListener('pointermove', onPointerMove);
-            window.removeEventListener('pointerup', onPointerUp);
-        };
-
-        window.addEventListener('pointermove', onPointerMove, { passive: false });
-        window.addEventListener('pointerup', onPointerUp);
-    };
-
-    return (
-        <div
-            ref={combinedRef}
-            style={style}
-            onClick={(e) => {
-                e.stopPropagation();
-                if (isAnyNodeResizing) return;
-                onClick();
-            }}
-            className={`relative h-full min-w-0 rounded-xl border flex flex-col justify-center items-center group touch-none ${
-                'cursor-pointer'
-            } ${
-                !isAnyNodeResizing && !isDragging ? 'transition-all duration-200' : ''
-            } ${
-                isFocused
-                    ? 'border-amber-500/50 bg-amber-500/10 shadow-[0_0_20px_rgba(245,158,11,0.2)] z-10'
-                    : 'border-white/10 bg-white/5 hover:bg-white/10'
-            } ${node.isSecondary ? 'scale-[0.85] border-dashed border-amber-500/30 -mx-1' : ''} ${isResizing && isFocused ? 'ring-1 ring-amber-500/50 z-20 transition-none' : ''}`}
-        >
-            <div ref={setBeforeDroppableRef} className="absolute inset-y-0 left-0 w-1/2" />
-            <div ref={setAfterDroppableRef} className="absolute inset-y-0 right-0 w-1/2" />
-
-            <div
-                {...listeners}
-                {...attributes}
-                className="relative z-10 flex flex-col items-center justify-center flex-1 w-full overflow-hidden"
-            >
-                <span className={`text-base font-black whitespace-nowrap ${node.isSecondary ? 'text-amber-500/90' : 'text-white/90'}`}>{chordName}</span>
-                <span className={`text-[9px] font-semibold whitespace-nowrap ${node.isSecondary ? 'text-amber-400/40' : 'text-white/30'}`}>{node.displayDegree}</span>
-            </div>
-            <div className="relative z-10 w-full flex justify-center pb-1 pointer-events-none overflow-hidden">
-                <span className="text-[8px] tracking-widest text-white/30 whitespace-nowrap">{displayDuration} beats</span>
-            </div>
-
-            {/* Resize Handles */}
-            {isFocused && totalNodes > 1 && (
-                <>
-                    {/* Left Handle: available if not the first node */}
-                    {index > 0 && (
-                        <div 
-                            onPointerDown={(e) => handleResizeStart(e, 'left')}
-                            className="absolute left-0 top-0 bottom-0 w-3 cursor-ew-resize hover:bg-amber-500/30 rounded-l-xl transition-colors z-20 flex items-center justify-center group/h"
-                        >
-                            <div className="w-1 h-4 bg-amber-500/20 group-hover/h:bg-amber-500/40 rounded-full" />
-                        </div>
-                    )}
-                    
-                    {/* Right Handle: available if not the last node */}
-                    {index < totalNodes - 1 && (
-                        <div 
-                            onPointerDown={(e) => handleResizeStart(e, 'right')}
-                            className="absolute right-0 top-0 bottom-0 w-3 cursor-ew-resize hover:bg-amber-500/30 rounded-r-xl transition-colors z-20 flex items-center justify-center group/h"
-                        >
-                            <div className="w-1 h-4 bg-amber-500/20 group-hover/h:bg-amber-500/40 rounded-full" />
-                        </div>
-                    )}
-                </>
-            )}
-
-            {/* Removed floating Context Menu - replaced by Inspector Panel */}
-        </div>
-    );
 }
 
 export default function ClientApp() {
@@ -933,97 +572,14 @@ export default function ClientApp() {
     }, [mode, progressionData, selectedKey]);
 
     // --- Handlers ---
-    // (Progression handlers extracted to useProgression hook)
-    const timelineContainerRef = useRef<HTMLDivElement>(null);
     const fretboardContainerRef = useRef<HTMLDivElement>(null);
-    const inspectorPanelRef = useRef<HTMLDivElement>(null);
-    const [activeOverId, setActiveOverId] = useState<string | null>(null);
-    const [activeOverData, setActiveOverData] = useState<{ type?: 'measure' | 'node'; measureId?: string; nodeIndex?: number; insertIndex?: number } | null>(null);
-    const [resizePreview, setResizePreview] = useState<ResizePreview | null>(null);
-
-    const handleDragOver = (event: DragOverEvent) => {
-        const { over } = event;
-        if (!over) {
-            setActiveOverId(null);
-            setActiveOverData(null);
-            return;
-        }
-
-        const overData = over.data.current as { type?: 'measure' | 'node'; measureId?: string; nodeIndex?: number; insertIndex?: number } | undefined;
-        const measureId = overData?.measureId || (typeof over.id === 'string' && over.id.startsWith('m-') ? String(over.id) : undefined);
-        setActiveOverId(measureId ?? String(over.id));
-        
-        if (overData?.type === 'node' && measureId) {
-            const insertIndex = clampIndex(
-                overData.insertIndex ?? overData.nodeIndex ?? 0,
-                progressionDoc.measures.find((measure) => measure.id === measureId)?.nodes.length ?? 0
-            );
-            setActiveOverData({
-                ...overData,
-                measureId,
-                insertIndex,
-            });
-        } else if (measureId) {
-            const measure = progressionDoc.measures.find((item) => item.id === measureId);
-            setActiveOverData({
-                ...overData,
-                measureId,
-                insertIndex: measure?.nodes.length ?? 0,
-            });
-        } else {
-            setActiveOverData(null);
-        }
-    };
-
-    const wrapHandleDragEnd = (event: DragEndEvent) => {
-        handleDragEnd(event);
-        setActiveOverId(null);
-        setActiveOverData(null);
-    };
-
-    const sensors = useSensors(
-        useSensor(PointerSensor, {
-            activationConstraint: {
-                distance: 10,
-            },
-        })
-    );
 
     // --- Effects ---
 
     useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            const isInsideTimeline = timelineContainerRef.current && timelineContainerRef.current.contains(event.target as Node);
-            const isInsideInspector = inspectorPanelRef.current && inspectorPanelRef.current.contains(event.target as Node);
-            
-            if (!isInsideTimeline && !isInsideInspector) {
-                setFocusedNodeId(null);
-            }
-        };
-
-        if (focusedNodeId) {
-            document.addEventListener('mousedown', handleClickOutside);
-        }
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [focusedNodeId, setFocusedNodeId]);
-
-    // FIXME: Auto-Scroll - This depends on Fretboard structure. 
-    // With grid, Fret 0 is at left. 
-    // We can just scroll the container.
-    // We need to access the container via Ref.
-    // The Ref is passed to Fretboard? No, Fretboard wrapper in Page has the ref.
-    // We need to pass ref or move wrapper here.
-    // I will move the wrapper here.
-
-    useEffect(() => {
         if (mode === 'chord' && fingering && fingering.length > 0) {
             const minFret = Math.min(...fingering.map(f => f.fret));
-            // Estimation
             if (fretboardContainerRef.current) {
-                // This logic is rough, but functional. 
                 const scrollPos = minFret * 60;
                 fretboardContainerRef.current.scrollTo({ left: scrollPos, behavior: 'smooth' });
             }
@@ -1099,576 +655,126 @@ export default function ClientApp() {
                     />
 
                     {mode === 'scale' && (
-                        <div className="relative z-10 w-full flex flex-col gap-6">
-                            <div className="px-6">
-                                <RelatedScalesStrip
-                                    sourceScaleGroup={effectiveScaleGroup}
-                                    sourceScaleName={effectiveScaleName}
-                                    committedScaleGroup={scaleGroup}
-                                    committedScaleName={scaleName}
-                                    previewScaleGroup={previewScaleGroup}
-                                    previewScaleName={previewScaleName}
-                                    onPreviewToggle={handleRelatedPreviewToggle}
-                                    onApplyPreview={handleApplyPreview}
-                                    onClearPreview={handleClearPreview}
-                                />
-                            </div>
-
-                            {/* Visualizer Controls Dashboard */}
-                            <div className="flex flex-col gap-4 bg-[#050505]/50 border border-white/5 rounded-3xl p-6 backdrop-blur-sm animate-in fade-in slide-in-from-top-4 duration-500">
-                                <div className="flex items-center gap-2 border-b border-white/5 pb-3 mb-2">
-                                    <SlidersHorizontal size={14} className="text-white/40" />
-                                    <span className="text-[10px] font-black uppercase text-white/40 tracking-[0.3em]">Visualization Overrides</span>
-                                </div>
-
-                                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                                    <TogglePill label={showIntervals ? "Mode: Note" : "Mode: Interval"} isActive={showIntervals} onToggle={() => setShowIntervals(p => !p)} hideDot={true} />
-                                    <TogglePill label="Chord Tones" isActive={showChordTones} onToggle={() => setShowChordTones(p => !p)} colorTheme="chord-tones" />
-
-                                    {isPentatonic && (
-                                        <TogglePill label="Add Blue Note" isActive={blueNote} onToggle={() => setBlueNote(p => !p)} />
-                                    )}
-                                    {isPentatonic && effectiveScaleName === "Minor Pentatonic" && (
-                                        <>
-                                            <TogglePill label="Add 2 (9th)" isActive={secondNote} onToggle={() => setSecondNote(p => !p)} />
-                                            <TogglePill label="Add 6th Note" isActive={sixthNote} onToggle={() => setSixthNote(p => !p)} />
-                                        </>
-                                    )}
-
-                                    {isDoubleStopAvailable && (
-                                        <div className="flex flex-col gap-2 col-span-2">
-                                            <div className="flex items-center justify-between">
-                                                <TogglePill label="Double Stops" isActive={isDoubleStopVisible} onToggle={() => setIsDoubleStopActive(p => !p)} />
-                                            </div>
-                                            {isDoubleStopVisible && (
-                                                <div className="flex flex-col gap-3 mt-1 p-3 bg-white/[0.03] border border-white/5 rounded-2xl animate-in fade-in duration-300">
-                                                    <div className="flex flex-col gap-2">
-                                                        <span className="text-[8px] font-black uppercase text-white/30 tracking-widest">Interval</span>
-                                                        <div className="flex gap-2">
-                                                            {([3, 4, 6] as HarmonicInterval[]).map((int) => {
-                                                                const hasValidPairs = harmonicDoubleStopPairsByInterval[int].length > 0;
-
-                                                                return (
-                                                                    <button
-                                                                        key={int}
-                                                                        disabled={!hasValidPairs}
-                                                                        onClick={() => {
-                                                                            setDoubleStopInterval(int);
-                                                                            setDoubleStopStrings(int === 6 ? [0, 2] : [0, 1]);
-                                                                        }}
-                                                                        className={`flex-1 py-1.5 text-[9px] font-black rounded-lg border transition-all ${!hasValidPairs ? 'border-white/5 text-white/15 cursor-not-allowed opacity-40' : doubleStopInterval === int ? 'bg-white/10 text-white border-white/30 shadow-lg' : 'border-white/5 text-white/30 hover:text-white/70'}`}
-                                                                    >
-                                                                        {int}{int === 3 ? 'rd' : 'th'}
-                                                                    </button>
-                                                                );
-                                                            })}
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="flex flex-col gap-2 border-t border-white/5 pt-2">
-                                                        <span className="text-[8px] font-black uppercase text-white/30 tracking-widest">String Pair</span>
-                                                        <div className="flex gap-2 flex-wrap">
-                                                            {(doubleStopInterval === 6
-                                                                ? [[0, 2], [1, 3], [2, 4], [3, 5]]
-                                                                : [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]]
-                                                            ).map(([s1, s2]) => (
-                                                                <button
-                                                                    key={`${s1}-${s2}`}
-                                                                    onClick={() => setDoubleStopStrings([s1, s2] as [number, number])}
-                                                                    className={`px-2 py-1.5 text-[9px] font-black rounded-lg border transition-all ${doubleStopStrings[0] === s1 && doubleStopStrings[1] === s2 ? 'bg-white/10 text-white border-white/30 shadow-lg' : 'border-white/5 text-white/30 hover:text-white/70'}`}
-                                                                >
-                                                                    {s1 + 1}-{s2 + 1}
-                                                                </button>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-
-                            <div className="border-y border-white/5 py-8 flex items-center justify-center relative overflow-hidden bg-white/[0.01]">
-                                <div ref={fretboardContainerRef} className="overflow-x-auto overflow-y-hidden custom-scrollbar relative w-full flex justify-center py-2">
-                                    <Fretboard
-                                        tuning={TUNING}
-                                        activeNotes={activeNotes}
-                                        rootNote={rootNote}
-                                        chordTones={currentChordTones}
-                                        modifierNotes={modifierNotes}
-                                        showChordTones={showChordTones}
-                                        showIntervals={showIntervals}
-                                        scaleIntervalLabels={mode === 'scale' ? scaleIntervalLabels : undefined}
-                                        fingering={fingering}
-                                        doubleStops={playableDoubleStops}
-                                    />
-                                </div>
-                            </div>
-                        </div>
+                        <ScaleModeWorkspace
+                            effectiveScaleGroup={effectiveScaleGroup}
+                            effectiveScaleName={effectiveScaleName}
+                            scaleGroup={scaleGroup}
+                            scaleName={scaleName}
+                            previewScaleGroup={previewScaleGroup}
+                            previewScaleName={previewScaleName}
+                            onPreviewToggle={handleRelatedPreviewToggle}
+                            onApplyPreview={handleApplyPreview}
+                            onClearPreview={handleClearPreview}
+                            showIntervals={showIntervals}
+                            onToggleIntervals={() => setShowIntervals((prev) => !prev)}
+                            showChordTones={showChordTones}
+                            onToggleChordTones={() => setShowChordTones((prev) => !prev)}
+                            isPentatonic={isPentatonic}
+                            blueNote={blueNote}
+                            onToggleBlueNote={() => setBlueNote((prev) => !prev)}
+                            secondNote={secondNote}
+                            onToggleSecondNote={() => setSecondNote((prev) => !prev)}
+                            sixthNote={sixthNote}
+                            onToggleSixthNote={() => setSixthNote((prev) => !prev)}
+                            isDoubleStopAvailable={isDoubleStopAvailable}
+                            isDoubleStopVisible={isDoubleStopVisible}
+                            onToggleDoubleStop={() => setIsDoubleStopActive((prev) => !prev)}
+                            doubleStopInterval={doubleStopInterval}
+                            onDoubleStopIntervalChange={setDoubleStopInterval}
+                            doubleStopStrings={doubleStopStrings}
+                            onDoubleStopStringsChange={setDoubleStopStrings}
+                            harmonicDoubleStopPairsByInterval={harmonicDoubleStopPairsByInterval}
+                            fretboardContainerRef={fretboardContainerRef}
+                            tuning={TUNING}
+                            activeNotes={activeNotes}
+                            rootNote={rootNote}
+                            chordTones={currentChordTones}
+                            modifierNotes={modifierNotes}
+                            scaleIntervalLabels={scaleIntervalLabels}
+                            fingering={fingering}
+                            doubleStops={playableDoubleStops}
+                        />
                     )}
 
                     {mode === 'chord' && (
-                        <div className="relative z-10 w-full mt-4 flex flex-col gap-8">
-                            <div className="rounded-[2rem] border border-white/5 bg-[#050505] p-6 flex flex-col gap-6">
-                                <div className="flex flex-col gap-3">
-                                    <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Chord Type</span>
-                                    <div className="flex flex-wrap gap-2">
-                                        {CHORD_SELECTOR_OPTIONS.map((option) => {
-                                            const isActive = chordType === option.stateValue;
-
-                                            return (
-                                                <button
-                                                    key={option.id}
-                                                    onClick={() => setChordType(option.stateValue)}
-                                                    className={`rounded-xl border px-4 py-3 text-left transition-all ${
-                                                        isActive
-                                                            ? 'border-cyan-200/50 bg-cyan-300/[0.12] text-cyan-50'
-                                                            : 'border-white/10 bg-white/[0.03] text-white/70 hover:border-white/20 hover:text-white'
-                                                    }`}
-                                                >
-                                                    <div className="text-sm font-black">{option.label}</div>
-                                                    <div className="text-[10px] font-black uppercase tracking-[0.18em] text-white/35">{option.description}</div>
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-
-                                <div className="rounded-[2rem] border border-white/5 bg-white/[0.02] overflow-hidden">
-                                    <div className="px-6 py-5 flex flex-col gap-4 border-b border-white/5 xl:flex-row xl:items-end xl:justify-between">
-                                        <div className="flex flex-col gap-2">
-                                            <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Chord</span>
-                                            <div className="flex flex-wrap items-end gap-x-3 gap-y-2">
-                                                <h3 className="text-3xl font-black text-white tracking-tight">{chordPreviewTitle}</h3>
-                                                <span className="pb-1 text-[10px] font-black uppercase tracking-[0.28em] text-white/35">
-                                                    {activeFuturePresentation.primaryLabel}
-                                                </span>
-                                                {(activeFuturePresentation.familyLabel || activeFuturePresentation.secondaryLabel) && (
-                                                    <span className="pb-1 text-[10px] font-black uppercase tracking-[0.22em] text-white/28">
-                                                        {activeFuturePresentation.familyLabel ?? activeFuturePresentation.secondaryLabel}
-                                                    </span>
-                                                )}
-                                            </div>
-                                        </div>
-
-                                        <div className="flex flex-wrap items-center gap-2">
-                                            {futureVoicingSelection.selectionSource !== 'requested' && activeFutureCandidate && (
-                                                <span className="px-3 py-1.5 rounded-full border border-emerald-400/25 bg-emerald-400/[0.08] text-[9px] font-black uppercase tracking-[0.25em] text-emerald-200">
-                                                    Recommended
-                                                </span>
-                                            )}
-                                            {activeFutureCandidate && (
-                                                <span className={`px-3 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-[0.25em] ${
-                                                    activeFutureCandidate.voicing.playable
-                                                        ? 'border-cyan-300/20 bg-cyan-400/[0.05] text-cyan-100/80'
-                                                        : 'border-amber-500/30 bg-amber-500/10 text-amber-200'
-                                                }`}>
-                                                    {activeFutureCandidate.voicing.playable ? 'Playable' : 'Alternate'}
-                                                </span>
-                                            )}
-                                            {activeFuturePresentation.sourceLabel && (
-                                                <span className="px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.04] text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
-                                                    {activeFuturePresentation.sourceLabel}
-                                                </span>
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    <div className="border-y border-white/5 py-8 flex items-center justify-center relative overflow-hidden bg-white/[0.01]">
-                                        <div ref={fretboardContainerRef} className="overflow-x-auto overflow-y-hidden custom-scrollbar relative w-full flex justify-center py-2">
-                                            <Fretboard
-                                                tuning={TUNING}
-                                                activeNotes={activeNotes}
-                                                rootNote={rootNote}
-                                                chordTones={currentChordTones}
-                                                modifierNotes={modifierNotes}
-                                                showChordTones={showChordTones}
-                                                showIntervals={showIntervals}
-                                                fingering={fingering}
-                                                doubleStops={[]}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="px-6 py-5 flex flex-col gap-4">
-                                        <div className="flex flex-col gap-3 rounded-[1.25rem] border border-white/5 bg-black/20 p-4">
-                                            <div className="flex flex-col gap-2 xl:flex-row xl:items-center xl:justify-between">
-                                                <div className="flex flex-col gap-1">
-                                                    <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Exploration Mode</span>
-                                                    <span className="text-sm font-semibold text-white">Rank the same chord for a different playing context.</span>
-                                                </div>
-                                                <div className="flex flex-wrap gap-2">
-                                                    {VOICING_RANKING_MODES.map((modeOption) => (
-                                                        <button
-                                                            key={modeOption}
-                                                            onClick={() => setVoicingRankingMode(modeOption)}
-                                                            className={`rounded-xl border px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all ${
-                                                                voicingRankingMode === modeOption
-                                                                    ? 'border-cyan-200/40 bg-cyan-300/[0.12] text-cyan-50'
-                                                                    : 'border-white/10 bg-white/[0.03] text-white/65 hover:border-white/20 hover:text-white'
-                                                            }`}
-                                                        >
-                                                            {modeOption.replace('-', ' ')}
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                            </div>
-
-                                            <div className="flex flex-wrap gap-2">
-                                                {(['all', 'legacy-import', 'generated'] as const).map((sourceOption) => (
-                                                    <button
-                                                        key={sourceOption}
-                                                        onClick={() => setVoicingSourceFilter(sourceOption)}
-                                                        className={`rounded-full border px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] transition-all ${
-                                                            voicingSourceFilter === sourceOption
-                                                                ? 'border-white/25 bg-white/10 text-white'
-                                                                : 'border-white/10 bg-white/[0.03] text-white/55 hover:border-white/20 hover:text-white'
-                                                        }`}
-                                                    >
-                                                        {sourceOption === 'all' ? 'All sources' : sourceOption === 'legacy-import' ? 'Legacy import' : 'Generated'}
-                                                    </button>
-                                                ))}
-                                                {(['all', '6', '5', '4'] as const).map((rootOption) => (
-                                                    <button
-                                                        key={rootOption}
-                                                        onClick={() => setVoicingRootFilter(rootOption)}
-                                                        className={`rounded-full border px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] transition-all ${
-                                                            voicingRootFilter === rootOption
-                                                                ? 'border-white/25 bg-white/10 text-white'
-                                                                : 'border-white/10 bg-white/[0.03] text-white/55 hover:border-white/20 hover:text-white'
-                                                        }`}
-                                                    >
-                                                        {rootOption === 'all' ? 'All roots' : `${rootOption}th-string root`}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        <div className="flex items-center justify-between gap-3">
-                                            <div className="flex flex-col gap-1">
-                                                <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Voicing</span>
-                                            </div>
-                                            <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/25">
-                                                {visibleFutureVoicingCandidates.length} of {futureVoicingCandidates.length} choices
-                                            </span>
-                                        </div>
-
-                                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
-                                            {visibleFutureVoicingCandidates.map((candidate) => {
-                                                const presentation = getVoicingPresentationMeta(candidate.voicing);
-                                                const isActive = candidate.voicing.id === futureVoicingSelection.activeCandidateId;
-                                                const isRecommended = futureVoicingSelection.selectionSource !== 'requested'
-                                                    && candidate.voicing.id === futureVoicingSelection.activeCandidateId;
-
-                                                return (
-                                                    <button
-                                                        key={candidate.voicing.id}
-                                                        onClick={() => handleSelectFutureVoicing(candidate.voicing.id)}
-                                                        className={`text-left rounded-[1.25rem] border p-4 transition-all ${
-                                                            isActive
-                                                                ? 'border-white/30 bg-white/10'
-                                                                : 'border-white/5 bg-white/[0.02] hover:border-white/15 hover:bg-white/[0.04]'
-                                                        }`}
-                                                    >
-                                                        <div className="flex items-start justify-between gap-3">
-                                                            <div className="flex flex-col gap-1">
-                                                                <span className="text-sm font-black text-white">{presentation.primaryLabel}</span>
-                                                                {(presentation.familyLabel || presentation.secondaryLabel) && (
-                                                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/35">
-                                                                        {presentation.familyLabel ?? presentation.secondaryLabel}
-                                                                    </span>
-                                                                )}
-                                                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/28">
-                                                                    {candidate.voicing.rootFret ?? 0}fr · {candidate.voicing.playable ? 'Playable' : 'Alternate'}
-                                                                </span>
-                                                                {candidate.voicing.omittedOptionalDegrees && candidate.voicing.omittedOptionalDegrees.length > 0 && (
-                                                                    <span className="text-[10px] text-white/45">
-                                                                        Omits {candidate.voicing.omittedOptionalDegrees.join(', ')}
-                                                                    </span>
-                                                                )}
-                                                            </div>
-                                                            <div className="flex flex-col items-end gap-2">
-                                                                {presentation.sourceLabel && (
-                                                                    <span className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.18em] text-white/60">
-                                                                        {presentation.sourceLabel}
-                                                                    </span>
-                                                                )}
-                                                                {isRecommended && (
-                                                                    <span className="rounded-full border border-emerald-400/25 bg-emerald-400/[0.08] px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.18em] text-emerald-200">
-                                                                        Recommended
-                                                                    </span>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    </button>
-                                                );
-                                            })}
-                                        </div>
-                                        {visibleFutureVoicingCandidates.length === 0 && (
-                                            <div className="rounded-[1.25rem] border border-white/5 bg-white/[0.02] px-4 py-4 text-sm text-white/55">
-                                                No candidates match the current filters.
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <ChordVoicingViewport
-                                chordType={chordType}
-                                selectedKey={selectedKey}
-                                rankingMode={voicingRankingMode}
-                                candidates={futureVoicingCandidates}
-                                activeCandidateId={activeFutureVoicingId}
-                                onActiveVoicingChange={handleFutureVoicingChange}
-                                activeScaleId={activeSelectedScaleId}
-                                onScaleSelect={handleSelectWorkspaceScale}
-                                onPrepareProgressionHandoff={handlePrepareChordWorkspaceHandoff}
-                                tonalContext={tonalContext}
-                            />
-                            {activePreparedChordWorkspaceHandoff && (
-                                <div className="rounded-[1.5rem] border border-emerald-400/15 bg-emerald-400/[0.05] px-5 py-4 flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-                                    <div className="flex flex-col gap-1">
-                                        <span className="text-[9px] font-black uppercase tracking-[0.28em] text-emerald-200/70">
-                                            {activeStagedProgression?.applied ? 'Progression Applied' : 'Progression Ready'}
-                                        </span>
-                                        <span className="text-sm font-semibold text-emerald-50">{activePreparedChordWorkspaceHandoff.title}</span>
-                                        <span className="text-xs text-emerald-50/75">
-                                            {activePreparedChordWorkspaceHandoff.degrees.join(' -> ')} · {activePreparedChordWorkspaceHandoff.summary}
-                                        </span>
-                                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-100/55">
-                                            Relative to tonic: {activePreparedChordWorkspaceHandoff.relativeDegree} · {activePreparedChordWorkspaceHandoff.roleLabel}
-                                        </span>
-                                    </div>
-                                    <div className="flex flex-col gap-3 xl:items-end">
-                                        <div className="flex flex-wrap gap-2">
-                                            {(['replace', 'append', 'insert-after-focus', 'stage-only'] as ProgressionDraftApplyMode[]).map((applyMode) => (
-                                                <button
-                                                    key={applyMode}
-                                                    onClick={() => handleSelectDraftApplyMode(applyMode)}
-                                                    className={`rounded-xl border px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all ${
-                                                        activeDraftApplyMode === applyMode
-                                                            ? 'border-emerald-100/60 bg-emerald-200/15 text-emerald-50'
-                                                            : 'border-white/10 bg-white/[0.03] text-white/60 hover:border-white/20 hover:text-white'
-                                                    }`}
-                                                >
-                                                    {applyMode === 'replace'
-                                                        ? 'Replace'
-                                                        : applyMode === 'append'
-                                                            ? 'Append'
-                                                            : applyMode === 'insert-after-focus'
-                                                                ? 'Insert After Focus'
-                                                                : 'Stage Only'}
-                                                </button>
-                                            ))}
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <button
-                                                onClick={handleApplyPreparedChordWorkspaceHandoff}
-                                                className="rounded-xl border border-emerald-200/40 bg-emerald-200/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-50 transition-all hover:border-emerald-100/60 hover:bg-emerald-200/15"
-                                            >
-                                                {activeDraftApplyMode === 'stage-only'
-                                                    ? 'Keep Staged'
-                                                    : (activeStagedProgression?.applied ? 'Apply Again' : 'Apply to Progression')}
-                                            </button>
-                                            <button
-                                                onClick={handleOpenProgressionWorkspace}
-                                                className="rounded-xl border border-cyan-200/30 bg-cyan-200/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-cyan-50 transition-all hover:border-cyan-100/60 hover:bg-cyan-200/15"
-                                            >
-                                                Open Progression
-                                            </button>
-                                            <button
-                                                onClick={handleClearPreparedChordWorkspaceHandoff}
-                                                className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/70 transition-all hover:border-white/20 hover:text-white"
-                                            >
-                                                Clear
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                            <details className="rounded-[1.5rem] border border-white/5 bg-white/[0.02] overflow-hidden">
-                                <summary className="cursor-pointer list-none px-5 py-4 flex items-center justify-between gap-4 text-white/70 hover:text-white transition-colors">
-                                    <div className="flex flex-col gap-1">
-                                        <span className="text-[9px] font-black uppercase tracking-[0.28em] text-white/30">Legacy Voicings</span>
-                                        <span className="text-sm font-semibold">Open reference gallery</span>
-                                    </div>
-                                    <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/30">fallback / reference</span>
-                                </summary>
-                                <div className="px-5 pb-5 pt-2 border-t border-white/5">
-                                    <ChordGallery
-                                        availableVoicings={availableVoicings}
-                                        selectedKey={selectedKey}
-                                        voicingIndex={voicingIndex}
-                                        onVoicingChange={setVoicingIndex}
-                                    />
-                                </div>
-                            </details>
-                        </div>
+                        <ChordModeWorkspace
+                            chordType={chordType}
+                            onChordTypeChange={setChordType}
+                            chordSelectorOptions={CHORD_SELECTOR_OPTIONS}
+                            chordPreviewTitle={chordPreviewTitle}
+                            activeFutureCandidate={activeFutureCandidate}
+                            activeFuturePresentation={activeFuturePresentation}
+                            futureVoicingSelection={futureVoicingSelection}
+                            fretboardContainerRef={fretboardContainerRef}
+                            tuning={TUNING}
+                            activeNotes={activeNotes}
+                            rootNote={rootNote}
+                            chordTones={currentChordTones}
+                            modifierNotes={modifierNotes}
+                            showChordTones={showChordTones}
+                            showIntervals={showIntervals}
+                            fingering={fingering}
+                            voicingRankingMode={voicingRankingMode}
+                            onVoicingRankingModeChange={setVoicingRankingMode}
+                            voicingSourceFilter={voicingSourceFilter}
+                            onVoicingSourceFilterChange={setVoicingSourceFilter}
+                            voicingRootFilter={voicingRootFilter}
+                            onVoicingRootFilterChange={setVoicingRootFilter}
+                            visibleFutureVoicingCandidates={visibleFutureVoicingCandidates}
+                            futureVoicingCandidates={futureVoicingCandidates}
+                            onSelectFutureVoicing={handleSelectFutureVoicing}
+                            activeFutureVoicingId={activeFutureVoicingId}
+                            activeSelectedScaleId={activeSelectedScaleId}
+                            onActiveVoicingChange={handleFutureVoicingChange}
+                            onScaleSelect={handleSelectWorkspaceScale}
+                            onPrepareProgressionHandoff={handlePrepareChordWorkspaceHandoff}
+                            selectedKey={selectedKey}
+                            tonalContext={tonalContext}
+                            activePreparedChordWorkspaceHandoff={activePreparedChordWorkspaceHandoff}
+                            activeStagedProgression={activeStagedProgression}
+                            activeDraftApplyMode={activeDraftApplyMode}
+                            onSelectDraftApplyMode={handleSelectDraftApplyMode}
+                            onApplyPreparedChordWorkspaceHandoff={handleApplyPreparedChordWorkspaceHandoff}
+                            onOpenProgressionWorkspace={handleOpenProgressionWorkspace}
+                            onClearPreparedChordWorkspaceHandoff={handleClearPreparedChordWorkspaceHandoff}
+                            availableVoicings={availableVoicings}
+                            voicingIndex={voicingIndex}
+                            onLegacyVoicingChange={setVoicingIndex}
+                        />
                     )}
 
                     {mode === 'progression' && (
-                        <DndContext sensors={sensors} onDragOver={handleDragOver} onDragEnd={wrapHandleDragEnd}>
-                            <div className="relative z-10 w-full flex flex-col gap-8 animate-in fade-in duration-500">
-                                {activePreparedChordWorkspaceHandoff && activeStagedProgression && (
-                                    <div className="rounded-[1.5rem] border border-emerald-400/15 bg-emerald-400/[0.05] px-5 py-4 flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-                                        <div className="flex flex-col gap-1">
-                                            <span className="text-[9px] font-black uppercase tracking-[0.28em] text-emerald-200/70">
-                                                {activeStagedProgression.applied ? 'Active Chord Workspace Draft' : 'Staged Chord Workspace Draft'}
-                                            </span>
-                                            <span className="text-sm font-semibold text-emerald-50">{activePreparedChordWorkspaceHandoff.title}</span>
-                                            <span className="text-xs text-emerald-50/75">
-                                                {activePreparedChordWorkspaceHandoff.degrees.join(' -> ')} · tonic {getNoteName(tonalContext.tonicPitchClass ?? tonalContext.selectedKey)} · {effectiveScaleName}
-                                            </span>
-                                            {activeStagedProgression.lastAppliedMode && (
-                                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-100/55">
-                                                    Last applied via {activeStagedProgression.lastAppliedMode}
-                                                </span>
-                                            )}
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            {!activeStagedProgression.applied && activeDraftApplyMode !== 'stage-only' && (
-                                                <button
-                                                    onClick={handleApplyPreparedChordWorkspaceHandoff}
-                                                    className="rounded-xl border border-emerald-200/40 bg-emerald-200/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-50 transition-all hover:border-emerald-100/60 hover:bg-emerald-200/15"
-                                                >
-                                                    Apply {activeDraftApplyMode}
-                                                </button>
-                                            )}
-                                            <button
-                                                onClick={handleClearPreparedChordWorkspaceHandoff}
-                                                className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/70 transition-all hover:border-white/20 hover:text-white"
-                                            >
-                                                Clear
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
-                                {/* Upper Layer: Diatonic Palette */}
-                                <div className="flex flex-col gap-4 bg-[#050505]/50 border border-white/5 rounded-3xl p-6 backdrop-blur-sm">
-                                    <div className="flex items-center gap-2 border-b border-white/5 pb-3">
-                                        <span className="text-[10px] font-black uppercase text-white/40 tracking-[0.3em]">Diatonic Palette</span>
-                                    </div>
-                                    <div className="flex gap-2 flex-wrap">
-                                        {diatonicChords.map((chord) => (
-                                            <DraggablePaletteItem 
-                                                key={chord.degree} 
-                                                degree={chord.degree} 
-                                                selectedKey={selectedKey} 
-                                                color={chord.color}
-                                            />
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Middle Layer: Timeline Canvas */}
-                                <div className="flex flex-col gap-4 bg-[#0a0a0a] border border-white/10 rounded-3xl p-6 shadow-inner" ref={timelineContainerRef}>
-                                    <div className="flex justify-between items-center border-b border-white/5 pb-3 mb-2">
-                                        <span className="text-[10px] font-black uppercase text-white/40 tracking-[0.3em]">Timeline Canvas</span>
-                                        <button
-                                            onClick={appendMeasure}
-                                            className="px-3 py-1.5 rounded-lg border border-white/10 bg-white/5 text-[9px] font-black tracking-widest text-white/60 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all"
-                                        >
-                                            + MEASURE
-                                        </button>
-                                    </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pb-4 w-full">
-                                        {progressionDoc.measures.map((measure) => {
-                                            const measureSubdivisions = measure.timeSignature[0] * 2;
-                                            const usedSubdivisions = measure.nodes.reduce((sum, node) => {
-                                                return sum + Math.round(node.durationInBeats * 2);
-                                            }, 0);
-
-                                            // Determine if this measure is being hovered and where
-                                            return (
-                                                <DroppableMeasure 
-                                                    key={measure.id} 
-                                                    measure={measure} 
-                                                    isOver={activeOverId === measure.id}
-                                                >
-                                                    <div className="flex justify-between items-center px-2 opacity-30 group-hover/measure:opacity-100 transition-opacity">
-                                                        <span className="text-[9px] font-black tracking-widest">M.{measure.index + 1}</span>
-                                                        <div className="flex items-center gap-3">
-                                                            <button
-                                                                onClick={() => removeMeasure(measure.id)}
-                                                                className="text-[9px] font-black text-red-500/50 hover:text-red-500"
-                                                            >
-                                                                DEL
-                                                            </button>
-                                                            {measure.nodes.length > 0 && (
-                                                                <button
-                                                                    onClick={() => clearMeasure(measure.id)}
-                                                                    className="text-[9px] font-black text-orange-500/50 hover:text-orange-500"
-                                                                >
-                                                                    CLEAR
-                                                                </button>
-                                                            )}
-                                                            <span className="text-[9px] font-black">{measure.timeSignature[0]}/{measure.timeSignature[1]}</span>
-                                                        </div>
-                                                        </div>
-                                                        <div
-                                                            className="flex-1 grid grid-rows-1 grid-flow-col gap-1 h-20 relative"
-                                                            style={{ gridTemplateColumns: `repeat(${measureSubdivisions}, minmax(0, 1fr))` }}
-                                                            data-measure-id={measure.id}
-                                                        >
-                                                            {measure.nodes.map((node, nIdx) => (
-                                                                <DraggableNode
-                                                                    key={node.id}
-                                                                    node={node}
-                                                                    measureId={measure.id}
-                                                                    isFocused={focusedNodeId === node.id}
-                                                                    selectedKey={selectedKey}
-                                                                    onClick={() => {
-                                                                        setFocusedNodeId(prev => prev === node.id ? null : node.id);
-                                                                    }}
-                                                                    updateNodeDuration={updateNodeDuration}
-                                                                    index={nIdx}
-                                                                    totalNodes={measure.nodes.length}
-                                                                    prevNodeDuration={measure.nodes[nIdx - 1]?.durationInBeats}
-                                                                    nextNodeDuration={measure.nodes[nIdx + 1]?.durationInBeats}
-                                                                    resizePreview={resizePreview}
-                                                                    setResizePreview={setResizePreview}
-                                                                />
-                                                            ))}
-                                                            {Array.from({ length: Math.max(0, measureSubdivisions - usedSubdivisions) }).map((_, i) => (
-                                                                <div key={`empty-${i}`} className="border border-white/5 rounded-xl bg-white/[0.01]" />
-                                                            ))}
-                                                            
-                                                            {/* Drop Indicator Logic */}
-                                                            {activeOverData?.measureId === measure.id && typeof activeOverData.insertIndex === 'number' && (
-                                                                <DropIndicator 
-                                                                    index={activeOverData.insertIndex} 
-                                                                    measure={measure} 
-                                                                />
-                                                            )}
-                                                        </div>
-                                                </DroppableMeasure>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-
-                                {focusedNode && (
-                                    <ProgressionInspector
-                                        ref={inspectorPanelRef}
-                                        focusedNode={focusedNode}
-                                        playbackData={progressionData}
-                                        selectedKey={selectedKey}
-                                        isMinorMode={isMinorMode}
-                                        isCadencePosition={isCadencePosition}
-                                        addSecondaryDominant={addSecondaryDominant}
-                                        addTritoneSubstitution={addTritoneSubstitution}
-                                        addSubdominantMinor={addSubdominantMinor}
-                                        addFlatSix={addFlatSix}
-                                        addFlatSeven={addFlatSeven}
-                                        applyPicardyThird={applyPicardyThird}
-                                        removeNode={removeNode}
-                                        playProgressionChord={playProgressionChord}
-                                    />
-                                )}
-
-                            </div>
-                        </DndContext>
+                        <ProgressionModeWorkspace
+                            activePreparedChordWorkspaceHandoff={activePreparedChordWorkspaceHandoff}
+                            activeStagedProgression={activeStagedProgression}
+                            activeDraftApplyMode={activeDraftApplyMode}
+                            onApplyPreparedChordWorkspaceHandoff={handleApplyPreparedChordWorkspaceHandoff}
+                            onClearPreparedChordWorkspaceHandoff={handleClearPreparedChordWorkspaceHandoff}
+                            tonalContext={tonalContext}
+                            effectiveScaleName={effectiveScaleName}
+                            diatonicChords={diatonicChords}
+                            selectedKey={selectedKey}
+                            progressionDoc={progressionDoc}
+                            appendMeasure={appendMeasure}
+                            removeMeasure={removeMeasure}
+                            clearMeasure={clearMeasure}
+                            focusedNodeId={focusedNodeId}
+                            setFocusedNodeId={setFocusedNodeId}
+                            handleDragEnd={handleDragEnd}
+                            updateNodeDuration={updateNodeDuration}
+                            focusedNode={focusedNode}
+                            progressionData={progressionData}
+                            isMinorMode={isMinorMode}
+                            isCadencePosition={isCadencePosition}
+                            addSecondaryDominant={addSecondaryDominant}
+                            addTritoneSubstitution={addTritoneSubstitution}
+                            addSubdominantMinor={addSubdominantMinor}
+                            addFlatSix={addFlatSix}
+                            addFlatSeven={addFlatSeven}
+                            applyPicardyThird={applyPicardyThird}
+                            removeNode={removeNode}
+                            playProgressionChord={playProgressionChord}
+                        />
                     )}
 
                     {/* Bottom Metrics */}
