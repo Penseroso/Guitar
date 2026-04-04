@@ -84,6 +84,16 @@ export function scoreResolvedVoicing(
         : requiredDegrees.filter((degree) => !playedDegrees.has(degree));
     const omittedOptionalDegrees = voicing.omittedOptionalDegrees ?? [];
     const metrics = getVoicingShapeMetrics(voicing);
+    const allowedPitchClasses = tones
+        ? new Set(tones.tones.map((tone) => tone.pitchClass))
+        : null;
+    const extraPitchClasses = allowedPitchClasses
+        ? Array.from(new Set(
+            voicing.notes
+                .filter((note) => !note.isMuted && !allowedPitchClasses.has(note.pitchClass))
+                .map((note) => note.pitchClass)
+        ))
+        : [];
     const reasons: string[] = [];
     let score = 0;
 
@@ -184,13 +194,22 @@ export function scoreResolvedVoicing(
         reasons.push('Matches a standard voicing family.');
     }
 
+    if (extraPitchClasses.length > 0) {
+        score -= extraPitchClasses.length * 18;
+        if ((entry.id === 'sus2' || entry.id === 'sus4') && playedDegrees.has('3')) {
+            reasons.push('Introduces a third into a suspended chord.');
+        } else {
+            reasons.push(`Introduces ${extraPitchClasses.length} out-of-chord tone${extraPitchClasses.length === 1 ? '' : 's'}.`);
+        }
+    }
+
     if (voicing.chord.slashBassPitchClass !== undefined) {
         if (voicing.satisfiesSlashBass) {
             score += 24;
-            reasons.push('Matches the requested slash bass in the lowest voice.');
+            reasons.push('Respects specified bass note.');
         } else {
             score -= 28;
-            reasons.push('Misses the requested slash bass in the lowest voice.');
+            reasons.push('Does not match specified bass.');
         }
     }
 

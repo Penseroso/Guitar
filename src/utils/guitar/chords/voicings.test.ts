@@ -277,7 +277,44 @@ describe('voicing ranking orchestration', () => {
         expect(bassMatch.satisfiesSlashBass).toBe(true);
         expect(bassMiss.satisfiesSlashBass).toBe(false);
         expect(matchCandidate.score).toBeGreaterThan(missCandidate.score);
-        expect(matchCandidate.reasons.some((reason) => reason.includes('slash bass'))).toBe(true);
-        expect(missCandidate.reasons.some((reason) => reason.includes('slash bass'))).toBe(true);
+        expect(matchCandidate.reasons).toContain('Respects specified bass note.');
+        expect(missCandidate.reasons).toContain('Does not match specified bass.');
+    });
+
+    it('penalizes suspended voicings that introduce a third', () => {
+        const entry = resolveChordRegistryEntry('sus4');
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+        const cleanSuspended = buildVoicingCandidate(resolveVoicingTemplate(chord, tones, {
+            id: 'sus4-clean',
+            label: 'sus4 clean',
+            instrument: 'guitar',
+            rootString: 4,
+            strings: [
+                { string: 0, fretOffset: 0, toneDegree: '5' },
+                { string: 1, fretOffset: -2, toneDegree: '1' },
+                { string: 2, fretOffset: -3, toneDegree: '5' },
+                { string: 3, fretOffset: 0, toneDegree: '4' },
+                { string: 4, fretOffset: 0, toneDegree: '1' },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 3 }), entry, tones);
+        const pollutedSuspended = buildVoicingCandidate(resolveVoicingTemplate(chord, tones, {
+            id: 'sus4-third',
+            label: 'sus4 with third',
+            instrument: 'guitar',
+            rootString: 4,
+            strings: [
+                { string: 0, fretOffset: 0, toneDegree: '5' },
+                { string: 1, fretOffset: -2, toneDegree: '1' },
+                { string: 2, fretOffset: -3, toneDegree: '5' },
+                { string: 3, fretOffset: -1, toneDegree: '3' },
+                { string: 4, fretOffset: 0, toneDegree: '1' },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 3 }), entry, tones);
+
+        expect(cleanSuspended.score).toBeGreaterThan(pollutedSuspended.score);
+        expect(pollutedSuspended.reasons).toContain('Introduces a third into a suspended chord.');
     });
 });
