@@ -24,4 +24,15 @@ describe('chord progression links', () => {
         expect(context.role).toBe('Suspended Color');
         expect(context.hints[0]?.degrees).toEqual(['sus', '7', 'I']);
     });
+
+    it('relabels dominant harmony as a modal center inside a mixolydian tonal frame', () => {
+        const context = getProgressionLinksForChord('dominant-7', 0, {
+            selectedKey: 0,
+            scaleGroup: 'Diatonic Modes',
+            scaleName: 'Mixolydian',
+        });
+
+        expect(context.role).toBe('Modal Center');
+        expect(context.summary).toContain('Mixolydian');
+    });
 });

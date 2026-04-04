@@ -2,9 +2,11 @@ import { PROGRESSION_LIBRARY } from '../theory';
 import { getNoteName } from '../logic';
 import { resolveChordRegistryEntry } from './helpers';
 import type { ChordRegistryEntry } from './registry';
+import type { HarmonicTonalContext } from './related-scales';
 
 export type HarmonicRoleLabel =
     | 'Tonic Center'
+    | 'Modal Center'
     | 'Pre-Dominant Motion'
     | 'Dominant Tension'
     | 'Suspended Color'
@@ -60,19 +62,27 @@ function buildHint(
 
 export function getProgressionLinksForChord(
     entryInput: string | ChordRegistryEntry,
-    selectedKey: number
+    selectedKey: number,
+    tonalContext?: HarmonicTonalContext
 ): ChordProgressionContext {
     const entry = resolveChordRegistryEntry(entryInput);
+    const activeScaleName = tonalContext?.scaleName;
     const tonicTarget = getNoteName((selectedKey + 5) % 12);
     const backTarget = getNoteName((selectedKey + 10) % 12);
+
+    const isModalMinorCenter = ['Dorian', 'Aeolian', 'Jazz Minor', 'Minor Pentatonic', 'Harmonic Minor'].includes(activeScaleName ?? '');
+    const isModalMajorCenter = ['Ionian', 'Lydian', 'Major Pentatonic'].includes(activeScaleName ?? '');
+    const isMixolydianCenter = activeScaleName === 'Mixolydian';
 
     switch (entry.id) {
         case 'major':
         case 'major-7':
         case 'major-9':
             return {
-                role: 'Tonic Center',
-                summary: 'This sonority reads as an arrival point or stable color field. The strongest surrounding motion usually comes from dominant or subdominant preparation.',
+                role: isModalMajorCenter && activeScaleName === 'Lydian' ? 'Modal Center' : 'Tonic Center',
+                summary: activeScaleName === 'Lydian'
+                    ? 'In a Lydian tonal frame this major sonority behaves as the modal home base, so bright color is part of the center rather than a departure from it.'
+                    : 'This sonority reads as an arrival point or stable color field. The strongest surrounding motion usually comes from dominant or subdominant preparation.',
                 hints: [
                     buildHint(entry, selectedKey, {
                         id: 'dominant-arrival',
@@ -96,8 +106,10 @@ export function getProgressionLinksForChord(
         case 'minor-7':
         case 'minor-9':
             return {
-                role: 'Pre-Dominant Motion',
-                summary: 'Minor quality often behaves as a setup area that can move toward dominant function, or as a tonic substitute in darker loops.',
+                role: isModalMinorCenter ? 'Modal Center' : 'Pre-Dominant Motion',
+                summary: isModalMinorCenter
+                    ? `Within ${activeScaleName} this minor sonority can act as the center of gravity, so the workspace now treats it as a modal home chord before reading it as a setup into dominant motion.`
+                    : 'Minor quality often behaves as a setup area that can move toward dominant function, or as a tonic substitute in darker loops.',
                 hints: [
                     buildHint(entry, selectedKey, {
                         id: 'minor-ii-v-i',
@@ -124,8 +136,10 @@ export function getProgressionLinksForChord(
         case 'hendrix-7-sharp-9':
         case 'dominant-7-flat-9':
             return {
-                role: 'Dominant Tension',
-                summary: `Dominant harmony wants to move by fourth into ${tonicTarget}. Altered variants intensify that same pull rather than changing the destination logic.`,
+                role: isMixolydianCenter ? 'Modal Center' : 'Dominant Tension',
+                summary: isMixolydianCenter
+                    ? 'In Mixolydian, the dominant shell can behave like a modal center rather than a pure cadential V chord, so the workspace keeps both vamp and resolution readings available.'
+                    : `Dominant harmony wants to move by fourth into ${tonicTarget}. Altered variants intensify that same pull rather than changing the destination logic.`,
                 hints: [
                     buildHint(entry, selectedKey, {
                         id: 'dominant-resolution',
@@ -185,8 +199,10 @@ export function getProgressionLinksForChord(
         case 'sus4':
         case 'sus2':
             return {
-                role: 'Suspended Color',
-                summary: 'Suspended chords create held tension rather than fixed major/minor identity. They are useful as pedals, delayed dominants, or modal vamps.',
+                role: isMixolydianCenter || isModalMinorCenter ? 'Modal Center' : 'Suspended Color',
+                summary: isMixolydianCenter || isModalMinorCenter
+                    ? 'Within the current tonal frame, the suspension can function as a stable modal sonority instead of only a delayed-resolution device.'
+                    : 'Suspended chords create held tension rather than fixed major/minor identity. They are useful as pedals, delayed dominants, or modal vamps.',
                 hints: [
                     buildHint(entry, selectedKey, {
                         id: 'sus-release',

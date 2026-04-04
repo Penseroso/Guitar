@@ -8,6 +8,7 @@ import {
     getRankedVoicingsForChord,
     getRelatedScaleSuggestionsForChord,
     resolveChordRegistryEntry,
+    type HarmonicTonalContext,
     type ProgressionHandoffPayload,
     type VoicingCandidate,
 } from '../../utils/guitar/chords';
@@ -25,8 +26,11 @@ interface ChordVoicingViewportProps {
     chordType: string;
     selectedKey: number;
     activeCandidateId?: string | null;
+    activeScaleId?: string | null;
     onActiveVoicingChange?: (payload: ActiveVoicingChangePayload) => void;
+    onScaleSelect?: (scaleId: string) => void;
     onPrepareProgressionHandoff?: (payload: ProgressionHandoffPayload) => void;
+    tonalContext?: HarmonicTonalContext;
 }
 
 function buildChordLabel(chordType: string, selectedKey: number): string {
@@ -96,8 +100,11 @@ export function ChordVoicingViewport({
     chordType,
     selectedKey,
     activeCandidateId,
+    activeScaleId,
     onActiveVoicingChange,
+    onScaleSelect,
     onPrepareProgressionHandoff,
+    tonalContext,
 }: ChordVoicingViewportProps) {
     const selectionKey = useMemo(() => getBridgeSelectionKey(chordType, selectedKey), [chordType, selectedKey]);
     const [internalSelection, setInternalSelection] = useState<{
@@ -146,28 +153,23 @@ export function ChordVoicingViewport({
 
     const chordLabel = buildChordLabel(chordType, selectedKey);
     const relatedScaleSuggestions = useMemo(
-        () => getRelatedScaleSuggestionsForChord(chordType),
-        [chordType]
+        () => getRelatedScaleSuggestionsForChord(chordType, tonalContext),
+        [chordType, tonalContext]
     );
     const progressionContext = useMemo(
-        () => getProgressionLinksForChord(chordType, selectedKey),
-        [chordType, selectedKey]
+        () => getProgressionLinksForChord(chordType, selectedKey, tonalContext),
+        [chordType, selectedKey, tonalContext]
     );
 
     const workspaceContextKey = `${selectionKey}::${selection.activeCandidateId ?? 'none'}`;
     const [workspaceSelection, setWorkspaceSelection] = useState<{
         contextKey: string;
-        activeScaleId: string | null;
         activeHintId: string | null;
     }>({
         contextKey: workspaceContextKey,
-        activeScaleId: null,
         activeHintId: null,
     });
 
-    const activeScaleId = workspaceSelection.contextKey === workspaceContextKey
-        ? workspaceSelection.activeScaleId
-        : null;
     const activeHintId = workspaceSelection.contextKey === workspaceContextKey
         ? workspaceSelection.activeHintId
         : null;
@@ -210,16 +212,11 @@ export function ChordVoicingViewport({
         }
     };
     const handleScaleSelect = (scaleId: string) => {
-        setWorkspaceSelection((current) => ({
-            contextKey: workspaceContextKey,
-            activeScaleId: scaleId,
-            activeHintId: current.contextKey === workspaceContextKey ? current.activeHintId : null,
-        }));
+        onScaleSelect?.(scaleId);
     };
     const handleHintSelect = (hintId: string) => {
-        setWorkspaceSelection((current) => ({
+        setWorkspaceSelection(() => ({
             contextKey: workspaceContextKey,
-            activeScaleId: current.contextKey === workspaceContextKey ? current.activeScaleId : null,
             activeHintId: hintId,
         }));
     };
@@ -236,7 +233,8 @@ export function ChordVoicingViewport({
                         </span>
                     </div>
                     <p className="max-w-3xl text-sm text-white/55">
-                        Future-engine ranking is intentionally separate from the legacy gallery below. This bridge previews future-domain voicings without forcing index-level sync to the active chord-mode flow.
+                    Future-engine ranking is intentionally separate from the legacy gallery below. This bridge previews future-domain voicings without forcing index-level sync to the active chord-mode flow.
+                        {tonalContext?.scaleName ? ` Tonal context: ${getNoteName(tonalContext.selectedKey)} ${tonalContext.scaleName}.` : ''}
                     </p>
                 </div>
 

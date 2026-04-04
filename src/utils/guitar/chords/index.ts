@@ -95,6 +95,7 @@ export {
 export type {
     ChordRelatedScaleSuggestion,
     ChordScaleSuggestionCategory,
+    HarmonicTonalContext,
 } from './related-scales';
 
 export {

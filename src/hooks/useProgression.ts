@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import type { DragEndEvent } from '@dnd-kit/core';
-import { HarmonicFunction, ChordNode, Measure, ProgressionDocument } from '../utils/guitar/types';
+import { HarmonicFunction, ChordNode, ProgressionDocument } from '../utils/guitar/types';
 import { PROGRESSION_LIBRARY } from '../utils/guitar/theory';
 import { 
     cloneDoc, 
     clampIndex, 
-    createNode, 
     insertNodeIntoMeasure, 
     parsePresetToMeasures,
     injectSecondaryDominant,
@@ -228,6 +227,15 @@ export const useProgression = () => {
         }
     };
 
+    const applyProgressionDocument = (progressionDoc: ProgressionDocument, progressionLabel?: string) => {
+        setProgressionDoc(cloneDoc(progressionDoc));
+        if (progressionLabel) {
+            setProgressionName(progressionLabel);
+        }
+        const firstNode = progressionDoc.measures[0]?.nodes[0];
+        setFocusedNodeId(firstNode?.id ?? null);
+    };
+
     const clearAllNodes = () => {
         setProgressionDoc({
             measures: [
@@ -260,6 +268,7 @@ export const useProgression = () => {
         clearAllNodes,
         appendMeasure,
         applyPreset,
+        applyProgressionDocument,
         updateNodeDuration,
     };
 };

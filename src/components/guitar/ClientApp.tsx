@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback, useReducer } from 'react';
 import { 
     DndContext, 
     useDraggable, 
@@ -43,6 +43,10 @@ import {
 } from '../../utils/guitar/logic';
 import { Mode, HarmonicFunction, Measure, ChordNode, HarmonicInterval } from '../../utils/guitar/types';
 import { useProgression } from '../../hooks/useProgression';
+import {
+    createHarmonicWorkspaceState,
+    reduceHarmonicWorkspaceState,
+} from '../../features/harmonic-workspace/state';
 
 
 
@@ -412,20 +416,6 @@ export default function ClientApp() {
     // --- State: Chord Mode ---
     const [chordType, setChordType] = useState('Major'); // 'Major', 'Minor', '7'
     const [voicingIndex, setVoicingIndex] = useState(0);
-    const [futureVoicingSelection, setFutureVoicingSelection] = useState<{
-        scopeKey: string;
-        candidateId: string | null;
-    }>({
-        scopeKey: 'Major::0',
-        candidateId: null,
-    });
-    const [preparedChordWorkspaceHandoff, setPreparedChordWorkspaceHandoff] = useState<{
-        scopeKey: string;
-        payload: ProgressionHandoffPayload | null;
-    }>({
-        scopeKey: 'Major::0',
-        payload: null,
-    });
 
     // --- State: Double Stops (Scale Mode Feature) ---
     const [isDoubleStopActive, setIsDoubleStopActive] = useState(false);
@@ -450,6 +440,7 @@ export default function ClientApp() {
         clearAllNodes,
         appendMeasure,
         applyPreset,
+        applyProgressionDocument,
         updateNodeDuration,
     } = useProgression();
 
@@ -560,27 +551,74 @@ export default function ClientApp() {
         return availableVoicings[voicingIndex] || availableVoicings[0];
     }, [availableVoicings, voicingIndex]);
     const futureVoicingScopeKey = `${chordType}::${selectedKey}`;
-    const activeFutureVoicingId = futureVoicingSelection.scopeKey === futureVoicingScopeKey
-        ? futureVoicingSelection.candidateId
-        : null;
-    const activePreparedChordWorkspaceHandoff = preparedChordWorkspaceHandoff.scopeKey === futureVoicingScopeKey
-        ? preparedChordWorkspaceHandoff.payload
-        : null;
+    const tonalContext = useMemo(() => ({
+        selectedKey,
+        scaleGroup: effectiveScaleGroup,
+        scaleName: effectiveScaleName,
+    }), [effectiveScaleGroup, effectiveScaleName, selectedKey]);
+    const [harmonicWorkspace, dispatchHarmonicWorkspace] = useReducer(
+        reduceHarmonicWorkspaceState,
+        createHarmonicWorkspaceState(futureVoicingScopeKey, tonalContext)
+    );
+
+    useEffect(() => {
+        dispatchHarmonicWorkspace({
+            type: 'sync-scope',
+            scopeKey: futureVoicingScopeKey,
+            tonalContext,
+        });
+    }, [futureVoicingScopeKey, tonalContext]);
+
+    const activeFutureVoicingId = harmonicWorkspace.selectedCandidateId;
+    const activePreparedChordWorkspaceHandoff = harmonicWorkspace.preparedHandoff;
+    const activeSelectedScaleId = harmonicWorkspace.selectedScaleId;
+    const activeStagedProgression = harmonicWorkspace.stagedProgression;
+
     const handleFutureVoicingChange = useCallback(({ activeCandidateId, chordType, selectedKey }: {
         activeCandidateId: string | null;
         chordType: string;
         selectedKey: number;
     }) => {
-        setFutureVoicingSelection({
+        dispatchHarmonicWorkspace({
+            type: 'select-candidate',
             scopeKey: `${chordType}::${selectedKey}`,
             candidateId: activeCandidateId,
         });
     }, []);
+    const handleSelectWorkspaceScale = useCallback((scaleId: string) => {
+        dispatchHarmonicWorkspace({
+            type: 'select-scale',
+            scopeKey: futureVoicingScopeKey,
+            scaleId,
+        });
+    }, [futureVoicingScopeKey]);
     const handlePrepareChordWorkspaceHandoff = useCallback((payload: ProgressionHandoffPayload) => {
-        setPreparedChordWorkspaceHandoff({
+        dispatchHarmonicWorkspace({
+            type: 'prepare-handoff',
             scopeKey: `${payload.chordType}::${payload.selectedKey}`,
+            tonalContext,
             payload,
         });
+    }, [tonalContext]);
+    const handleClearPreparedChordWorkspaceHandoff = useCallback(() => {
+        dispatchHarmonicWorkspace({
+            type: 'clear-handoff',
+            scopeKey: futureVoicingScopeKey,
+            tonalContext,
+        });
+    }, [futureVoicingScopeKey, tonalContext]);
+    const handleApplyPreparedChordWorkspaceHandoff = useCallback(() => {
+        if (!activeStagedProgression) return;
+
+        applyProgressionDocument(activeStagedProgression.document, activeStagedProgression.title);
+        dispatchHarmonicWorkspace({
+            type: 'mark-handoff-applied',
+            scopeKey: futureVoicingScopeKey,
+            tonalContext,
+        });
+    }, [activeStagedProgression, applyProgressionDocument, futureVoicingScopeKey, tonalContext]);
+    const handleOpenProgressionWorkspace = useCallback(() => {
+        setMode('progression');
     }, []);
 
     const fingering = useMemo(() => {
@@ -1038,26 +1076,42 @@ export default function ClientApp() {
                                 selectedKey={selectedKey}
                                 activeCandidateId={activeFutureVoicingId}
                                 onActiveVoicingChange={handleFutureVoicingChange}
+                                activeScaleId={activeSelectedScaleId}
+                                onScaleSelect={handleSelectWorkspaceScale}
                                 onPrepareProgressionHandoff={handlePrepareChordWorkspaceHandoff}
+                                tonalContext={tonalContext}
                             />
                             {activePreparedChordWorkspaceHandoff && (
                                 <div className="rounded-[1.5rem] border border-emerald-400/15 bg-emerald-400/[0.05] px-5 py-4 flex items-center justify-between gap-4">
                                     <div className="flex flex-col gap-1">
-                                        <span className="text-[9px] font-black uppercase tracking-[0.28em] text-emerald-200/70">Progression Handoff Ready</span>
+                                        <span className="text-[9px] font-black uppercase tracking-[0.28em] text-emerald-200/70">
+                                            {activeStagedProgression?.applied ? 'Progression Draft Applied' : 'Progression Handoff Ready'}
+                                        </span>
                                         <span className="text-sm font-semibold text-emerald-50">{activePreparedChordWorkspaceHandoff.title}</span>
                                         <span className="text-xs text-emerald-50/75">
                                             {activePreparedChordWorkspaceHandoff.degrees.join(' -> ')} · {activePreparedChordWorkspaceHandoff.summary}
                                         </span>
                                     </div>
-                                    <button
-                                        onClick={() => setPreparedChordWorkspaceHandoff({
-                                            scopeKey: futureVoicingScopeKey,
-                                            payload: null,
-                                        })}
-                                        className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/70 transition-all hover:border-white/20 hover:text-white"
-                                    >
-                                        Clear
-                                    </button>
+                                    <div className="flex items-center gap-2">
+                                        <button
+                                            onClick={handleApplyPreparedChordWorkspaceHandoff}
+                                            className="rounded-xl border border-emerald-200/40 bg-emerald-200/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-50 transition-all hover:border-emerald-100/60 hover:bg-emerald-200/15"
+                                        >
+                                            {activeStagedProgression?.applied ? 'Reapply Draft' : 'Apply Draft'}
+                                        </button>
+                                        <button
+                                            onClick={handleOpenProgressionWorkspace}
+                                            className="rounded-xl border border-cyan-200/30 bg-cyan-200/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-cyan-50 transition-all hover:border-cyan-100/60 hover:bg-cyan-200/15"
+                                        >
+                                            Open Progression
+                                        </button>
+                                        <button
+                                            onClick={handleClearPreparedChordWorkspaceHandoff}
+                                            className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/70 transition-all hover:border-white/20 hover:text-white"
+                                        >
+                                            Clear
+                                        </button>
+                                    </div>
                                 </div>
                             )}
                             <ChordGallery
@@ -1072,6 +1126,35 @@ export default function ClientApp() {
                     {mode === 'progression' && (
                         <DndContext sensors={sensors} onDragOver={handleDragOver} onDragEnd={wrapHandleDragEnd}>
                             <div className="relative z-10 w-full flex flex-col gap-8 animate-in fade-in duration-500">
+                                {activePreparedChordWorkspaceHandoff && activeStagedProgression && (
+                                    <div className="rounded-[1.5rem] border border-emerald-400/15 bg-emerald-400/[0.05] px-5 py-4 flex items-center justify-between gap-4">
+                                        <div className="flex flex-col gap-1">
+                                            <span className="text-[9px] font-black uppercase tracking-[0.28em] text-emerald-200/70">
+                                                {activeStagedProgression.applied ? 'Active Chord Workspace Draft' : 'Staged Chord Workspace Draft'}
+                                            </span>
+                                            <span className="text-sm font-semibold text-emerald-50">{activePreparedChordWorkspaceHandoff.title}</span>
+                                            <span className="text-xs text-emerald-50/75">
+                                                {activePreparedChordWorkspaceHandoff.degrees.join(' -> ')} · tonal center {getNoteName(selectedKey)} · {effectiveScaleName}
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            {!activeStagedProgression.applied && (
+                                                <button
+                                                    onClick={handleApplyPreparedChordWorkspaceHandoff}
+                                                    className="rounded-xl border border-emerald-200/40 bg-emerald-200/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-50 transition-all hover:border-emerald-100/60 hover:bg-emerald-200/15"
+                                                >
+                                                    Apply Staged Draft
+                                                </button>
+                                            )}
+                                            <button
+                                                onClick={handleClearPreparedChordWorkspaceHandoff}
+                                                className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/70 transition-all hover:border-white/20 hover:text-white"
+                                            >
+                                                Clear
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
                                 {/* Upper Layer: Diatonic Palette */}
                                 <div className="flex flex-col gap-4 bg-[#050505]/50 border border-white/5 rounded-3xl p-6 backdrop-blur-sm">
                                     <div className="flex items-center gap-2 border-b border-white/5 pb-3">

@@ -42,4 +42,15 @@ describe('chord related scale suggestions', () => {
             'Ionian',
         ]);
     });
+
+    it('promotes the active tonal-center scale when it is already supported by the chord mapping', () => {
+        const suggestions = getRelatedScaleSuggestionsForChord('major-7', {
+            selectedKey: 0,
+            scaleGroup: 'Diatonic Modes',
+            scaleName: 'Lydian',
+        });
+
+        expect(suggestions[0]?.name).toBe('Lydian');
+        expect(suggestions[0]?.category).toBe('primary');
+    });
 });

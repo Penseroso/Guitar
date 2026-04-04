@@ -4,6 +4,11 @@ import { resolveChordRegistryEntry } from './helpers';
 import type { ChordRegistryEntry } from './registry';
 
 export type ChordScaleSuggestionCategory = 'primary' | 'color' | 'altered' | 'modal';
+export interface HarmonicTonalContext {
+    selectedKey: number;
+    scaleGroup?: string;
+    scaleName?: string;
+}
 
 export interface ChordRelatedScaleSuggestion {
     scaleId: string;
@@ -52,7 +57,36 @@ function buildSuggestion(
     });
 }
 
-export function getRelatedScaleSuggestionsForChord(entryInput: string | ChordRegistryEntry): ChordRelatedScaleSuggestion[] {
+function prioritizeContextScale(
+    suggestions: ChordRelatedScaleSuggestion[],
+    tonalContext?: HarmonicTonalContext
+): ChordRelatedScaleSuggestion[] {
+    if (!tonalContext?.scaleName) {
+        return suggestions;
+    }
+
+    const contextualIndex = suggestions.findIndex((suggestion) => suggestion.name === tonalContext.scaleName);
+    if (contextualIndex <= 0) {
+        return suggestions;
+    }
+
+    const contextualSuggestion = suggestions[contextualIndex];
+    const reweightedSuggestion: ChordRelatedScaleSuggestion = {
+        ...contextualSuggestion,
+        category: 'primary',
+        reason: `Matches the current tonal center directly through ${tonalContext.scaleName}, so it is promoted as the most functionally immediate fit.`,
+    };
+
+    return [
+        reweightedSuggestion,
+        ...suggestions.filter((_, index) => index !== contextualIndex),
+    ];
+}
+
+export function getRelatedScaleSuggestionsForChord(
+    entryInput: string | ChordRegistryEntry,
+    tonalContext?: HarmonicTonalContext
+): ChordRelatedScaleSuggestion[] {
     const entry = resolveChordRegistryEntry(entryInput);
     const suggestions: ChordRelatedScaleSuggestion[] = [];
     const seen = new Set<string>();
@@ -138,5 +172,5 @@ export function getRelatedScaleSuggestionsForChord(entryInput: string | ChordReg
             break;
     }
 
-    return suggestions;
+    return prioritizeContextScale(suggestions, tonalContext);
 }

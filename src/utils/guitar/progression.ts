@@ -73,7 +73,11 @@ export const parsePresetToMeasures = (presetId: string, library: ProgressionData
     const prog = library.find(p => p.id === presetId);
     if (!prog) return [];
 
-    return prog.degrees.map((degree, index) => {
+    return buildMeasuresFromDegrees(prog.degrees);
+};
+
+export const buildMeasuresFromDegrees = (degrees: string[]): Measure[] => {
+    return degrees.map((degree, index) => {
         let coreDegree = degree;
         let displayDegree = degree;
         let harmonicFunction: HarmonicFunction = 'Tonic';
