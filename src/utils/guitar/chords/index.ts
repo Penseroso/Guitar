@@ -93,6 +93,16 @@ export {
 } from './voicings';
 
 export type {
+    HarmonicFunctionFit,
+    FunctionalHarmonyKind,
+    HarmonicFunctionInterpretation,
+} from './functional-interpretation';
+
+export {
+    interpretChordAgainstTonalCenter,
+} from './functional-interpretation';
+
+export type {
     ChordRelatedScaleSuggestion,
     ChordScaleSuggestionCategory,
     HarmonicTonalContext,

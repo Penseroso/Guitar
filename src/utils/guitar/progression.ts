@@ -1,6 +1,8 @@
 import { HarmonicFunction, ChordNode, Measure, ProgressionDocument } from './types';
 import { ProgressionData } from './theory';
 
+export type ProgressionDraftApplyMode = 'replace' | 'append' | 'insert-after-focus' | 'stage-only';
+
 export const cloneDoc = (doc: ProgressionDocument): ProgressionDocument => ({
     ...doc,
     measures: doc.measures.map((measure) => ({
@@ -10,6 +12,13 @@ export const cloneDoc = (doc: ProgressionDocument): ProgressionDocument => ({
 });
 
 export const clampIndex = (value: number, max: number) => Math.max(0, Math.min(value, max));
+
+function reindexMeasures(measures: Measure[]): Measure[] {
+    return measures.map((measure, index) => ({
+        ...measure,
+        index,
+    }));
+}
 
 export const createNode = (
     displayDegree: string,
@@ -239,3 +248,40 @@ export const injectFlatSix = (doc: ProgressionDocument, targetNodeId: string): P
 
 export const injectFlatSeven = (doc: ProgressionDocument, targetNodeId: string): ProgressionDocument =>
     injectModalChordAfter(doc, targetNodeId, 'bVII', 'bVII');
+
+export const applyDraftToProgressionDocument = (
+    currentDoc: ProgressionDocument,
+    draftDoc: ProgressionDocument,
+    mode: ProgressionDraftApplyMode,
+    focusedNodeId?: string | null
+): ProgressionDocument => {
+    if (mode === 'stage-only') {
+        return cloneDoc(currentDoc);
+    }
+
+    if (mode === 'replace') {
+        return cloneDoc(draftDoc);
+    }
+
+    const baseMeasures = cloneDoc(currentDoc).measures;
+    const draftMeasures = cloneDoc(draftDoc).measures;
+
+    if (mode === 'append') {
+        return {
+            measures: reindexMeasures([...baseMeasures, ...draftMeasures]),
+        };
+    }
+
+    const focusMeasureIndex = focusedNodeId
+        ? baseMeasures.findIndex((measure) => measure.nodes.some((node) => node.id === focusedNodeId))
+        : -1;
+    const insertAt = focusMeasureIndex >= 0 ? focusMeasureIndex + 1 : baseMeasures.length;
+
+    return {
+        measures: reindexMeasures([
+            ...baseMeasures.slice(0, insertAt),
+            ...draftMeasures,
+            ...baseMeasures.slice(insertAt),
+        ]),
+    };
+};

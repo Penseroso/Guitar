@@ -43,6 +43,7 @@ import {
 } from '../../utils/guitar/logic';
 import { Mode, HarmonicFunction, Measure, ChordNode, HarmonicInterval } from '../../utils/guitar/types';
 import { useProgression } from '../../hooks/useProgression';
+import { applyDraftToProgressionDocument, type ProgressionDraftApplyMode } from '../../utils/guitar/progression';
 import {
     createHarmonicWorkspaceState,
     reduceHarmonicWorkspaceState,
@@ -177,9 +178,6 @@ type DraggableNodeProps = {
     measureId: string;
     isFocused: boolean;
     selectedKey: number;
-    addSecondaryDominant: (id: string) => void;
-    addTritoneSubstitution: (id: string) => void;
-    removeNode: (id: string) => void;
     updateNodeDuration: (id: string, direction: 'left' | 'right', delta: number) => void;
     index: number;
     totalNodes: number;
@@ -196,9 +194,6 @@ function DraggableNode({
     isFocused, 
     onClick, 
     selectedKey,
-    addSecondaryDominant, 
-    addTritoneSubstitution,
-    removeNode,
     updateNodeDuration,
     index,
     totalNodes,
@@ -451,9 +446,9 @@ export default function ClientApp() {
         if (mode === 'progression') {
             clearAllNodes();
         }
-    }, [selectedKey, scaleName, mode]); // Also reset when entering progression mode? 
+    }, [clearAllNodes, selectedKey, scaleName, mode]); // Also reset when entering progression mode? 
 
-    // Actually the user said "시" (when changing), so watching key/scale is correct.
+    // Actually the user said "?? (when changing), so watching key/scale is correct.
     // Adding `mode` ensures it resets if they change mode/key while in prog mode.
     const hasPreview = previewScaleGroup !== null && previewScaleName !== null;
     const effectiveScaleGroup = previewScaleGroup ?? scaleGroup;
@@ -553,6 +548,7 @@ export default function ClientApp() {
     const futureVoicingScopeKey = `${chordType}::${selectedKey}`;
     const tonalContext = useMemo(() => ({
         selectedKey,
+        tonicPitchClass: selectedKey,
         scaleGroup: effectiveScaleGroup,
         scaleName: effectiveScaleName,
     }), [effectiveScaleGroup, effectiveScaleName, selectedKey]);
@@ -573,6 +569,7 @@ export default function ClientApp() {
     const activePreparedChordWorkspaceHandoff = harmonicWorkspace.preparedHandoff;
     const activeSelectedScaleId = harmonicWorkspace.selectedScaleId;
     const activeStagedProgression = harmonicWorkspace.stagedProgression;
+    const activeDraftApplyMode = activeStagedProgression?.applyMode ?? 'replace';
 
     const handleFutureVoicingChange = useCallback(({ activeCandidateId, chordType, selectedKey }: {
         activeCandidateId: string | null;
@@ -600,6 +597,13 @@ export default function ClientApp() {
             payload,
         });
     }, [tonalContext]);
+    const handleSelectDraftApplyMode = useCallback((applyMode: ProgressionDraftApplyMode) => {
+        dispatchHarmonicWorkspace({
+            type: 'set-draft-apply-mode',
+            scopeKey: futureVoicingScopeKey,
+            applyMode,
+        });
+    }, [futureVoicingScopeKey]);
     const handleClearPreparedChordWorkspaceHandoff = useCallback(() => {
         dispatchHarmonicWorkspace({
             type: 'clear-handoff',
@@ -610,13 +614,20 @@ export default function ClientApp() {
     const handleApplyPreparedChordWorkspaceHandoff = useCallback(() => {
         if (!activeStagedProgression) return;
 
-        applyProgressionDocument(activeStagedProgression.document, activeStagedProgression.title);
+        const nextProgressionDoc = applyDraftToProgressionDocument(
+            progressionDoc,
+            activeStagedProgression.document,
+            activeStagedProgression.applyMode,
+            focusedNodeId
+        );
+        applyProgressionDocument(nextProgressionDoc, activeStagedProgression.title);
         dispatchHarmonicWorkspace({
             type: 'mark-handoff-applied',
             scopeKey: futureVoicingScopeKey,
             tonalContext,
+            applyMode: activeStagedProgression.applyMode,
         });
-    }, [activeStagedProgression, applyProgressionDocument, futureVoicingScopeKey, tonalContext]);
+    }, [activeStagedProgression, applyProgressionDocument, focusedNodeId, futureVoicingScopeKey, progressionDoc, tonalContext]);
     const handleOpenProgressionWorkspace = useCallback(() => {
         setMode('progression');
     }, []);
@@ -668,7 +679,7 @@ export default function ClientApp() {
                 const noteIdx = (TUNING[s] + computedFret) % 12;
 
                 // Label
-                let label = "•";
+                let label = "??;
                 const diff = (noteIdx - selectedKey + 12) % 12;
                 if (diff === 0) label = "R";
                 else if (diff === 7) label = "5";
@@ -1082,7 +1093,7 @@ export default function ClientApp() {
                                 tonalContext={tonalContext}
                             />
                             {activePreparedChordWorkspaceHandoff && (
-                                <div className="rounded-[1.5rem] border border-emerald-400/15 bg-emerald-400/[0.05] px-5 py-4 flex items-center justify-between gap-4">
+                                <div className="rounded-[1.5rem] border border-emerald-400/15 bg-emerald-400/[0.05] px-5 py-4 flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
                                     <div className="flex flex-col gap-1">
                                         <span className="text-[9px] font-black uppercase tracking-[0.28em] text-emerald-200/70">
                                             {activeStagedProgression?.applied ? 'Progression Draft Applied' : 'Progression Handoff Ready'}
@@ -1091,26 +1102,48 @@ export default function ClientApp() {
                                         <span className="text-xs text-emerald-50/75">
                                             {activePreparedChordWorkspaceHandoff.degrees.join(' -> ')} · {activePreparedChordWorkspaceHandoff.summary}
                                         </span>
+                                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-100/55">
+                                            {activePreparedChordWorkspaceHandoff.relativeDegree} relative to tonic · {activePreparedChordWorkspaceHandoff.roleLabel}
+                                        </span>
                                     </div>
-                                    <div className="flex items-center gap-2">
-                                        <button
-                                            onClick={handleApplyPreparedChordWorkspaceHandoff}
-                                            className="rounded-xl border border-emerald-200/40 bg-emerald-200/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-50 transition-all hover:border-emerald-100/60 hover:bg-emerald-200/15"
-                                        >
-                                            {activeStagedProgression?.applied ? 'Reapply Draft' : 'Apply Draft'}
-                                        </button>
-                                        <button
-                                            onClick={handleOpenProgressionWorkspace}
-                                            className="rounded-xl border border-cyan-200/30 bg-cyan-200/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-cyan-50 transition-all hover:border-cyan-100/60 hover:bg-cyan-200/15"
-                                        >
-                                            Open Progression
-                                        </button>
-                                        <button
-                                            onClick={handleClearPreparedChordWorkspaceHandoff}
-                                            className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/70 transition-all hover:border-white/20 hover:text-white"
-                                        >
-                                            Clear
-                                        </button>
+                                    <div className="flex flex-col gap-3 xl:items-end">
+                                        <div className="flex flex-wrap gap-2">
+                                            {(['replace', 'append', 'insert-after-focus', 'stage-only'] as ProgressionDraftApplyMode[]).map((applyMode) => (
+                                                <button
+                                                    key={applyMode}
+                                                    onClick={() => handleSelectDraftApplyMode(applyMode)}
+                                                    className={`rounded-xl border px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all ${
+                                                        activeDraftApplyMode === applyMode
+                                                            ? 'border-emerald-100/60 bg-emerald-200/15 text-emerald-50'
+                                                            : 'border-white/10 bg-white/[0.03] text-white/60 hover:border-white/20 hover:text-white'
+                                                    }`}
+                                                >
+                                                    {applyMode}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <button
+                                                onClick={handleApplyPreparedChordWorkspaceHandoff}
+                                                className="rounded-xl border border-emerald-200/40 bg-emerald-200/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-50 transition-all hover:border-emerald-100/60 hover:bg-emerald-200/15"
+                                            >
+                                                {activeDraftApplyMode === 'stage-only'
+                                                    ? 'Keep Staged'
+                                                    : (activeStagedProgression?.applied ? `Reapply ${activeDraftApplyMode}` : `Apply ${activeDraftApplyMode}`)}
+                                            </button>
+                                            <button
+                                                onClick={handleOpenProgressionWorkspace}
+                                                className="rounded-xl border border-cyan-200/30 bg-cyan-200/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-cyan-50 transition-all hover:border-cyan-100/60 hover:bg-cyan-200/15"
+                                            >
+                                                Open Progression
+                                            </button>
+                                            <button
+                                                onClick={handleClearPreparedChordWorkspaceHandoff}
+                                                className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/70 transition-all hover:border-white/20 hover:text-white"
+                                            >
+                                                Clear
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             )}
@@ -1127,23 +1160,28 @@ export default function ClientApp() {
                         <DndContext sensors={sensors} onDragOver={handleDragOver} onDragEnd={wrapHandleDragEnd}>
                             <div className="relative z-10 w-full flex flex-col gap-8 animate-in fade-in duration-500">
                                 {activePreparedChordWorkspaceHandoff && activeStagedProgression && (
-                                    <div className="rounded-[1.5rem] border border-emerald-400/15 bg-emerald-400/[0.05] px-5 py-4 flex items-center justify-between gap-4">
+                                    <div className="rounded-[1.5rem] border border-emerald-400/15 bg-emerald-400/[0.05] px-5 py-4 flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
                                         <div className="flex flex-col gap-1">
                                             <span className="text-[9px] font-black uppercase tracking-[0.28em] text-emerald-200/70">
                                                 {activeStagedProgression.applied ? 'Active Chord Workspace Draft' : 'Staged Chord Workspace Draft'}
                                             </span>
                                             <span className="text-sm font-semibold text-emerald-50">{activePreparedChordWorkspaceHandoff.title}</span>
                                             <span className="text-xs text-emerald-50/75">
-                                                {activePreparedChordWorkspaceHandoff.degrees.join(' -> ')} · tonal center {getNoteName(selectedKey)} · {effectiveScaleName}
+                                                {activePreparedChordWorkspaceHandoff.degrees.join(' -> ')} · tonic {getNoteName(tonalContext.tonicPitchClass ?? tonalContext.selectedKey)} · {effectiveScaleName}
                                             </span>
+                                            {activeStagedProgression.lastAppliedMode && (
+                                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-100/55">
+                                                    Last applied via {activeStagedProgression.lastAppliedMode}
+                                                </span>
+                                            )}
                                         </div>
                                         <div className="flex items-center gap-2">
-                                            {!activeStagedProgression.applied && (
+                                            {!activeStagedProgression.applied && activeDraftApplyMode !== 'stage-only' && (
                                                 <button
                                                     onClick={handleApplyPreparedChordWorkspaceHandoff}
                                                     className="rounded-xl border border-emerald-200/40 bg-emerald-200/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-50 transition-all hover:border-emerald-100/60 hover:bg-emerald-200/15"
                                                 >
-                                                    Apply Staged Draft
+                                                    Apply {activeDraftApplyMode}
                                                 </button>
                                             )}
                                             <button
@@ -1232,9 +1270,6 @@ export default function ClientApp() {
                                                                     onClick={() => {
                                                                         setFocusedNodeId(prev => prev === node.id ? null : node.id);
                                                                     }}
-                                                                    addSecondaryDominant={addSecondaryDominant}
-                                                                    addTritoneSubstitution={addTritoneSubstitution}
-                                                                    removeNode={removeNode}
                                                                     updateNodeDuration={updateNodeDuration}
                                                                     index={nIdx}
                                                                     totalNodes={measure.nodes.length}
@@ -1296,3 +1331,10 @@ export default function ClientApp() {
         </div>
     );
 }
+
+
+
+
+
+
+

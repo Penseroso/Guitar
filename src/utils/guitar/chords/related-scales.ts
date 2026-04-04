@@ -2,10 +2,12 @@ import { buildScaleId } from '../scaleSelector';
 import { SCALES } from '../scales';
 import { resolveChordRegistryEntry } from './helpers';
 import type { ChordRegistryEntry } from './registry';
+import { interpretChordAgainstTonalCenter, type HarmonicFunctionFit } from './functional-interpretation';
 
 export type ChordScaleSuggestionCategory = 'primary' | 'color' | 'altered' | 'modal';
 export interface HarmonicTonalContext {
     selectedKey: number;
+    tonicPitchClass?: number;
     scaleGroup?: string;
     scaleName?: string;
 }
@@ -15,6 +17,8 @@ export interface ChordRelatedScaleSuggestion {
     group: string;
     name: string;
     category: ChordScaleSuggestionCategory;
+    fit: HarmonicFunctionFit;
+    functionLabel: string;
     reason: string;
 }
 
@@ -35,6 +39,8 @@ function buildSuggestion(
     seen: Set<string>,
     scaleName: string,
     category: ChordScaleSuggestionCategory,
+    fit: HarmonicFunctionFit,
+    functionLabel: string,
     reason: string
 ) {
     const scale = SCALE_LOOKUP_BY_NAME[scaleName];
@@ -53,13 +59,16 @@ function buildSuggestion(
         group: scale.group,
         name: scale.name,
         category,
+        fit,
+        functionLabel,
         reason,
     });
 }
 
-function prioritizeContextScale(
+function promoteContextScale(
     suggestions: ChordRelatedScaleSuggestion[],
-    tonalContext?: HarmonicTonalContext
+    tonalContext: HarmonicTonalContext | undefined,
+    functionLabel: string
 ): ChordRelatedScaleSuggestion[] {
     if (!tonalContext?.scaleName) {
         return suggestions;
@@ -71,106 +80,95 @@ function prioritizeContextScale(
     }
 
     const contextualSuggestion = suggestions[contextualIndex];
-    const reweightedSuggestion: ChordRelatedScaleSuggestion = {
-        ...contextualSuggestion,
-        category: 'primary',
-        reason: `Matches the current tonal center directly through ${tonalContext.scaleName}, so it is promoted as the most functionally immediate fit.`,
-    };
-
     return [
-        reweightedSuggestion,
+        {
+            ...contextualSuggestion,
+            category: 'primary',
+            fit: 'functional',
+            functionLabel,
+            reason: `The active tonal frame already uses ${tonalContext.scaleName}, so it is promoted as the direct functional fit for this chord reading.`,
+        },
         ...suggestions.filter((_, index) => index !== contextualIndex),
     ];
 }
 
 export function getRelatedScaleSuggestionsForChord(
     entryInput: string | ChordRegistryEntry,
-    tonalContext?: HarmonicTonalContext
+    tonalContext?: HarmonicTonalContext,
+    chordRootPitchClass?: number
 ): ChordRelatedScaleSuggestion[] {
     const entry = resolveChordRegistryEntry(entryInput);
+    const effectiveChordRoot = chordRootPitchClass ?? tonalContext?.selectedKey ?? 0;
+    const interpretation = interpretChordAgainstTonalCenter(entry, effectiveChordRoot, {
+        selectedKey: effectiveChordRoot,
+        tonicPitchClass: tonalContext?.tonicPitchClass ?? tonalContext?.selectedKey ?? effectiveChordRoot,
+        scaleGroup: tonalContext?.scaleGroup ?? 'Diatonic Modes',
+        scaleName: tonalContext?.scaleName ?? 'Ionian',
+    });
     const suggestions: ChordRelatedScaleSuggestion[] = [];
     const seen = new Set<string>();
+    const functionLabel = interpretation.roleLabel;
 
     switch (entry.id) {
         case 'major':
         case 'major-7':
         case 'major-9':
-            buildSuggestion(suggestions, seen, 'Ionian', 'primary', 'Baseline major-key fit with stable 3 and 7 support.');
-            buildSuggestion(suggestions, seen, 'Lydian', 'color', 'Keeps the major shell while adding a brighter #11 color.');
-            buildSuggestion(suggestions, seen, 'Major Pentatonic', 'color', 'Strips the harmony down to the cleanest major consonances.');
+            buildSuggestion(suggestions, seen, 'Ionian', 'primary', interpretation.harmonyKind === 'tonic' ? 'functional' : 'color', functionLabel, 'Stable major-tonic fit with clear 3 and 7 support.');
+            buildSuggestion(suggestions, seen, 'Lydian', 'color', interpretation.harmonyKind === 'modal-center' ? 'functional' : 'color', functionLabel, 'Bright major option when the harmonic reading welcomes #11 color.');
+            buildSuggestion(suggestions, seen, 'Major Pentatonic', 'color', 'color', functionLabel, 'Reduces the color to the cleanest major consonances.');
             break;
 
         case 'minor':
-            buildSuggestion(suggestions, seen, 'Aeolian', 'primary', 'Natural minor gives the most direct minor-triad environment.');
-            buildSuggestion(suggestions, seen, 'Dorian', 'color', 'Adds a brighter 6 for a more open modal minor sound.');
-            buildSuggestion(suggestions, seen, 'Minor Pentatonic', 'color', 'Keeps the minor identity compact and riff-friendly.');
-            break;
-
         case 'minor-7':
         case 'minor-9':
-            buildSuggestion(suggestions, seen, 'Dorian', 'primary', 'Common modern minor-7 color with a natural 6 and flexible pre-dominant pull.');
-            buildSuggestion(suggestions, seen, 'Aeolian', 'color', 'Leans darker when the chord wants a more natural-minor backdrop.');
-            buildSuggestion(suggestions, seen, 'Jazz Minor', 'color', 'Useful when the minor quality wants a brighter major-7 extension palette nearby.');
-            buildSuggestion(suggestions, seen, 'Minor Pentatonic', 'modal', 'Reduced-note option that keeps the minor shell intact.');
+            buildSuggestion(suggestions, seen, 'Dorian', 'primary', interpretation.harmonyKind === 'predominant' ? 'functional' : 'color', functionLabel, 'Flexible minor option that supports both modal and setup readings.');
+            buildSuggestion(suggestions, seen, 'Aeolian', 'color', interpretation.harmonyKind === 'modal-center' ? 'functional' : 'color', functionLabel, 'Darker minor frame when the chord behaves more like a tonic area.');
+            buildSuggestion(suggestions, seen, 'Jazz Minor', 'color', 'color', functionLabel, 'Adds brighter upper extensions around the minor shell.');
+            buildSuggestion(suggestions, seen, 'Minor Pentatonic', 'modal', 'color', functionLabel, 'Keeps the minor function compact and riff-friendly.');
             break;
 
         case 'dominant-7':
-            buildSuggestion(suggestions, seen, 'Mixolydian', 'primary', 'Default dominant color with natural 9 and 13 available.');
-            buildSuggestion(suggestions, seen, 'Lydian Dominant', 'color', 'Bright dominant option when you want #11 color without full alteration.');
-            buildSuggestion(suggestions, seen, 'Altered scale', 'altered', 'High-tension dominant option for stronger pull into resolution.');
-            break;
-
         case 'dominant-9':
         case 'dominant-13':
-            buildSuggestion(suggestions, seen, 'Mixolydian', 'primary', 'Natural dominant match that keeps 9 and 13 available.');
-            buildSuggestion(suggestions, seen, 'Lydian Dominant', 'color', 'Adds #11 color while keeping the dominant shell readable.');
-            buildSuggestion(suggestions, seen, 'Altered scale', 'altered', 'Pushes the dominant toward stronger altered resolution.');
+            buildSuggestion(suggestions, seen, 'Mixolydian', 'primary', interpretation.harmonyKind === 'dominant' || interpretation.harmonyKind === 'modal-center' ? 'functional' : 'color', functionLabel, 'Primary dominant collection with natural extensions intact.');
+            buildSuggestion(suggestions, seen, 'Lydian Dominant', 'color', 'color', functionLabel, 'Adds #11 color without committing to full altered tension.');
+            buildSuggestion(suggestions, seen, 'Altered scale', 'altered', interpretation.harmonyKind === 'dominant' ? 'functional' : 'color', functionLabel, 'High-tension dominant option when cadential pull should intensify.');
             break;
 
         case 'hendrix-7-sharp-9':
-            buildSuggestion(suggestions, seen, 'Altered scale', 'primary', 'Supports the altered dominant shell and the sharp-nine tension.');
-            buildSuggestion(suggestions, seen, 'Whole Tone', 'color', 'Useful for dominant sharp-five style color around the same tension family.');
-            buildSuggestion(suggestions, seen, 'Lydian Dominant', 'color', 'A less dense dominant color when full altered tension is too strong.');
-            break;
-
         case 'dominant-7-flat-9':
-            buildSuggestion(suggestions, seen, 'Altered scale', 'primary', 'Keeps the dominant core while embracing the flat-nine tension.');
-            buildSuggestion(suggestions, seen, 'Phrygian Dominant', 'color', 'Classic b9 dominant flavor with a strong tonal identity.');
-            buildSuggestion(suggestions, seen, 'Diminished', 'altered', 'Symmetric dominant tension option for b9-heavy motion.');
+            buildSuggestion(suggestions, seen, 'Altered scale', 'primary', interpretation.harmonyKind === 'dominant' ? 'functional' : 'color', functionLabel, 'Best functional fit when the altered tensions are part of the chord identity.');
+            buildSuggestion(suggestions, seen, 'Lydian Dominant', 'color', 'color', functionLabel, 'Backs off to a brighter dominant color if full alteration is too dense.');
+            buildSuggestion(suggestions, seen, entry.id === 'dominant-7-flat-9' ? 'Phrygian Dominant' : 'Whole Tone', 'altered', 'color', functionLabel, 'Alternative color family that still respects the dominant tension field.');
             break;
 
         case 'half-diminished-7':
-            buildSuggestion(suggestions, seen, 'Locrian', 'primary', 'Default half-diminished environment with b2, b3, b5, and b7.');
-            buildSuggestion(suggestions, seen, 'Locrian ♮2', 'color', 'Common minor iiø color when the line wants a natural 2.');
+            buildSuggestion(suggestions, seen, 'Locrian', 'primary', 'functional', functionLabel, 'Core half-diminished fit against a minor cadential setup.');
+            buildSuggestion(suggestions, seen, 'Locrian ♮2', 'color', 'functional', functionLabel, 'Common jazz/minor-key variation when the line wants a natural 2.');
             break;
 
         case 'diminished-7':
-            buildSuggestion(suggestions, seen, 'Diminished', 'primary', 'Symmetric diminished scale lines up directly with the chord structure.');
-            buildSuggestion(suggestions, seen, 'Ultralocrian', 'altered', 'Dark altered option when the diminished sonority acts as a passing dominant color.');
+            buildSuggestion(suggestions, seen, 'Diminished', 'primary', 'functional', functionLabel, 'Symmetric diminished collection fits the full diminished shell directly.');
+            buildSuggestion(suggestions, seen, 'Ultralocrian', 'altered', 'color', functionLabel, 'Alternate altered route when the chord behaves as passing tension.');
             break;
 
         case 'sus4':
-            buildSuggestion(suggestions, seen, 'Mixolydian', 'primary', 'Supports suspended dominant behavior without forcing the major 3rd immediately.');
-            buildSuggestion(suggestions, seen, 'Dorian', 'modal', 'Keeps the suspended fourth active in a more modal environment.');
-            buildSuggestion(suggestions, seen, 'Ionian', 'color', 'Useful when the suspension wants to release back into a stable major field.');
-            break;
-
         case 'sus2':
-            buildSuggestion(suggestions, seen, 'Ionian', 'primary', 'Natural major environment that preserves the open second.');
-            buildSuggestion(suggestions, seen, 'Mixolydian', 'color', 'Adds dominant flexibility while keeping the second available.');
-            buildSuggestion(suggestions, seen, 'Major Pentatonic', 'modal', 'Keeps the sus2 shell broad and uncluttered.');
+            buildSuggestion(suggestions, seen, 'Mixolydian', 'primary', interpretation.harmonyKind === 'modal-center' ? 'functional' : 'color', functionLabel, 'Keeps the suspended shell stable without forcing a major third immediately.');
+            buildSuggestion(suggestions, seen, 'Dorian', 'modal', interpretation.harmonyKind === 'modal-center' ? 'functional' : 'color', functionLabel, 'Useful when the suspension belongs to a modal minor frame.');
+            buildSuggestion(suggestions, seen, 'Ionian', 'color', 'color', functionLabel, 'Lets the suspension release back into a plain major frame later.');
             break;
 
         case 'power-5':
-            buildSuggestion(suggestions, seen, 'Major Pentatonic', 'primary', 'Neutral major-side option when the missing 3rd stays intentionally open.');
-            buildSuggestion(suggestions, seen, 'Minor Pentatonic', 'color', 'Neutral minor-side option for riff-based power-chord movement.');
-            buildSuggestion(suggestions, seen, 'Mixolydian', 'modal', 'Adds dominant-rock color without overcommitting the harmony.');
+            buildSuggestion(suggestions, seen, 'Major Pentatonic', 'primary', interpretation.harmonyKind === 'open' ? 'color' : 'functional', functionLabel, 'Open major-side riff fit when the third remains unstated.');
+            buildSuggestion(suggestions, seen, 'Minor Pentatonic', 'color', 'color', functionLabel, 'Open minor-side riff fit when the third remains unstated.');
+            buildSuggestion(suggestions, seen, 'Mixolydian', 'modal', 'color', functionLabel, 'Adds rock/modal motion without overcommitting the harmony.');
             break;
 
         default:
-            buildSuggestion(suggestions, seen, 'Ionian', 'primary', 'General stable major reference for unsupported chord-specific mapping.');
+            buildSuggestion(suggestions, seen, 'Ionian', 'primary', 'functional', functionLabel, 'Fallback stable reference inside the current supported inventory.');
             break;
     }
 
-    return prioritizeContextScale(suggestions, tonalContext);
+    return promoteContextScale(suggestions, tonalContext, functionLabel);
 }

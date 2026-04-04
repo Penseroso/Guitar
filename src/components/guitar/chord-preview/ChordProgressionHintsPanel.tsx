@@ -24,6 +24,9 @@ export function ChordProgressionHintsPanel({
             <div className="flex flex-col gap-1">
                 <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">Progression Context</span>
                 <span className="text-sm font-black text-white">{context.role}</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.22em] text-cyan-100/55">
+                    {context.relativeDegree} relative to tonic
+                </span>
                 <p className="text-xs text-white/60">{context.summary}</p>
             </div>
 
@@ -63,7 +66,7 @@ export function ChordProgressionHintsPanel({
                     <div className="flex flex-col gap-1">
                         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-200/70">Prepared Handoff</span>
                         <span className="text-sm font-semibold text-emerald-50">{activeHint.title}</span>
-                        <span className="text-xs text-emerald-50/75">{activeHint.degrees.join(' -> ')}</span>
+                        <span className="text-xs text-emerald-50/75">{activeHint.degrees.join(' -> ')} · {activeHint.handoff.roleLabel}</span>
                     </div>
                     <button
                         onClick={() => onPrepareHandoff?.(activeHint.handoff)}

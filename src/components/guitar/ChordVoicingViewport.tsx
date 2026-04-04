@@ -7,6 +7,7 @@ import {
     getProgressionLinksForChord,
     getRankedVoicingsForChord,
     getRelatedScaleSuggestionsForChord,
+    interpretChordAgainstTonalCenter,
     resolveChordRegistryEntry,
     type HarmonicTonalContext,
     type ProgressionHandoffPayload,
@@ -125,11 +126,9 @@ export function ChordVoicingViewport({
                 errorMessage: null,
             };
         } catch (error) {
-            const message = error instanceof Error ? error.message : 'Unknown future-engine resolution error.';
-
             return {
                 candidates: [] as VoicingCandidate[],
-                errorMessage: message,
+                errorMessage: error instanceof Error ? error.message : 'Unknown future-engine resolution error.',
             };
         }
     }, [chordType, selectedKey]);
@@ -151,10 +150,16 @@ export function ChordVoicingViewport({
         });
     }, [candidates.length, chordType, onActiveVoicingChange, selectedKey, selection]);
 
+    const harmonicInterpretation = useMemo(() => interpretChordAgainstTonalCenter(chordType, selectedKey, {
+        selectedKey,
+        tonicPitchClass: tonalContext?.tonicPitchClass ?? tonalContext?.selectedKey ?? selectedKey,
+        scaleGroup: tonalContext?.scaleGroup ?? 'Diatonic Modes',
+        scaleName: tonalContext?.scaleName ?? 'Ionian',
+    }), [chordType, selectedKey, tonalContext]);
     const chordLabel = buildChordLabel(chordType, selectedKey);
     const relatedScaleSuggestions = useMemo(
-        () => getRelatedScaleSuggestionsForChord(chordType, tonalContext),
-        [chordType, tonalContext]
+        () => getRelatedScaleSuggestionsForChord(chordType, tonalContext, selectedKey),
+        [chordType, tonalContext, selectedKey]
     );
     const progressionContext = useMemo(
         () => getProgressionLinksForChord(chordType, selectedKey, tonalContext),
@@ -205,27 +210,19 @@ export function ChordVoicingViewport({
 
     const handleSelectCandidate = (candidateId: string) => {
         if (activeCandidateId === undefined) {
-            setInternalSelection({
-                selectionKey,
-                candidateId,
-            });
+            setInternalSelection({ selectionKey, candidateId });
         }
     };
+
     const handleScaleSelect = (scaleId: string) => {
         onScaleSelect?.(scaleId);
-    };
-    const handleHintSelect = (hintId: string) => {
-        setWorkspaceSelection(() => ({
-            contextKey: workspaceContextKey,
-            activeHintId: hintId,
-        }));
     };
 
     return (
         <div className="rounded-[2rem] border border-white/5 bg-[#050505] p-6 flex flex-col gap-6">
             <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
                 <div className="flex flex-col gap-2">
-                    <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Future Engine Chord Preview</span>
+                    <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Future Engine Chord Workspace</span>
                     <div className="flex flex-wrap items-end gap-x-3 gap-y-2">
                         <h3 className="text-3xl font-black text-white tracking-tight">{chordLabel}</h3>
                         <span className="pb-1 text-[10px] font-black uppercase tracking-[0.3em] text-white/30">
@@ -233,8 +230,7 @@ export function ChordVoicingViewport({
                         </span>
                     </div>
                     <p className="max-w-3xl text-sm text-white/55">
-                    Future-engine ranking is intentionally separate from the legacy gallery below. This bridge previews future-domain voicings without forcing index-level sync to the active chord-mode flow.
-                        {tonalContext?.scaleName ? ` Tonal context: ${getNoteName(tonalContext.selectedKey)} ${tonalContext.scaleName}.` : ''}
+                        Future-engine ranking stays separate from the legacy gallery below. Root {harmonicInterpretation.chordRootNoteName} is interpreted against tonic {harmonicInterpretation.tonicNoteName} as {harmonicInterpretation.relativeDegree}.
                     </p>
                 </div>
 
@@ -246,8 +242,8 @@ export function ChordVoicingViewport({
                     }`}>
                         {activeCandidate.voicing.playable ? 'Playable' : 'Fallback Candidate'}
                     </span>
-                    <span className="px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.04] text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
-                        {selection.hasPlayableCandidates ? 'Playable set available' : 'No playable set yet'}
+                    <span className="px-3 py-1.5 rounded-full border border-cyan-300/20 bg-cyan-400/[0.05] text-[9px] font-black uppercase tracking-[0.25em] text-cyan-100/80">
+                        {harmonicInterpretation.roleLabel}
                     </span>
                 </div>
             </div>
@@ -271,12 +267,16 @@ export function ChordVoicingViewport({
                             </span>
                         </div>
 
-                        <div className="rounded-2xl border border-white/5 bg-black/20 px-3 py-3">
-                            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">Selection Policy</span>
-                            <p className="mt-1 text-xs font-semibold text-white/70">{defaultSelectionLabel}</p>
-                        </div>
-
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div className="rounded-2xl border border-cyan-300/20 bg-cyan-400/[0.05] px-3 py-3">
+                                <span className="text-[8px] font-black uppercase tracking-[0.3em] text-cyan-100/70">Function</span>
+                                <div className="mt-1 text-sm font-semibold text-cyan-50">{harmonicInterpretation.relativeDegree} · {harmonicInterpretation.roleLabel}</div>
+                                <p className="mt-1 text-xs text-cyan-50/80">{harmonicInterpretation.summary}</p>
+                            </div>
+                            <div className="rounded-2xl border border-white/5 bg-black/20 px-3 py-3">
+                                <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">Selection Policy</span>
+                                <p className="mt-1 text-xs font-semibold text-white/70">{defaultSelectionLabel}</p>
+                            </div>
                             {renderDegreeList('Missing Required', activeCandidate.voicing.missingRequiredDegrees, 'None', 'danger')}
                             {renderDegreeList('Omitted Optional', activeCandidate.voicing.omittedOptionalDegrees, 'None', 'warning')}
                             {renderDegreeList('Matched Required', activeCandidate.matchedRequiredDegrees, 'None')}
@@ -363,16 +363,19 @@ export function ChordVoicingViewport({
                 <ChordRelatedScalesPanel
                     rootPitchClass={selectedKey}
                     suggestions={relatedScaleSuggestions}
-                    activeScaleId={activeScaleId}
+                    activeScaleId={activeScaleId ?? null}
                     onScaleSelect={handleScaleSelect}
                 />
                 <ChordProgressionHintsPanel
                     context={progressionContext}
                     activeHintId={activeHintId}
-                    onHintSelect={handleHintSelect}
+                    onHintSelect={(hintId) => setWorkspaceSelection({ contextKey: workspaceContextKey, activeHintId: hintId })}
                     onPrepareHandoff={onPrepareProgressionHandoff}
                 />
             </div>
         </div>
     );
 }
+
+
+

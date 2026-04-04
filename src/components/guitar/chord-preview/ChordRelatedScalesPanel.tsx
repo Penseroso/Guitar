@@ -33,7 +33,7 @@ export function ChordRelatedScalesPanel({
             <div className="flex items-center justify-between gap-3">
                 <div className="flex flex-col gap-1">
                     <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">Related Scales</span>
-                    <span className="text-sm font-black text-white">Chord-aware scale options</span>
+                    <span className="text-sm font-black text-white">Functional fit vs color fit</span>
                 </div>
                 <span className="text-[10px] font-black uppercase tracking-[0.25em] text-white/35">
                     {suggestions.length} options
@@ -54,19 +54,27 @@ export function ChordRelatedScalesPanel({
                                 <button
                                     key={suggestion.scaleId}
                                     onClick={() => onScaleSelect(suggestion.scaleId)}
-                                    className={`min-w-[152px] rounded-2xl border px-4 py-3 text-left transition-all ${
+                                    className={`min-w-[168px] rounded-2xl border px-4 py-3 text-left transition-all ${
                                         isActive
                                             ? 'border-cyan-300/50 bg-cyan-400/[0.08] text-cyan-50 shadow-[0_0_18px_rgba(34,211,238,0.12)]'
                                             : 'border-white/10 bg-white/[0.02] text-white/65 hover:border-white/25 hover:text-white'
                                     }`}
                                 >
-                                    <div className={`text-[8px] font-black uppercase tracking-[0.28em] ${isActive ? 'text-cyan-200/70' : 'text-white/30'}`}>
-                                        {CATEGORY_LABELS[suggestion.category]}
+                                    <div className="flex items-center justify-between gap-2">
+                                        <div className={`text-[8px] font-black uppercase tracking-[0.28em] ${isActive ? 'text-cyan-200/70' : 'text-white/30'}`}>
+                                            {suggestion.fit === 'functional' ? 'Functional' : 'Color'}
+                                        </div>
+                                        <div className="text-[8px] font-black uppercase tracking-[0.2em] text-white/30">
+                                            {CATEGORY_LABELS[suggestion.category]}
+                                        </div>
                                     </div>
                                     <div className="mt-1 text-sm font-semibold">
                                         {getNoteName(rootPitchClass)} {getScaleDisplayName(suggestion.name)}
                                     </div>
                                     <div className="mt-1 text-[10px] font-black uppercase tracking-[0.2em] text-white/35">
+                                        {suggestion.functionLabel}
+                                    </div>
+                                    <div className="mt-1 text-[10px] font-black uppercase tracking-[0.2em] text-white/25">
                                         {getVisibleScaleFamilyLabel(suggestion.group)}
                                     </div>
                                 </button>
@@ -78,14 +86,17 @@ export function ChordRelatedScalesPanel({
                         <div className="rounded-2xl border border-cyan-300/20 bg-cyan-400/[0.05] px-4 py-3">
                             <div className="flex items-center justify-between gap-3">
                                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-100/70">
-                                    {CATEGORY_LABELS[activeScale.category]}
+                                    {activeScale.fit === 'functional' ? 'Functional Fit' : 'Color Fit'}
                                 </span>
                                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-100/50">
-                                    {getVisibleScaleFamilyLabel(activeScale.group)}
+                                    {CATEGORY_LABELS[activeScale.category]}
                                 </span>
                             </div>
                             <div className="mt-2 text-sm font-semibold text-cyan-50">
                                 {getNoteName(rootPitchClass)} {getScaleDisplayName(activeScale.name)}
+                            </div>
+                            <div className="mt-1 text-[10px] font-black uppercase tracking-[0.2em] text-cyan-100/50">
+                                {activeScale.functionLabel} · {getVisibleScaleFamilyLabel(activeScale.group)}
                             </div>
                             <p className="mt-1 text-xs text-cyan-50/80">{activeScale.reason}</p>
                         </div>

@@ -10,6 +10,7 @@ describe('harmonic workspace state', () => {
     it('stages a progression handoff into an executable draft', () => {
         const state = createHarmonicWorkspaceState('major::0', {
             selectedKey: 0,
+            tonicPitchClass: 0,
             scaleGroup: 'Diatonic Modes',
             scaleName: 'Ionian',
         });
@@ -32,9 +33,44 @@ describe('harmonic workspace state', () => {
         expect(next.stagedProgression?.degrees).toEqual(['ii', 'V', 'I']);
         expect(next.stagedProgression?.document.measures).toHaveLength(3);
         expect(next.stagedProgression?.applied).toBe(false);
+        expect(next.stagedProgression?.applyMode).toBe('replace');
     });
 
-    it('marks a staged progression as applied without rebuilding the draft', () => {
+    it('tracks explicit draft apply modes before application', () => {
+        const state = reduceHarmonicWorkspaceState(createHarmonicWorkspaceState('dominant-7::7', {
+            selectedKey: 7,
+            tonicPitchClass: 0,
+            scaleGroup: 'Diatonic Modes',
+            scaleName: 'Ionian',
+        }), {
+            type: 'prepare-handoff',
+            scopeKey: 'dominant-7::7',
+            tonalContext: {
+                selectedKey: 7,
+                tonicPitchClass: 0,
+                scaleGroup: 'Diatonic Modes',
+                scaleName: 'Ionian',
+            },
+            payload: {
+                hintId: 'dominant-resolution',
+                title: 'Resolve to tonic',
+                summary: 'V to I',
+                degrees: ['V', 'I'],
+                chordType: 'dominant-7',
+                selectedKey: 7,
+            },
+        });
+
+        const next = reduceHarmonicWorkspaceState(state, {
+            type: 'set-draft-apply-mode',
+            scopeKey: 'dominant-7::7',
+            applyMode: 'append',
+        });
+
+        expect(next.stagedProgression?.applyMode).toBe('append');
+    });
+
+    it('marks a staged progression as applied with the chosen mode', () => {
         const draft = buildProgressionDraftFromHandoff({
             hintId: 'dominant-resolution',
             title: 'Resolve to tonic',
@@ -42,10 +78,11 @@ describe('harmonic workspace state', () => {
             degrees: ['V', 'I'],
             chordType: 'dominant-7',
             selectedKey: 7,
-        });
+        }, 'insert-after-focus');
         const state = {
             ...createHarmonicWorkspaceState('dominant-7::7', {
                 selectedKey: 7,
+                tonicPitchClass: 0,
                 scaleGroup: 'Diatonic Modes',
                 scaleName: 'Mixolydian',
             }),
@@ -56,16 +93,18 @@ describe('harmonic workspace state', () => {
             type: 'mark-handoff-applied',
             scopeKey: 'dominant-7::7',
             tonalContext: state.tonalContext,
+            applyMode: 'insert-after-focus',
         });
 
         expect(next.stagedProgression?.applied).toBe(true);
-        expect(next.stagedProgression?.degrees).toEqual(['V', 'I']);
+        expect(next.stagedProgression?.lastAppliedMode).toBe('insert-after-focus');
     });
 
     it('resets staged handoff state when the chord scope changes', () => {
         const state = {
             ...createHarmonicWorkspaceState('major::0', {
                 selectedKey: 0,
+                tonicPitchClass: 0,
                 scaleGroup: 'Diatonic Modes',
                 scaleName: 'Ionian',
             }),
@@ -86,6 +125,7 @@ describe('harmonic workspace state', () => {
             scopeKey: 'dominant-7::7',
             tonalContext: {
                 selectedKey: 7,
+                tonicPitchClass: 0,
                 scaleGroup: 'Diatonic Modes',
                 scaleName: 'Mixolydian',
             },

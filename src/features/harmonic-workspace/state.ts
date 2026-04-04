@@ -1,9 +1,10 @@
 import type { ProgressionDocument } from '../../utils/guitar/types';
-import { buildMeasuresFromDegrees } from '../../utils/guitar/progression';
+import { buildMeasuresFromDegrees, type ProgressionDraftApplyMode } from '../../utils/guitar/progression';
 import type { ProgressionHandoffPayload } from '../../utils/guitar/chords';
 
 export interface HarmonicWorkspaceTonalContext {
     selectedKey: number;
+    tonicPitchClass?: number;
     scaleGroup: string;
     scaleName: string;
 }
@@ -16,6 +17,8 @@ export interface HarmonicWorkspaceProgressionDraft {
     progressionId?: string;
     document: ProgressionDocument;
     applied: boolean;
+    applyMode: ProgressionDraftApplyMode;
+    lastAppliedMode?: ProgressionDraftApplyMode;
 }
 
 export interface HarmonicWorkspaceState {
@@ -32,8 +35,9 @@ export type HarmonicWorkspaceAction =
     | { type: 'select-candidate'; scopeKey: string; candidateId: string | null }
     | { type: 'select-scale'; scopeKey: string; scaleId: string | null }
     | { type: 'prepare-handoff'; scopeKey: string; tonalContext: HarmonicWorkspaceTonalContext; payload: ProgressionHandoffPayload }
+    | { type: 'set-draft-apply-mode'; scopeKey: string; applyMode: ProgressionDraftApplyMode }
     | { type: 'clear-handoff'; scopeKey: string; tonalContext: HarmonicWorkspaceTonalContext }
-    | { type: 'mark-handoff-applied'; scopeKey: string; tonalContext: HarmonicWorkspaceTonalContext };
+    | { type: 'mark-handoff-applied'; scopeKey: string; tonalContext: HarmonicWorkspaceTonalContext; applyMode: ProgressionDraftApplyMode };
 
 export function createHarmonicWorkspaceState(
     scopeKey: string,
@@ -50,7 +54,8 @@ export function createHarmonicWorkspaceState(
 }
 
 export function buildProgressionDraftFromHandoff(
-    payload: ProgressionHandoffPayload
+    payload: ProgressionHandoffPayload,
+    applyMode: ProgressionDraftApplyMode = 'replace'
 ): HarmonicWorkspaceProgressionDraft {
     return {
         source: payload.progressionId ? 'preset' : 'hint',
@@ -62,6 +67,7 @@ export function buildProgressionDraftFromHandoff(
             measures: buildMeasuresFromDegrees(payload.degrees),
         },
         applied: false,
+        applyMode,
     };
 }
 
@@ -102,7 +108,22 @@ export function reduceHarmonicWorkspaceState(
                 scopeKey: action.scopeKey,
                 tonalContext: action.tonalContext,
                 preparedHandoff: action.payload,
-                stagedProgression: buildProgressionDraftFromHandoff(action.payload),
+                stagedProgression: buildProgressionDraftFromHandoff(
+                    action.payload,
+                    state.stagedProgression?.applyMode ?? 'replace'
+                ),
+            };
+
+        case 'set-draft-apply-mode':
+            return {
+                ...state,
+                scopeKey: action.scopeKey,
+                stagedProgression: state.stagedProgression
+                    ? {
+                        ...state.stagedProgression,
+                        applyMode: action.applyMode,
+                    }
+                    : null,
             };
 
         case 'clear-handoff':
@@ -123,6 +144,7 @@ export function reduceHarmonicWorkspaceState(
                     ? {
                         ...state.stagedProgression,
                         applied: true,
+                        lastAppliedMode: action.applyMode,
                     }
                     : null,
             };
