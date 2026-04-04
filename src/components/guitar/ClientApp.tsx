@@ -22,6 +22,7 @@ import { SlidersHorizontal } from 'lucide-react';
 import { ProgressionInspector } from '../../features/progression/components/ProgressionInspector';
 import { useProgressionAudio } from '../../features/progression/hooks/useProgressionAudio';
 import { getProgressionPlaybackData } from '../../features/progression/utils/getProgressionPlaybackData';
+import type { ProgressionHandoffPayload } from '../../utils/guitar/chords';
 import {
     TUNING,
     SCALES,
@@ -418,6 +419,13 @@ export default function ClientApp() {
         scopeKey: 'Major::0',
         candidateId: null,
     });
+    const [preparedChordWorkspaceHandoff, setPreparedChordWorkspaceHandoff] = useState<{
+        scopeKey: string;
+        payload: ProgressionHandoffPayload | null;
+    }>({
+        scopeKey: 'Major::0',
+        payload: null,
+    });
 
     // --- State: Double Stops (Scale Mode Feature) ---
     const [isDoubleStopActive, setIsDoubleStopActive] = useState(false);
@@ -555,6 +563,9 @@ export default function ClientApp() {
     const activeFutureVoicingId = futureVoicingSelection.scopeKey === futureVoicingScopeKey
         ? futureVoicingSelection.candidateId
         : null;
+    const activePreparedChordWorkspaceHandoff = preparedChordWorkspaceHandoff.scopeKey === futureVoicingScopeKey
+        ? preparedChordWorkspaceHandoff.payload
+        : null;
     const handleFutureVoicingChange = useCallback(({ activeCandidateId, chordType, selectedKey }: {
         activeCandidateId: string | null;
         chordType: string;
@@ -563,6 +574,12 @@ export default function ClientApp() {
         setFutureVoicingSelection({
             scopeKey: `${chordType}::${selectedKey}`,
             candidateId: activeCandidateId,
+        });
+    }, []);
+    const handlePrepareChordWorkspaceHandoff = useCallback((payload: ProgressionHandoffPayload) => {
+        setPreparedChordWorkspaceHandoff({
+            scopeKey: `${payload.chordType}::${payload.selectedKey}`,
+            payload,
         });
     }, []);
 
@@ -1021,7 +1038,28 @@ export default function ClientApp() {
                                 selectedKey={selectedKey}
                                 activeCandidateId={activeFutureVoicingId}
                                 onActiveVoicingChange={handleFutureVoicingChange}
+                                onPrepareProgressionHandoff={handlePrepareChordWorkspaceHandoff}
                             />
+                            {activePreparedChordWorkspaceHandoff && (
+                                <div className="rounded-[1.5rem] border border-emerald-400/15 bg-emerald-400/[0.05] px-5 py-4 flex items-center justify-between gap-4">
+                                    <div className="flex flex-col gap-1">
+                                        <span className="text-[9px] font-black uppercase tracking-[0.28em] text-emerald-200/70">Progression Handoff Ready</span>
+                                        <span className="text-sm font-semibold text-emerald-50">{activePreparedChordWorkspaceHandoff.title}</span>
+                                        <span className="text-xs text-emerald-50/75">
+                                            {activePreparedChordWorkspaceHandoff.degrees.join(' -> ')} · {activePreparedChordWorkspaceHandoff.summary}
+                                        </span>
+                                    </div>
+                                    <button
+                                        onClick={() => setPreparedChordWorkspaceHandoff({
+                                            scopeKey: futureVoicingScopeKey,
+                                            payload: null,
+                                        })}
+                                        className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/70 transition-all hover:border-white/20 hover:text-white"
+                                    >
+                                        Clear
+                                    </button>
+                                </div>
+                            )}
                             <ChordGallery
                                 availableVoicings={availableVoicings}
                                 selectedKey={selectedKey}

@@ -3,8 +3,17 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { getNoteName } from '../../utils/guitar/logic';
-import { getRankedVoicingsForChord, resolveChordRegistryEntry, type VoicingCandidate } from '../../utils/guitar/chords';
+import {
+    getProgressionLinksForChord,
+    getRankedVoicingsForChord,
+    getRelatedScaleSuggestionsForChord,
+    resolveChordRegistryEntry,
+    type ProgressionHandoffPayload,
+    type VoicingCandidate,
+} from '../../utils/guitar/chords';
 import { CompactVoicingDiagram } from './chord-preview/CompactVoicingDiagram';
+import { ChordProgressionHintsPanel } from './chord-preview/ChordProgressionHintsPanel';
+import { ChordRelatedScalesPanel } from './chord-preview/ChordRelatedScalesPanel';
 import {
     getBridgeSelectionKey,
     getReasonPreview,
@@ -17,6 +26,7 @@ interface ChordVoicingViewportProps {
     selectedKey: number;
     activeCandidateId?: string | null;
     onActiveVoicingChange?: (payload: ActiveVoicingChangePayload) => void;
+    onPrepareProgressionHandoff?: (payload: ProgressionHandoffPayload) => void;
 }
 
 function buildChordLabel(chordType: string, selectedKey: number): string {
@@ -87,6 +97,7 @@ export function ChordVoicingViewport({
     selectedKey,
     activeCandidateId,
     onActiveVoicingChange,
+    onPrepareProgressionHandoff,
 }: ChordVoicingViewportProps) {
     const selectionKey = useMemo(() => getBridgeSelectionKey(chordType, selectedKey), [chordType, selectedKey]);
     const [internalSelection, setInternalSelection] = useState<{
@@ -134,6 +145,32 @@ export function ChordVoicingViewport({
     }, [candidates.length, chordType, onActiveVoicingChange, selectedKey, selection]);
 
     const chordLabel = buildChordLabel(chordType, selectedKey);
+    const relatedScaleSuggestions = useMemo(
+        () => getRelatedScaleSuggestionsForChord(chordType),
+        [chordType]
+    );
+    const progressionContext = useMemo(
+        () => getProgressionLinksForChord(chordType, selectedKey),
+        [chordType, selectedKey]
+    );
+
+    const workspaceContextKey = `${selectionKey}::${selection.activeCandidateId ?? 'none'}`;
+    const [workspaceSelection, setWorkspaceSelection] = useState<{
+        contextKey: string;
+        activeScaleId: string | null;
+        activeHintId: string | null;
+    }>({
+        contextKey: workspaceContextKey,
+        activeScaleId: null,
+        activeHintId: null,
+    });
+
+    const activeScaleId = workspaceSelection.contextKey === workspaceContextKey
+        ? workspaceSelection.activeScaleId
+        : null;
+    const activeHintId = workspaceSelection.contextKey === workspaceContextKey
+        ? workspaceSelection.activeHintId
+        : null;
 
     if (errorMessage) {
         return renderViewportShell(
@@ -171,6 +208,20 @@ export function ChordVoicingViewport({
                 candidateId,
             });
         }
+    };
+    const handleScaleSelect = (scaleId: string) => {
+        setWorkspaceSelection((current) => ({
+            contextKey: workspaceContextKey,
+            activeScaleId: scaleId,
+            activeHintId: current.contextKey === workspaceContextKey ? current.activeHintId : null,
+        }));
+    };
+    const handleHintSelect = (hintId: string) => {
+        setWorkspaceSelection((current) => ({
+            contextKey: workspaceContextKey,
+            activeScaleId: current.contextKey === workspaceContextKey ? current.activeScaleId : null,
+            activeHintId: hintId,
+        }));
     };
 
     return (
@@ -308,6 +359,21 @@ export function ChordVoicingViewport({
                         </button>
                     );
                 })}
+            </div>
+
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                <ChordRelatedScalesPanel
+                    rootPitchClass={selectedKey}
+                    suggestions={relatedScaleSuggestions}
+                    activeScaleId={activeScaleId}
+                    onScaleSelect={handleScaleSelect}
+                />
+                <ChordProgressionHintsPanel
+                    context={progressionContext}
+                    activeHintId={activeHintId}
+                    onHintSelect={handleHintSelect}
+                    onPrepareHandoff={onPrepareProgressionHandoff}
+                />
             </div>
         </div>
     );

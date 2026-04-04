@@ -91,3 +91,23 @@ export type { GetRankedVoicingsOptions } from './voicings';
 export {
     getRankedVoicingsForChord,
 } from './voicings';
+
+export type {
+    ChordRelatedScaleSuggestion,
+    ChordScaleSuggestionCategory,
+} from './related-scales';
+
+export {
+    getRelatedScaleSuggestionsForChord,
+} from './related-scales';
+
+export type {
+    HarmonicRoleLabel,
+    ProgressionHandoffPayload,
+    ChordProgressionHint,
+    ChordProgressionContext,
+} from './progression-links';
+
+export {
+    getProgressionLinksForChord,
+} from './progression-links';
