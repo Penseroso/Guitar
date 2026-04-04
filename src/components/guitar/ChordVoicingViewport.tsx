@@ -197,7 +197,7 @@ export function ChordVoicingViewport({
     }
 
     const activeCandidate = selection.activeCandidate;
-    const activePresentation = getVoicingPresentationMeta(activeCandidate.voicing.template);
+    const activePresentation = getVoicingPresentationMeta(activeCandidate.voicing);
     const conciseReasons = getReasonPreview(activeCandidate.reasons, 3);
     const defaultSelectionLabel = selection.selectionSource === 'requested'
         ? 'Selected manually'

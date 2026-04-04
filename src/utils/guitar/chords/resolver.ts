@@ -8,6 +8,7 @@ import {
     normalizePitchClass,
     type BuildChordDefinitionOptions,
 } from './helpers';
+import { deriveVoicingDescriptor } from './descriptor';
 import type { ChordRegistryEntry } from './registry';
 import type {
     ChordDefinition,
@@ -220,11 +221,36 @@ export function resolveVoicingTemplate(
         (constraints.omittedDegrees !== undefined &&
             constraints.omittedDegrees.some((degree) => playedDegrees.has(degree)))
     );
+    const provenance = {
+        sourceKind: template.source === 'legacy-shape'
+            ? 'legacy-import'
+            : template.source === 'curated'
+                ? 'curated'
+                : 'generated',
+        seedId: template.id,
+        debugLabel: template.label,
+    } as const;
+    const descriptor = deriveVoicingDescriptor({
+        chordId: chord.id,
+        rootPitchClass: chord.rootPitchClass,
+        slashBassPitchClass: chord.slashBassPitchClass,
+        notes,
+        tones,
+        template,
+        rootString: template.rootString,
+        span,
+        minFret,
+        maxFret,
+        lowestPlayedPitchClass: lowestPlayedNote?.pitchClass,
+        satisfiesSlashBass,
+    });
 
     return {
         id: `${chord.id}:${chord.rootPitchClass}:${template.id}:${rootFret}`,
         chord,
         template,
+        provenance,
+        descriptor,
         notes,
         rootFret,
         positionIndex: options.positionIndex ?? 0,

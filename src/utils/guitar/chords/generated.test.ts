@@ -8,7 +8,7 @@ describe('generated voicing candidates', () => {
         const templates = getGeneratedVoicingTemplatesForChord('dominant-7');
 
         expect(templates.some((template) => template.source === 'generated')).toBe(true);
-        expect(templates.some((template) => template.tags?.includes('generated-shell'))).toBe(true);
+        expect(templates.some((template) => template.id.includes(':generated:shell:'))).toBe(true);
     });
 
     it('generated templates keep required tones for dominant thirteenth voicings', () => {
@@ -17,7 +17,7 @@ describe('generated voicing candidates', () => {
             includeNonPlayableCandidates: false,
             maxCandidates: 12,
         });
-        const shellCandidate = candidates.find((candidate) => candidate.voicing.template?.tags?.includes('generated-shell'));
+        const shellCandidate = candidates.find((candidate) => candidate.voicing.descriptor.family === 'shell');
 
         expect(shellCandidate).toBeDefined();
         expect(shellCandidate?.voicing.missingRequiredDegrees).toEqual([]);
@@ -30,8 +30,8 @@ describe('generated voicing candidates', () => {
             includeNonPlayableCandidates: false,
         });
 
-        expect(candidates.some((candidate) => candidate.voicing.template?.source === 'legacy-shape')).toBe(true);
-        expect(candidates.some((candidate) => candidate.voicing.template?.source === 'generated')).toBe(true);
+        expect(candidates.some((candidate) => candidate.voicing.descriptor.provenance.sourceKind === 'legacy-import')).toBe(true);
+        expect(candidates.some((candidate) => candidate.voicing.descriptor.provenance.sourceKind === 'generated')).toBe(true);
         expect(candidates[0].voicing.playable).toBe(true);
     });
 });

@@ -8,6 +8,11 @@ export type {
     VoicingTemplateString,
     VoicingTemplate,
     VoicingConstraints,
+    VoicingProvenance,
+    VoicingProvenanceSourceKind,
+    VoicingDescriptor,
+    VoicingFamily,
+    VoicingRegisterBand,
     ResolvedVoicingNote,
     ResolvedVoicing,
     VoicingCandidate,
@@ -62,6 +67,15 @@ export {
     getVoicingTemplatesForChord,
     getVoicingTemplatesByLegacyType,
 } from './templates';
+
+export {
+    deriveVoicingDescriptor,
+    getVoicingDisplayName,
+    getVoicingDisplaySubtitle,
+    getVoicingFamilyLabel,
+    getVoicingRegisterLabel,
+    getVoicingProvenanceLabel,
+} from './descriptor';
 
 export {
     getGeneratedVoicingTemplatesForChord,

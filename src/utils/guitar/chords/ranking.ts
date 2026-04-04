@@ -1,4 +1,5 @@
 import { getRequiredChordDegrees, resolveChordRegistryEntry } from './helpers';
+import { getVoicingFamilyLabel } from './descriptor';
 import type { ChordRegistryEntry } from './registry';
 import type { ChordTones, ResolvedVoicing, VoicingCandidate, VoicingRankingMode } from './types';
 
@@ -356,19 +357,19 @@ export function scoreResolvedVoicing(
 
     if (
         entry.voicingHint?.rootStrings?.length &&
-        voicing.template?.rootString !== undefined &&
-        entry.voicingHint.rootStrings.includes(voicing.template.rootString)
+        voicing.descriptor.rootString !== undefined &&
+        entry.voicingHint.rootStrings.includes(voicing.descriptor.rootString)
     ) {
         score += profile.rootHintBonus;
         reasons.push('Matches the registry root-string hint.');
-    } else if (voicing.template?.rootString !== undefined) {
+    } else if (voicing.descriptor.rootString !== undefined) {
         score -= profile.rootHintPenalty;
         reasons.push('Root string falls outside the registry hint.');
     }
 
-    if (voicing.template?.tags?.some((tag) => ['caged', 'drop-2', 'drop-3', 'power-chord'].includes(tag))) {
+    if (voicing.descriptor.family === 'full' || voicing.descriptor.family === 'close') {
         score += profile.standardFamilyBonus;
-        reasons.push('Matches a standard voicing family.');
+        reasons.push(`Falls into a ${getVoicingFamilyLabel(voicing.descriptor.family).toLowerCase()} voicing family.`);
     }
 
     if (metrics.barreNoteCount >= 3) {
@@ -391,21 +392,20 @@ export function scoreResolvedVoicing(
         reasons.push('Keeps the grip visually coherent.');
     }
 
-    const upperRegisterStringCount = voicing.notes.filter((note) => !note.isMuted && note.string <= 3).length;
     if (mode === 'upper-register') {
-        if (upperRegisterStringCount >= 3) {
+        if (voicing.descriptor.family === 'upper-register' || voicing.descriptor.registerBand === 'upper') {
             score += profile.upperRegisterBonus;
             reasons.push('Favours upper-string comping in this mode.');
         } else {
             score -= profile.upperRegisterPenalty;
             reasons.push('Sits too low for upper-register focus.');
         }
-    } else if (mode === 'beginner' && voicing.template?.source === 'legacy-shape') {
+    } else if (mode === 'beginner' && (voicing.descriptor.family === 'compact' || voicing.descriptor.family === 'shell') && voicing.descriptor.registerBand !== 'high') {
         score += 3;
-        reasons.push('Uses a familiar legacy grip.');
-    } else if (mode === 'compact' && voicing.template?.tags?.includes('generated-compact')) {
+        reasons.push('Reads as an easier grip in beginner mode.');
+    } else if (mode === 'compact' && voicing.descriptor.family === 'compact') {
         score += 4;
-        reasons.push('Generated for compact clustering.');
+        reasons.push('Classifies as compact in this mode.');
     }
 
     if (extraPitchClasses.length > 0) {

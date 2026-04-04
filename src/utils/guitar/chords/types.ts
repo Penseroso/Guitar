@@ -1,5 +1,8 @@
 export type PitchClass = number;
 export type GuitarStringIndex = 0 | 1 | 2 | 3 | 4 | 5;
+export type VoicingProvenanceSourceKind = 'legacy-import' | 'generated' | 'curated';
+export type VoicingRegisterBand = 'low' | 'mid' | 'high' | 'upper';
+export type VoicingFamily = 'shell' | 'compact' | 'close' | 'spread' | 'upper-register' | 'rootless' | 'full';
 
 export interface ChordTone {
     degree: string;
@@ -36,12 +39,45 @@ export interface VoicingTemplateString {
 
 export interface VoicingTemplate {
     id: string;
+    // Migration-only seed/debug label. User-facing naming must come from the derived descriptor.
     label: string;
     instrument: 'guitar';
     rootString?: GuitarStringIndex;
     strings: VoicingTemplateString[];
     source?: 'legacy-shape' | 'generated' | 'curated';
     tags?: string[];
+}
+
+export interface VoicingProvenance {
+    sourceKind: VoicingProvenanceSourceKind;
+    seedId?: string;
+    debugLabel?: string;
+}
+
+export interface VoicingDescriptor {
+    chordId: string;
+    rootPitchClass: PitchClass;
+    slashBassPitchClass?: PitchClass;
+    playedStrings: GuitarStringIndex[];
+    noteCount: number;
+    rootString?: GuitarStringIndex;
+    lowestPlayedString?: GuitarStringIndex;
+    highestPlayedString?: GuitarStringIndex;
+    lowestPlayedPitchClass?: PitchClass;
+    highestPlayedPitchClass?: PitchClass;
+    topVoicePitchClass?: PitchClass;
+    bassPitchClass?: PitchClass;
+    playedPitchClasses: PitchClass[];
+    matchedRequiredDegrees: string[];
+    missingRequiredDegrees: string[];
+    optionalCoverageDegrees: string[];
+    omittedOptionalDegrees: string[];
+    registerBand: VoicingRegisterBand;
+    family: VoicingFamily;
+    inversion: 'root-position' | 'inversion' | 'slash-bass' | 'rootless';
+    hasRoot: boolean;
+    satisfiesSlashBass?: boolean;
+    provenance: VoicingProvenance;
 }
 
 export interface VoicingConstraints {
@@ -69,6 +105,8 @@ export interface ResolvedVoicing {
     id: string;
     chord: ChordDefinition;
     template?: VoicingTemplate;
+    provenance: VoicingProvenance;
+    descriptor: VoicingDescriptor;
     notes: ResolvedVoicingNote[];
     rootFret?: number;
     positionIndex?: number;

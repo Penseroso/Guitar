@@ -470,7 +470,7 @@ export default function ClientApp() {
     const [chordType, setChordType] = useState('major');
     const [voicingIndex, setVoicingIndex] = useState(0);
     const [voicingRankingMode, setVoicingRankingMode] = useState<VoicingRankingMode>('balanced');
-    const [voicingSourceFilter, setVoicingSourceFilter] = useState<'all' | 'legacy-shape' | 'generated'>('all');
+    const [voicingSourceFilter, setVoicingSourceFilter] = useState<'all' | 'legacy-import' | 'generated'>('all');
     const [voicingRootFilter, setVoicingRootFilter] = useState<'all' | '6' | '5' | '4'>('all');
 
     // --- State: Double Stops (Scale Mode Feature) ---
@@ -653,9 +653,9 @@ export default function ClientApp() {
     const visibleFutureVoicingCandidates = useMemo(() => {
         return futureVoicingCandidates.filter((candidate) => {
             const sourceMatches = voicingSourceFilter === 'all'
-                || candidate.voicing.template?.source === voicingSourceFilter;
+                || candidate.voicing.descriptor.provenance.sourceKind === voicingSourceFilter;
             const rootMatches = voicingRootFilter === 'all'
-                || String((candidate.voicing.template?.rootString ?? -1) + 1) === voicingRootFilter;
+                || String((candidate.voicing.descriptor.rootString ?? -1) + 1) === voicingRootFilter;
 
             return sourceMatches && rootMatches;
         });
@@ -670,7 +670,7 @@ export default function ClientApp() {
         [activeFutureCandidate]
     );
     const activeFuturePresentation = useMemo(
-        () => getVoicingPresentationMeta(activeFutureCandidate?.voicing.template),
+        () => getVoicingPresentationMeta(activeFutureCandidate?.voicing),
         [activeFutureCandidate]
     );
     const chordPreviewTitle = useMemo(() => {
@@ -1316,7 +1316,7 @@ export default function ClientApp() {
                                             </div>
 
                                             <div className="flex flex-wrap gap-2">
-                                                {(['all', 'legacy-shape', 'generated'] as const).map((sourceOption) => (
+                                                {(['all', 'legacy-import', 'generated'] as const).map((sourceOption) => (
                                                     <button
                                                         key={sourceOption}
                                                         onClick={() => setVoicingSourceFilter(sourceOption)}
@@ -1326,7 +1326,7 @@ export default function ClientApp() {
                                                                 : 'border-white/10 bg-white/[0.03] text-white/55 hover:border-white/20 hover:text-white'
                                                         }`}
                                                     >
-                                                        {sourceOption === 'all' ? 'All sources' : sourceOption === 'legacy-shape' ? 'Legacy shapes' : 'Generated'}
+                                                        {sourceOption === 'all' ? 'All sources' : sourceOption === 'legacy-import' ? 'Legacy import' : 'Generated'}
                                                     </button>
                                                 ))}
                                                 {(['all', '6', '5', '4'] as const).map((rootOption) => (
@@ -1356,7 +1356,7 @@ export default function ClientApp() {
 
                                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
                                             {visibleFutureVoicingCandidates.map((candidate) => {
-                                                const presentation = getVoicingPresentationMeta(candidate.voicing.template);
+                                                const presentation = getVoicingPresentationMeta(candidate.voicing);
                                                 const isActive = candidate.voicing.id === futureVoicingSelection.activeCandidateId;
                                                 const isRecommended = futureVoicingSelection.selectionSource !== 'requested'
                                                     && candidate.voicing.id === futureVoicingSelection.activeCandidateId;
