@@ -1,5 +1,6 @@
 import { STANDARD_GUITAR_TUNING_PITCH_CLASSES } from '../tuning';
 import { getRequiredChordDegrees, normalizePitchClass, resolveChordRegistryEntry } from './helpers';
+import { isFormulaClosedChordFamily } from './semantics';
 import type { ChordRegistryEntry } from './registry';
 import type { GuitarStringIndex, VoicingTemplate, VoicingTemplateString } from './types';
 
@@ -83,6 +84,10 @@ function getDegreesForGeneratedFamily(entry: ChordRegistryEntry, family: Generat
     const degreePriority = getDegreePriority(entry);
 
     if (family === 'shell') {
+        if (isFormulaClosedChordFamily(entry)) {
+            return entry.formula.degrees.slice(0, maxNotes);
+        }
+
         return degreePriority
             .filter((degree) => requiredDegrees.includes(degree))
             .slice(0, Math.min(maxNotes, Math.max(3, requiredDegrees.length)));

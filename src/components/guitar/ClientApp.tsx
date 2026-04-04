@@ -6,11 +6,11 @@ import { useProgressionAudio } from '../../features/progression/hooks/useProgres
 import { getProgressionPlaybackData } from '../../features/progression/utils/getProgressionPlaybackData';
 import {
     CHORD_REGISTRY_LIST,
+    getChordTypeLabel,
     getRankedVoicingsForChord,
     resolveChordRegistryEntry,
     type ProgressionHandoffPayload,
     type ResolvedVoicing,
-    type VoicingRankingMode,
 } from '../../utils/guitar/chords';
 import {
     TUNING,
@@ -66,8 +66,7 @@ const CHORD_SELECTOR_OPTIONS = CHORD_TYPE_PRIORITY.map((id) => {
     return {
         id: entry.id,
         stateValue: entry.id,
-        label: entry.symbol || entry.displayName,
-        description: entry.displayName,
+        label: getChordTypeLabel(entry),
     };
 }).filter((entry): entry is NonNullable<typeof entry> => entry !== null);
 
@@ -104,10 +103,6 @@ export default function ClientApp() {
 
     // --- State: Chord Mode ---
     const [chordType, setChordType] = useState('major');
-    const [voicingRankingMode, setVoicingRankingMode] = useState<VoicingRankingMode>('balanced');
-    const [voicingSourceFilter, setVoicingSourceFilter] = useState<'all' | 'legacy-import' | 'generated'>('all');
-    const [voicingRootFilter, setVoicingRootFilter] = useState<'all' | '6' | '5' | '4'>('all');
-
     // --- State: Double Stops (Scale Mode Feature) ---
     const [isDoubleStopActive, setIsDoubleStopActive] = useState(false);
     const [doubleStopInterval, setDoubleStopInterval] = useState<HarmonicInterval>(3);
@@ -270,22 +265,11 @@ export default function ClientApp() {
             return getRankedVoicingsForChord(chordType, selectedKey, {
                 maxRootFret: 15,
                 maxCandidates: 12,
-                rankingMode: voicingRankingMode,
             });
         } catch {
             return [];
         }
-    }, [chordType, selectedKey, voicingRankingMode]);
-    const visibleFutureVoicingCandidates = useMemo(() => {
-        return futureVoicingCandidates.filter((candidate) => {
-            const sourceMatches = voicingSourceFilter === 'all'
-                || candidate.voicing.descriptor.provenance.sourceKind === voicingSourceFilter;
-            const rootMatches = voicingRootFilter === 'all'
-                || String((candidate.voicing.descriptor.rootString ?? -1) + 1) === voicingRootFilter;
-
-            return sourceMatches && rootMatches;
-        });
-    }, [futureVoicingCandidates, voicingRootFilter, voicingSourceFilter]);
+    }, [chordType, selectedKey]);
     const futureVoicingSelection = useMemo(
         () => resolveBridgeSelection(futureVoicingCandidates, activeFutureVoicingId),
         [activeFutureVoicingId, futureVoicingCandidates]
@@ -313,10 +297,11 @@ export default function ClientApp() {
             return `${root} ${chordType}`;
         }
 
-        return currentChordEntry.symbol
-            ? `${root}${currentChordEntry.symbol}`
-            : `${root} ${currentChordEntry.displayName}`;
+        return `${root}${getChordTypeLabel(currentChordEntry)}`;
     }, [chordType, currentChordEntry, selectedKey]);
+    const chordTypeLabel = currentChordEntry
+        ? getChordTypeLabel(currentChordEntry)
+        : chordType;
     const chordPreviewFormula = currentChordEntry?.formula.degrees ?? [];
     const chordPreviewPosition = activeFutureCandidate?.voicing.rootFret !== undefined
         ? `${activeFutureCandidate.voicing.rootFret}fr position`
@@ -569,6 +554,7 @@ export default function ClientApp() {
                     chordPreviewPrimaryLabel={chordPreviewPrimaryLabel}
                     chordPreviewSecondaryLabel={chordPreviewSecondaryLabel}
                     chordPreviewPosition={chordPreviewPosition}
+                    chordTypeLabel={chordTypeLabel}
 
                     progressionName={progressionName}
                     onProgressionChange={applyPreset}
@@ -642,13 +628,6 @@ export default function ClientApp() {
                             showChordTones={showChordTones}
                             showIntervals={showIntervals}
                             fingering={fingering}
-                            voicingRankingMode={voicingRankingMode}
-                            onVoicingRankingModeChange={setVoicingRankingMode}
-                            voicingSourceFilter={voicingSourceFilter}
-                            onVoicingSourceFilterChange={setVoicingSourceFilter}
-                            voicingRootFilter={voicingRootFilter}
-                            onVoicingRootFilterChange={setVoicingRootFilter}
-                            visibleFutureVoicingCandidates={visibleFutureVoicingCandidates}
                             futureVoicingCandidates={futureVoicingCandidates}
                             onSelectFutureVoicing={handleSelectFutureVoicing}
                             activeFutureVoicingId={activeFutureVoicingId}

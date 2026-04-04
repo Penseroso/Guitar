@@ -18,10 +18,6 @@ function makeCandidate(id: string, playable: boolean, score: number): VoicingCan
                 quality: 'major',
                 intervals: [0, 4, 7],
             },
-            provenance: {
-                sourceKind: 'generated',
-                seedId: id,
-            },
             descriptor: {
                 chordId: 'major',
                 rootPitchClass: 0,

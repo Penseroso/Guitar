@@ -115,6 +115,7 @@ export interface ResolvedVoicing {
     playable: boolean;
     lowestPlayedPitchClass?: PitchClass;
     satisfiesSlashBass?: boolean;
+    outOfFormulaPitchClasses?: PitchClass[];
     missingRequiredDegrees?: string[];
     omittedOptionalDegrees?: string[];
     omittedDegrees?: string[];

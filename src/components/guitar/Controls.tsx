@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { NOTES } from '../../utils/guitar/theory';
 import { TabsRail } from '../ui/design-system/TabsRail';
 import { KeyButton } from '../ui/design-system/KeyButton';
+import { TogglePill } from '../ui/design-system/TogglePill';
 import { CircleOfFifths } from './CircleOfFifths';
 import { ProgressionModePanel } from './panels/ProgressionModePanel';
 import { ScaleSelectorPanel } from './panels/ScaleSelectorPanel';
@@ -35,7 +36,7 @@ interface ControlsProps {
     onDoubleStopStringsChange: (strings: [number, number]) => void;
     mode: 'scale' | 'chord' | 'progression';
     onModeChange: (mode: 'scale' | 'chord' | 'progression') => void;
-    chordType: string;
+    chordTypeLabel: string;
     chordPreviewTitle: string;
     chordPreviewFormula: string[];
     chordPreviewPrimaryLabel: string;
@@ -51,9 +52,11 @@ export const Controls: React.FC<ControlsProps> = ({
     selectedScaleGroup,
     selectedScaleName,
     onScaleChange,
+    showIntervals,
+    onToggleIntervals,
     mode,
     onModeChange,
-    chordType,
+    chordTypeLabel,
     chordPreviewTitle,
     chordPreviewFormula,
     chordPreviewPrimaryLabel,
@@ -208,9 +211,16 @@ export const Controls: React.FC<ControlsProps> = ({
                                         )}
                                     </div>
 
-                                    <div className="rounded-2xl border border-white/5 bg-white/[0.03] px-4 py-3 flex flex-col gap-1">
+                                    <div className="rounded-2xl border border-white/5 bg-white/[0.03] px-4 py-3 flex flex-col gap-3">
                                         <span className="text-[8px] font-black uppercase tracking-[0.28em] text-white/30">Chord Type</span>
-                                        <span className="text-sm font-semibold text-white/75">{chordType}</span>
+                                        <span className="text-sm font-semibold text-white/75">{chordTypeLabel}</span>
+                                        <TogglePill
+                                            label={showIntervals ? 'Labels: Intervals' : 'Labels: Notes'}
+                                            isActive={showIntervals}
+                                            onToggle={onToggleIntervals}
+                                            hideDot={true}
+                                            className="p-3"
+                                        />
                                     </div>
                                 </div>
                             </div>

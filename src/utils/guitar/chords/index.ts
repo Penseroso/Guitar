@@ -53,11 +53,13 @@ export {
     getRequiredChordTones,
     getOptionalChordTones,
     getChordRegistryEntryFromLegacyTypeOrThrow,
+    getChordTypeLabel,
 } from './helpers';
 
 export {
     deriveChordToneRole,
     isRequiredChordDegree,
+    isFormulaClosedChordFamily,
     buildNormalizedChordTonesForEntry,
 } from './semantics';
 

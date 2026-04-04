@@ -4,7 +4,7 @@ import React from 'react';
 
 import { Fretboard } from '../../Fretboard';
 import { ChordVoicingViewport } from '../ChordVoicingViewport';
-import { VOICING_RANKING_MODES, type ProgressionHandoffPayload, type VoicingCandidate, type VoicingRankingMode } from '../../../utils/guitar/chords';
+import { type ProgressionHandoffPayload, type VoicingCandidate } from '../../../utils/guitar/chords';
 import type { Fingering } from '../../../utils/guitar/types';
 import { getVoicingPresentationMeta } from '../chord-preview/voicing-labels';
 
@@ -12,7 +12,6 @@ interface ChordSelectorOption {
     id: string;
     stateValue: string;
     label: string;
-    description: string;
 }
 
 interface ChordModeWorkspaceProps {
@@ -35,13 +34,6 @@ interface ChordModeWorkspaceProps {
     showChordTones: boolean;
     showIntervals: boolean;
     fingering?: Fingering[];
-    voicingRankingMode: VoicingRankingMode;
-    onVoicingRankingModeChange: (mode: VoicingRankingMode) => void;
-    voicingSourceFilter: 'all' | 'legacy-import' | 'generated';
-    onVoicingSourceFilterChange: (value: 'all' | 'legacy-import' | 'generated') => void;
-    voicingRootFilter: 'all' | '6' | '5' | '4';
-    onVoicingRootFilterChange: (value: 'all' | '6' | '5' | '4') => void;
-    visibleFutureVoicingCandidates: VoicingCandidate[];
     futureVoicingCandidates: VoicingCandidate[];
     onSelectFutureVoicing: (candidateId: string) => void;
     activeFutureVoicingId: string | null;
@@ -89,13 +81,6 @@ export function ChordModeWorkspace({
     showChordTones,
     showIntervals,
     fingering,
-    voicingRankingMode,
-    onVoicingRankingModeChange,
-    voicingSourceFilter,
-    onVoicingSourceFilterChange,
-    voicingRootFilter,
-    onVoicingRootFilterChange,
-    visibleFutureVoicingCandidates,
     futureVoicingCandidates,
     onSelectFutureVoicing,
     activeFutureVoicingId,
@@ -114,21 +99,18 @@ export function ChordModeWorkspace({
     onClearPreparedChordWorkspaceHandoff,
 }: ChordModeWorkspaceProps) {
     const hasEngineCandidates = futureVoicingCandidates.length > 0;
-    const hasVisibleCandidates = visibleFutureVoicingCandidates.length > 0;
     const chordWorkspaceEmptyMessage = !hasEngineCandidates
         ? 'No playable voicing candidates found for this chord yet.'
         : !activeFutureCandidate
             ? 'No active voicing candidate is available right now.'
-            : !hasVisibleCandidates
-                ? 'No playable voicing candidates found for the current filters.'
-                : null;
+            : null;
 
     return (
         <div className="relative z-10 w-full mt-4 flex flex-col gap-8">
             <div className="rounded-[2rem] border border-white/5 bg-[#050505] p-6 flex flex-col gap-6">
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-2">
                     <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Chord Type</span>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1.5">
                         {chordSelectorOptions.map((option) => {
                             const isActive = chordType === option.stateValue;
 
@@ -136,14 +118,13 @@ export function ChordModeWorkspace({
                                 <button
                                     key={option.id}
                                     onClick={() => onChordTypeChange(option.stateValue)}
-                                    className={`rounded-xl border px-4 py-3 text-left transition-all ${
+                                    className={`rounded-full border px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.14em] transition-all ${
                                         isActive
-                                            ? 'border-cyan-200/50 bg-cyan-300/[0.12] text-cyan-50'
-                                            : 'border-white/10 bg-white/[0.03] text-white/70 hover:border-white/20 hover:text-white'
+                                            ? 'border-cyan-200/45 bg-cyan-300/[0.1] text-cyan-50'
+                                            : 'border-white/10 bg-white/[0.02] text-white/65 hover:border-white/20 hover:text-white'
                                     }`}
                                 >
-                                    <div className="text-sm font-black">{option.label}</div>
-                                    <div className="text-[10px] font-black uppercase tracking-[0.18em] text-white/35">{option.description}</div>
+                                    {option.label}
                                 </button>
                             );
                         })}
@@ -182,11 +163,6 @@ export function ChordModeWorkspace({
                                     {activeFutureCandidate.voicing.playable ? 'Playable' : 'Alternate'}
                                 </span>
                             )}
-                            {activeFuturePresentation.sourceLabel && (
-                                <span className="px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.04] text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
-                                    {activeFuturePresentation.sourceLabel}
-                                </span>
-                            )}
                         </div>
                     </div>
 
@@ -212,77 +188,24 @@ export function ChordModeWorkspace({
                                     {chordWorkspaceEmptyMessage ?? 'No voicing candidate is available.'}
                                 </p>
                                 <p className="mt-2 text-xs text-white/55">
-                                    Adjust the chord, ranking mode, or filters to explore another engine-derived candidate.
+                                    Try another chord type or key to explore another engine-derived candidate.
                                 </p>
                             </div>
                         )}
                     </div>
 
                     <div className="px-6 py-5 flex flex-col gap-4">
-                        <div className="flex flex-col gap-3 rounded-[1.25rem] border border-white/5 bg-black/20 p-4">
-                            <div className="flex flex-col gap-2 xl:flex-row xl:items-center xl:justify-between">
-                                <div className="flex flex-col gap-1">
-                                    <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Exploration Mode</span>
-                                    <span className="text-sm font-semibold text-white">Rank the same chord for a different playing context.</span>
-                                </div>
-                                <div className="flex flex-wrap gap-2">
-                                    {VOICING_RANKING_MODES.map((modeOption) => (
-                                        <button
-                                            key={modeOption}
-                                            onClick={() => onVoicingRankingModeChange(modeOption)}
-                                            className={`rounded-xl border px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all ${
-                                                voicingRankingMode === modeOption
-                                                    ? 'border-cyan-200/40 bg-cyan-300/[0.12] text-cyan-50'
-                                                    : 'border-white/10 bg-white/[0.03] text-white/65 hover:border-white/20 hover:text-white'
-                                            }`}
-                                        >
-                                            {modeOption.replace('-', ' ')}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="flex flex-wrap gap-2">
-                                {(['all', 'legacy-import', 'generated'] as const).map((sourceOption) => (
-                                    <button
-                                        key={sourceOption}
-                                        onClick={() => onVoicingSourceFilterChange(sourceOption)}
-                                        className={`rounded-full border px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] transition-all ${
-                                            voicingSourceFilter === sourceOption
-                                                ? 'border-white/25 bg-white/10 text-white'
-                                                : 'border-white/10 bg-white/[0.03] text-white/55 hover:border-white/20 hover:text-white'
-                                        }`}
-                                    >
-                                        {sourceOption === 'all' ? 'All sources' : sourceOption === 'legacy-import' ? 'Legacy import' : 'Generated'}
-                                    </button>
-                                ))}
-                                {(['all', '6', '5', '4'] as const).map((rootOption) => (
-                                    <button
-                                        key={rootOption}
-                                        onClick={() => onVoicingRootFilterChange(rootOption)}
-                                        className={`rounded-full border px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] transition-all ${
-                                            voicingRootFilter === rootOption
-                                                ? 'border-white/25 bg-white/10 text-white'
-                                                : 'border-white/10 bg-white/[0.03] text-white/55 hover:border-white/20 hover:text-white'
-                                        }`}
-                                    >
-                                        {rootOption === 'all' ? 'All roots' : `${rootOption}th-string root`}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
                         <div className="flex items-center justify-between gap-3">
                             <div className="flex flex-col gap-1">
                                 <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Voicing</span>
                             </div>
                             <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/25">
-                                {visibleFutureVoicingCandidates.length} of {futureVoicingCandidates.length} choices
+                                {futureVoicingCandidates.length} choices
                             </span>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
-                            {visibleFutureVoicingCandidates.map((candidate) => {
+                            {futureVoicingCandidates.map((candidate) => {
                                 const presentation = getVoicingPresentationMeta(candidate.voicing);
                                 const isActive = candidate.voicing.id === activeFutureVoicingId;
                                 const isRecommended = futureVoicingSelection.selectionSource !== 'requested'
@@ -316,11 +239,6 @@ export function ChordModeWorkspace({
                                                 )}
                                             </div>
                                             <div className="flex flex-col items-end gap-2">
-                                                {presentation.sourceLabel && (
-                                                    <span className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.18em] text-white/60">
-                                                        {presentation.sourceLabel}
-                                                    </span>
-                                                )}
                                                 {isRecommended && (
                                                     <span className="rounded-full border border-emerald-400/25 bg-emerald-400/[0.08] px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.18em] text-emerald-200">
                                                         Recommended
@@ -332,11 +250,9 @@ export function ChordModeWorkspace({
                                 );
                             })}
                         </div>
-                        {visibleFutureVoicingCandidates.length === 0 && (
+                        {futureVoicingCandidates.length === 0 && (
                             <div className="rounded-[1.25rem] border border-white/5 bg-white/[0.02] px-4 py-4 text-sm text-white/55">
-                                {!hasEngineCandidates
-                                    ? 'No playable voicing candidates found for this chord yet.'
-                                    : 'No playable voicing candidates found for the current filters.'}
+                                No playable voicing candidates found for this chord yet.
                             </div>
                         )}
                     </div>
@@ -346,7 +262,6 @@ export function ChordModeWorkspace({
             <ChordVoicingViewport
                 chordType={chordType}
                 selectedKey={selectedKey}
-                rankingMode={voicingRankingMode}
                 candidates={futureVoicingCandidates}
                 activeCandidateId={activeFutureVoicingId}
                 onActiveVoicingChange={onActiveVoicingChange}

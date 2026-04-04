@@ -9,7 +9,8 @@ import {
     type BuildChordDefinitionOptions,
 } from './helpers';
 import { buildVoicingProvenance, deriveVoicingDescriptor } from './descriptor';
-import type { ChordRegistryEntry } from './registry';
+import { getChordRegistryEntry, type ChordRegistryEntry } from './registry';
+import { isFormulaClosedChordFamily } from './semantics';
 import type {
     ChordDefinition,
     ChordTones,
@@ -100,6 +101,22 @@ function collectPlayedDegrees(notes: ResolvedVoicingNote[]): Set<string> {
             .filter((note) => !note.isMuted && note.degree)
             .map((note) => note.degree as string)
     );
+}
+
+function getOutOfFormulaPitchClasses(chord: ChordDefinition, notes: ResolvedVoicingNote[], tones: ChordTones): PitchClass[] {
+    const entry = getChordRegistryEntry(chord.id);
+    if (!entry || !isFormulaClosedChordFamily(entry)) {
+        return [];
+    }
+
+    const allowedPitchClasses = new Set(tones.tones.map((tone) => normalizePitchClass(tone.pitchClass)));
+
+    return Array.from(new Set(
+        notes
+            .filter((note) => !note.isMuted)
+            .map((note) => normalizePitchClass(note.pitchClass))
+            .filter((pitchClass) => !allowedPitchClasses.has(pitchClass))
+    ));
 }
 
 function getVoicingSignature(notes: ResolvedVoicingNote[]): string {
@@ -233,6 +250,7 @@ function resolveVoicingSeed(
         .map((tone) => tone.degree)
         .filter((degree) => !playedDegrees.has(degree));
     const omittedDegrees = [...missingRequiredDegrees, ...omittedOptionalDegrees];
+    const outOfFormulaPitchClasses = getOutOfFormulaPitchClasses(chord, notes, tones);
     const requestedSlashBassPitchClass = chord.slashBassPitchClass;
     const satisfiesSlashBass = requestedSlashBassPitchClass === undefined
         ? undefined
@@ -281,9 +299,13 @@ function resolveVoicingSeed(
         minFret,
         maxFret,
         span,
-        playable: playedNotes.length > 0 && !hasInvalidFrets && !violatesConstraintRange,
+        playable: playedNotes.length > 0
+            && !hasInvalidFrets
+            && !violatesConstraintRange
+            && outOfFormulaPitchClasses.length === 0,
         lowestPlayedPitchClass: lowestPlayedNote?.pitchClass,
         satisfiesSlashBass,
+        outOfFormulaPitchClasses,
         missingRequiredDegrees,
         omittedOptionalDegrees,
         omittedDegrees,

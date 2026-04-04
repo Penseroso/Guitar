@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { buildChordTonesById, getChordRegistryEntryOrThrow } from './helpers';
-import { deriveChordToneRole, isRequiredChordDegree } from './semantics';
+import { deriveChordToneRole, isFormulaClosedChordFamily, isRequiredChordDegree } from './semantics';
 
 function getToneSemantics(id: string) {
     const entry = getChordRegistryEntryOrThrow(id);
@@ -108,5 +108,22 @@ describe('registry and helper tone semantics parity', () => {
         }));
 
         expect(builtTones).toEqual(normalizedTones);
+    });
+});
+
+describe('formula-closure policy', () => {
+    it('marks simple chord families as formula-closed for candidate generation and filtering', () => {
+        expect(isFormulaClosedChordFamily(getChordRegistryEntryOrThrow('major'))).toBe(true);
+        expect(isFormulaClosedChordFamily(getChordRegistryEntryOrThrow('minor'))).toBe(true);
+        expect(isFormulaClosedChordFamily(getChordRegistryEntryOrThrow('power-5'))).toBe(true);
+        expect(isFormulaClosedChordFamily(getChordRegistryEntryOrThrow('sus2'))).toBe(true);
+        expect(isFormulaClosedChordFamily(getChordRegistryEntryOrThrow('sus4'))).toBe(true);
+    });
+
+    it('leaves seventh, extended, and altered families open to their declared formula tones', () => {
+        expect(isFormulaClosedChordFamily(getChordRegistryEntryOrThrow('major-7'))).toBe(false);
+        expect(isFormulaClosedChordFamily(getChordRegistryEntryOrThrow('dominant-9'))).toBe(false);
+        expect(isFormulaClosedChordFamily(getChordRegistryEntryOrThrow('dominant-13'))).toBe(false);
+        expect(isFormulaClosedChordFamily(getChordRegistryEntryOrThrow('hendrix-7-sharp-9'))).toBe(false);
     });
 });

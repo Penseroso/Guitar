@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { getNoteName } from '../../utils/guitar/logic';
 import {
+    getChordTypeLabel,
     getProgressionLinksForChord,
     getRankedVoicingsForChord,
     getRelatedScaleSuggestionsForChord,
@@ -42,7 +43,7 @@ function buildChordLabel(chordType: string, selectedKey: number): string {
     try {
         const entry = resolveChordRegistryEntry(chordType);
         const root = getNoteName(selectedKey);
-        return entry.symbol ? `${root}${entry.symbol}` : `${root} ${entry.displayName}`;
+        return `${root}${getChordTypeLabel(entry)}`;
     } catch {
         return `${getNoteName(selectedKey)} ${chordType}`;
     }
@@ -232,9 +233,11 @@ export function ChordVoicingViewport({
                     <span className="px-3 py-1.5 rounded-full border border-cyan-300/20 bg-cyan-400/[0.05] text-[9px] font-black uppercase tracking-[0.25em] text-cyan-100/80">
                         {harmonicInterpretation.roleLabel}
                     </span>
-                    <span className="px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.04] text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
-                        {rankingMode.replace('-', ' ')} mode
-                    </span>
+                    {rankingMode !== undefined && (
+                        <span className="px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.04] text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
+                            {rankingMode.replace('-', ' ')} mode
+                        </span>
+                    )}
                     {selection.selectionSource !== 'requested' && (
                         <span className="px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.04] text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
                             Recommended
@@ -258,11 +261,6 @@ export function ChordVoicingViewport({
                             )}
                         </div>
                         <div className="flex flex-wrap justify-end gap-2">
-                            {activePresentation.sourceLabel && (
-                                <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
-                                    {activePresentation.sourceLabel}
-                                </div>
-                            )}
                             <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
                                 {defaultSelectionLabel}
                             </div>

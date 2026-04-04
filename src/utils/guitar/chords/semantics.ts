@@ -1,6 +1,14 @@
 import type { ChordRegistryEntry } from './registry';
 import type { ChordTone } from './types';
 
+const FORMULA_CLOSED_CHORD_IDS = new Set<ChordRegistryEntry['id']>([
+    'major',
+    'minor',
+    'power-5',
+    'sus2',
+    'sus4',
+]);
+
 const REQUIRED_DEGREES_BY_ID: Partial<Record<ChordRegistryEntry['id'], string[]>> = {
     major: ['1', '3'],
     minor: ['1', 'b3'],
@@ -40,6 +48,10 @@ export function deriveChordToneRole(entry: ChordRegistryEntry, degree: string): 
 
 export function isRequiredChordDegree(entry: ChordRegistryEntry, degree: string): boolean {
     return REQUIRED_DEGREES_BY_ID[entry.id]?.includes(degree) ?? false;
+}
+
+export function isFormulaClosedChordFamily(entry: ChordRegistryEntry): boolean {
+    return FORMULA_CLOSED_CHORD_IDS.has(entry.id);
 }
 
 export function buildNormalizedChordTonesForEntry(entry: ChordRegistryEntry): ChordTone[] {

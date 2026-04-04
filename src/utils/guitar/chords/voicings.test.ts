@@ -64,6 +64,86 @@ describe('voicing resolution', () => {
         expect(resolved.notes.filter((note) => !note.isMuted).some((note) => note.fret < 0)).toBe(true);
     });
 
+    it('invalidates major-triad seeds that introduce a non-formula seventh regardless of provenance', () => {
+        const entry = resolveChordRegistryEntry('major');
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+        const pollutedStrings = [
+            { string: 0, fretOffset: null },
+            { string: 1, fretOffset: -3 },
+            { string: 2, fretOffset: -3, toneDegree: '5' },
+            { string: 3, fretOffset: -1, toneDegree: '3' },
+            { string: 4, fretOffset: 0, toneDegree: '1' },
+            { string: 5, fretOffset: null },
+        ];
+
+        const legacyImported = resolveVoicingTemplate(chord, tones, {
+            id: 'major-polluted-legacy',
+            label: 'polluted legacy',
+            instrument: 'guitar',
+            rootString: 4,
+            source: 'legacy-shape',
+            strings: pollutedStrings,
+        }, { rootFret: 3 });
+        const generated = resolveVoicingTemplate(chord, tones, {
+            id: 'major-polluted-generated',
+            label: 'polluted generated',
+            instrument: 'guitar',
+            rootString: 4,
+            source: 'generated',
+            strings: pollutedStrings,
+        }, { rootFret: 3 });
+
+        expect(legacyImported.playable).toBe(false);
+        expect(generated.playable).toBe(false);
+        expect(legacyImported.outOfFormulaPitchClasses).toEqual([11]);
+        expect(generated.outOfFormulaPitchClasses).toEqual([11]);
+    });
+
+    it('invalidates minor and suspended seeds that introduce non-formula tones', () => {
+        const minorEntry = resolveChordRegistryEntry('minor');
+        const minorChord = buildChordDefinitionFromRegistryEntry(minorEntry, 0);
+        const minorTones = buildChordTonesFromRegistryEntry(minorEntry, 0);
+        const pollutedMinor = resolveVoicingTemplate(minorChord, minorTones, {
+            id: 'minor-polluted',
+            label: 'minor polluted',
+            instrument: 'guitar',
+            rootString: 4,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: null },
+                { string: 1, fretOffset: 0 },
+                { string: 2, fretOffset: -3, toneDegree: '5' },
+                { string: 3, fretOffset: -2, toneDegree: 'b3' },
+                { string: 4, fretOffset: 0, toneDegree: '1' },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 3 });
+        const susEntry = resolveChordRegistryEntry('sus4');
+        const susChord = buildChordDefinitionFromRegistryEntry(susEntry, 0);
+        const susTones = buildChordTonesFromRegistryEntry(susEntry, 0);
+        const pollutedSus = resolveVoicingTemplate(susChord, susTones, {
+            id: 'sus4-polluted',
+            label: 'sus polluted',
+            instrument: 'guitar',
+            rootString: 4,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: null },
+                { string: 1, fretOffset: -2, toneDegree: '1' },
+                { string: 2, fretOffset: -3, toneDegree: '5' },
+                { string: 3, fretOffset: -1, toneDegree: '3' },
+                { string: 4, fretOffset: 0, toneDegree: '1' },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 3 });
+
+        expect(pollutedMinor.playable).toBe(false);
+        expect(pollutedMinor.outOfFormulaPitchClasses).toEqual([2]);
+        expect(pollutedSus.playable).toBe(false);
+        expect(pollutedSus.outOfFormulaPitchClasses).toEqual([4]);
+    });
+
     it('generates multiple neck positions for the same template in bounded ascending order', () => {
         const entry = resolveChordRegistryEntry('major');
         const template = getVoicingTemplatesForChord(entry)[0];
@@ -100,6 +180,37 @@ describe('voicing ranking orchestration', () => {
         expect(candidates[0].voicing.playable).toBe(true);
         expect(candidates.at(-1)?.voicing.playable).toBe(false);
         expect(candidates[0].score).toBeGreaterThan(candidates.at(-1)?.score ?? 0);
+    });
+
+    it('keeps surfaced major candidates formula-closed', () => {
+        const candidates = getRankedVoicingsForChord('major', 0, {
+            includeNonPlayableCandidates: true,
+            maxCandidates: 20,
+        });
+
+        expect(candidates.length).toBeGreaterThan(0);
+        expect(candidates.every((candidate) => (candidate.voicing.outOfFormulaPitchClasses?.length ?? 0) === 0)).toBe(true);
+        expect(candidates.every((candidate) => candidate.voicing.notes
+            .filter((note) => !note.isMuted)
+            .every((note) => [0, 4, 7].includes(note.pitchClass)))).toBe(true);
+    });
+
+    it('keeps surfaced sus2 and sus4 candidates free of implicit thirds', () => {
+        const sus2Candidates = getRankedVoicingsForChord('sus2', 0, {
+            includeNonPlayableCandidates: true,
+            maxCandidates: 20,
+        });
+        const sus4Candidates = getRankedVoicingsForChord('sus4', 0, {
+            includeNonPlayableCandidates: true,
+            maxCandidates: 20,
+        });
+
+        expect(sus2Candidates.every((candidate) => candidate.voicing.notes
+            .filter((note) => !note.isMuted)
+            .every((note) => [0, 2, 7].includes(note.pitchClass)))).toBe(true);
+        expect(sus4Candidates.every((candidate) => candidate.voicing.notes
+            .filter((note) => !note.isMuted)
+            .every((note) => [0, 5, 7].includes(note.pitchClass)))).toBe(true);
     });
 
     it('penalizes major ninth voicings that miss the ninth', () => {
@@ -189,6 +300,20 @@ describe('voicing ranking orchestration', () => {
         expect(candidateWithOptionalOmissions?.voicing.omittedOptionalDegrees?.length).toBeGreaterThan(0);
         expect(candidateWithOptionalOmissions?.voicing.omittedOptionalDegrees).toContain('9');
         expect(candidateWithOptionalOmissions?.voicing.omittedOptionalDegrees).toContain('5');
+    });
+
+    it('preserves extended-family formula tones in surfaced seventh and ninth candidates', () => {
+        const major7Candidates = getRankedVoicingsForChord('major-7', 0, {
+            includeNonPlayableCandidates: false,
+            maxCandidates: 12,
+        });
+        const dominant9Candidates = getRankedVoicingsForChord('dominant-9', 0, {
+            includeNonPlayableCandidates: false,
+            maxCandidates: 12,
+        });
+
+        expect(major7Candidates.some((candidate) => candidate.voicing.notes.some((note) => !note.isMuted && note.pitchClass === 11))).toBe(true);
+        expect(dominant9Candidates.some((candidate) => candidate.voicing.notes.some((note) => !note.isMuted && note.degree === '9'))).toBe(true);
     });
 
     it('keeps suspended identity tones treated as required through ranked voicings', () => {

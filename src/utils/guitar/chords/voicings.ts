@@ -51,6 +51,10 @@ function dedupeResolvedVoicings(voicings: ResolvedVoicing[]): ResolvedVoicing[] 
     return Array.from(deduped.values());
 }
 
+function excludeFormulaInvalidVoicings(voicings: ResolvedVoicing[]): ResolvedVoicing[] {
+    return voicings.filter((voicing) => (voicing.outOfFormulaPitchClasses?.length ?? 0) === 0);
+}
+
 export function getRankedVoicingsForChord(
     entryInput: string | ChordRegistryEntry,
     rootPitchClass: number,
@@ -71,7 +75,8 @@ export function getRankedVoicingsForChord(
     const resolvedVoicings = options.resolveAcrossPositions === false
         ? resolveVoicingTemplates(chord, tones, templates, options)
         : resolveVoicingTemplatesAcrossPositions(chord, tones, templates, options);
-    const dedupedResolvedVoicings = dedupeResolvedVoicings(resolvedVoicings);
+    const surfacedResolvedVoicings = excludeFormulaInvalidVoicings(resolvedVoicings);
+    const dedupedResolvedVoicings = dedupeResolvedVoicings(surfacedResolvedVoicings);
     const filteredVoicings = options.includeNonPlayableCandidates === false
         ? dedupedResolvedVoicings.filter((voicing) => voicing.playable)
         : dedupedResolvedVoicings;
