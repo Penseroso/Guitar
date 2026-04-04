@@ -1,6 +1,26 @@
 import type { ChordRegistryEntry } from './registry';
 import type { ChordTone } from './types';
 
+const REQUIRED_DEGREES_BY_ID: Partial<Record<ChordRegistryEntry['id'], string[]>> = {
+    major: ['1', '3'],
+    minor: ['1', 'b3'],
+    'power-5': ['1', '5'],
+    'major-7': ['1', '3', '7'],
+    'minor-7': ['1', 'b3', 'b7'],
+    'dominant-7': ['1', '3', 'b7'],
+    'half-diminished-7': ['1', 'b3', 'b5', 'b7'],
+    'diminished-7': ['1', 'b3', 'b5', '6'],
+    'major-9': ['1', '3', '7', '9'],
+    'minor-9': ['1', 'b3', 'b7', '9'],
+    'dominant-9': ['1', '3', 'b7', '9'],
+    // For 13 chords we keep the root important in P1, while 3/b7/13 define the function most strongly.
+    'dominant-13': ['1', '3', 'b7', '13'],
+    'hendrix-7-sharp-9': ['1', '3', 'b7', '#9'],
+    'dominant-7-flat-9': ['1', '3', 'b7', 'b9'],
+    sus4: ['1', '4'],
+    sus2: ['1', '2'],
+};
+
 export function deriveChordToneRole(entry: ChordRegistryEntry, degree: string): ChordTone['role'] {
     if (degree === '1') return 'root';
 
@@ -19,21 +39,7 @@ export function deriveChordToneRole(entry: ChordRegistryEntry, degree: string): 
 }
 
 export function isRequiredChordDegree(entry: ChordRegistryEntry, degree: string): boolean {
-    if (degree === '1') return true;
-
-    if (entry.id === 'power-5') {
-        return degree === '5';
-    }
-
-    if ((entry.id === 'sus2' || entry.id === 'sus4') && (degree === '2' || degree === '4')) {
-        return true;
-    }
-
-    if (degree === '3' || degree === 'b3') return true;
-    if (degree === '7' || degree === 'b7' || degree === '6') return true;
-    if (degree === 'b9' || degree === '#9') return true;
-
-    return false;
+    return REQUIRED_DEGREES_BY_ID[entry.id]?.includes(degree) ?? false;
 }
 
 export function buildNormalizedChordTonesForEntry(entry: ChordRegistryEntry): ChordTone[] {

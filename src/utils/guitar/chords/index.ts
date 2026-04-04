@@ -57,6 +57,7 @@ export {
 
 export {
     buildVoicingTemplateFromLegacyShape,
+    getLegacyShapeKeyForChord,
     getVoicingTemplatesForChord,
     getVoicingTemplatesByLegacyType,
 } from './templates';

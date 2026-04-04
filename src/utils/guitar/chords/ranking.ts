@@ -184,6 +184,16 @@ export function scoreResolvedVoicing(
         reasons.push('Matches a standard voicing family.');
     }
 
+    if (voicing.chord.slashBassPitchClass !== undefined) {
+        if (voicing.satisfiesSlashBass) {
+            score += 24;
+            reasons.push('Matches the requested slash bass in the lowest voice.');
+        } else {
+            score -= 28;
+            reasons.push('Misses the requested slash bass in the lowest voice.');
+        }
+    }
+
     if (omittedOptionalDegrees.length > 0) {
         reasons.push(`Optional tones omitted: ${omittedOptionalDegrees.join(', ')}.`);
     } else if (tones?.tones.some((tone) => !tone.isRequired)) {

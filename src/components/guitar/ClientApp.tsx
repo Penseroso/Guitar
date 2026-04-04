@@ -96,7 +96,7 @@ const CHORD_SELECTOR_OPTIONS = CHORD_TYPE_PRIORITY.map((id) => {
 
     return {
         id: entry.id,
-        stateValue: entry.legacyType ?? entry.id,
+        stateValue: entry.id,
         label: entry.symbol || entry.displayName,
         description: entry.displayName,
     };
@@ -465,7 +465,7 @@ export default function ClientApp() {
     const [secondNote, setSecondNote] = useState(false);
 
     // --- State: Chord Mode ---
-    const [chordType, setChordType] = useState('Major'); // 'Major', 'Minor', '7'
+    const [chordType, setChordType] = useState('major');
     const [voicingIndex, setVoicingIndex] = useState(0);
 
     // --- State: Double Stops (Scale Mode Feature) ---
@@ -593,10 +593,18 @@ export default function ClientApp() {
     }, [mode, blueNote, sixthNote, secondNote, selectedKey, effectiveScaleName]);
 
     // --- Derived Data: Chords ---
+    const currentChordEntry = useMemo(() => {
+        try {
+            return resolveChordRegistryEntry(chordType);
+        } catch {
+            return null;
+        }
+    }, [chordType]);
     const availableVoicings = useMemo(() => {
-        const shapes = CHORD_SHAPES[chordType] || CHORD_SHAPES['Major'];
+        const legacyShapeKey = currentChordEntry?.legacyType ?? 'Major';
+        const shapes = CHORD_SHAPES[legacyShapeKey] || CHORD_SHAPES['Major'];
         return getSortedVoicings(shapes, selectedKey, TUNING);
-    }, [chordType, selectedKey]);
+    }, [currentChordEntry, selectedKey]);
 
     const currentVoicingShape = useMemo(() => {
         return availableVoicings[voicingIndex] || availableVoicings[0];
@@ -649,13 +657,6 @@ export default function ClientApp() {
         () => getVoicingPresentationMeta(activeFutureCandidate?.voicing.template),
         [activeFutureCandidate]
     );
-    const currentChordEntry = useMemo(() => {
-        try {
-            return resolveChordRegistryEntry(chordType);
-        } catch {
-            return null;
-        }
-    }, [chordType]);
     const chordPreviewTitle = useMemo(() => {
         const root = getNoteName(selectedKey);
         if (!currentChordEntry) {

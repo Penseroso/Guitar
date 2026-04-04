@@ -18,6 +18,15 @@ function getToneSemantics(id: string) {
 }
 
 describe('chord semantics direct classification', () => {
+    it('keeps the quality-defining seventh structure required', () => {
+        expect(getToneSemantics('major-7')).toMatchObject({
+            '1': { role: 'root', isRequired: true },
+            '3': { role: 'third', isRequired: true },
+            '5': { role: 'fifth', isRequired: false },
+            '7': { role: 'seventh', isRequired: true },
+        });
+    });
+
     it('classifies suspended chords correctly', () => {
         expect(getToneSemantics('sus2')).toMatchObject({
             '2': { role: 'suspension', isRequired: true },
@@ -36,21 +45,30 @@ describe('chord semantics direct classification', () => {
         });
     });
 
-    it('treats ninth and thirteenth extensions as optional color tones', () => {
+    it('treats ninths as core tones for the supported extended families', () => {
         expect(getToneSemantics('major-9')).toMatchObject({
-            '9': { role: 'extension', isRequired: false },
+            '7': { role: 'seventh', isRequired: true },
+            '9': { role: 'extension', isRequired: true },
         });
 
         expect(getToneSemantics('minor-9')).toMatchObject({
-            '9': { role: 'extension', isRequired: false },
+            'b7': { role: 'seventh', isRequired: true },
+            '9': { role: 'extension', isRequired: true },
         });
 
         expect(getToneSemantics('dominant-9')).toMatchObject({
-            '9': { role: 'extension', isRequired: false },
+            '3': { role: 'third', isRequired: true },
+            'b7': { role: 'seventh', isRequired: true },
+            '9': { role: 'extension', isRequired: true },
         });
+    });
 
+    it('treats the thirteenth as core for dominant-13 while leaving 5 and 9 optional', () => {
         expect(getToneSemantics('dominant-13')).toMatchObject({
-            '13': { role: 'extension', isRequired: false },
+            '3': { role: 'third', isRequired: true },
+            'b7': { role: 'seventh', isRequired: true },
+            '9': { role: 'extension', isRequired: false },
+            '13': { role: 'extension', isRequired: true },
         });
     });
 

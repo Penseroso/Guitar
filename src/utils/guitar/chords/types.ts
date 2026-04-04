@@ -76,6 +76,8 @@ export interface ResolvedVoicing {
     maxFret: number;
     span: number;
     playable: boolean;
+    lowestPlayedPitchClass?: PitchClass;
+    satisfiesSlashBass?: boolean;
     missingRequiredDegrees?: string[];
     omittedOptionalDegrees?: string[];
     omittedDegrees?: string[];

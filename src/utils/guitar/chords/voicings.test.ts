@@ -98,14 +98,80 @@ describe('voicing ranking orchestration', () => {
         expect(candidates[0].score).toBeGreaterThan(candidates.at(-1)?.score ?? 0);
     });
 
-    it('does not treat optional ninths as missing required degrees', () => {
-        const candidates = getRankedVoicingsForChord('major-9', 0);
-        const topPlayable = candidates.find((candidate) => candidate.voicing.playable);
+    it('penalizes major ninth voicings that miss the ninth', () => {
+        const entry = resolveChordRegistryEntry('major-9');
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+        const withNinth = buildVoicingCandidate(resolveVoicingTemplate(chord, tones, {
+            id: 'maj9-with-9',
+            label: 'maj9 with 9',
+            instrument: 'guitar',
+            rootString: 4,
+            strings: [
+                { string: 0, fretOffset: 0, toneDegree: '5' },
+                { string: 1, fretOffset: 0, toneDegree: '9' },
+                { string: 2, fretOffset: 1, toneDegree: '7' },
+                { string: 3, fretOffset: -1, toneDegree: '3' },
+                { string: 4, fretOffset: 0, toneDegree: '1' },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 3 }), entry, tones);
+        const missingNinth = buildVoicingCandidate(resolveVoicingTemplate(chord, tones, {
+            id: 'maj9-missing-9',
+            label: 'maj9 missing 9',
+            instrument: 'guitar',
+            rootString: 4,
+            strings: [
+                { string: 0, fretOffset: 0, toneDegree: '5' },
+                { string: 1, fretOffset: -2, toneDegree: '1' },
+                { string: 2, fretOffset: 1, toneDegree: '7' },
+                { string: 3, fretOffset: -1, toneDegree: '3' },
+                { string: 4, fretOffset: 0, toneDegree: '1' },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 3 }), entry, tones);
 
-        expect(topPlayable).toBeDefined();
-        expect(topPlayable?.missingRequiredDegrees).not.toContain('9');
-        expect(topPlayable?.matchedRequiredDegrees).toContain('1');
-        expect(topPlayable?.voicing.missingRequiredDegrees).not.toContain('9');
+        expect(withNinth.missingRequiredDegrees).toEqual([]);
+        expect(missingNinth.missingRequiredDegrees).toContain('9');
+        expect(withNinth.score).toBeGreaterThan(missingNinth.score);
+    });
+
+    it('treats dominant ninth structure as core when evaluating candidates', () => {
+        const entry = resolveChordRegistryEntry('dominant-9');
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+        const withNinth = buildVoicingCandidate(resolveVoicingTemplate(chord, tones, {
+            id: 'dom9-with-9',
+            label: 'dom9 with 9',
+            instrument: 'guitar',
+            rootString: 4,
+            strings: [
+                { string: 0, fretOffset: 0, toneDegree: '5' },
+                { string: 1, fretOffset: 0, toneDegree: '9' },
+                { string: 2, fretOffset: 0, toneDegree: 'b7' },
+                { string: 3, fretOffset: -1, toneDegree: '3' },
+                { string: 4, fretOffset: 0, toneDegree: '1' },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 3 }), entry, tones);
+        const missingNinth = buildVoicingCandidate(resolveVoicingTemplate(chord, tones, {
+            id: 'dom9-missing-9',
+            label: 'dom9 missing 9',
+            instrument: 'guitar',
+            rootString: 4,
+            strings: [
+                { string: 0, fretOffset: 0, toneDegree: '5' },
+                { string: 1, fretOffset: -2, toneDegree: '1' },
+                { string: 2, fretOffset: 0, toneDegree: 'b7' },
+                { string: 3, fretOffset: -1, toneDegree: '3' },
+                { string: 4, fretOffset: 0, toneDegree: '1' },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 3 }), entry, tones);
+
+        expect(withNinth.matchedRequiredDegrees).toContain('9');
+        expect(missingNinth.voicing.missingRequiredDegrees).toContain('9');
+        expect(withNinth.score).toBeGreaterThan(missingNinth.score);
     });
 
     it('separates omitted optional tones from missing required tones for extended chords', () => {
@@ -117,6 +183,8 @@ describe('voicing ranking orchestration', () => {
         expect(candidateWithOptionalOmissions).toBeDefined();
         expect(candidateWithOptionalOmissions?.voicing.missingRequiredDegrees).toEqual([]);
         expect(candidateWithOptionalOmissions?.voicing.omittedOptionalDegrees?.length).toBeGreaterThan(0);
+        expect(candidateWithOptionalOmissions?.voicing.omittedOptionalDegrees).toContain('9');
+        expect(candidateWithOptionalOmissions?.voicing.omittedOptionalDegrees).toContain('5');
     });
 
     it('keeps suspended identity tones treated as required through ranked voicings', () => {
@@ -131,5 +199,85 @@ describe('voicing ranking orchestration', () => {
 
         expect(candidate.reasons.length).toBeGreaterThan(0);
         expect(candidate.reasons.some((reason) => reason.includes('Playable'))).toBe(true);
+    });
+
+    it('keeps altered dominant identity tones required', () => {
+        const entry = resolveChordRegistryEntry('hendrix-7-sharp-9');
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+        const withAlteration = buildVoicingCandidate(resolveVoicingTemplate(chord, tones, {
+            id: '7sharp9-with-alt',
+            label: '7#9 with alteration',
+            instrument: 'guitar',
+            rootString: 4,
+            strings: [
+                { string: 0, fretOffset: 0, toneDegree: '5' },
+                { string: 1, fretOffset: 1, toneDegree: '#9' },
+                { string: 2, fretOffset: 0, toneDegree: 'b7' },
+                { string: 3, fretOffset: -1, toneDegree: '3' },
+                { string: 4, fretOffset: 0, toneDegree: '1' },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 3 }), entry, tones);
+        const missingAlteration = buildVoicingCandidate(resolveVoicingTemplate(chord, tones, {
+            id: '7sharp9-missing-alt',
+            label: '7#9 missing alteration',
+            instrument: 'guitar',
+            rootString: 4,
+            strings: [
+                { string: 0, fretOffset: 0, toneDegree: '5' },
+                { string: 1, fretOffset: -2, toneDegree: '1' },
+                { string: 2, fretOffset: 0, toneDegree: 'b7' },
+                { string: 3, fretOffset: -1, toneDegree: '3' },
+                { string: 4, fretOffset: 0, toneDegree: '1' },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 3 }), entry, tones);
+
+        expect(withAlteration.missingRequiredDegrees).toEqual([]);
+        expect(missingAlteration.missingRequiredDegrees).toContain('#9');
+        expect(withAlteration.score).toBeGreaterThan(missingAlteration.score);
+    });
+
+    it('rewards voicings that satisfy a requested slash bass', () => {
+        const entry = resolveChordRegistryEntry('major');
+        const slashChord = buildChordDefinitionFromRegistryEntry(entry, 0, { slashBassPitchClass: 4 });
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+        const bassMatch = resolveVoicingTemplate(slashChord, tones, {
+            id: 'c-over-e',
+            label: 'C/E',
+            instrument: 'guitar',
+            rootString: 4,
+            strings: [
+                { string: 0, fretOffset: -3, toneDegree: '3' },
+                { string: 1, fretOffset: -2, toneDegree: '1' },
+                { string: 2, fretOffset: -3, toneDegree: '5' },
+                { string: 3, fretOffset: -1, toneDegree: '3' },
+                { string: 4, fretOffset: 0, toneDegree: '1' },
+                { string: 5, fretOffset: -3, toneDegree: '3' },
+            ],
+        }, { rootFret: 3 });
+        const bassMiss = resolveVoicingTemplate(slashChord, tones, {
+            id: 'c-root-position',
+            label: 'C',
+            instrument: 'guitar',
+            rootString: 4,
+            strings: [
+                { string: 0, fretOffset: -3, toneDegree: '3' },
+                { string: 1, fretOffset: -2, toneDegree: '1' },
+                { string: 2, fretOffset: -3, toneDegree: '5' },
+                { string: 3, fretOffset: -1, toneDegree: '3' },
+                { string: 4, fretOffset: 0, toneDegree: '1' },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 3 });
+        const matchCandidate = buildVoicingCandidate(bassMatch, entry, tones);
+        const missCandidate = buildVoicingCandidate(bassMiss, entry, tones);
+
+        expect(bassMatch.satisfiesSlashBass).toBe(true);
+        expect(bassMiss.satisfiesSlashBass).toBe(false);
+        expect(matchCandidate.score).toBeGreaterThan(missCandidate.score);
+        expect(matchCandidate.reasons.some((reason) => reason.includes('slash bass'))).toBe(true);
+        expect(missCandidate.reasons.some((reason) => reason.includes('slash bass'))).toBe(true);
     });
 });

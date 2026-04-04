@@ -21,7 +21,9 @@ export function getRankedVoicingsForChord(
     options: GetRankedVoicingsOptions = {}
 ): VoicingCandidate[] {
     const entry = resolveChordRegistryEntry(entryInput);
-    const chord = buildChordDefinitionFromRegistryEntry(entry, rootPitchClass);
+    const chord = buildChordDefinitionFromRegistryEntry(entry, rootPitchClass, {
+        slashBassPitchClass: options.slashBassPitchClass,
+    });
     const tones = buildChordTonesFromRegistryEntry(entry, rootPitchClass);
     const templates = getVoicingTemplatesForChord(entry);
     const resolvedVoicings = options.resolveAcrossPositions === false

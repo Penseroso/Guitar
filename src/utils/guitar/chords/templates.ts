@@ -82,6 +82,11 @@ export function buildVoicingTemplateFromLegacyShape(
     };
 }
 
+export function getLegacyShapeKeyForChord(entryInput: string | ChordRegistryEntry): string | null {
+    const entry = resolveChordRegistryEntry(entryInput);
+    return entry.legacyType ?? null;
+}
+
 export function getVoicingTemplatesByLegacyType(legacyType: string): VoicingTemplate[] {
     const entry = resolveChordRegistryEntry(legacyType);
     const shapes = CHORD_SHAPES[legacyType] ?? [];
@@ -91,10 +96,12 @@ export function getVoicingTemplatesByLegacyType(legacyType: string): VoicingTemp
 
 export function getVoicingTemplatesForChord(entryInput: string | ChordRegistryEntry): VoicingTemplate[] {
     const entry = resolveChordRegistryEntry(entryInput);
+    const legacyShapeKey = getLegacyShapeKeyForChord(entry);
 
-    if (!entry.legacyType) {
+    if (!legacyShapeKey) {
         return [];
     }
 
-    return getVoicingTemplatesByLegacyType(entry.legacyType);
+    const shapes = CHORD_SHAPES[legacyShapeKey] ?? [];
+    return shapes.map((shape, index) => buildVoicingTemplateFromLegacyShape(entry, shape, index));
 }

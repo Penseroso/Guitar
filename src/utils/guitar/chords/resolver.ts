@@ -2,7 +2,12 @@ import {
     STANDARD_GUITAR_STRING_MIDI_PITCHES,
     STANDARD_GUITAR_TUNING_PITCH_CLASSES,
 } from '../tuning';
-import { buildChordDefinitionFromRegistryEntry, buildChordTonesFromRegistryEntry, normalizePitchClass } from './helpers';
+import {
+    buildChordDefinitionFromRegistryEntry,
+    buildChordTonesFromRegistryEntry,
+    normalizePitchClass,
+    type BuildChordDefinitionOptions,
+} from './helpers';
 import type { ChordRegistryEntry } from './registry';
 import type {
     ChordDefinition,
@@ -18,12 +23,19 @@ import type {
 export interface ResolveVoicingOptions {
     tuning?: PitchClass[];
     stringMidiPitches?: number[];
+    slashBassPitchClass?: PitchClass;
     constraints?: Partial<VoicingConstraints>;
     rootFret?: number;
     positionIndex?: number;
     minRootFret?: number;
     maxRootFret?: number;
     maxPositionsPerTemplate?: number;
+}
+
+function getLowestPlayedNote(notes: ResolvedVoicingNote[]): ResolvedVoicingNote | undefined {
+    return notes
+        .filter((note) => !note.isMuted && note.midiNote !== undefined)
+        .sort((left, right) => (left.midiNote as number) - (right.midiNote as number))[0];
 }
 
 function buildTonePitchClassMap(tones: ChordTones): Map<number, ChordTones['tones'][number][]> {
@@ -175,6 +187,7 @@ export function resolveVoicingTemplate(
         .sort((left, right) => left.string - right.string);
 
     const playedNotes = notes.filter((note) => !note.isMuted);
+    const lowestPlayedNote = getLowestPlayedNote(notes);
     const playedFrets = playedNotes.map((note) => note.fret);
     const minFret = playedFrets.length > 0 ? Math.min(...playedFrets) : 0;
     const maxFret = playedFrets.length > 0 ? Math.max(...playedFrets) : 0;
@@ -189,6 +202,10 @@ export function resolveVoicingTemplate(
         .map((tone) => tone.degree)
         .filter((degree) => !playedDegrees.has(degree));
     const omittedDegrees = [...missingRequiredDegrees, ...omittedOptionalDegrees];
+    const requestedSlashBassPitchClass = chord.slashBassPitchClass;
+    const satisfiesSlashBass = requestedSlashBassPitchClass === undefined
+        ? undefined
+        : lowestPlayedNote?.pitchClass === requestedSlashBassPitchClass;
     const hasInvalidFrets = playedFrets.some((fret) => fret < 0);
     const violatesConstraintRange = (
         (constraints.minFret !== undefined && playedFrets.some((fret) => fret < constraints.minFret!)) ||
@@ -215,6 +232,8 @@ export function resolveVoicingTemplate(
         maxFret,
         span,
         playable: playedNotes.length > 0 && !hasInvalidFrets && !violatesConstraintRange,
+        lowestPlayedPitchClass: lowestPlayedNote?.pitchClass,
+        satisfiesSlashBass,
         missingRequiredDegrees,
         omittedOptionalDegrees,
         omittedDegrees,
@@ -274,7 +293,10 @@ export function resolveVoicingTemplatesForChord(
     templates: VoicingTemplate[],
     options: ResolveVoicingOptions = {}
 ): ResolvedVoicing[] {
-    const chord = buildChordDefinitionFromRegistryEntry(entry, rootPitchClass);
+    const chordBuildOptions: BuildChordDefinitionOptions = {
+        slashBassPitchClass: options.slashBassPitchClass,
+    };
+    const chord = buildChordDefinitionFromRegistryEntry(entry, rootPitchClass, chordBuildOptions);
     const tones = buildChordTonesFromRegistryEntry(entry, rootPitchClass);
 
     return resolveVoicingTemplates(chord, tones, templates, options);
@@ -286,7 +308,10 @@ export function resolveVoicingTemplatesAcrossPositionsForChord(
     templates: VoicingTemplate[],
     options: ResolveVoicingOptions = {}
 ): ResolvedVoicing[] {
-    const chord = buildChordDefinitionFromRegistryEntry(entry, rootPitchClass);
+    const chordBuildOptions: BuildChordDefinitionOptions = {
+        slashBassPitchClass: options.slashBassPitchClass,
+    };
+    const chord = buildChordDefinitionFromRegistryEntry(entry, rootPitchClass, chordBuildOptions);
     const tones = buildChordTonesFromRegistryEntry(entry, rootPitchClass);
 
     return resolveVoicingTemplatesAcrossPositions(chord, tones, templates, options);
