@@ -3,6 +3,8 @@ import type { VoicingTemplate } from '../../../utils/guitar/chords';
 export interface VoicingPresentationMeta {
     primaryLabel: string;
     secondaryLabel: string | null;
+    sourceLabel: string | null;
+    familyLabel: string | null;
 }
 
 function buildPrimaryLabel(template?: VoicingTemplate): string {
@@ -43,9 +45,25 @@ export function getVoicingPresentationMeta(template?: VoicingTemplate): VoicingP
     const primaryLabel = buildPrimaryLabel(template);
     const rawSecondaryLabel = template?.label.match(/\(([^)]+)\)/)?.[1] ?? '';
     const secondaryLabel = rawSecondaryLabel ? normalizeSecondaryLabel(rawSecondaryLabel) : null;
+    const sourceLabel = template?.source === 'legacy-shape'
+        ? 'Legacy shape'
+        : template?.source === 'generated'
+            ? 'Generated'
+            : template?.source === 'curated'
+                ? 'Curated'
+                : null;
+    const familyLabel = template?.tags?.includes('generated-shell')
+        ? 'Shell'
+        : template?.tags?.includes('generated-compact')
+            ? 'Compact'
+            : template?.tags?.includes('generated-upper-register')
+                ? 'Upper register'
+                : secondaryLabel;
 
     return {
         primaryLabel,
         secondaryLabel,
+        sourceLabel,
+        familyLabel,
     };
 }

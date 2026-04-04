@@ -12,6 +12,7 @@ export type {
     ResolvedVoicing,
     VoicingCandidate,
     ChordInterpretationCandidate,
+    VoicingRankingMode,
 } from './types';
 
 export type {
@@ -62,6 +63,10 @@ export {
     getVoicingTemplatesByLegacyType,
 } from './templates';
 
+export {
+    getGeneratedVoicingTemplatesForChord,
+} from './generated';
+
 export type { ResolveVoicingOptions } from './resolver';
 
 export {
@@ -82,6 +87,7 @@ export type {
 
 export {
     getVoicingShapeMetrics,
+    VOICING_RANKING_MODES,
     scoreResolvedVoicing,
     buildVoicingCandidate,
     rankVoicingCandidates,

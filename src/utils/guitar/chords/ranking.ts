@@ -1,6 +1,6 @@
 import { getRequiredChordDegrees, resolveChordRegistryEntry } from './helpers';
 import type { ChordRegistryEntry } from './registry';
-import type { ChordTones, ResolvedVoicing, VoicingCandidate } from './types';
+import type { ChordTones, ResolvedVoicing, VoicingCandidate, VoicingRankingMode } from './types';
 
 function collectPlayedDegrees(voicing: ResolvedVoicing): Set<string> {
     return new Set(
@@ -17,16 +17,171 @@ export interface VoicingScore {
     missingRequiredDegrees: string[];
 }
 
+export interface ScoreResolvedVoicingOptions {
+    mode?: VoicingRankingMode;
+}
+
 export interface VoicingShapeMetrics {
     playedCount: number;
     frettedCount: number;
     openStringCount: number;
     mutedCount: number;
+    lowStringMuteCount: number;
     internalMutedCount: number;
     maxAdjacentFretJump: number;
     averageAdjacentFretJump: number;
     fretCenter: number;
+    highestPlayedString?: number;
+    lowestPlayedString?: number;
+    barreNoteCount: number;
+    gripDensity: number;
 }
+
+interface RankingProfile {
+    mode: VoicingRankingMode;
+    compactSpanBonus: number;
+    moderateSpanBonus: number;
+    wideSpanPenalty: number;
+    lowMidRegionBonus: number;
+    standardRegionBonus: number;
+    highRegionPenalty: number;
+    openStringBonus: number;
+    highOpenMixPenalty: number;
+    internalMuteReward: number;
+    internalMutePenalty: number;
+    tightClusterBonus: number;
+    manageableJumpBonus: number;
+    largeJumpPenalty: number;
+    rootHintBonus: number;
+    rootHintPenalty: number;
+    standardFamilyBonus: number;
+    optionalCoverageBonus: number;
+    optionalRetentionBonus: number;
+    mutedStringPenalty: number;
+    barreComplexityPenalty: number;
+    lowStringMutePenalty: number;
+    stretchDiscomfortPenalty: number;
+    gripDensityBonus: number;
+    upperRegisterBonus: number;
+    upperRegisterPenalty: number;
+}
+
+const RANKING_PROFILES: Record<VoicingRankingMode, RankingProfile> = {
+    balanced: {
+        mode: 'balanced',
+        compactSpanBonus: 12,
+        moderateSpanBonus: 4,
+        wideSpanPenalty: 5,
+        lowMidRegionBonus: 10,
+        standardRegionBonus: 4,
+        highRegionPenalty: 4,
+        openStringBonus: 3,
+        highOpenMixPenalty: 4,
+        internalMuteReward: 4,
+        internalMutePenalty: 6,
+        tightClusterBonus: 8,
+        manageableJumpBonus: 2,
+        largeJumpPenalty: 4,
+        rootHintBonus: 8,
+        rootHintPenalty: 3,
+        standardFamilyBonus: 3,
+        optionalCoverageBonus: 2,
+        optionalRetentionBonus: 3,
+        mutedStringPenalty: 2,
+        barreComplexityPenalty: 2,
+        lowStringMutePenalty: 4,
+        stretchDiscomfortPenalty: 5,
+        gripDensityBonus: 4,
+        upperRegisterBonus: 2,
+        upperRegisterPenalty: 0,
+    },
+    compact: {
+        mode: 'compact',
+        compactSpanBonus: 18,
+        moderateSpanBonus: 6,
+        wideSpanPenalty: 8,
+        lowMidRegionBonus: 6,
+        standardRegionBonus: 4,
+        highRegionPenalty: 3,
+        openStringBonus: 2,
+        highOpenMixPenalty: 5,
+        internalMuteReward: 5,
+        internalMutePenalty: 8,
+        tightClusterBonus: 12,
+        manageableJumpBonus: 3,
+        largeJumpPenalty: 6,
+        rootHintBonus: 6,
+        rootHintPenalty: 2,
+        standardFamilyBonus: 2,
+        optionalCoverageBonus: 1,
+        optionalRetentionBonus: 2,
+        mutedStringPenalty: 1,
+        barreComplexityPenalty: 2,
+        lowStringMutePenalty: 3,
+        stretchDiscomfortPenalty: 8,
+        gripDensityBonus: 7,
+        upperRegisterBonus: 2,
+        upperRegisterPenalty: 0,
+    },
+    beginner: {
+        mode: 'beginner',
+        compactSpanBonus: 16,
+        moderateSpanBonus: 6,
+        wideSpanPenalty: 9,
+        lowMidRegionBonus: 14,
+        standardRegionBonus: 4,
+        highRegionPenalty: 6,
+        openStringBonus: 4,
+        highOpenMixPenalty: 7,
+        internalMuteReward: 4,
+        internalMutePenalty: 10,
+        tightClusterBonus: 10,
+        manageableJumpBonus: 2,
+        largeJumpPenalty: 8,
+        rootHintBonus: 10,
+        rootHintPenalty: 4,
+        standardFamilyBonus: 6,
+        optionalCoverageBonus: 1,
+        optionalRetentionBonus: 2,
+        mutedStringPenalty: 4,
+        barreComplexityPenalty: 6,
+        lowStringMutePenalty: 7,
+        stretchDiscomfortPenalty: 10,
+        gripDensityBonus: 5,
+        upperRegisterBonus: 0,
+        upperRegisterPenalty: 2,
+    },
+    'upper-register': {
+        mode: 'upper-register',
+        compactSpanBonus: 10,
+        moderateSpanBonus: 4,
+        wideSpanPenalty: 5,
+        lowMidRegionBonus: 2,
+        standardRegionBonus: 5,
+        highRegionPenalty: 0,
+        openStringBonus: 1,
+        highOpenMixPenalty: 3,
+        internalMuteReward: 3,
+        internalMutePenalty: 6,
+        tightClusterBonus: 7,
+        manageableJumpBonus: 2,
+        largeJumpPenalty: 4,
+        rootHintBonus: 5,
+        rootHintPenalty: 2,
+        standardFamilyBonus: 2,
+        optionalCoverageBonus: 2,
+        optionalRetentionBonus: 3,
+        mutedStringPenalty: 1,
+        barreComplexityPenalty: 1,
+        lowStringMutePenalty: 2,
+        stretchDiscomfortPenalty: 4,
+        gripDensityBonus: 4,
+        upperRegisterBonus: 10,
+        upperRegisterPenalty: 6,
+    },
+};
+
+export const VOICING_RANKING_MODES = Object.keys(RANKING_PROFILES) as VoicingRankingMode[];
 
 export function getVoicingShapeMetrics(voicing: ResolvedVoicing): VoicingShapeMetrics {
     const playedNotes = voicing.notes
@@ -35,6 +190,7 @@ export function getVoicingShapeMetrics(voicing: ResolvedVoicing): VoicingShapeMe
     const frettedNotes = playedNotes.filter((note) => note.fret > 0);
     const openNotes = playedNotes.filter((note) => note.fret === 0);
     const mutedNotes = voicing.notes.filter((note) => note.isMuted);
+    const lowStringMuteCount = mutedNotes.filter((note) => note.string >= 4).length;
     const playedStrings = playedNotes.map((note) => note.string).sort((left, right) => left - right);
     const firstPlayedString = playedStrings[0];
     const lastPlayedString = playedStrings[playedStrings.length - 1];
@@ -55,24 +211,45 @@ export function getVoicingShapeMetrics(voicing: ResolvedVoicing): VoicingShapeMe
     const fretCenter = frettedNotes.length > 0
         ? frettedNotes.reduce((sum, note) => sum + note.fret, 0) / frettedNotes.length
         : 0;
+    const barreCounts = frettedNotes.reduce((accumulator, note) => {
+        accumulator.set(note.fret, (accumulator.get(note.fret) ?? 0) + 1);
+        return accumulator;
+    }, new Map<number, number>());
+    const barreNoteCount = Math.max(0, ...barreCounts.values());
+    const stringRange = firstPlayedString !== undefined && lastPlayedString !== undefined
+        ? (lastPlayedString - firstPlayedString) + 1
+        : 0;
+    const gripDensity = stringRange > 0 ? playedNotes.length / stringRange : 0;
 
     return {
         playedCount: playedNotes.length,
         frettedCount: frettedNotes.length,
         openStringCount: openNotes.length,
         mutedCount: mutedNotes.length,
+        lowStringMuteCount,
         internalMutedCount,
         maxAdjacentFretJump,
         averageAdjacentFretJump,
         fretCenter,
+        highestPlayedString: firstPlayedString,
+        lowestPlayedString: lastPlayedString,
+        barreNoteCount,
+        gripDensity,
     };
+}
+
+function getRankingProfile(mode: VoicingRankingMode): RankingProfile {
+    return RANKING_PROFILES[mode];
 }
 
 export function scoreResolvedVoicing(
     voicing: ResolvedVoicing,
     entryInput: string | ChordRegistryEntry,
-    tones?: ChordTones
+    tones?: ChordTones,
+    options: ScoreResolvedVoicingOptions = {}
 ): VoicingScore {
+    const mode = options.mode ?? 'balanced';
+    const profile = getRankingProfile(mode);
     const entry = resolveChordRegistryEntry(entryInput);
     const playedDegrees = collectPlayedDegrees(voicing);
     const requiredDegrees = getRequiredChordDegrees(entry);
@@ -121,7 +298,7 @@ export function scoreResolvedVoicing(
         reasons.push('Omits the chord root.');
     }
 
-    score -= metrics.mutedCount * 2;
+    score -= metrics.mutedCount * profile.mutedStringPenalty;
     if (metrics.mutedCount === 0) {
         reasons.push('Uses all six strings.');
     } else {
@@ -129,51 +306,51 @@ export function scoreResolvedVoicing(
     }
 
     if (voicing.span <= 4) {
-        score += 12;
+        score += profile.compactSpanBonus;
         reasons.push(`Compact fret span (${voicing.span}).`);
     } else if (voicing.span <= 6) {
-        score += 4;
+        score += profile.moderateSpanBonus;
         reasons.push(`Moderate fret span (${voicing.span}).`);
     } else {
-        score -= Math.max(0, voicing.span - 6) * 5;
+        score -= Math.max(0, voicing.span - 6) * profile.wideSpanPenalty;
         reasons.push(`Wide fret span (${voicing.span}).`);
     }
 
     if (voicing.minFret >= 0 && voicing.maxFret <= 7) {
-        score += 10;
+        score += profile.lowMidRegionBonus;
         reasons.push('Lives in a low-to-mid fret region.');
     } else if (voicing.minFret >= 0 && voicing.maxFret <= 12) {
-        score += 4;
+        score += profile.standardRegionBonus;
         reasons.push('Lives in a standard fret region.');
     } else {
-        score -= 4;
+        score -= profile.highRegionPenalty;
         reasons.push('Lives in a high or awkward fret region.');
     }
 
     if (metrics.openStringCount > 0 && voicing.maxFret <= 5) {
-        score += Math.min(metrics.openStringCount, 2) * 3;
+        score += Math.min(metrics.openStringCount, 2) * profile.openStringBonus;
         reasons.push(`Uses ${metrics.openStringCount} practical open string${metrics.openStringCount === 1 ? '' : 's'}.`);
     } else if (metrics.openStringCount >= 3 && voicing.maxFret >= 8) {
-        score -= 4;
+        score -= profile.highOpenMixPenalty;
         reasons.push('Mixes many open strings with a high fret position.');
     }
 
     if (metrics.internalMutedCount === 0) {
-        score += 4;
+        score += profile.internalMuteReward;
         reasons.push('Avoids internal muted-string gaps.');
     } else {
-        score -= metrics.internalMutedCount * 6;
+        score -= metrics.internalMutedCount * profile.internalMutePenalty;
         reasons.push(`Has ${metrics.internalMutedCount} internal muted-string gap${metrics.internalMutedCount === 1 ? '' : 's'}.`);
     }
 
     if (metrics.maxAdjacentFretJump <= 2) {
-        score += 8;
+        score += profile.tightClusterBonus;
         reasons.push('Adjacent strings stay tightly clustered.');
     } else if (metrics.maxAdjacentFretJump <= 4) {
-        score += 2;
+        score += profile.manageableJumpBonus;
         reasons.push('Adjacent string movement stays manageable.');
     } else {
-        score -= (metrics.maxAdjacentFretJump - 4) * 4;
+        score -= (metrics.maxAdjacentFretJump - 4) * profile.largeJumpPenalty;
         reasons.push(`Large adjacent-string jump (${metrics.maxAdjacentFretJump} frets).`);
     }
 
@@ -182,16 +359,53 @@ export function scoreResolvedVoicing(
         voicing.template?.rootString !== undefined &&
         entry.voicingHint.rootStrings.includes(voicing.template.rootString)
     ) {
-        score += 8;
+        score += profile.rootHintBonus;
         reasons.push('Matches the registry root-string hint.');
     } else if (voicing.template?.rootString !== undefined) {
-        score -= 3;
+        score -= profile.rootHintPenalty;
         reasons.push('Root string falls outside the registry hint.');
     }
 
     if (voicing.template?.tags?.some((tag) => ['caged', 'drop-2', 'drop-3', 'power-chord'].includes(tag))) {
-        score += 3;
+        score += profile.standardFamilyBonus;
         reasons.push('Matches a standard voicing family.');
+    }
+
+    if (metrics.barreNoteCount >= 3) {
+        score -= (metrics.barreNoteCount - 2) * profile.barreComplexityPenalty;
+        reasons.push(`Dense same-fret grip across ${metrics.barreNoteCount} strings.`);
+    }
+
+    if (metrics.lowStringMuteCount > 0) {
+        score -= metrics.lowStringMuteCount * profile.lowStringMutePenalty;
+        reasons.push(`Requires ${metrics.lowStringMuteCount} low-string mute${metrics.lowStringMuteCount === 1 ? '' : 's'}.`);
+    }
+
+    if (voicing.span >= 4 && metrics.averageAdjacentFretJump > 1.5) {
+        score -= Math.round(metrics.averageAdjacentFretJump) * profile.stretchDiscomfortPenalty;
+        reasons.push('Grip suggests extra stretch discomfort.');
+    }
+
+    if (metrics.gripDensity >= 0.8) {
+        score += profile.gripDensityBonus;
+        reasons.push('Keeps the grip visually coherent.');
+    }
+
+    const upperRegisterStringCount = voicing.notes.filter((note) => !note.isMuted && note.string <= 3).length;
+    if (mode === 'upper-register') {
+        if (upperRegisterStringCount >= 3) {
+            score += profile.upperRegisterBonus;
+            reasons.push('Favours upper-string comping in this mode.');
+        } else {
+            score -= profile.upperRegisterPenalty;
+            reasons.push('Sits too low for upper-register focus.');
+        }
+    } else if (mode === 'beginner' && voicing.template?.source === 'legacy-shape') {
+        score += 3;
+        reasons.push('Uses a familiar legacy grip.');
+    } else if (mode === 'compact' && voicing.template?.tags?.includes('generated-compact')) {
+        score += 4;
+        reasons.push('Generated for compact clustering.');
     }
 
     if (extraPitchClasses.length > 0) {
@@ -216,7 +430,7 @@ export function scoreResolvedVoicing(
     if (omittedOptionalDegrees.length > 0) {
         reasons.push(`Optional tones omitted: ${omittedOptionalDegrees.join(', ')}.`);
     } else if (tones?.tones.some((tone) => !tone.isRequired)) {
-        score += 3;
+        score += profile.optionalRetentionBonus;
         reasons.push('Retains optional color tones.');
     }
 
@@ -229,7 +443,7 @@ export function scoreResolvedVoicing(
         ).length;
 
         if (optionalCoverage > 0) {
-            score += optionalCoverage * 2;
+            score += optionalCoverage * profile.optionalCoverageBonus;
             reasons.push(`Includes ${optionalCoverage} optional color tone${optionalCoverage === 1 ? '' : 's'}.`);
         }
     }
@@ -245,9 +459,10 @@ export function scoreResolvedVoicing(
 export function buildVoicingCandidate(
     voicing: ResolvedVoicing,
     entryInput: string | ChordRegistryEntry,
-    tones?: ChordTones
+    tones?: ChordTones,
+    options: ScoreResolvedVoicingOptions = {}
 ): VoicingCandidate {
-    const score = scoreResolvedVoicing(voicing, entryInput, tones);
+    const score = scoreResolvedVoicing(voicing, entryInput, tones, options);
 
     return {
         voicing,
@@ -261,10 +476,11 @@ export function buildVoicingCandidate(
 export function rankVoicingCandidates(
     voicings: ResolvedVoicing[],
     entryInput: string | ChordRegistryEntry,
-    tones?: ChordTones
+    tones?: ChordTones,
+    options: ScoreResolvedVoicingOptions = {}
 ): VoicingCandidate[] {
     return voicings
-        .map((voicing) => buildVoicingCandidate(voicing, entryInput, tones))
+        .map((voicing) => buildVoicingCandidate(voicing, entryInput, tones, options))
         .sort((left, right) => {
             if (right.score !== left.score) {
                 return right.score - left.score;

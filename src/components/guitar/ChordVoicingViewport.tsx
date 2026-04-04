@@ -11,6 +11,8 @@ import {
     resolveChordRegistryEntry,
     type HarmonicTonalContext,
     type ProgressionHandoffPayload,
+    type VoicingCandidate,
+    type VoicingRankingMode,
 } from '../../utils/guitar/chords';
 import { CompactVoicingDiagram } from './chord-preview/CompactVoicingDiagram';
 import { ChordProgressionHintsPanel } from './chord-preview/ChordProgressionHintsPanel';
@@ -26,6 +28,8 @@ import { getVoicingPresentationMeta } from './chord-preview/voicing-labels';
 interface ChordVoicingViewportProps {
     chordType: string;
     selectedKey: number;
+    rankingMode?: VoicingRankingMode;
+    candidates?: VoicingCandidate[];
     activeCandidateId?: string | null;
     activeScaleId?: string | null;
     onActiveVoicingChange?: (payload: ActiveVoicingChangePayload) => void;
@@ -92,6 +96,8 @@ function buildSelectionSummary(primaryLabel: string, rootFret?: number): string 
 export function ChordVoicingViewport({
     chordType,
     selectedKey,
+    rankingMode = 'balanced',
+    candidates: providedCandidates,
     activeCandidateId,
     activeScaleId,
     onActiveVoicingChange,
@@ -102,11 +108,19 @@ export function ChordVoicingViewport({
     const selectionKey = useMemo(() => getBridgeSelectionKey(chordType, selectedKey), [chordType, selectedKey]);
 
     const { candidates, errorMessage } = useMemo(() => {
+        if (providedCandidates) {
+            return {
+                candidates: providedCandidates,
+                errorMessage: null,
+            };
+        }
+
         try {
             return {
                 candidates: getRankedVoicingsForChord(chordType, selectedKey, {
                     maxRootFret: 15,
-                    maxCandidates: 4,
+                    maxCandidates: 12,
+                    rankingMode,
                 }),
                 errorMessage: null,
             };
@@ -116,7 +130,7 @@ export function ChordVoicingViewport({
                 errorMessage: error instanceof Error ? error.message : 'Unknown future-engine resolution error.',
             };
         }
-    }, [chordType, selectedKey]);
+    }, [chordType, providedCandidates, rankingMode, selectedKey]);
 
     const selection = useMemo(
         () => resolveBridgeSelection(candidates, activeCandidateId ?? null),
@@ -218,6 +232,9 @@ export function ChordVoicingViewport({
                     <span className="px-3 py-1.5 rounded-full border border-cyan-300/20 bg-cyan-400/[0.05] text-[9px] font-black uppercase tracking-[0.25em] text-cyan-100/80">
                         {harmonicInterpretation.roleLabel}
                     </span>
+                    <span className="px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.04] text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
+                        {rankingMode.replace('-', ' ')} mode
+                    </span>
                     {selection.selectionSource !== 'requested' && (
                         <span className="px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.04] text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
                             Recommended
@@ -234,14 +251,21 @@ export function ChordVoicingViewport({
                             <span className="text-sm font-black text-white">
                                 {buildSelectionSummary(activePresentation.primaryLabel, activeCandidate.voicing.rootFret)}
                             </span>
-                            {activePresentation.secondaryLabel && (
+                            {(activePresentation.familyLabel || activePresentation.secondaryLabel) && (
                                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/35">
-                                    {activePresentation.secondaryLabel}
+                                    {activePresentation.familyLabel ?? activePresentation.secondaryLabel}
                                 </span>
                             )}
                         </div>
-                        <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
-                            {defaultSelectionLabel}
+                        <div className="flex flex-wrap justify-end gap-2">
+                            {activePresentation.sourceLabel && (
+                                <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
+                                    {activePresentation.sourceLabel}
+                                </div>
+                            )}
+                            <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
+                                {defaultSelectionLabel}
+                            </div>
                         </div>
                     </div>
 
