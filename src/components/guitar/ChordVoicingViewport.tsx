@@ -178,7 +178,7 @@ export function ChordVoicingViewport({
     if (errorMessage) {
         return renderViewportShell(
             chordLabel,
-            'No playable voicing could be resolved for this chord. The legacy voicing gallery below is still available as fallback reference.',
+            'No playable voicing could be resolved for this chord.',
             <div className="rounded-[1.5rem] border border-rose-500/20 bg-rose-500/10 px-4 py-4 text-sm text-rose-100">
                 <span className="font-black uppercase tracking-[0.2em] text-[10px] text-rose-200/80">Voicing Status</span>
                 <p className="mt-2 text-rose-100/85">{errorMessage}</p>
@@ -203,7 +203,7 @@ export function ChordVoicingViewport({
         ? 'Selected manually'
         : selection.selectionSource === 'first-playable'
             ? 'Default playable voicing'
-            : 'Default fallback voicing';
+            : 'Default ranked voicing';
 
     return (
         <div className="rounded-[2rem] border border-white/5 bg-[#050505] p-6 flex flex-col gap-6">

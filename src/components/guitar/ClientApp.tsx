@@ -15,15 +15,12 @@ import {
 import {
     TUNING,
     SCALES,
-    CHORD_SHAPES,
     getScaleIntervalLabels,
     getScaleEngineIntervalLabels,
     isDoubleStopSupported,
     generateModeData,
 } from '../../utils/guitar/theory';
 import {
-    getChordFingering,
-    getSortedVoicings,
     getHarmonicDoubleStops,
     getPlayableDoubleStopsOnStrings,
     getNoteName,
@@ -107,7 +104,6 @@ export default function ClientApp() {
 
     // --- State: Chord Mode ---
     const [chordType, setChordType] = useState('major');
-    const [voicingIndex, setVoicingIndex] = useState(0);
     const [voicingRankingMode, setVoicingRankingMode] = useState<VoicingRankingMode>('balanced');
     const [voicingSourceFilter, setVoicingSourceFilter] = useState<'all' | 'legacy-import' | 'generated'>('all');
     const [voicingRootFilter, setVoicingRootFilter] = useState<'all' | '6' | '5' | '4'>('all');
@@ -244,15 +240,6 @@ export default function ClientApp() {
             return null;
         }
     }, [chordType]);
-    const availableVoicings = useMemo(() => {
-        const legacyShapeKey = currentChordEntry?.legacyType ?? 'Major';
-        const shapes = CHORD_SHAPES[legacyShapeKey] || CHORD_SHAPES['Major'];
-        return getSortedVoicings(shapes, selectedKey, TUNING);
-    }, [currentChordEntry, selectedKey]);
-
-    const currentVoicingShape = useMemo(() => {
-        return availableVoicings[voicingIndex] || availableVoicings[0];
-    }, [availableVoicings, voicingIndex]);
     const futureVoicingScopeKey = `${chordType}::${selectedKey}`;
     const tonalContext = useMemo(() => ({
         selectedKey,
@@ -312,6 +299,14 @@ export default function ClientApp() {
         () => getVoicingPresentationMeta(activeFutureCandidate?.voicing),
         [activeFutureCandidate]
     );
+    const chordPreviewPrimaryLabel = activeFutureCandidate
+        ? activeFuturePresentation.primaryLabel
+        : 'No voicing available';
+    const chordPreviewSecondaryLabel = activeFutureCandidate
+        ? activeFuturePresentation.secondaryLabel
+        : futureVoicingCandidates.length === 0
+            ? 'No ranked candidates for this chord'
+            : 'No candidate selected';
     const chordPreviewTitle = useMemo(() => {
         const root = getNoteName(selectedKey);
         if (!currentChordEntry) {
@@ -325,7 +320,7 @@ export default function ClientApp() {
     const chordPreviewFormula = currentChordEntry?.formula.degrees ?? [];
     const chordPreviewPosition = activeFutureCandidate?.voicing.rootFret !== undefined
         ? `${activeFutureCandidate.voicing.rootFret}fr position`
-        : 'Open position';
+        : null;
 
     const handleFutureVoicingChange = useCallback(({ activeCandidateId, chordType, selectedKey }: {
         activeCandidateId: string | null;
@@ -397,75 +392,8 @@ export default function ClientApp() {
 
     const fingering = useMemo(() => {
         if (mode !== 'chord') return undefined;
-
-        if (activeFutureVoicingFingering && activeFutureVoicingFingering.length > 0) {
-            return activeFutureVoicingFingering;
-        }
-
-        if (!currentVoicingShape) return undefined;
-
-        // New logic
-        return getChordFingering(currentVoicingShape, selectedKey, TUNING);
-
-        /* Old logic to be removed
-        const { offsets, rootString } = currentVoicingShape;
-        // offsets are for strings 0-5 (High E to Low E) as per my new definition?
-        // Wait, let's check theory.ts definition. 
-        // "offsets: [0, 0, 1, 2, 2, 0]" for E Shape.
-        // If E Shape Root is Low E (String 5).
-        // offset[0] ? musicTheory.ts said "offsets for strings 0-5". 
-        // And I decided 0 is High E (Standard) but musicTheory.ts comment said:
-        // "offset[0] matches E A D G B e" NO -> E shape matches "0 2 2 1 0 0" (Low to High).
-        // musicTheory.ts E Shape: `offsets: [0, 0, 1, 2, 2, 0]`.
-        // My previous analysis in page.tsx:
-        // "matches E A D G B e" -> No.
-        // Let's assume standard array order usually Low to High?
-        // BUT TUNING is [4, 11, 7, 2, 9, 4] (High to Low).
-        // Components usually iterate 0..5 (High to Low).
-        // So if musicTheory.ts has `offsets: [0, 0, 1, 2, 2, 0]`, and string 0 is High E (4)...
-        // High E = 0. B = 0. G = 1. D = 2. A = 2. Low E = 0.
-        // This looks like E Major! (0 2 2 1 0 0) - but reversed.
-        // Low E (0) -> High E (0).
-        // So `offsets` in theory.ts seem to be High E -> Low E.
-
-        // rootString is 5 (Low E).
-
-        // Calculate Fret
-        const openNote = TUNING[currentVoicingShape.rootString]; // Low E for E Shape
-        // We want this string to play `selectedKey`.
-        // (openNote + fret) % 12 = selectedKey.
-        // fret = (selectedKey - openNote + 12) % 12.
-        // This is the "Base Fret" (Barre fret or Nut position).
-        const baseFret = (selectedKey - openNote + 12) % 12;
-
-        const fingerings = [];
-        for (let s = 0; s < 6; s++) {
-            const offset = offsets[s];
-            if (offset !== -1) {
-                const computedFret = baseFret + offset;
-                const noteIdx = (TUNING[s] + computedFret) % 12;
-
-                // Label
-                let label = "??;
-                const diff = (noteIdx - selectedKey + 12) % 12;
-                if (diff === 0) label = "R";
-                else if (diff === 7) label = "5";
-                else if (diff === 4) label = "3";
-                else if (diff === 3) label = "b3";
-                else if (diff === 10) label = "b7";
-                else if (diff === 11) label = "7";
-
-                fingerings.push({
-                    string: s,
-                    fret: computedFret,
-                    noteIdx: noteIdx,
-                    label: label
-                });
-            }
-        }
-        */
-
-    }, [activeFutureVoicingFingering, mode, currentVoicingShape, selectedKey]);
+        return activeFutureVoicingFingering;
+    }, [activeFutureVoicingFingering, mode]);
 
     // --- Derived Data: Progression ---
     const progressionData = useMemo(() => {
@@ -584,7 +512,7 @@ export default function ClientApp() {
                 fretboardContainerRef.current.scrollTo({ left: scrollPos, behavior: 'smooth' });
             }
         }
-    }, [mode, fingering, voicingIndex, selectedKey]);
+    }, [mode, fingering, selectedKey]);
 
     useEffect(() => {
         if (mode !== 'scale' || !hasPreview) return;
@@ -638,8 +566,8 @@ export default function ClientApp() {
                     chordType={chordType}
                     chordPreviewTitle={chordPreviewTitle}
                     chordPreviewFormula={chordPreviewFormula}
-                    chordPreviewPrimaryLabel={activeFuturePresentation.primaryLabel}
-                    chordPreviewSecondaryLabel={activeFuturePresentation.secondaryLabel}
+                    chordPreviewPrimaryLabel={chordPreviewPrimaryLabel}
+                    chordPreviewSecondaryLabel={chordPreviewSecondaryLabel}
                     chordPreviewPosition={chordPreviewPosition}
 
                     progressionName={progressionName}
@@ -737,9 +665,6 @@ export default function ClientApp() {
                             onApplyPreparedChordWorkspaceHandoff={handleApplyPreparedChordWorkspaceHandoff}
                             onOpenProgressionWorkspace={handleOpenProgressionWorkspace}
                             onClearPreparedChordWorkspaceHandoff={handleClearPreparedChordWorkspaceHandoff}
-                            availableVoicings={availableVoicings}
-                            voicingIndex={voicingIndex}
-                            onLegacyVoicingChange={setVoicingIndex}
                         />
                     )}
 

@@ -3,10 +3,9 @@
 import React from 'react';
 
 import { Fretboard } from '../../Fretboard';
-import { ChordGallery } from '../ChordGallery';
 import { ChordVoicingViewport } from '../ChordVoicingViewport';
 import { VOICING_RANKING_MODES, type ProgressionHandoffPayload, type VoicingCandidate, type VoicingRankingMode } from '../../../utils/guitar/chords';
-import type { ChordShape, Fingering } from '../../../utils/guitar/types';
+import type { Fingering } from '../../../utils/guitar/types';
 import { getVoicingPresentationMeta } from '../chord-preview/voicing-labels';
 
 interface ChordSelectorOption {
@@ -71,9 +70,6 @@ interface ChordModeWorkspaceProps {
     onApplyPreparedChordWorkspaceHandoff: () => void;
     onOpenProgressionWorkspace: () => void;
     onClearPreparedChordWorkspaceHandoff: () => void;
-    availableVoicings: ChordShape[];
-    voicingIndex: number;
-    onLegacyVoicingChange: (index: number) => void;
 }
 
 export function ChordModeWorkspace({
@@ -116,10 +112,17 @@ export function ChordModeWorkspace({
     onApplyPreparedChordWorkspaceHandoff,
     onOpenProgressionWorkspace,
     onClearPreparedChordWorkspaceHandoff,
-    availableVoicings,
-    voicingIndex,
-    onLegacyVoicingChange,
 }: ChordModeWorkspaceProps) {
+    const hasEngineCandidates = futureVoicingCandidates.length > 0;
+    const hasVisibleCandidates = visibleFutureVoicingCandidates.length > 0;
+    const chordWorkspaceEmptyMessage = !hasEngineCandidates
+        ? 'No playable voicing candidates found for this chord yet.'
+        : !activeFutureCandidate
+            ? 'No active voicing candidate is available right now.'
+            : !hasVisibleCandidates
+                ? 'No playable voicing candidates found for the current filters.'
+                : null;
+
     return (
         <div className="relative z-10 w-full mt-4 flex flex-col gap-8">
             <div className="rounded-[2rem] border border-white/5 bg-[#050505] p-6 flex flex-col gap-6">
@@ -154,9 +157,9 @@ export function ChordModeWorkspace({
                             <div className="flex flex-wrap items-end gap-x-3 gap-y-2">
                                 <h3 className="text-3xl font-black text-white tracking-tight">{chordPreviewTitle}</h3>
                                 <span className="pb-1 text-[10px] font-black uppercase tracking-[0.28em] text-white/35">
-                                    {activeFuturePresentation.primaryLabel}
+                                    {activeFutureCandidate ? activeFuturePresentation.primaryLabel : 'No voicing available'}
                                 </span>
-                                {(activeFuturePresentation.familyLabel || activeFuturePresentation.secondaryLabel) && (
+                                {activeFutureCandidate && (activeFuturePresentation.familyLabel || activeFuturePresentation.secondaryLabel) && (
                                     <span className="pb-1 text-[10px] font-black uppercase tracking-[0.22em] text-white/28">
                                         {activeFuturePresentation.familyLabel ?? activeFuturePresentation.secondaryLabel}
                                     </span>
@@ -188,19 +191,31 @@ export function ChordModeWorkspace({
                     </div>
 
                     <div className="border-y border-white/5 py-8 flex items-center justify-center relative overflow-hidden bg-white/[0.01]">
-                        <div ref={fretboardContainerRef} className="overflow-x-auto overflow-y-hidden custom-scrollbar relative w-full flex justify-center py-2">
-                            <Fretboard
-                                tuning={tuning}
-                                activeNotes={activeNotes}
-                                rootNote={rootNote}
-                                chordTones={chordTones}
-                                modifierNotes={modifierNotes}
-                                showChordTones={showChordTones}
-                                showIntervals={showIntervals}
-                                fingering={fingering}
-                                doubleStops={[]}
-                            />
-                        </div>
+                        {activeFutureCandidate && fingering ? (
+                            <div ref={fretboardContainerRef} className="overflow-x-auto overflow-y-hidden custom-scrollbar relative w-full flex justify-center py-2">
+                                <Fretboard
+                                    tuning={tuning}
+                                    activeNotes={activeNotes}
+                                    rootNote={rootNote}
+                                    chordTones={chordTones}
+                                    modifierNotes={modifierNotes}
+                                    showChordTones={showChordTones}
+                                    showIntervals={showIntervals}
+                                    fingering={fingering}
+                                    doubleStops={[]}
+                                />
+                            </div>
+                        ) : (
+                            <div className="w-full max-w-2xl rounded-[1.5rem] border border-white/5 bg-white/[0.03] px-6 py-10 text-center">
+                                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">Voicing State</span>
+                                <p className="mt-3 text-sm font-semibold text-white">
+                                    {chordWorkspaceEmptyMessage ?? 'No voicing candidate is available.'}
+                                </p>
+                                <p className="mt-2 text-xs text-white/55">
+                                    Adjust the chord, ranking mode, or filters to explore another engine-derived candidate.
+                                </p>
+                            </div>
+                        )}
                     </div>
 
                     <div className="px-6 py-5 flex flex-col gap-4">
@@ -319,7 +334,9 @@ export function ChordModeWorkspace({
                         </div>
                         {visibleFutureVoicingCandidates.length === 0 && (
                             <div className="rounded-[1.25rem] border border-white/5 bg-white/[0.02] px-4 py-4 text-sm text-white/55">
-                                No candidates match the current filters.
+                                {!hasEngineCandidates
+                                    ? 'No playable voicing candidates found for this chord yet.'
+                                    : 'No playable voicing candidates found for the current filters.'}
                             </div>
                         )}
                     </div>
@@ -399,23 +416,6 @@ export function ChordModeWorkspace({
                     </div>
                 </div>
             )}
-            <details className="rounded-[1.5rem] border border-white/5 bg-white/[0.02] overflow-hidden">
-                <summary className="cursor-pointer list-none px-5 py-4 flex items-center justify-between gap-4 text-white/70 hover:text-white transition-colors">
-                    <div className="flex flex-col gap-1">
-                        <span className="text-[9px] font-black uppercase tracking-[0.28em] text-white/30">Legacy Voicings</span>
-                        <span className="text-sm font-semibold">Open reference gallery</span>
-                    </div>
-                    <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/30">fallback / reference</span>
-                </summary>
-                <div className="px-5 pb-5 pt-2 border-t border-white/5">
-                    <ChordGallery
-                        availableVoicings={availableVoicings}
-                        selectedKey={selectedKey}
-                        voicingIndex={voicingIndex}
-                        onVoicingChange={onLegacyVoicingChange}
-                    />
-                </div>
-            </details>
         </div>
     );
 }
