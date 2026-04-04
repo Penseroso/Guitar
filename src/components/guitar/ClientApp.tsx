@@ -548,7 +548,6 @@ export default function ClientApp() {
                     mode={mode}
                     onModeChange={setMode}
 
-                    chordType={chordType}
                     chordPreviewTitle={chordPreviewTitle}
                     chordPreviewFormula={chordPreviewFormula}
                     chordPreviewPrimaryLabel={chordPreviewPrimaryLabel}
