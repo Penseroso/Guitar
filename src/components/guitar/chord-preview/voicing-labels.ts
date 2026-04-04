@@ -7,15 +7,15 @@ export interface VoicingPresentationMeta {
 
 function buildPrimaryLabel(template?: VoicingTemplate): string {
     if (template?.rootString !== undefined) {
-        return `${template.rootString + 1}번줄 루트`;
+        return `${template.rootString + 1}th-string root`;
     }
 
     const rootMatch = template?.label.match(/Root\s+(\d)/i);
     if (rootMatch) {
-        return `${rootMatch[1]}번줄 루트`;
+        return `${rootMatch[1]}th-string root`;
     }
 
-    return '루트 중심 보이싱';
+    return 'Rooted voicing';
 }
 
 function normalizeSecondaryLabel(rawSecondaryLabel: string): string {
@@ -25,7 +25,7 @@ function normalizeSecondaryLabel(rawSecondaryLabel: string): string {
     }
 
     if (/shape/i.test(normalized)) {
-        return normalized.replace(/\s*Shape/i, '-shape 계열');
+        return normalized.replace(/\s*Shape/i, '-shape family');
     }
 
     if (/^Drop\s+2$/i.test(normalized)) {

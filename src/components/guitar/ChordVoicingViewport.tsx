@@ -74,7 +74,7 @@ function renderViewportShell(
     return (
         <div className="rounded-[2rem] border border-white/5 bg-[#050505] p-6 flex flex-col gap-5">
             <div className="flex flex-col gap-2">
-                <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">코드 해석</span>
+                <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Chord Context</span>
                 <h3 className="text-2xl font-black tracking-tight text-white">{title}</h3>
                 <p className="max-w-3xl text-sm text-white/55">{description}</p>
             </div>
@@ -85,8 +85,8 @@ function renderViewportShell(
 
 function buildSelectionSummary(primaryLabel: string, rootFret?: number): string {
     return rootFret !== undefined
-        ? `${primaryLabel} · ${rootFret}프렛 포지션`
-        : `${primaryLabel} · 오픈 포지션`;
+        ? `${primaryLabel} · ${rootFret}fr position`
+        : `${primaryLabel} · Open position`;
 }
 
 export function ChordVoicingViewport({
@@ -164,9 +164,9 @@ export function ChordVoicingViewport({
     if (errorMessage) {
         return renderViewportShell(
             chordLabel,
-            '선택한 코드에서 바로 연주 가능한 보이싱을 고르지 못했습니다. 아래의 기존 보이싱 참고 영역은 계속 사용할 수 있습니다.',
+            'No playable voicing could be resolved for this chord. The legacy voicing gallery below is still available as fallback reference.',
             <div className="rounded-[1.5rem] border border-rose-500/20 bg-rose-500/10 px-4 py-4 text-sm text-rose-100">
-                <span className="font-black uppercase tracking-[0.2em] text-[10px] text-rose-200/80">보이싱 안내</span>
+                <span className="font-black uppercase tracking-[0.2em] text-[10px] text-rose-200/80">Voicing Status</span>
                 <p className="mt-2 text-rose-100/85">{errorMessage}</p>
             </div>
         );
@@ -175,9 +175,9 @@ export function ChordVoicingViewport({
     if (!selection.activeCandidate) {
         return renderViewportShell(
             chordLabel,
-            '이 코드에서는 아직 바로 보여줄 보이싱이 없습니다. 다른 키나 코드 타입을 선택하거나 아래의 기존 보이싱 참고 영역을 확인해 보세요.',
+            'No voicing candidates are available for this chord yet.',
             <div className="rounded-[1.5rem] border border-white/5 bg-white/[0.03] px-4 py-4 text-sm text-white/65">
-                보이싱 후보가 생기면 이 영역에 해석과 연결 정보가 다시 표시됩니다.
+                Try another key or chord type.
             </div>
         );
     }
@@ -186,24 +186,24 @@ export function ChordVoicingViewport({
     const activePresentation = getVoicingPresentationMeta(activeCandidate.voicing.template);
     const conciseReasons = getReasonPreview(activeCandidate.reasons, 3);
     const defaultSelectionLabel = selection.selectionSource === 'requested'
-        ? '직접 고른 보이싱'
+        ? 'Selected manually'
         : selection.selectionSource === 'first-playable'
-            ? '가장 바로 잡기 쉬운 보이싱으로 시작'
-            : '현재 조건에서 가장 자연스러운 기본 보이싱';
+            ? 'Default playable voicing'
+            : 'Default fallback voicing';
 
     return (
         <div className="rounded-[2rem] border border-white/5 bg-[#050505] p-6 flex flex-col gap-6">
             <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
                 <div className="flex flex-col gap-2">
-                    <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">연주 해석 프레임</span>
+                    <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Interpretation</span>
                     <div className="flex flex-wrap items-end gap-x-3 gap-y-2">
                         <h3 className="text-2xl font-black text-white tracking-tight">{chordLabel}</h3>
                         <span className="pb-1 text-[10px] font-black uppercase tracking-[0.3em] text-white/30">
-                            현재 보이싱 해석
+                            Current voicing
                         </span>
                     </div>
                     <p className="max-w-3xl text-sm text-white/55">
-                        루트 {harmonicInterpretation.chordRootNoteName}를 중심으로 현재 톤 센터 {harmonicInterpretation.tonicNoteName} 안에서 이 보이싱이 어떤 역할을 하는지 정리했습니다.
+                        Root {harmonicInterpretation.chordRootNoteName} against tonic {harmonicInterpretation.tonicNoteName}.
                     </p>
                 </div>
 
@@ -213,14 +213,14 @@ export function ChordVoicingViewport({
                             ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
                             : 'border-amber-500/30 bg-amber-500/10 text-amber-200'
                     }`}>
-                        {activeCandidate.voicing.playable ? '연주 가능' : '대체 보이싱'}
+                        {activeCandidate.voicing.playable ? 'Playable' : 'Alternate'}
                     </span>
                     <span className="px-3 py-1.5 rounded-full border border-cyan-300/20 bg-cyan-400/[0.05] text-[9px] font-black uppercase tracking-[0.25em] text-cyan-100/80">
                         {harmonicInterpretation.roleLabel}
                     </span>
                     {selection.selectionSource !== 'requested' && (
                         <span className="px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.04] text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
-                            추천
+                            Recommended
                         </span>
                     )}
                 </div>
@@ -230,7 +230,7 @@ export function ChordVoicingViewport({
                 <div className="rounded-[1.5rem] border border-white/5 bg-white/[0.02] p-4 flex flex-col gap-4">
                     <div className="flex items-start justify-between gap-3">
                         <div className="flex flex-col gap-1">
-                            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">현재 보이싱</span>
+                            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">Voicing</span>
                             <span className="text-sm font-black text-white">
                                 {buildSelectionSummary(activePresentation.primaryLabel, activeCandidate.voicing.rootFret)}
                             </span>
@@ -247,27 +247,27 @@ export function ChordVoicingViewport({
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div className="rounded-2xl border border-cyan-300/20 bg-cyan-400/[0.05] px-3 py-3">
-                            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-cyan-100/70">기능</span>
+                            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-cyan-100/70">Function</span>
                             <div className="mt-1 text-sm font-semibold text-cyan-50">{harmonicInterpretation.relativeDegree} · {harmonicInterpretation.roleLabel}</div>
                             <p className="mt-1 text-xs text-cyan-50/80">{harmonicInterpretation.summary}</p>
                         </div>
                         <div className="flex flex-col gap-1 rounded-2xl border border-white/5 bg-black/20 px-3 py-3">
-                            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">보이싱 정보</span>
+                            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">Voicing Details</span>
                             <span className="text-xs font-semibold text-white/75">
-                                {activePresentation.primaryLabel} · {activeCandidate.voicing.rootFret ?? 0}프렛 시작
+                                {activePresentation.primaryLabel} · {activeCandidate.voicing.rootFret ?? 0}fr start
                             </span>
                             <span className="text-xs text-white/55">
-                                프렛 간격 {activeCandidate.voicing.span}
+                                Span {activeCandidate.voicing.span}
                             </span>
                         </div>
-                        {renderDegreeList('빠진 필수 톤', activeCandidate.voicing.missingRequiredDegrees, '없음', 'danger')}
-                        {renderDegreeList('생략한 선택 톤', activeCandidate.voicing.omittedOptionalDegrees, '없음', 'warning')}
-                        {renderDegreeList('포함된 핵심 톤', activeCandidate.matchedRequiredDegrees, '없음')}
+                        {renderDegreeList('Missing required tones', activeCandidate.voicing.missingRequiredDegrees, 'None', 'danger')}
+                        {renderDegreeList('Optional omissions', activeCandidate.voicing.omittedOptionalDegrees, 'None', 'warning')}
+                        {renderDegreeList('Included tones', activeCandidate.matchedRequiredDegrees, 'None')}
                     </div>
                 </div>
 
                 <div className="rounded-[1.5rem] border border-white/5 bg-white/[0.02] p-4 flex flex-col gap-3">
-                    <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">추천 이유</span>
+                    <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">Selection Notes</span>
                     <div className="flex flex-col gap-2">
                         {conciseReasons.map((reason) => (
                             <div key={reason} className="text-xs text-white/70 border border-white/5 bg-black/20 rounded-xl px-3 py-2">
@@ -276,7 +276,7 @@ export function ChordVoicingViewport({
                         ))}
                         {conciseReasons.length === 0 && (
                             <div className="text-xs text-white/45 border border-white/5 bg-black/20 rounded-xl px-3 py-2">
-                                이 보이싱을 고른 기준이 아직 충분히 정리되지 않았습니다.
+                                No additional selection notes are available.
                             </div>
                         )}
                     </div>
