@@ -21,6 +21,7 @@ const REQUIRED_DEGREES_BY_ID: Partial<Record<ChordRegistryEntry['id'], string[]>
     'major-9': ['1', '3', '7', '9'],
     'minor-9': ['1', 'b3', 'b7', '9'],
     'dominant-9': ['1', '3', 'b7', '9'],
+    'dominant-11': ['1', '3', 'b7', '11'],
     // For 13 chords we keep the root important in P1, while 3/b7/13 define the function most strongly.
     'dominant-13': ['1', '3', 'b7', '13'],
     'hendrix-7-sharp-9': ['1', '3', 'b7', '#9'],

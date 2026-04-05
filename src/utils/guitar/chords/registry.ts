@@ -84,17 +84,17 @@ function createChordRegistryEntry(config: {
 }
 
 export const CHORD_FAMILIES: ChordFamilyDefinition[] = [
-    { id: 'triad', label: 'Triads', description: 'Core triadic chord structures and power-chord variants.' },
-    { id: 'seventh', label: '7th Chords', description: 'Primary seventh-chord colors used by the current app.' },
-    { id: 'extended', label: 'Extended', description: 'Ninth and thirteenth sonorities for richer color.' },
-    { id: 'altered', label: 'Altered & Suspended', description: 'Suspended and altered dominant structures.' },
+    { id: 'triad', label: 'Triads', description: 'Core triads, power chords, and suspended triads.' },
+    { id: 'seventh', label: '7th', description: 'Primary seventh-chord colors used by the current app.' },
+    { id: 'extended', label: 'Extended', description: 'Ninth, eleventh, and thirteenth sonorities.' },
+    { id: 'altered', label: 'Altered', description: 'Altered dominant structures.' },
 ];
 
 export const CHORD_REGISTRY_LIST: ChordRegistryEntry[] = [
     createChordRegistryEntry({
         id: 'major',
         symbol: '',
-        displayName: 'Major',
+        displayName: 'maj',
         family: 'triad',
         degrees: ['1', '3', '5'],
         intervals: [0, 4, 7],
@@ -107,7 +107,7 @@ export const CHORD_REGISTRY_LIST: ChordRegistryEntry[] = [
     createChordRegistryEntry({
         id: 'minor',
         symbol: 'm',
-        displayName: 'Minor',
+        displayName: 'm',
         family: 'triad',
         degrees: ['1', 'b3', '5'],
         intervals: [0, 3, 7],
@@ -120,7 +120,7 @@ export const CHORD_REGISTRY_LIST: ChordRegistryEntry[] = [
     createChordRegistryEntry({
         id: 'power-5',
         symbol: '5',
-        displayName: 'Power (5)',
+        displayName: '5',
         family: 'triad',
         degrees: ['1', '5'],
         intervals: [0, 7],
@@ -133,7 +133,7 @@ export const CHORD_REGISTRY_LIST: ChordRegistryEntry[] = [
     createChordRegistryEntry({
         id: 'major-7',
         symbol: 'maj7',
-        displayName: 'Major 7',
+        displayName: 'maj7',
         family: 'seventh',
         degrees: ['1', '3', '5', '7'],
         intervals: [0, 4, 7, 11],
@@ -146,7 +146,7 @@ export const CHORD_REGISTRY_LIST: ChordRegistryEntry[] = [
     createChordRegistryEntry({
         id: 'minor-7',
         symbol: 'm7',
-        displayName: 'Minor 7',
+        displayName: 'm7',
         family: 'seventh',
         degrees: ['1', 'b3', '5', 'b7'],
         intervals: [0, 3, 7, 10],
@@ -159,7 +159,7 @@ export const CHORD_REGISTRY_LIST: ChordRegistryEntry[] = [
     createChordRegistryEntry({
         id: 'dominant-7',
         symbol: '7',
-        displayName: 'Dominant 7',
+        displayName: '7',
         family: 'seventh',
         degrees: ['1', '3', '5', 'b7'],
         intervals: [0, 4, 7, 10],
@@ -172,7 +172,7 @@ export const CHORD_REGISTRY_LIST: ChordRegistryEntry[] = [
     createChordRegistryEntry({
         id: 'half-diminished-7',
         symbol: 'm7b5',
-        displayName: 'm7b5 (Half Dim)',
+        displayName: 'm7b5',
         family: 'seventh',
         degrees: ['1', 'b3', 'b5', 'b7'],
         intervals: [0, 3, 6, 10],
@@ -185,7 +185,7 @@ export const CHORD_REGISTRY_LIST: ChordRegistryEntry[] = [
     createChordRegistryEntry({
         id: 'diminished-7',
         symbol: 'dim7',
-        displayName: 'Diminished 7',
+        displayName: 'dim7',
         family: 'seventh',
         degrees: ['1', 'b3', 'b5', '6'],
         intervals: [0, 3, 6, 9],
@@ -198,7 +198,7 @@ export const CHORD_REGISTRY_LIST: ChordRegistryEntry[] = [
     createChordRegistryEntry({
         id: 'major-9',
         symbol: 'maj9',
-        displayName: 'Major 9',
+        displayName: 'maj9',
         family: 'extended',
         degrees: ['1', '3', '5', '7', '9'],
         intervals: [0, 4, 7, 11, 2],
@@ -212,7 +212,7 @@ export const CHORD_REGISTRY_LIST: ChordRegistryEntry[] = [
     createChordRegistryEntry({
         id: 'minor-9',
         symbol: 'm9',
-        displayName: 'Minor 9',
+        displayName: 'm9',
         family: 'extended',
         degrees: ['1', 'b3', '5', 'b7', '9'],
         intervals: [0, 3, 7, 10, 2],
@@ -226,7 +226,7 @@ export const CHORD_REGISTRY_LIST: ChordRegistryEntry[] = [
     createChordRegistryEntry({
         id: 'dominant-9',
         symbol: '9',
-        displayName: 'Dominant 9',
+        displayName: '9',
         family: 'extended',
         degrees: ['1', '3', '5', 'b7', '9'],
         intervals: [0, 4, 7, 10, 2],
@@ -234,6 +234,20 @@ export const CHORD_REGISTRY_LIST: ChordRegistryEntry[] = [
         aliases: ['dom9'],
         legacyType: 'Dominant 9',
         extensions: ['9'],
+        voicingHint: { rootStrings: [5, 4], tags: ['extended', 'dominant'] },
+        tags: ['extended', 'dominant'],
+    }),
+    createChordRegistryEntry({
+        id: 'dominant-11',
+        symbol: '11',
+        displayName: '11',
+        family: 'extended',
+        degrees: ['1', '3', '5', 'b7', '9', '11'],
+        intervals: [0, 4, 7, 10, 2, 5],
+        quality: 'dominant-eleventh',
+        aliases: ['dom11'],
+        legacyType: '11',
+        extensions: ['9', '11'],
         voicingHint: { rootStrings: [5, 4], tags: ['extended', 'dominant'] },
         tags: ['extended', 'dominant'],
     }),
@@ -253,7 +267,7 @@ export const CHORD_REGISTRY_LIST: ChordRegistryEntry[] = [
     createChordRegistryEntry({
         id: 'hendrix-7-sharp-9',
         symbol: '7#9',
-        displayName: '7#9 (Hendrix)',
+        displayName: '7#9',
         family: 'altered',
         degrees: ['1', '3', '5', 'b7', '#9'],
         intervals: [0, 4, 7, 10, 3],
@@ -281,26 +295,26 @@ export const CHORD_REGISTRY_LIST: ChordRegistryEntry[] = [
         id: 'sus4',
         symbol: 'sus4',
         displayName: 'sus4',
-        family: 'altered',
+        family: 'triad',
         degrees: ['1', '4', '5'],
         intervals: [0, 5, 7],
         quality: 'suspended-fourth',
         aliases: ['sus'],
         legacyType: 'sus4',
         voicingHint: { rootStrings: [5, 4, 3], tags: ['suspended'] },
-        tags: ['suspended'],
+        tags: ['triad', 'suspended'],
     }),
     createChordRegistryEntry({
         id: 'sus2',
         symbol: 'sus2',
         displayName: 'sus2',
-        family: 'altered',
+        family: 'triad',
         degrees: ['1', '2', '5'],
         intervals: [0, 2, 7],
         quality: 'suspended-second',
         legacyType: 'sus2',
         voicingHint: { rootStrings: [4, 3], tags: ['suspended'] },
-        tags: ['suspended'],
+        tags: ['triad', 'suspended'],
     }),
 ];
 

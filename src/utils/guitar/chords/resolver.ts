@@ -256,6 +256,7 @@ function resolveVoicingSeed(
         ? undefined
         : lowestPlayedNote?.pitchClass === requestedSlashBassPitchClass;
     const hasInvalidFrets = playedFrets.some((fret) => fret < 0);
+    const exceedsPlayableSpan = span >= 4;
     const violatesConstraintRange = (
         (constraints.minFret !== undefined && playedFrets.some((fret) => fret < constraints.minFret!)) ||
         (constraints.maxFret !== undefined && playedFrets.some((fret) => fret > constraints.maxFret!)) ||
@@ -301,6 +302,7 @@ function resolveVoicingSeed(
         span,
         playable: playedNotes.length > 0
             && !hasInvalidFrets
+            && !exceedsPlayableSpan
             && !violatesConstraintRange
             && outOfFormulaPitchClasses.length === 0,
         lowestPlayedPitchClass: lowestPlayedNote?.pitchClass,

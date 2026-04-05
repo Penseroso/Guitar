@@ -64,6 +64,30 @@ describe('voicing resolution', () => {
         expect(resolved.notes.filter((note) => !note.isMuted).some((note) => note.fret < 0)).toBe(true);
     });
 
+    it('marks span-4-and-wider grips as non-playable', () => {
+        const entry = resolveChordRegistryEntry('major-7');
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+        const resolved = resolveVoicingTemplate(chord, tones, {
+            id: 'wide-span',
+            label: 'wide span',
+            instrument: 'guitar',
+            rootString: 4,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: null },
+                { string: 1, fretOffset: 4, toneDegree: '5', isOptional: true },
+                { string: 2, fretOffset: 1, toneDegree: '7' },
+                { string: 3, fretOffset: 3, toneDegree: '3' },
+                { string: 4, fretOffset: 0, toneDegree: '1' },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 3 });
+
+        expect(resolved.span).toBe(4);
+        expect(resolved.playable).toBe(false);
+    });
+
     it('invalidates major-triad seeds that introduce a non-formula seventh regardless of provenance', () => {
         const entry = resolveChordRegistryEntry('major');
         const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
@@ -175,11 +199,21 @@ describe('voicing resolution', () => {
 
 describe('voicing ranking orchestration', () => {
     it('pushes playable major shapes above invalid legacy variants', () => {
-        const candidates = getRankedVoicingsForChord('major', 9);
+        const candidates = getRankedVoicingsForChord('major', 9, {
+            includeNonPlayableCandidates: true,
+        });
 
         expect(candidates[0].voicing.playable).toBe(true);
         expect(candidates.at(-1)?.voicing.playable).toBe(false);
         expect(candidates[0].score).toBeGreaterThan(candidates.at(-1)?.score ?? 0);
+    });
+
+    it('excludes non-playable span-4-and-wider candidates from the default surfaced pool', () => {
+        const candidates = getRankedVoicingsForChord('major-7', 0);
+
+        expect(candidates.length).toBeGreaterThan(0);
+        expect(candidates.every((candidate) => candidate.voicing.playable)).toBe(true);
+        expect(candidates.every((candidate) => candidate.voicing.span < 4)).toBe(true);
     });
 
     it('keeps surfaced major candidates formula-closed', () => {
@@ -319,12 +353,17 @@ describe('voicing ranking orchestration', () => {
             includeNonPlayableCandidates: false,
             maxCandidates: 12,
         });
+        const dominant11Candidates = getRankedVoicingsForChord('dominant-11', 0, {
+            includeNonPlayableCandidates: false,
+            maxCandidates: 12,
+        });
         const dominant9Candidates = getRankedVoicingsForChord('dominant-9', 0, {
             includeNonPlayableCandidates: false,
             maxCandidates: 12,
         });
 
         expect(major7Candidates.some((candidate) => candidate.voicing.notes.some((note) => !note.isMuted && note.pitchClass === 11))).toBe(true);
+        expect(dominant11Candidates.some((candidate) => candidate.voicing.notes.some((note) => !note.isMuted && note.degree === '11'))).toBe(true);
         expect(dominant9Candidates.some((candidate) => candidate.voicing.notes.some((note) => !note.isMuted && note.degree === '9'))).toBe(true);
     });
 

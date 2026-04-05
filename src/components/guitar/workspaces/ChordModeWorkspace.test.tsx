@@ -44,7 +44,11 @@ describe('ChordModeWorkspace', () => {
             <ChordModeWorkspace
                 chordType="major"
                 onChordTypeChange={() => {}}
-                chordSelectorOptions={[{ id: 'major', stateValue: 'major', label: 'major' }]}
+                chordSelectorGroups={[{
+                    id: 'triad',
+                    label: 'Triads',
+                    options: [{ id: 'major', stateValue: 'major', label: 'maj' }],
+                }]}
                 chordPreviewTitle="C"
                 activeFutureCandidate={candidate}
                 activeFuturePresentation={getVoicingPresentationMeta(candidate.voicing)}
@@ -96,7 +100,11 @@ describe('ChordModeWorkspace', () => {
             <ChordModeWorkspace
                 chordType="major"
                 onChordTypeChange={() => {}}
-                chordSelectorOptions={[{ id: 'major', stateValue: 'major', label: 'major' }]}
+                chordSelectorGroups={[{
+                    id: 'triad',
+                    label: 'Triads',
+                    options: [{ id: 'major', stateValue: 'major', label: 'maj' }],
+                }]}
                 chordPreviewTitle="C"
                 activeFutureCandidate={higherCandidate}
                 activeFuturePresentation={getVoicingPresentationMeta(higherCandidate.voicing)}
@@ -138,5 +146,75 @@ describe('ChordModeWorkspace', () => {
         );
 
         expect(markup.indexOf('3fr')).toBeLessThan(markup.indexOf('8fr'));
+    });
+
+    it('renders grouped compact selector sections on one screen', () => {
+        const candidate = buildWorkspaceCandidate();
+        const markup = renderToStaticMarkup(
+            <ChordModeWorkspace
+                chordType="dominant-11"
+                onChordTypeChange={() => {}}
+                chordSelectorGroups={[
+                    {
+                        id: 'triad',
+                        label: 'Triads',
+                        options: [
+                            { id: 'major', stateValue: 'major', label: 'maj' },
+                            { id: 'minor', stateValue: 'minor', label: 'm' },
+                        ],
+                    },
+                    {
+                        id: 'extended',
+                        label: 'Extended',
+                        options: [
+                            { id: 'dominant-9', stateValue: 'dominant-9', label: '9' },
+                            { id: 'dominant-11', stateValue: 'dominant-11', label: '11' },
+                            { id: 'dominant-13', stateValue: 'dominant-13', label: '13' },
+                        ],
+                    },
+                ]}
+                chordPreviewTitle="C11"
+                activeFutureCandidate={candidate}
+                activeFuturePresentation={getVoicingPresentationMeta(candidate.voicing)}
+                futureVoicingSelection={{
+                    activeCandidateId: candidate.voicing.id,
+                    selectionSource: 'requested',
+                }}
+                fretboardContainerRef={{ current: null }}
+                tuning={[4, 9, 2, 7, 11, 4]}
+                activeNotes={[]}
+                rootNote={0}
+                chordTones={[]}
+                modifierNotes={[]}
+                showChordTones={false}
+                showIntervals={false}
+                fingering={undefined}
+                futureVoicingCandidates={[candidate]}
+                onSelectFutureVoicing={() => {}}
+                activeFutureVoicingId={candidate.voicing.id}
+                activeSelectedScaleId={null}
+                onActiveVoicingChange={() => {}}
+                onScaleSelect={() => {}}
+                onPrepareProgressionHandoff={(_payload: ProgressionHandoffPayload) => {}}
+                selectedKey={0}
+                tonalContext={{
+                    selectedKey: 0,
+                    tonicPitchClass: 0,
+                    scaleGroup: 'Diatonic Modes',
+                    scaleName: 'Ionian',
+                }}
+                activePreparedChordWorkspaceHandoff={null}
+                activeStagedProgression={null}
+                activeDraftApplyMode="replace"
+                onSelectDraftApplyMode={() => {}}
+                onApplyPreparedChordWorkspaceHandoff={() => {}}
+                onOpenProgressionWorkspace={() => {}}
+                onClearPreparedChordWorkspaceHandoff={() => {}}
+            />
+        );
+
+        expect(markup).toContain('Triads');
+        expect(markup).toContain('Extended');
+        expect(markup).toContain('11');
     });
 });

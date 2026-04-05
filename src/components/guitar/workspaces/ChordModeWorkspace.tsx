@@ -14,10 +14,16 @@ interface ChordSelectorOption {
     label: string;
 }
 
+interface ChordSelectorGroup {
+    id: string;
+    label: string;
+    options: ChordSelectorOption[];
+}
+
 interface ChordModeWorkspaceProps {
     chordType: string;
     onChordTypeChange: (value: string) => void;
-    chordSelectorOptions: ChordSelectorOption[];
+    chordSelectorGroups: ChordSelectorGroup[];
     chordPreviewTitle: string;
     activeFutureCandidate?: VoicingCandidate | null;
     activeFuturePresentation: ReturnType<typeof getVoicingPresentationMeta>;
@@ -67,7 +73,7 @@ interface ChordModeWorkspaceProps {
 export function ChordModeWorkspace({
     chordType,
     onChordTypeChange,
-    chordSelectorOptions,
+    chordSelectorGroups,
     chordPreviewTitle,
     activeFutureCandidate,
     activeFuturePresentation,
@@ -127,24 +133,34 @@ export function ChordModeWorkspace({
             <div className="rounded-[2rem] border border-white/5 bg-[#050505] p-6 flex flex-col gap-6">
                 <div className="flex flex-col gap-2">
                     <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Chord Type</span>
-                    <div className="flex flex-wrap gap-1.5">
-                        {chordSelectorOptions.map((option) => {
-                            const isActive = chordType === option.stateValue;
+                    <div className="rounded-[1.5rem] border border-white/5 bg-white/[0.02] px-4 py-4">
+                        {chordSelectorGroups.map((group, index) => (
+                            <div
+                                key={group.id}
+                                className={`${index > 0 ? 'mt-4 border-t border-white/5 pt-4' : ''} flex flex-col gap-2`}
+                            >
+                                <span className="text-[9px] font-black uppercase tracking-[0.24em] text-white/32">{group.label}</span>
+                                <div className="flex flex-wrap gap-1.5">
+                                    {group.options.map((option) => {
+                                        const isActive = chordType === option.stateValue;
 
-                            return (
-                                <button
-                                    key={option.id}
-                                    onClick={() => onChordTypeChange(option.stateValue)}
-                                    className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold transition-all ${
-                                        isActive
-                                            ? 'border-cyan-200/45 bg-cyan-300/[0.1] text-cyan-50'
-                                            : 'border-white/10 bg-white/[0.02] text-white/65 hover:border-white/20 hover:text-white'
-                                    }`}
-                                >
-                                    {option.label}
-                                </button>
-                            );
-                        })}
+                                        return (
+                                            <button
+                                                key={option.id}
+                                                onClick={() => onChordTypeChange(option.stateValue)}
+                                                className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold leading-none transition-all ${
+                                                    isActive
+                                                        ? 'border-cyan-200/45 bg-cyan-300/[0.1] text-cyan-50'
+                                                        : 'border-white/10 bg-white/[0.02] text-white/65 hover:border-white/20 hover:text-white'
+                                                }`}
+                                            >
+                                                {option.label}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
 

@@ -77,9 +77,9 @@ export function getRankedVoicingsForChord(
         : resolveVoicingTemplatesAcrossPositions(chord, tones, templates, options);
     const surfacedResolvedVoicings = excludeFormulaInvalidVoicings(resolvedVoicings);
     const dedupedResolvedVoicings = dedupeResolvedVoicings(surfacedResolvedVoicings);
-    const filteredVoicings = options.includeNonPlayableCandidates === false
-        ? dedupedResolvedVoicings.filter((voicing) => voicing.playable)
-        : dedupedResolvedVoicings;
+    const filteredVoicings = options.includeNonPlayableCandidates === true
+        ? dedupedResolvedVoicings
+        : dedupedResolvedVoicings.filter((voicing) => voicing.playable);
     const ranked = rankVoicingCandidates(filteredVoicings, entry, tones, {
         mode: options.rankingMode ?? 'balanced',
     });

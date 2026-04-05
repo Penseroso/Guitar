@@ -61,6 +61,12 @@ describe('chord semantics direct classification', () => {
             'b7': { role: 'seventh', isRequired: true },
             '9': { role: 'extension', isRequired: true },
         });
+
+        expect(getToneSemantics('dominant-11')).toMatchObject({
+            '3': { role: 'third', isRequired: true },
+            'b7': { role: 'seventh', isRequired: true },
+            '11': { role: 'extension', isRequired: true },
+        });
     });
 
     it('treats the thirteenth as core for dominant-13 while leaving 5 and 9 optional', () => {
@@ -89,6 +95,7 @@ describe('registry and helper tone semantics parity', () => {
         'sus2',
         'sus4',
         'major-9',
+        'dominant-11',
         'dominant-13',
         'hendrix-7-sharp-9',
         'dominant-7-flat-9',
@@ -123,6 +130,7 @@ describe('formula-closure policy', () => {
     it('leaves seventh, extended, and altered families open to their declared formula tones', () => {
         expect(isFormulaClosedChordFamily(getChordRegistryEntryOrThrow('major-7'))).toBe(false);
         expect(isFormulaClosedChordFamily(getChordRegistryEntryOrThrow('dominant-9'))).toBe(false);
+        expect(isFormulaClosedChordFamily(getChordRegistryEntryOrThrow('dominant-11'))).toBe(false);
         expect(isFormulaClosedChordFamily(getChordRegistryEntryOrThrow('dominant-13'))).toBe(false);
         expect(isFormulaClosedChordFamily(getChordRegistryEntryOrThrow('hendrix-7-sharp-9'))).toBe(false);
     });

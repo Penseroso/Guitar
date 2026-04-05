@@ -6,11 +6,12 @@ import { resolveVoicingTemplate } from './resolver';
 
 describe('voicing descriptor derivation', () => {
     it('uses natural compact major and minor display language', () => {
-        expect(getChordTypeLabel('major')).toBe('major');
+        expect(getChordTypeLabel('major')).toBe('maj');
         expect(getChordTypeSuffix('major')).toBe('');
-        expect(getChordTypeLabel('minor')).toBe('minor');
+        expect(getChordTypeLabel('minor')).toBe('m');
         expect(getChordTypeSuffix('minor')).toBe('m');
         expect(getChordTypeLabel('major-7')).toBe('maj7');
+        expect(getChordTypeLabel('dominant-11')).toBe('11');
     });
 
     it('derives the same family and naming from structurally identical voicings across provenance', () => {

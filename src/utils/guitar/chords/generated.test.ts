@@ -11,17 +11,30 @@ describe('generated voicing candidates', () => {
         expect(templates.some((template) => template.id.includes(':generated:shell:'))).toBe(true);
     });
 
-    it('generated templates keep required tones for dominant thirteenth voicings', () => {
+    it('generated dominant thirteenth candidates retain required tones even when span rules invalidate them', () => {
         const candidates = getRankedVoicingsForChord('dominant-13', 0, {
+            includeLegacyCandidates: false,
+            includeNonPlayableCandidates: true,
+            maxCandidates: 12,
+        });
+        const generatedCandidate = candidates[0];
+
+        expect(generatedCandidate).toBeDefined();
+        expect(generatedCandidate?.voicing.missingRequiredDegrees).toEqual([]);
+        expect(generatedCandidate?.voicing.notes.some((note) => note.degree === '13')).toBe(true);
+    });
+
+    it('supports dominant eleventh through the generated engine path', () => {
+        const templates = getGeneratedVoicingTemplatesForChord('dominant-11');
+        const candidates = getRankedVoicingsForChord('dominant-11', 0, {
             includeLegacyCandidates: false,
             includeNonPlayableCandidates: false,
             maxCandidates: 12,
         });
-        const shellCandidate = candidates.find((candidate) => candidate.voicing.descriptor.family === 'shell');
 
-        expect(shellCandidate).toBeDefined();
-        expect(shellCandidate?.voicing.missingRequiredDegrees).toEqual([]);
-        expect(shellCandidate?.voicing.notes.some((note) => note.degree === '13')).toBe(true);
+        expect(templates.length).toBeGreaterThan(0);
+        expect(candidates.length).toBeGreaterThan(0);
+        expect(candidates.some((candidate) => candidate.voicing.notes.some((note) => note.degree === '11'))).toBe(true);
     });
 
     it('mixes generated candidates with legacy templates in the ranked result set', () => {

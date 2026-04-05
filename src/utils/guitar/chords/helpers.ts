@@ -113,14 +113,6 @@ export function getChordRegistryEntryFromLegacyTypeOrThrow(legacyType: string): 
 export function getChordTypeLabel(entryInput: string | ChordRegistryEntry): string {
     const entry = resolveChordRegistryEntry(entryInput);
 
-    if (entry.id === 'major') {
-        return 'major';
-    }
-
-    if (entry.id === 'minor') {
-        return 'minor';
-    }
-
     return entry.symbol || entry.displayName;
 }
 

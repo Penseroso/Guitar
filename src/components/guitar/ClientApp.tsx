@@ -5,6 +5,7 @@ import { Controls } from './Controls';
 import { useProgressionAudio } from '../../features/progression/hooks/useProgressionAudio';
 import { getProgressionPlaybackData } from '../../features/progression/utils/getProgressionPlaybackData';
 import {
+    CHORD_FAMILIES,
     CHORD_REGISTRY_LIST,
     getChordTypeLabel,
     getChordTypeSuffix,
@@ -39,37 +40,29 @@ import { ScaleModeWorkspace } from './workspaces/ScaleModeWorkspace';
 import { ChordModeWorkspace } from './workspaces/ChordModeWorkspace';
 import { ProgressionModeWorkspace } from './workspaces/ProgressionModeWorkspace';
 
-const CHORD_TYPE_PRIORITY = [
-    'major',
-    'minor',
-    'major-7',
-    'minor-7',
-    'dominant-7',
-    'sus2',
-    'sus4',
-    'major-9',
-    'minor-9',
-    'dominant-9',
-    'dominant-13',
-    'power-5',
-    'half-diminished-7',
-    'diminished-7',
-    'hendrix-7-sharp-9',
-    'dominant-7-flat-9',
-] as const;
+const CHORD_SELECTOR_ORDER_BY_FAMILY = {
+    triad: ['major', 'minor', 'power-5', 'sus2', 'sus4'],
+    seventh: ['major-7', 'minor-7', 'dominant-7', 'half-diminished-7', 'diminished-7'],
+    extended: ['major-9', 'minor-9', 'dominant-9', 'dominant-11', 'dominant-13'],
+    altered: ['hendrix-7-sharp-9', 'dominant-7-flat-9'],
+} as const;
 
-const CHORD_SELECTOR_OPTIONS = CHORD_TYPE_PRIORITY.map((id) => {
-    const entry = CHORD_REGISTRY_LIST.find((item) => item.id === id);
-    if (!entry) {
-        return null;
-    }
+const CHORD_SELECTOR_GROUPS = CHORD_FAMILIES.map((family) => {
+    const familyEntries = (CHORD_SELECTOR_ORDER_BY_FAMILY[family.id] ?? [])
+        .map((id) => CHORD_REGISTRY_LIST.find((item) => item.id === id))
+        .filter((entry): entry is NonNullable<typeof entry> => entry !== undefined)
+        .filter((entry) => entry.family === family.id);
 
     return {
-        id: entry.id,
-        stateValue: entry.id,
-        label: getChordTypeLabel(entry),
+        id: family.id,
+        label: family.label,
+        options: familyEntries.map((entry) => ({
+            id: entry.id,
+            stateValue: entry.id,
+            label: getChordTypeLabel(entry),
+        })),
     };
-}).filter((entry): entry is NonNullable<typeof entry> => entry !== null);
+}).filter((group) => group.options.length > 0);
 
 function buildResolvedVoicingFingering(voicing?: ResolvedVoicing): Fingering[] | undefined {
     if (!voicing) {
@@ -614,7 +607,7 @@ export default function ClientApp() {
                         <ChordModeWorkspace
                             chordType={chordType}
                             onChordTypeChange={setChordType}
-                            chordSelectorOptions={CHORD_SELECTOR_OPTIONS}
+                            chordSelectorGroups={CHORD_SELECTOR_GROUPS}
                             chordPreviewTitle={chordPreviewTitle}
                             activeFutureCandidate={activeFutureCandidate}
                             activeFuturePresentation={activeFuturePresentation}
