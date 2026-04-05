@@ -168,6 +168,15 @@ export default function ClientApp() {
         commitScaleSelection(previewScaleGroup, previewScaleName);
     }, [commitScaleSelection, previewScaleGroup, previewScaleName]);
 
+    const handleOpenScaleChordRecommendation = useCallback((payload: {
+        chordType: string;
+        rootPitchClass: number;
+    }) => {
+        setSelectedKey(payload.rootPitchClass);
+        setChordType(payload.chordType);
+        setMode('chord');
+    }, []);
+
     // --- Derived Data: Scales ---
     const activeScaleIntervals = useMemo(() => {
         return SCALES[effectiveScaleGroup]?.[effectiveScaleName] || SCALES['Diatonic Modes']['Ionian'];
@@ -531,6 +540,7 @@ export default function ClientApp() {
                             scaleIntervalLabels={scaleIntervalLabels}
                             fingering={fingering}
                             doubleStops={playableDoubleStops}
+                            onOpenChordRecommendation={handleOpenScaleChordRecommendation}
                         />
                     )}
 

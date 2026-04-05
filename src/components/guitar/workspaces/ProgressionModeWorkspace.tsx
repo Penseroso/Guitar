@@ -15,7 +15,7 @@ import { CSS } from '@dnd-kit/utilities';
 
 import { ProgressionInspector } from '../../../features/progression/components/ProgressionInspector';
 import type { ProgressionPlaybackData } from '../../../features/progression/utils/getProgressionPlaybackData';
-import { degreeToChordName, getChordFromDegree } from '../../../utils/guitar/logic';
+import { degreeToChordName, getChordFromDegree, getNoteName } from '../../../utils/guitar/logic';
 import type {
     ChordNode,
     HarmonicFunction,

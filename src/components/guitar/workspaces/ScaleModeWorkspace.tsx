@@ -7,6 +7,7 @@ import { RelatedScalesStrip } from '../scale-selector/RelatedScalesStrip';
 import { TogglePill } from '../../ui/design-system/TogglePill';
 import { SlidersHorizontal } from 'lucide-react';
 import type { HarmonicInterval, Fingering, PlayableDoubleStop } from '../../../utils/guitar/types';
+import { ScaleChordRecommendationsPanel } from '../scale-mode/ScaleChordRecommendationsPanel';
 
 interface ScaleModeWorkspaceProps {
     effectiveScaleGroup: string;
@@ -46,6 +47,10 @@ interface ScaleModeWorkspaceProps {
     scaleIntervalLabels: Partial<Record<number, string>>;
     fingering?: Fingering[];
     doubleStops: PlayableDoubleStop[];
+    onOpenChordRecommendation: (payload: {
+        chordType: string;
+        rootPitchClass: number;
+    }) => void;
 }
 
 export function ScaleModeWorkspace({
@@ -86,6 +91,7 @@ export function ScaleModeWorkspace({
     scaleIntervalLabels,
     fingering,
     doubleStops,
+    onOpenChordRecommendation,
 }: ScaleModeWorkspaceProps) {
     return (
         <div className="relative z-10 w-full flex flex-col gap-6">
@@ -193,6 +199,13 @@ export function ScaleModeWorkspace({
                     />
                 </div>
             </div>
+
+            <ScaleChordRecommendationsPanel
+                selectedKey={rootNote}
+                scaleGroup={effectiveScaleGroup}
+                scaleName={effectiveScaleName}
+                onOpenChordRecommendation={onOpenChordRecommendation}
+            />
         </div>
     );
 }
