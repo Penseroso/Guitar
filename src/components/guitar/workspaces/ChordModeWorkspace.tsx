@@ -4,7 +4,7 @@ import React from 'react';
 
 import { Fretboard } from '../../Fretboard';
 import { TogglePill } from '../../ui/design-system/TogglePill';
-import { ChordVoicingViewport } from '../ChordVoicingViewport';
+import { CompactVoicingDiagram } from '../chord-preview/CompactVoicingDiagram';
 import { type ProgressionHandoffPayload, type VoicingCandidate } from '../../../utils/guitar/chords';
 import type { Fingering } from '../../../utils/guitar/types';
 import { getVoicingPresentationMeta } from '../chord-preview/voicing-labels';
@@ -45,19 +45,6 @@ interface ChordModeWorkspaceProps {
     futureVoicingCandidates: VoicingCandidate[];
     onSelectFutureVoicing: (candidateId: string) => void;
     activeFutureVoicingId: string | null;
-    onActiveVoicingChange: (payload: {
-        activeCandidateId: string | null;
-        chordType: string;
-        selectedKey: number;
-    }) => void;
-    onPrepareProgressionHandoff: (payload: ProgressionHandoffPayload) => void;
-    selectedKey: number;
-    tonalContext: {
-        selectedKey: number;
-        tonicPitchClass?: number;
-        scaleGroup: string;
-        scaleName: string;
-    };
     activePreparedChordWorkspaceHandoff: ProgressionHandoffPayload | null;
     activeStagedProgression?: {
         applied?: boolean;
@@ -91,10 +78,6 @@ export function ChordModeWorkspace({
     futureVoicingCandidates,
     onSelectFutureVoicing,
     activeFutureVoicingId,
-    onActiveVoicingChange,
-    onPrepareProgressionHandoff,
-    selectedKey,
-    tonalContext,
     activePreparedChordWorkspaceHandoff,
     activeStagedProgression,
     activeDraftApplyMode,
@@ -103,6 +86,27 @@ export function ChordModeWorkspace({
     onOpenProgressionWorkspace,
     onClearPreparedChordWorkspaceHandoff,
 }: ChordModeWorkspaceProps) {
+    const getCandidateMetaLabel = React.useCallback((candidate: VoicingCandidate) => {
+        const segments: string[] = [];
+
+        if (candidate.voicing.rootFret !== undefined) {
+            segments.push(`${candidate.voicing.rootFret}fr`);
+        }
+
+        segments.push(`span ${candidate.voicing.span}`);
+
+        if (candidate.voicing.omittedOptionalDegrees && candidate.voicing.omittedOptionalDegrees.length > 0) {
+            const omitted = candidate.voicing.omittedOptionalDegrees.join(', ');
+            segments.push(
+                candidate.voicing.omittedOptionalDegrees.length > 1
+                    ? `omits ${omitted}`
+                    : `omit ${omitted}`
+            );
+        }
+
+        return segments.join(' · ');
+    }, []);
+
     const orderedFutureVoicingCandidates = React.useMemo(
         () => [...futureVoicingCandidates].sort((left, right) => {
             const leftPosition = left.voicing.minFret ?? left.voicing.rootFret ?? Number.MAX_SAFE_INTEGER;
@@ -247,30 +251,37 @@ export function ChordModeWorkspace({
                                     <button
                                         key={candidate.voicing.id}
                                         onClick={() => onSelectFutureVoicing(candidate.voicing.id)}
-                                        className={`text-left rounded-[1rem] border px-3.5 py-3 transition-all ${
+                                        className={`text-left rounded-[1rem] border px-3 py-3 transition-all ${
                                             isActive
-                                                ? 'border-white/30 bg-white/10'
+                                                ? 'border-cyan-100/35 bg-white/[0.08] shadow-[0_0_0_1px_rgba(186,230,253,0.08)]'
                                                 : 'border-white/5 bg-white/[0.02] hover:border-white/15 hover:bg-white/[0.04]'
                                         }`}
                                     >
-                                        <div className="flex items-start justify-between gap-3">
-                                            <div className="min-w-0 flex flex-col gap-1">
-                                                <span className="text-[13px] font-bold leading-tight text-white">{presentation.primaryLabel}</span>
-                                                {presentation.secondaryLabel && <span className="text-[10px] leading-tight text-white/55">{presentation.secondaryLabel}</span>}
-                                                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] text-white/38">
-                                                    <span>{candidate.voicing.rootFret ?? 0}fr</span>
-                                                    <span>span {candidate.voicing.span}</span>
-                                                    {candidate.voicing.omittedOptionalDegrees && candidate.voicing.omittedOptionalDegrees.length > 0 && (
-                                                        <span>omits {candidate.voicing.omittedOptionalDegrees.join(', ')}</span>
-                                                    )}
-                                                </div>
-                                            </div>
-                                            <div className="flex shrink-0 flex-col items-end gap-2">
+                                        <div className="flex h-full flex-col gap-3">
+                                            <div className="flex items-center justify-between gap-3">
+                                                <span className="text-[10px] font-black uppercase tracking-[0.18em] text-white/28">
+                                                    {candidate.voicing.rootFret !== undefined ? `${candidate.voicing.rootFret}fr` : 'Open'}
+                                                </span>
                                                 {isRecommended && (
                                                     <span className="rounded-full border border-emerald-400/25 bg-emerald-400/[0.08] px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.18em] text-emerald-200">
                                                         Recommended
                                                     </span>
                                                 )}
+                                            </div>
+                                            <div className="flex min-h-[10.5rem] items-center justify-center rounded-[0.9rem] border border-white/6 bg-[#070707] px-2 py-3">
+                                                <CompactVoicingDiagram
+                                                    voicing={candidate.voicing}
+                                                    labelMode={showIntervals ? 'degree' : 'note'}
+                                                />
+                                            </div>
+                                            <div className="min-w-0 flex flex-col gap-1">
+                                                <span className="text-[13px] font-bold leading-tight text-white">{presentation.primaryLabel}</span>
+                                                {presentation.secondaryLabel && (
+                                                    <span className="text-[10px] leading-tight text-white/52">{presentation.secondaryLabel}</span>
+                                                )}
+                                                <span className="text-[10px] leading-tight text-white/38">
+                                                    {getCandidateMetaLabel(candidate)}
+                                                </span>
                                             </div>
                                         </div>
                                     </button>
@@ -285,16 +296,6 @@ export function ChordModeWorkspace({
                     </div>
                 </div>
             </div>
-
-            <ChordVoicingViewport
-                chordType={chordType}
-                selectedKey={selectedKey}
-                candidates={futureVoicingCandidates}
-                activeCandidateId={activeFutureVoicingId}
-                onActiveVoicingChange={onActiveVoicingChange}
-                onPrepareProgressionHandoff={onPrepareProgressionHandoff}
-                tonalContext={tonalContext}
-            />
             {activePreparedChordWorkspaceHandoff && (
                 <div className="rounded-[1.5rem] border border-emerald-400/15 bg-emerald-400/[0.05] px-5 py-4 flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
                     <div className="flex flex-col gap-1">

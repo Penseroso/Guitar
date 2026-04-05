@@ -5,7 +5,6 @@ import { describe, expect, it } from 'vitest';
 import { buildChordDefinitionFromRegistryEntry, buildChordTonesFromRegistryEntry } from '../../../utils/guitar/chords';
 import { resolveVoicingTemplate } from '../../../utils/guitar/chords/resolver';
 import type { VoicingCandidate } from '../../../utils/guitar/chords/types';
-import type { ProgressionHandoffPayload } from '../../../utils/guitar/chords';
 import { getVoicingPresentationMeta } from '../chord-preview/voicing-labels';
 import { ChordModeWorkspace } from './ChordModeWorkspace';
 
@@ -69,15 +68,6 @@ describe('ChordModeWorkspace', () => {
                 futureVoicingCandidates={[candidate]}
                 onSelectFutureVoicing={() => {}}
                 activeFutureVoicingId={candidate.voicing.id}
-                onActiveVoicingChange={() => {}}
-                onPrepareProgressionHandoff={(_payload: ProgressionHandoffPayload) => {}}
-                selectedKey={0}
-                tonalContext={{
-                    selectedKey: 0,
-                    tonicPitchClass: 0,
-                    scaleGroup: 'Diatonic Modes',
-                    scaleName: 'Ionian',
-                }}
                 activePreparedChordWorkspaceHandoff={null}
                 activeStagedProgression={null}
                 activeDraftApplyMode="replace"
@@ -90,6 +80,7 @@ describe('ChordModeWorkspace', () => {
 
         expect(markup).not.toContain('Playable');
         expect(markup).toContain('Open');
+        expect(markup).not.toContain('Harmonic Context');
     });
 
     it('renders voicing choices in ascending fretboard position order', () => {
@@ -134,15 +125,6 @@ describe('ChordModeWorkspace', () => {
                 futureVoicingCandidates={[higherCandidate, lowerCandidate]}
                 onSelectFutureVoicing={() => {}}
                 activeFutureVoicingId={higherCandidate.voicing.id}
-                onActiveVoicingChange={() => {}}
-                onPrepareProgressionHandoff={(_payload: ProgressionHandoffPayload) => {}}
-                selectedKey={0}
-                tonalContext={{
-                    selectedKey: 0,
-                    tonicPitchClass: 0,
-                    scaleGroup: 'Diatonic Modes',
-                    scaleName: 'Ionian',
-                }}
                 activePreparedChordWorkspaceHandoff={null}
                 activeStagedProgression={null}
                 activeDraftApplyMode="replace"
@@ -201,15 +183,6 @@ describe('ChordModeWorkspace', () => {
                 futureVoicingCandidates={[candidate]}
                 onSelectFutureVoicing={() => {}}
                 activeFutureVoicingId={candidate.voicing.id}
-                onActiveVoicingChange={() => {}}
-                onPrepareProgressionHandoff={(_payload: ProgressionHandoffPayload) => {}}
-                selectedKey={0}
-                tonalContext={{
-                    selectedKey: 0,
-                    tonicPitchClass: 0,
-                    scaleGroup: 'Diatonic Modes',
-                    scaleName: 'Ionian',
-                }}
                 activePreparedChordWorkspaceHandoff={null}
                 activeStagedProgression={null}
                 activeDraftApplyMode="replace"
@@ -223,5 +196,50 @@ describe('ChordModeWorkspace', () => {
         expect(markup).toContain('Triads');
         expect(markup).toContain('Extended');
         expect(markup).toContain('11');
+    });
+
+    it('renders compact diagram previews in the voicing gallery', () => {
+        const candidate = buildWorkspaceCandidate();
+        const markup = renderToStaticMarkup(
+            <ChordModeWorkspace
+                chordType="major"
+                onChordTypeChange={() => {}}
+                chordSelectorGroups={[{
+                    id: 'triad',
+                    label: 'Triads',
+                    options: [{ id: 'major', stateValue: 'major', label: 'maj' }],
+                }]}
+                chordPreviewTitle="C"
+                activeFutureCandidate={candidate}
+                activeFuturePresentation={getVoicingPresentationMeta(candidate.voicing)}
+                futureVoicingSelection={{
+                    activeCandidateId: candidate.voicing.id,
+                    selectionSource: 'first-playable',
+                }}
+                fretboardContainerRef={{ current: null }}
+                tuning={[4, 9, 2, 7, 11, 4]}
+                activeNotes={[]}
+                rootNote={0}
+                chordTones={[]}
+                modifierNotes={[]}
+                showChordTones={false}
+                showIntervals={false}
+                onToggleIntervals={() => {}}
+                fingering={undefined}
+                futureVoicingCandidates={[candidate]}
+                onSelectFutureVoicing={() => {}}
+                activeFutureVoicingId={candidate.voicing.id}
+                activePreparedChordWorkspaceHandoff={null}
+                activeStagedProgression={null}
+                activeDraftApplyMode="replace"
+                onSelectDraftApplyMode={() => {}}
+                onApplyPreparedChordWorkspaceHandoff={() => {}}
+                onOpenProgressionWorkspace={() => {}}
+                onClearPreparedChordWorkspaceHandoff={() => {}}
+            />
+        );
+
+        expect(markup).toContain('diagram');
+        expect(markup).toContain('Recommended');
     });
 });

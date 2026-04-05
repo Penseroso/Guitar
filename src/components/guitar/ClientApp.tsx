@@ -11,7 +11,6 @@ import {
     getChordTypeSuffix,
     getRankedVoicingsForChord,
     resolveChordRegistryEntry,
-    type ProgressionHandoffPayload,
     type ResolvedVoicing,
 } from '../../utils/guitar/chords';
 import {
@@ -299,17 +298,6 @@ export default function ClientApp() {
         ? `${activeFutureCandidate.voicing.rootFret}fr position`
         : null;
 
-    const handleFutureVoicingChange = useCallback(({ activeCandidateId, chordType, selectedKey }: {
-        activeCandidateId: string | null;
-        chordType: string;
-        selectedKey: number;
-    }) => {
-        dispatchHarmonicWorkspace({
-            type: 'select-candidate',
-            scopeKey: `${chordType}::${selectedKey}`,
-            candidateId: activeCandidateId,
-        });
-    }, []);
     const handleSelectFutureVoicing = useCallback((candidateId: string) => {
         dispatchHarmonicWorkspace({
             type: 'select-candidate',
@@ -317,14 +305,6 @@ export default function ClientApp() {
             candidateId,
         });
     }, [futureVoicingScopeKey]);
-    const handlePrepareChordWorkspaceHandoff = useCallback((payload: ProgressionHandoffPayload) => {
-        dispatchHarmonicWorkspace({
-            type: 'prepare-handoff',
-            scopeKey: `${payload.chordType}::${payload.selectedKey}`,
-            tonalContext,
-            payload,
-        });
-    }, [tonalContext]);
     const handleSelectDraftApplyMode = useCallback((applyMode: ProgressionDraftApplyMode) => {
         dispatchHarmonicWorkspace({
             type: 'set-draft-apply-mode',
@@ -614,10 +594,6 @@ export default function ClientApp() {
                             futureVoicingCandidates={futureVoicingCandidates}
                             onSelectFutureVoicing={handleSelectFutureVoicing}
                             activeFutureVoicingId={activeFutureVoicingId}
-                            onActiveVoicingChange={handleFutureVoicingChange}
-                            onPrepareProgressionHandoff={handlePrepareChordWorkspaceHandoff}
-                            selectedKey={selectedKey}
-                            tonalContext={tonalContext}
                             activePreparedChordWorkspaceHandoff={activePreparedChordWorkspaceHandoff}
                             activeStagedProgression={activeStagedProgression}
                             activeDraftApplyMode={activeDraftApplyMode}
