@@ -64,6 +64,7 @@ describe('ChordModeWorkspace', () => {
                 modifierNotes={[]}
                 showChordTones={false}
                 showIntervals={false}
+                onToggleIntervals={() => {}}
                 fingering={undefined}
                 futureVoicingCandidates={[candidate]}
                 onSelectFutureVoicing={() => {}}
@@ -130,6 +131,7 @@ describe('ChordModeWorkspace', () => {
                 modifierNotes={[]}
                 showChordTones={false}
                 showIntervals={false}
+                onToggleIntervals={() => {}}
                 fingering={undefined}
                 futureVoicingCandidates={[higherCandidate, lowerCandidate]}
                 onSelectFutureVoicing={() => {}}
@@ -198,6 +200,7 @@ describe('ChordModeWorkspace', () => {
                 modifierNotes={[]}
                 showChordTones={false}
                 showIntervals={false}
+                onToggleIntervals={() => {}}
                 fingering={undefined}
                 futureVoicingCandidates={[candidate]}
                 onSelectFutureVoicing={() => {}}

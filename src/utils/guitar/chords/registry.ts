@@ -1,7 +1,7 @@
 import { ChordDefinition, ChordTones, GuitarStringIndex } from './types';
 import { buildNormalizedChordTonesForEntry } from './semantics';
 
-export type ChordFamilyId = 'triad' | 'seventh' | 'extended' | 'altered';
+export type ChordFamilyId = 'triad' | 'seventh' | 'extended';
 
 export interface ChordFamilyDefinition {
     id: ChordFamilyId;
@@ -86,8 +86,7 @@ function createChordRegistryEntry(config: {
 export const CHORD_FAMILIES: ChordFamilyDefinition[] = [
     { id: 'triad', label: 'Triads', description: 'Core triads, power chords, and suspended triads.' },
     { id: 'seventh', label: '7th', description: 'Primary seventh-chord colors used by the current app.' },
-    { id: 'extended', label: 'Extended', description: 'Ninth, eleventh, and thirteenth sonorities.' },
-    { id: 'altered', label: 'Altered', description: 'Altered dominant structures.' },
+    { id: 'extended', label: 'Extended', description: 'Ninth, eleventh, thirteenth, and altered dominant sonorities.' },
 ];
 
 export const CHORD_REGISTRY_LIST: ChordRegistryEntry[] = [
@@ -142,6 +141,19 @@ export const CHORD_REGISTRY_LIST: ChordRegistryEntry[] = [
         legacyType: 'Major 7',
         voicingHint: { rootStrings: [5, 4, 3], tags: ['drop-2', 'drop-3'] },
         tags: ['seventh'],
+    }),
+    createChordRegistryEntry({
+        id: 'major-6',
+        symbol: '6',
+        displayName: '6',
+        family: 'seventh',
+        degrees: ['1', '3', '5', '6'],
+        intervals: [0, 4, 7, 9],
+        quality: 'major-sixth',
+        aliases: ['maj6', 'M6'],
+        legacyType: 'Major 6',
+        voicingHint: { rootStrings: [5, 4, 3], tags: ['color-chord', 'rooted'] },
+        tags: ['seventh', 'color-chord'],
     }),
     createChordRegistryEntry({
         id: 'minor-7',
@@ -268,7 +280,7 @@ export const CHORD_REGISTRY_LIST: ChordRegistryEntry[] = [
         id: 'hendrix-7-sharp-9',
         symbol: '7#9',
         displayName: '7#9',
-        family: 'altered',
+        family: 'extended',
         degrees: ['1', '3', '5', 'b7', '#9'],
         intervals: [0, 4, 7, 10, 3],
         quality: 'altered-dominant',
@@ -282,7 +294,7 @@ export const CHORD_REGISTRY_LIST: ChordRegistryEntry[] = [
         id: 'dominant-7-flat-9',
         symbol: '7b9',
         displayName: '7b9',
-        family: 'altered',
+        family: 'extended',
         degrees: ['1', '3', '5', 'b7', 'b9'],
         intervals: [0, 4, 7, 10, 1],
         quality: 'altered-dominant',

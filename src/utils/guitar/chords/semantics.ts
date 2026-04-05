@@ -14,6 +14,7 @@ const REQUIRED_DEGREES_BY_ID: Partial<Record<ChordRegistryEntry['id'], string[]>
     minor: ['1', 'b3'],
     'power-5': ['1', '5'],
     'major-7': ['1', '3', '7'],
+    'major-6': ['1', '3', '6'],
     'minor-7': ['1', 'b3', 'b7'],
     'dominant-7': ['1', '3', 'b7'],
     'half-diminished-7': ['1', 'b3', 'b5', 'b7'],
@@ -32,6 +33,10 @@ const REQUIRED_DEGREES_BY_ID: Partial<Record<ChordRegistryEntry['id'], string[]>
 
 export function deriveChordToneRole(entry: ChordRegistryEntry, degree: string): ChordTone['role'] {
     if (degree === '1') return 'root';
+
+    if (entry.id === 'major-6' && degree === '6') {
+        return 'extension';
+    }
 
     if ((entry.id === 'sus2' || entry.id === 'sus4') && (degree === '2' || degree === '4')) {
         return 'suspension';

@@ -37,6 +37,21 @@ describe('generated voicing candidates', () => {
         expect(candidates.some((candidate) => candidate.voicing.notes.some((note) => note.degree === '11'))).toBe(true);
     });
 
+    it('surfaces playable major sixth candidates through the generated engine path', () => {
+        const templates = getGeneratedVoicingTemplatesForChord('major-6');
+        const candidates = getRankedVoicingsForChord('major-6', 0, {
+            includeLegacyCandidates: false,
+            includeNonPlayableCandidates: false,
+            maxCandidates: 12,
+        });
+
+        expect(templates.length).toBeGreaterThan(0);
+        expect(candidates.length).toBeGreaterThan(0);
+        expect(candidates[0].voicing.playable).toBe(true);
+        expect(candidates.some((candidate) => candidate.voicing.notes.some((note) => note.degree === '6'))).toBe(true);
+        expect(candidates.every((candidate) => candidate.missingRequiredDegrees.includes('6'))).toBe(false);
+    });
+
     it('mixes generated candidates with legacy templates in the ranked result set', () => {
         const candidates = getRankedVoicingsForChord('major-7', 0, {
             maxCandidates: 12,

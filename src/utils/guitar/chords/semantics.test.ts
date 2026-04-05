@@ -27,6 +27,15 @@ describe('chord semantics direct classification', () => {
         });
     });
 
+    it('treats major sixth as a core major color with 1, 3, and 6 required', () => {
+        expect(getToneSemantics('major-6')).toMatchObject({
+            '1': { role: 'root', isRequired: true },
+            '3': { role: 'third', isRequired: true },
+            '5': { role: 'fifth', isRequired: false },
+            '6': { role: 'extension', isRequired: true },
+        });
+    });
+
     it('classifies suspended chords correctly', () => {
         expect(getToneSemantics('sus2')).toMatchObject({
             '2': { role: 'suspension', isRequired: true },
@@ -94,6 +103,7 @@ describe('registry and helper tone semantics parity', () => {
         'power-5',
         'sus2',
         'sus4',
+        'major-6',
         'major-9',
         'dominant-11',
         'dominant-13',
@@ -129,6 +139,7 @@ describe('formula-closure policy', () => {
 
     it('leaves seventh, extended, and altered families open to their declared formula tones', () => {
         expect(isFormulaClosedChordFamily(getChordRegistryEntryOrThrow('major-7'))).toBe(false);
+        expect(isFormulaClosedChordFamily(getChordRegistryEntryOrThrow('major-6'))).toBe(false);
         expect(isFormulaClosedChordFamily(getChordRegistryEntryOrThrow('dominant-9'))).toBe(false);
         expect(isFormulaClosedChordFamily(getChordRegistryEntryOrThrow('dominant-11'))).toBe(false);
         expect(isFormulaClosedChordFamily(getChordRegistryEntryOrThrow('dominant-13'))).toBe(false);

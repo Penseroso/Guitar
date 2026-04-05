@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { NOTES } from '../../utils/guitar/theory';
 import { TabsRail } from '../ui/design-system/TabsRail';
 import { KeyButton } from '../ui/design-system/KeyButton';
-import { TogglePill } from '../ui/design-system/TogglePill';
 import { CircleOfFifths } from './CircleOfFifths';
 import { ProgressionModePanel } from './panels/ProgressionModePanel';
 import { ScaleSelectorPanel } from './panels/ScaleSelectorPanel';
@@ -19,8 +18,6 @@ interface ControlsProps {
     onScaleChange: (group: string, name: string) => void;
     showChordTones: boolean;
     onToggleChordTones: () => void;
-    showIntervals: boolean;
-    onToggleIntervals: () => void;
     isPentatonic: boolean;
     blueNote: boolean;
     onToggleBlueNote: () => void;
@@ -52,8 +49,6 @@ export const Controls: React.FC<ControlsProps> = ({
     selectedScaleGroup,
     selectedScaleName,
     onScaleChange,
-    showIntervals,
-    onToggleIntervals,
     mode,
     onModeChange,
     chordTypeLabel,
@@ -190,7 +185,7 @@ export const Controls: React.FC<ControlsProps> = ({
                                             {chordPreviewFormula.map((degree) => (
                                                 <span
                                                     key={degree}
-                                                    className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-white/70"
+                                                    className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-[10px] font-black tracking-[0.18em] text-white/70"
                                                 >
                                                     {degree}
                                                 </span>
@@ -214,13 +209,6 @@ export const Controls: React.FC<ControlsProps> = ({
                                     <div className="rounded-2xl border border-white/5 bg-white/[0.03] px-4 py-3 flex flex-col gap-3">
                                         <span className="text-[8px] font-black uppercase tracking-[0.28em] text-white/30">Chord Type</span>
                                         <span className="text-sm font-semibold text-white/75">{chordTypeLabel}</span>
-                                        <TogglePill
-                                            label={showIntervals ? 'Labels: Intervals' : 'Labels: Notes'}
-                                            isActive={showIntervals}
-                                            onToggle={onToggleIntervals}
-                                            hideDot={true}
-                                            className="p-3"
-                                        />
                                     </div>
                                 </div>
                             </div>

@@ -11,7 +11,19 @@ describe('voicing descriptor derivation', () => {
         expect(getChordTypeLabel('minor')).toBe('m');
         expect(getChordTypeSuffix('minor')).toBe('m');
         expect(getChordTypeLabel('major-7')).toBe('maj7');
+        expect(getChordTypeLabel('major-6')).toBe('6');
+        expect(getChordTypeSuffix('major-6')).toBe('6');
         expect(getChordTypeLabel('dominant-11')).toBe('11');
+    });
+
+    it('resolves major-6 from registry ids and aliases', () => {
+        expect(resolveChordRegistryEntry('major-6')).toMatchObject({
+            id: 'major-6',
+            symbol: '6',
+            family: 'seventh',
+        });
+        expect(resolveChordRegistryEntry('maj6').id).toBe('major-6');
+        expect(resolveChordRegistryEntry('M6').id).toBe('major-6');
     });
 
     it('derives the same family and naming from structurally identical voicings across provenance', () => {

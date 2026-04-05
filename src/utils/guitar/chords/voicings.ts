@@ -19,6 +19,8 @@ export interface GetRankedVoicingsOptions extends ResolveVoicingOptions {
     includeLegacyCandidates?: boolean;
 }
 
+const TOP_SET_TRIAD_IDS = new Set(['major', 'minor']);
+
 function getResolvedVoicingSignature(voicing: ResolvedVoicing): string {
     return voicing.notes
         .map((note) => `${note.string}:${note.isMuted ? 'x' : note.fret}`)
@@ -55,6 +57,40 @@ function excludeFormulaInvalidVoicings(voicings: ResolvedVoicing[]): ResolvedVoi
     return voicings.filter((voicing) => (voicing.outOfFormulaPitchClasses?.length ?? 0) === 0);
 }
 
+function getPlayedVoicingNotes(voicing: ResolvedVoicing) {
+    return voicing.notes.filter((note) => !note.isMuted);
+}
+
+function isStrictTopSetTriad(voicing: ResolvedVoicing): boolean {
+    if (!TOP_SET_TRIAD_IDS.has(voicing.chord.id)) {
+        return false;
+    }
+
+    const playedNotes = getPlayedVoicingNotes(voicing);
+    if (playedNotes.length !== 3) {
+        return false;
+    }
+
+    const playedStrings = playedNotes
+        .map((note) => note.string)
+        .sort((left, right) => left - right);
+    const playedDegrees = new Set(playedNotes.map((note) => note.degree));
+    const expectedThird = voicing.chord.id === 'minor' ? 'b3' : '3';
+
+    return playedStrings.join(',') === '0,1,2'
+        && playedDegrees.has('1')
+        && playedDegrees.has(expectedThird)
+        && playedDegrees.has('5');
+}
+
+export function shouldSurfaceChordModeVoicing(voicing: ResolvedVoicing): boolean {
+    if (!TOP_SET_TRIAD_IDS.has(voicing.chord.id)) {
+        return true;
+    }
+
+    return getPlayedVoicingNotes(voicing).length !== 3 || isStrictTopSetTriad(voicing);
+}
+
 export function getRankedVoicingsForChord(
     entryInput: string | ChordRegistryEntry,
     rootPitchClass: number,
@@ -75,7 +111,8 @@ export function getRankedVoicingsForChord(
     const resolvedVoicings = options.resolveAcrossPositions === false
         ? resolveVoicingTemplates(chord, tones, templates, options)
         : resolveVoicingTemplatesAcrossPositions(chord, tones, templates, options);
-    const surfacedResolvedVoicings = excludeFormulaInvalidVoicings(resolvedVoicings);
+    const surfacedResolvedVoicings = excludeFormulaInvalidVoicings(resolvedVoicings)
+        .filter((voicing) => shouldSurfaceChordModeVoicing(voicing));
     const dedupedResolvedVoicings = dedupeResolvedVoicings(surfacedResolvedVoicings);
     const filteredVoicings = options.includeNonPlayableCandidates === true
         ? dedupedResolvedVoicings

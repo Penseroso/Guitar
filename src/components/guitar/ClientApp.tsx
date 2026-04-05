@@ -42,9 +42,8 @@ import { ProgressionModeWorkspace } from './workspaces/ProgressionModeWorkspace'
 
 const CHORD_SELECTOR_ORDER_BY_FAMILY = {
     triad: ['major', 'minor', 'power-5', 'sus2', 'sus4'],
-    seventh: ['major-7', 'minor-7', 'dominant-7', 'half-diminished-7', 'diminished-7'],
-    extended: ['major-9', 'minor-9', 'dominant-9', 'dominant-11', 'dominant-13'],
-    altered: ['hendrix-7-sharp-9', 'dominant-7-flat-9'],
+    seventh: ['major-7', 'major-6', 'minor-7', 'dominant-7', 'half-diminished-7', 'diminished-7'],
+    extended: ['major-9', 'minor-9', 'dominant-9', 'dominant-11', 'dominant-13', 'hendrix-7-sharp-9', 'dominant-7-flat-9'],
 } as const;
 
 const CHORD_SELECTOR_GROUPS = CHORD_FAMILIES.map((family) => {
@@ -522,8 +521,6 @@ export default function ClientApp() {
                     onScaleChange={commitScaleSelection}
                     showChordTones={showChordTones}
                     onToggleChordTones={() => setShowChordTones(p => !p)}
-                    showIntervals={showIntervals}
-                    onToggleIntervals={() => setShowIntervals(p => !p)}
                     isPentatonic={isPentatonic}
                     blueNote={blueNote}
                     onToggleBlueNote={() => setBlueNote(p => !p)}
@@ -620,6 +617,7 @@ export default function ClientApp() {
                             modifierNotes={modifierNotes}
                             showChordTones={showChordTones}
                             showIntervals={showIntervals}
+                            onToggleIntervals={() => setShowIntervals((prev) => !prev)}
                             fingering={fingering}
                             futureVoicingCandidates={futureVoicingCandidates}
                             onSelectFutureVoicing={handleSelectFutureVoicing}

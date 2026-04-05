@@ -12,7 +12,7 @@ import {
     resolveVoicingTemplateAcrossPositions,
 } from './resolver';
 import { getVoicingTemplatesForChord } from './templates';
-import { getRankedVoicingsForChord } from './voicings';
+import { getRankedVoicingsForChord, shouldSurfaceChordModeVoicing } from './voicings';
 
 describe('voicing template adaptation', () => {
     it('adapts legacy major shapes into future-facing templates', () => {
@@ -257,6 +257,82 @@ describe('voicing ranking orchestration', () => {
         expect(powerCandidates.every((candidate) => candidate.voicing.notes
             .filter((note) => !note.isMuted)
             .every((note) => [0, 7].includes(note.pitchClass)))).toBe(true);
+    });
+
+    it('keeps major and minor three-note triads only when they are strict top-set shapes', () => {
+        const majorCandidates = getRankedVoicingsForChord('major', 0, {
+            includeNonPlayableCandidates: true,
+            maxCandidates: 20,
+        });
+        const minorCandidates = getRankedVoicingsForChord('minor', 9, {
+            includeNonPlayableCandidates: true,
+            maxCandidates: 20,
+        });
+
+        expect(majorCandidates
+            .filter((candidate) => candidate.voicing.descriptor.noteCount === 3)
+            .every((candidate) => candidate.voicing.descriptor.playedStrings.join(',') === '0,1,2')).toBe(true);
+        expect(minorCandidates
+            .filter((candidate) => candidate.voicing.descriptor.noteCount === 3)
+            .every((candidate) => candidate.voicing.descriptor.playedStrings.join(',') === '0,1,2')).toBe(true);
+    });
+
+    it('excludes non-top-set simple triad fragments while leaving other three-note chord families surfacable', () => {
+        const majorChord = buildChordDefinitionFromRegistryEntry('major', 0);
+        const majorTones = buildChordTonesFromRegistryEntry('major', 0);
+        const lowTriadFragment = resolveVoicingTemplate(majorChord, majorTones, {
+            id: 'low-triad-fragment',
+            label: 'low triad fragment',
+            instrument: 'guitar',
+            rootString: 5,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: null },
+                { string: 1, fretOffset: null },
+                { string: 2, fretOffset: null },
+                { string: 3, fretOffset: 0, toneDegree: '5' },
+                { string: 4, fretOffset: 0, toneDegree: '3' },
+                { string: 5, fretOffset: 0, toneDegree: '1' },
+            ],
+        }, { rootFret: 8 });
+        const topSetTriad = resolveVoicingTemplate(majorChord, majorTones, {
+            id: 'top-set-triad',
+            label: 'top set triad',
+            instrument: 'guitar',
+            rootString: 2,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: -2, toneDegree: '5' },
+                { string: 1, fretOffset: 0, toneDegree: '3' },
+                { string: 2, fretOffset: 0, toneDegree: '1' },
+                { string: 3, fretOffset: null },
+                { string: 4, fretOffset: null },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 5 });
+        const dominant7Chord = buildChordDefinitionFromRegistryEntry('dominant-7', 0);
+        const dominant7Tones = buildChordTonesFromRegistryEntry('dominant-7', 0);
+        const dominant7ThreeNoteVoicing = resolveVoicingTemplate(dominant7Chord, dominant7Tones, {
+            id: 'dominant-7-three-note',
+            label: 'dominant-7 three-note',
+            instrument: 'guitar',
+            rootString: 3,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: null },
+                { string: 1, fretOffset: 0, toneDegree: 'b7' },
+                { string: 2, fretOffset: 1, toneDegree: '3' },
+                { string: 3, fretOffset: 0, toneDegree: '1' },
+                { string: 4, fretOffset: null },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 3 });
+
+        expect(lowTriadFragment.descriptor.noteCount).toBe(3);
+        expect(lowTriadFragment.descriptor.playedStrings.join(',')).toBe('3,4,5');
+        expect(shouldSurfaceChordModeVoicing(lowTriadFragment)).toBe(false);
+        expect(shouldSurfaceChordModeVoicing(topSetTriad)).toBe(true);
+        expect(shouldSurfaceChordModeVoicing(dominant7ThreeNoteVoicing)).toBe(true);
     });
 
     it('penalizes major ninth voicings that miss the ninth', () => {
