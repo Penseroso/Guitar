@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import type { DragEndEvent } from '@dnd-kit/core';
 import { HarmonicFunction, ChordNode, ProgressionDocument } from '../utils/guitar/types';
 import { PROGRESSION_LIBRARY } from '../utils/guitar/theory';
@@ -236,7 +236,7 @@ export const useProgression = () => {
         setFocusedNodeId(firstNode?.id ?? null);
     };
 
-    const clearAllNodes = () => {
+    const clearAllNodes = useCallback(() => {
         setProgressionDoc({
             measures: [
                 { id: `m-0-${Date.now()}`, index: 0, timeSignature: [4, 4], nodes: [] },
@@ -246,7 +246,7 @@ export const useProgression = () => {
             ]
         });
         setFocusedNodeId(null);
-    };
+    }, []);
 
     return {
         progressionName,
