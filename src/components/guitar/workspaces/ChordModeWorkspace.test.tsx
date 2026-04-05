@@ -90,12 +90,22 @@ describe('ChordModeWorkspace', () => {
         );
 
         expect(markup).not.toContain('Playable');
-        expect(markup).toContain('Duplicated-root voicing');
+        expect(markup).toContain('Open');
     });
 
     it('renders voicing choices in ascending fretboard position order', () => {
         const higherCandidate = buildWorkspaceCandidate(8, 'workspace-high');
         const lowerCandidate = buildWorkspaceCandidate(3, 'workspace-low');
+        higherCandidate.voicing.descriptor.rootString = 4;
+        higherCandidate.voicing.descriptor.hasRoot = true;
+        higherCandidate.voicing.descriptor.inversion = 'root-position';
+        higherCandidate.voicing.minFret = 8;
+        lowerCandidate.voicing.descriptor.rootString = 4;
+        lowerCandidate.voicing.descriptor.hasRoot = true;
+        lowerCandidate.voicing.descriptor.inversion = 'root-position';
+        lowerCandidate.voicing.minFret = 0;
+        expect(getVoicingPresentationMeta(higherCandidate.voicing).primaryLabel).toBe('5th-string root');
+        expect(getVoicingPresentationMeta(lowerCandidate.voicing).primaryLabel).toBe('Open');
         const markup = renderToStaticMarkup(
             <ChordModeWorkspace
                 chordType="major"
@@ -145,7 +155,7 @@ describe('ChordModeWorkspace', () => {
             />
         );
 
-        expect(markup.indexOf('3fr')).toBeLessThan(markup.indexOf('8fr'));
+        expect(markup.indexOf('Open')).toBeLessThan(markup.lastIndexOf('5th-string root'));
     });
 
     it('renders grouped compact selector sections on one screen', () => {

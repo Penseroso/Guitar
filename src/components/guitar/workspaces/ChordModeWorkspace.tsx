@@ -173,9 +173,9 @@ export function ChordModeWorkspace({
                                 <span className="pb-1 text-[10px] font-black uppercase tracking-[0.28em] text-white/35">
                                     {activeFutureCandidate ? activeFuturePresentation.primaryLabel : 'No voicing available'}
                                 </span>
-                                {activeFutureCandidate && (activeFuturePresentation.familyLabel || activeFuturePresentation.secondaryLabel) && (
+                                {activeFutureCandidate && activeFuturePresentation.secondaryLabel && (
                                     <span className="pb-1 text-[10px] font-black uppercase tracking-[0.22em] text-white/28">
-                                        {[activeFuturePresentation.familyLabel, activeFuturePresentation.secondaryLabel].filter(Boolean).join(' · ')}
+                                        {activeFuturePresentation.secondaryLabel}
                                     </span>
                                 )}
                             </div>
@@ -231,7 +231,6 @@ export function ChordModeWorkspace({
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2.5">
                             {orderedFutureVoicingCandidates.map((candidate) => {
                                 const presentation = getVoicingPresentationMeta(candidate.voicing);
-                                const descriptorLine = [presentation.familyLabel, presentation.secondaryLabel].filter(Boolean).join(' · ');
                                 const isActive = candidate.voicing.id === activeFutureVoicingId;
                                 const isRecommended = futureVoicingSelection.selectionSource !== 'requested'
                                     && candidate.voicing.id === activeFutureVoicingId;
@@ -249,7 +248,7 @@ export function ChordModeWorkspace({
                                         <div className="flex items-start justify-between gap-3">
                                             <div className="min-w-0 flex flex-col gap-1">
                                                 <span className="text-[13px] font-bold leading-tight text-white">{presentation.primaryLabel}</span>
-                                                {descriptorLine && <span className="text-[10px] leading-tight text-white/55">{descriptorLine}</span>}
+                                                {presentation.secondaryLabel && <span className="text-[10px] leading-tight text-white/55">{presentation.secondaryLabel}</span>}
                                                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] text-white/38">
                                                     <span>{candidate.voicing.rootFret ?? 0}fr</span>
                                                     <span>span {candidate.voicing.span}</span>
