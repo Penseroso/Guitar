@@ -42,6 +42,13 @@ function getPitchClassSet(notes: ResolvedVoicingNote[]): PitchClass[] {
     ));
 }
 
+function getRootOccurrences(notes: ResolvedVoicingNote[], rootPitchClass: PitchClass): GuitarStringIndex[] {
+    return notes
+        .filter((note) => note.degree === '1' || note.pitchClass === rootPitchClass)
+        .map((note) => note.string)
+        .sort((left, right) => left - right) as GuitarStringIndex[];
+}
+
 function getPlayedStringSpan(playedStrings: GuitarStringIndex[]): number {
     if (playedStrings.length === 0) {
         return 0;
@@ -144,6 +151,7 @@ export function deriveVoicingDescriptor(args: {
     satisfiesSlashBass?: boolean;
 }): VoicingDescriptor {
     const playedNotes = args.notes.filter((note) => !note.isMuted);
+    const rootOccurrences = getRootOccurrences(playedNotes, args.rootPitchClass);
     const playedStrings = playedNotes
         .map((note) => note.string)
         .sort((left, right) => left - right) as GuitarStringIndex[];
@@ -165,7 +173,7 @@ export function deriveVoicingDescriptor(args: {
         .filter((degree) => !playedNotes.some((note) => note.degree === degree));
     const topVoice = [...playedNotes].sort((left, right) => (right.midiNote ?? 0) - (left.midiNote ?? 0))[0];
     const lowestVoice = [...playedNotes].sort((left, right) => (left.midiNote ?? 0) - (right.midiNote ?? 0))[0];
-    const hasRoot = playedNotes.some((note) => note.degree === '1' || note.pitchClass === args.rootPitchClass);
+    const hasRoot = rootOccurrences.length > 0;
     const registerBand = getRegisterBand(args.minFret, args.maxFret, playedStrings);
     const family = classifyVoicingFamily({
         noteCount: playedNotes.length,
@@ -190,9 +198,12 @@ export function deriveVoicingDescriptor(args: {
         slashBassPitchClass: args.slashBassPitchClass,
         playedStrings,
         noteCount: playedNotes.length,
-        rootString: hasRoot
-            ? (playedNotes.find((note) => note.degree === '1')?.string ?? args.rootString)
-            : args.rootString,
+        rootOccurrences,
+        rootOccurrenceCount: rootOccurrences.length,
+        lowestRootString: rootOccurrences[0],
+        highestRootString: rootOccurrences[rootOccurrences.length - 1],
+        hasDuplicatedRoot: rootOccurrences.length > 1,
+        rootString: rootOccurrences[0] ?? args.rootString,
         lowestPlayedString: lowestVoice?.string,
         highestPlayedString: topVoice?.string,
         lowestPlayedPitchClass: args.lowestPlayedPitchClass,
@@ -233,6 +244,22 @@ function getNoteCountLabel(noteCount: number): string {
     return `${noteCount}-note`;
 }
 
+function getRootDistributionLabel(descriptor: VoicingDescriptor): string | null {
+    if (descriptor.rootOccurrenceCount === 0) {
+        return null;
+    }
+
+    if (descriptor.hasDuplicatedRoot) {
+        return `${descriptor.rootOccurrenceCount} roots`;
+    }
+
+    if (descriptor.rootString !== undefined) {
+        return getRootStringLabel(descriptor.rootString);
+    }
+
+    return null;
+}
+
 export function getVoicingProvenanceLabel(provenance: VoicingProvenance): string {
     switch (provenance.sourceKind) {
         case 'legacy-import':
@@ -257,8 +284,8 @@ export function getVoicingDisplayName(descriptor: VoicingDescriptor): string {
         return 'Upper-register voicing';
     }
 
-    if (descriptor.rootString !== undefined) {
-        return getRootStringLabel(descriptor.rootString);
+    if (descriptor.hasDuplicatedRoot) {
+        return 'Duplicated-root voicing';
     }
 
     return `${getNoteCountLabel(descriptor.noteCount)} voicing`;
@@ -269,9 +296,12 @@ export function getVoicingDisplaySubtitle(descriptor: VoicingDescriptor): string
 
     parts.push(getNoteCountLabel(descriptor.noteCount));
 
-    if (descriptor.family === 'upper-register' && descriptor.rootString !== undefined) {
-        parts.push(getRootStringLabel(descriptor.rootString));
-    } else if (descriptor.registerBand !== 'mid') {
+    const rootDistributionLabel = getRootDistributionLabel(descriptor);
+    if (rootDistributionLabel) {
+        parts.push(rootDistributionLabel);
+    }
+
+    if (descriptor.registerBand !== 'mid' && descriptor.family !== 'upper-register') {
         parts.push(`${getVoicingRegisterLabel(descriptor.registerBand).toLowerCase()} register`);
     }
 

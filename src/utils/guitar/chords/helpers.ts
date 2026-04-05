@@ -114,7 +114,21 @@ export function getChordTypeLabel(entryInput: string | ChordRegistryEntry): stri
     const entry = resolveChordRegistryEntry(entryInput);
 
     if (entry.id === 'major') {
-        return 'maj';
+        return 'major';
+    }
+
+    if (entry.id === 'minor') {
+        return 'minor';
+    }
+
+    return entry.symbol || entry.displayName;
+}
+
+export function getChordTypeSuffix(entryInput: string | ChordRegistryEntry): string {
+    const entry = resolveChordRegistryEntry(entryInput);
+
+    if (entry.id === 'major') {
+        return '';
     }
 
     return entry.symbol || entry.displayName;

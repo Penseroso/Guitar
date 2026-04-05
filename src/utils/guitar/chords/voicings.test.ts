@@ -213,6 +213,18 @@ describe('voicing ranking orchestration', () => {
             .every((note) => [0, 5, 7].includes(note.pitchClass)))).toBe(true);
     });
 
+    it('keeps surfaced power chords formula-closed to root and fifth only', () => {
+        const powerCandidates = getRankedVoicingsForChord('power-5', 0, {
+            includeNonPlayableCandidates: true,
+            maxCandidates: 20,
+        });
+
+        expect(powerCandidates.length).toBeGreaterThan(0);
+        expect(powerCandidates.every((candidate) => candidate.voicing.notes
+            .filter((note) => !note.isMuted)
+            .every((note) => [0, 7].includes(note.pitchClass)))).toBe(true);
+    });
+
     it('penalizes major ninth voicings that miss the ninth', () => {
         const entry = resolveChordRegistryEntry('major-9');
         const chord = buildChordDefinitionFromRegistryEntry(entry, 0);

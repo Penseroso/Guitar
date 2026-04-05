@@ -54,6 +54,7 @@ export {
     getOptionalChordTones,
     getChordRegistryEntryFromLegacyTypeOrThrow,
     getChordTypeLabel,
+    getChordTypeSuffix,
 } from './helpers';
 
 export {

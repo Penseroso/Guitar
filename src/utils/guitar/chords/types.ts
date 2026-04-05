@@ -60,6 +60,11 @@ export interface VoicingDescriptor {
     slashBassPitchClass?: PitchClass;
     playedStrings: GuitarStringIndex[];
     noteCount: number;
+    rootOccurrences: GuitarStringIndex[];
+    rootOccurrenceCount: number;
+    lowestRootString?: GuitarStringIndex;
+    highestRootString?: GuitarStringIndex;
+    hasDuplicatedRoot: boolean;
     rootString?: GuitarStringIndex;
     lowestPlayedString?: GuitarStringIndex;
     highestPlayedString?: GuitarStringIndex;

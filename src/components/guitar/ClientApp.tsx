@@ -7,6 +7,7 @@ import { getProgressionPlaybackData } from '../../features/progression/utils/get
 import {
     CHORD_REGISTRY_LIST,
     getChordTypeLabel,
+    getChordTypeSuffix,
     getRankedVoicingsForChord,
     resolveChordRegistryEntry,
     type ProgressionHandoffPayload,
@@ -297,7 +298,7 @@ export default function ClientApp() {
             return `${root} ${chordType}`;
         }
 
-        return `${root}${getChordTypeLabel(currentChordEntry)}`;
+        return `${root}${getChordTypeSuffix(currentChordEntry)}`;
     }, [chordType, currentChordEntry, selectedKey]);
     const chordTypeLabel = currentChordEntry
         ? getChordTypeLabel(currentChordEntry)

@@ -1,10 +1,18 @@
 import { describe, expect, it } from 'vitest';
 
 import { getVoicingDisplayName, getVoicingDisplaySubtitle } from './descriptor';
-import { buildChordDefinitionFromRegistryEntry, buildChordTonesFromRegistryEntry, resolveChordRegistryEntry } from './helpers';
+import { buildChordDefinitionFromRegistryEntry, buildChordTonesFromRegistryEntry, getChordTypeLabel, getChordTypeSuffix, resolveChordRegistryEntry } from './helpers';
 import { resolveVoicingTemplate } from './resolver';
 
 describe('voicing descriptor derivation', () => {
+    it('uses natural compact major and minor display language', () => {
+        expect(getChordTypeLabel('major')).toBe('major');
+        expect(getChordTypeSuffix('major')).toBe('');
+        expect(getChordTypeLabel('minor')).toBe('minor');
+        expect(getChordTypeSuffix('minor')).toBe('m');
+        expect(getChordTypeLabel('major-7')).toBe('maj7');
+    });
+
     it('derives the same family and naming from structurally identical voicings across provenance', () => {
         const entry = resolveChordRegistryEntry('major-7');
         const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
@@ -39,8 +47,8 @@ describe('voicing descriptor derivation', () => {
         expect(legacyImported.descriptor.family).toBe(generated.descriptor.family);
         expect(getVoicingDisplayName(legacyImported.descriptor)).toBe(getVoicingDisplayName(generated.descriptor));
         expect(getVoicingDisplaySubtitle(legacyImported.descriptor)).toBe(getVoicingDisplaySubtitle(generated.descriptor));
-        expect(getVoicingDisplayName(legacyImported.descriptor)).toBe('5th-string root');
-        expect(getVoicingDisplaySubtitle(legacyImported.descriptor)).toBe('4-note · low register');
+        expect(getVoicingDisplayName(legacyImported.descriptor)).toBe('4-note voicing');
+        expect(getVoicingDisplaySubtitle(legacyImported.descriptor)).toBe('4-note · 5th-string root · low register');
         expect(legacyImported).not.toHaveProperty('template');
         expect(legacyImported).not.toHaveProperty('provenance');
         expect(legacyImported.descriptor.provenance.sourceKind).toBe('legacy-import');
@@ -68,8 +76,8 @@ describe('voicing descriptor derivation', () => {
         }, { rootFret: 3 });
 
         expect(voicing.descriptor.family).toBe('shell');
-        expect(getVoicingDisplayName(voicing.descriptor)).toBe('5th-string root');
-        expect(getVoicingDisplaySubtitle(voicing.descriptor)).toBe('3-note · low register');
+        expect(getVoicingDisplayName(voicing.descriptor)).toBe('3-note voicing');
+        expect(getVoicingDisplaySubtitle(voicing.descriptor)).toBe('3-note · 5th-string root · low register');
     });
 
     it('distinguishes compact from close when the grip widens without becoming spread', () => {
@@ -209,6 +217,36 @@ describe('voicing descriptor derivation', () => {
 
         expect(voicing.descriptor.inversion).toBe('slash-bass');
         expect(getVoicingDisplayName(voicing.descriptor)).toBe('Slash-bass voicing');
-        expect(getVoicingDisplaySubtitle(voicing.descriptor)).toBe('6-note · low register');
+        expect(getVoicingDisplaySubtitle(voicing.descriptor)).toBe('6-note · 2 roots · low register');
+    });
+
+    it('captures root distribution explicitly and normalizes compatibility rootString to the lowest root string', () => {
+        const entry = resolveChordRegistryEntry('major');
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+        const voicing = resolveVoicingTemplate(chord, tones, {
+            id: 'root-duplication',
+            label: 'spread roots',
+            instrument: 'guitar',
+            rootString: 5,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: -3, toneDegree: '3' },
+                { string: 1, fretOffset: -2, toneDegree: '1' },
+                { string: 2, fretOffset: 0, toneDegree: '5' },
+                { string: 3, fretOffset: -2, toneDegree: '1' },
+                { string: 4, fretOffset: null },
+                { string: 5, fretOffset: 0, toneDegree: '1' },
+            ],
+        }, { rootFret: 3 });
+
+        expect(voicing.descriptor.rootOccurrences).toEqual([1, 3]);
+        expect(voicing.descriptor.rootOccurrenceCount).toBe(2);
+        expect(voicing.descriptor.lowestRootString).toBe(1);
+        expect(voicing.descriptor.highestRootString).toBe(3);
+        expect(voicing.descriptor.hasDuplicatedRoot).toBe(true);
+        expect(voicing.descriptor.rootString).toBe(1);
+        expect(getVoicingDisplayName(voicing.descriptor)).toBe('Duplicated-root voicing');
+        expect(getVoicingDisplaySubtitle(voicing.descriptor)).toBe('5-note · 2 roots · low register · inversion');
     });
 });

@@ -98,6 +98,23 @@ export function ChordModeWorkspace({
     onOpenProgressionWorkspace,
     onClearPreparedChordWorkspaceHandoff,
 }: ChordModeWorkspaceProps) {
+    const orderedFutureVoicingCandidates = React.useMemo(
+        () => [...futureVoicingCandidates].sort((left, right) => {
+            const leftPosition = left.voicing.minFret ?? left.voicing.rootFret ?? Number.MAX_SAFE_INTEGER;
+            const rightPosition = right.voicing.minFret ?? right.voicing.rootFret ?? Number.MAX_SAFE_INTEGER;
+
+            if (leftPosition !== rightPosition) {
+                return leftPosition - rightPosition;
+            }
+
+            if ((left.voicing.rootFret ?? Number.MAX_SAFE_INTEGER) !== (right.voicing.rootFret ?? Number.MAX_SAFE_INTEGER)) {
+                return (left.voicing.rootFret ?? Number.MAX_SAFE_INTEGER) - (right.voicing.rootFret ?? Number.MAX_SAFE_INTEGER);
+            }
+
+            return right.score - left.score;
+        }),
+        [futureVoicingCandidates]
+    );
     const hasEngineCandidates = futureVoicingCandidates.length > 0;
     const chordWorkspaceEmptyMessage = !hasEngineCandidates
         ? 'No playable voicing candidates found for this chord yet.'
@@ -118,7 +135,7 @@ export function ChordModeWorkspace({
                                 <button
                                     key={option.id}
                                     onClick={() => onChordTypeChange(option.stateValue)}
-                                    className={`rounded-full border px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.14em] transition-all ${
+                                    className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold transition-all ${
                                         isActive
                                             ? 'border-cyan-200/45 bg-cyan-300/[0.1] text-cyan-50'
                                             : 'border-white/10 bg-white/[0.02] text-white/65 hover:border-white/20 hover:text-white'
@@ -142,7 +159,7 @@ export function ChordModeWorkspace({
                                 </span>
                                 {activeFutureCandidate && (activeFuturePresentation.familyLabel || activeFuturePresentation.secondaryLabel) && (
                                     <span className="pb-1 text-[10px] font-black uppercase tracking-[0.22em] text-white/28">
-                                        {activeFuturePresentation.familyLabel ?? activeFuturePresentation.secondaryLabel}
+                                        {[activeFuturePresentation.familyLabel, activeFuturePresentation.secondaryLabel].filter(Boolean).join(' · ')}
                                     </span>
                                 )}
                             </div>
@@ -152,15 +169,6 @@ export function ChordModeWorkspace({
                             {futureVoicingSelection.selectionSource !== 'requested' && activeFutureCandidate && (
                                 <span className="px-3 py-1.5 rounded-full border border-emerald-400/25 bg-emerald-400/[0.08] text-[9px] font-black uppercase tracking-[0.25em] text-emerald-200">
                                     Recommended
-                                </span>
-                            )}
-                            {activeFutureCandidate && (
-                                <span className={`px-3 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-[0.25em] ${
-                                    activeFutureCandidate.voicing.playable
-                                        ? 'border-cyan-300/20 bg-cyan-400/[0.05] text-cyan-100/80'
-                                        : 'border-amber-500/30 bg-amber-500/10 text-amber-200'
-                                }`}>
-                                    {activeFutureCandidate.voicing.playable ? 'Playable' : 'Alternate'}
                                 </span>
                             )}
                         </div>
@@ -200,13 +208,14 @@ export function ChordModeWorkspace({
                                 <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Voicing</span>
                             </div>
                             <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/25">
-                                {futureVoicingCandidates.length} choices
+                                {orderedFutureVoicingCandidates.length} choices
                             </span>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
-                            {futureVoicingCandidates.map((candidate) => {
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2.5">
+                            {orderedFutureVoicingCandidates.map((candidate) => {
                                 const presentation = getVoicingPresentationMeta(candidate.voicing);
+                                const descriptorLine = [presentation.familyLabel, presentation.secondaryLabel].filter(Boolean).join(' · ');
                                 const isActive = candidate.voicing.id === activeFutureVoicingId;
                                 const isRecommended = futureVoicingSelection.selectionSource !== 'requested'
                                     && candidate.voicing.id === activeFutureVoicingId;
@@ -215,30 +224,25 @@ export function ChordModeWorkspace({
                                     <button
                                         key={candidate.voicing.id}
                                         onClick={() => onSelectFutureVoicing(candidate.voicing.id)}
-                                        className={`text-left rounded-[1.25rem] border p-4 transition-all ${
+                                        className={`text-left rounded-[1rem] border px-3.5 py-3 transition-all ${
                                             isActive
                                                 ? 'border-white/30 bg-white/10'
                                                 : 'border-white/5 bg-white/[0.02] hover:border-white/15 hover:bg-white/[0.04]'
                                         }`}
                                     >
                                         <div className="flex items-start justify-between gap-3">
-                                            <div className="flex flex-col gap-1">
-                                                <span className="text-sm font-black text-white">{presentation.primaryLabel}</span>
-                                                {(presentation.familyLabel || presentation.secondaryLabel) && (
-                                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/35">
-                                                        {presentation.familyLabel ?? presentation.secondaryLabel}
-                                                    </span>
-                                                )}
-                                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/28">
-                                                    {candidate.voicing.rootFret ?? 0}fr · {candidate.voicing.playable ? 'Playable' : 'Alternate'}
-                                                </span>
-                                                {candidate.voicing.omittedOptionalDegrees && candidate.voicing.omittedOptionalDegrees.length > 0 && (
-                                                    <span className="text-[10px] text-white/45">
-                                                        Omits {candidate.voicing.omittedOptionalDegrees.join(', ')}
-                                                    </span>
-                                                )}
+                                            <div className="min-w-0 flex flex-col gap-1">
+                                                <span className="text-[13px] font-bold leading-tight text-white">{presentation.primaryLabel}</span>
+                                                {descriptorLine && <span className="text-[10px] leading-tight text-white/55">{descriptorLine}</span>}
+                                                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] text-white/38">
+                                                    <span>{candidate.voicing.rootFret ?? 0}fr</span>
+                                                    <span>span {candidate.voicing.span}</span>
+                                                    {candidate.voicing.omittedOptionalDegrees && candidate.voicing.omittedOptionalDegrees.length > 0 && (
+                                                        <span>omits {candidate.voicing.omittedOptionalDegrees.join(', ')}</span>
+                                                    )}
+                                                </div>
                                             </div>
-                                            <div className="flex flex-col items-end gap-2">
+                                            <div className="flex shrink-0 flex-col items-end gap-2">
                                                 {isRecommended && (
                                                     <span className="rounded-full border border-emerald-400/25 bg-emerald-400/[0.08] px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.18em] text-emerald-200">
                                                         Recommended
@@ -250,7 +254,7 @@ export function ChordModeWorkspace({
                                 );
                             })}
                         </div>
-                        {futureVoicingCandidates.length === 0 && (
+                        {orderedFutureVoicingCandidates.length === 0 && (
                             <div className="rounded-[1.25rem] border border-white/5 bg-white/[0.02] px-4 py-4 text-sm text-white/55">
                                 No playable voicing candidates found for this chord yet.
                             </div>

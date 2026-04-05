@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { getNoteName } from '../../utils/guitar/logic';
 import {
-    getChordTypeLabel,
+    getChordTypeSuffix,
     getProgressionLinksForChord,
     getRankedVoicingsForChord,
     getRelatedScaleSuggestionsForChord,
@@ -43,7 +43,7 @@ function buildChordLabel(chordType: string, selectedKey: number): string {
     try {
         const entry = resolveChordRegistryEntry(chordType);
         const root = getNoteName(selectedKey);
-        return `${root}${getChordTypeLabel(entry)}`;
+        return `${root}${getChordTypeSuffix(entry)}`;
     } catch {
         return `${getNoteName(selectedKey)} ${chordType}`;
     }
@@ -97,7 +97,7 @@ function buildSelectionSummary(primaryLabel: string, rootFret?: number): string 
 export function ChordVoicingViewport({
     chordType,
     selectedKey,
-    rankingMode = 'balanced',
+    rankingMode,
     candidates: providedCandidates,
     activeCandidateId,
     activeScaleId,
@@ -121,7 +121,7 @@ export function ChordVoicingViewport({
                 candidates: getRankedVoicingsForChord(chordType, selectedKey, {
                     maxRootFret: 15,
                     maxCandidates: 12,
-                    rankingMode,
+                    rankingMode: rankingMode ?? 'balanced',
                 }),
                 errorMessage: null,
             };
@@ -199,6 +199,7 @@ export function ChordVoicingViewport({
 
     const activeCandidate = selection.activeCandidate;
     const activePresentation = getVoicingPresentationMeta(activeCandidate.voicing);
+    const activeDescriptorLine = [activePresentation.familyLabel, activePresentation.secondaryLabel].filter(Boolean).join(' · ');
     const conciseReasons = getReasonPreview(activeCandidate.reasons, 3);
     const defaultSelectionLabel = selection.selectionSource === 'requested'
         ? 'Selected manually'
@@ -223,13 +224,6 @@ export function ChordVoicingViewport({
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
-                    <span className={`px-3 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-[0.25em] ${
-                        activeCandidate.voicing.playable
-                            ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
-                            : 'border-amber-500/30 bg-amber-500/10 text-amber-200'
-                    }`}>
-                        {activeCandidate.voicing.playable ? 'Playable' : 'Alternate'}
-                    </span>
                     <span className="px-3 py-1.5 rounded-full border border-cyan-300/20 bg-cyan-400/[0.05] text-[9px] font-black uppercase tracking-[0.25em] text-cyan-100/80">
                         {harmonicInterpretation.roleLabel}
                     </span>
@@ -254,11 +248,7 @@ export function ChordVoicingViewport({
                             <span className="text-sm font-black text-white">
                                 {buildSelectionSummary(activePresentation.primaryLabel, activeCandidate.voicing.rootFret)}
                             </span>
-                            {(activePresentation.familyLabel || activePresentation.secondaryLabel) && (
-                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/35">
-                                    {activePresentation.familyLabel ?? activePresentation.secondaryLabel}
-                                </span>
-                            )}
+                            {activeDescriptorLine && <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/35">{activeDescriptorLine}</span>}
                         </div>
                         <div className="flex flex-wrap justify-end gap-2">
                             <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
