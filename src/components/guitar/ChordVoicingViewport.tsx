@@ -150,12 +150,6 @@ export function ChordVoicingViewport({
             ?? null,
         [relatedScaleSuggestions, workspaceSelection.activeScaleId]
     );
-    const isUsingDefaultScaleSelection = activeScale !== null
-        && (
-            workspaceSelection.contextKey !== selectionKey
-            || workspaceSelection.activeScaleId === null
-            || !relatedScaleSuggestions.some((suggestion) => suggestion.scaleId === workspaceSelection.activeScaleId)
-        );
     const activeHintId = workspaceSelection.contextKey === selectionKey
         ? workspaceSelection.activeHintId
         : null;
@@ -187,12 +181,11 @@ export function ChordVoicingViewport({
 
             </div>
 
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+            <div className="flex flex-col gap-4">
                 <ChordRelatedScalesPanel
                     rootPitchClass={selectedKey}
                     suggestions={relatedScaleSuggestions}
                     activeScaleId={activeScale?.scaleId ?? null}
-                    isUsingDefaultSelection={isUsingDefaultScaleSelection}
                     onScaleSelect={(scaleId) => setWorkspaceSelection((current) => ({
                         contextKey: selectionKey,
                         activeScaleId: scaleId,

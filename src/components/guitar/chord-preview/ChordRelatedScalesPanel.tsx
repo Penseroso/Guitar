@@ -10,22 +10,13 @@ interface ChordRelatedScalesPanelProps {
     rootPitchClass: number;
     suggestions: ChordRelatedScaleSuggestion[];
     activeScaleId: string | null;
-    isUsingDefaultSelection: boolean;
     onScaleSelect: (scaleId: string) => void;
 }
-
-const CATEGORY_LABELS: Record<ChordRelatedScaleSuggestion['category'], string> = {
-    primary: 'Natural Fit',
-    color: 'Color',
-    altered: 'Altered',
-    modal: 'Modal',
-};
 
 export function ChordRelatedScalesPanel({
     rootPitchClass,
     suggestions,
     activeScaleId,
-    isUsingDefaultSelection,
     onScaleSelect,
 }: ChordRelatedScalesPanelProps) {
     const activeScale = suggestions.find((suggestion) => suggestion.scaleId === activeScaleId) ?? suggestions[0] ?? null;
@@ -62,14 +53,6 @@ export function ChordRelatedScalesPanel({
                                             : 'border-white/10 bg-white/[0.02] text-white/65 hover:border-white/25 hover:text-white'
                                     }`}
                                 >
-                                    <div className="flex items-center justify-between gap-2">
-                                        <div className={`text-[8px] font-black uppercase tracking-[0.28em] ${isActive ? 'text-cyan-200/70' : 'text-white/30'}`}>
-                                            {suggestion.fit === 'functional' ? 'Functional' : 'Color'}
-                                        </div>
-                                        <div className="text-[8px] font-black uppercase tracking-[0.2em] text-white/30">
-                                            {CATEGORY_LABELS[suggestion.category]}
-                                        </div>
-                                    </div>
                                     <div className="mt-1 text-sm font-semibold">
                                         {getNoteName(rootPitchClass)} {getScaleDisplayName(suggestion.name)}
                                     </div>
@@ -79,13 +62,6 @@ export function ChordRelatedScalesPanel({
                                     <div className="mt-1 text-[10px] font-black uppercase tracking-[0.2em] text-white/25">
                                         {getVisibleScaleFamilyLabel(suggestion.group)}
                                     </div>
-                                    {isActive && isUsingDefaultSelection && (
-                                        <div className="mt-2">
-                                            <span className="rounded-full border border-cyan-200/20 bg-black/20 px-2 py-1 text-[9px] font-black uppercase tracking-[0.16em] text-cyan-100/75">
-                                                Default
-                                            </span>
-                                        </div>
-                                    )}
                                 </button>
                             );
                         })}
@@ -93,14 +69,7 @@ export function ChordRelatedScalesPanel({
 
                     {activeScale && (
                         <div className="rounded-2xl border border-cyan-300/20 bg-cyan-400/[0.05] px-4 py-3">
-                            <div className="flex items-center justify-between gap-3">
-                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-100/70">
-                                    {isUsingDefaultSelection ? 'Default Scale' : 'Active Scale'}
-                                </span>
-                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-100/50">
-                                    {CATEGORY_LABELS[activeScale.category]}
-                                </span>
-                            </div>
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-100/70">Active Scale</span>
                             <div className="mt-2 text-sm font-semibold text-cyan-50">
                                 {getNoteName(rootPitchClass)} {getScaleDisplayName(activeScale.name)}
                             </div>

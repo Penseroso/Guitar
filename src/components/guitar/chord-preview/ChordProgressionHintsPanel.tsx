@@ -35,47 +35,45 @@ export function ChordProgressionHintsPanel({
                     const isActive = hint.id === activeHint?.id;
 
                     return (
-                        <button
+                        <div
                             key={hint.id}
-                            onClick={() => onHintSelect(hint.id)}
                             className={`rounded-2xl border px-4 py-3 text-left transition-all ${
                                 isActive
                                     ? 'border-white/25 bg-white/10'
                                     : 'border-white/10 bg-black/20 hover:border-white/20 hover:bg-white/[0.04]'
                             }`}
                         >
-                            <div className="flex items-start justify-between gap-3">
-                                <div className="flex flex-col gap-1">
-                                    <span className="text-sm font-semibold text-white">{hint.title}</span>
-                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/35">
-                                        {hint.degrees.join(' -> ')}
-                                    </span>
+                            <button
+                                onClick={() => onHintSelect(hint.id)}
+                                className="w-full text-left"
+                            >
+                                <div className="flex items-start justify-between gap-3">
+                                    <div className="flex flex-col gap-1">
+                                        <span className="text-sm font-semibold text-white">{hint.title}</span>
+                                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/35">
+                                            {hint.degrees.join(' -> ')}
+                                        </span>
+                                    </div>
                                 </div>
-                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/35">
-                                    {hint.category}
-                                </span>
-                            </div>
-                            <p className="mt-2 text-xs text-white/65">{hint.summary}</p>
-                        </button>
+                                <p className="mt-2 text-xs text-white/65">{hint.summary}</p>
+                            </button>
+                            {isActive && onPrepareHandoff && (
+                                <div className="mt-3 flex justify-end">
+                                    <button
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            onPrepareHandoff(hint.handoff);
+                                        }}
+                                        className="rounded-xl border border-emerald-200/30 bg-emerald-200/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-emerald-50 transition-all hover:border-emerald-100/50 hover:bg-emerald-200/15"
+                                    >
+                                        Prepare
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     );
                 })}
             </div>
-
-            {activeHint && (
-                <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.06] px-4 py-3 flex items-center justify-between gap-3">
-                    <div className="flex flex-col gap-1">
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-200/70">Prepared Handoff</span>
-                        <span className="text-sm font-semibold text-emerald-50">{activeHint.title}</span>
-                        <span className="text-xs text-emerald-50/75">{activeHint.degrees.join(' -> ')} · {activeHint.handoff.roleLabel}</span>
-                    </div>
-                    <button
-                        onClick={() => onPrepareHandoff?.(activeHint.handoff)}
-                        className="rounded-xl border border-emerald-200/40 bg-emerald-200/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-50 transition-all hover:border-emerald-100/60 hover:bg-emerald-200/15"
-                    >
-                        Prepare
-                    </button>
-                </div>
-            )}
         </div>
     );
 }

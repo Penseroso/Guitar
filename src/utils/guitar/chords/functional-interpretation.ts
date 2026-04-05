@@ -146,7 +146,7 @@ export function interpretChordAgainstTonalCenter(
             fit: 'functional',
             summary: isModalCenter
                 ? `${chordRootNoteName}${entry.symbol} is heard as the center of the current ${scaleName} frame rather than as a borrowed detour.`
-                : `${chordRootNoteName}${entry.symbol} aligns directly with tonic ${tonicNoteName}, so it reads as a true point of rest.`,
+                : `${chordRootNoteName}${entry.symbol} reads as a direct point of rest in the current tonal frame.`,
         };
     }
 

@@ -23,7 +23,6 @@ describe('ChordVoicingViewport', () => {
 
         expect(markup).toContain('Harmonic Context');
         expect(markup).toContain('Choose a Scale');
-        expect(markup).toContain('Default');
         expect(markup).toContain('Progression Context');
         expect(markup).not.toContain('Selection Notes');
         expect(markup).not.toContain('Missing required tones');
@@ -31,5 +30,7 @@ describe('ChordVoicingViewport', () => {
         expect(markup).not.toContain('Context Summary');
         expect(markup).not.toContain('Voicing available');
         expect(markup).not.toContain('Default Scale Lens');
+        expect(markup).not.toContain('Prepared Handoff');
+        expect(markup).not.toContain('Color');
     });
 });
