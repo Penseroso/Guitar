@@ -35,7 +35,7 @@ export function ChordRelatedScalesPanel({
             <div className="flex items-center justify-between gap-3">
                 <div className="flex flex-col gap-1">
                     <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">Choose a Scale</span>
-                    <span className="text-sm font-black text-white">Functional fit and color options</span>
+                    <span className="text-sm font-black text-white">Scale options</span>
                 </div>
                 <span className="text-[10px] font-black uppercase tracking-[0.25em] text-white/35">
                     {suggestions.length} options
@@ -95,7 +95,7 @@ export function ChordRelatedScalesPanel({
                         <div className="rounded-2xl border border-cyan-300/20 bg-cyan-400/[0.05] px-4 py-3">
                             <div className="flex items-center justify-between gap-3">
                                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-100/70">
-                                    {isUsingDefaultSelection ? 'Default Scale' : activeScale.fit === 'functional' ? 'Functional Fit' : 'Color Fit'}
+                                    {isUsingDefaultSelection ? 'Default Scale' : 'Active Scale'}
                                 </span>
                                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-100/50">
                                     {CATEGORY_LABELS[activeScale.category]}
@@ -107,7 +107,7 @@ export function ChordRelatedScalesPanel({
                             <div className="mt-1 text-[10px] font-black uppercase tracking-[0.2em] text-cyan-100/50">
                                 {activeScale.functionLabel} · {getVisibleScaleFamilyLabel(activeScale.group)}
                             </div>
-                            <p className="mt-1 text-xs text-cyan-50/80">{activeScale.reason}</p>
+                            <p className="mt-1 text-xs text-cyan-50/75">{activeScale.reason}</p>
                         </div>
                     )}
                 </>

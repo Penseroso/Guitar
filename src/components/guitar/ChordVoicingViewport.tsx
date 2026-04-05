@@ -3,7 +3,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { getNoteName } from '../../utils/guitar/logic';
-import { getScaleDisplayName } from '../../utils/guitar/scaleSelector';
 import {
     getChordTypeSuffix,
     getProgressionLinksForChord,
@@ -179,36 +178,13 @@ export function ChordVoicingViewport({
                     <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Harmonic Context</span>
                     <div className="flex flex-wrap items-end gap-x-3 gap-y-2">
                         <h3 className="text-2xl font-black text-white tracking-tight">{chordLabel}</h3>
-                        <span className="pb-1 text-[10px] font-black uppercase tracking-[0.3em] text-white/35">
-                            {harmonicInterpretation.relativeDegree}
+                        <span className="pb-1 text-[10px] font-black uppercase tracking-[0.28em] text-white/40">
+                            {harmonicInterpretation.relativeDegree} · {harmonicInterpretation.roleLabel}
                         </span>
                     </div>
                     <p className="max-w-3xl text-sm text-white/55">{harmonicInterpretation.summary}</p>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2">
-                    <span className="px-3 py-1.5 rounded-full border border-cyan-300/20 bg-cyan-400/[0.05] text-[9px] font-black uppercase tracking-[0.25em] text-cyan-100/80">
-                        {harmonicInterpretation.roleLabel}
-                    </span>
-                    <span className="px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.04] text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
-                        {harmonicInterpretation.chordRootNoteName} against {harmonicInterpretation.tonicNoteName}
-                    </span>
-                </div>
-            </div>
-
-            <div className="rounded-[1.5rem] border border-cyan-300/15 bg-cyan-400/[0.04] px-4 py-4 flex flex-col gap-2">
-                <span className="text-[8px] font-black uppercase tracking-[0.3em] text-cyan-100/70">Context Summary</span>
-                <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-sm font-black text-cyan-50">{harmonicInterpretation.relativeDegree} · {harmonicInterpretation.roleLabel}</span>
-                    <span className="rounded-full border border-cyan-200/20 bg-black/20 px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.2em] text-cyan-100/65">
-                        {selection.activeCandidate ? 'Voicing available' : 'Context only'}
-                    </span>
-                </div>
-                <p className="text-xs text-cyan-50/80">
-                    {activeScale
-                        ? `Default scale guidance starts from ${getNoteName(selectedKey)} ${getScaleDisplayName(activeScale.name)}. You can change the scale lens inside this panel without changing the main fretboard.`
-                        : 'Scale guidance will appear here when related suggestions are available.'}
-                </p>
             </div>
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
@@ -226,9 +202,6 @@ export function ChordVoicingViewport({
                 <ChordProgressionHintsPanel
                     context={progressionContext}
                     activeHintId={activeHintId}
-                    activeScaleLabel={activeScale ? `${getNoteName(selectedKey)} ${getScaleDisplayName(activeScale.name)}` : null}
-                    activeScaleReason={activeScale?.reason ?? null}
-                    isUsingDefaultScaleSelection={isUsingDefaultScaleSelection}
                     onHintSelect={(hintId) => setWorkspaceSelection((current) => ({
                         contextKey: selectionKey,
                         activeScaleId: current.contextKey === selectionKey ? current.activeScaleId : null,
