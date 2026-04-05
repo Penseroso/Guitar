@@ -69,9 +69,7 @@ describe('ChordModeWorkspace', () => {
                 futureVoicingCandidates={[candidate]}
                 onSelectFutureVoicing={() => {}}
                 activeFutureVoicingId={candidate.voicing.id}
-                activeSelectedScaleId={null}
                 onActiveVoicingChange={() => {}}
-                onScaleSelect={() => {}}
                 onPrepareProgressionHandoff={(_payload: ProgressionHandoffPayload) => {}}
                 selectedKey={0}
                 tonalContext={{
@@ -136,9 +134,7 @@ describe('ChordModeWorkspace', () => {
                 futureVoicingCandidates={[higherCandidate, lowerCandidate]}
                 onSelectFutureVoicing={() => {}}
                 activeFutureVoicingId={higherCandidate.voicing.id}
-                activeSelectedScaleId={null}
                 onActiveVoicingChange={() => {}}
-                onScaleSelect={() => {}}
                 onPrepareProgressionHandoff={(_payload: ProgressionHandoffPayload) => {}}
                 selectedKey={0}
                 tonalContext={{
@@ -205,9 +201,7 @@ describe('ChordModeWorkspace', () => {
                 futureVoicingCandidates={[candidate]}
                 onSelectFutureVoicing={() => {}}
                 activeFutureVoicingId={candidate.voicing.id}
-                activeSelectedScaleId={null}
                 onActiveVoicingChange={() => {}}
-                onScaleSelect={() => {}}
                 onPrepareProgressionHandoff={(_payload: ProgressionHandoffPayload) => {}}
                 selectedKey={0}
                 tonalContext={{

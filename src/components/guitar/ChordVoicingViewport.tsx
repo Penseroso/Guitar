@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { getNoteName } from '../../utils/guitar/logic';
+import { getScaleDisplayName } from '../../utils/guitar/scaleSelector';
 import {
     getChordTypeSuffix,
     getProgressionLinksForChord,
@@ -13,28 +14,21 @@ import {
     type HarmonicTonalContext,
     type ProgressionHandoffPayload,
     type VoicingCandidate,
-    type VoicingRankingMode,
 } from '../../utils/guitar/chords';
-import { CompactVoicingDiagram } from './chord-preview/CompactVoicingDiagram';
 import { ChordProgressionHintsPanel } from './chord-preview/ChordProgressionHintsPanel';
 import { ChordRelatedScalesPanel } from './chord-preview/ChordRelatedScalesPanel';
 import {
     getBridgeSelectionKey,
-    getReasonPreview,
     resolveBridgeSelection,
     type ActiveVoicingChangePayload,
 } from './chord-preview/bridge';
-import { getVoicingPresentationMeta } from './chord-preview/voicing-labels';
 
 interface ChordVoicingViewportProps {
     chordType: string;
     selectedKey: number;
-    rankingMode?: VoicingRankingMode;
     candidates?: VoicingCandidate[];
     activeCandidateId?: string | null;
-    activeScaleId?: string | null;
     onActiveVoicingChange?: (payload: ActiveVoicingChangePayload) => void;
-    onScaleSelect?: (scaleId: string) => void;
     onPrepareProgressionHandoff?: (payload: ProgressionHandoffPayload) => void;
     tonalContext?: HarmonicTonalContext;
 }
@@ -47,28 +41,6 @@ function buildChordLabel(chordType: string, selectedKey: number): string {
     } catch {
         return `${getNoteName(selectedKey)} ${chordType}`;
     }
-}
-
-function renderDegreeList(
-    title: string,
-    degrees: string[] | undefined,
-    emptyLabel: string,
-    tone: 'default' | 'warning' | 'danger' = 'default'
-) {
-    const toneClassName = tone === 'danger'
-        ? 'text-rose-200'
-        : tone === 'warning'
-            ? 'text-amber-200'
-            : 'text-white/75';
-
-    return (
-        <div className="flex flex-col gap-1 rounded-2xl border border-white/5 bg-black/20 px-3 py-3">
-            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">{title}</span>
-            <span className={`text-xs font-semibold ${toneClassName}`}>
-                {degrees && degrees.length > 0 ? degrees.join(' · ') : emptyLabel}
-            </span>
-        </div>
-    );
 }
 
 function renderViewportShell(
@@ -88,21 +60,12 @@ function renderViewportShell(
     );
 }
 
-function buildSelectionSummary(primaryLabel: string, rootFret?: number): string {
-    return rootFret !== undefined
-        ? `${primaryLabel} · ${rootFret}fr position`
-        : `${primaryLabel} · Open position`;
-}
-
 export function ChordVoicingViewport({
     chordType,
     selectedKey,
-    rankingMode,
     candidates: providedCandidates,
     activeCandidateId,
-    activeScaleId,
     onActiveVoicingChange,
-    onScaleSelect,
     onPrepareProgressionHandoff,
     tonalContext,
 }: ChordVoicingViewportProps) {
@@ -121,7 +84,6 @@ export function ChordVoicingViewport({
                 candidates: getRankedVoicingsForChord(chordType, selectedKey, {
                     maxRootFret: 15,
                     maxCandidates: 12,
-                    rankingMode: rankingMode ?? 'balanced',
                 }),
                 errorMessage: null,
             };
@@ -131,7 +93,7 @@ export function ChordVoicingViewport({
                 errorMessage: error instanceof Error ? error.message : 'Unknown future-engine resolution error.',
             };
         }
-    }, [chordType, providedCandidates, rankingMode, selectedKey]);
+    }, [chordType, providedCandidates, selectedKey]);
 
     const selection = useMemo(
         () => resolveBridgeSelection(candidates, activeCandidateId ?? null),
@@ -163,16 +125,39 @@ export function ChordVoicingViewport({
         [chordType, selectedKey, tonalContext]
     );
 
-    const workspaceContextKey = `${selectionKey}::${selection.activeCandidateId ?? 'none'}`;
     const [workspaceSelection, setWorkspaceSelection] = useState<{
         contextKey: string;
+        activeScaleId: string | null;
         activeHintId: string | null;
     }>({
-        contextKey: workspaceContextKey,
+        contextKey: selectionKey,
+        activeScaleId: null,
         activeHintId: null,
     });
 
-    const activeHintId = workspaceSelection.contextKey === workspaceContextKey
+    useEffect(() => {
+        setWorkspaceSelection((current) => current.contextKey === selectionKey
+            ? current
+            : {
+                contextKey: selectionKey,
+                activeScaleId: null,
+                activeHintId: null,
+            });
+    }, [selectionKey]);
+
+    const activeScale = useMemo(
+        () => relatedScaleSuggestions.find((suggestion) => suggestion.scaleId === workspaceSelection.activeScaleId)
+            ?? relatedScaleSuggestions[0]
+            ?? null,
+        [relatedScaleSuggestions, workspaceSelection.activeScaleId]
+    );
+    const isUsingDefaultScaleSelection = activeScale !== null
+        && (
+            workspaceSelection.contextKey !== selectionKey
+            || workspaceSelection.activeScaleId === null
+            || !relatedScaleSuggestions.some((suggestion) => suggestion.scaleId === workspaceSelection.activeScaleId)
+        );
+    const activeHintId = workspaceSelection.contextKey === selectionKey
         ? workspaceSelection.activeHintId
         : null;
 
@@ -187,127 +172,68 @@ export function ChordVoicingViewport({
         );
     }
 
-    if (!selection.activeCandidate) {
-        return renderViewportShell(
-            chordLabel,
-            'No voicing candidates are available for this chord yet.',
-            <div className="rounded-[1.5rem] border border-white/5 bg-white/[0.03] px-4 py-4 text-sm text-white/65">
-                Try another key or chord type.
-            </div>
-        );
-    }
-
-    const activeCandidate = selection.activeCandidate;
-    const activePresentation = getVoicingPresentationMeta(activeCandidate.voicing);
-    const conciseReasons = getReasonPreview(activeCandidate.reasons, 3);
-    const defaultSelectionLabel = selection.selectionSource === 'requested'
-        ? 'Selected manually'
-        : selection.selectionSource === 'first-playable'
-            ? 'Default playable voicing'
-            : 'Default ranked voicing';
-
     return (
         <div className="rounded-[2rem] border border-white/5 bg-[#050505] p-6 flex flex-col gap-6">
             <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
                 <div className="flex flex-col gap-2">
-                    <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Interpretation</span>
+                    <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Harmonic Context</span>
                     <div className="flex flex-wrap items-end gap-x-3 gap-y-2">
                         <h3 className="text-2xl font-black text-white tracking-tight">{chordLabel}</h3>
-                        <span className="pb-1 text-[10px] font-black uppercase tracking-[0.3em] text-white/30">
-                            Current voicing
+                        <span className="pb-1 text-[10px] font-black uppercase tracking-[0.3em] text-white/35">
+                            {harmonicInterpretation.relativeDegree}
                         </span>
                     </div>
-                    <p className="max-w-3xl text-sm text-white/55">
-                        Root {harmonicInterpretation.chordRootNoteName} against tonic {harmonicInterpretation.tonicNoteName}.
-                    </p>
+                    <p className="max-w-3xl text-sm text-white/55">{harmonicInterpretation.summary}</p>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
                     <span className="px-3 py-1.5 rounded-full border border-cyan-300/20 bg-cyan-400/[0.05] text-[9px] font-black uppercase tracking-[0.25em] text-cyan-100/80">
                         {harmonicInterpretation.roleLabel}
                     </span>
-                    {rankingMode !== undefined && (
-                        <span className="px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.04] text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
-                            {rankingMode.replace('-', ' ')} mode
-                        </span>
-                    )}
-                    {selection.selectionSource !== 'requested' && (
-                        <span className="px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.04] text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
-                            Recommended
-                        </span>
-                    )}
+                    <span className="px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.04] text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
+                        {harmonicInterpretation.chordRootNoteName} against {harmonicInterpretation.tonicNoteName}
+                    </span>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] gap-4">
-                <div className="rounded-[1.5rem] border border-white/5 bg-white/[0.02] p-4 flex flex-col gap-4">
-                    <div className="flex items-start justify-between gap-3">
-                        <div className="flex flex-col gap-1">
-                            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">Voicing</span>
-                            <span className="text-sm font-black text-white">
-                                {buildSelectionSummary(activePresentation.primaryLabel, activeCandidate.voicing.rootFret)}
-                            </span>
-                            {activePresentation.secondaryLabel && <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/35">{activePresentation.secondaryLabel}</span>}
-                        </div>
-                        <div className="flex flex-wrap justify-end gap-2">
-                            <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.25em] text-white/65">
-                                {defaultSelectionLabel}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div className="rounded-2xl border border-cyan-300/20 bg-cyan-400/[0.05] px-3 py-3">
-                            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-cyan-100/70">Function</span>
-                            <div className="mt-1 text-sm font-semibold text-cyan-50">{harmonicInterpretation.relativeDegree} · {harmonicInterpretation.roleLabel}</div>
-                            <p className="mt-1 text-xs text-cyan-50/80">{harmonicInterpretation.summary}</p>
-                        </div>
-                        <div className="flex flex-col gap-1 rounded-2xl border border-white/5 bg-black/20 px-3 py-3">
-                            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">Voicing Details</span>
-                            <span className="text-xs font-semibold text-white/75">
-                                {activePresentation.primaryLabel} · {activeCandidate.voicing.rootFret ?? 0}fr start
-                            </span>
-                            <span className="text-xs text-white/55">
-                                Span {activeCandidate.voicing.span}
-                            </span>
-                        </div>
-                        {renderDegreeList('Missing required tones', activeCandidate.voicing.missingRequiredDegrees, 'None', 'danger')}
-                        {renderDegreeList('Optional omissions', activeCandidate.voicing.omittedOptionalDegrees, 'None', 'warning')}
-                        {renderDegreeList('Included tones', activeCandidate.matchedRequiredDegrees, 'None')}
-                    </div>
+            <div className="rounded-[1.5rem] border border-cyan-300/15 bg-cyan-400/[0.04] px-4 py-4 flex flex-col gap-2">
+                <span className="text-[8px] font-black uppercase tracking-[0.3em] text-cyan-100/70">Context Summary</span>
+                <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-sm font-black text-cyan-50">{harmonicInterpretation.relativeDegree} · {harmonicInterpretation.roleLabel}</span>
+                    <span className="rounded-full border border-cyan-200/20 bg-black/20 px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.2em] text-cyan-100/65">
+                        {selection.activeCandidate ? 'Voicing available' : 'Context only'}
+                    </span>
                 </div>
-
-                <div className="rounded-[1.5rem] border border-white/5 bg-white/[0.02] p-4 flex flex-col gap-3">
-                    <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">Selection Notes</span>
-                    <div className="flex flex-col gap-2">
-                        {conciseReasons.map((reason) => (
-                            <div key={reason} className="text-xs text-white/70 border border-white/5 bg-black/20 rounded-xl px-3 py-2">
-                                {reason}
-                            </div>
-                        ))}
-                        {conciseReasons.length === 0 && (
-                            <div className="text-xs text-white/45 border border-white/5 bg-black/20 rounded-xl px-3 py-2">
-                                No additional selection notes are available.
-                            </div>
-                        )}
-                    </div>
-                    <div className="rounded-2xl border border-white/5 bg-black/20 p-3 flex items-center justify-center">
-                        <CompactVoicingDiagram voicing={activeCandidate.voicing} />
-                    </div>
-                </div>
+                <p className="text-xs text-cyan-50/80">
+                    {activeScale
+                        ? `Default scale guidance starts from ${getNoteName(selectedKey)} ${getScaleDisplayName(activeScale.name)}. You can change the scale lens inside this panel without changing the main fretboard.`
+                        : 'Scale guidance will appear here when related suggestions are available.'}
+                </p>
             </div>
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
                 <ChordRelatedScalesPanel
                     rootPitchClass={selectedKey}
                     suggestions={relatedScaleSuggestions}
-                    activeScaleId={activeScaleId ?? null}
-                    onScaleSelect={(scaleId) => onScaleSelect?.(scaleId)}
+                    activeScaleId={activeScale?.scaleId ?? null}
+                    isUsingDefaultSelection={isUsingDefaultScaleSelection}
+                    onScaleSelect={(scaleId) => setWorkspaceSelection((current) => ({
+                        contextKey: selectionKey,
+                        activeScaleId: scaleId,
+                        activeHintId: current.contextKey === selectionKey ? current.activeHintId : null,
+                    }))}
                 />
                 <ChordProgressionHintsPanel
                     context={progressionContext}
                     activeHintId={activeHintId}
-                    onHintSelect={(hintId) => setWorkspaceSelection({ contextKey: workspaceContextKey, activeHintId: hintId })}
+                    activeScaleLabel={activeScale ? `${getNoteName(selectedKey)} ${getScaleDisplayName(activeScale.name)}` : null}
+                    activeScaleReason={activeScale?.reason ?? null}
+                    isUsingDefaultScaleSelection={isUsingDefaultScaleSelection}
+                    onHintSelect={(hintId) => setWorkspaceSelection((current) => ({
+                        contextKey: selectionKey,
+                        activeScaleId: current.contextKey === selectionKey ? current.activeScaleId : null,
+                        activeHintId: hintId,
+                    }))}
                     onPrepareHandoff={onPrepareProgressionHandoff}
                 />
             </div>

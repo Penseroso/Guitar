@@ -10,6 +10,7 @@ interface ChordRelatedScalesPanelProps {
     rootPitchClass: number;
     suggestions: ChordRelatedScaleSuggestion[];
     activeScaleId: string | null;
+    isUsingDefaultSelection: boolean;
     onScaleSelect: (scaleId: string) => void;
 }
 
@@ -24,6 +25,7 @@ export function ChordRelatedScalesPanel({
     rootPitchClass,
     suggestions,
     activeScaleId,
+    isUsingDefaultSelection,
     onScaleSelect,
 }: ChordRelatedScalesPanelProps) {
     const activeScale = suggestions.find((suggestion) => suggestion.scaleId === activeScaleId) ?? suggestions[0] ?? null;
@@ -32,8 +34,8 @@ export function ChordRelatedScalesPanel({
         <div className="rounded-[1.5rem] border border-white/5 bg-white/[0.02] p-4 flex flex-col gap-4">
             <div className="flex items-center justify-between gap-3">
                 <div className="flex flex-col gap-1">
-                    <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">Related Scales</span>
-                    <span className="text-sm font-black text-white">Functional fit vs color fit</span>
+                    <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/30">Choose a Scale</span>
+                    <span className="text-sm font-black text-white">Functional fit and color options</span>
                 </div>
                 <span className="text-[10px] font-black uppercase tracking-[0.25em] text-white/35">
                     {suggestions.length} options
@@ -77,6 +79,13 @@ export function ChordRelatedScalesPanel({
                                     <div className="mt-1 text-[10px] font-black uppercase tracking-[0.2em] text-white/25">
                                         {getVisibleScaleFamilyLabel(suggestion.group)}
                                     </div>
+                                    {isActive && isUsingDefaultSelection && (
+                                        <div className="mt-2">
+                                            <span className="rounded-full border border-cyan-200/20 bg-black/20 px-2 py-1 text-[9px] font-black uppercase tracking-[0.16em] text-cyan-100/75">
+                                                Default
+                                            </span>
+                                        </div>
+                                    )}
                                 </button>
                             );
                         })}
@@ -86,7 +95,7 @@ export function ChordRelatedScalesPanel({
                         <div className="rounded-2xl border border-cyan-300/20 bg-cyan-400/[0.05] px-4 py-3">
                             <div className="flex items-center justify-between gap-3">
                                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-100/70">
-                                    {activeScale.fit === 'functional' ? 'Functional Fit' : 'Color Fit'}
+                                    {isUsingDefaultSelection ? 'Default Scale' : activeScale.fit === 'functional' ? 'Functional Fit' : 'Color Fit'}
                                 </span>
                                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-100/50">
                                     {CATEGORY_LABELS[activeScale.category]}

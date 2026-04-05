@@ -7,6 +7,9 @@ import type { ChordProgressionContext, ProgressionHandoffPayload } from '../../.
 interface ChordProgressionHintsPanelProps {
     context: ChordProgressionContext;
     activeHintId: string | null;
+    activeScaleLabel?: string | null;
+    activeScaleReason?: string | null;
+    isUsingDefaultScaleSelection?: boolean;
     onHintSelect: (hintId: string) => void;
     onPrepareHandoff?: (payload: ProgressionHandoffPayload) => void;
 }
@@ -14,6 +17,9 @@ interface ChordProgressionHintsPanelProps {
 export function ChordProgressionHintsPanel({
     context,
     activeHintId,
+    activeScaleLabel,
+    activeScaleReason,
+    isUsingDefaultScaleSelection,
     onHintSelect,
     onPrepareHandoff,
 }: ChordProgressionHintsPanelProps) {
@@ -28,6 +34,15 @@ export function ChordProgressionHintsPanel({
                     {context.relativeDegree} relative to tonic
                 </span>
                 <p className="text-xs text-white/60">{context.summary}</p>
+                {activeScaleLabel && (
+                    <div className="mt-2 rounded-2xl border border-white/5 bg-black/20 px-3 py-3">
+                        <span className="text-[8px] font-black uppercase tracking-[0.28em] text-white/30">
+                            {isUsingDefaultScaleSelection ? 'Default Scale Lens' : 'Current Scale Lens'}
+                        </span>
+                        <div className="mt-1 text-sm font-semibold text-white">{activeScaleLabel}</div>
+                        {activeScaleReason && <p className="mt-1 text-xs text-white/60">{activeScaleReason}</p>}
+                    </div>
+                )}
             </div>
 
             <div className="flex flex-col gap-2">

@@ -45,13 +45,11 @@ interface ChordModeWorkspaceProps {
     futureVoicingCandidates: VoicingCandidate[];
     onSelectFutureVoicing: (candidateId: string) => void;
     activeFutureVoicingId: string | null;
-    activeSelectedScaleId?: string | null;
     onActiveVoicingChange: (payload: {
         activeCandidateId: string | null;
         chordType: string;
         selectedKey: number;
     }) => void;
-    onScaleSelect: (scaleId: string) => void;
     onPrepareProgressionHandoff: (payload: ProgressionHandoffPayload) => void;
     selectedKey: number;
     tonalContext: {
@@ -93,9 +91,7 @@ export function ChordModeWorkspace({
     futureVoicingCandidates,
     onSelectFutureVoicing,
     activeFutureVoicingId,
-    activeSelectedScaleId,
     onActiveVoicingChange,
-    onScaleSelect,
     onPrepareProgressionHandoff,
     selectedKey,
     tonalContext,
@@ -296,8 +292,6 @@ export function ChordModeWorkspace({
                 candidates={futureVoicingCandidates}
                 activeCandidateId={activeFutureVoicingId}
                 onActiveVoicingChange={onActiveVoicingChange}
-                activeScaleId={activeSelectedScaleId}
-                onScaleSelect={onScaleSelect}
                 onPrepareProgressionHandoff={onPrepareProgressionHandoff}
                 tonalContext={tonalContext}
             />

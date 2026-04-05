@@ -250,7 +250,6 @@ export default function ClientApp() {
 
     const activeFutureVoicingId = harmonicWorkspace.selectedCandidateId;
     const activePreparedChordWorkspaceHandoff = harmonicWorkspace.preparedHandoff;
-    const activeSelectedScaleId = harmonicWorkspace.selectedScaleId;
     const activeStagedProgression = harmonicWorkspace.stagedProgression;
     const activeDraftApplyMode = activeStagedProgression?.applyMode ?? 'replace';
     const futureVoicingCandidates = useMemo(() => {
@@ -316,13 +315,6 @@ export default function ClientApp() {
             type: 'select-candidate',
             scopeKey: futureVoicingScopeKey,
             candidateId,
-        });
-    }, [futureVoicingScopeKey]);
-    const handleSelectWorkspaceScale = useCallback((scaleId: string) => {
-        dispatchHarmonicWorkspace({
-            type: 'select-scale',
-            scopeKey: futureVoicingScopeKey,
-            scaleId,
         });
     }, [futureVoicingScopeKey]);
     const handlePrepareChordWorkspaceHandoff = useCallback((payload: ProgressionHandoffPayload) => {
@@ -622,9 +614,7 @@ export default function ClientApp() {
                             futureVoicingCandidates={futureVoicingCandidates}
                             onSelectFutureVoicing={handleSelectFutureVoicing}
                             activeFutureVoicingId={activeFutureVoicingId}
-                            activeSelectedScaleId={activeSelectedScaleId}
                             onActiveVoicingChange={handleFutureVoicingChange}
-                            onScaleSelect={handleSelectWorkspaceScale}
                             onPrepareProgressionHandoff={handlePrepareChordWorkspaceHandoff}
                             selectedKey={selectedKey}
                             tonalContext={tonalContext}
