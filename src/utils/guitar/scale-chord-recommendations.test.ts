@@ -41,4 +41,19 @@ describe('scale chord recommendations', () => {
         expect(recommendations.usable.length).toBeGreaterThan(0);
         expect(recommendations.characteristic.map((item) => item.chordType)).toContain('major-6');
     });
+
+    it('uses heptatonic fallback behavior for harmonic minor family modes', () => {
+        const recommendations = buildScaleChordRecommendations(0, 'Harmonic Minor Modes', 'Phrygian Dominant');
+
+        expect(recommendations.characteristic.map((item) => item.chordType)).toContain('dominant-7');
+        expect(recommendations.characteristic.some((item) => item.rootPitchClass === 0)).toBe(true);
+        expect(recommendations.characteristic.some((item) => 'internalPriority' in item)).toBe(false);
+    });
+
+    it('keeps public recommendation payloads free of internal ranking metadata', () => {
+        const recommendations = buildScaleChordRecommendations(0, 'Diatonic Modes', 'Ionian');
+
+        expect(recommendations.usable[0]).not.toHaveProperty('internalPriority');
+        expect(recommendations.characteristic[0]).not.toHaveProperty('internalPriority');
+    });
 });
