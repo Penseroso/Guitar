@@ -68,13 +68,6 @@ describe('ChordModeWorkspace', () => {
                 futureVoicingCandidates={[candidate]}
                 onSelectFutureVoicing={() => {}}
                 activeFutureVoicingId={candidate.voicing.id}
-                activePreparedChordWorkspaceHandoff={null}
-                activeStagedProgression={null}
-                activeDraftApplyMode="replace"
-                onSelectDraftApplyMode={() => {}}
-                onApplyPreparedChordWorkspaceHandoff={() => {}}
-                onOpenProgressionWorkspace={() => {}}
-                onClearPreparedChordWorkspaceHandoff={() => {}}
             />
         );
 
@@ -125,13 +118,6 @@ describe('ChordModeWorkspace', () => {
                 futureVoicingCandidates={[higherCandidate, lowerCandidate]}
                 onSelectFutureVoicing={() => {}}
                 activeFutureVoicingId={higherCandidate.voicing.id}
-                activePreparedChordWorkspaceHandoff={null}
-                activeStagedProgression={null}
-                activeDraftApplyMode="replace"
-                onSelectDraftApplyMode={() => {}}
-                onApplyPreparedChordWorkspaceHandoff={() => {}}
-                onOpenProgressionWorkspace={() => {}}
-                onClearPreparedChordWorkspaceHandoff={() => {}}
             />
         );
 
@@ -183,13 +169,6 @@ describe('ChordModeWorkspace', () => {
                 futureVoicingCandidates={[candidate]}
                 onSelectFutureVoicing={() => {}}
                 activeFutureVoicingId={candidate.voicing.id}
-                activePreparedChordWorkspaceHandoff={null}
-                activeStagedProgression={null}
-                activeDraftApplyMode="replace"
-                onSelectDraftApplyMode={() => {}}
-                onApplyPreparedChordWorkspaceHandoff={() => {}}
-                onOpenProgressionWorkspace={() => {}}
-                onClearPreparedChordWorkspaceHandoff={() => {}}
             />
         );
 
@@ -229,13 +208,6 @@ describe('ChordModeWorkspace', () => {
                 futureVoicingCandidates={[candidate]}
                 onSelectFutureVoicing={() => {}}
                 activeFutureVoicingId={candidate.voicing.id}
-                activePreparedChordWorkspaceHandoff={null}
-                activeStagedProgression={null}
-                activeDraftApplyMode="replace"
-                onSelectDraftApplyMode={() => {}}
-                onApplyPreparedChordWorkspaceHandoff={() => {}}
-                onOpenProgressionWorkspace={() => {}}
-                onClearPreparedChordWorkspaceHandoff={() => {}}
             />
         );
 

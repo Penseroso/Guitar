@@ -5,7 +5,7 @@ import React from 'react';
 import { Fretboard } from '../../Fretboard';
 import { TogglePill } from '../../ui/design-system/TogglePill';
 import { CompactVoicingDiagram } from '../chord-preview/CompactVoicingDiagram';
-import { type ProgressionHandoffPayload, type VoicingCandidate } from '../../../utils/guitar/chords';
+import { type VoicingCandidate } from '../../../utils/guitar/chords';
 import type { Fingering } from '../../../utils/guitar/types';
 import { getVoicingPresentationMeta } from '../chord-preview/voicing-labels';
 
@@ -45,16 +45,6 @@ interface ChordModeWorkspaceProps {
     futureVoicingCandidates: VoicingCandidate[];
     onSelectFutureVoicing: (candidateId: string) => void;
     activeFutureVoicingId: string | null;
-    activePreparedChordWorkspaceHandoff: ProgressionHandoffPayload | null;
-    activeStagedProgression?: {
-        applied?: boolean;
-        applyMode: 'replace' | 'append' | 'insert-after-focus' | 'stage-only';
-    } | null;
-    activeDraftApplyMode: 'replace' | 'append' | 'insert-after-focus' | 'stage-only';
-    onSelectDraftApplyMode: (applyMode: 'replace' | 'append' | 'insert-after-focus' | 'stage-only') => void;
-    onApplyPreparedChordWorkspaceHandoff: () => void;
-    onOpenProgressionWorkspace: () => void;
-    onClearPreparedChordWorkspaceHandoff: () => void;
 }
 
 export function ChordModeWorkspace({
@@ -78,13 +68,6 @@ export function ChordModeWorkspace({
     futureVoicingCandidates,
     onSelectFutureVoicing,
     activeFutureVoicingId,
-    activePreparedChordWorkspaceHandoff,
-    activeStagedProgression,
-    activeDraftApplyMode,
-    onSelectDraftApplyMode,
-    onApplyPreparedChordWorkspaceHandoff,
-    onOpenProgressionWorkspace,
-    onClearPreparedChordWorkspaceHandoff,
 }: ChordModeWorkspaceProps) {
     const getCandidateMetaLabel = React.useCallback((candidate: VoicingCandidate) => {
         const segments: string[] = [];
@@ -296,67 +279,6 @@ export function ChordModeWorkspace({
                     </div>
                 </div>
             </div>
-            {activePreparedChordWorkspaceHandoff && (
-                <div className="rounded-[1.5rem] border border-emerald-400/15 bg-emerald-400/[0.05] px-5 py-4 flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-                    <div className="flex flex-col gap-1">
-                        <span className="text-[9px] font-black uppercase tracking-[0.28em] text-emerald-200/70">
-                            {activeStagedProgression?.applied ? 'Progression Applied' : 'Progression Ready'}
-                        </span>
-                        <span className="text-sm font-semibold text-emerald-50">{activePreparedChordWorkspaceHandoff.title}</span>
-                        <span className="text-xs text-emerald-50/75">
-                            {activePreparedChordWorkspaceHandoff.degrees.join(' -> ')} · {activePreparedChordWorkspaceHandoff.summary}
-                        </span>
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-100/55">
-                            Relative to tonic: {activePreparedChordWorkspaceHandoff.relativeDegree} · {activePreparedChordWorkspaceHandoff.roleLabel}
-                        </span>
-                    </div>
-                    <div className="flex flex-col gap-3 xl:items-end">
-                        <div className="flex flex-wrap gap-2">
-                            {(['replace', 'append', 'insert-after-focus', 'stage-only'] as const).map((applyMode) => (
-                                <button
-                                    key={applyMode}
-                                    onClick={() => onSelectDraftApplyMode(applyMode)}
-                                    className={`rounded-xl border px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all ${
-                                        activeDraftApplyMode === applyMode
-                                            ? 'border-emerald-100/60 bg-emerald-200/15 text-emerald-50'
-                                            : 'border-white/10 bg-white/[0.03] text-white/60 hover:border-white/20 hover:text-white'
-                                    }`}
-                                >
-                                    {applyMode === 'replace'
-                                        ? 'Replace'
-                                        : applyMode === 'append'
-                                            ? 'Append'
-                                            : applyMode === 'insert-after-focus'
-                                                ? 'Insert After Focus'
-                                                : 'Stage Only'}
-                                </button>
-                            ))}
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <button
-                                onClick={onApplyPreparedChordWorkspaceHandoff}
-                                className="rounded-xl border border-emerald-200/40 bg-emerald-200/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-50 transition-all hover:border-emerald-100/60 hover:bg-emerald-200/15"
-                            >
-                                {activeDraftApplyMode === 'stage-only'
-                                    ? 'Keep Staged'
-                                    : (activeStagedProgression?.applied ? 'Apply Again' : 'Apply to Progression')}
-                            </button>
-                            <button
-                                onClick={onOpenProgressionWorkspace}
-                                className="rounded-xl border border-cyan-200/30 bg-cyan-200/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-cyan-50 transition-all hover:border-cyan-100/60 hover:bg-cyan-200/15"
-                            >
-                                Open Progression
-                            </button>
-                            <button
-                                onClick={onClearPreparedChordWorkspaceHandoff}
-                                className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/70 transition-all hover:border-white/20 hover:text-white"
-                            >
-                                Clear
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }

@@ -15,7 +15,7 @@ import { CSS } from '@dnd-kit/utilities';
 
 import { ProgressionInspector } from '../../../features/progression/components/ProgressionInspector';
 import type { ProgressionPlaybackData } from '../../../features/progression/utils/getProgressionPlaybackData';
-import { degreeToChordName, getChordFromDegree, getNoteName } from '../../../utils/guitar/logic';
+import { degreeToChordName, getChordFromDegree } from '../../../utils/guitar/logic';
 import type {
     ChordNode,
     HarmonicFunction,
@@ -394,19 +394,6 @@ function ProgressionTimelineCanvas({
 }
 
 interface ProgressionModeWorkspaceProps {
-    activePreparedChordWorkspaceHandoff: {
-        title: string;
-        degrees: string[];
-    } | null;
-    activeStagedProgression?: {
-        applied?: boolean;
-        lastAppliedMode?: string;
-    } | null;
-    activeDraftApplyMode: 'replace' | 'append' | 'insert-after-focus' | 'stage-only';
-    onApplyPreparedChordWorkspaceHandoff: () => void;
-    onClearPreparedChordWorkspaceHandoff: () => void;
-    tonalContext: { tonicPitchClass?: number; selectedKey: number };
-    effectiveScaleName: string;
     diatonicChords: DiatonicChord[];
     selectedKey: number;
     progressionDoc: { measures: Measure[] };
@@ -432,13 +419,6 @@ interface ProgressionModeWorkspaceProps {
 }
 
 export function ProgressionModeWorkspace({
-    activePreparedChordWorkspaceHandoff,
-    activeStagedProgression,
-    activeDraftApplyMode,
-    onApplyPreparedChordWorkspaceHandoff,
-    onClearPreparedChordWorkspaceHandoff,
-    tonalContext,
-    effectiveScaleName,
     diatonicChords,
     selectedKey,
     progressionDoc,
@@ -538,35 +518,6 @@ export function ProgressionModeWorkspace({
     return (
         <DndContext sensors={sensors} onDragOver={handleDragOver} onDragEnd={wrapHandleDragEnd}>
             <div className="relative z-10 w-full flex flex-col gap-8 animate-in fade-in duration-500">
-                {activePreparedChordWorkspaceHandoff && activeStagedProgression && (
-                    <div className="rounded-[1.5rem] border border-emerald-400/15 bg-emerald-400/[0.05] px-5 py-4 flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-                        <div className="flex flex-col gap-1">
-                            <span className="text-[9px] font-black uppercase tracking-[0.28em] text-emerald-200/70">
-                                {activeStagedProgression.applied ? 'Active Chord Workspace Draft' : 'Staged Chord Workspace Draft'}
-                            </span>
-                            <span className="text-sm font-semibold text-emerald-50">{activePreparedChordWorkspaceHandoff.title}</span>
-                            <span className="text-xs text-emerald-50/75">
-                                {activePreparedChordWorkspaceHandoff.degrees.join(' -> ')} · tonic {getNoteName(tonalContext.tonicPitchClass ?? tonalContext.selectedKey)} · {effectiveScaleName}
-                            </span>
-                            {activeStagedProgression.lastAppliedMode && (
-                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-100/55">
-                                    Last applied via {activeStagedProgression.lastAppliedMode}
-                                </span>
-                            )}
-                        </div>
-                        <div className="flex items-center gap-2">
-                            {!activeStagedProgression.applied && activeDraftApplyMode !== 'stage-only' && (
-                                <button onClick={onApplyPreparedChordWorkspaceHandoff} className="rounded-xl border border-emerald-200/40 bg-emerald-200/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-50 transition-all hover:border-emerald-100/60 hover:bg-emerald-200/15">
-                                    Apply {activeDraftApplyMode}
-                                </button>
-                            )}
-                            <button onClick={onClearPreparedChordWorkspaceHandoff} className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/70 transition-all hover:border-white/20 hover:text-white">
-                                Clear
-                            </button>
-                        </div>
-                    </div>
-                )}
-
                 <div className="flex flex-col gap-4 bg-[#050505]/50 border border-white/5 rounded-3xl p-6 backdrop-blur-sm">
                     <div className="flex items-center gap-2 border-b border-white/5 pb-3">
                         <span className="text-[10px] font-black uppercase text-white/40 tracking-[0.3em]">Diatonic Palette</span>

@@ -28,7 +28,6 @@ import {
 } from '../../utils/guitar/logic';
 import { Mode, HarmonicInterval, Fingering } from '../../utils/guitar/types';
 import { useProgression } from '../../hooks/useProgression';
-import { applyDraftToProgressionDocument, type ProgressionDraftApplyMode } from '../../utils/guitar/progression';
 import {
     createHarmonicWorkspaceState,
     reduceHarmonicWorkspaceState,
@@ -248,9 +247,6 @@ export default function ClientApp() {
     }, [futureVoicingScopeKey, tonalContext]);
 
     const activeFutureVoicingId = harmonicWorkspace.selectedCandidateId;
-    const activePreparedChordWorkspaceHandoff = harmonicWorkspace.preparedHandoff;
-    const activeStagedProgression = harmonicWorkspace.stagedProgression;
-    const activeDraftApplyMode = activeStagedProgression?.applyMode ?? 'replace';
     const futureVoicingCandidates = useMemo(() => {
         try {
             return getRankedVoicingsForChord(chordType, selectedKey, {
@@ -305,40 +301,6 @@ export default function ClientApp() {
             candidateId,
         });
     }, [futureVoicingScopeKey]);
-    const handleSelectDraftApplyMode = useCallback((applyMode: ProgressionDraftApplyMode) => {
-        dispatchHarmonicWorkspace({
-            type: 'set-draft-apply-mode',
-            scopeKey: futureVoicingScopeKey,
-            applyMode,
-        });
-    }, [futureVoicingScopeKey]);
-    const handleClearPreparedChordWorkspaceHandoff = useCallback(() => {
-        dispatchHarmonicWorkspace({
-            type: 'clear-handoff',
-            scopeKey: futureVoicingScopeKey,
-            tonalContext,
-        });
-    }, [futureVoicingScopeKey, tonalContext]);
-    const handleApplyPreparedChordWorkspaceHandoff = useCallback(() => {
-        if (!activeStagedProgression) return;
-
-        const nextProgressionDoc = applyDraftToProgressionDocument(
-            progressionDoc,
-            activeStagedProgression.document,
-            activeStagedProgression.applyMode,
-            focusedNodeId
-        );
-        applyProgressionDocument(nextProgressionDoc, activeStagedProgression.title);
-        dispatchHarmonicWorkspace({
-            type: 'mark-handoff-applied',
-            scopeKey: futureVoicingScopeKey,
-            tonalContext,
-            applyMode: activeStagedProgression.applyMode,
-        });
-    }, [activeStagedProgression, applyProgressionDocument, focusedNodeId, futureVoicingScopeKey, progressionDoc, tonalContext]);
-    const handleOpenProgressionWorkspace = useCallback(() => {
-        setMode('progression');
-    }, []);
 
     const fingering = useMemo(() => {
         if (mode !== 'chord') return undefined;
@@ -594,25 +556,11 @@ export default function ClientApp() {
                             futureVoicingCandidates={futureVoicingCandidates}
                             onSelectFutureVoicing={handleSelectFutureVoicing}
                             activeFutureVoicingId={activeFutureVoicingId}
-                            activePreparedChordWorkspaceHandoff={activePreparedChordWorkspaceHandoff}
-                            activeStagedProgression={activeStagedProgression}
-                            activeDraftApplyMode={activeDraftApplyMode}
-                            onSelectDraftApplyMode={handleSelectDraftApplyMode}
-                            onApplyPreparedChordWorkspaceHandoff={handleApplyPreparedChordWorkspaceHandoff}
-                            onOpenProgressionWorkspace={handleOpenProgressionWorkspace}
-                            onClearPreparedChordWorkspaceHandoff={handleClearPreparedChordWorkspaceHandoff}
                         />
                     )}
 
                     {mode === 'progression' && (
                         <ProgressionModeWorkspace
-                            activePreparedChordWorkspaceHandoff={activePreparedChordWorkspaceHandoff}
-                            activeStagedProgression={activeStagedProgression}
-                            activeDraftApplyMode={activeDraftApplyMode}
-                            onApplyPreparedChordWorkspaceHandoff={handleApplyPreparedChordWorkspaceHandoff}
-                            onClearPreparedChordWorkspaceHandoff={handleClearPreparedChordWorkspaceHandoff}
-                            tonalContext={tonalContext}
-                            effectiveScaleName={effectiveScaleName}
                             diatonicChords={diatonicChords}
                             selectedKey={selectedKey}
                             progressionDoc={progressionDoc}
