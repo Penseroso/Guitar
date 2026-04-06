@@ -21,6 +21,20 @@ export interface GetRankedVoicingsOptions extends ResolveVoicingOptions {
 
 const TOP_SET_TRIAD_IDS = new Set(['major', 'minor']);
 
+function compareChordModeCandidateOrder(left: VoicingCandidate, right: VoicingCandidate): number {
+    if (left.voicing.minFret !== right.voicing.minFret) {
+        return left.voicing.minFret - right.voicing.minFret;
+    }
+
+    const leftRootFret = left.voicing.rootFret ?? Number.MAX_SAFE_INTEGER;
+    const rightRootFret = right.voicing.rootFret ?? Number.MAX_SAFE_INTEGER;
+    if (leftRootFret !== rightRootFret) {
+        return leftRootFret - rightRootFret;
+    }
+
+    return left.voicing.id.localeCompare(right.voicing.id);
+}
+
 function getResolvedVoicingSignature(voicing: ResolvedVoicing): string {
     return voicing.notes
         .map((note) => `${note.string}:${note.isMuted ? 'x' : note.fret}`)
@@ -84,11 +98,19 @@ function isStrictTopSetTriad(voicing: ResolvedVoicing): boolean {
 }
 
 export function shouldSurfaceChordModeVoicing(voicing: ResolvedVoicing): boolean {
+    // This is a chord-mode surfacing policy, not a theory rule. We currently suppress
+    // non-representative three-note major/minor fragments so browsing stays explicit.
     if (!TOP_SET_TRIAD_IDS.has(voicing.chord.id)) {
         return true;
     }
 
     return getPlayedVoicingNotes(voicing).length !== 3 || isStrictTopSetTriad(voicing);
+}
+
+export function orderChordModeVoicingCandidates(candidates: VoicingCandidate[]): VoicingCandidate[] {
+    // Current chord mode is a fret-position browser. Keep engine ranking metadata intact,
+    // but present visible candidates in stable fret-first order.
+    return [...candidates].sort(compareChordModeCandidateOrder);
 }
 
 export function getRankedVoicingsForChord(
@@ -117,6 +139,7 @@ export function getRankedVoicingsForChord(
     const filteredVoicings = options.includeNonPlayableCandidates === true
         ? dedupedResolvedVoicings
         : dedupedResolvedVoicings.filter((voicing) => voicing.playable);
+    // Ranking remains an engine utility for future recommendation/surfacing modes.
     const ranked = rankVoicingCandidates(filteredVoicings, entry, tones, {
         mode: options.rankingMode ?? 'balanced',
     });

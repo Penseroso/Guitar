@@ -5,7 +5,7 @@ import React from 'react';
 import { Fretboard } from '../../Fretboard';
 import { TogglePill } from '../../ui/design-system/TogglePill';
 import { CompactVoicingDiagram } from '../chord-preview/CompactVoicingDiagram';
-import { type VoicingCandidate } from '../../../utils/guitar/chords';
+import { orderChordModeVoicingCandidates, type VoicingCandidate } from '../../../utils/guitar/chords';
 import type { Fingering } from '../../../utils/guitar/types';
 import { getVoicingPresentationMeta } from '../chord-preview/voicing-labels';
 
@@ -28,10 +28,6 @@ interface ChordModeWorkspaceProps {
     chordPreviewTitle: string;
     activeFutureCandidate?: VoicingCandidate | null;
     activeFuturePresentation: ReturnType<typeof getVoicingPresentationMeta>;
-    futureVoicingSelection: {
-        activeCandidateId: string | null;
-        selectionSource: 'requested' | 'first-playable' | 'first-ranked' | 'none';
-    };
     fretboardContainerRef: React.RefObject<HTMLDivElement | null>;
     tuning: number[];
     activeNotes: number[];
@@ -54,7 +50,6 @@ export function ChordModeWorkspace({
     chordPreviewTitle,
     activeFutureCandidate,
     activeFuturePresentation,
-    futureVoicingSelection,
     fretboardContainerRef,
     tuning,
     activeNotes,
@@ -91,20 +86,8 @@ export function ChordModeWorkspace({
     }, []);
 
     const orderedFutureVoicingCandidates = React.useMemo(
-        () => [...futureVoicingCandidates].sort((left, right) => {
-            const leftPosition = left.voicing.minFret ?? left.voicing.rootFret ?? Number.MAX_SAFE_INTEGER;
-            const rightPosition = right.voicing.minFret ?? right.voicing.rootFret ?? Number.MAX_SAFE_INTEGER;
-
-            if (leftPosition !== rightPosition) {
-                return leftPosition - rightPosition;
-            }
-
-            if ((left.voicing.rootFret ?? Number.MAX_SAFE_INTEGER) !== (right.voicing.rootFret ?? Number.MAX_SAFE_INTEGER)) {
-                return (left.voicing.rootFret ?? Number.MAX_SAFE_INTEGER) - (right.voicing.rootFret ?? Number.MAX_SAFE_INTEGER);
-            }
-
-            return right.score - left.score;
-        }),
+        // Chord mode intentionally browses by neck position, not engine ranking.
+        () => orderChordModeVoicingCandidates(futureVoicingCandidates),
         [futureVoicingCandidates]
     );
     const hasEngineCandidates = futureVoicingCandidates.length > 0;
@@ -177,11 +160,6 @@ export function ChordModeWorkspace({
                                 hideDot={true}
                                 className="px-3 py-1.5"
                             />
-                            {futureVoicingSelection.selectionSource !== 'requested' && activeFutureCandidate && (
-                                <span className="px-3 py-1.5 rounded-full border border-emerald-400/25 bg-emerald-400/[0.08] text-[9px] font-black uppercase tracking-[0.25em] text-emerald-200">
-                                    Recommended
-                                </span>
-                            )}
                         </div>
                     </div>
 
@@ -227,8 +205,6 @@ export function ChordModeWorkspace({
                             {orderedFutureVoicingCandidates.map((candidate) => {
                                 const presentation = getVoicingPresentationMeta(candidate.voicing);
                                 const isActive = candidate.voicing.id === activeFutureVoicingId;
-                                const isRecommended = futureVoicingSelection.selectionSource !== 'requested'
-                                    && candidate.voicing.id === activeFutureVoicingId;
 
                                 return (
                                     <button
@@ -245,11 +221,6 @@ export function ChordModeWorkspace({
                                                 <span className="text-[10px] font-black uppercase tracking-[0.18em] text-white/28">
                                                     {candidate.voicing.rootFret !== undefined ? `${candidate.voicing.rootFret}fr` : 'Open'}
                                                 </span>
-                                                {isRecommended && (
-                                                    <span className="rounded-full border border-emerald-400/25 bg-emerald-400/[0.08] px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.18em] text-emerald-200">
-                                                        Recommended
-                                                    </span>
-                                                )}
                                             </div>
                                             <div className="flex min-h-[10.5rem] items-center justify-center rounded-[0.9rem] border border-white/6 bg-[#070707] px-2 py-3">
                                                 <CompactVoicingDiagram

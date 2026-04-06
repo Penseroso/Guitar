@@ -12,7 +12,11 @@ import {
     resolveVoicingTemplateAcrossPositions,
 } from './resolver';
 import { getVoicingTemplatesForChord } from './templates';
-import { getRankedVoicingsForChord, shouldSurfaceChordModeVoicing } from './voicings';
+import {
+    getRankedVoicingsForChord,
+    orderChordModeVoicingCandidates,
+    shouldSurfaceChordModeVoicing,
+} from './voicings';
 
 describe('voicing template adaptation', () => {
     it('adapts legacy major shapes into future-facing templates', () => {
@@ -198,6 +202,52 @@ describe('voicing resolution', () => {
 });
 
 describe('voicing ranking orchestration', () => {
+    it('supports a separate chord-mode fret-first ordering policy without using score', () => {
+        const lowerButLowerScore = {
+            ...buildVoicingCandidate(getRankedVoicingsForChord('major', 0)[0].voicing, 'major'),
+            score: 10,
+        };
+        const samePositionLowerRoot = {
+            ...buildVoicingCandidate(getRankedVoicingsForChord('major', 0)[0].voicing, 'major'),
+            score: 500,
+        };
+        const higherButHigherScore = {
+            ...buildVoicingCandidate(getRankedVoicingsForChord('major', 0)[0].voicing, 'major'),
+            score: 999,
+        };
+
+        lowerButLowerScore.voicing = {
+            ...lowerButLowerScore.voicing,
+            id: 'lower',
+            minFret: 1,
+            rootFret: 3,
+        };
+        samePositionLowerRoot.voicing = {
+            ...samePositionLowerRoot.voicing,
+            id: 'same-position-lower-root',
+            minFret: 5,
+            rootFret: 4,
+        };
+        higherButHigherScore.voicing = {
+            ...higherButHigherScore.voicing,
+            id: 'higher',
+            minFret: 5,
+            rootFret: 5,
+        };
+
+        const ordered = orderChordModeVoicingCandidates([
+            higherButHigherScore,
+            lowerButLowerScore,
+            samePositionLowerRoot,
+        ]);
+
+        expect(ordered.map((candidate) => candidate.voicing.id)).toEqual([
+            'lower',
+            'same-position-lower-root',
+            'higher',
+        ]);
+    });
+
     it('pushes playable major shapes above invalid legacy variants', () => {
         const candidates = getRankedVoicingsForChord('major', 9, {
             includeNonPlayableCandidates: true,

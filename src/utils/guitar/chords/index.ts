@@ -114,6 +114,7 @@ export type { GetRankedVoicingsOptions } from './voicings';
 
 export {
     getRankedVoicingsForChord,
+    orderChordModeVoicingCandidates,
 } from './voicings';
 
 export type {

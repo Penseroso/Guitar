@@ -10,6 +10,7 @@ import {
     getChordTypeLabel,
     getChordTypeSuffix,
     getRankedVoicingsForChord,
+    orderChordModeVoicingCandidates,
     resolveChordRegistryEntry,
     type ResolvedVoicing,
 } from '../../utils/guitar/chords';
@@ -117,7 +118,6 @@ export default function ClientApp() {
         clearAllNodes,
         appendMeasure,
         applyPreset,
-        applyProgressionDocument,
         updateNodeDuration,
     } = useProgression();
 
@@ -255,8 +255,8 @@ export default function ClientApp() {
         });
     }, [futureVoicingScopeKey, tonalContext]);
 
-    const activeFutureVoicingId = harmonicWorkspace.selectedCandidateId;
-    const futureVoicingCandidates = useMemo(() => {
+    const requestedFutureVoicingId = harmonicWorkspace.selectedCandidateId;
+    const rankedFutureVoicingCandidates = useMemo(() => {
         try {
             return getRankedVoicingsForChord(chordType, selectedKey, {
                 maxRootFret: 15,
@@ -266,11 +266,16 @@ export default function ClientApp() {
             return [];
         }
     }, [chordType, selectedKey]);
+    const futureVoicingCandidates = useMemo(
+        () => orderChordModeVoicingCandidates(rankedFutureVoicingCandidates),
+        [rankedFutureVoicingCandidates]
+    );
     const futureVoicingSelection = useMemo(
-        () => resolveBridgeSelection(futureVoicingCandidates, activeFutureVoicingId),
-        [activeFutureVoicingId, futureVoicingCandidates]
+        () => resolveBridgeSelection(futureVoicingCandidates, requestedFutureVoicingId),
+        [futureVoicingCandidates, requestedFutureVoicingId]
     );
     const activeFutureCandidate = futureVoicingSelection.activeCandidate;
+    const activeFutureVoicingId = futureVoicingSelection.activeCandidateId;
     const activeFutureVoicingFingering = useMemo(
         () => buildResolvedVoicingFingering(activeFutureCandidate?.voicing),
         [activeFutureCandidate]
@@ -285,7 +290,7 @@ export default function ClientApp() {
     const chordPreviewSecondaryLabel = activeFutureCandidate
         ? activeFuturePresentation.secondaryLabel
         : futureVoicingCandidates.length === 0
-            ? 'No ranked candidates for this chord'
+            ? 'No voicing candidates for this chord'
             : 'No candidate selected';
     const chordPreviewTitle = useMemo(() => {
         const root = getNoteName(selectedKey);
@@ -552,7 +557,6 @@ export default function ClientApp() {
                             chordPreviewTitle={chordPreviewTitle}
                             activeFutureCandidate={activeFutureCandidate}
                             activeFuturePresentation={activeFuturePresentation}
-                            futureVoicingSelection={futureVoicingSelection}
                             fretboardContainerRef={fretboardContainerRef}
                             tuning={TUNING}
                             activeNotes={activeNotes}

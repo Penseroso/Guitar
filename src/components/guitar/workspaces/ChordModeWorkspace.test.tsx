@@ -51,10 +51,6 @@ describe('ChordModeWorkspace', () => {
                 chordPreviewTitle="C"
                 activeFutureCandidate={candidate}
                 activeFuturePresentation={getVoicingPresentationMeta(candidate.voicing)}
-                futureVoicingSelection={{
-                    activeCandidateId: candidate.voicing.id,
-                    selectionSource: 'requested',
-                }}
                 fretboardContainerRef={{ current: null }}
                 tuning={[4, 9, 2, 7, 11, 4]}
                 activeNotes={[]}
@@ -101,10 +97,6 @@ describe('ChordModeWorkspace', () => {
                 chordPreviewTitle="C"
                 activeFutureCandidate={higherCandidate}
                 activeFuturePresentation={getVoicingPresentationMeta(higherCandidate.voicing)}
-                futureVoicingSelection={{
-                    activeCandidateId: higherCandidate.voicing.id,
-                    selectionSource: 'requested',
-                }}
                 fretboardContainerRef={{ current: null }}
                 tuning={[4, 9, 2, 7, 11, 4]}
                 activeNotes={[]}
@@ -152,10 +144,6 @@ describe('ChordModeWorkspace', () => {
                 chordPreviewTitle="C11"
                 activeFutureCandidate={candidate}
                 activeFuturePresentation={getVoicingPresentationMeta(candidate.voicing)}
-                futureVoicingSelection={{
-                    activeCandidateId: candidate.voicing.id,
-                    selectionSource: 'requested',
-                }}
                 fretboardContainerRef={{ current: null }}
                 tuning={[4, 9, 2, 7, 11, 4]}
                 activeNotes={[]}
@@ -191,10 +179,6 @@ describe('ChordModeWorkspace', () => {
                 chordPreviewTitle="C"
                 activeFutureCandidate={candidate}
                 activeFuturePresentation={getVoicingPresentationMeta(candidate.voicing)}
-                futureVoicingSelection={{
-                    activeCandidateId: candidate.voicing.id,
-                    selectionSource: 'first-playable',
-                }}
                 fretboardContainerRef={{ current: null }}
                 tuning={[4, 9, 2, 7, 11, 4]}
                 activeNotes={[]}
@@ -212,6 +196,6 @@ describe('ChordModeWorkspace', () => {
         );
 
         expect(markup).toContain('diagram');
-        expect(markup).toContain('Recommended');
+        expect(markup).not.toContain('Recommended');
     });
 });

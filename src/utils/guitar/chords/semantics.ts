@@ -1,6 +1,7 @@
 import type { ChordRegistryEntry } from './registry';
 import type { ChordTone } from './types';
 
+// Theory / semantic rules only: chord formula closure, required degrees, and tone-role meaning.
 const FORMULA_CLOSED_CHORD_IDS = new Set<ChordRegistryEntry['id']>([
     'major',
     'minor',

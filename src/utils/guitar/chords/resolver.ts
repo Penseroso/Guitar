@@ -256,7 +256,9 @@ function resolveVoicingSeed(
         ? undefined
         : lowestPlayedNote?.pitchClass === requestedSlashBassPitchClass;
     const hasInvalidFrets = playedFrets.some((fret) => fret < 0);
-    const exceedsPlayableSpan = span >= 4;
+    // Empirical P1 guardrail: the current generator still emits many obviously awkward
+    // grips at span 4+, so chord-mode surfacing treats them as non-playable for now.
+    const violatesEmpiricalSpanGuardrail = span >= 4;
     const violatesConstraintRange = (
         (constraints.minFret !== undefined && playedFrets.some((fret) => fret < constraints.minFret!)) ||
         (constraints.maxFret !== undefined && playedFrets.some((fret) => fret > constraints.maxFret!)) ||
@@ -302,7 +304,7 @@ function resolveVoicingSeed(
         span,
         playable: playedNotes.length > 0
             && !hasInvalidFrets
-            && !exceedsPlayableSpan
+            && !violatesEmpiricalSpanGuardrail
             && !violatesConstraintRange
             && outOfFormulaPitchClasses.length === 0,
         lowestPlayedPitchClass: lowestPlayedNote?.pitchClass,

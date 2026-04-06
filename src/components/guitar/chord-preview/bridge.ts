@@ -1,6 +1,6 @@
 import type { VoicingCandidate } from '../../../utils/guitar/chords';
 
-export type BridgeSelectionSource = 'requested' | 'first-playable' | 'first-ranked' | 'none';
+export type BridgeSelectionSource = 'requested' | 'first-available' | 'none';
 
 export interface BridgeSelectionResolution {
     activeCandidate: VoicingCandidate | null;
@@ -50,16 +50,14 @@ export function resolveBridgeSelection(
         }
     }
 
-    const firstPlayableIndex = candidates.findIndex((candidate) => candidate.voicing.playable);
-    const resolvedIndex = firstPlayableIndex >= 0 ? firstPlayableIndex : 0;
-    const resolvedCandidate = candidates[resolvedIndex];
+    const resolvedCandidate = candidates[0];
 
     return {
         activeCandidate: resolvedCandidate,
         activeCandidateId: resolvedCandidate.voicing.id,
-        activeIndex: resolvedIndex,
-        hasPlayableCandidates: firstPlayableIndex >= 0,
-        selectionSource: firstPlayableIndex >= 0 ? 'first-playable' : 'first-ranked',
+        activeIndex: 0,
+        hasPlayableCandidates: candidates.some((candidate) => candidate.voicing.playable),
+        selectionSource: 'first-available',
     };
 }
 

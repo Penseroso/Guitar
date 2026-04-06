@@ -50,27 +50,17 @@ function makeCandidate(id: string, playable: boolean, score: number): VoicingCan
 }
 
 describe('future chord bridge selection', () => {
-    it('defaults to the first playable candidate when the top-ranked entry is not playable', () => {
+    it('defaults to the first candidate in the provided order when nothing is requested', () => {
         const resolution = resolveBridgeSelection([
             makeCandidate('ranked-but-unplayable', false, 100),
             makeCandidate('first-playable', true, 90),
             makeCandidate('second-playable', true, 80),
         ]);
 
-        expect(resolution.activeCandidateId).toBe('first-playable');
-        expect(resolution.activeIndex).toBe(1);
-        expect(resolution.selectionSource).toBe('first-playable');
-    });
-
-    it('falls back to the first ranked candidate when nothing playable exists', () => {
-        const resolution = resolveBridgeSelection([
-            makeCandidate('rank-1', false, 100),
-            makeCandidate('rank-2', false, 90),
-        ]);
-
-        expect(resolution.activeCandidateId).toBe('rank-1');
+        expect(resolution.activeCandidateId).toBe('ranked-but-unplayable');
         expect(resolution.activeIndex).toBe(0);
-        expect(resolution.selectionSource).toBe('first-ranked');
+        expect(resolution.selectionSource).toBe('first-available');
+        expect(resolution.hasPlayableCandidates).toBe(true);
     });
 
     it('preserves an explicit requested selection when it remains valid', () => {
