@@ -6,9 +6,9 @@ import {
     resolveVoicingTemplatesAcrossPositions,
     type ResolveVoicingOptions,
 } from './resolver';
-import { getVoicingTemplatesForChord } from './templates';
+import { getLegacyVoicingTemplatesForChord } from './templates';
 import type { ChordRegistryEntry } from './registry';
-import type { ResolvedVoicing, VoicingCandidate, VoicingRankingMode } from './types';
+import type { ResolvedVoicing, VoicingCandidate, VoicingRankingMode, VoicingTemplate } from './types';
 
 export interface GetRankedVoicingsOptions extends ResolveVoicingOptions {
     resolveAcrossPositions?: boolean;
@@ -20,6 +20,13 @@ export interface GetRankedVoicingsOptions extends ResolveVoicingOptions {
 }
 
 const TOP_SET_TRIAD_IDS = new Set(['major', 'minor']);
+
+export interface VoicingTemplateSourceCollection {
+    legacyTemplates: VoicingTemplate[];
+    curatedTemplates: VoicingTemplate[];
+    generatedTemplates: VoicingTemplate[];
+    allTemplates: VoicingTemplate[];
+}
 
 // Candidate-source preservation: legacy CHORD_SHAPES and generated templates both remain
 // intentional engine inputs in this phase. We are only clarifying policy boundaries here.
@@ -52,6 +59,12 @@ function getTemplateSourcePriority(voicing: ResolvedVoicing): number {
         default:
             return 2;
     }
+}
+
+function getCuratedVoicingTemplatesForChord(_entryInput: string | ChordRegistryEntry): VoicingTemplate[] {
+    // Future curated seam: reserved for hand-authored or reviewed inventories that should sit
+    // between legacy imports and generated blueprints without changing the rest of the pipeline.
+    return [];
 }
 
 function dedupeResolvedVoicings(voicings: ResolvedVoicing[]): ResolvedVoicing[] {
@@ -117,6 +130,26 @@ function applyChordModeSurfacingPolicies(voicings: ResolvedVoicing[]): ResolvedV
         .filter((voicing) => shouldSurfaceChordModeVoicing(voicing));
 }
 
+export function collectVoicingTemplateSourcesForChord(
+    entryInput: string | ChordRegistryEntry,
+    options: GetRankedVoicingsOptions = {}
+): VoicingTemplateSourceCollection {
+    const legacyTemplates = options.includeLegacyCandidates === false
+        ? []
+        : getLegacyVoicingTemplatesForChord(entryInput);
+    const curatedTemplates = getCuratedVoicingTemplatesForChord(entryInput);
+    const generatedTemplates = options.includeGeneratedCandidates === false
+        ? []
+        : getGeneratedVoicingTemplatesForChord(entryInput);
+
+    return {
+        legacyTemplates,
+        curatedTemplates,
+        generatedTemplates,
+        allTemplates: [...legacyTemplates, ...curatedTemplates, ...generatedTemplates],
+    };
+}
+
 export function orderChordModeVoicingCandidates(candidates: VoicingCandidate[]): VoicingCandidate[] {
     // Current chord mode is a fret-position browser. Keep engine ranking metadata intact,
     // but present visible candidates in stable fret-first order.
@@ -143,16 +176,10 @@ export function getRankedVoicingsForChord(
         slashBassPitchClass: options.slashBassPitchClass,
     });
     const tones = buildChordTonesFromRegistryEntry(entry, rootPitchClass);
-    const legacyTemplates = options.includeLegacyCandidates === false
-        ? []
-        : getVoicingTemplatesForChord(entry);
-    const generatedTemplates = options.includeGeneratedCandidates === false
-        ? []
-        : getGeneratedVoicingTemplatesForChord(entry);
-    const templates = [...legacyTemplates, ...generatedTemplates];
+    const templateSources = collectVoicingTemplateSourcesForChord(entry, options);
     const resolvedVoicings = options.resolveAcrossPositions === false
-        ? resolveVoicingTemplates(chord, tones, templates, options)
-        : resolveVoicingTemplatesAcrossPositions(chord, tones, templates, options);
+        ? resolveVoicingTemplates(chord, tones, templateSources.allTemplates, options)
+        : resolveVoicingTemplatesAcrossPositions(chord, tones, templateSources.allTemplates, options);
     const surfacedResolvedVoicings = applyChordModeSurfacingPolicies(resolvedVoicings);
     const dedupedResolvedVoicings = dedupeResolvedVoicings(surfacedResolvedVoicings);
     const filteredVoicings = options.includeNonPlayableCandidates === true

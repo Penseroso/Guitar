@@ -5,8 +5,8 @@ import { buildChordTonesFromRegistryEntry, normalizePitchClass, resolveChordRegi
 import type { ChordRegistryEntry } from './registry';
 import type { VoicingTemplate, VoicingTemplateString } from './types';
 
-// Legacy CHORD_SHAPES remain an intentional template source in P2a. They continue to feed
-// the engine alongside generated templates until a later dedicated replacement pass.
+// Legacy CHORD_SHAPES remain an intentional engine source layer. They continue to feed
+// the candidate pipeline alongside generated templates until a later replacement pass.
 function slugifyTemplateLabel(value: string): string {
     return value
         .toLowerCase()
@@ -96,7 +96,7 @@ export function getVoicingTemplatesByLegacyType(legacyType: string): VoicingTemp
     return shapes.map((shape, index) => buildVoicingTemplateFromLegacyShape(entry, shape, index));
 }
 
-export function getVoicingTemplatesForChord(entryInput: string | ChordRegistryEntry): VoicingTemplate[] {
+export function getLegacyVoicingTemplatesForChord(entryInput: string | ChordRegistryEntry): VoicingTemplate[] {
     const entry = resolveChordRegistryEntry(entryInput);
     const legacyShapeKey = getLegacyShapeKeyForChord(entry);
 
@@ -106,4 +106,8 @@ export function getVoicingTemplatesForChord(entryInput: string | ChordRegistryEn
 
     const shapes = CHORD_SHAPES[legacyShapeKey] ?? [];
     return shapes.map((shape, index) => buildVoicingTemplateFromLegacyShape(entry, shape, index));
+}
+
+export function getVoicingTemplatesForChord(entryInput: string | ChordRegistryEntry): VoicingTemplate[] {
+    return getLegacyVoicingTemplatesForChord(entryInput);
 }

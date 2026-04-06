@@ -66,6 +66,7 @@ export {
 
 export {
     buildVoicingTemplateFromLegacyShape,
+    getLegacyVoicingTemplatesForChord,
     getLegacyShapeKeyForChord,
     getVoicingTemplatesForChord,
     getVoicingTemplatesByLegacyType,
@@ -113,6 +114,7 @@ export {
 export type { GetRankedVoicingsOptions } from './voicings';
 
 export {
+    collectVoicingTemplateSourcesForChord,
     getChordModeVoicingsForChord,
     getRankedVoicingsForChord,
     orderChordModeVoicingCandidates,

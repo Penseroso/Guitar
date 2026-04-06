@@ -32,6 +32,15 @@ const REQUIRED_DEGREES_BY_ID: Partial<Record<ChordRegistryEntry['id'], string[]>
     sus2: ['1', '2'],
 };
 
+const THIRD_DEGREES = new Set(['b3', '3']);
+const FIFTH_DEGREES = new Set(['b5', '5', '#5']);
+const SEVENTH_FUNCTION_DEGREES = new Set(['6', 'b7', '7']);
+const EXTENSION_DEGREES = new Set(['9', '11', '13', '2', '4']);
+
+function isSuspensionDegree(entry: ChordRegistryEntry, degree: string): boolean {
+    return (entry.id === 'sus2' || entry.id === 'sus4') && (degree === '2' || degree === '4');
+}
+
 export function deriveChordToneRole(entry: ChordRegistryEntry, degree: string): ChordTone['role'] {
     if (degree === '1') return 'root';
 
@@ -39,14 +48,14 @@ export function deriveChordToneRole(entry: ChordRegistryEntry, degree: string): 
         return 'extension';
     }
 
-    if ((entry.id === 'sus2' || entry.id === 'sus4') && (degree === '2' || degree === '4')) {
+    if (isSuspensionDegree(entry, degree)) {
         return 'suspension';
     }
 
-    if (degree === 'b3' || degree === '3') return 'third';
-    if (degree === 'b5' || degree === '5' || degree === '#5') return 'fifth';
-    if (degree === '6' || degree === 'b7' || degree === '7') return 'seventh';
-    if (degree === '9' || degree === '11' || degree === '13' || degree === '2' || degree === '4') {
+    if (THIRD_DEGREES.has(degree)) return 'third';
+    if (FIFTH_DEGREES.has(degree)) return 'fifth';
+    if (SEVENTH_FUNCTION_DEGREES.has(degree)) return 'seventh';
+    if (EXTENSION_DEGREES.has(degree)) {
         return 'extension';
     }
 

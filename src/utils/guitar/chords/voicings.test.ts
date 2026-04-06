@@ -12,17 +12,19 @@ import {
     resolveVoicingTemplate,
     resolveVoicingTemplateAcrossPositions,
 } from './resolver';
-import { getVoicingTemplatesForChord } from './templates';
+import { getLegacyVoicingTemplatesForChord, getVoicingTemplatesForChord } from './templates';
+import type { VoicingTemplateString } from './types';
 import {
     getChordModeVoicingsForChord,
     getRankedVoicingsForChord,
+    collectVoicingTemplateSourcesForChord,
     orderChordModeVoicingCandidates,
     shouldSurfaceChordModeVoicing,
 } from './voicings';
 
 describe('voicing template adaptation', () => {
     it('adapts legacy major shapes into future-facing templates', () => {
-        const templates = getVoicingTemplatesForChord('major');
+        const templates = getLegacyVoicingTemplatesForChord('major');
         const firstTemplate = templates[0];
 
         expect(templates).toHaveLength(5);
@@ -34,6 +36,21 @@ describe('voicing template adaptation', () => {
         expect(firstTemplate.strings).toHaveLength(6);
         expect(firstTemplate.strings[0]).toMatchObject({ string: 0, fretOffset: 0, toneDegree: '1' });
         expect(firstTemplate.strings[4]).toMatchObject({ string: 4, fretOffset: 2, toneDegree: '5' });
+    });
+
+    it('collects candidate templates as explicit source layers while preserving current coverage', () => {
+        const sources = collectVoicingTemplateSourcesForChord('major-7');
+
+        expect(sources.legacyTemplates.length).toBeGreaterThan(0);
+        expect(sources.generatedTemplates.length).toBeGreaterThan(0);
+        expect(sources.curatedTemplates).toEqual([]);
+        expect(sources.allTemplates).toEqual([
+            ...sources.legacyTemplates,
+            ...sources.curatedTemplates,
+            ...sources.generatedTemplates,
+        ]);
+        expect(sources.legacyTemplates.every((template) => template.source === 'legacy-shape')).toBe(true);
+        expect(sources.generatedTemplates.every((template) => template.source === 'generated')).toBe(true);
     });
 });
 
@@ -103,7 +120,7 @@ describe('voicing resolution', () => {
         const entry = resolveChordRegistryEntry('major');
         const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
         const tones = buildChordTonesFromRegistryEntry(entry, 0);
-        const pollutedStrings = [
+        const pollutedStrings: VoicingTemplateString[] = [
             { string: 0, fretOffset: null },
             { string: 1, fretOffset: -3 },
             { string: 2, fretOffset: -3, toneDegree: '5' },
