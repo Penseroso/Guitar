@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
+import { getCuratedVoicingTemplatesForChord } from './curated';
 import {
     buildChordDefinitionFromRegistryEntry,
     buildChordTonesFromRegistryEntry,
@@ -42,15 +43,24 @@ describe('voicing template adaptation', () => {
         const sources = collectVoicingTemplateSourcesForChord('major-7');
 
         expect(sources.legacyTemplates.length).toBeGreaterThan(0);
+        expect(sources.curatedTemplates.length).toBeGreaterThan(0);
         expect(sources.generatedTemplates.length).toBeGreaterThan(0);
-        expect(sources.curatedTemplates).toEqual([]);
         expect(sources.allTemplates).toEqual([
             ...sources.legacyTemplates,
             ...sources.curatedTemplates,
             ...sources.generatedTemplates,
         ]);
         expect(sources.legacyTemplates.every((template) => template.source === 'legacy-shape')).toBe(true);
+        expect(sources.curatedTemplates.every((template) => template.source === 'curated')).toBe(true);
         expect(sources.generatedTemplates.every((template) => template.source === 'generated')).toBe(true);
+    });
+
+    it('keeps curated coverage empty outside the pilot chord set', () => {
+        const sources = collectVoicingTemplateSourcesForChord('dominant-13');
+
+        expect(sources.curatedTemplates).toEqual([]);
+        expect(sources.legacyTemplates.length).toBeGreaterThan(0);
+        expect(sources.generatedTemplates.length).toBeGreaterThan(0);
     });
 });
 
@@ -311,6 +321,16 @@ describe('voicing ranking orchestration', () => {
         expect(chordModeCandidates.map((candidate) => candidate.voicing.id)).toEqual(
             orderChordModeVoicingCandidates(ranked).map((candidate) => candidate.voicing.id)
         );
+    });
+
+    it('keeps chord-mode candidate presentation fret-first even when curated seeds are active', () => {
+        const chordModeCandidates = getChordModeVoicingsForChord('major-7', 0, {
+            maxRootFret: 15,
+            maxCandidates: 12,
+        });
+
+        const minFrets = chordModeCandidates.map((candidate) => candidate.voicing.minFret);
+        expect(minFrets).toEqual([...minFrets].sort((left, right) => left - right));
     });
 
     it('pushes playable major shapes above invalid legacy variants', () => {
@@ -687,5 +707,55 @@ describe('voicing ranking orchestration', () => {
 
         expect(cleanSuspended.score).toBeGreaterThan(pollutedSuspended.score);
         expect(pollutedSuspended.reasons).toContain('Introduces a third into a suspended chord.');
+    });
+});
+
+describe('curated source pilot', () => {
+    it('provides a real curated inventory for the pilot chord set', () => {
+        expect(getCuratedVoicingTemplatesForChord('major').length).toBeGreaterThan(0);
+        expect(getCuratedVoicingTemplatesForChord('minor').length).toBeGreaterThan(0);
+        expect(getCuratedVoicingTemplatesForChord('major-7').length).toBeGreaterThan(0);
+        expect(getCuratedVoicingTemplatesForChord('minor-7').length).toBeGreaterThan(0);
+        expect(getCuratedVoicingTemplatesForChord('dominant-7').length).toBeGreaterThan(0);
+    });
+
+    it('resolves curated templates with curated provenance', () => {
+        const entry = resolveChordRegistryEntry('major-7');
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+        const template = getCuratedVoicingTemplatesForChord(entry)[0];
+        const resolved = resolveVoicingTemplate(chord, tones, template);
+
+        expect(template.source).toBe('curated');
+        expect(resolved.descriptor.provenance.sourceKind).toBe('curated');
+        expect(resolved.descriptor.provenance.seedId).toBe(template.id);
+    });
+
+    it('prefers curated provenance over legacy imports when identical seeds resolve to the same voicing', () => {
+        const entry = resolveChordRegistryEntry('major-7');
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+        const sources = collectVoicingTemplateSourcesForChord(entry);
+        const resolvedLegacy = resolveVoicingTemplate(chord, tones, sources.legacyTemplates[1]);
+        const resolvedCurated = resolveVoicingTemplate(chord, tones, sources.curatedTemplates[0]);
+        const candidates = getRankedVoicingsForChord(entry, 0, {
+            includeNonPlayableCandidates: true,
+            maxCandidates: 20,
+        });
+
+        expect(resolvedLegacy.notes).toEqual(resolvedCurated.notes);
+        expect(candidates.some((candidate) => candidate.voicing.descriptor.provenance.sourceKind === 'curated')).toBe(true);
+        expect(candidates.some((candidate) => candidate.voicing.id === resolvedCurated.id)).toBe(true);
+        expect(candidates.some((candidate) => candidate.voicing.id === resolvedLegacy.id)).toBe(false);
+    });
+
+    it('preserves non-pilot chords on legacy plus generated paths only', () => {
+        const candidates = getRankedVoicingsForChord('dominant-13', 0, {
+            includeNonPlayableCandidates: true,
+            maxCandidates: 20,
+        });
+
+        expect(candidates.length).toBeGreaterThan(0);
+        expect(candidates.every((candidate) => candidate.voicing.descriptor.provenance.sourceKind !== 'curated')).toBe(true);
     });
 });

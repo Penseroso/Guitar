@@ -1,4 +1,5 @@
 import { buildChordDefinitionFromRegistryEntry, buildChordTonesFromRegistryEntry, resolveChordRegistryEntry } from './helpers';
+import { getCuratedVoicingTemplatesForChord } from './curated';
 import { getGeneratedVoicingTemplatesForChord } from './generated';
 import { rankVoicingCandidates } from './ranking';
 import {
@@ -50,21 +51,17 @@ function getResolvedVoicingSignature(voicing: ResolvedVoicing): string {
         .join('|');
 }
 
-function getTemplateSourcePriority(voicing: ResolvedVoicing): number {
+function getTemplateSourceDedupePriority(voicing: ResolvedVoicing): number {
     switch (voicing.descriptor.provenance.sourceKind) {
-        case 'legacy-import':
-            return 0;
+        // Curated inventory is the reviewed source layer, so exact duplicates should retain
+        // curated provenance before falling back to preserved legacy imports or generated seeds.
         case 'curated':
+            return 0;
+        case 'legacy-import':
             return 1;
         default:
             return 2;
     }
-}
-
-function getCuratedVoicingTemplatesForChord(_entryInput: string | ChordRegistryEntry): VoicingTemplate[] {
-    // Future curated seam: reserved for hand-authored or reviewed inventories that should sit
-    // between legacy imports and generated blueprints without changing the rest of the pipeline.
-    return [];
 }
 
 function dedupeResolvedVoicings(voicings: ResolvedVoicing[]): ResolvedVoicing[] {
@@ -74,7 +71,7 @@ function dedupeResolvedVoicings(voicings: ResolvedVoicing[]): ResolvedVoicing[] 
         const signature = getResolvedVoicingSignature(voicing);
         const existing = deduped.get(signature);
 
-        if (!existing || getTemplateSourcePriority(voicing) < getTemplateSourcePriority(existing)) {
+        if (!existing || getTemplateSourceDedupePriority(voicing) < getTemplateSourceDedupePriority(existing)) {
             deduped.set(signature, voicing);
         }
     }

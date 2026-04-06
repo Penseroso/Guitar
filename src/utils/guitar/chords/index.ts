@@ -73,6 +73,10 @@ export {
 } from './templates';
 
 export {
+    getCuratedVoicingTemplatesForChord,
+} from './curated';
+
+export {
     deriveVoicingDescriptor,
     getVoicingDisplayName,
     getVoicingDisplaySubtitle,
