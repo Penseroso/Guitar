@@ -24,6 +24,8 @@ export function resolveBridgeSelection(
     candidates: VoicingCandidate[],
     requestedCandidateId?: string | null
 ): BridgeSelectionResolution {
+    // The bridge does not impose ranking or browsing policy. It trusts the caller's
+    // candidate order, so chord mode can stay aligned with its fret-first list.
     if (candidates.length === 0) {
         return {
             activeCandidate: null,

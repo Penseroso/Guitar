@@ -113,6 +113,16 @@ export function orderChordModeVoicingCandidates(candidates: VoicingCandidate[]):
     return [...candidates].sort(compareChordModeCandidateOrder);
 }
 
+export function getChordModeVoicingsForChord(
+    entryInput: string | ChordRegistryEntry,
+    rootPitchClass: number,
+    options: GetRankedVoicingsOptions = {}
+): VoicingCandidate[] {
+    // Chord mode currently consumes the same engine candidates as future ranking-aware
+    // surfaces, but applies its own explicit fret-first browsing order.
+    return orderChordModeVoicingCandidates(getRankedVoicingsForChord(entryInput, rootPitchClass, options));
+}
+
 export function getRankedVoicingsForChord(
     entryInput: string | ChordRegistryEntry,
     rootPitchClass: number,

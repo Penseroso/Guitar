@@ -5,7 +5,7 @@ import React from 'react';
 import { Fretboard } from '../../Fretboard';
 import { TogglePill } from '../../ui/design-system/TogglePill';
 import { CompactVoicingDiagram } from '../chord-preview/CompactVoicingDiagram';
-import { orderChordModeVoicingCandidates, type VoicingCandidate } from '../../../utils/guitar/chords';
+import { type VoicingCandidate } from '../../../utils/guitar/chords';
 import type { Fingering } from '../../../utils/guitar/types';
 import { getVoicingPresentationMeta } from '../chord-preview/voicing-labels';
 
@@ -85,11 +85,6 @@ export function ChordModeWorkspace({
         return segments.join(' · ');
     }, []);
 
-    const orderedFutureVoicingCandidates = React.useMemo(
-        // Chord mode intentionally browses by neck position, not engine ranking.
-        () => orderChordModeVoicingCandidates(futureVoicingCandidates),
-        [futureVoicingCandidates]
-    );
     const hasEngineCandidates = futureVoicingCandidates.length > 0;
     const chordWorkspaceEmptyMessage = !hasEngineCandidates
         ? 'No playable voicing candidates found for this chord yet.'
@@ -197,12 +192,12 @@ export function ChordModeWorkspace({
                                 <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Voicing</span>
                             </div>
                             <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/25">
-                                {orderedFutureVoicingCandidates.length} choices
+                                {futureVoicingCandidates.length} choices
                             </span>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2.5">
-                            {orderedFutureVoicingCandidates.map((candidate) => {
+                            {futureVoicingCandidates.map((candidate) => {
                                 const presentation = getVoicingPresentationMeta(candidate.voicing);
                                 const isActive = candidate.voicing.id === activeFutureVoicingId;
 
@@ -242,7 +237,7 @@ export function ChordModeWorkspace({
                                 );
                             })}
                         </div>
-                        {orderedFutureVoicingCandidates.length === 0 && (
+                        {futureVoicingCandidates.length === 0 && (
                             <div className="rounded-[1.25rem] border border-white/5 bg-white/[0.02] px-4 py-4 text-sm text-white/55">
                                 No playable voicing candidates found for this chord yet.
                             </div>

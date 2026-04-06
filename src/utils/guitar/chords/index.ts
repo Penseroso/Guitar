@@ -113,6 +113,7 @@ export {
 export type { GetRankedVoicingsOptions } from './voicings';
 
 export {
+    getChordModeVoicingsForChord,
     getRankedVoicingsForChord,
     orderChordModeVoicingCandidates,
 } from './voicings';

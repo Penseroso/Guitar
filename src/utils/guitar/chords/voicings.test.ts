@@ -13,6 +13,7 @@ import {
 } from './resolver';
 import { getVoicingTemplatesForChord } from './templates';
 import {
+    getChordModeVoicingsForChord,
     getRankedVoicingsForChord,
     orderChordModeVoicingCandidates,
     shouldSurfaceChordModeVoicing,
@@ -246,6 +247,47 @@ describe('voicing ranking orchestration', () => {
             'same-position-lower-root',
             'higher',
         ]);
+    });
+
+    it('keeps chord-mode ordering stable by voicing id when fret position ties', () => {
+        const laterId = {
+            ...buildVoicingCandidate(getRankedVoicingsForChord('major', 0)[0].voicing, 'major'),
+        };
+        const earlierId = {
+            ...buildVoicingCandidate(getRankedVoicingsForChord('major', 0)[0].voicing, 'major'),
+        };
+
+        laterId.voicing = {
+            ...laterId.voicing,
+            id: 'voicing-b',
+            minFret: 5,
+            rootFret: 5,
+        };
+        earlierId.voicing = {
+            ...earlierId.voicing,
+            id: 'voicing-a',
+            minFret: 5,
+            rootFret: 5,
+        };
+
+        const ordered = orderChordModeVoicingCandidates([laterId, earlierId]);
+
+        expect(ordered.map((candidate) => candidate.voicing.id)).toEqual(['voicing-a', 'voicing-b']);
+    });
+
+    it('provides chord-mode candidates through a single fret-first helper', () => {
+        const ranked = getRankedVoicingsForChord('major', 0, {
+            maxRootFret: 15,
+            maxCandidates: 12,
+        });
+        const chordModeCandidates = getChordModeVoicingsForChord('major', 0, {
+            maxRootFret: 15,
+            maxCandidates: 12,
+        });
+
+        expect(chordModeCandidates.map((candidate) => candidate.voicing.id)).toEqual(
+            orderChordModeVoicingCandidates(ranked).map((candidate) => candidate.voicing.id)
+        );
     });
 
     it('pushes playable major shapes above invalid legacy variants', () => {

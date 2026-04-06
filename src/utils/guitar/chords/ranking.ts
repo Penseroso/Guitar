@@ -502,6 +502,7 @@ export function rankVoicingCandidates(
     tones?: ChordTones,
     options: ScoreResolvedVoicingOptions = {}
 ): VoicingCandidate[] {
+    // Future-facing engine utility: current chord mode does not surface this ranking order directly.
     return voicings
         .map((voicing) => buildVoicingCandidate(voicing, entryInput, tones, options))
         .sort((left, right) => {

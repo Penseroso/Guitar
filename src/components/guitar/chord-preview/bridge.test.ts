@@ -74,6 +74,17 @@ describe('future chord bridge selection', () => {
         expect(resolution.selectionSource).toBe('requested');
     });
 
+    it('falls back to the first candidate in the provided order when the requested id is missing', () => {
+        const resolution = resolveBridgeSelection([
+            makeCandidate('visible-first', true, 10),
+            makeCandidate('visible-second', true, 100),
+        ], 'stale-selection');
+
+        expect(resolution.activeCandidateId).toBe('visible-first');
+        expect(resolution.activeIndex).toBe(0);
+        expect(resolution.selectionSource).toBe('first-available');
+    });
+
     it('returns an empty selection state when no candidates exist', () => {
         const resolution = resolveBridgeSelection([]);
 

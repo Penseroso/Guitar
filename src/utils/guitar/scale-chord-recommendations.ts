@@ -204,7 +204,7 @@ function buildSyntheticCharacteristicCandidates(
 }
 
 function selectCharacteristicRecommendations(
-    usable: ScaleChordRecommendation[],
+    usable: InternalScaleChordCandidate[],
     profile: ScaleChordRecommendationProfile,
     selectedKey: number
 ): ScaleChordRecommendation[] {
@@ -288,8 +288,9 @@ export function buildScaleChordRecommendations(
     scaleName: string
 ): ScaleChordRecommendationSet {
     const profile = getScaleChordRecommendationProfile(scaleGroup, scaleName);
-    const usable = buildUsableCandidates(selectedKey, scaleGroup, scaleName).slice(0, 7).map(toPublicRecommendation);
-    const characteristic = selectCharacteristicRecommendations(usable, profile, selectedKey);
+    const internalUsable = buildUsableCandidates(selectedKey, scaleGroup, scaleName).slice(0, 7);
+    const usable = internalUsable.map(toPublicRecommendation);
+    const characteristic = selectCharacteristicRecommendations(internalUsable, profile, selectedKey);
 
     return {
         usable,

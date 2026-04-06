@@ -72,19 +72,11 @@ describe('ChordModeWorkspace', () => {
         expect(markup).not.toContain('Harmonic Context');
     });
 
-    it('renders voicing choices in ascending fretboard position order', () => {
-        const higherCandidate = buildWorkspaceCandidate(8, 'workspace-high');
-        const lowerCandidate = buildWorkspaceCandidate(3, 'workspace-low');
-        higherCandidate.voicing.descriptor.rootString = 4;
-        higherCandidate.voicing.descriptor.hasRoot = true;
-        higherCandidate.voicing.descriptor.inversion = 'root-position';
-        higherCandidate.voicing.minFret = 8;
-        lowerCandidate.voicing.descriptor.rootString = 4;
-        lowerCandidate.voicing.descriptor.hasRoot = true;
-        lowerCandidate.voicing.descriptor.inversion = 'root-position';
-        lowerCandidate.voicing.minFret = 0;
-        expect(getVoicingPresentationMeta(higherCandidate.voicing).primaryLabel).toBe('5th-string root');
-        expect(getVoicingPresentationMeta(lowerCandidate.voicing).primaryLabel).toBe('Open');
+    it('renders voicing choices in the order provided by the chord-mode boundary', () => {
+        const firstCandidate = buildWorkspaceCandidate(10, 'workspace-first');
+        const secondCandidate = buildWorkspaceCandidate(8, 'workspace-second');
+        firstCandidate.voicing.minFret = 10;
+        secondCandidate.voicing.minFret = 8;
         const markup = renderToStaticMarkup(
             <ChordModeWorkspace
                 chordType="major"
@@ -95,8 +87,8 @@ describe('ChordModeWorkspace', () => {
                     options: [{ id: 'major', stateValue: 'major', label: 'maj' }],
                 }]}
                 chordPreviewTitle="C"
-                activeFutureCandidate={higherCandidate}
-                activeFuturePresentation={getVoicingPresentationMeta(higherCandidate.voicing)}
+                activeFutureCandidate={firstCandidate}
+                activeFuturePresentation={getVoicingPresentationMeta(firstCandidate.voicing)}
                 fretboardContainerRef={{ current: null }}
                 tuning={[4, 9, 2, 7, 11, 4]}
                 activeNotes={[]}
@@ -107,13 +99,13 @@ describe('ChordModeWorkspace', () => {
                 showIntervals={false}
                 onToggleIntervals={() => {}}
                 fingering={undefined}
-                futureVoicingCandidates={[higherCandidate, lowerCandidate]}
+                futureVoicingCandidates={[firstCandidate, secondCandidate]}
                 onSelectFutureVoicing={() => {}}
-                activeFutureVoicingId={higherCandidate.voicing.id}
+                activeFutureVoicingId={firstCandidate.voicing.id}
             />
         );
 
-        expect(markup.indexOf('Open')).toBeLessThan(markup.lastIndexOf('5th-string root'));
+        expect(markup.indexOf('10fr')).toBeLessThan(markup.lastIndexOf('8fr'));
     });
 
     it('renders grouped compact selector sections on one screen', () => {

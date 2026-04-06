@@ -7,10 +7,9 @@ import { getProgressionPlaybackData } from '../../features/progression/utils/get
 import {
     CHORD_FAMILIES,
     CHORD_REGISTRY_LIST,
+    getChordModeVoicingsForChord,
     getChordTypeLabel,
     getChordTypeSuffix,
-    getRankedVoicingsForChord,
-    orderChordModeVoicingCandidates,
     resolveChordRegistryEntry,
     type ResolvedVoicing,
 } from '../../utils/guitar/chords';
@@ -256,9 +255,9 @@ export default function ClientApp() {
     }, [futureVoicingScopeKey, tonalContext]);
 
     const requestedFutureVoicingId = harmonicWorkspace.selectedCandidateId;
-    const rankedFutureVoicingCandidates = useMemo(() => {
+    const chordModeVoicingCandidates = useMemo(() => {
         try {
-            return getRankedVoicingsForChord(chordType, selectedKey, {
+            return getChordModeVoicingsForChord(chordType, selectedKey, {
                 maxRootFret: 15,
                 maxCandidates: 12,
             });
@@ -266,13 +265,9 @@ export default function ClientApp() {
             return [];
         }
     }, [chordType, selectedKey]);
-    const futureVoicingCandidates = useMemo(
-        () => orderChordModeVoicingCandidates(rankedFutureVoicingCandidates),
-        [rankedFutureVoicingCandidates]
-    );
     const futureVoicingSelection = useMemo(
-        () => resolveBridgeSelection(futureVoicingCandidates, requestedFutureVoicingId),
-        [futureVoicingCandidates, requestedFutureVoicingId]
+        () => resolveBridgeSelection(chordModeVoicingCandidates, requestedFutureVoicingId),
+        [chordModeVoicingCandidates, requestedFutureVoicingId]
     );
     const activeFutureCandidate = futureVoicingSelection.activeCandidate;
     const activeFutureVoicingId = futureVoicingSelection.activeCandidateId;
@@ -289,7 +284,7 @@ export default function ClientApp() {
         : 'No voicing available';
     const chordPreviewSecondaryLabel = activeFutureCandidate
         ? activeFuturePresentation.secondaryLabel
-        : futureVoicingCandidates.length === 0
+        : chordModeVoicingCandidates.length === 0
             ? 'No voicing candidates for this chord'
             : 'No candidate selected';
     const chordPreviewTitle = useMemo(() => {
@@ -567,7 +562,7 @@ export default function ClientApp() {
                             showIntervals={showIntervals}
                             onToggleIntervals={() => setShowIntervals((prev) => !prev)}
                             fingering={fingering}
-                            futureVoicingCandidates={futureVoicingCandidates}
+                            futureVoicingCandidates={chordModeVoicingCandidates}
                             onSelectFutureVoicing={handleSelectFutureVoicing}
                             activeFutureVoicingId={activeFutureVoicingId}
                         />
