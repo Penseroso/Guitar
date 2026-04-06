@@ -5,6 +5,8 @@ import { buildChordTonesFromRegistryEntry, normalizePitchClass, resolveChordRegi
 import type { ChordRegistryEntry } from './registry';
 import type { VoicingTemplate, VoicingTemplateString } from './types';
 
+// Legacy CHORD_SHAPES remain an intentional template source in P2a. They continue to feed
+// the engine alongside generated templates until a later dedicated replacement pass.
 function slugifyTemplateLabel(value: string): string {
     return value
         .toLowerCase()

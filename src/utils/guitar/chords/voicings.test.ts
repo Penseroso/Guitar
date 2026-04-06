@@ -8,6 +8,7 @@ import {
 import { buildVoicingCandidate, rankVoicingCandidates } from './ranking';
 import {
     getCandidateRootFretsForTemplate,
+    getEmpiricalVoicingGuardrailState,
     resolveVoicingTemplate,
     resolveVoicingTemplateAcrossPositions,
 } from './resolver';
@@ -37,6 +38,11 @@ describe('voicing template adaptation', () => {
 });
 
 describe('voicing resolution', () => {
+    it('exposes empirical guardrails separately from chord semantics', () => {
+        expect(getEmpiricalVoicingGuardrailState(3)).toEqual({ exceedsSpanGuardrail: false });
+        expect(getEmpiricalVoicingGuardrailState(4)).toEqual({ exceedsSpanGuardrail: true });
+    });
+
     it('resolves a barred C major shape into concrete fretboard notes', () => {
         const entry = resolveChordRegistryEntry('major');
         const template = getVoicingTemplatesForChord(entry)[0];

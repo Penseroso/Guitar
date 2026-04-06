@@ -21,6 +21,8 @@ export interface GetRankedVoicingsOptions extends ResolveVoicingOptions {
 
 const TOP_SET_TRIAD_IDS = new Set(['major', 'minor']);
 
+// Candidate-source preservation: legacy CHORD_SHAPES and generated templates both remain
+// intentional engine inputs in this phase. We are only clarifying policy boundaries here.
 function compareChordModeCandidateOrder(left: VoicingCandidate, right: VoicingCandidate): number {
     if (left.voicing.minFret !== right.voicing.minFret) {
         return left.voicing.minFret - right.voicing.minFret;
@@ -67,6 +69,8 @@ function dedupeResolvedVoicings(voicings: ResolvedVoicing[]): ResolvedVoicing[] 
     return Array.from(deduped.values());
 }
 
+// Semantic filtering: formula-closed families should not leak extra pitch classes into
+// the surfaced pool, regardless of template provenance.
 function excludeFormulaInvalidVoicings(voicings: ResolvedVoicing[]): ResolvedVoicing[] {
     return voicings.filter((voicing) => (voicing.outOfFormulaPitchClasses?.length ?? 0) === 0);
 }
@@ -75,7 +79,8 @@ function getPlayedVoicingNotes(voicing: ResolvedVoicing) {
     return voicing.notes.filter((note) => !note.isMuted);
 }
 
-function isStrictTopSetTriad(voicing: ResolvedVoicing): boolean {
+// Chord-mode surfacing policy: keep only representative three-note major/minor fragments.
+function isRepresentativeChordModeTriadFragment(voicing: ResolvedVoicing): boolean {
     if (!TOP_SET_TRIAD_IDS.has(voicing.chord.id)) {
         return false;
     }
@@ -104,7 +109,12 @@ export function shouldSurfaceChordModeVoicing(voicing: ResolvedVoicing): boolean
         return true;
     }
 
-    return getPlayedVoicingNotes(voicing).length !== 3 || isStrictTopSetTriad(voicing);
+    return getPlayedVoicingNotes(voicing).length !== 3 || isRepresentativeChordModeTriadFragment(voicing);
+}
+
+function applyChordModeSurfacingPolicies(voicings: ResolvedVoicing[]): ResolvedVoicing[] {
+    return excludeFormulaInvalidVoicings(voicings)
+        .filter((voicing) => shouldSurfaceChordModeVoicing(voicing));
 }
 
 export function orderChordModeVoicingCandidates(candidates: VoicingCandidate[]): VoicingCandidate[] {
@@ -143,8 +153,7 @@ export function getRankedVoicingsForChord(
     const resolvedVoicings = options.resolveAcrossPositions === false
         ? resolveVoicingTemplates(chord, tones, templates, options)
         : resolveVoicingTemplatesAcrossPositions(chord, tones, templates, options);
-    const surfacedResolvedVoicings = excludeFormulaInvalidVoicings(resolvedVoicings)
-        .filter((voicing) => shouldSurfaceChordModeVoicing(voicing));
+    const surfacedResolvedVoicings = applyChordModeSurfacingPolicies(resolvedVoicings);
     const dedupedResolvedVoicings = dedupeResolvedVoicings(surfacedResolvedVoicings);
     const filteredVoicings = options.includeNonPlayableCandidates === true
         ? dedupedResolvedVoicings

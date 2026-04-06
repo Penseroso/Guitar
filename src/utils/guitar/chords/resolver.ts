@@ -46,6 +46,10 @@ interface ResolvedVoicingSeed {
     };
 }
 
+interface EmpiricalVoicingGuardrailState {
+    exceedsSpanGuardrail: boolean;
+}
+
 function getLowestPlayedNote(notes: ResolvedVoicingNote[]): ResolvedVoicingNote | undefined {
     return notes
         .filter((note) => !note.isMuted && note.midiNote !== undefined)
@@ -101,6 +105,14 @@ function collectPlayedDegrees(notes: ResolvedVoicingNote[]): Set<string> {
             .filter((note) => !note.isMuted && note.degree)
             .map((note) => note.degree as string)
     );
+}
+
+export function getEmpiricalVoicingGuardrailState(span: number): EmpiricalVoicingGuardrailState {
+    return {
+        // Empirical P2a guardrail: this is a pragmatic cutoff for current generator output,
+        // not a theory claim about what is musically valid on guitar.
+        exceedsSpanGuardrail: span >= 4,
+    };
 }
 
 function getOutOfFormulaPitchClasses(chord: ChordDefinition, notes: ResolvedVoicingNote[], tones: ChordTones): PitchClass[] {
@@ -256,9 +268,7 @@ function resolveVoicingSeed(
         ? undefined
         : lowestPlayedNote?.pitchClass === requestedSlashBassPitchClass;
     const hasInvalidFrets = playedFrets.some((fret) => fret < 0);
-    // Empirical P1 guardrail: the current generator still emits many obviously awkward
-    // grips at span 4+, so chord-mode surfacing treats them as non-playable for now.
-    const violatesEmpiricalSpanGuardrail = span >= 4;
+    const guardrailState = getEmpiricalVoicingGuardrailState(span);
     const violatesConstraintRange = (
         (constraints.minFret !== undefined && playedFrets.some((fret) => fret < constraints.minFret!)) ||
         (constraints.maxFret !== undefined && playedFrets.some((fret) => fret > constraints.maxFret!)) ||
@@ -304,7 +314,7 @@ function resolveVoicingSeed(
         span,
         playable: playedNotes.length > 0
             && !hasInvalidFrets
-            && !violatesEmpiricalSpanGuardrail
+            && !guardrailState.exceedsSpanGuardrail
             && !violatesConstraintRange
             && outOfFormulaPitchClasses.length === 0,
         lowestPlayedPitchClass: lowestPlayedNote?.pitchClass,
