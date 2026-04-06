@@ -719,6 +719,16 @@ describe('curated source pilot', () => {
         expect(getCuratedVoicingTemplatesForChord('dominant-7').length).toBeGreaterThan(0);
     });
 
+    it('keeps the curated pilot internally consistent around reviewed root-5 and root-4 grips', () => {
+        const pilotIds = ['major', 'minor', 'major-7', 'minor-7', 'dominant-7'] as const;
+
+        for (const id of pilotIds) {
+            const templates = getCuratedVoicingTemplatesForChord(id);
+            expect(templates.map((template) => template.rootString)).toEqual([4, 3]);
+            expect(templates.every((template) => template.source === 'curated')).toBe(true);
+        }
+    });
+
     it('resolves curated templates with curated provenance', () => {
         const entry = resolveChordRegistryEntry('major-7');
         const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
@@ -729,6 +739,22 @@ describe('curated source pilot', () => {
         expect(template.source).toBe('curated');
         expect(resolved.descriptor.provenance.sourceKind).toBe('curated');
         expect(resolved.descriptor.provenance.seedId).toBe(template.id);
+    });
+
+    it('keeps curated pilot voicings playable and structurally complete for the included families', () => {
+        const pilotIds = ['major', 'minor', 'major-7', 'minor-7', 'dominant-7'] as const;
+
+        for (const id of pilotIds) {
+            const entry = resolveChordRegistryEntry(id);
+            const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+            const tones = buildChordTonesFromRegistryEntry(entry, 0);
+            const resolved = getCuratedVoicingTemplatesForChord(entry)
+                .map((template) => resolveVoicingTemplate(chord, tones, template));
+
+            expect(resolved.length).toBe(2);
+            expect(resolved.every((voicing) => voicing.playable)).toBe(true);
+            expect(resolved.every((voicing) => (voicing.missingRequiredDegrees?.length ?? 0) === 0)).toBe(true);
+        }
     });
 
     it('prefers curated provenance over legacy imports when identical seeds resolve to the same voicing', () => {
@@ -747,6 +773,18 @@ describe('curated source pilot', () => {
         expect(candidates.some((candidate) => candidate.voicing.descriptor.provenance.sourceKind === 'curated')).toBe(true);
         expect(candidates.some((candidate) => candidate.voicing.id === resolvedCurated.id)).toBe(true);
         expect(candidates.some((candidate) => candidate.voicing.id === resolvedLegacy.id)).toBe(false);
+    });
+
+    it('keeps curated dominant seventh focused on the compact reviewed drop-2 overlap instead of the low C7 shape', () => {
+        const entry = resolveChordRegistryEntry('dominant-7');
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+        const resolved = resolveVoicingTemplate(chord, tones, getCuratedVoicingTemplatesForChord(entry)[0]);
+
+        expect(resolved.descriptor.registerBand).toBe('mid');
+        expect(resolved.descriptor.family).toBe('compact');
+        expect(resolved.minFret).toBe(3);
+        expect(resolved.maxFret).toBe(5);
     });
 
     it('preserves non-pilot chords on legacy plus generated paths only', () => {

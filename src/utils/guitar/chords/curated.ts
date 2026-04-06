@@ -10,33 +10,36 @@ interface CuratedVoicingSeed {
     offsets: Array<number | null>;
 }
 
+// Curated pilot inventory: keep this small and intentionally reviewed. The current subset
+// favors representative root-5 mid-register grips plus root-4 upper-register companions so
+// the curated layer reads as a consistent preferred inventory rather than a grab bag of shapes.
 const CURATED_VOICING_SEEDS: Partial<Record<ChordRegistryEntry['id'], CuratedVoicingSeed[]>> = {
     major: [
-        {
-            id: 'root-6-reviewed-open',
-            label: 'Root 6 (Reviewed Open)',
-            rootString: 5,
-            offsets: [0, 0, 1, 2, 2, 0],
-        },
         {
             id: 'root-5-reviewed-caged',
             label: 'Root 5 (Reviewed CAGED)',
             rootString: 4,
             offsets: [0, 2, 2, 2, 0, null],
         },
+        {
+            id: 'root-4-reviewed-upper',
+            label: 'Root 4 (Reviewed Upper)',
+            rootString: 3,
+            offsets: [2, 3, 2, 0, null, null],
+        },
     ],
     minor: [
-        {
-            id: 'root-6-reviewed-open',
-            label: 'Root 6 (Reviewed Open)',
-            rootString: 5,
-            offsets: [0, 0, 0, 2, 2, 0],
-        },
         {
             id: 'root-5-reviewed-caged',
             label: 'Root 5 (Reviewed CAGED)',
             rootString: 4,
             offsets: [0, 1, 2, 2, 0, null],
+        },
+        {
+            id: 'root-4-reviewed-upper',
+            label: 'Root 4 (Reviewed Upper)',
+            rootString: 3,
+            offsets: [1, 3, 2, 0, null, null],
         },
     ],
     'major-7': [
@@ -69,10 +72,10 @@ const CURATED_VOICING_SEEDS: Partial<Record<ChordRegistryEntry['id'], CuratedVoi
     ],
     'dominant-7': [
         {
-            id: 'root-5-reviewed-c7',
-            label: 'Root 5 (Reviewed C7)',
+            id: 'root-5-reviewed-drop-2',
+            label: 'Root 5 (Reviewed Drop 2)',
             rootString: 4,
-            offsets: [-3, -2, 0, -1, 0, null],
+            offsets: [null, 2, 0, 2, 0, null],
         },
         {
             id: 'root-4-reviewed-drop-2',
