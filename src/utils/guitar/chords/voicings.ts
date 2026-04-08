@@ -1,4 +1,5 @@
 import { buildChordDefinitionFromRegistryEntry, buildChordTonesFromRegistryEntry, resolveChordRegistryEntry } from './helpers';
+import { getArchetypeGeneratedVoicingTemplatesForChord } from './archetype-generated';
 import { getCuratedVoicingTemplatesForChord } from './curated';
 import { getGeneratedVoicingTemplatesForChord } from './generated';
 import { rankVoicingCandidates } from './ranking';
@@ -16,6 +17,8 @@ export interface GetRankedVoicingsOptions extends ResolveVoicingOptions {
     includeNonPlayableCandidates?: boolean;
     maxCandidates?: number;
     rankingMode?: VoicingRankingMode;
+    includeCuratedCandidates?: boolean;
+    includeArchetypeGeneratedCandidates?: boolean;
     includeGeneratedCandidates?: boolean;
     includeLegacyCandidates?: boolean;
 }
@@ -25,6 +28,7 @@ const TOP_SET_TRIAD_IDS = new Set(['major', 'minor']);
 export interface VoicingTemplateSourceCollection {
     legacyTemplates: VoicingTemplate[];
     curatedTemplates: VoicingTemplate[];
+    archetypeGeneratedTemplates: VoicingTemplate[];
     generatedTemplates: VoicingTemplate[];
     allTemplates: VoicingTemplate[];
 }
@@ -59,8 +63,10 @@ function getTemplateSourceDedupePriority(voicing: ResolvedVoicing): number {
             return 0;
         case 'legacy-import':
             return 1;
-        default:
+        case 'archetype-generated':
             return 2;
+        default:
+            return 3;
     }
 }
 
@@ -134,7 +140,12 @@ export function collectVoicingTemplateSourcesForChord(
     const legacyTemplates = options.includeLegacyCandidates === false
         ? []
         : getLegacyVoicingTemplatesForChord(entryInput);
-    const curatedTemplates = getCuratedVoicingTemplatesForChord(entryInput);
+    const curatedTemplates = options.includeCuratedCandidates === false
+        ? []
+        : getCuratedVoicingTemplatesForChord(entryInput);
+    const archetypeGeneratedTemplates = options.includeArchetypeGeneratedCandidates === true
+        ? getArchetypeGeneratedVoicingTemplatesForChord(entryInput)
+        : [];
     const generatedTemplates = options.includeGeneratedCandidates === false
         ? []
         : getGeneratedVoicingTemplatesForChord(entryInput);
@@ -142,8 +153,9 @@ export function collectVoicingTemplateSourcesForChord(
     return {
         legacyTemplates,
         curatedTemplates,
+        archetypeGeneratedTemplates,
         generatedTemplates,
-        allTemplates: [...legacyTemplates, ...curatedTemplates, ...generatedTemplates],
+        allTemplates: [...legacyTemplates, ...curatedTemplates, ...archetypeGeneratedTemplates, ...generatedTemplates],
     };
 }
 
@@ -161,6 +173,20 @@ export function getChordModeVoicingsForChord(
     // Chord mode currently consumes the same engine candidates as future ranking-aware
     // surfaces, but applies its own explicit fret-first browsing order.
     return orderChordModeVoicingCandidates(getRankedVoicingsForChord(entryInput, rootPitchClass, options));
+}
+
+export function getArchetypeGeneratedVoicingsForChord(
+    entryInput: string | ChordRegistryEntry,
+    rootPitchClass: number,
+    options: GetRankedVoicingsOptions = {}
+): VoicingCandidate[] {
+    return getRankedVoicingsForChord(entryInput, rootPitchClass, {
+        ...options,
+        includeLegacyCandidates: false,
+        includeCuratedCandidates: false,
+        includeGeneratedCandidates: false,
+        includeArchetypeGeneratedCandidates: true,
+    });
 }
 
 export function getRankedVoicingsForChord(

@@ -1,6 +1,6 @@
 export type PitchClass = number;
 export type GuitarStringIndex = 0 | 1 | 2 | 3 | 4 | 5;
-export type VoicingProvenanceSourceKind = 'legacy-import' | 'generated' | 'curated';
+export type VoicingProvenanceSourceKind = 'legacy-import' | 'generated' | 'archetype-generated' | 'curated';
 export type VoicingRegisterBand = 'low' | 'mid' | 'high' | 'upper';
 export type VoicingFamily = 'shell' | 'compact' | 'close' | 'spread' | 'upper-register' | 'rootless' | 'full';
 
@@ -44,7 +44,7 @@ export interface VoicingTemplate {
     instrument: 'guitar';
     rootString?: GuitarStringIndex;
     strings: VoicingTemplateString[];
-    source?: 'legacy-shape' | 'generated' | 'curated';
+    source?: 'legacy-shape' | 'generated' | 'archetype-generated' | 'curated';
     tags?: string[];
 }
 

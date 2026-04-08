@@ -44,10 +44,12 @@ describe('voicing template adaptation', () => {
 
         expect(sources.legacyTemplates.length).toBeGreaterThan(0);
         expect(sources.curatedTemplates.length).toBeGreaterThan(0);
+        expect(sources.archetypeGeneratedTemplates).toEqual([]);
         expect(sources.generatedTemplates.length).toBeGreaterThan(0);
         expect(sources.allTemplates).toEqual([
             ...sources.legacyTemplates,
             ...sources.curatedTemplates,
+            ...sources.archetypeGeneratedTemplates,
             ...sources.generatedTemplates,
         ]);
         expect(sources.legacyTemplates.every((template) => template.source === 'legacy-shape')).toBe(true);
@@ -59,6 +61,7 @@ describe('voicing template adaptation', () => {
         const sources = collectVoicingTemplateSourcesForChord('dominant-13');
 
         expect(sources.curatedTemplates).toEqual([]);
+        expect(sources.archetypeGeneratedTemplates).toEqual([]);
         expect(sources.legacyTemplates.length).toBeGreaterThan(0);
         expect(sources.generatedTemplates.length).toBeGreaterThan(0);
     });

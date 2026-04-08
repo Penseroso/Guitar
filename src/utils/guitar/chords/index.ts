@@ -113,6 +113,11 @@ export {
 } from './descriptor';
 
 export {
+    ARCHETYPE_GENERATED_CHORD_IDS,
+    getArchetypeGeneratedVoicingTemplatesForChord,
+} from './archetype-generated';
+
+export {
     getGeneratedVoicingTemplatesForChord,
 } from './generated';
 
@@ -146,6 +151,7 @@ export type { GetRankedVoicingsOptions } from './voicings';
 
 export {
     collectVoicingTemplateSourcesForChord,
+    getArchetypeGeneratedVoicingsForChord,
     getChordModeVoicingsForChord,
     getRankedVoicingsForChord,
     orderChordModeVoicingCandidates,

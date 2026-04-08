@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { getGeneratedVoicingTemplatesForChord } from './generated';
-import { getRankedVoicingsForChord } from './voicings';
+import { collectVoicingTemplateSourcesForChord, getRankedVoicingsForChord } from './voicings';
 
 describe('generated voicing candidates', () => {
     it('produces generated shell candidates for seventh-family chords', () => {
@@ -61,5 +61,15 @@ describe('generated voicing candidates', () => {
         expect(candidates.some((candidate) => candidate.voicing.descriptor.provenance.sourceKind === 'legacy-import')).toBe(true);
         expect(candidates.some((candidate) => candidate.voicing.descriptor.provenance.sourceKind === 'generated')).toBe(true);
         expect(candidates[0].voicing.playable).toBe(true);
+    });
+
+    it('keeps the older generated path available in parallel with the new archetype path', () => {
+        const sources = collectVoicingTemplateSourcesForChord('major-7', {
+            includeCuratedCandidates: false,
+            includeArchetypeGeneratedCandidates: true,
+        });
+
+        expect(sources.generatedTemplates.length).toBeGreaterThan(0);
+        expect(sources.archetypeGeneratedTemplates.length).toBeGreaterThan(0);
     });
 });

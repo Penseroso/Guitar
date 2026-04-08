@@ -17,12 +17,14 @@ function toTitleCase(value: string): string {
 }
 
 export function buildVoicingProvenance(args: {
-    source?: 'legacy-shape' | 'generated' | 'curated';
+    source?: 'legacy-shape' | 'generated' | 'archetype-generated' | 'curated';
     seedId?: string;
     debugLabel?: string;
 }): VoicingProvenance {
     const sourceKind = args.source === 'legacy-shape'
         ? 'legacy-import'
+        : args.source === 'archetype-generated'
+            ? 'archetype-generated'
         : args.source === 'curated'
             ? 'curated'
             : 'generated';
@@ -264,6 +266,8 @@ export function getVoicingProvenanceLabel(provenance: VoicingProvenance): string
     switch (provenance.sourceKind) {
         case 'legacy-import':
             return 'Legacy import';
+        case 'archetype-generated':
+            return 'Archetype generated';
         case 'curated':
             return 'Curated';
         default:
