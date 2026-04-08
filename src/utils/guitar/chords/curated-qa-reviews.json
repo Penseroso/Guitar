@@ -1,0 +1,55 @@
+{
+  "updatedAt": "2026-04-08T06:50:13.815Z",
+  "reviews": [
+    {
+      "chordType": "dominant-7",
+      "candidateId": "dominant-7:0:dominant-7:curated:root-4-reviewed-drop-2:10",
+      "decision": "accept"
+    },
+    {
+      "chordType": "dominant-7",
+      "candidateId": "dominant-7:0:dominant-7:curated:root-5-reviewed-drop-2:3",
+      "decision": "accept"
+    },
+    {
+      "chordType": "major",
+      "candidateId": "major:0:major:curated:root-4-reviewed-upper:10",
+      "decision": "accept"
+    },
+    {
+      "chordType": "major",
+      "candidateId": "major:0:major:curated:root-5-reviewed-caged:3",
+      "decision": "accept"
+    },
+    {
+      "chordType": "major-7",
+      "candidateId": "major-7:0:major-7:curated:root-4-reviewed-drop-2:10",
+      "decision": "accept"
+    },
+    {
+      "chordType": "major-7",
+      "candidateId": "major-7:0:major-7:curated:root-5-reviewed-drop-2:3",
+      "decision": "accept"
+    },
+    {
+      "chordType": "minor",
+      "candidateId": "minor:0:minor:curated:root-4-reviewed-upper:10",
+      "decision": "accept"
+    },
+    {
+      "chordType": "minor",
+      "candidateId": "minor:0:minor:curated:root-5-reviewed-caged:3",
+      "decision": "accept"
+    },
+    {
+      "chordType": "minor-7",
+      "candidateId": "minor-7:0:minor-7:curated:root-4-reviewed-drop-2:10",
+      "decision": "accept"
+    },
+    {
+      "chordType": "minor-7",
+      "candidateId": "minor-7:0:minor-7:curated:root-5-reviewed-drop-2:3",
+      "decision": "accept"
+    }
+  ]
+}

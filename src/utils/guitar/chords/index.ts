@@ -76,6 +76,33 @@ export {
     getCuratedVoicingTemplatesForChord,
 } from './curated';
 
+export type {
+    CuratedQaPilotChordId,
+    CuratedQaDecision,
+    CuratedQaReviewRecord,
+    CuratedQaReviewState,
+    CuratedQaCandidate,
+} from './curated-qa';
+
+export {
+    CURATED_QA_PILOT_CHORD_IDS,
+    getCuratedQaReviewKey,
+    recordCuratedQaDecision,
+    getCuratedQaDecisionForCandidate,
+    isDeveloperCuratedQaEnabled,
+    getCuratedQaCandidates,
+} from './curated-qa';
+
+export type {
+    CuratedQaReviewSnapshot,
+} from './curated-qa-storage';
+
+export {
+    CURATED_QA_REVIEW_STORAGE_PATH,
+    normalizeCuratedQaReviewSnapshot,
+    buildCuratedQaReviewSnapshot,
+} from './curated-qa-storage';
+
 export {
     deriveVoicingDescriptor,
     getVoicingDisplayName,

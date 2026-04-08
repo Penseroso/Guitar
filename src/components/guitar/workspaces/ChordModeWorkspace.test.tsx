@@ -70,6 +70,7 @@ describe('ChordModeWorkspace', () => {
         expect(markup).not.toContain('Playable');
         expect(markup).toContain('Open');
         expect(markup).not.toContain('Harmonic Context');
+        expect(markup).not.toContain('Curated QA');
     });
 
     it('renders voicing choices in the order provided by the chord-mode boundary', () => {

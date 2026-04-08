@@ -8,11 +8,18 @@ import {
     CHORD_FAMILIES,
     CHORD_REGISTRY_LIST,
     getChordModeVoicingsForChord,
+    getCuratedQaCandidates,
     getChordTypeLabel,
     getChordTypeSuffix,
     resolveChordRegistryEntry,
     type ResolvedVoicing,
 } from '../../utils/guitar/chords';
+import {
+    isDeveloperCuratedQaEnabled,
+    recordCuratedQaDecision,
+    type CuratedQaReviewRecord,
+    type CuratedQaReviewState,
+} from '../../utils/guitar/chords/curated-qa';
 import {
     TUNING,
     SCALES,
@@ -33,6 +40,7 @@ import {
     reduceHarmonicWorkspaceState,
 } from '../../features/harmonic-workspace/state';
 import { resolveBridgeSelection } from './chord-preview/bridge';
+import { CuratedQaPanel } from './chord-preview/CuratedQaPanel';
 import { getVoicingPresentationMeta } from './chord-preview/voicing-labels';
 import { ScaleModeWorkspace } from './workspaces/ScaleModeWorkspace';
 import { ChordModeWorkspace } from './workspaces/ChordModeWorkspace';
@@ -60,6 +68,17 @@ const CHORD_SELECTOR_GROUPS = CHORD_FAMILIES.map((family) => {
         })),
     };
 }).filter((group) => group.options.length > 0);
+
+function isPersistedCuratedQaReview(value: unknown): value is CuratedQaReviewRecord {
+    if (!value || typeof value !== 'object') {
+        return false;
+    }
+
+    const candidate = value as Partial<CuratedQaReviewRecord>;
+    return typeof candidate.chordType === 'string'
+        && typeof candidate.candidateId === 'string'
+        && (candidate.decision === 'accept' || candidate.decision === 'reject');
+}
 
 function buildResolvedVoicingFingering(voicing?: ResolvedVoicing): Fingering[] | undefined {
     if (!voicing) {
@@ -94,6 +113,20 @@ export default function ClientApp() {
 
     // --- State: Chord Mode ---
     const [chordType, setChordType] = useState('major');
+    const [isCuratedQaEnabled] = useState(() => {
+        if (typeof window === 'undefined') {
+            return false;
+        }
+
+        return isDeveloperCuratedQaEnabled({
+            nodeEnv: process.env.NODE_ENV,
+            search: window.location.search,
+        });
+    });
+    const [curatedQaReviews, setCuratedQaReviews] = useState<CuratedQaReviewState>({});
+    const [isSubmittingCuratedQa, setIsSubmittingCuratedQa] = useState(false);
+    const [curatedQaSubmitStatus, setCuratedQaSubmitStatus] = useState<string | null>(null);
+    const [curatedQaLastSavedAt, setCuratedQaLastSavedAt] = useState<string | null>(null);
     // --- State: Double Stops (Scale Mode Feature) ---
     const [isDoubleStopActive, setIsDoubleStopActive] = useState(false);
     const [doubleStopInterval, setDoubleStopInterval] = useState<HarmonicInterval>(3);
@@ -452,6 +485,98 @@ export default function ClientApp() {
         };
     }, [mode, hasPreview, handleApplyPreview, handleClearPreview]);
 
+    const curatedQaCandidates = useMemo(() => {
+        if (!isCuratedQaEnabled) {
+            return [];
+        }
+
+        return getCuratedQaCandidates(selectedKey);
+    }, [isCuratedQaEnabled, selectedKey]);
+
+    const handleCuratedQaReview = useCallback((candidate: (typeof curatedQaCandidates)[number], decision: 'accept' | 'reject') => {
+        setCuratedQaReviews((currentState) => recordCuratedQaDecision(currentState, {
+            chordType: candidate.chordType,
+            candidateId: candidate.candidateId,
+            decision,
+        }));
+        setCuratedQaSubmitStatus(null);
+    }, []);
+
+    useEffect(() => {
+        if (!isCuratedQaEnabled) {
+            return;
+        }
+
+        let isCancelled = false;
+
+        void (async () => {
+            try {
+                const response = await fetch('/api/dev/curated-qa', { method: 'GET' });
+                if (!response.ok) {
+                    throw new Error(`Unable to load curated QA state (${response.status})`);
+                }
+
+                const payload = await response.json() as {
+                    updatedAt?: string | null;
+                    reviews?: Array<{ chordType: string; candidateId: string; decision: 'accept' | 'reject' }>;
+                };
+
+                if (isCancelled) {
+                    return;
+                }
+
+                const nextState = (payload.reviews ?? []).reduce<CuratedQaReviewState>((accumulator, review) => {
+                    if (!isPersistedCuratedQaReview(review)) {
+                        return accumulator;
+                    }
+
+                    return recordCuratedQaDecision(accumulator, review);
+                }, {});
+
+                setCuratedQaReviews(nextState);
+                setCuratedQaLastSavedAt(payload.updatedAt ?? null);
+                setCuratedQaSubmitStatus(payload.updatedAt ? 'Loaded saved curated QA decisions.' : null);
+            } catch {
+                if (!isCancelled) {
+                    setCuratedQaSubmitStatus('Unable to load saved curated QA decisions.');
+                }
+            }
+        })();
+
+        return () => {
+            isCancelled = true;
+        };
+    }, [isCuratedQaEnabled]);
+
+    const handleSubmitCuratedQa = useCallback(async () => {
+        setIsSubmittingCuratedQa(true);
+        setCuratedQaSubmitStatus(null);
+
+        try {
+            const response = await fetch('/api/dev/curated-qa', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    reviews: Object.values(curatedQaReviews),
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Unable to save curated QA state (${response.status})`);
+            }
+
+            const payload = await response.json() as { updatedAt?: string | null };
+            setCuratedQaLastSavedAt(payload.updatedAt ?? null);
+            setCuratedQaSubmitStatus('Curated QA decisions saved to internal JSON.');
+        } catch {
+            setCuratedQaSubmitStatus('Failed to save curated QA decisions.');
+        } finally {
+            setIsSubmittingCuratedQa(false);
+        }
+    }, [curatedQaReviews]);
+
     return (
         <div className="min-h-screen bg-[#050505] text-[#a0a0a0] selection:bg-white/20 p-8 flex flex-col items-center gap-12 overflow-x-hidden font-sans">
             <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -545,27 +670,41 @@ export default function ClientApp() {
                     )}
 
                     {mode === 'chord' && (
-                        <ChordModeWorkspace
-                            chordType={chordType}
-                            onChordTypeChange={setChordType}
-                            chordSelectorGroups={CHORD_SELECTOR_GROUPS}
-                            chordPreviewTitle={chordPreviewTitle}
-                            activeFutureCandidate={activeFutureCandidate}
-                            activeFuturePresentation={activeFuturePresentation}
-                            fretboardContainerRef={fretboardContainerRef}
-                            tuning={TUNING}
-                            activeNotes={activeNotes}
-                            rootNote={rootNote}
-                            chordTones={currentChordTones}
-                            modifierNotes={modifierNotes}
-                            showChordTones={showChordTones}
-                            showIntervals={showIntervals}
-                            onToggleIntervals={() => setShowIntervals((prev) => !prev)}
-                            fingering={fingering}
-                            futureVoicingCandidates={chordModeVoicingCandidates}
-                            onSelectFutureVoicing={handleSelectFutureVoicing}
-                            activeFutureVoicingId={activeFutureVoicingId}
-                        />
+                        <div className="flex flex-col gap-6">
+                            <ChordModeWorkspace
+                                chordType={chordType}
+                                onChordTypeChange={setChordType}
+                                chordSelectorGroups={CHORD_SELECTOR_GROUPS}
+                                chordPreviewTitle={chordPreviewTitle}
+                                activeFutureCandidate={activeFutureCandidate}
+                                activeFuturePresentation={activeFuturePresentation}
+                                fretboardContainerRef={fretboardContainerRef}
+                                tuning={TUNING}
+                                activeNotes={activeNotes}
+                                rootNote={rootNote}
+                                chordTones={currentChordTones}
+                                modifierNotes={modifierNotes}
+                                showChordTones={showChordTones}
+                                showIntervals={showIntervals}
+                                onToggleIntervals={() => setShowIntervals((prev) => !prev)}
+                                fingering={fingering}
+                                futureVoicingCandidates={chordModeVoicingCandidates}
+                                onSelectFutureVoicing={handleSelectFutureVoicing}
+                                activeFutureVoicingId={activeFutureVoicingId}
+                            />
+
+                            {isCuratedQaEnabled && (
+                                <CuratedQaPanel
+                                    candidates={curatedQaCandidates}
+                                    reviews={curatedQaReviews}
+                                    onReview={handleCuratedQaReview}
+                                    onSubmit={handleSubmitCuratedQa}
+                                    isSubmitting={isSubmittingCuratedQa}
+                                    submitStatus={curatedQaSubmitStatus}
+                                    lastSavedAt={curatedQaLastSavedAt}
+                                />
+                            )}
+                        </div>
                     )}
 
                     {mode === 'progression' && (
