@@ -103,6 +103,21 @@ export {
     buildCuratedQaReviewSnapshot,
 } from './curated-qa-storage';
 
+export type {
+    CuratedQaReviewBuckets,
+    VoicingStructuralProfile,
+} from './curated-qa-comparison';
+
+export {
+    getCuratedQaReviewsByDecision,
+    partitionCuratedQaReviews,
+    getVoicingSignature,
+    getVoicingStructuralProfile,
+    isStructurallyCloseToAcceptedReference,
+    matchesRejectedReferencePattern,
+    prefersAcceptedReferenceOverRejected,
+} from './curated-qa-comparison';
+
 export {
     deriveVoicingDescriptor,
     getVoicingDisplayName,
