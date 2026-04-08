@@ -6,12 +6,14 @@ import {
     getArchetypePlanForChord,
     getArchetypeGeneratedVoicingTemplatesForChord,
 } from './archetype-generated';
+import { CURATED_QA_REVIEW_CHORD_IDS } from './curated-qa';
 import {
     collectVoicingTemplateSourcesForChord,
     getArchetypeGeneratedVoicingsForChord,
     getRankedVoicingsForChord,
 } from './voicings';
 import type { CuratedQaReviewSnapshot } from './curated-qa-storage';
+import type { VoicingTemplate } from './types';
 
 const ACCEPTED_CURATED_BASELINE = (curatedQaReviews as CuratedQaReviewSnapshot).reviews
     .filter((review) => review.decision === 'accept');
@@ -22,8 +24,55 @@ function getVoicingSignature(candidate: { voicing: { notes: Array<{ string: numb
         .join('|');
 }
 
+function getActiveTemplateStrings(template: VoicingTemplate) {
+    return template.strings.filter((stringValue) => stringValue.fretOffset !== null);
+}
+
+function getTemplateDegrees(template: VoicingTemplate): string[] {
+    return getActiveTemplateStrings(template)
+        .map((stringValue) => stringValue.toneDegree)
+        .filter((degree): degree is string => Boolean(degree));
+}
+
+function expectArchetypeAxisCoverage(chordId: typeof ARCHETYPE_GENERATED_CHORD_IDS[number], template: VoicingTemplate) {
+    const degrees = new Set(getTemplateDegrees(template));
+    const hasRoot = degrees.has('1');
+    const hasThirdLike = degrees.has('3') || degrees.has('b3');
+    const hasFifth = degrees.has('5');
+    const hasSeventhLike = degrees.has('7') || degrees.has('b7');
+    const hasExtensionLike = degrees.has('9') || degrees.has('2');
+    const hasSuspensionLike = degrees.has('2') || degrees.has('4');
+
+    if (chordId === 'major' || chordId === 'minor') {
+        expect(hasRoot).toBe(true);
+        expect(hasThirdLike).toBe(true);
+        expect(hasFifth).toBe(true);
+        return;
+    }
+
+    if (chordId === 'major-7' || chordId === 'minor-7' || chordId === 'dominant-7') {
+        expect(hasRoot).toBe(true);
+        expect(hasThirdLike).toBe(true);
+        expect(hasSeventhLike).toBe(true);
+        return;
+    }
+
+    if (chordId === 'major-9' || chordId === 'dominant-9') {
+        expect(hasRoot).toBe(true);
+        expect(hasSeventhLike).toBe(true);
+        expect(hasExtensionLike).toBe(true);
+        return;
+    }
+
+    if (chordId === 'sus2' || chordId === 'sus4') {
+        expect(hasRoot).toBe(true);
+        expect(hasSuspensionLike).toBe(true);
+    }
+}
+
 describe('archetype-generated voicing path', () => {
     it('supports the narrow reviewed chord-family scope only', () => {
+        expect(ARCHETYPE_GENERATED_CHORD_IDS).toEqual(CURATED_QA_REVIEW_CHORD_IDS);
         expect(ARCHETYPE_GENERATED_CHORD_IDS).toEqual([
             'major',
             'minor',
@@ -47,8 +96,12 @@ describe('archetype-generated voicing path', () => {
         }
     });
 
-    it('makes chord-to-archetype grammar explicit through narrow plans instead of raw per-chord seed lists', () => {
+    it('protects explicit chordClass and family-plan mappings for the supported scope', () => {
         expect(getArchetypePlanForChord('major')).toEqual({
+            chordClass: 'triad',
+            families: ['representative-mid', 'upper-companion'],
+        });
+        expect(getArchetypePlanForChord('minor')).toEqual({
             chordClass: 'triad',
             families: ['representative-mid', 'upper-companion'],
         });
@@ -56,15 +109,61 @@ describe('archetype-generated voicing path', () => {
             chordClass: 'seventh',
             families: ['compact-seventh', 'upper-companion'],
         });
+        expect(getArchetypePlanForChord('minor-7')).toEqual({
+            chordClass: 'seventh',
+            families: ['compact-seventh', 'upper-companion'],
+        });
+        expect(getArchetypePlanForChord('dominant-7')).toEqual({
+            chordClass: 'seventh',
+            families: ['compact-seventh', 'upper-companion'],
+        });
         expect(getArchetypePlanForChord('major-9')).toEqual({
             chordClass: 'ninth',
             families: ['controlled-ninth', 'upper-companion'],
+        });
+        expect(getArchetypePlanForChord('dominant-9')).toEqual({
+            chordClass: 'ninth',
+            families: ['controlled-ninth', 'upper-companion'],
+        });
+        expect(getArchetypePlanForChord('sus2')).toEqual({
+            chordClass: 'suspension',
+            families: ['suspension-open', 'upper-companion'],
         });
         expect(getArchetypePlanForChord('sus4')).toEqual({
             chordClass: 'suspension',
             families: ['suspension-open', 'upper-companion'],
         });
         expect(getArchetypePlanForChord('dominant-13')).toBeNull();
+        expect(getArchetypePlanForChord('power-5')).toBeNull();
+    });
+
+    it('emits exactly two archetype-generated templates per supported chord with explicit archetype identity', () => {
+        for (const chordId of ARCHETYPE_GENERATED_CHORD_IDS) {
+            const templates = getArchetypeGeneratedVoicingTemplatesForChord(chordId);
+
+            expect(templates).toHaveLength(2);
+            expect(templates.every((template) => template.source === 'archetype-generated')).toBe(true);
+            expect(templates.every((template) => template.id.includes(':archetype-generated:'))).toBe(true);
+            expect(templates.every((template) => template.tags?.includes('archetype-generated'))).toBe(true);
+            expect(templates.every((template) => template.tags?.some((tag) => tag.startsWith('archetype-')))).toBe(true);
+            expect(templates.every((template) => template.tags?.some((tag) => tag.startsWith('archetype-class-')))).toBe(true);
+            expect(new Set(templates.map((template) => template.id)).size).toBe(2);
+            expect(new Set(templates.map((template) => template.rootString)).size).toBe(2);
+            expect(new Set(templates.map((template) => template.label)).size).toBe(2);
+        }
+    });
+
+    it('keeps the two emitted templates structurally distinct enough to represent separate archetypes', () => {
+        for (const chordId of ARCHETYPE_GENERATED_CHORD_IDS) {
+            const templates = getArchetypeGeneratedVoicingTemplatesForChord(chordId);
+            const [firstTemplate, secondTemplate] = templates;
+
+            expect(firstTemplate.rootString).not.toBe(secondTemplate.rootString);
+            expect(firstTemplate.label).not.toBe(secondTemplate.label);
+            expect(firstTemplate.strings.map((stringValue) => stringValue.fretOffset)).not.toEqual(
+                secondTemplate.strings.map((stringValue) => stringValue.fretOffset)
+            );
+        }
     });
 
     it('stays out of the default public pipeline unless explicitly enabled', () => {
@@ -83,7 +182,24 @@ describe('archetype-generated voicing path', () => {
         expect(defaultCandidates.every((candidate) => candidate.voicing.descriptor.provenance.sourceKind !== 'archetype-generated')).toBe(true);
     });
 
-    it('emits playable structurally coherent archetype-generated candidates for the supported scope', () => {
+    it('guards minimum structural coherence for emitted archetype-generated templates before resolution', () => {
+        for (const chordId of ARCHETYPE_GENERATED_CHORD_IDS) {
+            const templates = getArchetypeGeneratedVoicingTemplatesForChord(chordId);
+
+            for (const template of templates) {
+                const activeStrings = getActiveTemplateStrings(template);
+                const templateDegrees = getTemplateDegrees(template);
+
+                expect(activeStrings.length).toBeGreaterThanOrEqual(3);
+                expect(templateDegrees.length).toBeGreaterThanOrEqual(3);
+                expect(activeStrings.every((stringValue) => typeof stringValue.fretOffset === 'number')).toBe(true);
+                expect(activeStrings.every((stringValue) => typeof stringValue.toneDegree === 'string')).toBe(true);
+                expectArchetypeAxisCoverage(chordId, template);
+            }
+        }
+    });
+
+    it('emits playable structurally coherent archetype-generated candidates for the supported scope after resolution', () => {
         for (const chordId of ARCHETYPE_GENERATED_CHORD_IDS) {
             const candidates = getArchetypeGeneratedVoicingsForChord(chordId, 0, {
                 includeNonPlayableCandidates: false,
@@ -95,6 +211,8 @@ describe('archetype-generated voicing path', () => {
             expect(candidates.every((candidate) => candidate.voicing.descriptor.provenance.sourceKind === 'archetype-generated')).toBe(true);
             expect(candidates.every((candidate) => candidate.voicing.span < 4)).toBe(true);
             expect(candidates.every((candidate) => candidate.voicing.descriptor.playedStrings.length >= 3)).toBe(true);
+            expect(candidates.every((candidate) => (candidate.voicing.outOfFormulaPitchClasses?.length ?? 0) === 0)).toBe(true);
+            expect(candidates.every((candidate) => (candidate.voicing.missingRequiredDegrees?.length ?? 0) === 0)).toBe(true);
         }
     });
 
