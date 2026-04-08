@@ -249,7 +249,7 @@ describe('archetype-generated voicing path', () => {
         }
     });
 
-    it('formalizes reject reviews as a negative-pattern guardrail without turning them into an absolute ban list', () => {
+    it('formalizes reject reviews as a directional guardrail that disallows rejected resemblance without accepted closeness', () => {
         const chordTypesWithRejects = [...new Set(CURATED_QA_BUCKETS.reject.map((review) => review.chordType))];
 
         for (const chordType of chordTypesWithRejects) {
@@ -279,10 +279,16 @@ describe('archetype-generated voicing path', () => {
                 acceptedReferences,
                 rejectedReferences
             )).toBe(true);
-            expect(candidates.some((candidate) => matchesRejectedReferencePattern(
-                candidate.voicing,
-                rejectedReferences[0]
-            ))).toBe(true);
+            expect(candidates
+                .filter((candidate) => matchesRejectedReferencePattern(
+                    candidate.voicing,
+                    rejectedReferences[0]
+                ))
+                .every((candidate) => prefersAcceptedReferenceOverRejected(
+                    candidate.voicing,
+                    acceptedReferences,
+                    rejectedReferences
+                ))).toBe(false);
         }
     });
 

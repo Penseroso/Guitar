@@ -95,5 +95,13 @@ export function prefersAcceptedReferenceOverRejected(
         matchesRejectedReferencePattern(archetypeVoicing, reference)
     );
 
-    return matchesAccepted || !matchesRejected;
+    if (matchesRejected && !matchesAccepted) {
+        return false;
+    }
+
+    if (acceptedReferences.length > 0) {
+        return matchesAccepted;
+    }
+
+    return !matchesRejected;
 }
