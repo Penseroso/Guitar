@@ -13,7 +13,6 @@ import {
     prefersAcceptedReferenceOverRejected,
     partitionCuratedQaReviews,
 } from './curated-qa-comparison';
-import { CURATED_QA_REVIEW_CHORD_IDS } from './curated-qa';
 import {
     collectVoicingTemplateSourcesForChord,
     getArchetypeGeneratedVoicingsForChord,
@@ -72,7 +71,6 @@ function expectArchetypeAxisCoverage(chordId: typeof ARCHETYPE_GENERATED_CHORD_I
 
 describe('archetype-generated voicing path', () => {
     it('supports the narrow reviewed chord-family scope only', () => {
-        expect(ARCHETYPE_GENERATED_CHORD_IDS).toEqual(CURATED_QA_REVIEW_CHORD_IDS);
         expect(ARCHETYPE_GENERATED_CHORD_IDS).toEqual([
             'major',
             'minor',

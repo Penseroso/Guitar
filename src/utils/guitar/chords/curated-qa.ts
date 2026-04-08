@@ -1,21 +1,23 @@
 import { getChordTypeLabel, getChordTypeSuffix, resolveChordRegistryEntry } from './helpers';
 import { getCuratedVoicingTemplatesForChord } from './curated';
-import { getVoicingDisplayName, getVoicingDisplaySubtitle } from './descriptor';
+import { getVoicingDisplayName, getVoicingDisplaySubtitle, getVoicingProvenanceLabel } from './descriptor';
+import { getLegacyVoicingTemplatesForChord } from './templates';
 import { buildChordDefinitionFromRegistryEntry, buildChordTonesFromRegistryEntry } from './helpers';
 import { resolveVoicingTemplate } from './resolver';
 import type { ChordRegistryEntry } from './registry';
-import type { ResolvedVoicing } from './types';
+import type { ResolvedVoicing, VoicingTemplate } from './types';
 
 export const CURATED_QA_REVIEW_CHORD_IDS = [
     'major',
-    'minor',
+    'major-6',
     'major-7',
+    'major-9',
+    'minor',
     'minor-7',
     'dominant-7',
+    'dominant-9',
     'sus2',
     'sus4',
-    'major-9',
-    'dominant-9',
 ] as const;
 
 export type CuratedQaChordId = (typeof CURATED_QA_REVIEW_CHORD_IDS)[number];
@@ -81,7 +83,7 @@ export function isDeveloperCuratedQaEnabled(args: {
 function buildCuratedQaCandidate(entry: ChordRegistryEntry, rootPitchClass: number, templateIndex: number): CuratedQaCandidate {
     const chord = buildChordDefinitionFromRegistryEntry(entry, rootPitchClass);
     const tones = buildChordTonesFromRegistryEntry(entry, rootPitchClass);
-    const template = getCuratedVoicingTemplatesForChord(entry)[templateIndex];
+    const template = getCuratedQaTemplatesForChord(entry)[templateIndex];
     const voicing = resolveVoicingTemplate(chord, tones, template);
 
     return {
@@ -90,17 +92,46 @@ function buildCuratedQaCandidate(entry: ChordRegistryEntry, rootPitchClass: numb
         chordTypeLabel: getChordTypeLabel(entry),
         chordLabel: `${chord.symbol}${getChordTypeSuffix(entry)}`,
         voicing,
-        sourceLabel: 'Curated',
+        sourceLabel: getVoicingProvenanceLabel(voicing.descriptor.provenance),
         displayName: getVoicingDisplayName(voicing.descriptor),
         displaySubtitle: getVoicingDisplaySubtitle(voicing.descriptor),
         seedId: voicing.descriptor.provenance.seedId,
     };
 }
 
+function getCuratedQaTemplateSignature(template: VoicingTemplate): string {
+    return template.strings
+        .map((stringValue) => `${stringValue.string}:${stringValue.fretOffset ?? 'x'}`)
+        .join('|');
+}
+
+function getCuratedQaTemplatesForChord(entryInput: string | ChordRegistryEntry): VoicingTemplate[] {
+    const entry = resolveChordRegistryEntry(entryInput);
+    const curatedTemplates = getCuratedVoicingTemplatesForChord(entry);
+
+    if (entry.id !== 'major') {
+        return curatedTemplates;
+    }
+
+    const majorTemplates = [...curatedTemplates, ...getLegacyVoicingTemplatesForChord(entry)];
+    const seenSignatures = new Set<string>();
+
+    return majorTemplates.filter((template) => {
+        const signature = getCuratedQaTemplateSignature(template);
+
+        if (seenSignatures.has(signature)) {
+            return false;
+        }
+
+        seenSignatures.add(signature);
+        return true;
+    });
+}
+
 export function getCuratedQaCandidates(rootPitchClass: number): CuratedQaCandidate[] {
     return CURATED_QA_REVIEW_CHORD_IDS.flatMap((chordType) => {
         const entry = resolveChordRegistryEntry(chordType);
-        const templates = getCuratedVoicingTemplatesForChord(entry);
+        const templates = getCuratedQaTemplatesForChord(entry);
 
         return templates.map((_, templateIndex) => buildCuratedQaCandidate(entry, rootPitchClass, templateIndex));
     });

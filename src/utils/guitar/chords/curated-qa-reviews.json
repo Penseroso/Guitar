@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-04-08T07:16:49.212Z",
+  "updatedAt": "2026-04-08T14:57:19.956Z",
   "reviews": [
     {
       "chordType": "dominant-7",
@@ -23,12 +23,37 @@
     },
     {
       "chordType": "major",
+      "candidateId": "major:0:major:0:root-6-e-shape:8",
+      "decision": "accept"
+    },
+    {
+      "chordType": "major",
+      "candidateId": "major:0:major:3:root-6-g-shape:8",
+      "decision": "reject"
+    },
+    {
+      "chordType": "major",
+      "candidateId": "major:0:major:4:root-5-c-shape:3",
+      "decision": "accept"
+    },
+    {
+      "chordType": "major",
       "candidateId": "major:0:major:curated:root-4-reviewed-upper:10",
       "decision": "borderline"
     },
     {
       "chordType": "major",
       "candidateId": "major:0:major:curated:root-5-reviewed-caged:3",
+      "decision": "accept"
+    },
+    {
+      "chordType": "major-6",
+      "candidateId": "major-6:0:major-6:curated:root-4-reviewed-upper-6:10",
+      "decision": "accept"
+    },
+    {
+      "chordType": "major-6",
+      "candidateId": "major-6:0:major-6:curated:root-5-reviewed-open-6:3",
       "decision": "accept"
     },
     {

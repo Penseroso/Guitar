@@ -28,6 +28,20 @@ const CURATED_VOICING_SEEDS: Partial<Record<ChordRegistryEntry['id'], CuratedVoi
             offsets: [2, 3, 2, 0, null, null],
         },
     ],
+    'major-6': [
+        {
+            id: 'root-5-reviewed-open-6',
+            label: 'Root 5 (Reviewed 6)',
+            rootString: 4,
+            offsets: [-3, -2, -1, -1, 0, null],
+        },
+        {
+            id: 'root-4-reviewed-upper-6',
+            label: 'Root 4 (Reviewed Upper 6)',
+            rootString: 3,
+            offsets: [-2, 0, -1, 0, null, null],
+        },
+    ],
     minor: [
         {
             id: 'root-5-reviewed-caged',

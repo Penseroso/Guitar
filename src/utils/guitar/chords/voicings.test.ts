@@ -716,6 +716,7 @@ describe('voicing ranking orchestration', () => {
 describe('curated source QA scope', () => {
     it('provides a real curated inventory for the reviewed QA chord set', () => {
         expect(getCuratedVoicingTemplatesForChord('major').length).toBeGreaterThan(0);
+        expect(getCuratedVoicingTemplatesForChord('major-6').length).toBeGreaterThan(0);
         expect(getCuratedVoicingTemplatesForChord('minor').length).toBeGreaterThan(0);
         expect(getCuratedVoicingTemplatesForChord('major-7').length).toBeGreaterThan(0);
         expect(getCuratedVoicingTemplatesForChord('minor-7').length).toBeGreaterThan(0);
@@ -727,7 +728,7 @@ describe('curated source QA scope', () => {
     });
 
     it('keeps the curated QA scope internally consistent around reviewed root-5 and root-4 grips', () => {
-        const qaIds = ['major', 'minor', 'major-7', 'minor-7', 'dominant-7', 'sus2', 'sus4', 'major-9', 'dominant-9'] as const;
+        const qaIds = ['major', 'major-6', 'major-7', 'major-9', 'minor', 'minor-7', 'dominant-7', 'dominant-9', 'sus2', 'sus4'] as const;
 
         for (const id of qaIds) {
             const templates = getCuratedVoicingTemplatesForChord(id);
@@ -749,7 +750,7 @@ describe('curated source QA scope', () => {
     });
 
     it('keeps curated QA voicings playable and structurally complete for the included families', () => {
-        const qaIds = ['major', 'minor', 'major-7', 'minor-7', 'dominant-7', 'sus2', 'sus4', 'major-9', 'dominant-9'] as const;
+        const qaIds = ['major', 'major-6', 'major-7', 'major-9', 'minor', 'minor-7', 'dominant-7', 'dominant-9', 'sus2', 'sus4'] as const;
 
         for (const id of qaIds) {
             const entry = resolveChordRegistryEntry(id);
@@ -762,6 +763,22 @@ describe('curated source QA scope', () => {
             expect(resolved.every((voicing) => voicing.playable)).toBe(true);
             expect(resolved.every((voicing) => (voicing.missingRequiredDegrees?.length ?? 0) === 0)).toBe(true);
         }
+    });
+
+    it('keeps the newly added major-6 QA grips in representative low and upper positions', () => {
+        const entry = resolveChordRegistryEntry('major-6');
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+        const resolved = getCuratedVoicingTemplatesForChord(entry)
+            .map((template) => resolveVoicingTemplate(chord, tones, template));
+
+        expect(resolved.map((voicing) => voicing.descriptor.provenance.seedId)).toEqual([
+            'major-6:curated:root-5-reviewed-open-6',
+            'major-6:curated:root-4-reviewed-upper-6',
+        ]);
+        expect(resolved.map((voicing) => voicing.minFret)).toEqual([0, 8]);
+        expect(resolved.every((voicing) => voicing.playable)).toBe(true);
+        expect(resolved.every((voicing) => voicing.notes.some((note) => !note.isMuted && note.degree === '6'))).toBe(true);
     });
 
     it('prefers curated provenance over legacy imports when identical seeds resolve to the same voicing', () => {
