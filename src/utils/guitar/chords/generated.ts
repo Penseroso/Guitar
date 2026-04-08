@@ -4,7 +4,7 @@ import { isFormulaClosedChordFamily } from './semantics';
 import type { ChordRegistryEntry } from './registry';
 import type { GuitarStringIndex, VoicingTemplate, VoicingTemplateString } from './types';
 
-type GeneratedFamily = 'shell' | 'compact' | 'upper-register';
+type GeneratedFamily = 'shell' | 'compact' | 'upper-register' | 'full';
 
 interface GeneratedBlueprint {
     family: GeneratedFamily;
@@ -18,6 +18,8 @@ const GENERATED_BLUEPRINTS: GeneratedBlueprint[] = [
     { family: 'shell', rootString: 4, strings: [4, 3, 2, 1], maxNotes: 4 },
     { family: 'compact', rootString: 5, strings: [5, 4, 3, 2], maxNotes: 4 },
     { family: 'compact', rootString: 4, strings: [4, 3, 2, 1], maxNotes: 4 },
+    { family: 'full', rootString: 5, strings: [5, 3, 2, 1, 0], maxNotes: 5 },
+    { family: 'full', rootString: 4, strings: [4, 3, 2, 1, 0], maxNotes: 5 },
     { family: 'upper-register', rootString: 4, strings: [4, 3, 2, 1], maxNotes: 4 },
     { family: 'upper-register', rootString: 3, strings: [3, 2, 1, 0], maxNotes: 4 },
 ];
@@ -25,6 +27,7 @@ const GENERATED_BLUEPRINTS: GeneratedBlueprint[] = [
 const FAMILY_LABELS: Record<GeneratedFamily, string> = {
     shell: 'Shell',
     compact: 'Compact',
+    full: 'Full',
     'upper-register': 'Upper Register',
 };
 
@@ -79,9 +82,30 @@ function getDegreePriority(entry: ChordRegistryEntry): string[] {
     ];
 }
 
+function buildFullVoicingDegrees(entry: ChordRegistryEntry, maxNotes: number): string[] {
+    const thirdLike = getThirdDegree(entry);
+    const seventhLike = getSeventhDegree(entry);
+    const extensionLike = getExtensionPriority(entry)[0] ?? null;
+    const fifthLike = getFifthPriority(entry)[0] ?? null;
+    const duplicatePlan = [
+        '1',
+        seventhLike ?? extensionLike ?? fifthLike ?? thirdLike,
+        thirdLike ?? extensionLike ?? fifthLike,
+        fifthLike ?? extensionLike ?? '1',
+        '1',
+        extensionLike ?? fifthLike ?? thirdLike ?? '1',
+    ].filter((degree): degree is string => Boolean(degree));
+
+    return duplicatePlan.slice(0, Math.min(maxNotes, 6));
+}
+
 function getDegreesForGeneratedFamily(entry: ChordRegistryEntry, family: GeneratedFamily, maxNotes: number): string[] {
     const requiredDegrees = getRequiredChordDegrees(entry);
     const degreePriority = getDegreePriority(entry);
+
+    if (family === 'full') {
+        return buildFullVoicingDegrees(entry, maxNotes);
+    }
 
     if (family === 'shell') {
         if (isFormulaClosedChordFamily(entry)) {
@@ -169,6 +193,10 @@ function buildGeneratedTemplateStrings(
 }
 
 function buildGeneratedTemplate(entry: ChordRegistryEntry, blueprint: GeneratedBlueprint): VoicingTemplate | null {
+    if (blueprint.family === 'full' && entry.family === 'extended') {
+        return null;
+    }
+
     const degrees = getDegreesForGeneratedFamily(entry, blueprint.family, blueprint.maxNotes);
 
     if (degrees.length < 3 || !degrees.includes('1')) {

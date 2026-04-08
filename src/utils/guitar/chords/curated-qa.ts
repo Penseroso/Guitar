@@ -1,11 +1,13 @@
 import { getChordTypeLabel, getChordTypeSuffix, resolveChordRegistryEntry } from './helpers';
 import { getCuratedVoicingTemplatesForChord } from './curated';
 import { getVoicingDisplayName, getVoicingDisplaySubtitle, getVoicingProvenanceLabel } from './descriptor';
+import { getGeneratedVoicingTemplatesForChord } from './generated';
 import { getLegacyVoicingTemplatesForChord } from './templates';
 import { buildChordDefinitionFromRegistryEntry, buildChordTonesFromRegistryEntry } from './helpers';
 import { resolveVoicingTemplate } from './resolver';
+import { getChordModeVoicingsForChord } from './voicings';
 import type { ChordRegistryEntry } from './registry';
-import type { ResolvedVoicing, VoicingTemplate } from './types';
+import type { ResolvedVoicing, VoicingCandidate, VoicingTemplate } from './types';
 
 export const CURATED_QA_REVIEW_CHORD_IDS = [
     'major',
@@ -52,6 +54,8 @@ export interface CuratedQaCandidateGroup {
 
 interface CuratedQaSlicePlan {
     includeLegacyCandidates: boolean;
+    includeGeneratedCandidates: boolean;
+    matchChordModeOrder?: boolean;
     maxCandidates: number;
 }
 
@@ -63,42 +67,53 @@ interface CuratedQaResolvedTemplateCandidate {
 const CURATED_QA_SLICE_PLANS: Record<CuratedQaChordId, CuratedQaSlicePlan> = {
     major: {
         includeLegacyCandidates: true,
-        maxCandidates: 5,
+        includeGeneratedCandidates: true,
+        matchChordModeOrder: true,
+        maxCandidates: 7,
     },
     'major-6': {
         includeLegacyCandidates: false,
+        includeGeneratedCandidates: false,
         maxCandidates: 2,
     },
     'major-7': {
         includeLegacyCandidates: true,
+        includeGeneratedCandidates: false,
         maxCandidates: 3,
     },
     'major-9': {
         includeLegacyCandidates: true,
+        includeGeneratedCandidates: false,
         maxCandidates: 3,
     },
     minor: {
         includeLegacyCandidates: true,
+        includeGeneratedCandidates: false,
         maxCandidates: 4,
     },
     'minor-7': {
         includeLegacyCandidates: true,
+        includeGeneratedCandidates: false,
         maxCandidates: 3,
     },
     'dominant-7': {
         includeLegacyCandidates: true,
+        includeGeneratedCandidates: false,
         maxCandidates: 4,
     },
     'dominant-9': {
         includeLegacyCandidates: true,
+        includeGeneratedCandidates: false,
         maxCandidates: 3,
     },
     sus2: {
         includeLegacyCandidates: false,
+        includeGeneratedCandidates: false,
         maxCandidates: 2,
     },
     sus4: {
         includeLegacyCandidates: true,
+        includeGeneratedCandidates: false,
         maxCandidates: 3,
     },
 };
@@ -162,6 +177,26 @@ function buildCuratedQaCandidateFromTemplate(
     };
 }
 
+function buildCuratedQaCandidateFromVoicing(
+    entry: ChordRegistryEntry,
+    rootPitchClass: number,
+    voicing: ResolvedVoicing
+): CuratedQaCandidate {
+    const chord = buildChordDefinitionFromRegistryEntry(entry, rootPitchClass);
+
+    return {
+        candidateId: voicing.id,
+        chordType: entry.id as CuratedQaChordId,
+        chordTypeLabel: getChordTypeLabel(entry),
+        chordLabel: `${chord.symbol}${getChordTypeSuffix(entry)}`,
+        voicing,
+        sourceLabel: getVoicingProvenanceLabel(voicing.descriptor.provenance),
+        displayName: getVoicingDisplayName(voicing.descriptor),
+        displaySubtitle: getVoicingDisplaySubtitle(voicing.descriptor),
+        seedId: voicing.descriptor.provenance.seedId,
+    };
+}
+
 function getResolvedVoicingSignature(voicing: ResolvedVoicing): string {
     return voicing.notes
         .map((note) => `${note.string}:${note.isMuted ? 'x' : note.fret}`)
@@ -188,6 +223,19 @@ function getCuratedQaStructureBucket(candidate: CuratedQaResolvedTemplateCandida
     ].join('::');
 }
 
+function selectChordModeCandidatesForChord(
+    entry: ChordRegistryEntry,
+    rootPitchClass: number,
+    plan: CuratedQaSlicePlan
+): CuratedQaCandidate[] {
+    return getChordModeVoicingsForChord(entry, rootPitchClass, {
+        maxRootFret: 15,
+        maxCandidates: plan.maxCandidates,
+        includeLegacyCandidates: plan.includeLegacyCandidates,
+        includeGeneratedCandidates: plan.includeGeneratedCandidates,
+    }).map((candidate: VoicingCandidate) => buildCuratedQaCandidateFromVoicing(entry, rootPitchClass, candidate.voicing));
+}
+
 function selectStratifiedCandidatesForChord(
     entry: ChordRegistryEntry,
     rootPitchClass: number,
@@ -196,6 +244,7 @@ function selectStratifiedCandidatesForChord(
     const templatePool = [
         ...getCuratedVoicingTemplatesForChord(entry),
         ...(plan.includeLegacyCandidates ? getLegacyVoicingTemplatesForChord(entry) : []),
+        ...(plan.includeGeneratedCandidates ? getGeneratedVoicingTemplatesForChord(entry) : []),
     ];
     const deduped = new Map<string, CuratedQaResolvedTemplateCandidate>();
 
@@ -276,6 +325,10 @@ export function getCuratedQaCandidatesForChord(
 ): CuratedQaCandidate[] {
     const entry = resolveChordRegistryEntry(chordType);
     const plan = CURATED_QA_SLICE_PLANS[chordType];
+
+    if (plan.matchChordModeOrder) {
+        return selectChordModeCandidatesForChord(entry, rootPitchClass, plan);
+    }
 
     return selectStratifiedCandidatesForChord(entry, rootPitchClass, plan);
 }

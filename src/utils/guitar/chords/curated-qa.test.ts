@@ -3,12 +3,15 @@ import { describe, expect, it } from 'vitest';
 import {
     CURATED_QA_REVIEW_CHORD_IDS,
     getCuratedQaCandidates,
+    getCuratedQaCandidatesForChord,
     getCuratedQaDecisionForCandidate,
     groupCuratedQaCandidates,
     isDeveloperCuratedQaEnabled,
     recordCuratedQaDecision,
     type CuratedQaReviewState,
 } from './curated-qa';
+import { getChordModeVoicingsForChord } from './voicings';
+import { getVoicingPresentationMeta } from '../../../components/guitar/chord-preview/voicing-labels';
 
 describe('developer curated QA mode', () => {
     it('stays gated unless the dev-only flag is present outside production', () => {
@@ -34,12 +37,12 @@ describe('developer curated QA mode', () => {
             'sus2',
             'sus4',
         ]);
-        expect(candidates).toHaveLength(31);
+        expect(candidates).toHaveLength(33);
         expect(new Set(candidates.map((candidate) => candidate.chordType))).toEqual(new Set(CURATED_QA_REVIEW_CHORD_IDS));
         expect(candidates.every((candidate) => candidate.voicing.playable)).toBe(true);
         expect(groupedCandidates.map((group) => group.chordType)).toEqual(CURATED_QA_REVIEW_CHORD_IDS);
         expect(Object.fromEntries(groupedCandidates.map((group) => [group.chordType, group.candidates.length]))).toEqual({
-            major: 5,
+            major: 7,
             'major-6': 2,
             'major-7': 3,
             'major-9': 3,
@@ -56,6 +59,8 @@ describe('developer curated QA mode', () => {
             'major',
             'major',
             'major',
+            'major',
+            'major',
             'major-6',
             'major-6',
             'major-7',
@@ -65,24 +70,37 @@ describe('developer curated QA mode', () => {
             'major-9',
             'major-9',
         ]);
-        expect(majorCandidates).toHaveLength(5);
-        expect(majorCandidates.map((candidate) => candidate.candidateId)).toEqual([
-            'major:0:major:curated:root-5-reviewed-caged:3',
-            'major:0:major:curated:root-4-reviewed-upper:10',
-            'major:0:major:0:root-6-e-shape:8',
-            'major:0:major:3:root-6-g-shape:8',
-            'major:0:major:4:root-5-c-shape:3',
-        ]);
-        expect(majorCandidates.map((candidate) => candidate.sourceLabel)).toEqual([
-            'Curated',
-            'Curated',
-            'Legacy import',
-            'Legacy import',
-            'Legacy import',
-        ]);
+        expect(majorCandidates).toHaveLength(7);
+        expect(majorCandidates.map((candidate) => candidate.candidateId)).toEqual(
+            getChordModeVoicingsForChord('major', 0, {
+                maxRootFret: 15,
+                maxCandidates: 7,
+            }).map((candidate) => candidate.voicing.id)
+        );
         expect(groupedCandidates.every((group) => new Set(
             group.candidates.map((candidate) => candidate.voicing.notes.map((note) => `${note.string}:${note.isMuted ? 'x' : note.fret}`).join('|'))
         ).size === group.candidates.length)).toBe(true);
+    });
+
+    it('keeps the major QA slice aligned to the app-visible chord-mode candidates', () => {
+        const qaCandidates = getCuratedQaCandidatesForChord('major', 0);
+        const appCandidates = getChordModeVoicingsForChord('major', 0, {
+            maxRootFret: 15,
+            maxCandidates: 7,
+        });
+        const appSpreadCandidate = appCandidates.find((candidate) => {
+            const meta = getVoicingPresentationMeta(candidate.voicing);
+
+            return meta.primaryLabel === 'Position voicing'
+                && meta.secondaryLabel?.includes('15fr')
+                && meta.secondaryLabel?.includes('spread');
+        });
+
+        expect(qaCandidates.map((candidate) => candidate.candidateId)).toEqual(
+            appCandidates.map((candidate) => candidate.voicing.id)
+        );
+        expect(appSpreadCandidate).toBeDefined();
+        expect(qaCandidates.some((candidate) => candidate.candidateId === appSpreadCandidate?.voicing.id)).toBe(true);
     });
 
     it('records accept borderline and reject decisions in a simple keyed in-memory state object', () => {

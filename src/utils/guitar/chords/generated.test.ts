@@ -72,4 +72,20 @@ describe('generated voicing candidates', () => {
         expect(sources.generatedTemplates.length).toBeGreaterThan(0);
         expect(sources.archetypeGeneratedTemplates.length).toBeGreaterThan(0);
     });
+
+    it('allows fuller generated minor-seventh grips including the 3x3333 shape', () => {
+        const templates = getGeneratedVoicingTemplatesForChord('minor-7');
+        const candidates = getRankedVoicingsForChord('minor-7', 7, {
+            includeLegacyCandidates: false,
+            includeCuratedCandidates: false,
+            includeArchetypeGeneratedCandidates: false,
+            includeNonPlayableCandidates: true,
+            maxRootFret: 15,
+        });
+
+        expect(templates.some((template) => template.id.includes(':generated:full:root-6'))).toBe(true);
+        expect(candidates.some((candidate) => candidate.voicing.playable && candidate.voicing.notes.map((note) => (
+            note.isMuted ? 'x' : String(note.fret)
+        )).join('') === '3333x3')).toBe(true);
+    });
 });
