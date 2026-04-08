@@ -4,6 +4,7 @@ import {
     CURATED_QA_REVIEW_CHORD_IDS,
     getCuratedQaCandidates,
     getCuratedQaDecisionForCandidate,
+    groupCuratedQaCandidates,
     isDeveloperCuratedQaEnabled,
     recordCuratedQaDecision,
     type CuratedQaReviewState,
@@ -16,9 +17,10 @@ describe('developer curated QA mode', () => {
         expect(isDeveloperCuratedQaEnabled({ nodeEnv: 'test', search: '?dev-curated-qa=1' })).toBe(true);
     });
 
-    it('surfaces the QA review set while expanding major triads to the full shape inventory', () => {
+    it('surfaces a stratified chord-by-chord QA slice instead of an exhaustive review census', () => {
         const candidates = getCuratedQaCandidates(0);
         const majorCandidates = candidates.filter((candidate) => candidate.chordType === 'major');
+        const groupedCandidates = groupCuratedQaCandidates(candidates);
 
         expect(CURATED_QA_REVIEW_CHORD_IDS).toEqual([
             'major',
@@ -32,9 +34,22 @@ describe('developer curated QA mode', () => {
             'sus2',
             'sus4',
         ]);
-        expect(candidates).toHaveLength(23);
+        expect(candidates).toHaveLength(31);
         expect(new Set(candidates.map((candidate) => candidate.chordType))).toEqual(new Set(CURATED_QA_REVIEW_CHORD_IDS));
         expect(candidates.every((candidate) => candidate.voicing.playable)).toBe(true);
+        expect(groupedCandidates.map((group) => group.chordType)).toEqual(CURATED_QA_REVIEW_CHORD_IDS);
+        expect(Object.fromEntries(groupedCandidates.map((group) => [group.chordType, group.candidates.length]))).toEqual({
+            major: 5,
+            'major-6': 2,
+            'major-7': 3,
+            'major-9': 3,
+            minor: 3,
+            'minor-7': 3,
+            'dominant-7': 4,
+            'dominant-9': 3,
+            sus2: 2,
+            sus4: 3,
+        });
         expect(candidates.filter((candidate) => candidate.chordType.startsWith('major')).map((candidate) => candidate.chordType)).toEqual([
             'major',
             'major',
@@ -45,6 +60,8 @@ describe('developer curated QA mode', () => {
             'major-6',
             'major-7',
             'major-7',
+            'major-7',
+            'major-9',
             'major-9',
             'major-9',
         ]);
@@ -63,6 +80,9 @@ describe('developer curated QA mode', () => {
             'Legacy import',
             'Legacy import',
         ]);
+        expect(groupedCandidates.every((group) => new Set(
+            group.candidates.map((candidate) => candidate.voicing.notes.map((note) => `${note.string}:${note.isMuted ? 'x' : note.fret}`).join('|'))
+        ).size === group.candidates.length)).toBe(true);
     });
 
     it('records accept borderline and reject decisions in a simple keyed in-memory state object', () => {

@@ -91,6 +91,8 @@ export {
     getCuratedQaDecisionForCandidate,
     isDeveloperCuratedQaEnabled,
     getCuratedQaCandidates,
+    getCuratedQaCandidatesForChord,
+    groupCuratedQaCandidates,
 } from './curated-qa';
 
 export type {

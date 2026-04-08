@@ -43,6 +43,66 @@ export interface CuratedQaCandidate {
     seedId?: string;
 }
 
+export interface CuratedQaCandidateGroup {
+    chordType: CuratedQaChordId;
+    chordTypeLabel: string;
+    chordLabel: string;
+    candidates: CuratedQaCandidate[];
+}
+
+interface CuratedQaSlicePlan {
+    includeLegacyCandidates: boolean;
+    maxCandidates: number;
+}
+
+interface CuratedQaResolvedTemplateCandidate {
+    template: VoicingTemplate;
+    candidate: CuratedQaCandidate;
+}
+
+const CURATED_QA_SLICE_PLANS: Record<CuratedQaChordId, CuratedQaSlicePlan> = {
+    major: {
+        includeLegacyCandidates: true,
+        maxCandidates: 5,
+    },
+    'major-6': {
+        includeLegacyCandidates: false,
+        maxCandidates: 2,
+    },
+    'major-7': {
+        includeLegacyCandidates: true,
+        maxCandidates: 3,
+    },
+    'major-9': {
+        includeLegacyCandidates: true,
+        maxCandidates: 3,
+    },
+    minor: {
+        includeLegacyCandidates: true,
+        maxCandidates: 4,
+    },
+    'minor-7': {
+        includeLegacyCandidates: true,
+        maxCandidates: 3,
+    },
+    'dominant-7': {
+        includeLegacyCandidates: true,
+        maxCandidates: 4,
+    },
+    'dominant-9': {
+        includeLegacyCandidates: true,
+        maxCandidates: 3,
+    },
+    sus2: {
+        includeLegacyCandidates: false,
+        maxCandidates: 2,
+    },
+    sus4: {
+        includeLegacyCandidates: true,
+        maxCandidates: 3,
+    },
+};
+
 function getReviewKey(chordType: CuratedQaChordId, candidateId: string): string {
     return `${chordType}::${candidateId}`;
 }
@@ -80,10 +140,13 @@ export function isDeveloperCuratedQaEnabled(args: {
     return params.get('dev-curated-qa') === '1';
 }
 
-function buildCuratedQaCandidate(entry: ChordRegistryEntry, rootPitchClass: number, templateIndex: number): CuratedQaCandidate {
+function buildCuratedQaCandidateFromTemplate(
+    entry: ChordRegistryEntry,
+    rootPitchClass: number,
+    template: VoicingTemplate
+): CuratedQaCandidate {
     const chord = buildChordDefinitionFromRegistryEntry(entry, rootPitchClass);
     const tones = buildChordTonesFromRegistryEntry(entry, rootPitchClass);
-    const template = getCuratedQaTemplatesForChord(entry)[templateIndex];
     const voicing = resolveVoicingTemplate(chord, tones, template);
 
     return {
@@ -99,40 +162,137 @@ function buildCuratedQaCandidate(entry: ChordRegistryEntry, rootPitchClass: numb
     };
 }
 
-function getCuratedQaTemplateSignature(template: VoicingTemplate): string {
-    return template.strings
-        .map((stringValue) => `${stringValue.string}:${stringValue.fretOffset ?? 'x'}`)
+function getResolvedVoicingSignature(voicing: ResolvedVoicing): string {
+    return voicing.notes
+        .map((note) => `${note.string}:${note.isMuted ? 'x' : note.fret}`)
         .join('|');
 }
 
-function getCuratedQaTemplatesForChord(entryInput: string | ChordRegistryEntry): VoicingTemplate[] {
-    const entry = resolveChordRegistryEntry(entryInput);
-    const curatedTemplates = getCuratedVoicingTemplatesForChord(entry);
+function getResolvedTemplateCandidate(
+    entry: ChordRegistryEntry,
+    rootPitchClass: number,
+    template: VoicingTemplate
+): CuratedQaResolvedTemplateCandidate {
+    return {
+        template,
+        candidate: buildCuratedQaCandidateFromTemplate(entry, rootPitchClass, template),
+    };
+}
 
-    if (entry.id !== 'major') {
-        return curatedTemplates;
-    }
+function getCuratedQaStructureBucket(candidate: CuratedQaResolvedTemplateCandidate): string {
+    return [
+        candidate.template.rootString ?? 'none',
+        candidate.candidate.voicing.descriptor.registerBand,
+        candidate.candidate.voicing.descriptor.family,
+        candidate.candidate.voicing.descriptor.noteCount,
+    ].join('::');
+}
 
-    const majorTemplates = [...curatedTemplates, ...getLegacyVoicingTemplatesForChord(entry)];
-    const seenSignatures = new Set<string>();
+function selectStratifiedCandidatesForChord(
+    entry: ChordRegistryEntry,
+    rootPitchClass: number,
+    plan: CuratedQaSlicePlan
+): CuratedQaCandidate[] {
+    const templatePool = [
+        ...getCuratedVoicingTemplatesForChord(entry),
+        ...(plan.includeLegacyCandidates ? getLegacyVoicingTemplatesForChord(entry) : []),
+    ];
+    const deduped = new Map<string, CuratedQaResolvedTemplateCandidate>();
 
-    return majorTemplates.filter((template) => {
-        const signature = getCuratedQaTemplateSignature(template);
+    for (const template of templatePool) {
+        const resolvedCandidate = getResolvedTemplateCandidate(entry, rootPitchClass, template);
 
-        if (seenSignatures.has(signature)) {
-            return false;
+        if (!resolvedCandidate.candidate.voicing.playable) {
+            continue;
         }
 
-        seenSignatures.add(signature);
-        return true;
-    });
+        const voicingSignature = getResolvedVoicingSignature(resolvedCandidate.candidate.voicing);
+        const existing = deduped.get(voicingSignature);
+
+        if (!existing) {
+            deduped.set(voicingSignature, resolvedCandidate);
+            continue;
+        }
+
+        if (existing.candidate.voicing.descriptor.provenance.sourceKind !== 'curated'
+            && resolvedCandidate.candidate.voicing.descriptor.provenance.sourceKind === 'curated') {
+            deduped.set(voicingSignature, resolvedCandidate);
+        }
+    }
+
+    const dedupedCandidates = Array.from(deduped.values());
+    const selected = dedupedCandidates.filter(
+        (resolvedCandidate) => resolvedCandidate.candidate.voicing.descriptor.provenance.sourceKind === 'curated'
+    );
+    const selectedIds = new Set(selected.map((resolvedCandidate) => resolvedCandidate.candidate.candidateId));
+    const selectedBuckets = new Set(selected.map(getCuratedQaStructureBucket));
+
+    for (const resolvedCandidate of dedupedCandidates) {
+        if (selected.length >= plan.maxCandidates) {
+            break;
+        }
+
+        if (selectedIds.has(resolvedCandidate.candidate.candidateId)) {
+            continue;
+        }
+
+        const bucket = getCuratedQaStructureBucket(resolvedCandidate);
+        if (selectedBuckets.has(bucket)) {
+            continue;
+        }
+
+        selected.push(resolvedCandidate);
+        selectedIds.add(resolvedCandidate.candidate.candidateId);
+        selectedBuckets.add(bucket);
+    }
+
+    for (const resolvedCandidate of dedupedCandidates) {
+        if (selected.length >= plan.maxCandidates) {
+            break;
+        }
+
+        if (selectedIds.has(resolvedCandidate.candidate.candidateId)) {
+            continue;
+        }
+
+        selected.push(resolvedCandidate);
+        selectedIds.add(resolvedCandidate.candidate.candidateId);
+    }
+
+    return selected
+        .slice(0, plan.maxCandidates)
+        .map((resolvedCandidate) => resolvedCandidate.candidate);
 }
 
 export function getCuratedQaCandidates(rootPitchClass: number): CuratedQaCandidate[] {
     return CURATED_QA_REVIEW_CHORD_IDS.flatMap((chordType) => {
-        const entry = resolveChordRegistryEntry(chordType);
-        const templates = getCuratedQaTemplatesForChord(entry);
-
-        return templates.map((_, templateIndex) => buildCuratedQaCandidate(entry, rootPitchClass, templateIndex));
+        return getCuratedQaCandidatesForChord(chordType, rootPitchClass);
     });
+}
+
+export function getCuratedQaCandidatesForChord(
+    chordType: CuratedQaChordId,
+    rootPitchClass: number
+): CuratedQaCandidate[] {
+    const entry = resolveChordRegistryEntry(chordType);
+    const plan = CURATED_QA_SLICE_PLANS[chordType];
+
+    return selectStratifiedCandidatesForChord(entry, rootPitchClass, plan);
+}
+
+export function groupCuratedQaCandidates(candidates: CuratedQaCandidate[]): CuratedQaCandidateGroup[] {
+    return CURATED_QA_REVIEW_CHORD_IDS.map((chordType) => {
+        const matchingCandidates = candidates.filter((candidate) => candidate.chordType === chordType);
+
+        if (matchingCandidates.length === 0) {
+            return null;
+        }
+
+        return {
+            chordType,
+            chordTypeLabel: matchingCandidates[0].chordTypeLabel,
+            chordLabel: matchingCandidates[0].chordLabel,
+            candidates: matchingCandidates,
+        };
+    }).filter((group): group is CuratedQaCandidateGroup => group !== null);
 }

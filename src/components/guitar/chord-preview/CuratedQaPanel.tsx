@@ -6,6 +6,7 @@ import {
     getVoicingFamilyLabel,
     getVoicingProvenanceLabel,
     getVoicingRegisterLabel,
+    groupCuratedQaCandidates,
 } from '../../../utils/guitar/chords';
 import {
     getCuratedQaDecisionForCandidate,
@@ -52,6 +53,7 @@ export function CuratedQaPanel({
     const acceptedCount = Object.values(reviews).filter((review) => review.decision === 'accept').length;
     const borderlineCount = Object.values(reviews).filter((review) => review.decision === 'borderline').length;
     const rejectedCount = Object.values(reviews).filter((review) => review.decision === 'reject').length;
+    const candidateGroups = groupCuratedQaCandidates(candidates);
 
     return (
         <section
@@ -74,93 +76,126 @@ export function CuratedQaPanel({
                 </div>
             </div>
 
-            <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
-                {candidates.map((candidate) => {
-                    const decision = getCuratedQaDecisionForCandidate(reviews, candidate);
-                    const meta = getCandidateMeta(candidate);
+            <div className="mt-5 flex flex-col gap-5">
+                {candidateGroups.map((group) => {
+                    const groupReviews = group.candidates
+                        .map((candidate) => getCuratedQaDecisionForCandidate(reviews, candidate))
+                        .filter((decision): decision is CuratedQaDecision => decision !== null);
+                    const groupAcceptedCount = groupReviews.filter((decision) => decision === 'accept').length;
+                    const groupBorderlineCount = groupReviews.filter((decision) => decision === 'borderline').length;
+                    const groupRejectedCount = groupReviews.filter((decision) => decision === 'reject').length;
 
                     return (
-                        <article
-                            key={candidate.candidateId}
-                            className="rounded-[1.4rem] border border-white/6 bg-white/[0.02] p-4"
+                        <section
+                            key={group.chordType}
+                            className="rounded-[1.6rem] border border-white/6 bg-white/[0.02] p-4"
                         >
-                            <div className="flex items-start justify-between gap-3">
-                                <div className="min-w-0">
-                                    <div className="flex flex-wrap items-center gap-2">
-                                        <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/65">
-                                            {candidate.chordLabel}
-                                        </span>
-                                        <span className="rounded-full border border-amber-100/15 bg-amber-100/5 px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.18em] text-amber-50/70">
-                                            {candidate.sourceLabel}
-                                        </span>
-                                    </div>
-                                    <p className="mt-2 text-sm font-semibold text-white">{candidate.displayName}</p>
-                                    <p className="mt-1 text-xs text-white/48">{candidate.chordTypeLabel}</p>
-                                    {candidate.displaySubtitle && (
-                                        <p className="mt-1 text-[11px] text-white/42">{candidate.displaySubtitle}</p>
-                                    )}
+                            <div className="flex flex-wrap items-end justify-between gap-3 border-b border-white/5 pb-3">
+                                <div className="flex flex-col gap-1">
+                                    <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/38">
+                                        {group.chordLabel}
+                                    </span>
+                                    <h4 className="text-sm font-black uppercase tracking-[0.18em] text-white/80">
+                                        {group.chordTypeLabel} review slice
+                                    </h4>
                                 </div>
-                                <span className="text-[10px] font-black uppercase tracking-[0.18em] text-white/28">
-                                    {decision ?? 'pending'}
-                                </span>
+                                <div className="flex flex-col items-start gap-1 text-[10px] font-black uppercase tracking-[0.2em] text-white/32 md:items-end">
+                                    <span>{groupReviews.length}/{group.candidates.length} reviewed</span>
+                                    <span>{groupAcceptedCount} accept · {groupBorderlineCount} borderline · {groupRejectedCount} reject</span>
+                                </div>
                             </div>
 
-                            <div className="mt-4 flex min-h-[10.5rem] items-center justify-center rounded-[1rem] border border-white/6 bg-[#070707] px-2 py-3">
-                                <CompactVoicingDiagram voicing={candidate.voicing} labelMode="degree" />
-                            </div>
+                            <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+                                {group.candidates.map((candidate) => {
+                                    const decision = getCuratedQaDecisionForCandidate(reviews, candidate);
+                                    const meta = getCandidateMeta(candidate);
 
-                            <div className="mt-4 flex flex-wrap gap-1.5">
-                                {meta.map((item) => (
-                                    <span
-                                        key={`${candidate.candidateId}-${item}`}
-                                        className="rounded-full border border-white/8 px-2 py-1 text-[9px] font-black uppercase tracking-[0.14em] text-white/42"
-                                    >
-                                        {item}
-                                    </span>
-                                ))}
-                                {candidate.seedId && (
-                                    <span className="rounded-full border border-white/8 px-2 py-1 text-[9px] font-black uppercase tracking-[0.14em] text-white/42">
-                                        {candidate.seedId}
-                                    </span>
-                                )}
-                            </div>
+                                    return (
+                                        <article
+                                            key={candidate.candidateId}
+                                            className="rounded-[1.4rem] border border-white/6 bg-[#090909] p-4"
+                                        >
+                                            <div className="flex items-start justify-between gap-3">
+                                                <div className="min-w-0">
+                                                    <div className="flex flex-wrap items-center gap-2">
+                                                        <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/65">
+                                                            {candidate.chordLabel}
+                                                        </span>
+                                                        <span className="rounded-full border border-amber-100/15 bg-amber-100/5 px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.18em] text-amber-50/70">
+                                                            {candidate.sourceLabel}
+                                                        </span>
+                                                    </div>
+                                                    <p className="mt-2 text-sm font-semibold text-white">{candidate.displayName}</p>
+                                                    <p className="mt-1 text-xs text-white/48">{candidate.chordTypeLabel}</p>
+                                                    {candidate.displaySubtitle && (
+                                                        <p className="mt-1 text-[11px] text-white/42">{candidate.displaySubtitle}</p>
+                                                    )}
+                                                </div>
+                                                <span className="text-[10px] font-black uppercase tracking-[0.18em] text-white/28">
+                                                    {decision ?? 'pending'}
+                                                </span>
+                                            </div>
 
-                            <div className="mt-4 grid grid-cols-3 gap-2">
-                                <button
-                                    type="button"
-                                    onClick={() => onReview(candidate, 'accept')}
-                                    className={`rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-colors ${
-                                        decision === 'accept'
-                                            ? 'border-emerald-200/35 bg-emerald-300/[0.12] text-emerald-50'
-                                            : 'border-white/10 bg-white/[0.02] text-white/68 hover:border-emerald-200/20 hover:text-white'
-                                    }`}
-                                >
-                                    Accept
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => onReview(candidate, 'borderline')}
-                                    className={`rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-colors ${
-                                        decision === 'borderline'
-                                            ? 'border-amber-200/35 bg-amber-300/[0.12] text-amber-50'
-                                            : 'border-white/10 bg-white/[0.02] text-white/68 hover:border-amber-200/20 hover:text-white'
-                                    }`}
-                                >
-                                    Borderline
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => onReview(candidate, 'reject')}
-                                    className={`rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-colors ${
-                                        decision === 'reject'
-                                            ? 'border-red-200/35 bg-red-300/[0.12] text-red-50'
-                                            : 'border-white/10 bg-white/[0.02] text-white/68 hover:border-red-200/20 hover:text-white'
-                                    }`}
-                                >
-                                    Reject
-                                </button>
+                                            <div className="mt-4 flex min-h-[10.5rem] items-center justify-center rounded-[1rem] border border-white/6 bg-[#070707] px-2 py-3">
+                                                <CompactVoicingDiagram voicing={candidate.voicing} labelMode="degree" />
+                                            </div>
+
+                                            <div className="mt-4 flex flex-wrap gap-1.5">
+                                                {meta.map((item) => (
+                                                    <span
+                                                        key={`${candidate.candidateId}-${item}`}
+                                                        className="rounded-full border border-white/8 px-2 py-1 text-[9px] font-black uppercase tracking-[0.14em] text-white/42"
+                                                    >
+                                                        {item}
+                                                    </span>
+                                                ))}
+                                                {candidate.seedId && (
+                                                    <span className="rounded-full border border-white/8 px-2 py-1 text-[9px] font-black uppercase tracking-[0.14em] text-white/42">
+                                                        {candidate.seedId}
+                                                    </span>
+                                                )}
+                                            </div>
+
+                                            <div className="mt-4 grid grid-cols-3 gap-2">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => onReview(candidate, 'accept')}
+                                                    className={`rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-colors ${
+                                                        decision === 'accept'
+                                                            ? 'border-emerald-200/35 bg-emerald-300/[0.12] text-emerald-50'
+                                                            : 'border-white/10 bg-white/[0.02] text-white/68 hover:border-emerald-200/20 hover:text-white'
+                                                    }`}
+                                                >
+                                                    Accept
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => onReview(candidate, 'borderline')}
+                                                    className={`rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-colors ${
+                                                        decision === 'borderline'
+                                                            ? 'border-amber-200/35 bg-amber-300/[0.12] text-amber-50'
+                                                            : 'border-white/10 bg-white/[0.02] text-white/68 hover:border-amber-200/20 hover:text-white'
+                                                    }`}
+                                                >
+                                                    Borderline
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => onReview(candidate, 'reject')}
+                                                    className={`rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-colors ${
+                                                        decision === 'reject'
+                                                            ? 'border-red-200/35 bg-red-300/[0.12] text-red-50'
+                                                            : 'border-white/10 bg-white/[0.02] text-white/68 hover:border-red-200/20 hover:text-white'
+                                                    }`}
+                                                >
+                                                    Reject
+                                                </button>
+                                            </div>
+                                        </article>
+                                    );
+                                })}
                             </div>
-                        </article>
+                        </section>
                     );
                 })}
             </div>

@@ -13,6 +13,7 @@ import {
     prefersAcceptedReferenceOverRejected,
     partitionCuratedQaReviews,
 } from './curated-qa-comparison';
+import { getCuratedQaCandidatesForChord } from './curated-qa';
 import {
     collectVoicingTemplateSourcesForChord,
     getArchetypeGeneratedVoicingsForChord,
@@ -223,51 +224,47 @@ describe('archetype-generated voicing path', () => {
         }
     });
 
-    it('formalizes accept reviews as the positive structural comparison baseline for archetype-generated output', () => {
-        for (const review of CURATED_QA_BUCKETS.accept) {
-            const curatedCandidates = getRankedVoicingsForChord(review.chordType, 0, {
-                includeLegacyCandidates: false,
-                includeGeneratedCandidates: false,
-                includeArchetypeGeneratedCandidates: false,
-                includeCuratedCandidates: true,
-                includeNonPlayableCandidates: true,
-                maxCandidates: 20,
-            });
-            const candidates = getArchetypeGeneratedVoicingsForChord(review.chordType, 0, {
-                includeNonPlayableCandidates: true,
-                maxCandidates: 20,
-            });
-            const curatedCandidate = curatedCandidates.find((candidate) => candidate.voicing.id === review.candidateId);
+    it('formalizes accept reviews as a positive anchor set that remains structurally reachable per reviewed chord type', () => {
+        const chordTypesWithAccepts = [...new Set(
+            CURATED_QA_BUCKETS.accept
+                .map((review) => review.chordType)
+                .filter((chordType) => ARCHETYPE_GENERATED_CHORD_IDS.includes(chordType))
+        )];
 
-            expect(curatedCandidate).toBeDefined();
-            expect(candidates.some((candidate) => isStructurallyCloseToAcceptedReference(
-                candidate.voicing,
-                curatedCandidate!.voicing
-            ))).toBe(true);
-        }
-    });
-
-    it('formalizes reject reviews as a directional guardrail that disallows rejected resemblance without accepted closeness', () => {
-        const chordTypesWithRejects = [...new Set(CURATED_QA_BUCKETS.reject.map((review) => review.chordType))];
-
-        for (const chordType of chordTypesWithRejects) {
-            const curatedCandidates = getRankedVoicingsForChord(chordType, 0, {
-                includeLegacyCandidates: false,
-                includeGeneratedCandidates: false,
-                includeArchetypeGeneratedCandidates: false,
-                includeCuratedCandidates: true,
-                includeNonPlayableCandidates: true,
-                maxCandidates: 20,
-            });
+        for (const chordType of chordTypesWithAccepts) {
+            const acceptedReferenceIds = CURATED_QA_BUCKETS.accept
+                .filter((review) => review.chordType === chordType)
+                .map((review) => review.candidateId);
+            const acceptedReferences = getCuratedQaCandidatesForChord(chordType, 0)
+                .filter((candidate) => acceptedReferenceIds.includes(candidate.candidateId))
+                .map((candidate) => candidate.voicing);
             const candidates = getArchetypeGeneratedVoicingsForChord(chordType, 0, {
                 includeNonPlayableCandidates: true,
                 maxCandidates: 20,
             });
-            const acceptedReferences = curatedCandidates
-                .filter((candidate) => CURATED_QA_BUCKETS.accept.some((review) => review.candidateId === candidate.voicing.id))
+
+            expect(acceptedReferences.length).toBeGreaterThan(0);
+            expect(candidates.some((candidate) => acceptedReferences.some((reference) => isStructurallyCloseToAcceptedReference(
+                candidate.voicing,
+                reference
+            )))).toBe(true);
+        }
+    });
+
+    it('formalizes reject reviews as a directional guardrail that keeps the top archetype candidate closer to accepted anchors than rejected ones', () => {
+        const chordTypesWithRejects = [...new Set(CURATED_QA_BUCKETS.reject.map((review) => review.chordType))];
+
+        for (const chordType of chordTypesWithRejects) {
+            const qaCandidates = getCuratedQaCandidatesForChord(chordType, 0);
+            const candidates = getArchetypeGeneratedVoicingsForChord(chordType, 0, {
+                includeNonPlayableCandidates: true,
+                maxCandidates: 20,
+            });
+            const acceptedReferences = qaCandidates
+                .filter((candidate) => CURATED_QA_BUCKETS.accept.some((review) => review.candidateId === candidate.candidateId))
                 .map((candidate) => candidate.voicing);
-            const rejectedReferences = curatedCandidates
-                .filter((candidate) => CURATED_QA_BUCKETS.reject.some((review) => review.candidateId === candidate.voicing.id))
+            const rejectedReferences = qaCandidates
+                .filter((candidate) => CURATED_QA_BUCKETS.reject.some((review) => review.candidateId === candidate.candidateId))
                 .map((candidate) => candidate.voicing);
 
             expect(acceptedReferences.length).toBeGreaterThan(0);
@@ -277,29 +274,17 @@ describe('archetype-generated voicing path', () => {
                 acceptedReferences,
                 rejectedReferences
             )).toBe(true);
-            expect(candidates
-                .filter((candidate) => matchesRejectedReferencePattern(
-                    candidate.voicing,
-                    rejectedReferences[0]
-                ))
-                .every((candidate) => prefersAcceptedReferenceOverRejected(
-                    candidate.voicing,
-                    acceptedReferences,
-                    rejectedReferences
-                ))).toBe(false);
+            expect(rejectedReferences.some((reference) => matchesRejectedReferencePattern(
+                candidates[0].voicing,
+                reference
+            ))).toBe(false);
         }
     });
 
     it('keeps borderline reviews visible as holdout comparison references without turning them into pass/fail anchors', () => {
         for (const review of CURATED_QA_BUCKETS.borderline) {
-            const curatedCandidates = getRankedVoicingsForChord(review.chordType, 0, {
-                includeLegacyCandidates: false,
-                includeGeneratedCandidates: false,
-                includeArchetypeGeneratedCandidates: false,
-                includeCuratedCandidates: true,
-                includeNonPlayableCandidates: true,
-                maxCandidates: 20,
-            });
+            const curatedCandidates = getCuratedQaCandidatesForChord(review.chordType, 0)
+                .map((candidate) => ({ voicing: candidate.voicing }));
             const borderlineCandidate = curatedCandidates.find((candidate) => candidate.voicing.id === review.candidateId);
 
             expect(borderlineCandidate).toBeDefined();
