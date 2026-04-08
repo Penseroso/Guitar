@@ -10,7 +10,7 @@ interface CuratedVoicingSeed {
     offsets: Array<number | null>;
 }
 
-// Curated pilot inventory: keep this small and intentionally reviewed. The current subset
+// Curated QA inventory: keep this small and intentionally reviewed. The current subset
 // favors representative root-5 mid-register grips plus root-4 upper-register companions so
 // the curated layer reads as a consistent preferred inventory rather than a grab bag of shapes.
 const CURATED_VOICING_SEEDS: Partial<Record<ChordRegistryEntry['id'], CuratedVoicingSeed[]>> = {
@@ -82,6 +82,62 @@ const CURATED_VOICING_SEEDS: Partial<Record<ChordRegistryEntry['id'], CuratedVoi
             label: 'Root 4 (Reviewed Drop 2)',
             rootString: 3,
             offsets: [2, 1, 2, 0, null, null],
+        },
+    ],
+    sus2: [
+        {
+            id: 'root-5-reviewed-open-sus2',
+            label: 'Root 5 (Reviewed Sus2)',
+            rootString: 4,
+            offsets: [0, 0, 2, 2, 0, null],
+        },
+        {
+            id: 'root-4-reviewed-upper-sus2',
+            label: 'Root 4 (Reviewed Upper Sus2)',
+            rootString: 3,
+            offsets: [0, 3, 2, 0, null, null],
+        },
+    ],
+    sus4: [
+        {
+            id: 'root-5-reviewed-open-sus4',
+            label: 'Root 5 (Reviewed Sus4)',
+            rootString: 4,
+            offsets: [null, 3, 2, 2, 0, null],
+        },
+        {
+            id: 'root-4-reviewed-upper-sus4',
+            label: 'Root 4 (Reviewed Upper Sus4)',
+            rootString: 3,
+            offsets: [3, 3, 2, 0, null, null],
+        },
+    ],
+    'major-9': [
+        {
+            id: 'root-5-reviewed-major-9',
+            label: 'Root 5 (Reviewed Major 9)',
+            rootString: 4,
+            offsets: [null, 0, 1, -1, 0, null],
+        },
+        {
+            id: 'root-4-reviewed-upper-major-9',
+            label: 'Root 4 (Reviewed Upper Major 9)',
+            rootString: 3,
+            offsets: [0, 2, -1, 0, null, null],
+        },
+    ],
+    'dominant-9': [
+        {
+            id: 'root-5-reviewed-dominant-9',
+            label: 'Root 5 (Reviewed Dominant 9)',
+            rootString: 4,
+            offsets: [null, 0, 0, -1, 0, null],
+        },
+        {
+            id: 'root-4-reviewed-upper-dominant-9',
+            label: 'Root 4 (Reviewed Upper Dominant 9)',
+            rootString: 3,
+            offsets: [0, 1, -1, 0, null, null],
         },
     ],
 };

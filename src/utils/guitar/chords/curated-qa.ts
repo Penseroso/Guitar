@@ -6,19 +6,23 @@ import { resolveVoicingTemplate } from './resolver';
 import type { ChordRegistryEntry } from './registry';
 import type { ResolvedVoicing } from './types';
 
-export const CURATED_QA_PILOT_CHORD_IDS = [
+export const CURATED_QA_REVIEW_CHORD_IDS = [
     'major',
     'minor',
     'major-7',
     'minor-7',
     'dominant-7',
+    'sus2',
+    'sus4',
+    'major-9',
+    'dominant-9',
 ] as const;
 
-export type CuratedQaPilotChordId = (typeof CURATED_QA_PILOT_CHORD_IDS)[number];
-export type CuratedQaDecision = 'accept' | 'reject';
+export type CuratedQaChordId = (typeof CURATED_QA_REVIEW_CHORD_IDS)[number];
+export type CuratedQaDecision = 'accept' | 'borderline' | 'reject';
 
 export interface CuratedQaReviewRecord {
-    chordType: CuratedQaPilotChordId;
+    chordType: CuratedQaChordId;
     candidateId: string;
     decision: CuratedQaDecision;
 }
@@ -27,7 +31,7 @@ export type CuratedQaReviewState = Record<string, CuratedQaReviewRecord>;
 
 export interface CuratedQaCandidate {
     candidateId: string;
-    chordType: CuratedQaPilotChordId;
+    chordType: CuratedQaChordId;
     chordTypeLabel: string;
     chordLabel: string;
     voicing: ResolvedVoicing;
@@ -37,7 +41,7 @@ export interface CuratedQaCandidate {
     seedId?: string;
 }
 
-function getReviewKey(chordType: CuratedQaPilotChordId, candidateId: string): string {
+function getReviewKey(chordType: CuratedQaChordId, candidateId: string): string {
     return `${chordType}::${candidateId}`;
 }
 
@@ -82,7 +86,7 @@ function buildCuratedQaCandidate(entry: ChordRegistryEntry, rootPitchClass: numb
 
     return {
         candidateId: voicing.id,
-        chordType: entry.id as CuratedQaPilotChordId,
+        chordType: entry.id as CuratedQaChordId,
         chordTypeLabel: getChordTypeLabel(entry),
         chordLabel: `${chord.symbol}${getChordTypeSuffix(entry)}`,
         voicing,
@@ -94,7 +98,7 @@ function buildCuratedQaCandidate(entry: ChordRegistryEntry, rootPitchClass: numb
 }
 
 export function getCuratedQaCandidates(rootPitchClass: number): CuratedQaCandidate[] {
-    return CURATED_QA_PILOT_CHORD_IDS.flatMap((chordType) => {
+    return CURATED_QA_REVIEW_CHORD_IDS.flatMap((chordType) => {
         const entry = resolveChordRegistryEntry(chordType);
         const templates = getCuratedVoicingTemplatesForChord(entry);
 

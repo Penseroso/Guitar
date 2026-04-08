@@ -77,7 +77,7 @@ export {
 } from './curated';
 
 export type {
-    CuratedQaPilotChordId,
+    CuratedQaChordId,
     CuratedQaDecision,
     CuratedQaReviewRecord,
     CuratedQaReviewState,
@@ -85,7 +85,7 @@ export type {
 } from './curated-qa';
 
 export {
-    CURATED_QA_PILOT_CHORD_IDS,
+    CURATED_QA_REVIEW_CHORD_IDS,
     getCuratedQaReviewKey,
     recordCuratedQaDecision,
     getCuratedQaDecisionForCandidate,

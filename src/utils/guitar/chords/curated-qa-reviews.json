@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-04-08T06:50:13.815Z",
+  "updatedAt": "2026-04-08T07:16:49.212Z",
   "reviews": [
     {
       "chordType": "dominant-7",
@@ -12,9 +12,19 @@
       "decision": "accept"
     },
     {
+      "chordType": "dominant-9",
+      "candidateId": "dominant-9:0:dominant-9:curated:root-4-reviewed-upper-dominant-9:10",
+      "decision": "accept"
+    },
+    {
+      "chordType": "dominant-9",
+      "candidateId": "dominant-9:0:dominant-9:curated:root-5-reviewed-dominant-9:3",
+      "decision": "accept"
+    },
+    {
       "chordType": "major",
       "candidateId": "major:0:major:curated:root-4-reviewed-upper:10",
-      "decision": "accept"
+      "decision": "borderline"
     },
     {
       "chordType": "major",
@@ -32,9 +42,19 @@
       "decision": "accept"
     },
     {
+      "chordType": "major-9",
+      "candidateId": "major-9:0:major-9:curated:root-4-reviewed-upper-major-9:10",
+      "decision": "reject"
+    },
+    {
+      "chordType": "major-9",
+      "candidateId": "major-9:0:major-9:curated:root-5-reviewed-major-9:3",
+      "decision": "accept"
+    },
+    {
       "chordType": "minor",
       "candidateId": "minor:0:minor:curated:root-4-reviewed-upper:10",
-      "decision": "accept"
+      "decision": "borderline"
     },
     {
       "chordType": "minor",
@@ -49,6 +69,26 @@
     {
       "chordType": "minor-7",
       "candidateId": "minor-7:0:minor-7:curated:root-5-reviewed-drop-2:3",
+      "decision": "accept"
+    },
+    {
+      "chordType": "sus2",
+      "candidateId": "sus2:0:sus2:curated:root-4-reviewed-upper-sus2:10",
+      "decision": "accept"
+    },
+    {
+      "chordType": "sus2",
+      "candidateId": "sus2:0:sus2:curated:root-5-reviewed-open-sus2:3",
+      "decision": "accept"
+    },
+    {
+      "chordType": "sus4",
+      "candidateId": "sus4:0:sus4:curated:root-4-reviewed-upper-sus4:10",
+      "decision": "borderline"
+    },
+    {
+      "chordType": "sus4",
+      "candidateId": "sus4:0:sus4:curated:root-5-reviewed-open-sus4:3",
       "decision": "accept"
     }
   ]

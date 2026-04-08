@@ -710,19 +710,23 @@ describe('voicing ranking orchestration', () => {
     });
 });
 
-describe('curated source pilot', () => {
-    it('provides a real curated inventory for the pilot chord set', () => {
+describe('curated source QA scope', () => {
+    it('provides a real curated inventory for the reviewed QA chord set', () => {
         expect(getCuratedVoicingTemplatesForChord('major').length).toBeGreaterThan(0);
         expect(getCuratedVoicingTemplatesForChord('minor').length).toBeGreaterThan(0);
         expect(getCuratedVoicingTemplatesForChord('major-7').length).toBeGreaterThan(0);
         expect(getCuratedVoicingTemplatesForChord('minor-7').length).toBeGreaterThan(0);
         expect(getCuratedVoicingTemplatesForChord('dominant-7').length).toBeGreaterThan(0);
+        expect(getCuratedVoicingTemplatesForChord('sus2').length).toBeGreaterThan(0);
+        expect(getCuratedVoicingTemplatesForChord('sus4').length).toBeGreaterThan(0);
+        expect(getCuratedVoicingTemplatesForChord('major-9').length).toBeGreaterThan(0);
+        expect(getCuratedVoicingTemplatesForChord('dominant-9').length).toBeGreaterThan(0);
     });
 
-    it('keeps the curated pilot internally consistent around reviewed root-5 and root-4 grips', () => {
-        const pilotIds = ['major', 'minor', 'major-7', 'minor-7', 'dominant-7'] as const;
+    it('keeps the curated QA scope internally consistent around reviewed root-5 and root-4 grips', () => {
+        const qaIds = ['major', 'minor', 'major-7', 'minor-7', 'dominant-7', 'sus2', 'sus4', 'major-9', 'dominant-9'] as const;
 
-        for (const id of pilotIds) {
+        for (const id of qaIds) {
             const templates = getCuratedVoicingTemplatesForChord(id);
             expect(templates.map((template) => template.rootString)).toEqual([4, 3]);
             expect(templates.every((template) => template.source === 'curated')).toBe(true);
@@ -741,10 +745,10 @@ describe('curated source pilot', () => {
         expect(resolved.descriptor.provenance.seedId).toBe(template.id);
     });
 
-    it('keeps curated pilot voicings playable and structurally complete for the included families', () => {
-        const pilotIds = ['major', 'minor', 'major-7', 'minor-7', 'dominant-7'] as const;
+    it('keeps curated QA voicings playable and structurally complete for the included families', () => {
+        const qaIds = ['major', 'minor', 'major-7', 'minor-7', 'dominant-7', 'sus2', 'sus4', 'major-9', 'dominant-9'] as const;
 
-        for (const id of pilotIds) {
+        for (const id of qaIds) {
             const entry = resolveChordRegistryEntry(id);
             const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
             const tones = buildChordTonesFromRegistryEntry(entry, 0);

@@ -15,12 +15,26 @@ describe('curated QA storage', () => {
         });
     });
 
+    it('keeps older accept-only review records usable without migration', () => {
+        expect(normalizeCuratedQaReviewSnapshot({
+            updatedAt: '2026-04-08T00:00:00.000Z',
+            reviews: [
+                { chordType: 'major', candidateId: 'legacy-major', decision: 'accept' },
+            ],
+        })).toEqual({
+            updatedAt: '2026-04-08T00:00:00.000Z',
+            reviews: [
+                { chordType: 'major', candidateId: 'legacy-major', decision: 'accept' },
+            ],
+        });
+    });
+
     it('serializes review state into a stable JSON snapshot', () => {
         let reviews: CuratedQaReviewState = {};
         reviews = recordCuratedQaDecision(reviews, {
             chordType: 'minor-7',
             candidateId: 'b',
-            decision: 'reject',
+            decision: 'borderline',
         });
         reviews = recordCuratedQaDecision(reviews, {
             chordType: 'major',
@@ -32,7 +46,7 @@ describe('curated QA storage', () => {
             updatedAt: '2026-04-08T00:00:00.000Z',
             reviews: [
                 { chordType: 'major', candidateId: 'a', decision: 'accept' },
-                { chordType: 'minor-7', candidateId: 'b', decision: 'reject' },
+                { chordType: 'minor-7', candidateId: 'b', decision: 'borderline' },
             ],
         });
     });

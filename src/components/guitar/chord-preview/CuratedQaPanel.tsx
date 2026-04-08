@@ -49,6 +49,9 @@ export function CuratedQaPanel({
     lastSavedAt,
 }: CuratedQaPanelProps) {
     const reviewedCount = Object.keys(reviews).length;
+    const acceptedCount = Object.values(reviews).filter((review) => review.decision === 'accept').length;
+    const borderlineCount = Object.values(reviews).filter((review) => review.decision === 'borderline').length;
+    const rejectedCount = Object.values(reviews).filter((review) => review.decision === 'reject').length;
 
     return (
         <section
@@ -61,12 +64,13 @@ export function CuratedQaPanel({
                     <div className="flex flex-col gap-1">
                         <h3 className="text-xl font-black tracking-tight text-white">Curated QA</h3>
                         <p className="text-xs text-white/55">
-                            Internal review surface for the curated pilot only. Decisions stay in local in-memory state.
+                            Internal review surface for the current curated QA set. Accept approves the baseline, borderline holds a maybe bucket, and reject excludes it.
                         </p>
                     </div>
-                    <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/32">
-                        {reviewedCount}/{candidates.length} reviewed
-                    </span>
+                    <div className="flex flex-col items-start gap-1 text-[10px] font-black uppercase tracking-[0.22em] text-white/32 md:items-end">
+                        <span>{reviewedCount}/{candidates.length} reviewed</span>
+                        <span>{acceptedCount} accept · {borderlineCount} borderline · {rejectedCount} reject</span>
+                    </div>
                 </div>
             </div>
 
@@ -121,7 +125,7 @@ export function CuratedQaPanel({
                                 )}
                             </div>
 
-                            <div className="mt-4 grid grid-cols-2 gap-2">
+                            <div className="mt-4 grid grid-cols-3 gap-2">
                                 <button
                                     type="button"
                                     onClick={() => onReview(candidate, 'accept')}
@@ -132,6 +136,17 @@ export function CuratedQaPanel({
                                     }`}
                                 >
                                     Accept
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => onReview(candidate, 'borderline')}
+                                    className={`rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-colors ${
+                                        decision === 'borderline'
+                                            ? 'border-amber-200/35 bg-amber-300/[0.12] text-amber-50'
+                                            : 'border-white/10 bg-white/[0.02] text-white/68 hover:border-amber-200/20 hover:text-white'
+                                    }`}
+                                >
+                                    Borderline
                                 </button>
                                 <button
                                     type="button"

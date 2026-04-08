@@ -17,7 +17,7 @@ export const CURATED_QA_REVIEW_STORAGE_PATH = path.join(
 );
 
 function isValidDecision(value: unknown): value is CuratedQaReviewRecord['decision'] {
-    return value === 'accept' || value === 'reject';
+    return value === 'accept' || value === 'borderline' || value === 'reject';
 }
 
 function isValidReviewRecord(value: unknown): value is CuratedQaReviewRecord {

@@ -17,6 +17,7 @@ import {
 import {
     isDeveloperCuratedQaEnabled,
     recordCuratedQaDecision,
+    type CuratedQaDecision,
     type CuratedQaReviewRecord,
     type CuratedQaReviewState,
 } from '../../utils/guitar/chords/curated-qa';
@@ -77,7 +78,7 @@ function isPersistedCuratedQaReview(value: unknown): value is CuratedQaReviewRec
     const candidate = value as Partial<CuratedQaReviewRecord>;
     return typeof candidate.chordType === 'string'
         && typeof candidate.candidateId === 'string'
-        && (candidate.decision === 'accept' || candidate.decision === 'reject');
+        && (candidate.decision === 'accept' || candidate.decision === 'borderline' || candidate.decision === 'reject');
 }
 
 function buildResolvedVoicingFingering(voicing?: ResolvedVoicing): Fingering[] | undefined {
@@ -493,7 +494,7 @@ export default function ClientApp() {
         return getCuratedQaCandidates(selectedKey);
     }, [isCuratedQaEnabled, selectedKey]);
 
-    const handleCuratedQaReview = useCallback((candidate: (typeof curatedQaCandidates)[number], decision: 'accept' | 'reject') => {
+    const handleCuratedQaReview = useCallback((candidate: (typeof curatedQaCandidates)[number], decision: CuratedQaDecision) => {
         setCuratedQaReviews((currentState) => recordCuratedQaDecision(currentState, {
             chordType: candidate.chordType,
             candidateId: candidate.candidateId,
@@ -518,7 +519,7 @@ export default function ClientApp() {
 
                 const payload = await response.json() as {
                     updatedAt?: string | null;
-                    reviews?: Array<{ chordType: string; candidateId: string; decision: 'accept' | 'reject' }>;
+                    reviews?: Array<{ chordType: string; candidateId: string; decision: CuratedQaDecision }>;
                 };
 
                 if (isCancelled) {
