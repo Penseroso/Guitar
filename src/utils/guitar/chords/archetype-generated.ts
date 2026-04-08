@@ -3,19 +3,34 @@ import { buildChordTonesFromRegistryEntry, normalizePitchClass, resolveChordRegi
 import type { ChordRegistryEntry } from './registry';
 import type { GuitarStringIndex, VoicingTemplate, VoicingTemplateString } from './types';
 
-type ArchetypeFamily =
+export type ArchetypeFamily =
     | 'representative-mid'
     | 'upper-companion'
     | 'compact-seventh'
     | 'controlled-ninth'
     | 'suspension-open';
 
-interface ArchetypeGeneratedSeed {
-    id: string;
-    label: string;
-    archetypeFamily: ArchetypeFamily;
+type ArchetypeChordClass = 'triad' | 'seventh' | 'ninth' | 'suspension';
+type ArchetypeRole = 'root' | 'third-like' | 'fifth' | 'seventh-like' | 'extension-like' | 'suspension-like';
+
+interface ArchetypeBlueprint {
+    family: ArchetypeFamily;
     rootString: GuitarStringIndex;
-    offsets: Array<number | null>;
+    label: string;
+    stringOrder: GuitarStringIndex[];
+    roleSequence: ArchetypeRole[];
+    preferredOffsets: number[];
+}
+
+interface ChordArchetypePlan {
+    chordClass: ArchetypeChordClass;
+    families: ArchetypeFamily[];
+}
+
+interface ArchetypeResolvedSlot {
+    string: GuitarStringIndex;
+    degree: string;
+    preferredOffset: number;
 }
 
 export const ARCHETYPE_GENERATED_CHORD_IDS = [
@@ -30,151 +45,120 @@ export const ARCHETYPE_GENERATED_CHORD_IDS = [
     'dominant-9',
 ] as const;
 
-const ARCHETYPE_GENERATED_SEEDS: Partial<Record<ChordRegistryEntry['id'], ArchetypeGeneratedSeed[]>> = {
-    major: [
-        {
-            id: 'representative-mid-root-5',
+const CHORD_ARCHETYPE_PLANS: Record<(typeof ARCHETYPE_GENERATED_CHORD_IDS)[number], ChordArchetypePlan> = {
+    major: {
+        chordClass: 'triad',
+        families: ['representative-mid', 'upper-companion'],
+    },
+    minor: {
+        chordClass: 'triad',
+        families: ['representative-mid', 'upper-companion'],
+    },
+    'major-7': {
+        chordClass: 'seventh',
+        families: ['compact-seventh', 'upper-companion'],
+    },
+    'minor-7': {
+        chordClass: 'seventh',
+        families: ['compact-seventh', 'upper-companion'],
+    },
+    'dominant-7': {
+        chordClass: 'seventh',
+        families: ['compact-seventh', 'upper-companion'],
+    },
+    sus2: {
+        chordClass: 'suspension',
+        families: ['suspension-open', 'upper-companion'],
+    },
+    sus4: {
+        chordClass: 'suspension',
+        families: ['suspension-open', 'upper-companion'],
+    },
+    'major-9': {
+        chordClass: 'ninth',
+        families: ['controlled-ninth', 'upper-companion'],
+    },
+    'dominant-9': {
+        chordClass: 'ninth',
+        families: ['controlled-ninth', 'upper-companion'],
+    },
+};
+
+const ARCHETYPE_BLUEPRINTS: Record<ArchetypeFamily, Partial<Record<ArchetypeChordClass, ArchetypeBlueprint>>> = {
+    'representative-mid': {
+        triad: {
+            family: 'representative-mid',
+            rootString: 4,
             label: 'Root 5 (Representative Mid)',
-            archetypeFamily: 'representative-mid',
-            rootString: 4,
-            offsets: [0, 2, 2, 2, 0, null],
+            stringOrder: [4, 3, 2, 1, 0],
+            roleSequence: ['root', 'fifth', 'root', 'third-like', 'fifth'],
+            preferredOffsets: [0, 2, 2, 2, 0],
         },
-        {
-            id: 'upper-companion-root-4',
+    },
+    'upper-companion': {
+        triad: {
+            family: 'upper-companion',
+            rootString: 3,
             label: 'Root 4 (Upper Companion)',
-            archetypeFamily: 'upper-companion',
+            stringOrder: [3, 2, 1, 0],
+            roleSequence: ['root', 'fifth', 'root', 'third-like'],
+            preferredOffsets: [0, 2, 2, 0],
+        },
+        seventh: {
+            family: 'upper-companion',
             rootString: 3,
-            offsets: [2, 3, 2, 0, null, null],
-        },
-    ],
-    minor: [
-        {
-            id: 'representative-mid-root-5',
-            label: 'Root 5 (Representative Mid)',
-            archetypeFamily: 'representative-mid',
-            rootString: 4,
-            offsets: [0, 1, 2, 2, 0, null],
-        },
-        {
-            id: 'upper-companion-root-4',
-            label: 'Root 4 (Upper Companion)',
-            archetypeFamily: 'upper-companion',
-            rootString: 3,
-            offsets: [1, 3, 2, 0, null, null],
-        },
-    ],
-    'major-7': [
-        {
-            id: 'compact-seventh-root-5',
-            label: 'Root 5 (Compact 7th)',
-            archetypeFamily: 'compact-seventh',
-            rootString: 4,
-            offsets: [0, 2, 1, 2, 0, null],
-        },
-        {
-            id: 'upper-companion-root-4',
             label: 'Root 4 (Upper Companion 7th)',
-            archetypeFamily: 'upper-companion',
+            stringOrder: [3, 2, 1, 0],
+            roleSequence: ['root', 'fifth', 'seventh-like', 'third-like'],
+            preferredOffsets: [0, 2, 2, 2],
+        },
+        ninth: {
+            family: 'upper-companion',
             rootString: 3,
-            offsets: [2, 2, 2, 0, null, null],
-        },
-    ],
-    'minor-7': [
-        {
-            id: 'compact-seventh-root-5',
-            label: 'Root 5 (Compact 7th)',
-            archetypeFamily: 'compact-seventh',
-            rootString: 4,
-            offsets: [0, 1, 0, 2, 0, null],
-        },
-        {
-            id: 'upper-companion-root-4',
-            label: 'Root 4 (Upper Companion 7th)',
-            archetypeFamily: 'upper-companion',
-            rootString: 3,
-            offsets: [1, 1, 2, 0, null, null],
-        },
-    ],
-    'dominant-7': [
-        {
-            id: 'compact-seventh-root-5',
-            label: 'Root 5 (Compact 7th)',
-            archetypeFamily: 'compact-seventh',
-            rootString: 4,
-            offsets: [null, 2, 0, 2, 0, null],
-        },
-        {
-            id: 'upper-companion-root-4',
-            label: 'Root 4 (Upper Companion 7th)',
-            archetypeFamily: 'upper-companion',
-            rootString: 3,
-            offsets: [2, 1, 2, 0, null, null],
-        },
-    ],
-    sus2: [
-        {
-            id: 'suspension-open-root-5',
-            label: 'Root 5 (Suspension Open)',
-            archetypeFamily: 'suspension-open',
-            rootString: 4,
-            offsets: [0, 0, 2, 2, 0, null],
-        },
-        {
-            id: 'upper-companion-root-4',
-            label: 'Root 4 (Upper Companion Suspension)',
-            archetypeFamily: 'upper-companion',
-            rootString: 3,
-            offsets: [0, 3, 2, 0, null, null],
-        },
-    ],
-    sus4: [
-        {
-            id: 'suspension-open-root-5',
-            label: 'Root 5 (Suspension Open)',
-            archetypeFamily: 'suspension-open',
-            rootString: 4,
-            offsets: [null, 3, 2, 2, 0, null],
-        },
-        {
-            id: 'upper-companion-root-4',
-            label: 'Root 4 (Upper Companion Suspension)',
-            archetypeFamily: 'upper-companion',
-            rootString: 3,
-            offsets: [3, 3, 2, 0, null, null],
-        },
-    ],
-    'major-9': [
-        {
-            id: 'controlled-ninth-root-5',
-            label: 'Root 5 (Controlled 9th)',
-            archetypeFamily: 'controlled-ninth',
-            rootString: 4,
-            offsets: [null, 0, 1, -1, 0, null],
-        },
-        {
-            id: 'upper-companion-root-4',
             label: 'Root 4 (Upper Companion 9th)',
-            archetypeFamily: 'upper-companion',
-            rootString: 3,
-            offsets: [0, 2, -1, 0, null, null],
+            stringOrder: [3, 2, 1, 0],
+            roleSequence: ['root', 'third-like', 'seventh-like', 'extension-like'],
+            preferredOffsets: [0, -1, 2, 0],
         },
-    ],
-    'dominant-9': [
-        {
-            id: 'controlled-ninth-root-5',
-            label: 'Root 5 (Controlled 9th)',
-            archetypeFamily: 'controlled-ninth',
+        suspension: {
+            family: 'upper-companion',
+            rootString: 3,
+            label: 'Root 4 (Upper Companion Suspension)',
+            stringOrder: [3, 2, 1, 0],
+            roleSequence: ['root', 'fifth', 'root', 'suspension-like'],
+            preferredOffsets: [0, 2, 2, 0],
+        },
+    },
+    'compact-seventh': {
+        seventh: {
+            family: 'compact-seventh',
             rootString: 4,
-            offsets: [null, 0, 0, -1, 0, null],
+            label: 'Root 5 (Compact 7th)',
+            stringOrder: [4, 3, 2, 1, 0],
+            roleSequence: ['root', 'fifth', 'seventh-like', 'third-like', 'fifth'],
+            preferredOffsets: [0, 2, 1, 2, 0],
         },
-        {
-            id: 'upper-companion-root-4',
-            label: 'Root 4 (Upper Companion 9th)',
-            archetypeFamily: 'upper-companion',
-            rootString: 3,
-            offsets: [0, 1, -1, 0, null, null],
+    },
+    'controlled-ninth': {
+        ninth: {
+            family: 'controlled-ninth',
+            rootString: 4,
+            label: 'Root 5 (Controlled 9th)',
+            stringOrder: [4, 3, 2, 1],
+            roleSequence: ['root', 'third-like', 'seventh-like', 'extension-like'],
+            preferredOffsets: [0, -1, 1, 0],
         },
-    ],
+    },
+    'suspension-open': {
+        suspension: {
+            family: 'suspension-open',
+            rootString: 4,
+            label: 'Root 5 (Suspension Open)',
+            stringOrder: [4, 3, 2, 1, 0],
+            roleSequence: ['root', 'fifth', 'root', 'suspension-like', 'fifth'],
+            preferredOffsets: [0, 2, 2, 0, 0],
+        },
+    },
 };
 
 function buildToneDegreeMap(entry: ChordRegistryEntry): Map<number, { degree: string; isRequired: boolean }> {
@@ -191,59 +175,190 @@ function buildToneDegreeMap(entry: ChordRegistryEntry): Map<number, { degree: st
     );
 }
 
-function buildTemplateStrings(entry: ChordRegistryEntry, seed: ArchetypeGeneratedSeed): VoicingTemplateString[] {
+function getThirdLikeDegree(entry: ChordRegistryEntry): string {
+    if (entry.formula.degrees.includes('b3')) {
+        return 'b3';
+    }
+
+    return '3';
+}
+
+function getSeventhLikeDegree(entry: ChordRegistryEntry): string {
+    if (entry.formula.degrees.includes('7')) {
+        return '7';
+    }
+
+    return 'b7';
+}
+
+function getExtensionLikeDegree(entry: ChordRegistryEntry): string {
+    if (entry.formula.degrees.includes('9')) {
+        return '9';
+    }
+
+    return entry.formula.degrees.includes('2') ? '2' : entry.formula.degrees[0];
+}
+
+function getSuspensionLikeDegree(entry: ChordRegistryEntry): string {
+    if (entry.id === 'sus4') {
+        return '4';
+    }
+
+    return '2';
+}
+
+function resolveDegreeForRole(entry: ChordRegistryEntry, role: ArchetypeRole): string | null {
+    switch (role) {
+        case 'root':
+            return '1';
+        case 'third-like':
+            return getThirdLikeDegree(entry);
+        case 'fifth':
+            return entry.formula.degrees.includes('5') ? '5' : null;
+        case 'seventh-like':
+            return getSeventhLikeDegree(entry);
+        case 'extension-like':
+            return getExtensionLikeDegree(entry);
+        case 'suspension-like':
+            return getSuspensionLikeDegree(entry);
+        default:
+            return null;
+    }
+}
+
+function chooseOffsetForDegree(args: {
+    rootString: GuitarStringIndex;
+    string: GuitarStringIndex;
+    interval: number;
+    preferredOffset: number;
+}): number {
+    const { rootString, string, interval, preferredOffset } = args;
+    const rootStringPitch = STANDARD_GUITAR_TUNING_PITCH_CLASSES[rootString];
+    const stringPitch = STANDARD_GUITAR_TUNING_PITCH_CLASSES[string];
+    const intervalFromRootString = normalizePitchClass(stringPitch - rootStringPitch);
+    const baseOffset = normalizePitchClass(interval - intervalFromRootString);
+    const candidates = [baseOffset - 12, baseOffset, baseOffset + 12]
+        .filter((value) => value >= -6 && value <= 8);
+
+    return candidates.sort((left, right) => {
+        const leftDistance = Math.abs(left - preferredOffset);
+        const rightDistance = Math.abs(right - preferredOffset);
+
+        if (leftDistance !== rightDistance) {
+            return leftDistance - rightDistance;
+        }
+
+        return Math.abs(left) - Math.abs(right);
+    })[0] ?? baseOffset;
+}
+
+function getBlueprintForEntry(entry: ChordRegistryEntry, family: ArchetypeFamily): ArchetypeBlueprint | null {
+    const plan = CHORD_ARCHETYPE_PLANS[entry.id as (typeof ARCHETYPE_GENERATED_CHORD_IDS)[number]];
+    const blueprint = plan ? ARCHETYPE_BLUEPRINTS[family][plan.chordClass] : undefined;
+
+    return blueprint ?? null;
+}
+
+function resolveBlueprintSlots(entry: ChordRegistryEntry, blueprint: ArchetypeBlueprint): ArchetypeResolvedSlot[] {
+    const degreeIntervalMap = new Map(entry.formula.degrees.map((degree, index) => [degree, entry.formula.intervals[index]]));
+
+    return blueprint.stringOrder.flatMap((string, index) => {
+        const degree = resolveDegreeForRole(entry, blueprint.roleSequence[index]);
+        if (!degree) {
+            return [];
+        }
+
+        const interval = degreeIntervalMap.get(degree);
+        if (interval === undefined) {
+            return [];
+        }
+
+        return [{
+            string,
+            degree,
+            preferredOffset: chooseOffsetForDegree({
+                rootString: blueprint.rootString,
+                string,
+                interval,
+                preferredOffset: blueprint.preferredOffsets[index],
+            }),
+        }];
+    });
+}
+
+function buildTemplateStrings(entry: ChordRegistryEntry, blueprint: ArchetypeBlueprint): VoicingTemplateString[] {
     const toneDegreeMap = buildToneDegreeMap(entry);
-    const rootStringPitchClass = STANDARD_GUITAR_TUNING_PITCH_CLASSES[seed.rootString];
+    const resolvedSlots = new Map(resolveBlueprintSlots(entry, blueprint).map((slot) => [slot.string, slot]));
+    const rootStringPitchClass = STANDARD_GUITAR_TUNING_PITCH_CLASSES[blueprint.rootString];
 
-    return seed.offsets.map((fretOffset, stringIndex) => {
-        const stringPitchClass = STANDARD_GUITAR_TUNING_PITCH_CLASSES[stringIndex];
-
-        if (fretOffset === null) {
+    return ([0, 1, 2, 3, 4, 5] as GuitarStringIndex[]).map((string) => {
+        const slot = resolvedSlots.get(string);
+        if (!slot) {
             return {
-                string: stringIndex as GuitarStringIndex,
+                string,
                 fretOffset: null,
             };
         }
 
+        const stringPitchClass = STANDARD_GUITAR_TUNING_PITCH_CLASSES[string];
         const normalizedPitchClass = normalizePitchClass(
-            stringPitchClass - rootStringPitchClass + fretOffset
+            stringPitchClass - rootStringPitchClass + slot.preferredOffset
         );
         const matchedTone = toneDegreeMap.get(normalizedPitchClass);
 
         return {
-            string: stringIndex as GuitarStringIndex,
-            fretOffset,
-            toneDegree: matchedTone?.degree,
+            string,
+            fretOffset: slot.preferredOffset,
+            toneDegree: matchedTone?.degree ?? slot.degree,
             isOptional: matchedTone ? !matchedTone.isRequired : undefined,
         };
     });
 }
 
-function buildArchetypeTags(entry: ChordRegistryEntry, seed: ArchetypeGeneratedSeed): string[] {
+function buildArchetypeTags(entry: ChordRegistryEntry, blueprint: ArchetypeBlueprint, chordClass: ArchetypeChordClass): string[] {
     return Array.from(new Set([
         ...(entry.tags ?? []),
         ...(entry.voicingHint?.tags ?? []),
         'archetype-generated',
-        `archetype-${seed.archetypeFamily}`,
-        `root-string-${seed.rootString + 1}`,
+        `archetype-${blueprint.family}`,
+        `archetype-class-${chordClass}`,
+        `root-string-${blueprint.rootString + 1}`,
     ]));
 }
 
-function buildArchetypeTemplate(entry: ChordRegistryEntry, seed: ArchetypeGeneratedSeed): VoicingTemplate {
+function buildArchetypeTemplate(entry: ChordRegistryEntry, family: ArchetypeFamily): VoicingTemplate | null {
+    const plan = CHORD_ARCHETYPE_PLANS[entry.id as (typeof ARCHETYPE_GENERATED_CHORD_IDS)[number]];
+    const blueprint = getBlueprintForEntry(entry, family);
+
+    if (!plan || !blueprint) {
+        return null;
+    }
+
     return {
-        id: `${entry.id}:archetype-generated:${seed.id}`,
-        label: seed.label,
+        id: `${entry.id}:archetype-generated:${family}:root-${blueprint.rootString + 1}`,
+        label: blueprint.label,
         instrument: 'guitar',
-        rootString: seed.rootString,
-        strings: buildTemplateStrings(entry, seed),
+        rootString: blueprint.rootString,
+        strings: buildTemplateStrings(entry, blueprint),
         source: 'archetype-generated',
-        tags: buildArchetypeTags(entry, seed),
+        tags: buildArchetypeTags(entry, blueprint, plan.chordClass),
     };
+}
+
+export function getArchetypePlanForChord(entryInput: string | ChordRegistryEntry): ChordArchetypePlan | null {
+    const entry = resolveChordRegistryEntry(entryInput);
+    return CHORD_ARCHETYPE_PLANS[entry.id as (typeof ARCHETYPE_GENERATED_CHORD_IDS)[number]] ?? null;
 }
 
 export function getArchetypeGeneratedVoicingTemplatesForChord(entryInput: string | ChordRegistryEntry): VoicingTemplate[] {
     const entry = resolveChordRegistryEntry(entryInput);
-    const seeds = ARCHETYPE_GENERATED_SEEDS[entry.id] ?? [];
+    const plan = getArchetypePlanForChord(entry);
 
-    return seeds.map((seed) => buildArchetypeTemplate(entry, seed));
+    if (!plan) {
+        return [];
+    }
+
+    return plan.families
+        .map((family) => buildArchetypeTemplate(entry, family))
+        .filter((template): template is VoicingTemplate => template !== null);
 }

@@ -114,6 +114,7 @@ export {
 
 export {
     ARCHETYPE_GENERATED_CHORD_IDS,
+    getArchetypePlanForChord,
     getArchetypeGeneratedVoicingTemplatesForChord,
 } from './archetype-generated';
 
