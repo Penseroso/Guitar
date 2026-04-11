@@ -19,10 +19,14 @@ export interface CuratedQaChordTypeAnalysis {
     chordType: string;
     chordFamily: string;
     reviewedCount: number;
+    activeReviewedCount: number;
+    staleReviewedCount: number;
     candidateCount: number;
     unreviewedCount: number;
     decisions: CuratedQaDecisionCounts;
+    byStatus: CuratedQaAnalysisBucket[];
     provenance: CuratedQaAnalysisBucket[];
+    inversions: CuratedQaAnalysisBucket[];
     rootStrings: CuratedQaAnalysisBucket[];
     registerBands: CuratedQaAnalysisBucket[];
     noteCounts: CuratedQaAnalysisBucket[];
@@ -33,18 +37,30 @@ export interface CuratedQaChordTypeAnalysis {
 
 export interface CuratedQaAnalysisSummary {
     totalReviews: number;
+    activeReviewCount: number;
+    staleReviewCount: number;
     byDecision: CuratedQaDecisionCounts;
+    byStatus: CuratedQaAnalysisBucket[];
     byChordFamily: CuratedQaAnalysisBucket[];
     byProvenance: CuratedQaAnalysisBucket[];
+    byInversion: CuratedQaAnalysisBucket[];
     byRootString: CuratedQaAnalysisBucket[];
     byRegisterBand: CuratedQaAnalysisBucket[];
     byNoteCount: CuratedQaAnalysisBucket[];
     byMissingRequiredDegrees: CuratedQaAnalysisBucket[];
     byOutOfFormula: CuratedQaAnalysisBucket[];
     byPlayability: CuratedQaAnalysisBucket[];
+    staleReviewReferences: Array<{
+        chordType: string;
+        candidateId: string;
+        decision: CuratedQaDecision;
+        rootPitchClass: number;
+    }>;
     weakCoverageChordTypes: Array<{
         chordType: string;
         reviewedCount: number;
+        activeReviewedCount: number;
+        staleReviewedCount: number;
         candidateCount: number;
         unreviewedCount: number;
     }>;
@@ -54,8 +70,11 @@ export interface CuratedQaAnalysisSummary {
 interface ResolvedReviewEvidence {
     chordType: string;
     chordFamily: string;
+    candidateId: string;
     decision: CuratedQaDecision;
+    rootPitchClass: number;
     candidate: CuratedQaCandidate | null;
+    status: 'active' | 'stale';
 }
 
 function createDecisionCounts(): CuratedQaDecisionCounts {
@@ -112,19 +131,22 @@ function resolveReviewEvidence(snapshot: CuratedQaReviewSnapshot): ResolvedRevie
         return {
             chordType: review.chordType,
             chordFamily: chordEntry.family,
+            candidateId: review.candidateId,
             decision: review.decision,
+            rootPitchClass,
             candidate,
+            status: candidate ? 'active' : 'stale',
         };
     });
 }
 
-function getCandidateCoverage(chordType: string, snapshot: CuratedQaReviewSnapshot) {
-    const rootPitchClass = snapshot.reviews.find((review) => review.chordType === chordType)?.rootPitchClass ?? 0;
+function getCandidateCoverage(chordType: string, evidence: ResolvedReviewEvidence[]) {
+    const rootPitchClass = evidence.find((entry) => entry.chordType === chordType)?.rootPitchClass ?? 0;
     const candidates = getCuratedQaCandidatesForChord(chordType as Parameters<typeof getCuratedQaCandidatesForChord>[0], rootPitchClass);
     const reviewedCandidateIds = new Set(
-        snapshot.reviews
-            .filter((review) => review.chordType === chordType)
-            .map((review) => review.candidateId)
+        evidence
+            .filter((entry) => entry.chordType === chordType && entry.status === 'active' && entry.candidate)
+            .map((entry) => entry.candidate!.candidateId)
     );
 
     return {
@@ -135,7 +157,6 @@ function getCandidateCoverage(chordType: string, snapshot: CuratedQaReviewSnapsh
 
 function buildChordTypeAnalysis(
     chordType: string,
-    snapshot: CuratedQaReviewSnapshot,
     evidence: ResolvedReviewEvidence[]
 ): CuratedQaChordTypeAnalysis {
     const chordEvidence = evidence.filter((entry) => entry.chordType === chordType);
@@ -146,31 +167,55 @@ function buildChordTypeAnalysis(
         incrementDecisionCounts(decisions, entry.decision);
     }
 
-    const coverage = getCandidateCoverage(chordType, snapshot);
+    const activeReviewedCount = chordEvidence.filter((entry) => entry.status === 'active').length;
+    const staleReviewedCount = chordEvidence.length - activeReviewedCount;
+    const coverage = getCandidateCoverage(chordType, evidence);
 
     return {
         chordType,
         chordFamily: chordEntry.family,
         reviewedCount: chordEvidence.length,
+        activeReviewedCount,
+        staleReviewedCount,
         candidateCount: coverage.candidateCount,
         unreviewedCount: coverage.unreviewedCount,
         decisions,
-        provenance: buildDecisionBuckets(chordEvidence, (entry) => entry.candidate?.voicing.descriptor.provenance.sourceKind ?? 'unknown'),
+        byStatus: buildDecisionBuckets(chordEvidence, (entry) => entry.status),
+        provenance: buildDecisionBuckets(chordEvidence, (entry) => entry.candidate?.voicing.descriptor.provenance.sourceKind ?? 'stale'),
+        inversions: buildDecisionBuckets(chordEvidence, (entry) => entry.candidate?.voicing.descriptor.inversion ?? 'stale'),
         rootStrings: buildDecisionBuckets(chordEvidence, (entry) => {
+            if (entry.status === 'stale') {
+                return 'stale';
+            }
+
             const rootString = entry.candidate?.voicing.descriptor.rootString;
             return rootString === undefined ? 'none' : `root-${rootString + 1}`;
         }),
-        registerBands: buildDecisionBuckets(chordEvidence, (entry) => entry.candidate?.voicing.descriptor.registerBand ?? 'unknown'),
-        noteCounts: buildDecisionBuckets(chordEvidence, (entry) => String(entry.candidate?.voicing.descriptor.noteCount ?? 'unknown')),
+        registerBands: buildDecisionBuckets(chordEvidence, (entry) => entry.candidate?.voicing.descriptor.registerBand ?? 'stale'),
+        noteCounts: buildDecisionBuckets(chordEvidence, (entry) => String(entry.candidate?.voicing.descriptor.noteCount ?? 'stale')),
         missingRequiredDegrees: buildDecisionBuckets(chordEvidence, (entry) => {
+            if (entry.status === 'stale') {
+                return 'stale';
+            }
+
             const count = entry.candidate?.voicing.missingRequiredDegrees?.length ?? 0;
             return count === 0 ? 'complete' : `missing-${count}`;
         }),
         outOfFormula: buildDecisionBuckets(chordEvidence, (entry) => {
+            if (entry.status === 'stale') {
+                return 'stale';
+            }
+
             const count = entry.candidate?.voicing.outOfFormulaPitchClasses?.length ?? 0;
             return count === 0 ? 'formula-closed' : `out-of-formula-${count}`;
         }),
-        playability: buildDecisionBuckets(chordEvidence, (entry) => entry.candidate?.voicing.playable === false ? 'non-playable' : 'playable'),
+        playability: buildDecisionBuckets(chordEvidence, (entry) => {
+            if (entry.status === 'stale') {
+                return 'stale';
+            }
+
+            return entry.candidate?.voicing.playable === false ? 'non-playable' : 'playable';
+        }),
     };
 }
 
@@ -182,35 +227,69 @@ export function buildCuratedQaAnalysisSummary(snapshot: CuratedQaReviewSnapshot)
         incrementDecisionCounts(byDecision, review.decision);
     }
 
+    const activeReviewCount = evidence.filter((entry) => entry.status === 'active').length;
+    const staleReviewCount = evidence.length - activeReviewCount;
     const chordTypes = [...new Set(snapshot.reviews.map((review) => review.chordType))]
         .sort((left, right) => left.localeCompare(right));
-    const byChordType = chordTypes.map((chordType) => buildChordTypeAnalysis(chordType, snapshot, evidence));
+    const byChordType = chordTypes.map((chordType) => buildChordTypeAnalysis(chordType, evidence));
 
     return {
         totalReviews: snapshot.reviews.length,
+        activeReviewCount,
+        staleReviewCount,
         byDecision,
+        byStatus: buildDecisionBuckets(evidence, (entry) => entry.status),
         byChordFamily: buildDecisionBuckets(evidence, (entry) => entry.chordFamily),
-        byProvenance: buildDecisionBuckets(evidence, (entry) => entry.candidate?.voicing.descriptor.provenance.sourceKind ?? 'unknown'),
+        byProvenance: buildDecisionBuckets(evidence, (entry) => entry.candidate?.voicing.descriptor.provenance.sourceKind ?? 'stale'),
+        byInversion: buildDecisionBuckets(evidence, (entry) => entry.candidate?.voicing.descriptor.inversion ?? 'stale'),
         byRootString: buildDecisionBuckets(evidence, (entry) => {
+            if (entry.status === 'stale') {
+                return 'stale';
+            }
+
             const rootString = entry.candidate?.voicing.descriptor.rootString;
             return rootString === undefined ? 'none' : `root-${rootString + 1}`;
         }),
-        byRegisterBand: buildDecisionBuckets(evidence, (entry) => entry.candidate?.voicing.descriptor.registerBand ?? 'unknown'),
-        byNoteCount: buildDecisionBuckets(evidence, (entry) => String(entry.candidate?.voicing.descriptor.noteCount ?? 'unknown')),
+        byRegisterBand: buildDecisionBuckets(evidence, (entry) => entry.candidate?.voicing.descriptor.registerBand ?? 'stale'),
+        byNoteCount: buildDecisionBuckets(evidence, (entry) => String(entry.candidate?.voicing.descriptor.noteCount ?? 'stale')),
         byMissingRequiredDegrees: buildDecisionBuckets(evidence, (entry) => {
+            if (entry.status === 'stale') {
+                return 'stale';
+            }
+
             const count = entry.candidate?.voicing.missingRequiredDegrees?.length ?? 0;
             return count === 0 ? 'complete' : `missing-${count}`;
         }),
         byOutOfFormula: buildDecisionBuckets(evidence, (entry) => {
+            if (entry.status === 'stale') {
+                return 'stale';
+            }
+
             const count = entry.candidate?.voicing.outOfFormulaPitchClasses?.length ?? 0;
             return count === 0 ? 'formula-closed' : `out-of-formula-${count}`;
         }),
-        byPlayability: buildDecisionBuckets(evidence, (entry) => entry.candidate?.voicing.playable === false ? 'non-playable' : 'playable'),
+        byPlayability: buildDecisionBuckets(evidence, (entry) => {
+            if (entry.status === 'stale') {
+                return 'stale';
+            }
+
+            return entry.candidate?.voicing.playable === false ? 'non-playable' : 'playable';
+        }),
+        staleReviewReferences: evidence
+            .filter((entry) => entry.status === 'stale')
+            .map((entry) => ({
+                chordType: entry.chordType,
+                candidateId: entry.candidateId,
+                decision: entry.decision,
+                rootPitchClass: entry.rootPitchClass,
+            })),
         weakCoverageChordTypes: byChordType
             .filter((entry) => entry.unreviewedCount > 0)
             .map((entry) => ({
                 chordType: entry.chordType,
                 reviewedCount: entry.reviewedCount,
+                activeReviewedCount: entry.activeReviewedCount,
+                staleReviewedCount: entry.staleReviewedCount,
                 candidateCount: entry.candidateCount,
                 unreviewedCount: entry.unreviewedCount,
             }))

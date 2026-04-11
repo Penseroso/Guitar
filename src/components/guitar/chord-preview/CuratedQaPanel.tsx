@@ -3,6 +3,7 @@
 import React from 'react';
 
 import {
+    type CuratedQaAnalysisSummary,
     getVoicingFamilyLabel,
     getVoicingProvenanceLabel,
     getVoicingRegisterLabel,
@@ -24,6 +25,7 @@ interface CuratedQaPanelProps {
     isSubmitting: boolean;
     submitStatus: string | null;
     lastSavedAt: string | null;
+    analysis?: CuratedQaAnalysisSummary | null;
 }
 
 function getCandidateMeta(candidate: CuratedQaCandidate): string[] {
@@ -48,12 +50,14 @@ export function CuratedQaPanel({
     isSubmitting,
     submitStatus,
     lastSavedAt,
+    analysis,
 }: CuratedQaPanelProps) {
     const reviewedCount = Object.keys(reviews).length;
     const acceptedCount = Object.values(reviews).filter((review) => review.decision === 'accept').length;
     const borderlineCount = Object.values(reviews).filter((review) => review.decision === 'borderline').length;
     const rejectedCount = Object.values(reviews).filter((review) => review.decision === 'reject').length;
     const candidateGroups = groupCuratedQaCandidates(candidates);
+    const weakCoveragePreview = analysis?.weakCoverageChordTypes.slice(0, 3) ?? [];
 
     return (
         <section
@@ -72,9 +76,57 @@ export function CuratedQaPanel({
                     <div className="flex flex-col items-start gap-1 text-[10px] font-black uppercase tracking-[0.22em] text-white/32 md:items-end">
                         <span>{reviewedCount}/{candidates.length} reviewed</span>
                         <span>{acceptedCount} accept · {borderlineCount} borderline · {rejectedCount} reject</span>
+                        {analysis && (
+                            <span>{analysis.activeReviewCount} active · {analysis.staleReviewCount} stale saved reviews</span>
+                        )}
                     </div>
                 </div>
             </div>
+
+            {analysis && (
+                <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-2">
+                    <div className="rounded-[1.4rem] border border-white/6 bg-white/[0.02] p-4">
+                        <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/36">Coverage</span>
+                        <p className="mt-2 text-xs text-white/58">
+                            {analysis.weakCoverageChordTypes.length === 0
+                                ? 'Active QA slices are fully covered.'
+                                : `Weak active coverage remains in ${analysis.weakCoverageChordTypes.length} chord slices.`}
+                        </p>
+                        {weakCoveragePreview.length > 0 && (
+                            <div className="mt-3 flex flex-wrap gap-2">
+                                {weakCoveragePreview.map((entry) => (
+                                    <span
+                                        key={entry.chordType}
+                                        className="rounded-full border border-white/8 px-2 py-1 text-[9px] font-black uppercase tracking-[0.14em] text-white/42"
+                                    >
+                                        {entry.chordType} {entry.activeReviewedCount}/{entry.candidateCount}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                    <div className="rounded-[1.4rem] border border-white/6 bg-white/[0.02] p-4">
+                        <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/36">Review Drift</span>
+                        <p className="mt-2 text-xs text-white/58">
+                            {analysis.staleReviewCount === 0
+                                ? 'Saved reviews all map cleanly into the current exploratory QA slice.'
+                                : `${analysis.staleReviewCount} saved reviews are now stale and excluded from active slice coverage.`}
+                        </p>
+                        {analysis.staleReviewReferences.length > 0 && (
+                            <div className="mt-3 flex flex-wrap gap-2">
+                                {analysis.staleReviewReferences.slice(0, 3).map((entry) => (
+                                    <span
+                                        key={`${entry.chordType}-${entry.candidateId}`}
+                                        className="rounded-full border border-red-200/12 px-2 py-1 text-[9px] font-black uppercase tracking-[0.14em] text-red-100/52"
+                                    >
+                                        {entry.chordType} {entry.decision}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
 
             <div className="mt-5 flex flex-col gap-5">
                 {candidateGroups.map((group) => {

@@ -7,6 +7,7 @@ import { getProgressionPlaybackData } from '../../features/progression/utils/get
 import {
     CHORD_FAMILIES,
     CHORD_REGISTRY_LIST,
+    type CuratedQaAnalysisSummary,
     getChordSurfaceVoicingsForChord,
     getCuratedQaCandidates,
     getChordTypeLabel,
@@ -126,6 +127,7 @@ export default function ClientApp() {
         });
     });
     const [curatedQaReviews, setCuratedQaReviews] = useState<CuratedQaReviewState>({});
+    const [curatedQaAnalysis, setCuratedQaAnalysis] = useState<CuratedQaAnalysisSummary | null>(null);
     const [isSubmittingCuratedQa, setIsSubmittingCuratedQa] = useState(false);
     const [curatedQaSubmitStatus, setCuratedQaSubmitStatus] = useState<string | null>(null);
     const [curatedQaLastSavedAt, setCuratedQaLastSavedAt] = useState<string | null>(null);
@@ -520,7 +522,7 @@ export default function ClientApp() {
                 }
 
                 const payload = await response.json() as {
-                    analysis?: unknown;
+                    analysis?: CuratedQaAnalysisSummary;
                     updatedAt?: string | null;
                     reviews?: Array<{ chordType: string; candidateId: string; decision: CuratedQaDecision; rootPitchClass?: number }>;
                 };
@@ -538,10 +540,12 @@ export default function ClientApp() {
                 }, {});
 
                 setCuratedQaReviews(nextState);
+                setCuratedQaAnalysis(payload.analysis ?? null);
                 setCuratedQaLastSavedAt(payload.updatedAt ?? null);
                 setCuratedQaSubmitStatus(payload.updatedAt ? 'Loaded saved curated QA decisions.' : null);
             } catch {
                 if (!isCancelled) {
+                    setCuratedQaAnalysis(null);
                     setCuratedQaSubmitStatus('Unable to load saved curated QA decisions.');
                 }
             }
@@ -571,7 +575,8 @@ export default function ClientApp() {
                 throw new Error(`Unable to save curated QA state (${response.status})`);
             }
 
-            const payload = await response.json() as { updatedAt?: string | null };
+            const payload = await response.json() as { updatedAt?: string | null; analysis?: CuratedQaAnalysisSummary };
+            setCuratedQaAnalysis(payload.analysis ?? null);
             setCuratedQaLastSavedAt(payload.updatedAt ?? null);
             setCuratedQaSubmitStatus('Curated QA decisions saved to internal JSON.');
         } catch {
@@ -706,6 +711,7 @@ export default function ClientApp() {
                                     isSubmitting={isSubmittingCuratedQa}
                                     submitStatus={curatedQaSubmitStatus}
                                     lastSavedAt={curatedQaLastSavedAt}
+                                    analysis={curatedQaAnalysis}
                                 />
                             )}
                         </div>

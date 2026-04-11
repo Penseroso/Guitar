@@ -52,8 +52,8 @@ export interface CuratedQaCandidateGroup {
 
 interface CuratedQaSlicePlan {
     includeLegacyCandidates: boolean;
-    includeGeneratedCandidates: boolean;
     maxCandidates: number;
+    searchMultiplier?: number;
 }
 
 interface CuratedQaResolvedCandidate {
@@ -64,53 +64,44 @@ interface CuratedQaResolvedCandidate {
 const CURATED_QA_SLICE_PLANS: Record<CuratedQaChordId, CuratedQaSlicePlan> = {
     major: {
         includeLegacyCandidates: true,
-        includeGeneratedCandidates: true,
-        maxCandidates: 7,
+        maxCandidates: 8,
+        searchMultiplier: 12,
     },
     'major-6': {
         includeLegacyCandidates: false,
-        includeGeneratedCandidates: false,
-        maxCandidates: 2,
+        maxCandidates: 3,
     },
     'major-7': {
         includeLegacyCandidates: true,
-        includeGeneratedCandidates: false,
-        maxCandidates: 3,
+        maxCandidates: 4,
     },
     'major-9': {
         includeLegacyCandidates: true,
-        includeGeneratedCandidates: false,
-        maxCandidates: 3,
+        maxCandidates: 4,
     },
     minor: {
         includeLegacyCandidates: true,
-        includeGeneratedCandidates: false,
-        maxCandidates: 4,
+        maxCandidates: 5,
     },
     'minor-7': {
         includeLegacyCandidates: true,
-        includeGeneratedCandidates: false,
-        maxCandidates: 3,
+        maxCandidates: 4,
     },
     'dominant-7': {
         includeLegacyCandidates: true,
-        includeGeneratedCandidates: false,
-        maxCandidates: 4,
+        maxCandidates: 5,
     },
     'dominant-9': {
         includeLegacyCandidates: true,
-        includeGeneratedCandidates: false,
-        maxCandidates: 3,
+        maxCandidates: 4,
     },
     sus2: {
         includeLegacyCandidates: false,
-        includeGeneratedCandidates: false,
-        maxCandidates: 2,
+        maxCandidates: 3,
     },
     sus4: {
         includeLegacyCandidates: true,
-        includeGeneratedCandidates: false,
-        maxCandidates: 3,
+        maxCandidates: 4,
     },
 };
 
@@ -189,12 +180,56 @@ function getResolvedTemplateCandidate(
     };
 }
 
+interface GeneratedSeedFacetSummary {
+    bassString: string;
+    layoutKind: string;
+    registerBias: string;
+    coverageProfile: string;
+}
+
+function getGeneratedSeedFacetSummary(seedId?: string): GeneratedSeedFacetSummary {
+    if (!seedId || !seedId.includes(':generated:')) {
+        return {
+            bassString: 'na',
+            layoutKind: 'na',
+            registerBias: 'na',
+            coverageProfile: 'na',
+        };
+    }
+
+    const match = seedId.match(/:generated:b(\d):r\d:s[1-6]+:n\d+:([^:]+):([^:]+):([^:]+):/);
+    if (!match) {
+        return {
+            bassString: 'generated',
+            layoutKind: 'generated',
+            registerBias: 'generated',
+            coverageProfile: 'generated',
+        };
+    }
+
+    return {
+        bassString: `bass-${match[1]}`,
+        layoutKind: match[2],
+        registerBias: match[3],
+        coverageProfile: match[4],
+    };
+}
+
 function getCuratedQaStructureBucket(candidate: CuratedQaResolvedCandidate): string {
+    const seedFacets = getGeneratedSeedFacetSummary(candidate.candidate.seedId);
+
     return [
+        candidate.candidate.voicing.descriptor.provenance.sourceKind,
+        candidate.candidate.voicing.descriptor.inversion,
         candidate.candidate.voicing.descriptor.rootString ?? 'none',
+        seedFacets.bassString,
         candidate.candidate.voicing.descriptor.registerBand,
         candidate.candidate.voicing.descriptor.family,
         candidate.candidate.voicing.descriptor.noteCount,
+        seedFacets.layoutKind,
+        seedFacets.registerBias,
+        seedFacets.coverageProfile,
+        candidate.candidate.voicing.playable ? 'playable' : 'non-playable',
     ].join('::');
 }
 
@@ -205,10 +240,9 @@ function selectStratifiedCandidatesForChord(
 ): CuratedQaCandidate[] {
     const exploratoryCandidates = getExploratoryVoicingsForChord(entry, rootPitchClass, {
         maxRootFret: 15,
-        maxCandidates: Math.max(plan.maxCandidates * 6, 18),
+        maxCandidates: Math.max(plan.maxCandidates * (plan.searchMultiplier ?? 10), 24),
         includeCuratedCandidates: true,
         includeLegacyCandidates: plan.includeLegacyCandidates,
-        includeGeneratedCandidates: plan.includeGeneratedCandidates,
     });
     const deduped = new Map<string, CuratedQaResolvedCandidate>();
 

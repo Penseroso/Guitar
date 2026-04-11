@@ -41,37 +41,21 @@ describe('developer curated QA mode', () => {
         expect(candidates.every((candidate) => candidate.voicing.playable)).toBe(true);
         expect(groupedCandidates.map((group) => group.chordType)).toEqual(CURATED_QA_REVIEW_CHORD_IDS);
         expect(Object.fromEntries(groupedCandidates.map((group) => [group.chordType, group.candidates.length]))).toEqual({
-            major: 7,
-            'major-6': 2,
-            'major-7': 3,
-            'major-9': 3,
-            minor: 4,
-            'minor-7': 3,
-            'dominant-7': 4,
-            'dominant-9': 3,
-            sus2: 2,
-            sus4: 3,
+            major: 8,
+            'major-6': 3,
+            'major-7': 4,
+            'major-9': 4,
+            minor: 5,
+            'minor-7': 4,
+            'dominant-7': 5,
+            'dominant-9': 4,
+            sus2: 3,
+            sus4: 4,
         });
-        expect(candidates.filter((candidate) => candidate.chordType.startsWith('major')).map((candidate) => candidate.chordType)).toEqual([
-            'major',
-            'major',
-            'major',
-            'major',
-            'major',
-            'major',
-            'major',
-            'major-6',
-            'major-6',
-            'major-7',
-            'major-7',
-            'major-7',
-            'major-9',
-            'major-9',
-            'major-9',
-        ]);
-        expect(majorCandidates).toHaveLength(7);
+        expect(majorCandidates).toHaveLength(8);
         expect(majorCandidates.some((candidate) => candidate.sourceLabel === 'Curated')).toBe(true);
         expect(majorCandidates.some((candidate) => candidate.sourceLabel !== 'Curated')).toBe(true);
+        expect(majorCandidates.some((candidate) => candidate.voicing.descriptor.inversion === 'inversion')).toBe(true);
         expect(groupedCandidates.every((group) => new Set(
             group.candidates.map((candidate) => candidate.voicing.notes.map((note) => `${note.string}:${note.isMuted ? 'x' : note.fret}`).join('|'))
         ).size === group.candidates.length)).toBe(true);
@@ -85,10 +69,10 @@ describe('developer curated QA mode', () => {
         });
         const exploratoryCandidates = getExploratoryVoicingsForChord('major', 0, {
             maxRootFret: 15,
-            maxCandidates: 40,
+            maxCandidates: 160,
         });
 
-        expect(qaCandidates).toHaveLength(7);
+        expect(qaCandidates).toHaveLength(8);
         expect(surfaceCandidates).toHaveLength(7);
         expect(qaCandidates.map((candidate) => candidate.candidateId)).not.toEqual(
             surfaceCandidates.map((candidate) => candidate.voicing.id)
@@ -97,6 +81,7 @@ describe('developer curated QA mode', () => {
             exploratoryCandidates.some((exploratoryCandidate) => exploratoryCandidate.voicing.id === candidate.candidateId)
         )).toBe(true);
         expect(qaCandidates.some((candidate) => candidate.sourceLabel === 'Curated')).toBe(true);
+        expect(qaCandidates.some((candidate) => candidate.voicing.descriptor.inversion === 'inversion')).toBe(true);
     });
 
     it('records accept borderline and reject decisions in a simple keyed in-memory state object', () => {
