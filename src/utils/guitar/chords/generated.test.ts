@@ -1,9 +1,16 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+    buildDegreeAssignmentsForSeed,
+    buildGeneratedChordPolicy,
+    buildGeneratedCoverageRecipes,
+    buildGeneratedTemplateVariants,
     getGeneratedVoicingTemplatesForChord,
+    getExploratorySeedsForChord,
+    getOffsetCandidatesForDegree,
     getPrimaryGeneratedVoicingTemplatesForChord,
 } from './generated';
+import { resolveChordRegistryEntry } from './helpers';
 import {
     collectVoicingTemplateSourcesForChord,
     getChordSurfaceVoicingsForChord,
@@ -13,6 +20,10 @@ import {
 } from './voicings';
 
 describe('generated voicing candidates', () => {
+    function getFifthLikeDegree(chordType: string): string | undefined {
+        return resolveChordRegistryEntry(chordType).formula.degrees.find((degree) => degree === '5' || degree === 'b5' || degree === '#5');
+    }
+
     it('produces bounded exploratory generated templates for seventh-family chords', () => {
         const templates = getGeneratedVoicingTemplatesForChord('dominant-7');
 
@@ -27,8 +38,23 @@ describe('generated voicing candidates', () => {
         const primaryTemplates = getPrimaryGeneratedVoicingTemplatesForChord('major-7');
 
         expect(exploratoryTemplates.length).toBeGreaterThan(primaryTemplates.length);
-        expect(exploratoryTemplates.some((template) => template.tags?.includes('generated-register-wide'))).toBe(true);
-        expect(primaryTemplates.some((template) => template.tags?.includes('generated-register-wide'))).toBe(false);
+        expect(exploratoryTemplates.some((template) => template.tags?.includes('generated-inversional-bass'))).toBe(true);
+        expect(primaryTemplates.some((template) => template.tags?.includes('generated-inversional-bass'))).toBe(false);
+    });
+
+    it('locks seventh-bearing baseline recipes to retain the formula fifth-like degree', () => {
+        const chordTypes = ['major-7', 'diminished-7', 'hendrix-7-sharp-9', 'dominant-7-flat-9'] as const;
+
+        for (const chordType of chordTypes) {
+            const entry = resolveChordRegistryEntry(chordType);
+            const recipes = buildGeneratedCoverageRecipes(entry, buildGeneratedChordPolicy(entry).chordClass);
+            const baselineRecipe = recipes.find((recipe) => recipe.family === 'baseline');
+            const fifthLikeDegree = getFifthLikeDegree(chordType);
+
+            expect(baselineRecipe).toBeDefined();
+            expect(fifthLikeDegree).toBeDefined();
+            expect(baselineRecipe?.requiredDegrees).toContain(fifthLikeDegree);
+        }
     });
 
     it('generated dominant thirteenth candidates retain required tones even when span rules invalidate them', () => {
@@ -71,21 +97,11 @@ describe('generated voicing candidates', () => {
         expect(candidates.every((candidate) => candidate.missingRequiredDegrees.includes('6'))).toBe(false);
     });
 
-    it('mixes generated candidates with legacy templates in the ranked result set', () => {
-        const candidates = getRankedVoicingsForChord('major-7', 0, {
-            maxCandidates: 12,
-            includeNonPlayableCandidates: false,
-        });
-
-        expect(candidates.some((candidate) => candidate.voicing.descriptor.provenance.sourceKind === 'legacy-import')).toBe(true);
-        expect(candidates.some((candidate) => candidate.voicing.descriptor.provenance.sourceKind === 'generated')).toBe(true);
-        expect(candidates[0].voicing.playable).toBe(true);
-    });
-
     it('keeps the older generated path available in parallel with the new archetype path', () => {
         const sources = collectVoicingTemplateSourcesForChord('major-7', {
             includeCuratedCandidates: false,
             includeArchetypeGeneratedCandidates: true,
+            generatedTemplateCollectionMode: 'exploration',
         });
 
         expect(sources.generatedTemplates.length).toBeGreaterThan(0);
@@ -107,6 +123,40 @@ describe('generated voicing candidates', () => {
         expect(new Set(candidates.map((candidate) => candidate.voicing.descriptor.family)).size).toBeGreaterThan(1);
     });
 
+    it('preserves multiple degree assignments for a single exploratory seed', () => {
+        const entry = resolveChordRegistryEntry('major-7');
+        const policy = buildGeneratedChordPolicy(entry);
+        const seed = getExploratorySeedsForChord(entry)
+            .find((candidateSeed) => buildDegreeAssignmentsForSeed(entry, policy, candidateSeed).length > 1);
+
+        expect(seed).toBeDefined();
+        expect(buildDegreeAssignmentsForSeed(entry, policy, seed!).length).toBeGreaterThan(1);
+    });
+
+    it('preserves multiple template variants for the same seed instead of collapsing to one representative', () => {
+        const entry = resolveChordRegistryEntry('major-7');
+        const seed = getExploratorySeedsForChord(entry)
+            .find((candidateSeed) => buildGeneratedTemplateVariants(entry, candidateSeed).length > 1);
+
+        expect(seed).toBeDefined();
+        const templates = buildGeneratedTemplateVariants(entry, seed!);
+        expect(templates.length).toBeGreaterThan(1);
+    });
+
+    it('limits offset candidates to +-3 and keeps multiple root-anchor placements when available', () => {
+        const offsets = getOffsetCandidatesForDegree({
+            rootString: 5,
+            string: 4,
+            interval: 7,
+        });
+        const entry = resolveChordRegistryEntry('major-7');
+        const seed = getExploratorySeedsForChord(entry)
+            .find((candidateSeed) => buildGeneratedTemplateVariants(entry, candidateSeed).some((template) => template.id.includes(':a0:')));
+
+        expect(offsets.every((offset) => offset >= -3 && offset <= 3)).toBe(true);
+        expect(seed).toBeDefined();
+    });
+
     it('keeps generated exploration broader than public chord-mode surfacing', () => {
         const exploratoryCandidates = getExploratoryVoicingsForChord('major', 0, {
             includeNonPlayableCandidates: true,
@@ -123,9 +173,6 @@ describe('generated voicing candidates', () => {
         expect(exploratoryCandidates.length).toBeGreaterThan(0);
         expect(exploratoryCandidates.length).toBeGreaterThanOrEqual(publicCandidates.length);
         expect(exploratoryCandidates.some((candidate) => candidate.descriptor.inversion === 'inversion')).toBe(true);
-        expect(exploratoryCandidates.some((candidate) =>
-            candidate.descriptor.provenance.seedId?.includes(':wide:')
-        )).toBe(true);
         expect(publicCandidates.some((candidate) => candidate.voicing.descriptor.inversion === 'inversion')).toBe(false);
     });
 
@@ -151,5 +198,28 @@ describe('generated voicing candidates', () => {
         expect(new Set(candidates.map((candidate) => candidate.descriptor.rootString)).size).toBeGreaterThan(1);
         expect(new Set(candidates.map((candidate) => candidate.descriptor.noteCount)).has(6)).toBe(true);
         expect(candidates.some((candidate) => candidate.descriptor.inversion === 'inversion')).toBe(true);
+    });
+
+    it('applies exact-signature dedupe only after generating raw template variants', () => {
+        const entry = resolveChordRegistryEntry('major-7');
+        const rawTemplates = getExploratorySeedsForChord(entry)
+            .flatMap((seed) => buildGeneratedTemplateVariants(entry, seed));
+        const dedupedTemplates = getGeneratedVoicingTemplatesForChord('major-7');
+        const dedupedSignatures = new Set(dedupedTemplates.map((template) => template.strings
+            .map((stringValue) => `${stringValue.string}:${stringValue.fretOffset ?? 'x'}:${stringValue.toneDegree ?? '_'}`)
+            .join('|')));
+
+        expect(rawTemplates.length).toBeGreaterThanOrEqual(dedupedTemplates.length);
+        expect(dedupedSignatures.size).toBe(dedupedTemplates.length);
+    });
+
+    it('keeps the QA exploratory path compatible with generated-only raw candidates', () => {
+        const candidates = getExploratoryVoicingsForChord('major-7', 0, {
+            includeNonPlayableCandidates: false,
+            maxRootFret: 15,
+        });
+
+        expect(candidates.length).toBeGreaterThan(0);
+        expect(candidates.every((candidate) => candidate.descriptor.provenance.sourceKind === 'generated')).toBe(true);
     });
 });

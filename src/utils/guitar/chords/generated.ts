@@ -97,6 +97,15 @@ function getChordClass(entry: ChordRegistryEntry): GeneratedChordClass {
     return 'extended';
 }
 
+function isSeventhBearingChord(entry: ChordRegistryEntry): boolean {
+    if (entry.id === 'major-6') {
+        return false;
+    }
+
+    return getSeventhDegree(entry) !== null
+        && (entry.family === 'seventh' || entry.family === 'extended' || getChordClass(entry) === 'altered');
+}
+
 function pushUniqueDegrees(target: string[], degrees: Array<string | null | undefined>) {
     for (const degree of degrees) {
         if (degree && !target.includes(degree)) {
@@ -135,16 +144,18 @@ function buildDuplicationBudgets(entry: ChordRegistryEntry, chordClass: Generate
     return budgets;
 }
 
-function buildGeneratedCoverageRecipes(entry: ChordRegistryEntry, chordClass: GeneratedChordClass): GeneratedCoverageRecipe[] {
+export function buildGeneratedCoverageRecipes(entry: ChordRegistryEntry, chordClass: GeneratedChordClass): GeneratedCoverageRecipe[] {
     const requiredDegrees = getRequiredChordDegrees(entry);
     const thirdLike = getThirdDegree(entry);
     const fifthLike = getFifthDegree(entry);
     const seventhLike = getSeventhDegree(entry);
     const extensionDegrees = getExtensionPriority(entry);
     const optionalFormulaDegrees = entry.formula.degrees.filter((degree) => !requiredDegrees.includes(degree));
-    const baselineRequired = chordClass === 'triad'
-        ? compactDefinedDegrees([...requiredDegrees, thirdLike, fifthLike])
-        : compactDefinedDegrees([...requiredDegrees, thirdLike, fifthLike, seventhLike]);
+    const baselineRequired = isSeventhBearingChord(entry)
+        ? compactDefinedDegrees([...requiredDegrees, thirdLike, fifthLike, seventhLike])
+        : chordClass === 'triad'
+            ? compactDefinedDegrees([...requiredDegrees, thirdLike, fifthLike])
+            : compactDefinedDegrees([...requiredDegrees, thirdLike, fifthLike, seventhLike]);
     const reducedRequired = compactDefinedDegrees(requiredDegrees);
     const fullerRequired = compactDefinedDegrees([...baselineRequired, extensionDegrees[0]]);
     const colorRetainedRequired = compactDefinedDegrees([
@@ -218,7 +229,7 @@ function buildGeneratedCoverageRecipes(entry: ChordRegistryEntry, chordClass: Ge
     return recipes;
 }
 
-function buildGeneratedChordPolicy(entry: ChordRegistryEntry): GeneratedChordPolicy {
+export function buildGeneratedChordPolicy(entry: ChordRegistryEntry): GeneratedChordPolicy {
     const thirdLike = getThirdDegree(entry);
     const fifthLike = getFifthDegree(entry);
     const seventhLike = getSeventhDegree(entry);
@@ -297,7 +308,7 @@ function getGeneratedRegisterBiases(strings: GuitarStringIndex[], layoutKind: Ge
     return biases;
 }
 
-function getExploratorySeedsForChord(entry: ChordRegistryEntry): GeneratedSearchSeed[] {
+export function getExploratorySeedsForChord(entry: ChordRegistryEntry): GeneratedSearchSeed[] {
     const policy = buildGeneratedChordPolicy(entry);
     const seeds: GeneratedSearchSeed[] = [];
 
@@ -462,7 +473,7 @@ function buildUniquePermutations(values: string[]): string[][] {
     return permutations;
 }
 
-function buildDegreeAssignmentsForSeed(
+export function buildDegreeAssignmentsForSeed(
     entry: ChordRegistryEntry,
     policy: GeneratedChordPolicy,
     seed: GeneratedSearchSeed
@@ -534,7 +545,7 @@ function buildDegreeAssignmentsForSeed(
     return Array.from(assignments).map((signature) => signature.split('|'));
 }
 
-function getOffsetCandidatesForDegree(args: {
+export function getOffsetCandidatesForDegree(args: {
     rootString: GuitarStringIndex;
     string: GuitarStringIndex;
     interval: number;
@@ -554,10 +565,24 @@ function getOffsetCandidatesForDegree(args: {
     return candidates;
 }
 
-function buildGeneratedTemplateStringVariants(
-    entry: ChordRegistryEntry,
+function getAssignmentRootStringVariants(
     seed: GeneratedSearchSeed,
     degrees: string[]
+): GuitarStringIndex[] {
+    const rootStrings = seed.playedStrings
+        .filter((string, index) => degrees[index] === '1');
+
+    return Array.from(new Set([
+        seed.rootString,
+        ...rootStrings,
+    ]));
+}
+
+export function buildGeneratedTemplateStringVariants(
+    entry: ChordRegistryEntry,
+    seed: GeneratedSearchSeed,
+    degrees: string[],
+    anchorRootString: GuitarStringIndex
 ): VoicingTemplateString[][] {
     const degreeIntervalMap = buildDegreeIntervalMap(entry);
     const assignedDegrees = new Map<GuitarStringIndex, string>();
@@ -583,10 +608,10 @@ function buildGeneratedTemplateStringVariants(
             return [];
         }
 
-        const offsets = string === seed.rootString
+        const offsets = string === anchorRootString
             ? [0]
             : getOffsetCandidatesForDegree({
-                rootString: seed.rootString,
+                rootString: anchorRootString,
                 string,
                 interval,
             });
@@ -630,12 +655,17 @@ function buildGeneratedTemplateStringVariants(
     return results;
 }
 
-function buildGeneratedTags(entry: ChordRegistryEntry, seed: GeneratedSearchSeed, policy: GeneratedChordPolicy): string[] {
+function buildGeneratedTags(
+    entry: ChordRegistryEntry,
+    seed: GeneratedSearchSeed,
+    policy: GeneratedChordPolicy,
+    rootString: GuitarStringIndex
+): string[] {
     return Array.from(new Set([
         ...(entry.tags ?? []),
         'generated',
         `generated-class-${policy.chordClass}`,
-        `root-string-${seed.rootString + 1}`,
+        `root-string-${rootString + 1}`,
         `bass-string-${seed.bassString + 1}`,
         `generated-bass-degree-${seed.bassDegree}`,
         `generated-strings-${seed.playedStrings.map((string) => string + 1).join('')}`,
@@ -647,26 +677,38 @@ function buildGeneratedTags(entry: ChordRegistryEntry, seed: GeneratedSearchSeed
     ]));
 }
 
-function buildGeneratedTemplate(entry: ChordRegistryEntry, seed: GeneratedSearchSeed): VoicingTemplate | null {
+function createGeneratedTemplateId(
+    seed: GeneratedSearchSeed,
+    anchorRootString: GuitarStringIndex,
+    assignmentIndex: number,
+    variantIndex: number
+): string {
+    return `generated:b${seed.bassString + 1}:r${anchorRootString + 1}:s${seed.playedStrings.map((string) => string + 1).join('')}:n${seed.noteCount}:${seed.layoutKind}:${seed.registerBias}:${seed.coverageProfile}:${seed.bassDegree}:a${assignmentIndex}:v${variantIndex}`;
+}
+
+export function buildGeneratedTemplateVariants(entry: ChordRegistryEntry, seed: GeneratedSearchSeed): VoicingTemplate[] {
     const policy = buildGeneratedChordPolicy(entry);
     const degreeAssignments = buildDegreeAssignmentsForSeed(entry, policy, seed);
-    const requiredDegrees = getRequiredChordDegrees(entry);
 
     if (degreeAssignments.length === 0) {
-        return null;
+        return [];
     }
 
-    return {
-        id: `${entry.id}:generated:b${seed.bassString + 1}:r${seed.rootString + 1}:s${seed.playedStrings.map((string) => string + 1).join('')}:n${seed.noteCount}:${seed.layoutKind}:${seed.registerBias}:${seed.coverageProfile}:${seed.bassDegree}`,
-        label: `Root ${seed.rootString + 1} exploratory ${seed.noteCount}-note`,
-        instrument: 'guitar',
-        rootString: seed.rootString,
-        strings: buildGeneratedTemplateStringVariants(entry, seed, degreeAssignments[0]!).find((strings) =>
-            requiredDegrees.every((degree) => strings.some((stringValue) => stringValue.toneDegree === degree))
-        ) ?? [],
-        source: 'generated',
-        tags: buildGeneratedTags(entry, seed, policy),
-    };
+    return degreeAssignments.flatMap((degrees, assignmentIndex) =>
+        getAssignmentRootStringVariants(seed, degrees).flatMap((anchorRootString) =>
+            buildGeneratedTemplateStringVariants(entry, seed, degrees, anchorRootString)
+                .slice(0, MAX_TEMPLATE_VARIANTS_PER_ASSIGNMENT)
+                .map((strings, variantIndex) => ({
+                    id: `${entry.id}:${createGeneratedTemplateId(seed, anchorRootString, assignmentIndex, variantIndex)}`,
+                    label: `Root ${anchorRootString + 1} exploratory ${seed.noteCount}-note`,
+                    instrument: 'guitar' as const,
+                    rootString: anchorRootString,
+                    strings,
+                    source: 'generated' as const,
+                    tags: buildGeneratedTags(entry, seed, policy, anchorRootString),
+                }))
+        )
+    );
 }
 
 function isPrimarySurfaceSeed(template: VoicingTemplate): boolean {
@@ -675,11 +717,11 @@ function isPrimarySurfaceSeed(template: VoicingTemplate): boolean {
     const isDense = tags.has('generated-note-count-6');
     const isInversionalBass = tags.has('generated-inversional-bass');
     const isUpperRootFour = tags.has('root-string-4') && tags.has('generated-register-upper');
-    const allowsExtensionForward = (
+    const allowsExtendedColor = (
         tags.has('generated-class-ninth')
         || tags.has('generated-class-extended')
         || tags.has('generated-class-altered')
-    ) && tags.has('generated-profile-extension-forward');
+    ) && (tags.has('generated-profile-color-retained') || tags.has('generated-profile-fuller'));
 
     if (isWide || isDense || isInversionalBass) {
         return false;
@@ -690,7 +732,7 @@ function isPrimarySurfaceSeed(template: VoicingTemplate): boolean {
     }
 
     return tags.has('generated-layout-contiguous')
-        && (tags.has('generated-profile-core') || allowsExtensionForward);
+        && (tags.has('generated-profile-baseline') || allowsExtendedColor);
 }
 
 function getGeneratedTemplateSignature(template: VoicingTemplate): string {
@@ -717,8 +759,7 @@ export function getGeneratedVoicingTemplatesForChord(entryInput: string | ChordR
     const entry = resolveChordRegistryEntry(entryInput);
 
     return dedupeGeneratedTemplates(getExploratorySeedsForChord(entry)
-        .map((seed) => buildGeneratedTemplate(entry, seed))
-        .filter((template): template is VoicingTemplate => template !== null));
+        .flatMap((seed) => buildGeneratedTemplateVariants(entry, seed)));
 }
 
 export function getPrimaryGeneratedVoicingTemplatesForChord(entryInput: string | ChordRegistryEntry): VoicingTemplate[] {
