@@ -652,6 +652,7 @@ function selectStratifiedCandidatesForChord(
         maxRootFret: 15,
         includeNonPlayableCandidates: false,
         dedupeResolvedCandidates: false,
+        generatedTemplateCollectionMode: 'qa-full',
     });
 
     return selectCuratedQaCandidatesFromResolvedVoicings(entry, rootPitchClass, exploratoryCandidates, plan);

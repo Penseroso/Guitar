@@ -34,13 +34,43 @@ interface GeneratedCoverageRecipe {
     fillDegrees: string[];
 }
 
+export interface GeneratedTemplateCollectionOptions {
+    collectionMode?: 'exploration' | 'qa-full';
+}
+
+interface GeneratedVariantCaps {
+    maxFillVariantsPerRecipe: number;
+    maxAssignmentsPerRecipe: number;
+    maxTemplateVariantsPerAssignment: number;
+}
+
+export interface GeneratedTemplateCollectionStats {
+    seedCount: number;
+    rawTemplateCount: number;
+    dedupedTemplateCount: number;
+    ceilingHit: boolean;
+}
+
 const EXPLORATORY_STRINGS: GuitarStringIndex[] = [5, 4, 3, 2, 1, 0];
 const MAX_GENERATED_NOTE_COUNT = 6;
 const MIN_OFFSET_CANDIDATE = -3;
 const MAX_OFFSET_CANDIDATE = 3;
-const MAX_FILL_VARIANTS_PER_RECIPE = 10;
-const MAX_ASSIGNMENTS_PER_RECIPE = 16;
-const MAX_TEMPLATE_VARIANTS_PER_ASSIGNMENT = 8;
+const DEFAULT_GENERATED_VARIANT_CAPS: GeneratedVariantCaps = {
+    maxFillVariantsPerRecipe: 10,
+    maxAssignmentsPerRecipe: 16,
+    maxTemplateVariantsPerAssignment: 8,
+};
+const QA_FULL_GENERATED_VARIANT_CAPS: GeneratedVariantCaps = {
+    maxFillVariantsPerRecipe: 256,
+    maxAssignmentsPerRecipe: 512,
+    maxTemplateVariantsPerAssignment: 128,
+};
+
+function getGeneratedVariantCaps(options: GeneratedTemplateCollectionOptions = {}): GeneratedVariantCaps {
+    return options.collectionMode === 'qa-full'
+        ? QA_FULL_GENERATED_VARIANT_CAPS
+        : DEFAULT_GENERATED_VARIANT_CAPS;
+}
 
 function buildDegreeIntervalMap(entry: ChordRegistryEntry): Map<string, number> {
     return new Map(entry.formula.degrees.map((degree, index) => [degree, entry.formula.intervals[index]]));
@@ -376,12 +406,13 @@ function appendRecipeFillVariants(
     fillDegrees: string[],
     duplicationBudgets: Record<string, number>,
     degreeCounts: Map<string, number>,
+    caps: GeneratedVariantCaps,
     remainingSlots: number,
     startIndex: number,
     current: string[],
     results: string[][]
 ) {
-    if (results.length >= MAX_FILL_VARIANTS_PER_RECIPE) {
+    if (results.length >= caps.maxFillVariantsPerRecipe) {
         return;
     }
 
@@ -401,7 +432,7 @@ function appendRecipeFillVariants(
 
         degreeCounts.set(degree, count + 1);
         current.push(degree);
-        appendRecipeFillVariants(fillDegrees, duplicationBudgets, degreeCounts, remainingSlots - 1, index, current, results);
+        appendRecipeFillVariants(fillDegrees, duplicationBudgets, degreeCounts, caps, remainingSlots - 1, index, current, results);
         current.pop();
         degreeCounts.set(degree, count);
     }
@@ -410,6 +441,7 @@ function appendRecipeFillVariants(
 function getRecipeFillVariants(
     recipe: GeneratedCoverageRecipe,
     policy: GeneratedChordPolicy,
+    caps: GeneratedVariantCaps,
     degreeCounts: Map<string, number>,
     remainingSlots: number
 ): string[][] {
@@ -422,6 +454,7 @@ function getRecipeFillVariants(
         recipe.fillDegrees,
         policy.duplicationBudgets,
         cloneDegreeCounts(degreeCounts),
+        caps,
         remainingSlots,
         0,
         [],
@@ -431,7 +464,7 @@ function getRecipeFillVariants(
     return variants;
 }
 
-function buildUniquePermutations(values: string[]): string[][] {
+function buildUniquePermutations(values: string[], caps: GeneratedVariantCaps): string[][] {
     if (values.length <= 1) {
         return [values];
     }
@@ -446,7 +479,7 @@ function buildUniquePermutations(values: string[]): string[][] {
     const distinctValues = Array.from(counts.keys()).sort();
 
     const walk = () => {
-        if (permutations.length >= MAX_ASSIGNMENTS_PER_RECIPE) {
+        if (permutations.length >= caps.maxAssignmentsPerRecipe) {
             return;
         }
 
@@ -476,8 +509,10 @@ function buildUniquePermutations(values: string[]): string[][] {
 export function buildDegreeAssignmentsForSeed(
     entry: ChordRegistryEntry,
     policy: GeneratedChordPolicy,
-    seed: GeneratedSearchSeed
+    seed: GeneratedSearchSeed,
+    options: GeneratedTemplateCollectionOptions = {}
 ): string[][] {
+    const caps = getGeneratedVariantCaps(options);
     const recipe = getCoverageRecipeForSeed(policy, seed);
     const rootIndex = seed.playedStrings.indexOf(seed.rootString);
     const bassIndex = seed.playedStrings.indexOf(seed.bassString);
@@ -518,6 +553,7 @@ export function buildDegreeAssignmentsForSeed(
     const fillVariants = getRecipeFillVariants(
         recipe,
         policy,
+        caps,
         currentCounts,
         remainingIndexes.length - remainingRequiredDegrees.length
     );
@@ -525,7 +561,7 @@ export function buildDegreeAssignmentsForSeed(
 
     for (const fillVariant of fillVariants) {
         const remainingDegrees = [...remainingRequiredDegrees, ...fillVariant];
-        const permutations = buildUniquePermutations(remainingDegrees);
+        const permutations = buildUniquePermutations(remainingDegrees, caps);
 
         for (const permutation of permutations) {
             const assignment = [...fixedAssignments];
@@ -582,8 +618,10 @@ export function buildGeneratedTemplateStringVariants(
     entry: ChordRegistryEntry,
     seed: GeneratedSearchSeed,
     degrees: string[],
-    anchorRootString: GuitarStringIndex
+    anchorRootString: GuitarStringIndex,
+    options: GeneratedTemplateCollectionOptions = {}
 ): VoicingTemplateString[][] {
+    const caps = getGeneratedVariantCaps(options);
     const degreeIntervalMap = buildDegreeIntervalMap(entry);
     const assignedDegrees = new Map<GuitarStringIndex, string>();
     const stringVariants = new Map<GuitarStringIndex, VoicingTemplateString[]>();
@@ -633,7 +671,7 @@ export function buildGeneratedTemplateStringVariants(
     const current: VoicingTemplateString[] = [];
 
     const walk = (index: number) => {
-        if (results.length >= MAX_TEMPLATE_VARIANTS_PER_ASSIGNMENT) {
+        if (results.length >= caps.maxTemplateVariantsPerAssignment) {
             return;
         }
 
@@ -686,18 +724,32 @@ function createGeneratedTemplateId(
     return `generated:b${seed.bassString + 1}:r${anchorRootString + 1}:s${seed.playedStrings.map((string) => string + 1).join('')}:n${seed.noteCount}:${seed.layoutKind}:${seed.registerBias}:${seed.coverageProfile}:${seed.bassDegree}:a${assignmentIndex}:v${variantIndex}`;
 }
 
-export function buildGeneratedTemplateVariants(entry: ChordRegistryEntry, seed: GeneratedSearchSeed): VoicingTemplate[] {
+export function buildGeneratedTemplateVariants(
+    entry: ChordRegistryEntry,
+    seed: GeneratedSearchSeed,
+    options: GeneratedTemplateCollectionOptions = {}
+): VoicingTemplate[] {
+    return buildGeneratedTemplateVariantsWithOptions(entry, seed, options);
+}
+
+function buildGeneratedTemplateVariantsWithOptions(
+    entry: ChordRegistryEntry,
+    seed: GeneratedSearchSeed,
+    options: GeneratedTemplateCollectionOptions = {}
+): VoicingTemplate[] {
     const policy = buildGeneratedChordPolicy(entry);
-    const degreeAssignments = buildDegreeAssignmentsForSeed(entry, policy, seed);
+    const degreeAssignments = buildDegreeAssignmentsForSeed(entry, policy, seed, options);
 
     if (degreeAssignments.length === 0) {
         return [];
     }
 
+    const caps = getGeneratedVariantCaps(options);
+
     return degreeAssignments.flatMap((degrees, assignmentIndex) =>
         getAssignmentRootStringVariants(seed, degrees).flatMap((anchorRootString) =>
-            buildGeneratedTemplateStringVariants(entry, seed, degrees, anchorRootString)
-                .slice(0, MAX_TEMPLATE_VARIANTS_PER_ASSIGNMENT)
+            buildGeneratedTemplateStringVariants(entry, seed, degrees, anchorRootString, options)
+                .slice(0, caps.maxTemplateVariantsPerAssignment)
                 .map((strings, variantIndex) => ({
                     id: `${entry.id}:${createGeneratedTemplateId(seed, anchorRootString, assignmentIndex, variantIndex)}`,
                     label: `Root ${anchorRootString + 1} exploratory ${seed.noteCount}-note`,
@@ -755,14 +807,51 @@ function dedupeGeneratedTemplates(templates: VoicingTemplate[]): VoicingTemplate
     return Array.from(deduped.values());
 }
 
-export function getGeneratedVoicingTemplatesForChord(entryInput: string | ChordRegistryEntry): VoicingTemplate[] {
+export function getGeneratedVoicingTemplatesForChord(
+    entryInput: string | ChordRegistryEntry,
+    options: GeneratedTemplateCollectionOptions = {}
+): VoicingTemplate[] {
     const entry = resolveChordRegistryEntry(entryInput);
 
     return dedupeGeneratedTemplates(getExploratorySeedsForChord(entry)
-        .flatMap((seed) => buildGeneratedTemplateVariants(entry, seed)));
+        .flatMap((seed) => buildGeneratedTemplateVariantsWithOptions(entry, seed, options)));
 }
 
 export function getPrimaryGeneratedVoicingTemplatesForChord(entryInput: string | ChordRegistryEntry): VoicingTemplate[] {
-    return getGeneratedVoicingTemplatesForChord(entryInput)
+    return getGeneratedVoicingTemplatesForChord(entryInput, { collectionMode: 'exploration' })
         .filter(isPrimarySurfaceSeed);
+}
+
+export function getGeneratedTemplateCollectionStatsForChord(
+    entryInput: string | ChordRegistryEntry,
+    options: GeneratedTemplateCollectionOptions = {}
+): GeneratedTemplateCollectionStats {
+    const entry = resolveChordRegistryEntry(entryInput);
+    const seeds = getExploratorySeedsForChord(entry);
+    const caps = getGeneratedVariantCaps(options);
+    let ceilingHit = false;
+
+    const rawTemplates = seeds.flatMap((seed) => {
+        const policy = buildGeneratedChordPolicy(entry);
+        const assignments = buildDegreeAssignmentsForSeed(entry, policy, seed, options);
+
+        if (assignments.length >= caps.maxAssignmentsPerRecipe) {
+            ceilingHit = true;
+        }
+
+        const variants = buildGeneratedTemplateVariantsWithOptions(entry, seed, options);
+        if (variants.length >= caps.maxAssignmentsPerRecipe * caps.maxTemplateVariantsPerAssignment) {
+            ceilingHit = true;
+        }
+
+        return variants;
+    });
+    const dedupedTemplates = dedupeGeneratedTemplates(rawTemplates);
+
+    return {
+        seedCount: seeds.length,
+        rawTemplateCount: rawTemplates.length,
+        dedupedTemplateCount: dedupedTemplates.length,
+        ceilingHit,
+    };
 }

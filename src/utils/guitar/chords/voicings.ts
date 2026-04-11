@@ -22,7 +22,7 @@ export interface GetRankedVoicingsOptions extends ResolveVoicingOptions {
     maxCandidates?: number;
     rankingMode?: VoicingRankingMode;
     applyChordModeSurfacing?: boolean;
-    generatedTemplateCollectionMode?: 'primary' | 'exploration';
+    generatedTemplateCollectionMode?: 'primary' | 'exploration' | 'qa-full';
     includeCuratedCandidates?: boolean;
     includeArchetypeGeneratedCandidates?: boolean;
     includeGeneratedCandidates?: boolean;
@@ -173,7 +173,9 @@ export function collectVoicingTemplateSourcesForChord(
     const generatedTemplates = options.includeGeneratedCandidates === false
         ? []
         : options.generatedTemplateCollectionMode === 'exploration'
-            ? getGeneratedVoicingTemplatesForChord(entryInput)
+            ? getGeneratedVoicingTemplatesForChord(entryInput, { collectionMode: 'exploration' })
+            : options.generatedTemplateCollectionMode === 'qa-full'
+                ? getGeneratedVoicingTemplatesForChord(entryInput, { collectionMode: 'qa-full' })
             : getPrimaryGeneratedVoicingTemplatesForChord(entryInput);
 
     return {

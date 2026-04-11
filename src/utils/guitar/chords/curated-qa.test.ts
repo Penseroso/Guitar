@@ -77,6 +77,12 @@ describe('developer curated QA mode', () => {
         const exploratoryCandidates = getExploratoryVoicingsForChord('major', 0, {
             maxRootFret: 15,
             dedupeResolvedCandidates: false,
+            generatedTemplateCollectionMode: 'qa-full',
+        });
+        const defaultExploratoryCandidates = getExploratoryVoicingsForChord('major', 0, {
+            maxRootFret: 15,
+            dedupeResolvedCandidates: false,
+            generatedTemplateCollectionMode: 'exploration',
         });
         const rankedExploratoryCandidates = getRankedExploratoryVoicingsForChord('major', 0, {
             maxRootFret: 15,
@@ -94,6 +100,7 @@ describe('developer curated QA mode', () => {
         expect(qaCandidates.every((candidate) => candidate.voicing.descriptor.provenance.sourceKind === 'generated')).toBe(true);
         expect(qaCandidates.every((candidate) => !candidate.sourceLabel.includes('Curated'))).toBe(true);
         expect(qaCandidates.some((candidate) => candidate.voicing.descriptor.inversion === 'inversion')).toBe(true);
+        expect(exploratoryCandidates.length).toBeGreaterThanOrEqual(defaultExploratoryCandidates.length);
         expect(rankedExploratoryCandidates.length).toBeLessThan(exploratoryCandidates.length);
     });
 

@@ -5,6 +5,7 @@ import {
     buildGeneratedChordPolicy,
     buildGeneratedCoverageRecipes,
     buildGeneratedTemplateVariants,
+    getGeneratedTemplateCollectionStatsForChord,
     getGeneratedVoicingTemplatesForChord,
     getExploratorySeedsForChord,
     getOffsetCandidatesForDegree,
@@ -176,6 +177,18 @@ describe('generated voicing candidates', () => {
         expect(publicCandidates.some((candidate) => candidate.voicing.descriptor.inversion === 'inversion')).toBe(false);
     });
 
+    it('expands QA full generation beyond the default exploratory mode for review collection', () => {
+        const explorationStats = getGeneratedTemplateCollectionStatsForChord('major-7', {
+            collectionMode: 'exploration',
+        });
+        const qaFullStats = getGeneratedTemplateCollectionStatsForChord('major-7', {
+            collectionMode: 'qa-full',
+        });
+
+        expect(qaFullStats.rawTemplateCount).toBeGreaterThanOrEqual(explorationStats.rawTemplateCount);
+        expect(qaFullStats.dedupedTemplateCount).toBeGreaterThanOrEqual(explorationStats.dedupedTemplateCount);
+    });
+
     it('dedupes exploratory generated templates by effective string signature', () => {
         const templates = getGeneratedVoicingTemplatesForChord('major-7');
         const signatures = templates.map((template) => template.strings
@@ -217,9 +230,25 @@ describe('generated voicing candidates', () => {
         const candidates = getExploratoryVoicingsForChord('major-7', 0, {
             includeNonPlayableCandidates: false,
             maxRootFret: 15,
+            generatedTemplateCollectionMode: 'qa-full',
         });
 
         expect(candidates.length).toBeGreaterThan(0);
         expect(candidates.every((candidate) => candidate.descriptor.provenance.sourceKind === 'generated')).toBe(true);
+    });
+
+    it('reports raw and deduped template counts for representative QA chord types', () => {
+        const chordTypes = ['major-7', 'dominant-7', 'major-9'] as const;
+
+        for (const chordType of chordTypes) {
+            const stats = getGeneratedTemplateCollectionStatsForChord(chordType, {
+                collectionMode: 'qa-full',
+            });
+
+            expect(stats.seedCount).toBeGreaterThan(0);
+            expect(stats.rawTemplateCount).toBeGreaterThan(0);
+            expect(stats.dedupedTemplateCount).toBeGreaterThan(0);
+            expect(stats.rawTemplateCount).toBeGreaterThanOrEqual(stats.dedupedTemplateCount);
+        }
     });
 });
