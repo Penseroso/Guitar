@@ -23,6 +23,7 @@ import {
     collectChordModeTemplateRolesForChord,
     getChordSurfaceVoicingsForChord,
     getExploratoryVoicingsForChord,
+    getRankedExploratoryVoicingsForChord,
     getRankedVoicingsForChord,
     collectVoicingTemplateSourcesForChord,
     orderChordSurfaceVoicingCandidates,
@@ -334,7 +335,11 @@ describe('voicing ranking orchestration', () => {
     });
 
     it('keeps exploratory ranking broader than public chord-mode surfacing', () => {
-        const exploratory = getExploratoryVoicingsForChord('major', 0, {
+        const rawExploratory = getExploratoryVoicingsForChord('major', 0, {
+            maxRootFret: 15,
+            includeNonPlayableCandidates: true,
+        });
+        const exploratory = getRankedExploratoryVoicingsForChord('major', 0, {
             maxRootFret: 15,
             maxCandidates: 20,
         });
@@ -343,11 +348,29 @@ describe('voicing ranking orchestration', () => {
             maxCandidates: 20,
         });
 
+        expect(rawExploratory.length).toBeGreaterThan(exploratory.length);
         expect(exploratory.length).toBeGreaterThan(0);
         expect(chordModeCandidates.length).toBeGreaterThan(0);
         expect(exploratory.length).toBeGreaterThanOrEqual(chordModeCandidates.length);
         expect(exploratory.some((candidate) => !shouldSurfaceChordModeVoicing(candidate.voicing))).toBe(true);
         expect(chordModeCandidates.every((candidate) => shouldSurfaceChordModeVoicing(candidate.voicing))).toBe(true);
+    });
+
+    it('keeps QA-relevant exploratory candidates available in the raw pool before ranking trims them', () => {
+        const rawExploratory = getExploratoryVoicingsForChord('major', 0, {
+            maxRootFret: 15,
+            includeNonPlayableCandidates: false,
+        });
+        const rankedExploratory = getRankedExploratoryVoicingsForChord('major', 0, {
+            maxRootFret: 15,
+            includeNonPlayableCandidates: false,
+            maxCandidates: 12,
+        });
+
+        expect(rawExploratory.some((candidate) =>
+            candidate.descriptor.registerBand === 'upper' || candidate.descriptor.inversion === 'inversion'
+        )).toBe(true);
+        expect(rawExploratory.length).toBeGreaterThan(rankedExploratory.length);
     });
 
     it('keeps chord-mode candidate presentation fret-first even when curated seeds are active', () => {

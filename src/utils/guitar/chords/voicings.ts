@@ -208,7 +208,47 @@ export function orderChordSurfaceVoicingCandidates(candidates: VoicingCandidate[
     return [...candidates].sort(compareChordSurfaceCandidateOrder);
 }
 
+function getResolvedVoicingPoolForChord(
+    entryInput: string | ChordRegistryEntry,
+    rootPitchClass: number,
+    options: GetRankedVoicingsOptions = {}
+): ResolvedVoicing[] {
+    const entry = resolveChordRegistryEntry(entryInput);
+    const chord = buildChordDefinitionFromRegistryEntry(entry, rootPitchClass, {
+        slashBassPitchClass: options.slashBassPitchClass,
+    });
+    const tones = buildChordTonesFromRegistryEntry(entry, rootPitchClass);
+    const templateSources = collectVoicingTemplateSourcesForChord(entry, options);
+    const resolvedVoicings = options.resolveAcrossPositions === false
+        ? resolveVoicingTemplates(chord, tones, templateSources.allTemplates, options)
+        : resolveVoicingTemplatesAcrossPositions(chord, tones, templateSources.allTemplates, options);
+    const semanticallyValidResolvedVoicings = excludeFormulaInvalidVoicings(resolvedVoicings);
+    const surfacedResolvedVoicings = options.applyChordModeSurfacing === false
+        ? semanticallyValidResolvedVoicings
+        : applyChordSurfacePolicies(semanticallyValidResolvedVoicings);
+    const dedupedResolvedVoicings = dedupeResolvedVoicings(surfacedResolvedVoicings);
+
+    return options.includeNonPlayableCandidates === true
+        ? dedupedResolvedVoicings
+        : dedupedResolvedVoicings.filter((voicing) => voicing.playable);
+}
+
 export function getExploratoryVoicingsForChord(
+    entryInput: string | ChordRegistryEntry,
+    rootPitchClass: number,
+    options: GetRankedVoicingsOptions = {}
+): ResolvedVoicing[] {
+    return getResolvedVoicingPoolForChord(entryInput, rootPitchClass, {
+        ...options,
+        applyChordModeSurfacing: false,
+        generatedTemplateCollectionMode: 'exploration',
+        includeCuratedCandidates: false,
+        includeLegacyCandidates: false,
+        includeArchetypeGeneratedCandidates: false,
+    });
+}
+
+export function getRankedExploratoryVoicingsForChord(
     entryInput: string | ChordRegistryEntry,
     rootPitchClass: number,
     options: GetRankedVoicingsOptions = {}
@@ -217,6 +257,9 @@ export function getExploratoryVoicingsForChord(
         ...options,
         applyChordModeSurfacing: false,
         generatedTemplateCollectionMode: 'exploration',
+        includeCuratedCandidates: false,
+        includeLegacyCandidates: false,
+        includeArchetypeGeneratedCandidates: false,
     });
 }
 
@@ -292,22 +335,8 @@ export function getRankedVoicingsForChord(
     options: GetRankedVoicingsOptions = {}
 ): VoicingCandidate[] {
     const entry = resolveChordRegistryEntry(entryInput);
-    const chord = buildChordDefinitionFromRegistryEntry(entry, rootPitchClass, {
-        slashBassPitchClass: options.slashBassPitchClass,
-    });
     const tones = buildChordTonesFromRegistryEntry(entry, rootPitchClass);
-    const templateSources = collectVoicingTemplateSourcesForChord(entry, options);
-    const resolvedVoicings = options.resolveAcrossPositions === false
-        ? resolveVoicingTemplates(chord, tones, templateSources.allTemplates, options)
-        : resolveVoicingTemplatesAcrossPositions(chord, tones, templateSources.allTemplates, options);
-    const semanticallyValidResolvedVoicings = excludeFormulaInvalidVoicings(resolvedVoicings);
-    const surfacedResolvedVoicings = options.applyChordModeSurfacing === false
-        ? semanticallyValidResolvedVoicings
-        : applyChordSurfacePolicies(semanticallyValidResolvedVoicings);
-    const dedupedResolvedVoicings = dedupeResolvedVoicings(surfacedResolvedVoicings);
-    const filteredVoicings = options.includeNonPlayableCandidates === true
-        ? dedupedResolvedVoicings
-        : dedupedResolvedVoicings.filter((voicing) => voicing.playable);
+    const filteredVoicings = getResolvedVoicingPoolForChord(entry, rootPitchClass, options);
     // Ranking remains an engine utility for future recommendation/surfacing modes.
     const ranked = rankVoicingCandidates(filteredVoicings, entry, tones, {
         mode: options.rankingMode ?? 'balanced',

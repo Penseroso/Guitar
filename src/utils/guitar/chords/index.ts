@@ -187,6 +187,7 @@ export {
     getChordSurfaceVoicingsForChord,
     getChordModeVoicingsForChord,
     getExploratoryVoicingsForChord,
+    getRankedExploratoryVoicingsForChord,
     getRankedVoicingsForChord,
     orderChordSurfaceVoicingCandidates,
     orderChordModeVoicingCandidates,

@@ -3,7 +3,7 @@ import { getVoicingDisplayName, getVoicingDisplaySubtitle, getVoicingProvenanceL
 import { buildChordDefinitionFromRegistryEntry } from './helpers';
 import { getExploratoryVoicingsForChord } from './voicings';
 import type { ChordRegistryEntry } from './registry';
-import type { ResolvedVoicing, VoicingCandidate } from './types';
+import type { ResolvedVoicing } from './types';
 
 export const CURATED_QA_REVIEW_CHORD_IDS = [
     'major',
@@ -56,7 +56,6 @@ interface CuratedQaSlicePlan {
 }
 
 interface CuratedQaResolvedCandidate {
-    sourceCandidate: VoicingCandidate;
     candidate: CuratedQaCandidate;
 }
 
@@ -159,13 +158,12 @@ function getResolvedVoicingSignature(voicing: ResolvedVoicing): string {
 }
 
 function getResolvedTemplateCandidate(
-    sourceCandidate: VoicingCandidate,
+    voicing: ResolvedVoicing,
     entry: ChordRegistryEntry,
     rootPitchClass: number
 ): CuratedQaResolvedCandidate {
     return {
-        sourceCandidate,
-        candidate: buildCuratedQaCandidateFromVoicing(entry, rootPitchClass, sourceCandidate.voicing),
+        candidate: buildCuratedQaCandidateFromVoicing(entry, rootPitchClass, voicing),
     };
 }
 
@@ -229,14 +227,12 @@ function selectStratifiedCandidatesForChord(
 ): CuratedQaCandidate[] {
     const exploratoryCandidates = getExploratoryVoicingsForChord(entry, rootPitchClass, {
         maxRootFret: 15,
-        maxCandidates: Math.max(plan.maxCandidates * (plan.searchMultiplier ?? 10), 24),
-        includeCuratedCandidates: false,
-        includeLegacyCandidates: false,
+        includeNonPlayableCandidates: false,
     });
     const deduped = new Map<string, CuratedQaResolvedCandidate>();
 
-    for (const sourceCandidate of exploratoryCandidates) {
-        const resolvedCandidate = getResolvedTemplateCandidate(sourceCandidate, entry, rootPitchClass);
+    for (const voicing of exploratoryCandidates) {
+        const resolvedCandidate = getResolvedTemplateCandidate(voicing, entry, rootPitchClass);
 
         const voicingSignature = getResolvedVoicingSignature(resolvedCandidate.candidate.voicing);
         const existing = deduped.get(voicingSignature);
@@ -250,8 +246,9 @@ function selectStratifiedCandidatesForChord(
     const selected: CuratedQaResolvedCandidate[] = [];
     const selectedIds = new Set(selected.map((resolvedCandidate) => resolvedCandidate.candidate.candidateId));
     const selectedBuckets = new Set(selected.map(getCuratedQaStructureBucket));
+    const candidateBudget = Math.max(plan.maxCandidates * (plan.searchMultiplier ?? 10), 24);
 
-    for (const resolvedCandidate of dedupedCandidates) {
+    for (const resolvedCandidate of dedupedCandidates.slice(0, candidateBudget)) {
         if (selected.length >= plan.maxCandidates) {
             break;
         }
@@ -270,7 +267,7 @@ function selectStratifiedCandidatesForChord(
         selectedBuckets.add(bucket);
     }
 
-    for (const resolvedCandidate of dedupedCandidates) {
+    for (const resolvedCandidate of dedupedCandidates.slice(0, candidateBudget)) {
         if (selected.length >= plan.maxCandidates) {
             break;
         }
