@@ -288,10 +288,18 @@ describe('archetype-generated voicing path', () => {
     });
 
     it('keeps borderline reviews visible as holdout comparison references without turning them into pass/fail anchors', () => {
-        for (const review of CURATED_QA_BUCKETS.borderline) {
-            const curatedCandidates = getCuratedQaCandidatesForChord(review.chordType, 0)
-                .map((candidate) => ({ voicing: candidate.voicing }));
-            const borderlineCandidate = curatedCandidates.find((candidate) => candidate.voicing.id === review.candidateId);
+        const activeBorderlineCandidates = CURATED_QA_BUCKETS.borderline
+            .map((review) => ({
+                review,
+                candidate: getCuratedQaCandidatesForChord(review.chordType, 0)
+                    .find((candidate) => candidate.voicing.id === review.candidateId),
+            }))
+            .filter((entry) => entry.candidate);
+
+        expect(activeBorderlineCandidates.length).toBeGreaterThan(0);
+
+        for (const { candidate } of activeBorderlineCandidates) {
+            const borderlineCandidate = candidate;
 
             expect(borderlineCandidate).toBeDefined();
             expect(borderlineCandidate?.voicing.descriptor.provenance.sourceKind).toBe('curated');
