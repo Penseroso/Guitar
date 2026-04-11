@@ -12,11 +12,12 @@ import {
 } from './voicings';
 
 describe('generated voicing candidates', () => {
-    it('produces generated shell candidates for seventh-family chords', () => {
+    it('produces bounded exploratory generated templates for seventh-family chords', () => {
         const templates = getGeneratedVoicingTemplatesForChord('dominant-7');
 
         expect(templates.some((template) => template.source === 'generated')).toBe(true);
-        expect(templates.some((template) => template.id.includes(':generated:shell:'))).toBe(true);
+        expect(templates.some((template) => template.id.includes(':generated:r'))).toBe(true);
+        expect(templates.some((template) => template.tags?.includes('generated-layout-contiguous'))).toBe(true);
     });
 
     it('keeps exploratory generated inventory broader than the primary chord-mode baseline', () => {
@@ -24,8 +25,8 @@ describe('generated voicing candidates', () => {
         const primaryTemplates = getPrimaryGeneratedVoicingTemplatesForChord('major-7');
 
         expect(exploratoryTemplates.length).toBeGreaterThan(primaryTemplates.length);
-        expect(exploratoryTemplates.some((template) => template.id.includes(':generated:spread:'))).toBe(true);
-        expect(primaryTemplates.some((template) => template.id.includes(':generated:spread:'))).toBe(false);
+        expect(exploratoryTemplates.some((template) => template.tags?.includes('generated-register-wide'))).toBe(true);
+        expect(primaryTemplates.some((template) => template.tags?.includes('generated-register-wide'))).toBe(false);
     });
 
     it('generated dominant thirteenth candidates retain required tones even when span rules invalidate them', () => {
@@ -90,7 +91,7 @@ describe('generated voicing candidates', () => {
         expect(sources.archetypeGeneratedTemplates.length).toBeGreaterThan(0);
     });
 
-    it('allows fuller generated minor-seventh grips including the 3x3333 shape', () => {
+    it('widens exploratory minor-seventh coverage across note-count and layout axes', () => {
         const templates = getGeneratedVoicingTemplatesForChord('minor-7');
         const candidates = getRankedVoicingsForChord('minor-7', 7, {
             includeLegacyCandidates: false,
@@ -100,10 +101,10 @@ describe('generated voicing candidates', () => {
             maxRootFret: 15,
         });
 
-        expect(templates.some((template) => template.id.includes(':generated:full:root-6'))).toBe(true);
-        expect(candidates.some((candidate) => candidate.voicing.playable && candidate.voicing.notes.map((note) => (
-            note.isMuted ? 'x' : String(note.fret)
-        )).join('') === '3333x3')).toBe(true);
+        expect(templates.some((template) => template.tags?.includes('generated-note-count-4'))).toBe(true);
+        expect(templates.some((template) => template.tags?.includes('generated-layout-skip'))).toBe(true);
+        expect(candidates.some((candidate) => candidate.voicing.playable && candidate.voicing.descriptor.noteCount >= 4)).toBe(true);
+        expect(new Set(candidates.map((candidate) => candidate.voicing.descriptor.family)).size).toBeGreaterThan(1);
     });
 
     it('keeps generated exploration broader than public chord-mode surfacing', () => {
@@ -121,15 +122,39 @@ describe('generated voicing candidates', () => {
             maxRootFret: 15,
             maxCandidates: 20,
         });
-        const exploratorySpreadCandidate = exploratoryCandidates.find((candidate) =>
-            candidate.voicing.descriptor.provenance.seedId?.includes(':generated:spread:')
-        );
 
         expect(exploratoryCandidates.length).toBeGreaterThan(0);
         expect(exploratoryCandidates.length).toBeGreaterThanOrEqual(publicCandidates.length);
-        expect(exploratorySpreadCandidate).toBeDefined();
+        expect(exploratoryCandidates.some((candidate) =>
+            candidate.voicing.descriptor.provenance.seedId?.includes(':wide:')
+        )).toBe(true);
         expect(publicCandidates.some((candidate) =>
-            candidate.voicing.descriptor.provenance.seedId === exploratorySpreadCandidate?.voicing.descriptor.provenance.seedId
+            candidate.voicing.descriptor.provenance.seedId?.includes(':wide:')
         )).toBe(false);
+    });
+
+    it('dedupes exploratory generated templates by effective string signature', () => {
+        const templates = getGeneratedVoicingTemplatesForChord('major-7');
+        const signatures = templates.map((template) => template.strings
+            .map((stringValue) => `${stringValue.string}:${stringValue.fretOffset ?? 'x'}:${stringValue.toneDegree ?? '_'}`)
+            .join('|'));
+
+        expect(new Set(signatures).size).toBe(templates.length);
+    });
+
+    it('increases exploratory diversity across descriptor axes without breaking minimal sanity', () => {
+        const candidates = getExploratoryVoicingsForChord('major', 0, {
+            includeLegacyCandidates: false,
+            includeCuratedCandidates: false,
+            includeNonPlayableCandidates: true,
+            maxRootFret: 15,
+            maxCandidates: 50,
+        });
+
+        expect(candidates.every((candidate) => (candidate.voicing.outOfFormulaPitchClasses?.length ?? 0) === 0)).toBe(true);
+        expect(candidates.every((candidate) => candidate.voicing.notes.some((note) => !note.isMuted && note.degree === '1'))).toBe(true);
+        expect(new Set(candidates.map((candidate) => candidate.voicing.descriptor.family)).size).toBeGreaterThan(1);
+        expect(new Set(candidates.map((candidate) => candidate.voicing.descriptor.registerBand)).size).toBeGreaterThan(1);
+        expect(new Set(candidates.map((candidate) => candidate.voicing.descriptor.rootString)).size).toBeGreaterThan(1);
     });
 });
