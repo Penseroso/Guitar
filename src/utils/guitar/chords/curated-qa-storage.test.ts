@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildCuratedQaReviewSnapshot, normalizeCuratedQaReviewSnapshot } from './curated-qa-storage';
+import {
+    applyCuratedQaReviewUpdates,
+    buildCuratedQaReviewSnapshot,
+    normalizeCuratedQaReviewRecords,
+    normalizeCuratedQaReviewSnapshot,
+} from './curated-qa-storage';
 import { recordCuratedQaDecision, type CuratedQaReviewState } from './curated-qa';
 
 describe('curated QA storage', () => {
@@ -43,6 +48,16 @@ describe('curated QA storage', () => {
         });
     });
 
+    it('normalizes submitted review records without treating arbitrary payloads as valid submissions', () => {
+        expect(normalizeCuratedQaReviewRecords(null)).toEqual([]);
+        expect(normalizeCuratedQaReviewRecords([
+            { chordType: 'major', candidateId: 'major-a', decision: 'accept' },
+            { chordType: 'major', candidateId: 12, decision: 'accept' },
+        ])).toEqual([
+            { chordType: 'major', candidateId: 'major-a', decision: 'accept' },
+        ]);
+    });
+
     it('serializes review state into a stable JSON snapshot', () => {
         let reviews: CuratedQaReviewState = {};
         reviews = recordCuratedQaDecision(reviews, {
@@ -61,6 +76,26 @@ describe('curated QA storage', () => {
             reviews: [
                 { chordType: 'major', candidateId: 'a', decision: 'accept' },
                 { chordType: 'minor-7', candidateId: 'b', decision: 'borderline' },
+            ],
+        });
+    });
+
+    it('applies only submitted review updates on top of the persisted snapshot', () => {
+        const snapshot = {
+            updatedAt: '2026-04-08T00:00:00.000Z',
+            reviews: [
+                { chordType: 'major', candidateId: 'major-a', decision: 'accept' as const },
+                { chordType: 'minor', candidateId: 'minor-a', decision: 'borderline' as const },
+            ],
+        };
+
+        expect(applyCuratedQaReviewUpdates(snapshot, [
+            { chordType: 'major', candidateId: 'major-a', decision: 'reject' },
+        ], '2026-04-12T00:00:00.000Z')).toEqual({
+            updatedAt: '2026-04-12T00:00:00.000Z',
+            reviews: [
+                { chordType: 'major', candidateId: 'major-a', decision: 'reject' },
+                { chordType: 'minor', candidateId: 'minor-a', decision: 'borderline' },
             ],
         });
     });

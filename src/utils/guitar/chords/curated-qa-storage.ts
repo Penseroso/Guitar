@@ -1,6 +1,11 @@
 import path from 'node:path';
 
-import type { CuratedQaReviewRecord, CuratedQaReviewState } from './curated-qa';
+import {
+    buildCuratedQaReviewState,
+    mergeCuratedQaReviewStates,
+    type CuratedQaReviewRecord,
+    type CuratedQaReviewState,
+} from './curated-qa';
 
 export interface CuratedQaReviewSnapshot {
     updatedAt: string | null;
@@ -32,15 +37,19 @@ function isValidReviewRecord(value: unknown): value is CuratedQaReviewRecord {
         && isValidDecision(candidate.decision);
 }
 
+export function normalizeCuratedQaReviewRecords(value: unknown): CuratedQaReviewRecord[] {
+    return Array.isArray(value)
+        ? value.filter(isValidReviewRecord)
+        : [];
+}
+
 export function normalizeCuratedQaReviewSnapshot(value: unknown): CuratedQaReviewSnapshot {
     if (!value || typeof value !== 'object') {
         return { updatedAt: null, reviews: [] };
     }
 
     const snapshot = value as Partial<CuratedQaReviewSnapshot>;
-    const reviews = Array.isArray(snapshot.reviews)
-        ? snapshot.reviews.filter(isValidReviewRecord)
-        : [];
+    const reviews = normalizeCuratedQaReviewRecords(snapshot.reviews);
 
     return {
         updatedAt: typeof snapshot.updatedAt === 'string' ? snapshot.updatedAt : null,
@@ -60,4 +69,17 @@ export function buildCuratedQaReviewSnapshot(reviewState: CuratedQaReviewState, 
             return left.candidateId.localeCompare(right.candidateId);
         }),
     };
+}
+
+export function applyCuratedQaReviewUpdates(
+    snapshot: CuratedQaReviewSnapshot,
+    submittedReviews: CuratedQaReviewRecord[],
+    updatedAt = new Date().toISOString()
+): CuratedQaReviewSnapshot {
+    const persistedState = buildCuratedQaReviewState(snapshot.reviews);
+    const submittedState = buildCuratedQaReviewState(submittedReviews);
+    return buildCuratedQaReviewSnapshot(
+        mergeCuratedQaReviewStates(persistedState, submittedState),
+        updatedAt
+    );
 }

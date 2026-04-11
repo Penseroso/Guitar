@@ -17,6 +17,8 @@ import {
 } from '../../utils/guitar/chords';
 import {
     isDeveloperCuratedQaEnabled,
+    mergeCuratedQaReviewStates,
+    recordCuratedQaSessionDecision,
     recordCuratedQaDecision,
     type CuratedQaDecision,
     type CuratedQaReviewRecord,
@@ -126,7 +128,8 @@ export default function ClientApp() {
             search: window.location.search,
         });
     });
-    const [curatedQaReviews, setCuratedQaReviews] = useState<CuratedQaReviewState>({});
+    const [persistedCuratedQaReviews, setPersistedCuratedQaReviews] = useState<CuratedQaReviewState>({});
+    const [curatedQaSessionReviews, setCuratedQaSessionReviews] = useState<CuratedQaReviewState>({});
     const [curatedQaAnalysis, setCuratedQaAnalysis] = useState<CuratedQaAnalysisSummary | null>(null);
     const [isSubmittingCuratedQa, setIsSubmittingCuratedQa] = useState(false);
     const [curatedQaSubmitStatus, setCuratedQaSubmitStatus] = useState<string | null>(null);
@@ -497,15 +500,20 @@ export default function ClientApp() {
         return getCuratedQaCandidates(selectedKey);
     }, [isCuratedQaEnabled, selectedKey]);
 
+    const curatedQaEffectiveReviews = useMemo(
+        () => mergeCuratedQaReviewStates(persistedCuratedQaReviews, curatedQaSessionReviews),
+        [persistedCuratedQaReviews, curatedQaSessionReviews]
+    );
+
     const handleCuratedQaReview = useCallback((candidate: (typeof curatedQaCandidates)[number], decision: CuratedQaDecision) => {
-        setCuratedQaReviews((currentState) => recordCuratedQaDecision(currentState, {
+        setCuratedQaSessionReviews((currentState) => recordCuratedQaSessionDecision(persistedCuratedQaReviews, currentState, {
             chordType: candidate.chordType,
             candidateId: candidate.candidateId,
             decision,
             rootPitchClass: candidate.rootPitchClass,
         }));
         setCuratedQaSubmitStatus(null);
-    }, []);
+    }, [persistedCuratedQaReviews]);
 
     useEffect(() => {
         if (!isCuratedQaEnabled) {
@@ -539,12 +547,15 @@ export default function ClientApp() {
                     return recordCuratedQaDecision(accumulator, review);
                 }, {});
 
-                setCuratedQaReviews(nextState);
+                setPersistedCuratedQaReviews(nextState);
+                setCuratedQaSessionReviews({});
                 setCuratedQaAnalysis(payload.analysis ?? null);
                 setCuratedQaLastSavedAt(payload.updatedAt ?? null);
                 setCuratedQaSubmitStatus(payload.updatedAt ? 'Loaded saved curated QA decisions.' : null);
             } catch {
                 if (!isCancelled) {
+                    setPersistedCuratedQaReviews({});
+                    setCuratedQaSessionReviews({});
                     setCuratedQaAnalysis(null);
                     setCuratedQaSubmitStatus('Unable to load saved curated QA decisions.');
                 }
@@ -557,6 +568,13 @@ export default function ClientApp() {
     }, [isCuratedQaEnabled]);
 
     const handleSubmitCuratedQa = useCallback(async () => {
+        const submittedReviews = Object.values(curatedQaSessionReviews);
+
+        if (submittedReviews.length === 0) {
+            setCuratedQaSubmitStatus('Select accept, borderline, or reject before submitting QA.');
+            return;
+        }
+
         setIsSubmittingCuratedQa(true);
         setCuratedQaSubmitStatus(null);
 
@@ -567,7 +585,7 @@ export default function ClientApp() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    reviews: Object.values(curatedQaReviews),
+                    submittedReviews,
                 }),
             });
 
@@ -575,16 +593,34 @@ export default function ClientApp() {
                 throw new Error(`Unable to save curated QA state (${response.status})`);
             }
 
-            const payload = await response.json() as { updatedAt?: string | null; analysis?: CuratedQaAnalysisSummary };
+            const payload = await response.json() as {
+                updatedAt?: string | null;
+                analysis?: CuratedQaAnalysisSummary;
+                reviews?: Array<{ chordType: string; candidateId: string; decision: CuratedQaDecision; rootPitchClass?: number }>;
+                saved?: boolean;
+                submittedCount?: number;
+            };
+            const nextPersistedState = (payload.reviews ?? []).reduce<CuratedQaReviewState>((accumulator, review) => {
+                if (!isPersistedCuratedQaReview(review)) {
+                    return accumulator;
+                }
+
+                return recordCuratedQaDecision(accumulator, review);
+            }, {});
+
+            setPersistedCuratedQaReviews(nextPersistedState);
+            setCuratedQaSessionReviews({});
             setCuratedQaAnalysis(payload.analysis ?? null);
             setCuratedQaLastSavedAt(payload.updatedAt ?? null);
-            setCuratedQaSubmitStatus('Curated QA decisions saved to internal JSON.');
+            setCuratedQaSubmitStatus(payload.saved === false
+                ? 'No submitted QA decisions were saved.'
+                : `Saved ${payload.submittedCount ?? submittedReviews.length} submitted QA decisions.`);
         } catch {
             setCuratedQaSubmitStatus('Failed to save curated QA decisions.');
         } finally {
             setIsSubmittingCuratedQa(false);
         }
-    }, [curatedQaReviews]);
+    }, [curatedQaSessionReviews]);
 
     return (
         <div className="min-h-screen bg-[#050505] text-[#a0a0a0] selection:bg-white/20 p-8 flex flex-col items-center gap-12 overflow-x-hidden font-sans">
@@ -705,10 +741,13 @@ export default function ClientApp() {
                             {isCuratedQaEnabled && (
                                 <CuratedQaPanel
                                     candidates={curatedQaCandidates}
-                                    reviews={curatedQaReviews}
+                                    persistedReviews={persistedCuratedQaReviews}
+                                    sessionReviews={curatedQaSessionReviews}
+                                    effectiveReviews={curatedQaEffectiveReviews}
                                     onReview={handleCuratedQaReview}
                                     onSubmit={handleSubmitCuratedQa}
                                     isSubmitting={isSubmittingCuratedQa}
+                                    hasPendingChanges={Object.keys(curatedQaSessionReviews).length > 0}
                                     submitStatus={curatedQaSubmitStatus}
                                     lastSavedAt={curatedQaLastSavedAt}
                                     analysis={curatedQaAnalysis}

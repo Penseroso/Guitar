@@ -4,16 +4,15 @@ import path from 'node:path';
 import { NextResponse } from 'next/server';
 
 import {
-    getCuratedQaReviewKey,
     type CuratedQaReviewRecord,
-    type CuratedQaReviewState,
 } from '@/utils/guitar/chords/curated-qa';
 import {
     buildCuratedQaAnalysisSummary,
 } from '@/utils/guitar/chords/curated-qa-analysis';
 import {
-    buildCuratedQaReviewSnapshot,
+    applyCuratedQaReviewUpdates,
     CURATED_QA_REVIEW_STORAGE_PATH,
+    normalizeCuratedQaReviewRecords,
     normalizeCuratedQaReviewSnapshot,
 } from '@/utils/guitar/chords/curated-qa-storage';
 
@@ -28,13 +27,6 @@ async function readSnapshot() {
     } catch {
         return { updatedAt: null, reviews: [] };
     }
-}
-
-function buildReviewState(records: CuratedQaReviewRecord[]): CuratedQaReviewState {
-    return records.reduce<CuratedQaReviewState>((accumulator, record) => {
-        accumulator[getCuratedQaReviewKey(record)] = record;
-        return accumulator;
-    }, {});
 }
 
 export async function GET() {
@@ -54,9 +46,20 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Not found' }, { status: 404 });
     }
 
-    const body = await request.json().catch(() => null);
-    const incomingSnapshot = normalizeCuratedQaReviewSnapshot(body);
-    const normalizedSnapshot = buildCuratedQaReviewSnapshot(buildReviewState(incomingSnapshot.reviews));
+    const snapshot = await readSnapshot();
+    const body = await request.json().catch(() => null) as { submittedReviews?: CuratedQaReviewRecord[] } | null;
+    const submittedReviews = normalizeCuratedQaReviewRecords(body?.submittedReviews);
+
+    if (submittedReviews.length === 0) {
+        return NextResponse.json({
+            ...snapshot,
+            analysis: buildCuratedQaAnalysisSummary(snapshot),
+            saved: false,
+            submittedCount: 0,
+        });
+    }
+
+    const normalizedSnapshot = applyCuratedQaReviewUpdates(snapshot, submittedReviews);
 
     await mkdir(path.dirname(CURATED_QA_REVIEW_STORAGE_PATH), { recursive: true });
     await writeFile(
@@ -68,5 +71,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
         ...normalizedSnapshot,
         analysis: buildCuratedQaAnalysisSummary(normalizedSnapshot),
+        saved: true,
+        submittedCount: submittedReviews.length,
     });
 }

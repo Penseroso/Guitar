@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 
 import {
     CURATED_QA_REVIEW_CHORD_IDS,
+    buildCuratedQaReviewState,
+    clearCuratedQaDecision,
     getCuratedQaCandidates,
     getCuratedQaCandidatesForChord,
     getCuratedQaMacroCategory,
@@ -9,7 +11,9 @@ import {
     getCuratedQaDecisionForCandidate,
     groupCuratedQaCandidates,
     isDeveloperCuratedQaEnabled,
+    mergeCuratedQaReviewStates,
     recordCuratedQaDecision,
+    recordCuratedQaSessionDecision,
     type CuratedQaReviewState,
 } from './curated-qa';
 import { getChordSurfaceVoicingsForChord, getExploratoryVoicingsForChord, getRankedExploratoryVoicingsForChord } from './voicings';
@@ -134,5 +138,59 @@ describe('developer curated QA mode', () => {
         });
         expect(getCuratedQaDecisionForCandidate(reviews, candidate)).toBe('reject');
         expect(Object.keys(reviews)).toHaveLength(1);
+    });
+
+    it('tracks session edits separately from persisted reviews and clears no-op edits against the saved snapshot', () => {
+        const [candidate] = getCuratedQaCandidates(0);
+        const persistedReviews = buildCuratedQaReviewState([
+            {
+                chordType: candidate.chordType,
+                candidateId: candidate.candidateId,
+                decision: 'accept',
+                rootPitchClass: candidate.rootPitchClass,
+            },
+        ]);
+
+        let sessionReviews: CuratedQaReviewState = {};
+        sessionReviews = recordCuratedQaSessionDecision(persistedReviews, sessionReviews, {
+            chordType: candidate.chordType,
+            candidateId: candidate.candidateId,
+            decision: 'borderline',
+            rootPitchClass: candidate.rootPitchClass,
+        });
+
+        expect(getCuratedQaDecisionForCandidate(sessionReviews, candidate)).toBe('borderline');
+        expect(getCuratedQaDecisionForCandidate(
+            mergeCuratedQaReviewStates(persistedReviews, sessionReviews),
+            candidate
+        )).toBe('borderline');
+
+        sessionReviews = recordCuratedQaSessionDecision(persistedReviews, sessionReviews, {
+            chordType: candidate.chordType,
+            candidateId: candidate.candidateId,
+            decision: 'accept',
+            rootPitchClass: candidate.rootPitchClass,
+        });
+
+        expect(getCuratedQaDecisionForCandidate(sessionReviews, candidate)).toBeNull();
+        expect(getCuratedQaDecisionForCandidate(
+            mergeCuratedQaReviewStates(persistedReviews, sessionReviews),
+            candidate
+        )).toBe('accept');
+    });
+
+    it('can clear a queued review decision without mutating the saved state', () => {
+        const [candidate] = getCuratedQaCandidates(0);
+        const reviews = buildCuratedQaReviewState([
+            {
+                chordType: candidate.chordType,
+                candidateId: candidate.candidateId,
+                decision: 'reject',
+                rootPitchClass: candidate.rootPitchClass,
+            },
+        ]);
+
+        expect(clearCuratedQaDecision(reviews, candidate)).toEqual({});
+        expect(getCuratedQaDecisionForCandidate(reviews, candidate)).toBe('reject');
     });
 });

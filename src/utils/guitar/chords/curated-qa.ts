@@ -73,6 +73,11 @@ interface CuratedQaResolvedCandidate {
     candidate: CuratedQaCandidate;
 }
 
+interface CategorizedCuratedQaResolvedCandidate extends CuratedQaResolvedCandidate {
+    macroCategoryKey: string;
+    microCategoryKey: string;
+}
+
 const CURATED_QA_SLICE_PLANS: Record<CuratedQaChordId, CuratedQaSlicePlan> = {
     major: {
         maxCandidates: 12,
@@ -123,6 +128,53 @@ export function recordCuratedQaDecision(
         ...currentState,
         [getCuratedQaReviewKey(record)]: record,
     };
+}
+
+export function clearCuratedQaDecision(
+    currentState: CuratedQaReviewState,
+    record: Pick<CuratedQaReviewRecord, 'chordType' | 'candidateId'>
+): CuratedQaReviewState {
+    const nextState = { ...currentState };
+    delete nextState[getCuratedQaReviewKey(record)];
+    return nextState;
+}
+
+export function buildCuratedQaReviewState(records: CuratedQaReviewRecord[]): CuratedQaReviewState {
+    return records.reduce<CuratedQaReviewState>((accumulator, record) => {
+        accumulator[getCuratedQaReviewKey(record)] = record;
+        return accumulator;
+    }, {});
+}
+
+export function mergeCuratedQaReviewStates(...states: Array<CuratedQaReviewState | null | undefined>): CuratedQaReviewState {
+    return states.reduce<CuratedQaReviewState>((accumulator, state) => {
+        if (!state) {
+            return accumulator;
+        }
+
+        return {
+            ...accumulator,
+            ...state,
+        };
+    }, {});
+}
+
+export function recordCuratedQaSessionDecision(
+    persistedState: CuratedQaReviewState,
+    sessionState: CuratedQaReviewState,
+    record: CuratedQaReviewRecord
+): CuratedQaReviewState {
+    const persistedRecord = persistedState[getCuratedQaReviewKey(record)];
+
+    if (
+        persistedRecord
+        && persistedRecord.decision === record.decision
+        && (persistedRecord.rootPitchClass ?? null) === (record.rootPitchClass ?? null)
+    ) {
+        return clearCuratedQaDecision(sessionState, record);
+    }
+
+    return recordCuratedQaDecision(sessionState, record);
 }
 
 export function getCuratedQaDecisionForCandidate(
@@ -304,6 +356,117 @@ function getCuratedQaMicroCategoryKey(candidate: CuratedQaCandidate): string {
     ].join('::');
 }
 
+function categorizeCuratedQaResolvedCandidate(
+    resolvedCandidate: CuratedQaResolvedCandidate
+): CategorizedCuratedQaResolvedCandidate {
+    return {
+        ...resolvedCandidate,
+        macroCategoryKey: getCuratedQaMacroCategoryKey(resolvedCandidate.candidate),
+        microCategoryKey: getCuratedQaMicroCategoryKey(resolvedCandidate.candidate),
+    };
+}
+
+function buildMacroCategoryInventory(
+    candidates: CategorizedCuratedQaResolvedCandidate[]
+): Map<string, CategorizedCuratedQaResolvedCandidate[]> {
+    const inventory = new Map<string, CategorizedCuratedQaResolvedCandidate[]>();
+
+    for (const candidate of candidates) {
+        const existing = inventory.get(candidate.macroCategoryKey) ?? [];
+        existing.push(candidate);
+        inventory.set(candidate.macroCategoryKey, existing);
+    }
+
+    return inventory;
+}
+
+function selectMacroCoverageCandidates(
+    candidates: CategorizedCuratedQaResolvedCandidate[],
+    maxCandidates: number
+): CategorizedCuratedQaResolvedCandidate[] {
+    const macroInventory = buildMacroCategoryInventory(candidates);
+    const selected: CategorizedCuratedQaResolvedCandidate[] = [];
+    const selectedIds = new Set<string>();
+    const macroKeys = Array.from(macroInventory.keys());
+    let macroIndex = 0;
+
+    while (selected.length < maxCandidates && macroKeys.length > 0) {
+        let selectedInRound = false;
+
+        for (let index = 0; index < macroKeys.length; index += 1) {
+            const macroKey = macroKeys[(macroIndex + index) % macroKeys.length];
+            const nextCandidate = (macroInventory.get(macroKey) ?? []).find((candidate) => !selectedIds.has(candidate.candidate.candidateId));
+
+            if (!nextCandidate) {
+                continue;
+            }
+
+            selected.push(nextCandidate);
+            selectedIds.add(nextCandidate.candidate.candidateId);
+            macroIndex = (macroIndex + index + 1) % macroKeys.length;
+            selectedInRound = true;
+
+            if (selected.length >= maxCandidates) {
+                break;
+            }
+        }
+
+        if (!selectedInRound) {
+            break;
+        }
+    }
+
+    return selected;
+}
+
+function selectMicroDiversityCandidates(
+    candidates: CategorizedCuratedQaResolvedCandidate[],
+    selected: CategorizedCuratedQaResolvedCandidate[],
+    maxCandidates: number
+): CategorizedCuratedQaResolvedCandidate[] {
+    const selectedIds = new Set(selected.map((candidate) => candidate.candidate.candidateId));
+    const selectedMacroMicroPairs = new Set(selected.map((candidate) => `${candidate.macroCategoryKey}::${candidate.microCategoryKey}`));
+    const macroInventory = buildMacroCategoryInventory(candidates);
+    const macroKeys = Array.from(macroInventory.keys());
+    let macroIndex = 0;
+
+    while (selected.length < maxCandidates && macroKeys.length > 0) {
+        let selectedInRound = false;
+
+        for (let index = 0; index < macroKeys.length; index += 1) {
+            const macroKey = macroKeys[(macroIndex + index) % macroKeys.length];
+            const macroCandidates = macroInventory.get(macroKey) ?? [];
+            const nextCandidate = macroCandidates.find((candidate) => {
+                if (selectedIds.has(candidate.candidate.candidateId)) {
+                    return false;
+                }
+
+                return !selectedMacroMicroPairs.has(`${candidate.macroCategoryKey}::${candidate.microCategoryKey}`);
+            });
+
+            if (!nextCandidate) {
+                continue;
+            }
+
+            selected.push(nextCandidate);
+            selectedIds.add(nextCandidate.candidate.candidateId);
+            selectedMacroMicroPairs.add(`${nextCandidate.macroCategoryKey}::${nextCandidate.microCategoryKey}`);
+            macroIndex = (macroIndex + index + 1) % macroKeys.length;
+            selectedInRound = true;
+
+            if (selected.length >= maxCandidates) {
+                break;
+            }
+        }
+
+        if (!selectedInRound) {
+            break;
+        }
+    }
+
+    return selected;
+}
+
 function selectStratifiedCandidatesForChord(
     entry: ChordRegistryEntry,
     rootPitchClass: number,
@@ -326,57 +489,15 @@ function selectStratifiedCandidatesForChord(
         }
     }
 
-    const dedupedCandidates = Array.from(deduped.values());
-    const selected: CuratedQaResolvedCandidate[] = [];
+    const categorizedCandidates = Array.from(deduped.values()).map(categorizeCuratedQaResolvedCandidate);
+    const selected = selectMicroDiversityCandidates(
+        categorizedCandidates,
+        selectMacroCoverageCandidates(categorizedCandidates, plan.maxCandidates),
+        plan.maxCandidates
+    );
     const selectedIds = new Set(selected.map((resolvedCandidate) => resolvedCandidate.candidate.candidateId));
-    const candidateBudget = Math.max(plan.maxCandidates * (plan.searchMultiplier ?? 10), 24);
-    const budgetedCandidates = dedupedCandidates.slice(0, candidateBudget);
-    const selectedMacroCategories = new Set<string>();
-    const selectedMacroMicroPairs = new Set<string>();
 
-    for (const resolvedCandidate of budgetedCandidates) {
-        if (selected.length >= plan.maxCandidates) {
-            break;
-        }
-
-        if (selectedIds.has(resolvedCandidate.candidate.candidateId)) {
-            continue;
-        }
-
-        const macroCategoryKey = getCuratedQaMacroCategoryKey(resolvedCandidate.candidate);
-        if (selectedMacroCategories.has(macroCategoryKey)) {
-            continue;
-        }
-
-        selected.push(resolvedCandidate);
-        selectedIds.add(resolvedCandidate.candidate.candidateId);
-        selectedMacroCategories.add(macroCategoryKey);
-        selectedMacroMicroPairs.add(`${macroCategoryKey}::${getCuratedQaMicroCategoryKey(resolvedCandidate.candidate)}`);
-    }
-
-    for (const resolvedCandidate of budgetedCandidates) {
-        if (selected.length >= plan.maxCandidates) {
-            break;
-        }
-
-        if (selectedIds.has(resolvedCandidate.candidate.candidateId)) {
-            continue;
-        }
-
-        const macroCategoryKey = getCuratedQaMacroCategoryKey(resolvedCandidate.candidate);
-        const macroMicroPairKey = `${macroCategoryKey}::${getCuratedQaMicroCategoryKey(resolvedCandidate.candidate)}`;
-
-        if (selectedMacroMicroPairs.has(macroMicroPairKey)) {
-            continue;
-        }
-
-        selected.push(resolvedCandidate);
-        selectedIds.add(resolvedCandidate.candidate.candidateId);
-        selectedMacroCategories.add(macroCategoryKey);
-        selectedMacroMicroPairs.add(macroMicroPairKey);
-    }
-
-    for (const resolvedCandidate of budgetedCandidates) {
+    for (const resolvedCandidate of categorizedCandidates) {
         if (selected.length >= plan.maxCandidates) {
             break;
         }

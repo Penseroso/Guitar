@@ -19,10 +19,13 @@ import { CompactVoicingDiagram } from './CompactVoicingDiagram';
 
 interface CuratedQaPanelProps {
     candidates: CuratedQaCandidate[];
-    reviews: CuratedQaReviewState;
+    persistedReviews: CuratedQaReviewState;
+    sessionReviews: CuratedQaReviewState;
+    effectiveReviews: CuratedQaReviewState;
     onReview: (candidate: CuratedQaCandidate, decision: CuratedQaDecision) => void;
     onSubmit: () => void;
     isSubmitting: boolean;
+    hasPendingChanges: boolean;
     submitStatus: string | null;
     lastSavedAt: string | null;
     analysis?: CuratedQaAnalysisSummary | null;
@@ -44,18 +47,23 @@ function getCandidateMeta(candidate: CuratedQaCandidate): string[] {
 
 export function CuratedQaPanel({
     candidates,
-    reviews,
+    persistedReviews,
+    sessionReviews,
+    effectiveReviews,
     onReview,
     onSubmit,
     isSubmitting,
+    hasPendingChanges,
     submitStatus,
     lastSavedAt,
     analysis,
 }: CuratedQaPanelProps) {
-    const reviewedCount = Object.keys(reviews).length;
-    const acceptedCount = Object.values(reviews).filter((review) => review.decision === 'accept').length;
-    const borderlineCount = Object.values(reviews).filter((review) => review.decision === 'borderline').length;
-    const rejectedCount = Object.values(reviews).filter((review) => review.decision === 'reject').length;
+    const reviewedCount = Object.keys(effectiveReviews).length;
+    const acceptedCount = Object.values(effectiveReviews).filter((review) => review.decision === 'accept').length;
+    const borderlineCount = Object.values(effectiveReviews).filter((review) => review.decision === 'borderline').length;
+    const rejectedCount = Object.values(effectiveReviews).filter((review) => review.decision === 'reject').length;
+    const sessionReviewCount = Object.keys(sessionReviews).length;
+    const persistedReviewCount = Object.keys(persistedReviews).length;
     const candidateGroups = groupCuratedQaCandidates(candidates);
     const weakCoveragePreview = analysis?.weakCoverageChordTypes.slice(0, 3) ?? [];
 
@@ -70,12 +78,13 @@ export function CuratedQaPanel({
                     <div className="flex flex-col gap-1">
                         <h3 className="text-xl font-black tracking-tight text-white">Curated QA</h3>
                         <p className="text-xs text-white/55">
-                            Internal review surface for the current curated QA set. Accept approves the baseline, borderline holds a maybe bucket, and reject excludes it.
+                            Internal review surface for the current curated QA set. Choose accept, borderline, or reject in this session, then submit to persist those decisions into the QA snapshot.
                         </p>
                     </div>
                     <div className="flex flex-col items-start gap-1 text-[10px] font-black uppercase tracking-[0.22em] text-white/32 md:items-end">
                         <span>{reviewedCount}/{candidates.length} reviewed</span>
                         <span>{acceptedCount} accept · {borderlineCount} borderline · {rejectedCount} reject</span>
+                        <span>{sessionReviewCount} unsaved session edits · {persistedReviewCount} saved decisions loaded</span>
                         {analysis && (
                             <span>{analysis.activeReviewCount} active · {analysis.staleReviewCount} stale saved reviews</span>
                         )}
@@ -131,7 +140,7 @@ export function CuratedQaPanel({
             <div className="mt-5 flex flex-col gap-5">
                 {candidateGroups.map((group) => {
                     const groupReviews = group.candidates
-                        .map((candidate) => getCuratedQaDecisionForCandidate(reviews, candidate))
+                        .map((candidate) => getCuratedQaDecisionForCandidate(effectiveReviews, candidate))
                         .filter((decision): decision is CuratedQaDecision => decision !== null);
                     const groupAcceptedCount = groupReviews.filter((decision) => decision === 'accept').length;
                     const groupBorderlineCount = groupReviews.filter((decision) => decision === 'borderline').length;
@@ -159,7 +168,9 @@ export function CuratedQaPanel({
 
                             <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
                                 {group.candidates.map((candidate) => {
-                                    const decision = getCuratedQaDecisionForCandidate(reviews, candidate);
+                                    const savedDecision = getCuratedQaDecisionForCandidate(persistedReviews, candidate);
+                                    const pendingDecision = getCuratedQaDecisionForCandidate(sessionReviews, candidate);
+                                    const decision = getCuratedQaDecisionForCandidate(effectiveReviews, candidate);
                                     const meta = getCandidateMeta(candidate);
 
                                     return (
@@ -184,7 +195,11 @@ export function CuratedQaPanel({
                                                     )}
                                                 </div>
                                                 <span className="text-[10px] font-black uppercase tracking-[0.18em] text-white/28">
-                                                    {decision ?? 'pending'}
+                                                    {pendingDecision
+                                                        ? `unsaved ${pendingDecision}`
+                                                        : savedDecision
+                                                            ? `saved ${savedDecision}`
+                                                            : 'pending'}
                                                 </span>
                                             </div>
 
@@ -255,7 +270,11 @@ export function CuratedQaPanel({
             <div className="mt-5 flex flex-col gap-3 border-t border-white/5 pt-4 md:flex-row md:items-center md:justify-between">
                 <div className="flex flex-col gap-1">
                     <span className="text-[10px] font-black uppercase tracking-[0.18em] text-white/32">
-                        {lastSavedAt ? `Saved ${new Date(lastSavedAt).toLocaleString()}` : 'Not submitted yet'}
+                        {hasPendingChanges
+                            ? `${sessionReviewCount} unsaved review updates pending submit`
+                            : lastSavedAt
+                                ? `Saved ${new Date(lastSavedAt).toLocaleString()}`
+                                : 'No saved QA snapshot yet'}
                     </span>
                     {submitStatus && (
                         <span className="text-xs text-white/55">{submitStatus}</span>
@@ -264,10 +283,10 @@ export function CuratedQaPanel({
                 <button
                     type="button"
                     onClick={onSubmit}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || !hasPendingChanges}
                     className="rounded-full border border-amber-200/25 bg-amber-200/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-amber-50 transition-colors hover:border-amber-100/40 hover:bg-amber-200/14 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                    {isSubmitting ? 'Submitting...' : 'Submit QA'}
+                    {isSubmitting ? 'Submitting...' : hasPendingChanges ? 'Submit QA' : 'No Changes To Submit'}
                 </button>
             </div>
         </section>
