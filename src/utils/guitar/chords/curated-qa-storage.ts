@@ -28,6 +28,7 @@ function isValidReviewRecord(value: unknown): value is CuratedQaReviewRecord {
     const candidate = value as Partial<CuratedQaReviewRecord>;
     return typeof candidate.chordType === 'string'
         && typeof candidate.candidateId === 'string'
+        && (candidate.rootPitchClass === undefined || Number.isInteger(candidate.rootPitchClass))
         && isValidDecision(candidate.decision);
 }
 

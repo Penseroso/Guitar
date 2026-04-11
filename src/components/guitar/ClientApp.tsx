@@ -7,7 +7,7 @@ import { getProgressionPlaybackData } from '../../features/progression/utils/get
 import {
     CHORD_FAMILIES,
     CHORD_REGISTRY_LIST,
-    getChordModeVoicingsForChord,
+    getChordSurfaceVoicingsForChord,
     getCuratedQaCandidates,
     getChordTypeLabel,
     getChordTypeSuffix,
@@ -78,6 +78,7 @@ function isPersistedCuratedQaReview(value: unknown): value is CuratedQaReviewRec
     const candidate = value as Partial<CuratedQaReviewRecord>;
     return typeof candidate.chordType === 'string'
         && typeof candidate.candidateId === 'string'
+        && (candidate.rootPitchClass === undefined || Number.isInteger(candidate.rootPitchClass))
         && (candidate.decision === 'accept' || candidate.decision === 'borderline' || candidate.decision === 'reject');
 }
 
@@ -289,9 +290,9 @@ export default function ClientApp() {
     }, [futureVoicingScopeKey, tonalContext]);
 
     const requestedFutureVoicingId = harmonicWorkspace.selectedCandidateId;
-    const chordModeVoicingCandidates = useMemo(() => {
+    const chordSurfaceVoicingCandidates = useMemo(() => {
         try {
-            return getChordModeVoicingsForChord(chordType, selectedKey, {
+            return getChordSurfaceVoicingsForChord(chordType, selectedKey, {
                 maxRootFret: 15,
                 maxCandidates: 12,
             });
@@ -300,8 +301,8 @@ export default function ClientApp() {
         }
     }, [chordType, selectedKey]);
     const futureVoicingSelection = useMemo(
-        () => resolveBridgeSelection(chordModeVoicingCandidates, requestedFutureVoicingId),
-        [chordModeVoicingCandidates, requestedFutureVoicingId]
+        () => resolveBridgeSelection(chordSurfaceVoicingCandidates, requestedFutureVoicingId),
+        [chordSurfaceVoicingCandidates, requestedFutureVoicingId]
     );
     const activeFutureCandidate = futureVoicingSelection.activeCandidate;
     const activeFutureVoicingId = futureVoicingSelection.activeCandidateId;
@@ -318,7 +319,7 @@ export default function ClientApp() {
         : 'No voicing available';
     const chordPreviewSecondaryLabel = activeFutureCandidate
         ? activeFuturePresentation.secondaryLabel
-        : chordModeVoicingCandidates.length === 0
+        : chordSurfaceVoicingCandidates.length === 0
             ? 'No voicing candidates for this chord'
             : 'No candidate selected';
     const chordPreviewTitle = useMemo(() => {
@@ -499,6 +500,7 @@ export default function ClientApp() {
             chordType: candidate.chordType,
             candidateId: candidate.candidateId,
             decision,
+            rootPitchClass: candidate.rootPitchClass,
         }));
         setCuratedQaSubmitStatus(null);
     }, []);
@@ -518,8 +520,9 @@ export default function ClientApp() {
                 }
 
                 const payload = await response.json() as {
+                    analysis?: unknown;
                     updatedAt?: string | null;
-                    reviews?: Array<{ chordType: string; candidateId: string; decision: CuratedQaDecision }>;
+                    reviews?: Array<{ chordType: string; candidateId: string; decision: CuratedQaDecision; rootPitchClass?: number }>;
                 };
 
                 if (isCancelled) {
@@ -689,7 +692,7 @@ export default function ClientApp() {
                                 showIntervals={showIntervals}
                                 onToggleIntervals={() => setShowIntervals((prev) => !prev)}
                                 fingering={fingering}
-                                futureVoicingCandidates={chordModeVoicingCandidates}
+                                futureVoicingCandidates={chordSurfaceVoicingCandidates}
                                 onSelectFutureVoicing={handleSelectFutureVoicing}
                                 activeFutureVoicingId={activeFutureVoicingId}
                             />

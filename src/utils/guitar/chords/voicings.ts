@@ -45,7 +45,7 @@ export interface ChordModeTemplateRoleCollection {
     primaryTemplates: VoicingTemplate[];
 }
 
-function compareChordModeCandidateOrder(left: VoicingCandidate, right: VoicingCandidate): number {
+function compareChordSurfaceCandidateOrder(left: VoicingCandidate, right: VoicingCandidate): number {
     if (left.voicing.minFret !== right.voicing.minFret) {
         return left.voicing.minFret - right.voicing.minFret;
     }
@@ -152,7 +152,7 @@ export function shouldSurfaceChordModeVoicing(voicing: ResolvedVoicing): boolean
     return getPlayedVoicingNotes(voicing).length !== 3 || isRepresentativeChordModeTriadFragment(voicing);
 }
 
-function applyChordModeSurfacingPolicies(voicings: ResolvedVoicing[]): ResolvedVoicing[] {
+function applyChordSurfacePolicies(voicings: ResolvedVoicing[]): ResolvedVoicing[] {
     return voicings.filter((voicing) => shouldSurfaceChordModeVoicing(voicing));
 }
 
@@ -202,10 +202,10 @@ export function collectChordModeTemplateRolesForChord(
     };
 }
 
-export function orderChordModeVoicingCandidates(candidates: VoicingCandidate[]): VoicingCandidate[] {
+export function orderChordSurfaceVoicingCandidates(candidates: VoicingCandidate[]): VoicingCandidate[] {
     // Current chord mode is a fret-position browser. Keep engine ranking metadata intact,
     // but present visible candidates in stable fret-first order.
-    return [...candidates].sort(compareChordModeCandidateOrder);
+    return [...candidates].sort(compareChordSurfaceCandidateOrder);
 }
 
 export function getExploratoryVoicingsForChord(
@@ -220,7 +220,7 @@ export function getExploratoryVoicingsForChord(
     });
 }
 
-export function getChordModeVoicingsForChord(
+export function getChordSurfaceVoicingsForChord(
     entryInput: string | ChordRegistryEntry,
     rootPitchClass: number,
     options: GetRankedVoicingsOptions = {}
@@ -247,7 +247,7 @@ export function getChordModeVoicingsForChord(
     });
 
     if (primaryCandidates.length >= maxCandidates || chordModeRoles.fallbackTemplates.length === 0) {
-        return orderChordModeVoicingCandidates(primaryCandidates).slice(0, maxCandidates);
+        return orderChordSurfaceVoicingCandidates(primaryCandidates).slice(0, maxCandidates);
     }
 
     const fallbackCandidates = getRankedVoicingsForChord(entryInput, rootPitchClass, {
@@ -255,9 +255,21 @@ export function getChordModeVoicingsForChord(
         includeLegacyCandidates: true,
     });
 
-    return orderChordModeVoicingCandidates(
+    return orderChordSurfaceVoicingCandidates(
         dedupeVoicingCandidatesBySignature([...primaryCandidates, ...fallbackCandidates])
     ).slice(0, maxCandidates);
+}
+
+export function orderChordModeVoicingCandidates(candidates: VoicingCandidate[]): VoicingCandidate[] {
+    return orderChordSurfaceVoicingCandidates(candidates);
+}
+
+export function getChordModeVoicingsForChord(
+    entryInput: string | ChordRegistryEntry,
+    rootPitchClass: number,
+    options: GetRankedVoicingsOptions = {}
+): VoicingCandidate[] {
+    return getChordSurfaceVoicingsForChord(entryInput, rootPitchClass, options);
 }
 
 export function getArchetypeGeneratedVoicingsForChord(
@@ -291,7 +303,7 @@ export function getRankedVoicingsForChord(
     const semanticallyValidResolvedVoicings = excludeFormulaInvalidVoicings(resolvedVoicings);
     const surfacedResolvedVoicings = options.applyChordModeSurfacing === false
         ? semanticallyValidResolvedVoicings
-        : applyChordModeSurfacingPolicies(semanticallyValidResolvedVoicings);
+        : applyChordSurfacePolicies(semanticallyValidResolvedVoicings);
     const dedupedResolvedVoicings = dedupeResolvedVoicings(surfacedResolvedVoicings);
     const filteredVoicings = options.includeNonPlayableCandidates === true
         ? dedupedResolvedVoicings

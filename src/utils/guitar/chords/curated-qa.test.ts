@@ -10,7 +10,7 @@ import {
     recordCuratedQaDecision,
     type CuratedQaReviewState,
 } from './curated-qa';
-import { getChordModeVoicingsForChord } from './voicings';
+import { getChordSurfaceVoicingsForChord, getExploratoryVoicingsForChord } from './voicings';
 
 describe('developer curated QA mode', () => {
     it('stays gated unless the dev-only flag is present outside production', () => {
@@ -36,7 +36,7 @@ describe('developer curated QA mode', () => {
             'sus2',
             'sus4',
         ]);
-        expect(candidates).toHaveLength(33);
+        expect(candidates).toHaveLength(groupedCandidates.reduce((total, group) => total + group.candidates.length, 0));
         expect(new Set(candidates.map((candidate) => candidate.chordType))).toEqual(new Set(CURATED_QA_REVIEW_CHORD_IDS));
         expect(candidates.every((candidate) => candidate.voicing.playable)).toBe(true);
         expect(groupedCandidates.map((group) => group.chordType)).toEqual(CURATED_QA_REVIEW_CHORD_IDS);
@@ -45,7 +45,7 @@ describe('developer curated QA mode', () => {
             'major-6': 2,
             'major-7': 3,
             'major-9': 3,
-            minor: 3,
+            minor: 4,
             'minor-7': 3,
             'dominant-7': 4,
             'dominant-9': 3,
@@ -79,16 +79,23 @@ describe('developer curated QA mode', () => {
 
     it('keeps the major QA slice as a reviewed stratified sample instead of mirroring public chord-mode surfacing', () => {
         const qaCandidates = getCuratedQaCandidatesForChord('major', 0);
-        const appCandidates = getChordModeVoicingsForChord('major', 0, {
+        const surfaceCandidates = getChordSurfaceVoicingsForChord('major', 0, {
             maxRootFret: 15,
             maxCandidates: 7,
         });
+        const exploratoryCandidates = getExploratoryVoicingsForChord('major', 0, {
+            maxRootFret: 15,
+            maxCandidates: 40,
+        });
 
         expect(qaCandidates).toHaveLength(7);
-        expect(appCandidates).toHaveLength(7);
+        expect(surfaceCandidates).toHaveLength(7);
         expect(qaCandidates.map((candidate) => candidate.candidateId)).not.toEqual(
-            appCandidates.map((candidate) => candidate.voicing.id)
+            surfaceCandidates.map((candidate) => candidate.voicing.id)
         );
+        expect(qaCandidates.every((candidate) =>
+            exploratoryCandidates.some((exploratoryCandidate) => exploratoryCandidate.voicing.id === candidate.candidateId)
+        )).toBe(true);
         expect(qaCandidates.some((candidate) => candidate.sourceLabel === 'Curated')).toBe(true);
     });
 

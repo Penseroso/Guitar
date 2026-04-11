@@ -252,7 +252,13 @@ describe('archetype-generated voicing path', () => {
     });
 
     it('formalizes reject reviews as a directional guardrail that keeps the top archetype candidate closer to accepted anchors than rejected ones', () => {
-        const chordTypesWithRejects = [...new Set(CURATED_QA_BUCKETS.reject.map((review) => review.chordType))];
+        const chordTypesWithRejects = [...new Set(CURATED_QA_BUCKETS.reject.map((review) => review.chordType))]
+            .filter((chordType) => {
+                const qaCandidates = getCuratedQaCandidatesForChord(chordType, 0);
+
+                return qaCandidates.some((candidate) => CURATED_QA_BUCKETS.accept.some((review) => review.candidateId === candidate.candidateId))
+                    && qaCandidates.some((candidate) => CURATED_QA_BUCKETS.reject.some((review) => review.candidateId === candidate.candidateId));
+            });
 
         for (const chordType of chordTypesWithRejects) {
             const qaCandidates = getCuratedQaCandidatesForChord(chordType, 0);

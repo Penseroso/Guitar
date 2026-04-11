@@ -120,6 +120,18 @@ export {
     prefersAcceptedReferenceOverRejected,
 } from './curated-qa-comparison';
 
+export type {
+    CuratedQaAnalysisBucket,
+    CuratedQaAnalysisSummary,
+    CuratedQaChordTypeAnalysis,
+    CuratedQaDecisionCounts,
+} from './curated-qa-analysis';
+
+export {
+    buildCuratedQaAnalysisSummary,
+    getAcceptedSourceKinds,
+} from './curated-qa-analysis';
+
 export {
     deriveVoicingDescriptor,
     getVoicingDisplayName,
@@ -172,9 +184,11 @@ export {
     collectChordModeTemplateRolesForChord,
     collectVoicingTemplateSourcesForChord,
     getArchetypeGeneratedVoicingsForChord,
+    getChordSurfaceVoicingsForChord,
     getChordModeVoicingsForChord,
     getExploratoryVoicingsForChord,
     getRankedVoicingsForChord,
+    orderChordSurfaceVoicingCandidates,
     orderChordModeVoicingCandidates,
 } from './voicings';
 

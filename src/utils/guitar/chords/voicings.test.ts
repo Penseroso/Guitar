@@ -21,11 +21,11 @@ import { getLegacyVoicingTemplatesForChord, getVoicingTemplatesForChord } from '
 import type { VoicingTemplateString } from './types';
 import {
     collectChordModeTemplateRolesForChord,
-    getChordModeVoicingsForChord,
+    getChordSurfaceVoicingsForChord,
     getExploratoryVoicingsForChord,
     getRankedVoicingsForChord,
     collectVoicingTemplateSourcesForChord,
-    orderChordModeVoicingCandidates,
+    orderChordSurfaceVoicingCandidates,
     shouldSurfaceChordModeVoicing,
 } from './voicings';
 
@@ -294,7 +294,7 @@ describe('voicing ranking orchestration', () => {
             rootFret: 5,
         };
 
-        const ordered = orderChordModeVoicingCandidates([
+        const ordered = orderChordSurfaceVoicingCandidates([
             higherButHigherScore,
             lowerButLowerScore,
             samePositionLowerRoot,
@@ -328,7 +328,7 @@ describe('voicing ranking orchestration', () => {
             rootFret: 5,
         };
 
-        const ordered = orderChordModeVoicingCandidates([laterId, earlierId]);
+        const ordered = orderChordSurfaceVoicingCandidates([laterId, earlierId]);
 
         expect(ordered.map((candidate) => candidate.voicing.id)).toEqual(['voicing-a', 'voicing-b']);
     });
@@ -338,7 +338,7 @@ describe('voicing ranking orchestration', () => {
             maxRootFret: 15,
             maxCandidates: 20,
         });
-        const chordModeCandidates = getChordModeVoicingsForChord('major', 0, {
+        const chordModeCandidates = getChordSurfaceVoicingsForChord('major', 0, {
             maxRootFret: 15,
             maxCandidates: 20,
         });
@@ -351,7 +351,7 @@ describe('voicing ranking orchestration', () => {
     });
 
     it('keeps chord-mode candidate presentation fret-first even when curated seeds are active', () => {
-        const chordModeCandidates = getChordModeVoicingsForChord('major-7', 0, {
+        const chordModeCandidates = getChordSurfaceVoicingsForChord('major-7', 0, {
             maxRootFret: 15,
             maxCandidates: 12,
         });
@@ -361,12 +361,12 @@ describe('voicing ranking orchestration', () => {
     });
 
     it('treats legacy as chord-mode fallback instead of a co-equal primary source', () => {
-        const primaryOnly = getChordModeVoicingsForChord('major-7', 0, {
+        const primaryOnly = getChordSurfaceVoicingsForChord('major-7', 0, {
             maxRootFret: 15,
             maxCandidates: 12,
             includeLegacyCandidates: false,
         });
-        const withFallback = getChordModeVoicingsForChord('major-7', 0, {
+        const withFallback = getChordSurfaceVoicingsForChord('major-7', 0, {
             maxRootFret: 15,
             maxCandidates: 12,
         });

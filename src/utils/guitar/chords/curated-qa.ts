@@ -1,12 +1,9 @@
 import { getChordTypeLabel, getChordTypeSuffix, resolveChordRegistryEntry } from './helpers';
-import { getCuratedVoicingTemplatesForChord } from './curated';
 import { getVoicingDisplayName, getVoicingDisplaySubtitle, getVoicingProvenanceLabel } from './descriptor';
-import { getGeneratedVoicingTemplatesForChord } from './generated';
-import { getLegacyVoicingTemplatesForChord } from './templates';
-import { buildChordDefinitionFromRegistryEntry, buildChordTonesFromRegistryEntry } from './helpers';
-import { resolveVoicingTemplate } from './resolver';
+import { buildChordDefinitionFromRegistryEntry } from './helpers';
+import { getExploratoryVoicingsForChord } from './voicings';
 import type { ChordRegistryEntry } from './registry';
-import type { ResolvedVoicing, VoicingTemplate } from './types';
+import type { ResolvedVoicing, VoicingCandidate } from './types';
 
 export const CURATED_QA_REVIEW_CHORD_IDS = [
     'major',
@@ -28,6 +25,7 @@ export interface CuratedQaReviewRecord {
     chordType: CuratedQaChordId;
     candidateId: string;
     decision: CuratedQaDecision;
+    rootPitchClass?: number;
 }
 
 export type CuratedQaReviewState = Record<string, CuratedQaReviewRecord>;
@@ -35,6 +33,7 @@ export type CuratedQaReviewState = Record<string, CuratedQaReviewRecord>;
 export interface CuratedQaCandidate {
     candidateId: string;
     chordType: CuratedQaChordId;
+    rootPitchClass: number;
     chordTypeLabel: string;
     chordLabel: string;
     voicing: ResolvedVoicing;
@@ -57,8 +56,8 @@ interface CuratedQaSlicePlan {
     maxCandidates: number;
 }
 
-interface CuratedQaResolvedTemplateCandidate {
-    template: VoicingTemplate;
+interface CuratedQaResolvedCandidate {
+    sourceCandidate: VoicingCandidate;
     candidate: CuratedQaCandidate;
 }
 
@@ -152,18 +151,17 @@ export function isDeveloperCuratedQaEnabled(args: {
     return params.get('dev-curated-qa') === '1';
 }
 
-function buildCuratedQaCandidateFromTemplate(
+function buildCuratedQaCandidateFromVoicing(
     entry: ChordRegistryEntry,
     rootPitchClass: number,
-    template: VoicingTemplate
+    voicing: ResolvedVoicing
 ): CuratedQaCandidate {
     const chord = buildChordDefinitionFromRegistryEntry(entry, rootPitchClass);
-    const tones = buildChordTonesFromRegistryEntry(entry, rootPitchClass);
-    const voicing = resolveVoicingTemplate(chord, tones, template);
 
     return {
         candidateId: voicing.id,
         chordType: entry.id as CuratedQaChordId,
+        rootPitchClass,
         chordTypeLabel: getChordTypeLabel(entry),
         chordLabel: `${chord.symbol}${getChordTypeSuffix(entry)}`,
         voicing,
@@ -181,19 +179,19 @@ function getResolvedVoicingSignature(voicing: ResolvedVoicing): string {
 }
 
 function getResolvedTemplateCandidate(
+    sourceCandidate: VoicingCandidate,
     entry: ChordRegistryEntry,
-    rootPitchClass: number,
-    template: VoicingTemplate
-): CuratedQaResolvedTemplateCandidate {
+    rootPitchClass: number
+): CuratedQaResolvedCandidate {
     return {
-        template,
-        candidate: buildCuratedQaCandidateFromTemplate(entry, rootPitchClass, template),
+        sourceCandidate,
+        candidate: buildCuratedQaCandidateFromVoicing(entry, rootPitchClass, sourceCandidate.voicing),
     };
 }
 
-function getCuratedQaStructureBucket(candidate: CuratedQaResolvedTemplateCandidate): string {
+function getCuratedQaStructureBucket(candidate: CuratedQaResolvedCandidate): string {
     return [
-        candidate.template.rootString ?? 'none',
+        candidate.candidate.voicing.descriptor.rootString ?? 'none',
         candidate.candidate.voicing.descriptor.registerBand,
         candidate.candidate.voicing.descriptor.family,
         candidate.candidate.voicing.descriptor.noteCount,
@@ -205,19 +203,17 @@ function selectStratifiedCandidatesForChord(
     rootPitchClass: number,
     plan: CuratedQaSlicePlan
 ): CuratedQaCandidate[] {
-    const templatePool = [
-        ...getCuratedVoicingTemplatesForChord(entry),
-        ...(plan.includeLegacyCandidates ? getLegacyVoicingTemplatesForChord(entry) : []),
-        ...(plan.includeGeneratedCandidates ? getGeneratedVoicingTemplatesForChord(entry) : []),
-    ];
-    const deduped = new Map<string, CuratedQaResolvedTemplateCandidate>();
+    const exploratoryCandidates = getExploratoryVoicingsForChord(entry, rootPitchClass, {
+        maxRootFret: 15,
+        maxCandidates: Math.max(plan.maxCandidates * 6, 18),
+        includeCuratedCandidates: true,
+        includeLegacyCandidates: plan.includeLegacyCandidates,
+        includeGeneratedCandidates: plan.includeGeneratedCandidates,
+    });
+    const deduped = new Map<string, CuratedQaResolvedCandidate>();
 
-    for (const template of templatePool) {
-        const resolvedCandidate = getResolvedTemplateCandidate(entry, rootPitchClass, template);
-
-        if (!resolvedCandidate.candidate.voicing.playable) {
-            continue;
-        }
+    for (const sourceCandidate of exploratoryCandidates) {
+        const resolvedCandidate = getResolvedTemplateCandidate(sourceCandidate, entry, rootPitchClass);
 
         const voicingSignature = getResolvedVoicingSignature(resolvedCandidate.candidate.voicing);
         const existing = deduped.get(voicingSignature);

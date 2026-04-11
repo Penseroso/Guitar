@@ -6,7 +6,7 @@ import {
 } from './generated';
 import {
     collectVoicingTemplateSourcesForChord,
-    getChordModeVoicingsForChord,
+    getChordSurfaceVoicingsForChord,
     getExploratoryVoicingsForChord,
     getRankedVoicingsForChord,
 } from './voicings';
@@ -114,7 +114,7 @@ describe('generated voicing candidates', () => {
             maxRootFret: 15,
             maxCandidates: 20,
         });
-        const publicCandidates = getChordModeVoicingsForChord('major', 0, {
+        const publicCandidates = getChordSurfaceVoicingsForChord('major', 0, {
             includeLegacyCandidates: false,
             includeCuratedCandidates: false,
             includeNonPlayableCandidates: true,

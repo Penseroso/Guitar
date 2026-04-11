@@ -29,6 +29,20 @@ describe('curated QA storage', () => {
         });
     });
 
+    it('keeps optional rootPitchClass review metadata when present', () => {
+        expect(normalizeCuratedQaReviewSnapshot({
+            updatedAt: '2026-04-08T00:00:00.000Z',
+            reviews: [
+                { chordType: 'major', candidateId: 'major-rooted', decision: 'accept', rootPitchClass: 4 },
+            ],
+        })).toEqual({
+            updatedAt: '2026-04-08T00:00:00.000Z',
+            reviews: [
+                { chordType: 'major', candidateId: 'major-rooted', decision: 'accept', rootPitchClass: 4 },
+            ],
+        });
+    });
+
     it('serializes review state into a stable JSON snapshot', () => {
         let reviews: CuratedQaReviewState = {};
         reviews = recordCuratedQaDecision(reviews, {

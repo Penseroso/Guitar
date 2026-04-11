@@ -9,6 +9,9 @@ import {
     type CuratedQaReviewState,
 } from '@/utils/guitar/chords/curated-qa';
 import {
+    buildCuratedQaAnalysisSummary,
+} from '@/utils/guitar/chords/curated-qa-analysis';
+import {
     buildCuratedQaReviewSnapshot,
     CURATED_QA_REVIEW_STORAGE_PATH,
     normalizeCuratedQaReviewSnapshot,
@@ -40,7 +43,10 @@ export async function GET() {
     }
 
     const snapshot = await readSnapshot();
-    return NextResponse.json(snapshot);
+    return NextResponse.json({
+        ...snapshot,
+        analysis: buildCuratedQaAnalysisSummary(snapshot),
+    });
 }
 
 export async function POST(request: Request) {
@@ -59,5 +65,8 @@ export async function POST(request: Request) {
         'utf8'
     );
 
-    return NextResponse.json(normalizedSnapshot);
+    return NextResponse.json({
+        ...normalizedSnapshot,
+        analysis: buildCuratedQaAnalysisSummary(normalizedSnapshot),
+    });
 }
