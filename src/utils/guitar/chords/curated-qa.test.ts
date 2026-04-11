@@ -4,6 +4,8 @@ import {
     CURATED_QA_REVIEW_CHORD_IDS,
     getCuratedQaCandidates,
     getCuratedQaCandidatesForChord,
+    getCuratedQaMacroCategory,
+    getCuratedQaMicroCategory,
     getCuratedQaDecisionForCandidate,
     groupCuratedQaCandidates,
     isDeveloperCuratedQaEnabled,
@@ -86,6 +88,25 @@ describe('developer curated QA mode', () => {
         expect(qaCandidates.every((candidate) => !candidate.sourceLabel.includes('Curated'))).toBe(true);
         expect(qaCandidates.some((candidate) => candidate.voicing.descriptor.inversion === 'inversion')).toBe(true);
         expect(rankedExploratoryCandidates.length).toBeLessThan(exploratoryCandidates.length);
+    });
+
+    it('covers multiple macro categories instead of collapsing the QA slice into one structural cluster', () => {
+        const qaCandidates = getCuratedQaCandidates(0);
+        const macroCategories = qaCandidates.map((candidate) => getCuratedQaMacroCategory(candidate));
+
+        expect(new Set(macroCategories.map((category) => category.inversionClass)).size).toBeGreaterThan(1);
+        expect(new Set(macroCategories.map((category) => category.registerTopologyClass)).size).toBeGreaterThan(1);
+        expect(new Set(macroCategories.map((category) => category.fullnessClass)).size).toBeGreaterThan(1);
+        expect(new Set(macroCategories.map((category) => category.topologyClass)).size).toBeGreaterThan(1);
+    });
+
+    it('keeps micro diversity inside the QA slice when generated candidates expose open strings, root duplication, and color variation', () => {
+        const qaCandidates = getCuratedQaCandidatesForChord('major', 0);
+        const microCategories = qaCandidates.map((candidate) => getCuratedQaMicroCategory(candidate));
+
+        expect(new Set(microCategories.map((category) => category.openStringUsageClass)).size).toBeGreaterThan(1);
+        expect(new Set(microCategories.map((category) => category.rootDistributionClass)).size).toBeGreaterThan(1);
+        expect(new Set(microCategories.map((category) => category.optionalColorRetentionClass)).size).toBeGreaterThan(1);
     });
 
     it('records accept borderline and reject decisions in a simple keyed in-memory state object', () => {

@@ -50,6 +50,20 @@ export interface CuratedQaCandidateGroup {
     candidates: CuratedQaCandidate[];
 }
 
+export interface CuratedQaMacroCategory {
+    inversionClass: 'root-position' | 'inversion' | 'slash-bass' | 'rootless';
+    registerTopologyClass: 'low-cluster' | 'mid-cluster' | 'upper-cluster' | 'high-fret-not-upper';
+    fullnessClass: 'lean' | 'standard' | 'fuller' | 'dense-color';
+    topologyClass: string;
+}
+
+export interface CuratedQaMicroCategory {
+    openStringUsageClass: 'none' | 'one' | 'two-plus';
+    rootDistributionClass: 'single-root' | 'duplicated-root' | '3plus-root';
+    optionalColorRetentionClass: 'no-optional' | 'some-optional' | 'color-rich';
+    seedExplorationClass: string;
+}
+
 interface CuratedQaSlicePlan {
     maxCandidates: number;
     searchMultiplier?: number;
@@ -202,21 +216,91 @@ function getGeneratedSeedFacetSummary(seedId?: string): GeneratedSeedFacetSummar
     };
 }
 
-function getCuratedQaStructureBucket(candidate: CuratedQaResolvedCandidate): string {
-    const seedFacets = getGeneratedSeedFacetSummary(candidate.candidate.seedId);
+function getCuratedQaPlayedStringTopology(voicing: ResolvedVoicing): string {
+    return voicing.descriptor.playedStrings.join(',') || 'none';
+}
+
+function getCuratedQaRegisterTopologyClass(voicing: ResolvedVoicing): CuratedQaMacroCategory['registerTopologyClass'] {
+    const playedStrings = voicing.descriptor.playedStrings;
+    const allUpperStrings = playedStrings.length > 0 && playedStrings.every((string) => string <= 2);
+    const allLowerStrings = playedStrings.length > 0 && playedStrings.every((string) => string >= 3);
+
+    if (allUpperStrings) {
+        return 'upper-cluster';
+    }
+
+    if (voicing.descriptor.registerBand === 'high') {
+        return 'high-fret-not-upper';
+    }
+
+    if (voicing.descriptor.registerBand === 'low' || allLowerStrings) {
+        return 'low-cluster';
+    }
+
+    return 'mid-cluster';
+}
+
+export function getCuratedQaMacroCategory(candidate: CuratedQaCandidate): CuratedQaMacroCategory {
+    const voicing = candidate.voicing;
+    const optionalColorCount = voicing.descriptor.optionalCoverageDegrees.length;
+    const fullnessClass: CuratedQaMacroCategory['fullnessClass'] = optionalColorCount >= 2 || voicing.descriptor.noteCount >= 6
+        ? 'dense-color'
+        : voicing.descriptor.noteCount >= 5
+            ? 'fuller'
+            : voicing.descriptor.noteCount <= 3
+                ? 'lean'
+                : 'standard';
+
+    return {
+        inversionClass: voicing.descriptor.inversion,
+        registerTopologyClass: getCuratedQaRegisterTopologyClass(voicing),
+        fullnessClass,
+        topologyClass: getCuratedQaPlayedStringTopology(voicing),
+    };
+}
+
+export function getCuratedQaMicroCategory(candidate: CuratedQaCandidate): CuratedQaMicroCategory {
+    const voicing = candidate.voicing;
+    const openStringCount = voicing.notes.filter((note) => !note.isMuted && note.fret === 0).length;
+    const seedFacets = getGeneratedSeedFacetSummary(candidate.seedId);
+    const rootDistributionClass: CuratedQaMicroCategory['rootDistributionClass'] = voicing.descriptor.rootOccurrenceCount >= 3
+        ? '3plus-root'
+        : voicing.descriptor.rootOccurrenceCount >= 2
+            ? 'duplicated-root'
+            : 'single-root';
+    const optionalColorRetentionClass: CuratedQaMicroCategory['optionalColorRetentionClass'] = voicing.descriptor.optionalCoverageDegrees.length >= 2
+        ? 'color-rich'
+        : voicing.descriptor.optionalCoverageDegrees.length >= 1
+            ? 'some-optional'
+            : 'no-optional';
+
+    return {
+        openStringUsageClass: openStringCount >= 2 ? 'two-plus' : openStringCount === 1 ? 'one' : 'none',
+        rootDistributionClass,
+        optionalColorRetentionClass,
+        seedExplorationClass: `${seedFacets.coverageProfile}:${seedFacets.layoutKind}`,
+    };
+}
+
+function getCuratedQaMacroCategoryKey(candidate: CuratedQaCandidate): string {
+    const category = getCuratedQaMacroCategory(candidate);
 
     return [
-        candidate.candidate.voicing.descriptor.provenance.sourceKind,
-        candidate.candidate.voicing.descriptor.inversion,
-        candidate.candidate.voicing.descriptor.rootString ?? 'none',
-        seedFacets.bassString,
-        candidate.candidate.voicing.descriptor.registerBand,
-        candidate.candidate.voicing.descriptor.family,
-        candidate.candidate.voicing.descriptor.noteCount,
-        seedFacets.layoutKind,
-        seedFacets.registerBias,
-        seedFacets.coverageProfile,
-        candidate.candidate.voicing.playable ? 'playable' : 'non-playable',
+        category.inversionClass,
+        category.registerTopologyClass,
+        category.fullnessClass,
+        category.topologyClass,
+    ].join('::');
+}
+
+function getCuratedQaMicroCategoryKey(candidate: CuratedQaCandidate): string {
+    const category = getCuratedQaMicroCategory(candidate);
+
+    return [
+        category.openStringUsageClass,
+        category.rootDistributionClass,
+        category.optionalColorRetentionClass,
+        category.seedExplorationClass,
     ].join('::');
 }
 
@@ -245,10 +329,12 @@ function selectStratifiedCandidatesForChord(
     const dedupedCandidates = Array.from(deduped.values());
     const selected: CuratedQaResolvedCandidate[] = [];
     const selectedIds = new Set(selected.map((resolvedCandidate) => resolvedCandidate.candidate.candidateId));
-    const selectedBuckets = new Set(selected.map(getCuratedQaStructureBucket));
     const candidateBudget = Math.max(plan.maxCandidates * (plan.searchMultiplier ?? 10), 24);
+    const budgetedCandidates = dedupedCandidates.slice(0, candidateBudget);
+    const selectedMacroCategories = new Set<string>();
+    const selectedMacroMicroPairs = new Set<string>();
 
-    for (const resolvedCandidate of dedupedCandidates.slice(0, candidateBudget)) {
+    for (const resolvedCandidate of budgetedCandidates) {
         if (selected.length >= plan.maxCandidates) {
             break;
         }
@@ -257,17 +343,40 @@ function selectStratifiedCandidatesForChord(
             continue;
         }
 
-        const bucket = getCuratedQaStructureBucket(resolvedCandidate);
-        if (selectedBuckets.has(bucket)) {
+        const macroCategoryKey = getCuratedQaMacroCategoryKey(resolvedCandidate.candidate);
+        if (selectedMacroCategories.has(macroCategoryKey)) {
             continue;
         }
 
         selected.push(resolvedCandidate);
         selectedIds.add(resolvedCandidate.candidate.candidateId);
-        selectedBuckets.add(bucket);
+        selectedMacroCategories.add(macroCategoryKey);
+        selectedMacroMicroPairs.add(`${macroCategoryKey}::${getCuratedQaMicroCategoryKey(resolvedCandidate.candidate)}`);
     }
 
-    for (const resolvedCandidate of dedupedCandidates.slice(0, candidateBudget)) {
+    for (const resolvedCandidate of budgetedCandidates) {
+        if (selected.length >= plan.maxCandidates) {
+            break;
+        }
+
+        if (selectedIds.has(resolvedCandidate.candidate.candidateId)) {
+            continue;
+        }
+
+        const macroCategoryKey = getCuratedQaMacroCategoryKey(resolvedCandidate.candidate);
+        const macroMicroPairKey = `${macroCategoryKey}::${getCuratedQaMicroCategoryKey(resolvedCandidate.candidate)}`;
+
+        if (selectedMacroMicroPairs.has(macroMicroPairKey)) {
+            continue;
+        }
+
+        selected.push(resolvedCandidate);
+        selectedIds.add(resolvedCandidate.candidate.candidateId);
+        selectedMacroCategories.add(macroCategoryKey);
+        selectedMacroMicroPairs.add(macroMicroPairKey);
+    }
+
+    for (const resolvedCandidate of budgetedCandidates) {
         if (selected.length >= plan.maxCandidates) {
             break;
         }
