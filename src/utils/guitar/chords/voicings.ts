@@ -17,6 +17,7 @@ export interface GetRankedVoicingsOptions extends ResolveVoicingOptions {
     includeNonPlayableCandidates?: boolean;
     maxCandidates?: number;
     rankingMode?: VoicingRankingMode;
+    applyChordModeSurfacing?: boolean;
     includeCuratedCandidates?: boolean;
     includeArchetypeGeneratedCandidates?: boolean;
     includeGeneratedCandidates?: boolean;
@@ -33,8 +34,13 @@ export interface VoicingTemplateSourceCollection {
     allTemplates: VoicingTemplate[];
 }
 
-// Candidate-source preservation: legacy CHORD_SHAPES and generated templates both remain
-// intentional engine inputs in this phase. We are only clarifying policy boundaries here.
+export interface ChordModeTemplateRoleCollection {
+    reviewedTemplates: VoicingTemplate[];
+    explorationTemplates: VoicingTemplate[];
+    fallbackTemplates: VoicingTemplate[];
+    primaryTemplates: VoicingTemplate[];
+}
+
 function compareChordModeCandidateOrder(left: VoicingCandidate, right: VoicingCandidate): number {
     if (left.voicing.minFret !== right.voicing.minFret) {
         return left.voicing.minFret - right.voicing.minFret;
@@ -85,8 +91,22 @@ function dedupeResolvedVoicings(voicings: ResolvedVoicing[]): ResolvedVoicing[] 
     return Array.from(deduped.values());
 }
 
-// Semantic filtering: formula-closed families should not leak extra pitch classes into
-// the surfaced pool, regardless of template provenance.
+function dedupeVoicingCandidatesBySignature(candidates: VoicingCandidate[]): VoicingCandidate[] {
+    const deduped = new Map<string, VoicingCandidate>();
+
+    for (const candidate of candidates) {
+        const signature = getResolvedVoicingSignature(candidate.voicing);
+
+        if (!deduped.has(signature)) {
+            deduped.set(signature, candidate);
+        }
+    }
+
+    return Array.from(deduped.values());
+}
+
+// Engine sanity filter: formula-invalid resolutions are not useful exploration candidates,
+// regardless of whether the source was generated, curated, or legacy-preserved.
 function excludeFormulaInvalidVoicings(voicings: ResolvedVoicing[]): ResolvedVoicing[] {
     return voicings.filter((voicing) => (voicing.outOfFormulaPitchClasses?.length ?? 0) === 0);
 }
@@ -129,8 +149,7 @@ export function shouldSurfaceChordModeVoicing(voicing: ResolvedVoicing): boolean
 }
 
 function applyChordModeSurfacingPolicies(voicings: ResolvedVoicing[]): ResolvedVoicing[] {
-    return excludeFormulaInvalidVoicings(voicings)
-        .filter((voicing) => shouldSurfaceChordModeVoicing(voicing));
+    return voicings.filter((voicing) => shouldSurfaceChordModeVoicing(voicing));
 }
 
 export function collectVoicingTemplateSourcesForChord(
@@ -159,10 +178,39 @@ export function collectVoicingTemplateSourcesForChord(
     };
 }
 
+export function collectChordModeTemplateRolesForChord(
+    entryInput: string | ChordRegistryEntry,
+    options: GetRankedVoicingsOptions = {}
+): ChordModeTemplateRoleCollection {
+    const sources = collectVoicingTemplateSourcesForChord(entryInput, options);
+
+    return {
+        reviewedTemplates: sources.curatedTemplates,
+        explorationTemplates: [...sources.archetypeGeneratedTemplates, ...sources.generatedTemplates],
+        fallbackTemplates: sources.legacyTemplates,
+        primaryTemplates: [
+            ...sources.curatedTemplates,
+            ...sources.archetypeGeneratedTemplates,
+            ...sources.generatedTemplates,
+        ],
+    };
+}
+
 export function orderChordModeVoicingCandidates(candidates: VoicingCandidate[]): VoicingCandidate[] {
     // Current chord mode is a fret-position browser. Keep engine ranking metadata intact,
     // but present visible candidates in stable fret-first order.
     return [...candidates].sort(compareChordModeCandidateOrder);
+}
+
+export function getExploratoryVoicingsForChord(
+    entryInput: string | ChordRegistryEntry,
+    rootPitchClass: number,
+    options: GetRankedVoicingsOptions = {}
+): VoicingCandidate[] {
+    return getRankedVoicingsForChord(entryInput, rootPitchClass, {
+        ...options,
+        applyChordModeSurfacing: false,
+    });
 }
 
 export function getChordModeVoicingsForChord(
@@ -170,9 +218,38 @@ export function getChordModeVoicingsForChord(
     rootPitchClass: number,
     options: GetRankedVoicingsOptions = {}
 ): VoicingCandidate[] {
-    // Chord mode currently consumes the same engine candidates as future ranking-aware
-    // surfaces, but applies its own explicit fret-first browsing order.
-    return orderChordModeVoicingCandidates(getRankedVoicingsForChord(entryInput, rootPitchClass, options));
+    const chordModeRoles = collectChordModeTemplateRolesForChord(entryInput, options);
+    const maxCandidates = options.maxCandidates ?? Number.MAX_SAFE_INTEGER;
+    const baseOptions = {
+        ...options,
+        maxCandidates: undefined,
+        applyChordModeSurfacing: true,
+        includeLegacyCandidates: false,
+        includeCuratedCandidates: false,
+        includeGeneratedCandidates: false,
+        includeArchetypeGeneratedCandidates: false,
+    } satisfies GetRankedVoicingsOptions;
+    const primaryCandidates = getRankedVoicingsForChord(entryInput, rootPitchClass, {
+        ...baseOptions,
+        includeCuratedCandidates: chordModeRoles.reviewedTemplates.length > 0,
+        includeGeneratedCandidates: chordModeRoles.explorationTemplates.some((template) => template.source === 'generated'),
+        includeArchetypeGeneratedCandidates: chordModeRoles.explorationTemplates.some(
+            (template) => template.source === 'archetype-generated'
+        ),
+    });
+
+    if (primaryCandidates.length >= maxCandidates || chordModeRoles.fallbackTemplates.length === 0) {
+        return orderChordModeVoicingCandidates(primaryCandidates).slice(0, maxCandidates);
+    }
+
+    const fallbackCandidates = getRankedVoicingsForChord(entryInput, rootPitchClass, {
+        ...baseOptions,
+        includeLegacyCandidates: true,
+    });
+
+    return orderChordModeVoicingCandidates(
+        dedupeVoicingCandidatesBySignature([...primaryCandidates, ...fallbackCandidates])
+    ).slice(0, maxCandidates);
 }
 
 export function getArchetypeGeneratedVoicingsForChord(
@@ -203,7 +280,10 @@ export function getRankedVoicingsForChord(
     const resolvedVoicings = options.resolveAcrossPositions === false
         ? resolveVoicingTemplates(chord, tones, templateSources.allTemplates, options)
         : resolveVoicingTemplatesAcrossPositions(chord, tones, templateSources.allTemplates, options);
-    const surfacedResolvedVoicings = applyChordModeSurfacingPolicies(resolvedVoicings);
+    const semanticallyValidResolvedVoicings = excludeFormulaInvalidVoicings(resolvedVoicings);
+    const surfacedResolvedVoicings = options.applyChordModeSurfacing === false
+        ? semanticallyValidResolvedVoicings
+        : applyChordModeSurfacingPolicies(semanticallyValidResolvedVoicings);
     const dedupedResolvedVoicings = dedupeResolvedVoicings(surfacedResolvedVoicings);
     const filteredVoicings = options.includeNonPlayableCandidates === true
         ? dedupedResolvedVoicings

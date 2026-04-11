@@ -16,7 +16,9 @@ import {
 import { getLegacyVoicingTemplatesForChord, getVoicingTemplatesForChord } from './templates';
 import type { VoicingTemplateString } from './types';
 import {
+    collectChordModeTemplateRolesForChord,
     getChordModeVoicingsForChord,
+    getExploratoryVoicingsForChord,
     getRankedVoicingsForChord,
     collectVoicingTemplateSourcesForChord,
     orderChordModeVoicingCandidates,
@@ -41,6 +43,7 @@ describe('voicing template adaptation', () => {
 
     it('collects candidate templates as explicit source layers while preserving current coverage', () => {
         const sources = collectVoicingTemplateSourcesForChord('major-7');
+        const roles = collectChordModeTemplateRolesForChord('major-7');
 
         expect(sources.legacyTemplates.length).toBeGreaterThan(0);
         expect(sources.curatedTemplates.length).toBeGreaterThan(0);
@@ -55,6 +58,12 @@ describe('voicing template adaptation', () => {
         expect(sources.legacyTemplates.every((template) => template.source === 'legacy-shape')).toBe(true);
         expect(sources.curatedTemplates.every((template) => template.source === 'curated')).toBe(true);
         expect(sources.generatedTemplates.every((template) => template.source === 'generated')).toBe(true);
+        expect(roles.reviewedTemplates).toEqual(sources.curatedTemplates);
+        expect(roles.fallbackTemplates).toEqual(sources.legacyTemplates);
+        expect(roles.primaryTemplates).toEqual([
+            ...sources.curatedTemplates,
+            ...sources.generatedTemplates,
+        ]);
     });
 
     it('keeps curated coverage empty outside the pilot chord set', () => {
@@ -311,19 +320,21 @@ describe('voicing ranking orchestration', () => {
         expect(ordered.map((candidate) => candidate.voicing.id)).toEqual(['voicing-a', 'voicing-b']);
     });
 
-    it('provides chord-mode candidates through a single fret-first helper', () => {
-        const ranked = getRankedVoicingsForChord('major', 0, {
+    it('keeps exploratory ranking broader than public chord-mode surfacing', () => {
+        const exploratory = getExploratoryVoicingsForChord('major', 0, {
             maxRootFret: 15,
-            maxCandidates: 12,
+            maxCandidates: 20,
         });
         const chordModeCandidates = getChordModeVoicingsForChord('major', 0, {
             maxRootFret: 15,
-            maxCandidates: 12,
+            maxCandidates: 20,
         });
 
-        expect(chordModeCandidates.map((candidate) => candidate.voicing.id)).toEqual(
-            orderChordModeVoicingCandidates(ranked).map((candidate) => candidate.voicing.id)
-        );
+        expect(exploratory.length).toBeGreaterThan(0);
+        expect(chordModeCandidates.length).toBeGreaterThan(0);
+        expect(exploratory.length).toBeGreaterThanOrEqual(chordModeCandidates.length);
+        expect(exploratory.some((candidate) => !shouldSurfaceChordModeVoicing(candidate.voicing))).toBe(true);
+        expect(chordModeCandidates.every((candidate) => shouldSurfaceChordModeVoicing(candidate.voicing))).toBe(true);
     });
 
     it('keeps chord-mode candidate presentation fret-first even when curated seeds are active', () => {
@@ -334,6 +345,24 @@ describe('voicing ranking orchestration', () => {
 
         const minFrets = chordModeCandidates.map((candidate) => candidate.voicing.minFret);
         expect(minFrets).toEqual([...minFrets].sort((left, right) => left - right));
+    });
+
+    it('treats legacy as chord-mode fallback instead of a co-equal primary source', () => {
+        const primaryOnly = getChordModeVoicingsForChord('major-7', 0, {
+            maxRootFret: 15,
+            maxCandidates: 12,
+            includeLegacyCandidates: false,
+        });
+        const withFallback = getChordModeVoicingsForChord('major-7', 0, {
+            maxRootFret: 15,
+            maxCandidates: 12,
+        });
+
+        expect(primaryOnly.length).toBeGreaterThan(0);
+        expect(withFallback.length).toBeGreaterThanOrEqual(primaryOnly.length);
+        expect(primaryOnly.every((candidate) =>
+            withFallback.some((fallbackCandidate) => fallbackCandidate.voicing.id === candidate.voicing.id)
+        )).toBe(true);
     });
 
     it('pushes playable major shapes above invalid legacy variants', () => {

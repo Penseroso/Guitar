@@ -168,9 +168,11 @@ export {
 export type { GetRankedVoicingsOptions } from './voicings';
 
 export {
+    collectChordModeTemplateRolesForChord,
     collectVoicingTemplateSourcesForChord,
     getArchetypeGeneratedVoicingsForChord,
     getChordModeVoicingsForChord,
+    getExploratoryVoicingsForChord,
     getRankedVoicingsForChord,
     orderChordModeVoicingCandidates,
 } from './voicings';

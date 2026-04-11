@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
 import { getGeneratedVoicingTemplatesForChord } from './generated';
-import { collectVoicingTemplateSourcesForChord, getRankedVoicingsForChord } from './voicings';
+import {
+    collectVoicingTemplateSourcesForChord,
+    getChordModeVoicingsForChord,
+    getExploratoryVoicingsForChord,
+    getRankedVoicingsForChord,
+} from './voicings';
 
 describe('generated voicing candidates', () => {
     it('produces generated shell candidates for seventh-family chords', () => {
@@ -87,5 +92,23 @@ describe('generated voicing candidates', () => {
         expect(candidates.some((candidate) => candidate.voicing.playable && candidate.voicing.notes.map((note) => (
             note.isMuted ? 'x' : String(note.fret)
         )).join('') === '3333x3')).toBe(true);
+    });
+
+    it('keeps generated exploration broader than public chord-mode surfacing', () => {
+        const exploratoryCandidates = getExploratoryVoicingsForChord('major', 0, {
+            includeLegacyCandidates: false,
+            includeCuratedCandidates: false,
+            maxRootFret: 15,
+            maxCandidates: 20,
+        });
+        const publicCandidates = getChordModeVoicingsForChord('major', 0, {
+            includeLegacyCandidates: false,
+            includeCuratedCandidates: false,
+            maxRootFret: 15,
+            maxCandidates: 20,
+        });
+
+        expect(exploratoryCandidates.length).toBeGreaterThan(0);
+        expect(exploratoryCandidates.length).toBeGreaterThanOrEqual(publicCandidates.length);
     });
 });

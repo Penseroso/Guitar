@@ -11,7 +11,6 @@ import {
     type CuratedQaReviewState,
 } from './curated-qa';
 import { getChordModeVoicingsForChord } from './voicings';
-import { getVoicingPresentationMeta } from '../../../components/guitar/chord-preview/voicing-labels';
 
 describe('developer curated QA mode', () => {
     it('stays gated unless the dev-only flag is present outside production', () => {
@@ -71,36 +70,26 @@ describe('developer curated QA mode', () => {
             'major-9',
         ]);
         expect(majorCandidates).toHaveLength(7);
-        expect(majorCandidates.map((candidate) => candidate.candidateId)).toEqual(
-            getChordModeVoicingsForChord('major', 0, {
-                maxRootFret: 15,
-                maxCandidates: 7,
-            }).map((candidate) => candidate.voicing.id)
-        );
+        expect(majorCandidates.some((candidate) => candidate.sourceLabel === 'Curated')).toBe(true);
+        expect(majorCandidates.some((candidate) => candidate.sourceLabel !== 'Curated')).toBe(true);
         expect(groupedCandidates.every((group) => new Set(
             group.candidates.map((candidate) => candidate.voicing.notes.map((note) => `${note.string}:${note.isMuted ? 'x' : note.fret}`).join('|'))
         ).size === group.candidates.length)).toBe(true);
     });
 
-    it('keeps the major QA slice aligned to the app-visible chord-mode candidates', () => {
+    it('keeps the major QA slice as a reviewed stratified sample instead of mirroring public chord-mode surfacing', () => {
         const qaCandidates = getCuratedQaCandidatesForChord('major', 0);
         const appCandidates = getChordModeVoicingsForChord('major', 0, {
             maxRootFret: 15,
             maxCandidates: 7,
         });
-        const appSpreadCandidate = appCandidates.find((candidate) => {
-            const meta = getVoicingPresentationMeta(candidate.voicing);
 
-            return meta.primaryLabel === 'Position voicing'
-                && meta.secondaryLabel?.includes('15fr')
-                && meta.secondaryLabel?.includes('spread');
-        });
-
-        expect(qaCandidates.map((candidate) => candidate.candidateId)).toEqual(
+        expect(qaCandidates).toHaveLength(7);
+        expect(appCandidates).toHaveLength(7);
+        expect(qaCandidates.map((candidate) => candidate.candidateId)).not.toEqual(
             appCandidates.map((candidate) => candidate.voicing.id)
         );
-        expect(appSpreadCandidate).toBeDefined();
-        expect(qaCandidates.some((candidate) => candidate.candidateId === appSpreadCandidate?.voicing.id)).toBe(true);
+        expect(qaCandidates.some((candidate) => candidate.sourceLabel === 'Curated')).toBe(true);
     });
 
     it('records accept borderline and reject decisions in a simple keyed in-memory state object', () => {
