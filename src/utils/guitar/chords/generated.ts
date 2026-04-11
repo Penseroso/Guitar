@@ -4,16 +4,17 @@ import { isFormulaClosedChordFamily } from './semantics';
 import type { ChordRegistryEntry } from './registry';
 import type { GuitarStringIndex, VoicingTemplate, VoicingTemplateString } from './types';
 
-type GeneratedFamily = 'shell' | 'compact' | 'upper-register' | 'full';
+type GeneratedFamily = 'shell' | 'compact' | 'upper-register' | 'full' | 'spread';
 
 interface GeneratedBlueprint {
     family: GeneratedFamily;
     rootString: GuitarStringIndex;
     strings: GuitarStringIndex[];
     maxNotes: number;
+    preferredOffsets?: number[];
 }
 
-const GENERATED_BLUEPRINTS: GeneratedBlueprint[] = [
+const PRIMARY_GENERATED_BLUEPRINTS: GeneratedBlueprint[] = [
     { family: 'shell', rootString: 5, strings: [5, 4, 3, 2], maxNotes: 4 },
     { family: 'shell', rootString: 4, strings: [4, 3, 2, 1], maxNotes: 4 },
     { family: 'compact', rootString: 5, strings: [5, 4, 3, 2], maxNotes: 4 },
@@ -24,10 +25,16 @@ const GENERATED_BLUEPRINTS: GeneratedBlueprint[] = [
     { family: 'upper-register', rootString: 3, strings: [3, 2, 1, 0], maxNotes: 4 },
 ];
 
+const EXPLORATORY_GENERATED_BLUEPRINTS: GeneratedBlueprint[] = [
+    { family: 'spread', rootString: 5, strings: [5, 4, 2, 1], maxNotes: 4, preferredOffsets: [0, 1, 4, 5] },
+    { family: 'spread', rootString: 4, strings: [4, 3, 1, 0], maxNotes: 4, preferredOffsets: [0, 1, 4, 5] },
+];
+
 const FAMILY_LABELS: Record<GeneratedFamily, string> = {
     shell: 'Shell',
     compact: 'Compact',
     full: 'Full',
+    spread: 'Spread',
     'upper-register': 'Upper Register',
 };
 
@@ -185,6 +192,7 @@ function buildGeneratedTemplateStrings(
                     rootString: blueprint.rootString,
                     string,
                     interval,
+                    preferredOffset: blueprint.preferredOffsets?.[blueprint.strings.indexOf(string)],
                 }),
             toneDegree: degree,
             isOptional: !getRequiredChordDegrees(entry).includes(degree),
@@ -222,7 +230,15 @@ function buildGeneratedTemplate(entry: ChordRegistryEntry, blueprint: GeneratedB
 export function getGeneratedVoicingTemplatesForChord(entryInput: string | ChordRegistryEntry): VoicingTemplate[] {
     const entry = resolveChordRegistryEntry(entryInput);
 
-    return GENERATED_BLUEPRINTS
+    return [...PRIMARY_GENERATED_BLUEPRINTS, ...EXPLORATORY_GENERATED_BLUEPRINTS]
+        .map((blueprint) => buildGeneratedTemplate(entry, blueprint))
+        .filter((template): template is VoicingTemplate => template !== null);
+}
+
+export function getPrimaryGeneratedVoicingTemplatesForChord(entryInput: string | ChordRegistryEntry): VoicingTemplate[] {
+    const entry = resolveChordRegistryEntry(entryInput);
+
+    return PRIMARY_GENERATED_BLUEPRINTS
         .map((blueprint) => buildGeneratedTemplate(entry, blueprint))
         .filter((template): template is VoicingTemplate => template !== null);
 }

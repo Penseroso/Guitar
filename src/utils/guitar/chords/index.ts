@@ -137,6 +137,7 @@ export {
 
 export {
     getGeneratedVoicingTemplatesForChord,
+    getPrimaryGeneratedVoicingTemplatesForChord,
 } from './generated';
 
 export type { ResolveVoicingOptions } from './resolver';

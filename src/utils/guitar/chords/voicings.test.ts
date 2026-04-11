@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
+import {
+    getGeneratedVoicingTemplatesForChord,
+    getPrimaryGeneratedVoicingTemplatesForChord,
+} from './generated';
 import { getCuratedVoicingTemplatesForChord } from './curated';
 import {
     buildChordDefinitionFromRegistryEntry,
@@ -73,6 +77,15 @@ describe('voicing template adaptation', () => {
         expect(sources.archetypeGeneratedTemplates).toEqual([]);
         expect(sources.legacyTemplates.length).toBeGreaterThan(0);
         expect(sources.generatedTemplates.length).toBeGreaterThan(0);
+    });
+
+    it('keeps public source collection on the primary generated baseline while exploration can widen beyond it', () => {
+        const publicSources = collectVoicingTemplateSourcesForChord('major-7');
+        const primaryGenerated = getPrimaryGeneratedVoicingTemplatesForChord('major-7');
+        const exploratoryGenerated = getGeneratedVoicingTemplatesForChord('major-7');
+
+        expect(publicSources.generatedTemplates).toEqual(primaryGenerated);
+        expect(exploratoryGenerated.length).toBeGreaterThan(primaryGenerated.length);
     });
 });
 

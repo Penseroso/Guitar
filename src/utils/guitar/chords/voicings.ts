@@ -1,7 +1,10 @@
 import { buildChordDefinitionFromRegistryEntry, buildChordTonesFromRegistryEntry, resolveChordRegistryEntry } from './helpers';
 import { getArchetypeGeneratedVoicingTemplatesForChord } from './archetype-generated';
 import { getCuratedVoicingTemplatesForChord } from './curated';
-import { getGeneratedVoicingTemplatesForChord } from './generated';
+import {
+    getGeneratedVoicingTemplatesForChord,
+    getPrimaryGeneratedVoicingTemplatesForChord,
+} from './generated';
 import { rankVoicingCandidates } from './ranking';
 import {
     resolveVoicingTemplates,
@@ -18,6 +21,7 @@ export interface GetRankedVoicingsOptions extends ResolveVoicingOptions {
     maxCandidates?: number;
     rankingMode?: VoicingRankingMode;
     applyChordModeSurfacing?: boolean;
+    generatedTemplateCollectionMode?: 'primary' | 'exploration';
     includeCuratedCandidates?: boolean;
     includeArchetypeGeneratedCandidates?: boolean;
     includeGeneratedCandidates?: boolean;
@@ -167,7 +171,9 @@ export function collectVoicingTemplateSourcesForChord(
         : [];
     const generatedTemplates = options.includeGeneratedCandidates === false
         ? []
-        : getGeneratedVoicingTemplatesForChord(entryInput);
+        : options.generatedTemplateCollectionMode === 'exploration'
+            ? getGeneratedVoicingTemplatesForChord(entryInput)
+            : getPrimaryGeneratedVoicingTemplatesForChord(entryInput);
 
     return {
         legacyTemplates,
@@ -210,6 +216,7 @@ export function getExploratoryVoicingsForChord(
     return getRankedVoicingsForChord(entryInput, rootPitchClass, {
         ...options,
         applyChordModeSurfacing: false,
+        generatedTemplateCollectionMode: 'exploration',
     });
 }
 
@@ -224,6 +231,7 @@ export function getChordModeVoicingsForChord(
         ...options,
         maxCandidates: undefined,
         applyChordModeSurfacing: true,
+        generatedTemplateCollectionMode: 'primary',
         includeLegacyCandidates: false,
         includeCuratedCandidates: false,
         includeGeneratedCandidates: false,

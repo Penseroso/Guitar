@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { getGeneratedVoicingTemplatesForChord } from './generated';
+import {
+    getGeneratedVoicingTemplatesForChord,
+    getPrimaryGeneratedVoicingTemplatesForChord,
+} from './generated';
 import {
     collectVoicingTemplateSourcesForChord,
     getChordModeVoicingsForChord,
@@ -14,6 +17,15 @@ describe('generated voicing candidates', () => {
 
         expect(templates.some((template) => template.source === 'generated')).toBe(true);
         expect(templates.some((template) => template.id.includes(':generated:shell:'))).toBe(true);
+    });
+
+    it('keeps exploratory generated inventory broader than the primary chord-mode baseline', () => {
+        const exploratoryTemplates = getGeneratedVoicingTemplatesForChord('major-7');
+        const primaryTemplates = getPrimaryGeneratedVoicingTemplatesForChord('major-7');
+
+        expect(exploratoryTemplates.length).toBeGreaterThan(primaryTemplates.length);
+        expect(exploratoryTemplates.some((template) => template.id.includes(':generated:spread:'))).toBe(true);
+        expect(primaryTemplates.some((template) => template.id.includes(':generated:spread:'))).toBe(false);
     });
 
     it('generated dominant thirteenth candidates retain required tones even when span rules invalidate them', () => {
@@ -98,17 +110,26 @@ describe('generated voicing candidates', () => {
         const exploratoryCandidates = getExploratoryVoicingsForChord('major', 0, {
             includeLegacyCandidates: false,
             includeCuratedCandidates: false,
+            includeNonPlayableCandidates: true,
             maxRootFret: 15,
             maxCandidates: 20,
         });
         const publicCandidates = getChordModeVoicingsForChord('major', 0, {
             includeLegacyCandidates: false,
             includeCuratedCandidates: false,
+            includeNonPlayableCandidates: true,
             maxRootFret: 15,
             maxCandidates: 20,
         });
+        const exploratorySpreadCandidate = exploratoryCandidates.find((candidate) =>
+            candidate.voicing.descriptor.provenance.seedId?.includes(':generated:spread:')
+        );
 
         expect(exploratoryCandidates.length).toBeGreaterThan(0);
         expect(exploratoryCandidates.length).toBeGreaterThanOrEqual(publicCandidates.length);
+        expect(exploratorySpreadCandidate).toBeDefined();
+        expect(publicCandidates.some((candidate) =>
+            candidate.voicing.descriptor.provenance.seedId === exploratorySpreadCandidate?.voicing.descriptor.provenance.seedId
+        )).toBe(false);
     });
 });
