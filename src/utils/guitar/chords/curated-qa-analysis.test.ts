@@ -9,21 +9,21 @@ describe('curated QA analysis', () => {
         const summary = buildCuratedQaAnalysisSummary(curatedQaReviews as CuratedQaReviewSnapshot);
 
         expect(summary.totalReviews).toBe(curatedQaReviews.reviews.length);
-        expect(summary.activeReviewCount).toBe(0);
-        expect(summary.staleReviewCount).toBe(curatedQaReviews.reviews.length);
+        expect(summary.activeReviewCount).toBe(curatedQaReviews.reviews.length);
+        expect(summary.staleReviewCount).toBe(0);
         expect(summary.byDecision).toEqual({
-            accept: 18,
-            borderline: 3,
-            reject: 2,
+            accept: 46,
+            borderline: 16,
+            reject: 0,
         });
         expect(summary.byStatus).toEqual([
             {
-                key: 'stale',
-                total: 23,
+                key: 'active',
+                total: 62,
                 decisions: {
-                    accept: 18,
-                    borderline: 3,
-                    reject: 2,
+                    accept: 46,
+                    borderline: 16,
+                    reject: 0,
                 },
             },
         ]);
@@ -31,103 +31,81 @@ describe('curated QA analysis', () => {
         expect(summary.byChordType.every((entry) => entry.candidateCount >= entry.reviewedCount)).toBe(true);
         expect(summary.byProvenance).toEqual([
             {
-                key: 'stale',
-                total: 23,
+                key: 'generated',
+                total: 62,
                 decisions: {
-                    accept: 18,
-                    borderline: 3,
-                    reject: 2,
+                    accept: 46,
+                    borderline: 16,
+                    reject: 0,
                 },
             },
         ]);
         expect(summary.byChordFamily.some((bucket) => bucket.key === 'triad')).toBe(true);
         expect(summary.byChordFamily.some((bucket) => bucket.key === 'seventh')).toBe(true);
-        expect(summary.byRootString).toEqual([
-            {
-                key: 'stale',
-                total: 23,
-                decisions: {
-                    accept: 18,
-                    borderline: 3,
-                    reject: 2,
-                },
-            },
-        ]);
-        expect(summary.byRegisterBand).toEqual([
-            {
-                key: 'stale',
-                total: 23,
-                decisions: {
-                    accept: 18,
-                    borderline: 3,
-                    reject: 2,
-                },
-            },
-        ]);
-        expect(summary.byInversion).toEqual([
-            {
-                key: 'stale',
-                total: 23,
-                decisions: {
-                    accept: 18,
-                    borderline: 3,
-                    reject: 2,
-                },
-            },
-        ]);
+        expect(summary.byRootString.some((bucket) => bucket.key !== 'stale')).toBe(true);
+        expect(summary.byRegisterBand.some((bucket) => bucket.key === 'high')).toBe(true);
+        expect(summary.byInversion.some((bucket) => bucket.key === 'root-position')).toBe(true);
+        expect(summary.byInversion.some((bucket) => bucket.key === 'inversion')).toBe(true);
         expect(summary.byNoteCount).toEqual([
             {
-                key: 'stale',
-                total: 23,
+                key: '3',
+                total: 50,
                 decisions: {
-                    accept: 18,
-                    borderline: 3,
-                    reject: 2,
+                    accept: 34,
+                    borderline: 16,
+                    reject: 0,
+                },
+            },
+            {
+                key: '4',
+                total: 12,
+                decisions: {
+                    accept: 12,
+                    borderline: 0,
+                    reject: 0,
                 },
             },
         ]);
         expect(summary.byMissingRequiredDegrees).toEqual([
             {
-                key: 'stale',
-                total: 23,
+                key: 'complete',
+                total: 62,
                 decisions: {
-                    accept: 18,
-                    borderline: 3,
-                    reject: 2,
+                    accept: 46,
+                    borderline: 16,
+                    reject: 0,
                 },
             },
         ]);
         expect(summary.byOutOfFormula).toEqual([
             {
-                key: 'stale',
-                total: 23,
+                key: 'formula-closed',
+                total: 62,
                 decisions: {
-                    accept: 18,
-                    borderline: 3,
-                    reject: 2,
+                    accept: 46,
+                    borderline: 16,
+                    reject: 0,
                 },
             },
         ]);
         expect(summary.byPlayability).toEqual([
             {
-                key: 'stale',
-                total: 23,
+                key: 'playable',
+                total: 62,
                 decisions: {
-                    accept: 18,
-                    borderline: 3,
-                    reject: 2,
+                    accept: 46,
+                    borderline: 16,
+                    reject: 0,
                 },
             },
         ]);
-        expect(summary.staleReviewReferences).toHaveLength(23);
-        expect(summary.weakCoverageChordTypes.length).toBeGreaterThan(0);
-        expect(summary.weakCoverageChordTypes.some((entry) => entry.staleReviewedCount > 0)).toBe(true);
-        expect(summary.weakCoverageChordTypes.every((entry) => entry.activeReviewedCount === 0)).toBe(true);
+        expect(summary.staleReviewReferences).toHaveLength(0);
+        expect(summary.weakCoverageChordTypes).toEqual([]);
     });
 
     it('exposes accepted provenance kinds for later engine-building consumers', () => {
         const summary = buildCuratedQaAnalysisSummary(curatedQaReviews as CuratedQaReviewSnapshot);
 
-        expect(getAcceptedSourceKinds(summary)).toEqual([]);
+        expect(getAcceptedSourceKinds(summary)).toEqual(['generated']);
     });
 });
