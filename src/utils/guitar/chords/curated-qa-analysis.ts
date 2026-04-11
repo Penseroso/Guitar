@@ -121,11 +121,35 @@ function buildDecisionBuckets(
     return buildSortedBuckets(buckets);
 }
 
-function resolveReviewEvidence(snapshot: CuratedQaReviewSnapshot): ResolvedReviewEvidence[] {
+type CuratedQaCandidateLookup = Map<string, CuratedQaCandidate[]>;
+
+function getCandidateLookupKey(chordType: string, rootPitchClass: number): string {
+    return `${chordType}::${rootPitchClass}`;
+}
+
+function buildCandidateLookup(snapshot: CuratedQaReviewSnapshot): CuratedQaCandidateLookup {
+    const lookup = new Map<string, CuratedQaCandidate[]>();
+
+    for (const review of snapshot.reviews) {
+        const rootPitchClass = review.rootPitchClass ?? 0;
+        const lookupKey = getCandidateLookupKey(review.chordType, rootPitchClass);
+
+        if (!lookup.has(lookupKey)) {
+            lookup.set(lookupKey, getCuratedQaCandidatesForChord(
+                review.chordType,
+                rootPitchClass
+            ));
+        }
+    }
+
+    return lookup;
+}
+
+function resolveReviewEvidence(snapshot: CuratedQaReviewSnapshot, candidateLookup: CuratedQaCandidateLookup): ResolvedReviewEvidence[] {
     return snapshot.reviews.map((review) => {
         const rootPitchClass = review.rootPitchClass ?? 0;
         const chordEntry = resolveChordRegistryEntry(review.chordType);
-        const candidate = getCuratedQaCandidatesForChord(review.chordType, rootPitchClass)
+        const candidate = (candidateLookup.get(getCandidateLookupKey(review.chordType, rootPitchClass)) ?? [])
             .find((item) => item.candidateId === review.candidateId) ?? null;
 
         return {
@@ -140,9 +164,13 @@ function resolveReviewEvidence(snapshot: CuratedQaReviewSnapshot): ResolvedRevie
     });
 }
 
-function getCandidateCoverage(chordType: string, evidence: ResolvedReviewEvidence[]) {
+function getCandidateCoverage(
+    chordType: string,
+    evidence: ResolvedReviewEvidence[],
+    candidateLookup: CuratedQaCandidateLookup
+) {
     const rootPitchClass = evidence.find((entry) => entry.chordType === chordType)?.rootPitchClass ?? 0;
-    const candidates = getCuratedQaCandidatesForChord(chordType as Parameters<typeof getCuratedQaCandidatesForChord>[0], rootPitchClass);
+    const candidates = candidateLookup.get(getCandidateLookupKey(chordType, rootPitchClass)) ?? [];
     const reviewedCandidateIds = new Set(
         evidence
             .filter((entry) => entry.chordType === chordType && entry.status === 'active' && entry.candidate)
@@ -157,7 +185,8 @@ function getCandidateCoverage(chordType: string, evidence: ResolvedReviewEvidenc
 
 function buildChordTypeAnalysis(
     chordType: string,
-    evidence: ResolvedReviewEvidence[]
+    evidence: ResolvedReviewEvidence[],
+    candidateLookup: CuratedQaCandidateLookup
 ): CuratedQaChordTypeAnalysis {
     const chordEvidence = evidence.filter((entry) => entry.chordType === chordType);
     const chordEntry = resolveChordRegistryEntry(chordType);
@@ -169,7 +198,7 @@ function buildChordTypeAnalysis(
 
     const activeReviewedCount = chordEvidence.filter((entry) => entry.status === 'active').length;
     const staleReviewedCount = chordEvidence.length - activeReviewedCount;
-    const coverage = getCandidateCoverage(chordType, evidence);
+    const coverage = getCandidateCoverage(chordType, evidence, candidateLookup);
 
     return {
         chordType,
@@ -220,7 +249,8 @@ function buildChordTypeAnalysis(
 }
 
 export function buildCuratedQaAnalysisSummary(snapshot: CuratedQaReviewSnapshot): CuratedQaAnalysisSummary {
-    const evidence = resolveReviewEvidence(snapshot);
+    const candidateLookup = buildCandidateLookup(snapshot);
+    const evidence = resolveReviewEvidence(snapshot, candidateLookup);
     const byDecision = createDecisionCounts();
 
     for (const review of snapshot.reviews) {
@@ -231,7 +261,7 @@ export function buildCuratedQaAnalysisSummary(snapshot: CuratedQaReviewSnapshot)
     const staleReviewCount = evidence.length - activeReviewCount;
     const chordTypes = [...new Set(snapshot.reviews.map((review) => review.chordType))]
         .sort((left, right) => left.localeCompare(right));
-    const byChordType = chordTypes.map((chordType) => buildChordTypeAnalysis(chordType, evidence));
+    const byChordType = chordTypes.map((chordType) => buildChordTypeAnalysis(chordType, evidence, candidateLookup));
 
     return {
         totalReviews: snapshot.reviews.length,
@@ -306,6 +336,6 @@ export function buildCuratedQaAnalysisSummary(snapshot: CuratedQaReviewSnapshot)
 
 export function getAcceptedSourceKinds(summary: CuratedQaAnalysisSummary): VoicingProvenanceSourceKind[] {
     return summary.byProvenance
-        .filter((bucket) => bucket.decisions.accept > 0)
+        .filter((bucket) => bucket.decisions.accept > 0 && bucket.key !== 'stale')
         .map((bucket) => bucket.key as VoicingProvenanceSourceKind);
 }

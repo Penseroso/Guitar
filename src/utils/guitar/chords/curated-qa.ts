@@ -51,7 +51,6 @@ export interface CuratedQaCandidateGroup {
 }
 
 interface CuratedQaSlicePlan {
-    includeLegacyCandidates: boolean;
     maxCandidates: number;
     searchMultiplier?: number;
 }
@@ -63,44 +62,34 @@ interface CuratedQaResolvedCandidate {
 
 const CURATED_QA_SLICE_PLANS: Record<CuratedQaChordId, CuratedQaSlicePlan> = {
     major: {
-        includeLegacyCandidates: true,
         maxCandidates: 8,
         searchMultiplier: 12,
     },
     'major-6': {
-        includeLegacyCandidates: false,
         maxCandidates: 3,
     },
     'major-7': {
-        includeLegacyCandidates: true,
         maxCandidates: 4,
     },
     'major-9': {
-        includeLegacyCandidates: true,
         maxCandidates: 4,
     },
     minor: {
-        includeLegacyCandidates: true,
         maxCandidates: 5,
     },
     'minor-7': {
-        includeLegacyCandidates: true,
         maxCandidates: 4,
     },
     'dominant-7': {
-        includeLegacyCandidates: true,
         maxCandidates: 5,
     },
     'dominant-9': {
-        includeLegacyCandidates: true,
         maxCandidates: 4,
     },
     sus2: {
-        includeLegacyCandidates: false,
         maxCandidates: 3,
     },
     sus4: {
-        includeLegacyCandidates: true,
         maxCandidates: 4,
     },
 };
@@ -241,8 +230,8 @@ function selectStratifiedCandidatesForChord(
     const exploratoryCandidates = getExploratoryVoicingsForChord(entry, rootPitchClass, {
         maxRootFret: 15,
         maxCandidates: Math.max(plan.maxCandidates * (plan.searchMultiplier ?? 10), 24),
-        includeCuratedCandidates: true,
-        includeLegacyCandidates: plan.includeLegacyCandidates,
+        includeCuratedCandidates: false,
+        includeLegacyCandidates: false,
     });
     const deduped = new Map<string, CuratedQaResolvedCandidate>();
 
@@ -254,19 +243,11 @@ function selectStratifiedCandidatesForChord(
 
         if (!existing) {
             deduped.set(voicingSignature, resolvedCandidate);
-            continue;
-        }
-
-        if (existing.candidate.voicing.descriptor.provenance.sourceKind !== 'curated'
-            && resolvedCandidate.candidate.voicing.descriptor.provenance.sourceKind === 'curated') {
-            deduped.set(voicingSignature, resolvedCandidate);
         }
     }
 
     const dedupedCandidates = Array.from(deduped.values());
-    const selected = dedupedCandidates.filter(
-        (resolvedCandidate) => resolvedCandidate.candidate.voicing.descriptor.provenance.sourceKind === 'curated'
-    );
+    const selected: CuratedQaResolvedCandidate[] = [];
     const selectedIds = new Set(selected.map((resolvedCandidate) => resolvedCandidate.candidate.candidateId));
     const selectedBuckets = new Set(selected.map(getCuratedQaStructureBucket));
 

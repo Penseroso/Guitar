@@ -53,8 +53,7 @@ describe('developer curated QA mode', () => {
             sus4: 4,
         });
         expect(majorCandidates).toHaveLength(8);
-        expect(majorCandidates.some((candidate) => candidate.sourceLabel === 'Curated')).toBe(true);
-        expect(majorCandidates.some((candidate) => candidate.sourceLabel !== 'Curated')).toBe(true);
+        expect(candidates.every((candidate) => candidate.voicing.descriptor.provenance.sourceKind === 'generated')).toBe(true);
         expect(majorCandidates.some((candidate) => candidate.voicing.descriptor.inversion === 'inversion')).toBe(true);
         expect(groupedCandidates.every((group) => new Set(
             group.candidates.map((candidate) => candidate.voicing.notes.map((note) => `${note.string}:${note.isMuted ? 'x' : note.fret}`).join('|'))
@@ -80,7 +79,8 @@ describe('developer curated QA mode', () => {
         expect(qaCandidates.every((candidate) =>
             exploratoryCandidates.some((exploratoryCandidate) => exploratoryCandidate.voicing.id === candidate.candidateId)
         )).toBe(true);
-        expect(qaCandidates.some((candidate) => candidate.sourceLabel === 'Curated')).toBe(true);
+        expect(qaCandidates.every((candidate) => candidate.voicing.descriptor.provenance.sourceKind === 'generated')).toBe(true);
+        expect(qaCandidates.every((candidate) => !candidate.sourceLabel.includes('Curated'))).toBe(true);
         expect(qaCandidates.some((candidate) => candidate.voicing.descriptor.inversion === 'inversion')).toBe(true);
     });
 
