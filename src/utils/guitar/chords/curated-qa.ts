@@ -62,29 +62,29 @@ interface CuratedQaResolvedCandidate {
 
 const CURATED_QA_SLICE_PLANS: Record<CuratedQaChordId, CuratedQaSlicePlan> = {
     major: {
-        maxCandidates: 8,
+        maxCandidates: 12,
         searchMultiplier: 12,
     },
     'major-6': {
         maxCandidates: 3,
     },
     'major-7': {
-        maxCandidates: 4,
+        maxCandidates: 6,
     },
     'major-9': {
-        maxCandidates: 4,
+        maxCandidates: 6,
     },
     minor: {
-        maxCandidates: 5,
+        maxCandidates: 8,
     },
     'minor-7': {
-        maxCandidates: 4,
+        maxCandidates: 6,
     },
     'dominant-7': {
-        maxCandidates: 5,
+        maxCandidates: 8,
     },
     'dominant-9': {
-        maxCandidates: 4,
+        maxCandidates: 6,
     },
     sus2: {
         maxCandidates: 3,
