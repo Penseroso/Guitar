@@ -14,8 +14,10 @@ import {
     mergeCuratedQaReviewStates,
     recordCuratedQaDecision,
     recordCuratedQaSessionDecision,
+    selectCuratedQaCandidatesFromResolvedVoicings,
     type CuratedQaReviewState,
 } from './curated-qa';
+import { resolveChordRegistryEntry } from './helpers';
 import { getChordSurfaceVoicingsForChord, getExploratoryVoicingsForChord, getRankedExploratoryVoicingsForChord } from './voicings';
 
 describe('developer curated QA mode', () => {
@@ -74,6 +76,7 @@ describe('developer curated QA mode', () => {
         });
         const exploratoryCandidates = getExploratoryVoicingsForChord('major', 0, {
             maxRootFret: 15,
+            dedupeResolvedCandidates: false,
         });
         const rankedExploratoryCandidates = getRankedExploratoryVoicingsForChord('major', 0, {
             maxRootFret: 15,
@@ -92,6 +95,75 @@ describe('developer curated QA mode', () => {
         expect(qaCandidates.every((candidate) => !candidate.sourceLabel.includes('Curated'))).toBe(true);
         expect(qaCandidates.some((candidate) => candidate.voicing.descriptor.inversion === 'inversion')).toBe(true);
         expect(rankedExploratoryCandidates.length).toBeLessThan(exploratoryCandidates.length);
+    });
+
+    it('keeps QA category coverage stable even when the raw exploratory pool order is reversed', () => {
+        const entry = resolveChordRegistryEntry('major');
+        const rawExploratoryCandidates = getExploratoryVoicingsForChord('major', 0, {
+            maxRootFret: 15,
+            includeNonPlayableCandidates: false,
+            dedupeResolvedCandidates: false,
+        });
+        const forwardSelection = selectCuratedQaCandidatesFromResolvedVoicings(entry, 0, rawExploratoryCandidates, {
+            maxCandidates: 12,
+        });
+        const reverseSelection = selectCuratedQaCandidatesFromResolvedVoicings(entry, 0, [...rawExploratoryCandidates].reverse(), {
+            maxCandidates: 12,
+        });
+
+        expect(forwardSelection.map((candidate) => candidate.candidateId)).toEqual(
+            reverseSelection.map((candidate) => candidate.candidateId)
+        );
+        expect(new Set(forwardSelection.map((candidate) => JSON.stringify(getCuratedQaMacroCategory(candidate))))).toEqual(
+            new Set(reverseSelection.map((candidate) => JSON.stringify(getCuratedQaMacroCategory(candidate))))
+        );
+    });
+
+    it('does not let exact-signature duplicate ordering change the chosen QA representative', () => {
+        const entry = resolveChordRegistryEntry('major');
+        const [referenceCandidate] = getExploratoryVoicingsForChord('major', 0, {
+            maxRootFret: 15,
+            includeNonPlayableCandidates: false,
+            dedupeResolvedCandidates: false,
+        });
+        const duplicateCandidateA = {
+            ...referenceCandidate,
+            id: `${referenceCandidate.id}::b`,
+            descriptor: {
+                ...referenceCandidate.descriptor,
+                provenance: {
+                    ...referenceCandidate.descriptor.provenance,
+                    seedId: `${referenceCandidate.descriptor.provenance.seedId ?? referenceCandidate.id}::b`,
+                },
+            },
+        };
+        const duplicateCandidateB = {
+            ...referenceCandidate,
+            id: `${referenceCandidate.id}::a`,
+            descriptor: {
+                ...referenceCandidate.descriptor,
+                provenance: {
+                    ...referenceCandidate.descriptor.provenance,
+                    seedId: `${referenceCandidate.descriptor.provenance.seedId ?? referenceCandidate.id}::a`,
+                },
+            },
+        };
+
+        const forwardSelection = selectCuratedQaCandidatesFromResolvedVoicings(entry, 0, [
+            duplicateCandidateA,
+            duplicateCandidateB,
+        ], {
+            maxCandidates: 1,
+        });
+        const reverseSelection = selectCuratedQaCandidatesFromResolvedVoicings(entry, 0, [
+            duplicateCandidateB,
+            duplicateCandidateA,
+        ], {
+            maxCandidates: 1,
+        });
+
+        expect(forwardSelection[0]?.candidateId).toBe(duplicateCandidateB.id);
+        expect(reverseSelection[0]?.candidateId).toBe(duplicateCandidateB.id);
     });
 
     it('covers multiple macro categories instead of collapsing the QA slice into one structural cluster', () => {

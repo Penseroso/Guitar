@@ -1,4 +1,4 @@
-import { getChordTypeLabel, getChordTypeSuffix, resolveChordRegistryEntry } from './helpers';
+import { getChordTypeLabel, resolveChordRegistryEntry } from './helpers';
 import { getVoicingDisplayName, getVoicingDisplaySubtitle, getVoicingProvenanceLabel } from './descriptor';
 import { buildChordDefinitionFromRegistryEntry } from './helpers';
 import { getExploratoryVoicingsForChord } from './voicings';
@@ -74,8 +74,34 @@ interface CuratedQaResolvedCandidate {
 }
 
 interface CategorizedCuratedQaResolvedCandidate extends CuratedQaResolvedCandidate {
+    fullnessClass: CuratedQaMacroCategory['fullnessClass'];
+    inversionClass: CuratedQaMacroCategory['inversionClass'];
+    registerTopologyClass: CuratedQaMacroCategory['registerTopologyClass'];
+    topologyClass: CuratedQaMacroCategory['topologyClass'];
     macroCategoryKey: string;
     microCategoryKey: string;
+}
+
+interface CuratedQaCategoryInventory {
+    byFullness: Map<CuratedQaMacroCategory['fullnessClass'], CategorizedCuratedQaResolvedCandidate[]>;
+    byInversion: Map<CuratedQaMacroCategory['inversionClass'], CategorizedCuratedQaResolvedCandidate[]>;
+    byRegisterTopology: Map<CuratedQaMacroCategory['registerTopologyClass'], CategorizedCuratedQaResolvedCandidate[]>;
+    byTopology: Map<string, CategorizedCuratedQaResolvedCandidate[]>;
+    byMacro: Map<string, CategorizedCuratedQaResolvedCandidate[]>;
+    byMicro: Map<string, CategorizedCuratedQaResolvedCandidate[]>;
+    byMacroMicro: Map<string, CategorizedCuratedQaResolvedCandidate[]>;
+}
+
+interface CuratedQaSelectionState {
+    selectedIds: Set<string>;
+    selected: CategorizedCuratedQaResolvedCandidate[];
+    fullnessCounts: Map<string, number>;
+    inversionCounts: Map<string, number>;
+    registerTopologyCounts: Map<string, number>;
+    topologyCounts: Map<string, number>;
+    macroCounts: Map<string, number>;
+    microCounts: Map<string, number>;
+    macroMicroCounts: Map<string, number>;
 }
 
 const CURATED_QA_SLICE_PLANS: Record<CuratedQaChordId, CuratedQaSlicePlan> = {
@@ -208,7 +234,7 @@ function buildCuratedQaCandidateFromVoicing(
         chordType: entry.id as CuratedQaChordId,
         rootPitchClass,
         chordTypeLabel: getChordTypeLabel(entry),
-        chordLabel: `${chord.symbol}${getChordTypeSuffix(entry)}`,
+        chordLabel: chord.symbol,
         voicing,
         sourceLabel: getVoicingProvenanceLabel(voicing.descriptor.provenance),
         displayName: getVoicingDisplayName(voicing.descriptor),
@@ -231,6 +257,10 @@ function getResolvedTemplateCandidate(
     return {
         candidate: buildCuratedQaCandidateFromVoicing(entry, rootPitchClass, voicing),
     };
+}
+
+function incrementSelectionCount(counts: Map<string, number>, key: string) {
+    counts.set(key, (counts.get(key) ?? 0) + 1);
 }
 
 interface GeneratedSeedFacetSummary {
@@ -359,112 +389,258 @@ function getCuratedQaMicroCategoryKey(candidate: CuratedQaCandidate): string {
 function categorizeCuratedQaResolvedCandidate(
     resolvedCandidate: CuratedQaResolvedCandidate
 ): CategorizedCuratedQaResolvedCandidate {
+    const macroCategory = getCuratedQaMacroCategory(resolvedCandidate.candidate);
+    const microCategoryKey = getCuratedQaMicroCategoryKey(resolvedCandidate.candidate);
+    const macroCategoryKey = [
+        macroCategory.inversionClass,
+        macroCategory.registerTopologyClass,
+        macroCategory.fullnessClass,
+        macroCategory.topologyClass,
+    ].join('::');
+
     return {
         ...resolvedCandidate,
-        macroCategoryKey: getCuratedQaMacroCategoryKey(resolvedCandidate.candidate),
-        microCategoryKey: getCuratedQaMicroCategoryKey(resolvedCandidate.candidate),
+        fullnessClass: macroCategory.fullnessClass,
+        inversionClass: macroCategory.inversionClass,
+        registerTopologyClass: macroCategory.registerTopologyClass,
+        topologyClass: macroCategory.topologyClass,
+        macroCategoryKey,
+        microCategoryKey,
     };
 }
 
-function buildMacroCategoryInventory(
+function pushInventoryEntry<Key extends string>(
+    inventory: Map<Key, CategorizedCuratedQaResolvedCandidate[]>,
+    key: Key,
+    candidate: CategorizedCuratedQaResolvedCandidate
+) {
+    const existing = inventory.get(key) ?? [];
+    existing.push(candidate);
+    inventory.set(key, existing);
+}
+
+function buildCuratedQaCategoryInventory(
     candidates: CategorizedCuratedQaResolvedCandidate[]
-): Map<string, CategorizedCuratedQaResolvedCandidate[]> {
-    const inventory = new Map<string, CategorizedCuratedQaResolvedCandidate[]>();
+): CuratedQaCategoryInventory {
+    const inventory: CuratedQaCategoryInventory = {
+        byFullness: new Map(),
+        byInversion: new Map(),
+        byRegisterTopology: new Map(),
+        byTopology: new Map(),
+        byMacro: new Map(),
+        byMicro: new Map(),
+        byMacroMicro: new Map(),
+    };
 
     for (const candidate of candidates) {
-        const existing = inventory.get(candidate.macroCategoryKey) ?? [];
-        existing.push(candidate);
-        inventory.set(candidate.macroCategoryKey, existing);
+        pushInventoryEntry(inventory.byFullness, candidate.fullnessClass, candidate);
+        pushInventoryEntry(inventory.byInversion, candidate.inversionClass, candidate);
+        pushInventoryEntry(inventory.byRegisterTopology, candidate.registerTopologyClass, candidate);
+        pushInventoryEntry(inventory.byTopology, candidate.topologyClass, candidate);
+        pushInventoryEntry(inventory.byMacro, candidate.macroCategoryKey, candidate);
+        pushInventoryEntry(inventory.byMicro, candidate.microCategoryKey, candidate);
+        pushInventoryEntry(inventory.byMacroMicro, `${candidate.macroCategoryKey}::${candidate.microCategoryKey}`, candidate);
     }
 
     return inventory;
 }
 
-function selectMacroCoverageCandidates(
-    candidates: CategorizedCuratedQaResolvedCandidate[],
-    maxCandidates: number
-): CategorizedCuratedQaResolvedCandidate[] {
-    const macroInventory = buildMacroCategoryInventory(candidates);
-    const selected: CategorizedCuratedQaResolvedCandidate[] = [];
-    const selectedIds = new Set<string>();
-    const macroKeys = Array.from(macroInventory.keys());
-    let macroIndex = 0;
-
-    while (selected.length < maxCandidates && macroKeys.length > 0) {
-        let selectedInRound = false;
-
-        for (let index = 0; index < macroKeys.length; index += 1) {
-            const macroKey = macroKeys[(macroIndex + index) % macroKeys.length];
-            const nextCandidate = (macroInventory.get(macroKey) ?? []).find((candidate) => !selectedIds.has(candidate.candidate.candidateId));
-
-            if (!nextCandidate) {
-                continue;
-            }
-
-            selected.push(nextCandidate);
-            selectedIds.add(nextCandidate.candidate.candidateId);
-            macroIndex = (macroIndex + index + 1) % macroKeys.length;
-            selectedInRound = true;
-
-            if (selected.length >= maxCandidates) {
-                break;
-            }
-        }
-
-        if (!selectedInRound) {
-            break;
-        }
+function compareCandidateTieBreak(left: CuratedQaResolvedCandidate, right: CuratedQaResolvedCandidate): number {
+    const candidateIdOrder = left.candidate.candidateId.localeCompare(right.candidate.candidateId);
+    if (candidateIdOrder !== 0) {
+        return candidateIdOrder;
     }
 
-    return selected;
+    return (left.candidate.seedId ?? '').localeCompare(right.candidate.seedId ?? '');
 }
 
-function selectMicroDiversityCandidates(
-    candidates: CategorizedCuratedQaResolvedCandidate[],
-    selected: CategorizedCuratedQaResolvedCandidate[],
-    maxCandidates: number
-): CategorizedCuratedQaResolvedCandidate[] {
-    const selectedIds = new Set(selected.map((candidate) => candidate.candidate.candidateId));
-    const selectedMacroMicroPairs = new Set(selected.map((candidate) => `${candidate.macroCategoryKey}::${candidate.microCategoryKey}`));
-    const macroInventory = buildMacroCategoryInventory(candidates);
-    const macroKeys = Array.from(macroInventory.keys());
-    let macroIndex = 0;
+function buildExactSignatureRepresentatives(
+    candidates: CuratedQaResolvedCandidate[]
+): CuratedQaResolvedCandidate[] {
+    const groups = new Map<string, CuratedQaResolvedCandidate[]>();
 
-    while (selected.length < maxCandidates && macroKeys.length > 0) {
-        let selectedInRound = false;
-
-        for (let index = 0; index < macroKeys.length; index += 1) {
-            const macroKey = macroKeys[(macroIndex + index) % macroKeys.length];
-            const macroCandidates = macroInventory.get(macroKey) ?? [];
-            const nextCandidate = macroCandidates.find((candidate) => {
-                if (selectedIds.has(candidate.candidate.candidateId)) {
-                    return false;
-                }
-
-                return !selectedMacroMicroPairs.has(`${candidate.macroCategoryKey}::${candidate.microCategoryKey}`);
-            });
-
-            if (!nextCandidate) {
-                continue;
-            }
-
-            selected.push(nextCandidate);
-            selectedIds.add(nextCandidate.candidate.candidateId);
-            selectedMacroMicroPairs.add(`${nextCandidate.macroCategoryKey}::${nextCandidate.microCategoryKey}`);
-            macroIndex = (macroIndex + index + 1) % macroKeys.length;
-            selectedInRound = true;
-
-            if (selected.length >= maxCandidates) {
-                break;
-            }
-        }
-
-        if (!selectedInRound) {
-            break;
-        }
+    for (const candidate of candidates) {
+        const signature = getResolvedVoicingSignature(candidate.candidate.voicing);
+        const existing = groups.get(signature) ?? [];
+        existing.push(candidate);
+        groups.set(signature, existing);
     }
 
-    return selected;
+    return Array.from(groups.values())
+        .map((group) => [...group].sort(compareCandidateTieBreak)[0]!)
+        .sort(compareCandidateTieBreak);
+}
+
+function createCuratedQaSelectionState(): CuratedQaSelectionState {
+    return {
+        selectedIds: new Set(),
+        selected: [],
+        fullnessCounts: new Map(),
+        inversionCounts: new Map(),
+        registerTopologyCounts: new Map(),
+        topologyCounts: new Map(),
+        macroCounts: new Map(),
+        microCounts: new Map(),
+        macroMicroCounts: new Map(),
+    };
+}
+
+function addSelectedCandidate(
+    state: CuratedQaSelectionState,
+    candidate: CategorizedCuratedQaResolvedCandidate
+) {
+    if (state.selectedIds.has(candidate.candidate.candidateId)) {
+        return;
+    }
+
+    state.selected.push(candidate);
+    state.selectedIds.add(candidate.candidate.candidateId);
+    incrementSelectionCount(state.fullnessCounts, candidate.fullnessClass);
+    incrementSelectionCount(state.inversionCounts, candidate.inversionClass);
+    incrementSelectionCount(state.registerTopologyCounts, candidate.registerTopologyClass);
+    incrementSelectionCount(state.topologyCounts, candidate.topologyClass);
+    incrementSelectionCount(state.macroCounts, candidate.macroCategoryKey);
+    incrementSelectionCount(state.microCounts, candidate.microCategoryKey);
+    incrementSelectionCount(state.macroMicroCounts, `${candidate.macroCategoryKey}::${candidate.microCategoryKey}`);
+}
+
+function compareTupleValues(left: Array<string | number>, right: Array<string | number>): number {
+    const length = Math.max(left.length, right.length);
+
+    for (let index = 0; index < length; index += 1) {
+        const leftValue = left[index];
+        const rightValue = right[index];
+
+        if (leftValue === rightValue) {
+            continue;
+        }
+
+        if (typeof leftValue === 'number' && typeof rightValue === 'number') {
+            return leftValue - rightValue;
+        }
+
+        return String(leftValue).localeCompare(String(rightValue));
+    }
+
+    return 0;
+}
+
+function getInventoryCandidateRarityTuple(
+    candidate: CategorizedCuratedQaResolvedCandidate,
+    inventory: CuratedQaCategoryInventory
+): Array<string | number> {
+    return [
+        inventory.byMacro.get(candidate.macroCategoryKey)?.length ?? Number.MAX_SAFE_INTEGER,
+        inventory.byFullness.get(candidate.fullnessClass)?.length ?? Number.MAX_SAFE_INTEGER,
+        inventory.byInversion.get(candidate.inversionClass)?.length ?? Number.MAX_SAFE_INTEGER,
+        inventory.byRegisterTopology.get(candidate.registerTopologyClass)?.length ?? Number.MAX_SAFE_INTEGER,
+        inventory.byTopology.get(candidate.topologyClass)?.length ?? Number.MAX_SAFE_INTEGER,
+        inventory.byMicro.get(candidate.microCategoryKey)?.length ?? Number.MAX_SAFE_INTEGER,
+        candidate.candidate.candidateId,
+        candidate.candidate.seedId ?? '',
+    ];
+}
+
+function getSelectionBalanceTuple(
+    candidate: CategorizedCuratedQaResolvedCandidate,
+    state: CuratedQaSelectionState,
+    inventory: CuratedQaCategoryInventory
+): Array<string | number> {
+    return [
+        state.macroCounts.get(candidate.macroCategoryKey) ?? 0,
+        state.macroMicroCounts.get(`${candidate.macroCategoryKey}::${candidate.microCategoryKey}`) ?? 0,
+        state.fullnessCounts.get(candidate.fullnessClass) ?? 0,
+        state.inversionCounts.get(candidate.inversionClass) ?? 0,
+        state.registerTopologyCounts.get(candidate.registerTopologyClass) ?? 0,
+        state.topologyCounts.get(candidate.topologyClass) ?? 0,
+        state.microCounts.get(candidate.microCategoryKey) ?? 0,
+        ...getInventoryCandidateRarityTuple(candidate, inventory),
+    ];
+}
+
+function pickBestRepresentativeCandidate(
+    candidates: CategorizedCuratedQaResolvedCandidate[],
+    state: CuratedQaSelectionState,
+    inventory: CuratedQaCategoryInventory
+): CategorizedCuratedQaResolvedCandidate | undefined {
+    return [...candidates]
+        .filter((candidate) => !state.selectedIds.has(candidate.candidate.candidateId))
+        .sort((left, right) =>
+            compareTupleValues(
+                getSelectionBalanceTuple(left, state, inventory),
+                getSelectionBalanceTuple(right, state, inventory)
+            )
+        )[0];
+}
+
+function applyCategoryCoveragePass<Key extends string>(
+    categoryMap: Map<Key, CategorizedCuratedQaResolvedCandidate[]>,
+    state: CuratedQaSelectionState,
+    inventory: CuratedQaCategoryInventory,
+    maxCandidates: number
+) {
+    const orderedCategories = Array.from(categoryMap.entries())
+        .sort((left, right) => {
+            if (left[1].length !== right[1].length) {
+                return left[1].length - right[1].length;
+            }
+
+            return String(left[0]).localeCompare(String(right[0]));
+        });
+
+    for (const [, candidates] of orderedCategories) {
+        if (state.selected.length >= maxCandidates) {
+            break;
+        }
+
+        const nextCandidate = pickBestRepresentativeCandidate(candidates, state, inventory);
+        if (!nextCandidate) {
+            continue;
+        }
+
+        addSelectedCandidate(state, nextCandidate);
+    }
+}
+
+function applyFillPass(
+    candidates: CategorizedCuratedQaResolvedCandidate[],
+    state: CuratedQaSelectionState,
+    inventory: CuratedQaCategoryInventory,
+    maxCandidates: number
+) {
+    while (state.selected.length < maxCandidates) {
+        const nextCandidate = pickBestRepresentativeCandidate(candidates, state, inventory);
+
+        if (!nextCandidate) {
+            break;
+        }
+
+        addSelectedCandidate(state, nextCandidate);
+    }
+}
+
+export function selectCuratedQaCandidatesFromResolvedVoicings(
+    entry: ChordRegistryEntry,
+    rootPitchClass: number,
+    voicings: ResolvedVoicing[],
+    plan: Pick<CuratedQaSlicePlan, 'maxCandidates'>
+): CuratedQaCandidate[] {
+    const representativeCandidates = buildExactSignatureRepresentatives(
+        voicings.map((voicing) => getResolvedTemplateCandidate(voicing, entry, rootPitchClass))
+    ).map(categorizeCuratedQaResolvedCandidate);
+    const inventory = buildCuratedQaCategoryInventory(representativeCandidates);
+    const selectionState = createCuratedQaSelectionState();
+
+    applyCategoryCoveragePass(inventory.byFullness, selectionState, inventory, plan.maxCandidates);
+    applyCategoryCoveragePass(inventory.byInversion, selectionState, inventory, plan.maxCandidates);
+    applyCategoryCoveragePass(inventory.byRegisterTopology, selectionState, inventory, plan.maxCandidates);
+    applyCategoryCoveragePass(inventory.byMacro, selectionState, inventory, plan.maxCandidates);
+    applyCategoryCoveragePass(inventory.byMacroMicro, selectionState, inventory, plan.maxCandidates);
+    applyFillPass(representativeCandidates, selectionState, inventory, plan.maxCandidates);
+
+    return selectionState.selected
+        .slice(0, plan.maxCandidates)
+        .map((resolvedCandidate) => resolvedCandidate.candidate);
 }
 
 function selectStratifiedCandidatesForChord(
@@ -475,44 +651,10 @@ function selectStratifiedCandidatesForChord(
     const exploratoryCandidates = getExploratoryVoicingsForChord(entry, rootPitchClass, {
         maxRootFret: 15,
         includeNonPlayableCandidates: false,
+        dedupeResolvedCandidates: false,
     });
-    const deduped = new Map<string, CuratedQaResolvedCandidate>();
 
-    for (const voicing of exploratoryCandidates) {
-        const resolvedCandidate = getResolvedTemplateCandidate(voicing, entry, rootPitchClass);
-
-        const voicingSignature = getResolvedVoicingSignature(resolvedCandidate.candidate.voicing);
-        const existing = deduped.get(voicingSignature);
-
-        if (!existing) {
-            deduped.set(voicingSignature, resolvedCandidate);
-        }
-    }
-
-    const categorizedCandidates = Array.from(deduped.values()).map(categorizeCuratedQaResolvedCandidate);
-    const selected = selectMicroDiversityCandidates(
-        categorizedCandidates,
-        selectMacroCoverageCandidates(categorizedCandidates, plan.maxCandidates),
-        plan.maxCandidates
-    );
-    const selectedIds = new Set(selected.map((resolvedCandidate) => resolvedCandidate.candidate.candidateId));
-
-    for (const resolvedCandidate of categorizedCandidates) {
-        if (selected.length >= plan.maxCandidates) {
-            break;
-        }
-
-        if (selectedIds.has(resolvedCandidate.candidate.candidateId)) {
-            continue;
-        }
-
-        selected.push(resolvedCandidate);
-        selectedIds.add(resolvedCandidate.candidate.candidateId);
-    }
-
-    return selected
-        .slice(0, plan.maxCandidates)
-        .map((resolvedCandidate) => resolvedCandidate.candidate);
+    return selectCuratedQaCandidatesFromResolvedVoicings(entry, rootPitchClass, exploratoryCandidates, plan);
 }
 
 export function getCuratedQaCandidates(rootPitchClass: number): CuratedQaCandidate[] {

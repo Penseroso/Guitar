@@ -18,6 +18,7 @@ import type { ResolvedVoicing, VoicingCandidate, VoicingRankingMode, VoicingTemp
 export interface GetRankedVoicingsOptions extends ResolveVoicingOptions {
     resolveAcrossPositions?: boolean;
     includeNonPlayableCandidates?: boolean;
+    dedupeResolvedCandidates?: boolean;
     maxCandidates?: number;
     rankingMode?: VoicingRankingMode;
     applyChordModeSurfacing?: boolean;
@@ -226,7 +227,9 @@ function getResolvedVoicingPoolForChord(
     const surfacedResolvedVoicings = options.applyChordModeSurfacing === false
         ? semanticallyValidResolvedVoicings
         : applyChordSurfacePolicies(semanticallyValidResolvedVoicings);
-    const dedupedResolvedVoicings = dedupeResolvedVoicings(surfacedResolvedVoicings);
+    const dedupedResolvedVoicings = options.dedupeResolvedCandidates === false
+        ? surfacedResolvedVoicings
+        : dedupeResolvedVoicings(surfacedResolvedVoicings);
 
     return options.includeNonPlayableCandidates === true
         ? dedupedResolvedVoicings

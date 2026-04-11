@@ -73,7 +73,7 @@ export function CuratedQaPanel({
             aria-label="Developer curated QA"
         >
             <div className="flex flex-col gap-2 border-b border-white/5 pb-4">
-                <span className="text-[9px] font-black uppercase tracking-[0.35em] text-amber-100/45">Developer Only</span>
+                <span className="text-[9px] font-black tracking-[0.35em] text-amber-100/45">Developer Only</span>
                 <div className="flex flex-wrap items-end justify-between gap-3">
                     <div className="flex flex-col gap-1">
                         <h3 className="text-xl font-black tracking-tight text-white">Curated QA</h3>
@@ -81,7 +81,7 @@ export function CuratedQaPanel({
                             Internal review surface for the current curated QA set. Choose accept, borderline, or reject in this session, then submit to persist those decisions into the QA snapshot.
                         </p>
                     </div>
-                    <div className="flex flex-col items-start gap-1 text-[10px] font-black uppercase tracking-[0.22em] text-white/32 md:items-end">
+                    <div className="flex flex-col items-start gap-1 text-[10px] font-black tracking-[0.22em] text-white/32 md:items-end">
                         <span>{reviewedCount}/{candidates.length} reviewed</span>
                         <span>{acceptedCount} accept · {borderlineCount} borderline · {rejectedCount} reject</span>
                         <span>{sessionReviewCount} unsaved session edits · {persistedReviewCount} saved decisions loaded</span>
@@ -95,7 +95,7 @@ export function CuratedQaPanel({
             {analysis && (
                 <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-2">
                     <div className="rounded-[1.4rem] border border-white/6 bg-white/[0.02] p-4">
-                        <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/36">Coverage</span>
+                        <span className="text-[10px] font-black tracking-[0.22em] text-white/36">Coverage</span>
                         <p className="mt-2 text-xs text-white/58">
                             {analysis.weakCoverageChordTypes.length === 0
                                 ? 'Active QA slices are fully covered.'
@@ -106,7 +106,7 @@ export function CuratedQaPanel({
                                 {weakCoveragePreview.map((entry) => (
                                     <span
                                         key={entry.chordType}
-                                        className="rounded-full border border-white/8 px-2 py-1 text-[9px] font-black uppercase tracking-[0.14em] text-white/42"
+                                        className="rounded-full border border-white/8 px-2 py-1 text-[9px] font-black tracking-[0.14em] text-white/42"
                                     >
                                         {entry.chordType} {entry.activeReviewedCount}/{entry.candidateCount}
                                     </span>
@@ -115,7 +115,7 @@ export function CuratedQaPanel({
                         )}
                     </div>
                     <div className="rounded-[1.4rem] border border-white/6 bg-white/[0.02] p-4">
-                        <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/36">Review Drift</span>
+                        <span className="text-[10px] font-black tracking-[0.22em] text-white/36">Review Drift</span>
                         <p className="mt-2 text-xs text-white/58">
                             {analysis.staleReviewCount === 0
                                 ? 'Saved reviews all map cleanly into the current exploratory QA slice.'
@@ -126,7 +126,7 @@ export function CuratedQaPanel({
                                 {analysis.staleReviewReferences.slice(0, 3).map((entry) => (
                                     <span
                                         key={`${entry.chordType}-${entry.candidateId}`}
-                                        className="rounded-full border border-red-200/12 px-2 py-1 text-[9px] font-black uppercase tracking-[0.14em] text-red-100/52"
+                                        className="rounded-full border border-red-200/12 px-2 py-1 text-[9px] font-black tracking-[0.14em] text-red-100/52"
                                     >
                                         {entry.chordType} {entry.decision}
                                     </span>
@@ -153,14 +153,14 @@ export function CuratedQaPanel({
                         >
                             <div className="flex flex-wrap items-end justify-between gap-3 border-b border-white/5 pb-3">
                                 <div className="flex flex-col gap-1">
-                                    <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/38">
+                                    <span className="text-[10px] font-black tracking-[0.22em] text-white/38">
                                         {group.chordLabel}
                                     </span>
-                                    <h4 className="text-sm font-black uppercase tracking-[0.18em] text-white/80">
+                                    <h4 className="text-sm font-black tracking-[0.18em] text-white/80">
                                         {group.chordTypeLabel} review slice
                                     </h4>
                                 </div>
-                                <div className="flex flex-col items-start gap-1 text-[10px] font-black uppercase tracking-[0.2em] text-white/32 md:items-end">
+                                <div className="flex flex-col items-start gap-1 text-[10px] font-black tracking-[0.2em] text-white/32 md:items-end">
                                     <span>{groupReviews.length}/{group.candidates.length} reviewed</span>
                                     <span>{groupAcceptedCount} accept · {groupBorderlineCount} borderline · {groupRejectedCount} reject</span>
                                 </div>
@@ -181,10 +181,10 @@ export function CuratedQaPanel({
                                             <div className="flex items-start justify-between gap-3">
                                                 <div className="min-w-0">
                                                     <div className="flex flex-wrap items-center gap-2">
-                                                        <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/65">
+                                                        <span className="text-[10px] font-black tracking-[0.22em] text-white/65">
                                                             {candidate.chordLabel}
                                                         </span>
-                                                        <span className="rounded-full border border-amber-100/15 bg-amber-100/5 px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.18em] text-amber-50/70">
+                                                        <span className="rounded-full border border-amber-100/15 bg-amber-100/5 px-2 py-0.5 text-[9px] font-black tracking-[0.18em] text-amber-50/70">
                                                             {candidate.sourceLabel}
                                                         </span>
                                                     </div>
@@ -194,7 +194,7 @@ export function CuratedQaPanel({
                                                         <p className="mt-1 text-[11px] text-white/42">{candidate.displaySubtitle}</p>
                                                     )}
                                                 </div>
-                                                <span className="text-[10px] font-black uppercase tracking-[0.18em] text-white/28">
+                                                <span className="text-[10px] font-black tracking-[0.18em] text-white/28">
                                                     {pendingDecision
                                                         ? `unsaved ${pendingDecision}`
                                                         : savedDecision
@@ -211,13 +211,13 @@ export function CuratedQaPanel({
                                                 {meta.map((item) => (
                                                     <span
                                                         key={`${candidate.candidateId}-${item}`}
-                                                        className="rounded-full border border-white/8 px-2 py-1 text-[9px] font-black uppercase tracking-[0.14em] text-white/42"
+                                                        className="rounded-full border border-white/8 px-2 py-1 text-[9px] font-black tracking-[0.14em] text-white/42"
                                                     >
                                                         {item}
                                                     </span>
                                                 ))}
                                                 {candidate.seedId && (
-                                                    <span className="rounded-full border border-white/8 px-2 py-1 text-[9px] font-black uppercase tracking-[0.14em] text-white/42">
+                                                    <span className="rounded-full border border-white/8 px-2 py-1 text-[9px] font-black tracking-[0.14em] text-white/42">
                                                         {candidate.seedId}
                                                     </span>
                                                 )}
@@ -227,7 +227,7 @@ export function CuratedQaPanel({
                                                 <button
                                                     type="button"
                                                     onClick={() => onReview(candidate, 'accept')}
-                                                    className={`rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-colors ${
+                                                    className={`rounded-full border px-3 py-2 text-[10px] font-black tracking-[0.2em] transition-colors ${
                                                         decision === 'accept'
                                                             ? 'border-emerald-200/35 bg-emerald-300/[0.12] text-emerald-50'
                                                             : 'border-white/10 bg-white/[0.02] text-white/68 hover:border-emerald-200/20 hover:text-white'
@@ -238,7 +238,7 @@ export function CuratedQaPanel({
                                                 <button
                                                     type="button"
                                                     onClick={() => onReview(candidate, 'borderline')}
-                                                    className={`rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-colors ${
+                                                    className={`rounded-full border px-3 py-2 text-[10px] font-black tracking-[0.2em] transition-colors ${
                                                         decision === 'borderline'
                                                             ? 'border-amber-200/35 bg-amber-300/[0.12] text-amber-50'
                                                             : 'border-white/10 bg-white/[0.02] text-white/68 hover:border-amber-200/20 hover:text-white'
@@ -249,7 +249,7 @@ export function CuratedQaPanel({
                                                 <button
                                                     type="button"
                                                     onClick={() => onReview(candidate, 'reject')}
-                                                    className={`rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-colors ${
+                                                    className={`rounded-full border px-3 py-2 text-[10px] font-black tracking-[0.2em] transition-colors ${
                                                         decision === 'reject'
                                                             ? 'border-red-200/35 bg-red-300/[0.12] text-red-50'
                                                             : 'border-white/10 bg-white/[0.02] text-white/68 hover:border-red-200/20 hover:text-white'
@@ -269,7 +269,7 @@ export function CuratedQaPanel({
 
             <div className="mt-5 flex flex-col gap-3 border-t border-white/5 pt-4 md:flex-row md:items-center md:justify-between">
                 <div className="flex flex-col gap-1">
-                    <span className="text-[10px] font-black uppercase tracking-[0.18em] text-white/32">
+                    <span className="text-[10px] font-black tracking-[0.18em] text-white/32">
                         {hasPendingChanges
                             ? `${sessionReviewCount} unsaved review updates pending submit`
                             : lastSavedAt
@@ -284,7 +284,7 @@ export function CuratedQaPanel({
                     type="button"
                     onClick={onSubmit}
                     disabled={isSubmitting || !hasPendingChanges}
-                    className="rounded-full border border-amber-200/25 bg-amber-200/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-amber-50 transition-colors hover:border-amber-100/40 hover:bg-amber-200/14 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="rounded-full border border-amber-200/25 bg-amber-200/10 px-4 py-2 text-[10px] font-black tracking-[0.2em] text-amber-50 transition-colors hover:border-amber-100/40 hover:bg-amber-200/14 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                     {isSubmitting ? 'Submitting...' : hasPendingChanges ? 'Submit QA' : 'No Changes To Submit'}
                 </button>
