@@ -50,15 +50,15 @@ describe('developer curated QA mode', () => {
         expect(groupedCandidates.map((group) => group.chordType)).toEqual(CURATED_QA_REVIEW_CHORD_IDS);
         expect(Object.fromEntries(groupedCandidates.map((group) => [group.chordType, group.candidates.length]))).toEqual({
             major: 12,
-            'major-6': 3,
+            'major-6': 6,
             'major-7': 6,
             'major-9': 6,
             minor: 8,
             'minor-7': 6,
             'dominant-7': 8,
             'dominant-9': 6,
-            sus2: 3,
-            sus4: 4,
+            sus2: 6,
+            sus4: 6,
         });
         expect(majorCandidates).toHaveLength(12);
         expect(candidates.every((candidate) => candidate.voicing.descriptor.provenance.sourceKind === 'generated')).toBe(true);

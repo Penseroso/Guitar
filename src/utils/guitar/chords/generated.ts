@@ -5,7 +5,7 @@ import type { GuitarStringIndex, VoicingTemplate, VoicingTemplateString } from '
 
 type GeneratedRegisterBias = 'neutral' | 'upper' | 'wide';
 type GeneratedLayoutKind = 'contiguous' | 'skip';
-type GeneratedCoverageProfile = 'core' | 'inversional' | 'extension-forward' | 'duplicated-root' | 'dense';
+type GeneratedCoverageProfile = 'baseline' | 'reduced' | 'fuller' | 'duplicated-root' | 'color-retained';
 type GeneratedChordClass = 'triad' | 'seventh' | 'ninth' | 'suspension' | 'extended' | 'altered';
 
 interface GeneratedSearchSeed {
@@ -23,14 +23,24 @@ interface GeneratedChordPolicy {
     chordClass: GeneratedChordClass;
     minimumNoteCount: number;
     maximumNoteCount: number;
-    structuralDegrees: string[];
-    extensionDegrees: string[];
     bassDegrees: string[];
     duplicationBudgets: Record<string, number>;
+    coverageRecipes: GeneratedCoverageRecipe[];
+}
+
+interface GeneratedCoverageRecipe {
+    family: GeneratedCoverageProfile;
+    requiredDegrees: string[];
+    fillDegrees: string[];
 }
 
 const EXPLORATORY_STRINGS: GuitarStringIndex[] = [5, 4, 3, 2, 1, 0];
 const MAX_GENERATED_NOTE_COUNT = 6;
+const MIN_OFFSET_CANDIDATE = -3;
+const MAX_OFFSET_CANDIDATE = 3;
+const MAX_FILL_VARIANTS_PER_RECIPE = 10;
+const MAX_ASSIGNMENTS_PER_RECIPE = 16;
+const MAX_TEMPLATE_VARIANTS_PER_ASSIGNMENT = 8;
 
 function buildDegreeIntervalMap(entry: ChordRegistryEntry): Map<string, number> {
     return new Map(entry.formula.degrees.map((degree, index) => [degree, entry.formula.intervals[index]]));
@@ -95,6 +105,12 @@ function pushUniqueDegrees(target: string[], degrees: Array<string | null | unde
     }
 }
 
+function compactDefinedDegrees(degrees: Array<string | null | undefined>): string[] {
+    const result: string[] = [];
+    pushUniqueDegrees(result, degrees);
+    return result;
+}
+
 function buildDuplicationBudgets(entry: ChordRegistryEntry, chordClass: GeneratedChordClass): Record<string, number> {
     const budgets: Record<string, number> = {
         '1': chordClass === 'triad' ? 3 : 2,
@@ -119,33 +135,95 @@ function buildDuplicationBudgets(entry: ChordRegistryEntry, chordClass: Generate
     return budgets;
 }
 
+function buildGeneratedCoverageRecipes(entry: ChordRegistryEntry, chordClass: GeneratedChordClass): GeneratedCoverageRecipe[] {
+    const requiredDegrees = getRequiredChordDegrees(entry);
+    const thirdLike = getThirdDegree(entry);
+    const fifthLike = getFifthDegree(entry);
+    const seventhLike = getSeventhDegree(entry);
+    const extensionDegrees = getExtensionPriority(entry);
+    const optionalFormulaDegrees = entry.formula.degrees.filter((degree) => !requiredDegrees.includes(degree));
+    const baselineRequired = chordClass === 'triad'
+        ? compactDefinedDegrees([...requiredDegrees, thirdLike, fifthLike])
+        : compactDefinedDegrees([...requiredDegrees, thirdLike, fifthLike, seventhLike]);
+    const reducedRequired = compactDefinedDegrees(requiredDegrees);
+    const fullerRequired = compactDefinedDegrees([...baselineRequired, extensionDegrees[0]]);
+    const colorRetainedRequired = compactDefinedDegrees([
+        ...requiredDegrees,
+        fifthLike,
+        extensionDegrees[0],
+        extensionDegrees[1],
+    ]);
+    const baselineFill = compactDefinedDegrees([
+        ...entry.formula.degrees,
+        ...optionalFormulaDegrees,
+        '1',
+        fifthLike,
+    ]);
+    const reducedFill = compactDefinedDegrees([
+        fifthLike,
+        ...entry.formula.degrees,
+        ...optionalFormulaDegrees,
+        '1',
+    ]);
+    const fullerFill = compactDefinedDegrees([
+        ...entry.formula.degrees,
+        ...optionalFormulaDegrees,
+        '1',
+        fifthLike,
+        thirdLike,
+        seventhLike,
+    ]);
+    const duplicatedRootFill = compactDefinedDegrees([
+        '1',
+        ...entry.formula.degrees,
+        ...optionalFormulaDegrees,
+        fifthLike,
+    ]);
+    const recipes: GeneratedCoverageRecipe[] = [
+        {
+            family: 'baseline',
+            requiredDegrees: baselineRequired,
+            fillDegrees: baselineFill,
+        },
+        {
+            family: 'reduced',
+            requiredDegrees: reducedRequired,
+            fillDegrees: reducedFill,
+        },
+        {
+            family: 'fuller',
+            requiredDegrees: fullerRequired,
+            fillDegrees: fullerFill,
+        },
+        {
+            family: 'duplicated-root',
+            requiredDegrees: baselineRequired,
+            fillDegrees: duplicatedRootFill,
+        },
+    ];
+
+    if (colorRetainedRequired.length > 0 && colorRetainedRequired.some((degree) => extensionDegrees.includes(degree))) {
+        recipes.push({
+            family: 'color-retained',
+            requiredDegrees: colorRetainedRequired,
+            fillDegrees: compactDefinedDegrees([
+                ...extensionDegrees,
+                ...entry.formula.degrees,
+                '1',
+                fifthLike,
+            ]),
+        });
+    }
+
+    return recipes;
+}
+
 function buildGeneratedChordPolicy(entry: ChordRegistryEntry): GeneratedChordPolicy {
     const thirdLike = getThirdDegree(entry);
     const fifthLike = getFifthDegree(entry);
     const seventhLike = getSeventhDegree(entry);
     const extensionDegrees = getExtensionPriority(entry);
     const chordClass = getChordClass(entry);
-    const structuralDegrees: string[] = ['1'];
-
-    switch (chordClass) {
-        case 'triad':
-            pushUniqueDegrees(structuralDegrees, [thirdLike, fifthLike]);
-            break;
-        case 'suspension':
-            pushUniqueDegrees(structuralDegrees, [thirdLike, fifthLike, seventhLike]);
-            break;
-        case 'seventh':
-            pushUniqueDegrees(structuralDegrees, [thirdLike, seventhLike, fifthLike]);
-            break;
-        case 'ninth':
-            pushUniqueDegrees(structuralDegrees, [thirdLike, seventhLike, extensionDegrees[0], fifthLike]);
-            break;
-        case 'altered':
-        case 'extended':
-            pushUniqueDegrees(structuralDegrees, [thirdLike, seventhLike, extensionDegrees[0], extensionDegrees[1], fifthLike]);
-            break;
-    }
-
     const bassDegrees: string[] = ['1'];
     switch (chordClass) {
         case 'triad':
@@ -168,10 +246,9 @@ function buildGeneratedChordPolicy(entry: ChordRegistryEntry): GeneratedChordPol
         chordClass,
         minimumNoteCount: Math.max(3, Math.min(getRequiredChordDegrees(entry).length, MAX_GENERATED_NOTE_COUNT)),
         maximumNoteCount: MAX_GENERATED_NOTE_COUNT,
-        structuralDegrees,
-        extensionDegrees,
         bassDegrees,
         duplicationBudgets: buildDuplicationBudgets(entry, chordClass),
+        coverageRecipes: buildGeneratedCoverageRecipes(entry, chordClass),
     };
 }
 
@@ -220,18 +297,6 @@ function getGeneratedRegisterBiases(strings: GuitarStringIndex[], layoutKind: Ge
     return biases;
 }
 
-function getCoverageProfilesForSeed(noteCount: number): GeneratedCoverageProfile[] {
-    if (noteCount <= 3) {
-        return ['core', 'inversional'];
-    }
-
-    if (noteCount === 4) {
-        return ['core', 'inversional', 'extension-forward', 'duplicated-root'];
-    }
-
-    return ['core', 'inversional', 'extension-forward', 'duplicated-root', 'dense'];
-}
-
 function getExploratorySeedsForChord(entry: ChordRegistryEntry): GeneratedSearchSeed[] {
     const policy = buildGeneratedChordPolicy(entry);
     const seeds: GeneratedSearchSeed[] = [];
@@ -242,12 +307,11 @@ function getExploratorySeedsForChord(entry: ChordRegistryEntry): GeneratedSearch
             const bassString = descendingStrings[0];
             const layoutKind = classifyLayoutKind(descendingStrings);
             const registerBiases = getGeneratedRegisterBiases(descendingStrings, layoutKind);
-            const coverageProfiles = getCoverageProfilesForSeed(noteCount);
 
             for (const rootString of descendingStrings) {
                 for (const bassDegree of policy.bassDegrees) {
                     for (const registerBias of registerBiases) {
-                        for (const coverageProfile of coverageProfiles) {
+                        for (const coverageRecipe of policy.coverageRecipes) {
                             seeds.push({
                                 bassString,
                                 rootString,
@@ -255,7 +319,7 @@ function getExploratorySeedsForChord(entry: ChordRegistryEntry): GeneratedSearch
                                 noteCount,
                                 layoutKind,
                                 registerBias,
-                                coverageProfile,
+                                coverageProfile: coverageRecipe.family,
                                 bassDegree,
                             });
                         }
@@ -268,177 +332,302 @@ function getExploratorySeedsForChord(entry: ChordRegistryEntry): GeneratedSearch
     return seeds;
 }
 
-function buildCoverageOrder(
-    entry: ChordRegistryEntry,
-    policy: GeneratedChordPolicy,
-    seed: GeneratedSearchSeed
-): string[] {
-    const thirdLike = getThirdDegree(entry);
-    const fifthLike = getFifthDegree(entry);
-    const seventhLike = getSeventhDegree(entry);
-    const [extensionLike, secondaryExtensionLike] = policy.extensionDegrees;
-    const base: string[] = [];
-
-    switch (seed.coverageProfile) {
-        case 'inversional':
-            pushUniqueDegrees(base, [seed.bassDegree, thirdLike, seventhLike, fifthLike, extensionLike, '1', secondaryExtensionLike]);
-            break;
-        case 'extension-forward':
-            pushUniqueDegrees(base, [seed.bassDegree, extensionLike, thirdLike, seventhLike, secondaryExtensionLike, fifthLike, '1']);
-            break;
-        case 'duplicated-root':
-            pushUniqueDegrees(base, [seed.bassDegree, '1', thirdLike, fifthLike, seventhLike, extensionLike, '1']);
-            break;
-        case 'dense':
-            pushUniqueDegrees(base, [seed.bassDegree, '1', thirdLike, fifthLike, seventhLike, extensionLike, secondaryExtensionLike, '1']);
-            break;
-        default:
-            pushUniqueDegrees(base, [seed.bassDegree, ...policy.structuralDegrees, ...policy.extensionDegrees, '1']);
-            break;
-    }
-
-    pushUniqueDegrees(base, entry.formula.degrees);
-    return base;
+function getCoverageRecipeForSeed(policy: GeneratedChordPolicy, seed: GeneratedSearchSeed): GeneratedCoverageRecipe | null {
+    return policy.coverageRecipes.find((recipe) => recipe.family === seed.coverageProfile) ?? null;
 }
 
-function buildDegreeSequenceForSeed(
-    entry: ChordRegistryEntry,
-    policy: GeneratedChordPolicy,
-    seed: GeneratedSearchSeed
+function cloneDegreeCounts(counts: Map<string, number>): Map<string, number> {
+    return new Map(counts.entries());
+}
+
+function getRemainingRecipeRequiredDegrees(
+    recipe: GeneratedCoverageRecipe,
+    fixedDegreeCounts: Map<string, number>
 ): string[] {
-    const requiredDegrees = getRequiredChordDegrees(entry);
-    const coverageOrder = buildCoverageOrder(entry, policy, seed);
-    const selected = Array.from({ length: seed.playedStrings.length }).fill('') as string[];
-    const rootIndex = seed.playedStrings.indexOf(seed.rootString);
-    const bassIndex = seed.playedStrings.indexOf(seed.bassString);
-    const degreeCounts = new Map<string, number>();
-    const incrementDegree = (degree: string) => degreeCounts.set(degree, (degreeCounts.get(degree) ?? 0) + 1);
+    const remainingFixedCounts = cloneDegreeCounts(fixedDegreeCounts);
+    const remaining: string[] = [];
 
-    selected[rootIndex] = '1';
-    incrementDegree('1');
+    for (const degree of recipe.requiredDegrees) {
+        const count = remainingFixedCounts.get(degree) ?? 0;
 
-    if (!selected[bassIndex]) {
-        selected[bassIndex] = seed.bassDegree;
-        incrementDegree(seed.bassDegree);
-    }
-
-    const openIndexes = selected
-        .map((degree, index) => ({ degree, index }))
-        .filter((entry) => entry.degree === '')
-        .map((entry) => entry.index);
-
-    for (const index of openIndexes) {
-        const nextDegree = coverageOrder.find((degree) => {
-            const duplicateBudget = policy.duplicationBudgets[degree] ?? 1;
-            const currentCount = degreeCounts.get(degree) ?? 0;
-
-            return currentCount < duplicateBudget;
-        }) ?? '1';
-
-        selected[index] = nextDegree;
-        incrementDegree(nextDegree);
-    }
-
-    for (const degree of requiredDegrees) {
-        if (selected.includes(degree)) {
+        if (count > 0) {
+            remainingFixedCounts.set(degree, count - 1);
             continue;
         }
 
-        const replacementIndex = selected.findIndex((selectedDegree, index) => {
-            if (index === rootIndex) {
-                return false;
+        remaining.push(degree);
+    }
+
+    return remaining;
+}
+
+function appendRecipeFillVariants(
+    fillDegrees: string[],
+    duplicationBudgets: Record<string, number>,
+    degreeCounts: Map<string, number>,
+    remainingSlots: number,
+    startIndex: number,
+    current: string[],
+    results: string[][]
+) {
+    if (results.length >= MAX_FILL_VARIANTS_PER_RECIPE) {
+        return;
+    }
+
+    if (remainingSlots === 0) {
+        results.push([...current]);
+        return;
+    }
+
+    for (let index = startIndex; index < fillDegrees.length; index += 1) {
+        const degree = fillDegrees[index]!;
+        const budget = duplicationBudgets[degree] ?? 1;
+        const count = degreeCounts.get(degree) ?? 0;
+
+        if (count >= budget) {
+            continue;
+        }
+
+        degreeCounts.set(degree, count + 1);
+        current.push(degree);
+        appendRecipeFillVariants(fillDegrees, duplicationBudgets, degreeCounts, remainingSlots - 1, index, current, results);
+        current.pop();
+        degreeCounts.set(degree, count);
+    }
+}
+
+function getRecipeFillVariants(
+    recipe: GeneratedCoverageRecipe,
+    policy: GeneratedChordPolicy,
+    degreeCounts: Map<string, number>,
+    remainingSlots: number
+): string[][] {
+    if (remainingSlots === 0) {
+        return [[]];
+    }
+
+    const variants: string[][] = [];
+    appendRecipeFillVariants(
+        recipe.fillDegrees,
+        policy.duplicationBudgets,
+        cloneDegreeCounts(degreeCounts),
+        remainingSlots,
+        0,
+        [],
+        variants
+    );
+
+    return variants;
+}
+
+function buildUniquePermutations(values: string[]): string[][] {
+    if (values.length <= 1) {
+        return [values];
+    }
+
+    const counts = new Map<string, number>();
+    for (const value of values) {
+        counts.set(value, (counts.get(value) ?? 0) + 1);
+    }
+
+    const permutations: string[][] = [];
+    const current: string[] = [];
+    const distinctValues = Array.from(counts.keys()).sort();
+
+    const walk = () => {
+        if (permutations.length >= MAX_ASSIGNMENTS_PER_RECIPE) {
+            return;
+        }
+
+        if (current.length === values.length) {
+            permutations.push([...current]);
+            return;
+        }
+
+        for (const value of distinctValues) {
+            const count = counts.get(value) ?? 0;
+            if (count <= 0) {
+                continue;
             }
 
-            return !requiredDegrees.includes(selectedDegree) || selectedDegree === seed.bassDegree;
-        });
+            counts.set(value, count - 1);
+            current.push(value);
+            walk();
+            current.pop();
+            counts.set(value, count);
+        }
+    };
 
-        if (replacementIndex !== -1) {
-            selected[replacementIndex] = degree;
+    walk();
+    return permutations;
+}
+
+function buildDegreeAssignmentsForSeed(
+    entry: ChordRegistryEntry,
+    policy: GeneratedChordPolicy,
+    seed: GeneratedSearchSeed
+): string[][] {
+    const recipe = getCoverageRecipeForSeed(policy, seed);
+    const rootIndex = seed.playedStrings.indexOf(seed.rootString);
+    const bassIndex = seed.playedStrings.indexOf(seed.bassString);
+
+    if (!recipe || rootIndex === -1 || bassIndex === -1) {
+        return [];
+    }
+
+    if (rootIndex === bassIndex && seed.bassDegree !== '1') {
+        return [];
+    }
+
+    const fixedAssignments = Array.from({ length: seed.playedStrings.length }).fill('') as string[];
+    const fixedCounts = new Map<string, number>();
+    fixedAssignments[rootIndex] = '1';
+    fixedCounts.set('1', 1);
+
+    if (!fixedAssignments[bassIndex]) {
+        fixedAssignments[bassIndex] = seed.bassDegree;
+        fixedCounts.set(seed.bassDegree, (fixedCounts.get(seed.bassDegree) ?? 0) + 1);
+    }
+
+    const remainingRequiredDegrees = getRemainingRecipeRequiredDegrees(recipe, fixedCounts);
+    const remainingIndexes = fixedAssignments
+        .map((degree, index) => ({ degree, index }))
+        .filter((entryValue) => entryValue.degree === '')
+        .map((entryValue) => entryValue.index);
+
+    if (remainingRequiredDegrees.length > remainingIndexes.length) {
+        return [];
+    }
+
+    const currentCounts = cloneDegreeCounts(fixedCounts);
+    for (const degree of remainingRequiredDegrees) {
+        currentCounts.set(degree, (currentCounts.get(degree) ?? 0) + 1);
+    }
+
+    const fillVariants = getRecipeFillVariants(
+        recipe,
+        policy,
+        currentCounts,
+        remainingIndexes.length - remainingRequiredDegrees.length
+    );
+    const assignments = new Set<string>();
+
+    for (const fillVariant of fillVariants) {
+        const remainingDegrees = [...remainingRequiredDegrees, ...fillVariant];
+        const permutations = buildUniquePermutations(remainingDegrees);
+
+        for (const permutation of permutations) {
+            const assignment = [...fixedAssignments];
+            remainingIndexes.forEach((index, permutationIndex) => {
+                assignment[index] = permutation[permutationIndex]!;
+            });
+
+            const requiredDegrees = getRequiredChordDegrees(entry);
+            if (requiredDegrees.some((degree) => !assignment.includes(degree))) {
+                continue;
+            }
+
+            assignments.add(assignment.join('|'));
         }
     }
 
-    return selected;
+    return Array.from(assignments).map((signature) => signature.split('|'));
 }
 
-function chooseOffsetForDegree(args: {
+function getOffsetCandidatesForDegree(args: {
     rootString: GuitarStringIndex;
     string: GuitarStringIndex;
     interval: number;
-    registerBias: GeneratedRegisterBias;
-    layoutKind: GeneratedLayoutKind;
-    bassString: GuitarStringIndex;
-}): number {
-    const { rootString, string, interval, registerBias, layoutKind, bassString } = args;
+}): number[] {
+    const { rootString, string, interval } = args;
     const rootStringPitch = STANDARD_GUITAR_TUNING_PITCH_CLASSES[rootString];
     const stringPitch = STANDARD_GUITAR_TUNING_PITCH_CLASSES[string];
     const intervalFromRootString = normalizePitchClass(stringPitch - rootStringPitch);
-    const baseOffset = normalizePitchClass(interval - intervalFromRootString);
-    const candidates = [baseOffset - 12, baseOffset, baseOffset + 12]
-        .filter((value) => value >= -8 && value <= 10);
-    const preferredOffset = registerBias === 'upper'
-        ? 4
-        : registerBias === 'wide'
-            ? (layoutKind === 'skip' ? 3 : 2)
-            : (string === bassString ? -1 : 0);
+    const candidates: number[] = [];
 
-    return candidates.sort((left, right) => {
-        const leftDistance = Math.abs(left - preferredOffset);
-        const rightDistance = Math.abs(right - preferredOffset);
-
-        if (leftDistance !== rightDistance) {
-            return leftDistance - rightDistance;
+    for (let offset = MIN_OFFSET_CANDIDATE; offset <= MAX_OFFSET_CANDIDATE; offset += 1) {
+        if (normalizePitchClass(intervalFromRootString + offset) === normalizePitchClass(interval)) {
+            candidates.push(offset);
         }
+    }
 
-        return Math.abs(left) - Math.abs(right);
-    })[0] ?? baseOffset;
+    return candidates;
 }
 
-function buildGeneratedTemplateStrings(
+function buildGeneratedTemplateStringVariants(
     entry: ChordRegistryEntry,
     seed: GeneratedSearchSeed,
     degrees: string[]
-): VoicingTemplateString[] {
+): VoicingTemplateString[][] {
     const degreeIntervalMap = buildDegreeIntervalMap(entry);
     const assignedDegrees = new Map<GuitarStringIndex, string>();
+    const stringVariants = new Map<GuitarStringIndex, VoicingTemplateString[]>();
 
     seed.playedStrings.forEach((string, index) => {
         assignedDegrees.set(string, degrees[index]);
     });
 
-    return ([0, 1, 2, 3, 4, 5] as GuitarStringIndex[]).map((string) => {
+    for (const string of ([0, 1, 2, 3, 4, 5] as GuitarStringIndex[])) {
         const degree = assignedDegrees.get(string);
 
         if (!degree) {
-            return {
+            stringVariants.set(string, [{
                 string,
                 fretOffset: null,
-            };
+            }]);
+            continue;
         }
 
         const interval = degreeIntervalMap.get(degree);
         if (interval === undefined) {
-            return {
-                string,
-                fretOffset: null,
-            };
+            return [];
         }
 
-        return {
+        const offsets = string === seed.rootString
+            ? [0]
+            : getOffsetCandidatesForDegree({
+                rootString: seed.rootString,
+                string,
+                interval,
+            });
+
+        if (offsets.length === 0) {
+            return [];
+        }
+
+        stringVariants.set(string, offsets.map((offset) => ({
             string,
-            fretOffset: string === seed.rootString
-                ? 0
-                : chooseOffsetForDegree({
-                    rootString: seed.rootString,
-                    string,
-                    interval,
-                    registerBias: seed.registerBias,
-                    layoutKind: seed.layoutKind,
-                    bassString: seed.bassString,
-                }),
+            fretOffset: offset,
             toneDegree: degree,
             isOptional: !getRequiredChordDegrees(entry).includes(degree),
-        };
-    });
+        })));
+    }
+
+    const strings = [0, 1, 2, 3, 4, 5] as GuitarStringIndex[];
+    const results: VoicingTemplateString[][] = [];
+    const current: VoicingTemplateString[] = [];
+
+    const walk = (index: number) => {
+        if (results.length >= MAX_TEMPLATE_VARIANTS_PER_ASSIGNMENT) {
+            return;
+        }
+
+        if (index >= strings.length) {
+            results.push([...current]);
+            return;
+        }
+
+        const string = strings[index]!;
+        const variants = stringVariants.get(string) ?? [];
+        for (const variant of variants) {
+            current.push(variant);
+            walk(index + 1);
+            current.pop();
+        }
+    };
+
+    walk(0);
+    return results;
 }
 
 function buildGeneratedTags(entry: ChordRegistryEntry, seed: GeneratedSearchSeed, policy: GeneratedChordPolicy): string[] {
@@ -460,14 +649,10 @@ function buildGeneratedTags(entry: ChordRegistryEntry, seed: GeneratedSearchSeed
 
 function buildGeneratedTemplate(entry: ChordRegistryEntry, seed: GeneratedSearchSeed): VoicingTemplate | null {
     const policy = buildGeneratedChordPolicy(entry);
-    const degrees = buildDegreeSequenceForSeed(entry, policy, seed);
+    const degreeAssignments = buildDegreeAssignmentsForSeed(entry, policy, seed);
     const requiredDegrees = getRequiredChordDegrees(entry);
 
-    if (!degrees.includes('1')) {
-        return null;
-    }
-
-    if (requiredDegrees.some((degree) => !degrees.includes(degree))) {
+    if (degreeAssignments.length === 0) {
         return null;
     }
 
@@ -476,7 +661,9 @@ function buildGeneratedTemplate(entry: ChordRegistryEntry, seed: GeneratedSearch
         label: `Root ${seed.rootString + 1} exploratory ${seed.noteCount}-note`,
         instrument: 'guitar',
         rootString: seed.rootString,
-        strings: buildGeneratedTemplateStrings(entry, seed, degrees),
+        strings: buildGeneratedTemplateStringVariants(entry, seed, degreeAssignments[0]!).find((strings) =>
+            requiredDegrees.every((degree) => strings.some((stringValue) => stringValue.toneDegree === degree))
+        ) ?? [],
         source: 'generated',
         tags: buildGeneratedTags(entry, seed, policy),
     };

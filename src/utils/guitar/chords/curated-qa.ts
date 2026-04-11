@@ -110,7 +110,7 @@ const CURATED_QA_SLICE_PLANS: Record<CuratedQaChordId, CuratedQaSlicePlan> = {
         searchMultiplier: 12,
     },
     'major-6': {
-        maxCandidates: 3,
+        maxCandidates: 6,
     },
     'major-7': {
         maxCandidates: 6,
@@ -131,10 +131,10 @@ const CURATED_QA_SLICE_PLANS: Record<CuratedQaChordId, CuratedQaSlicePlan> = {
         maxCandidates: 6,
     },
     sus2: {
-        maxCandidates: 3,
+        maxCandidates: 6,
     },
     sus4: {
-        maxCandidates: 4,
+        maxCandidates: 6,
     },
 };
 
