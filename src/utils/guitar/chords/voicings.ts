@@ -22,7 +22,7 @@ export interface GetRankedVoicingsOptions extends ResolveVoicingOptions {
     maxCandidates?: number;
     rankingMode?: VoicingRankingMode;
     applyChordModeSurfacing?: boolean;
-    generatedTemplateCollectionMode?: 'primary' | 'exploration' | 'qa-full';
+    generatedTemplateCollectionMode?: 'default' | 'primary' | 'qa-full';
     includeCuratedCandidates?: boolean;
     includeArchetypeGeneratedCandidates?: boolean;
     includeGeneratedCandidates?: boolean;
@@ -172,10 +172,10 @@ export function collectVoicingTemplateSourcesForChord(
         : [];
     const generatedTemplates = options.includeGeneratedCandidates === false
         ? []
-        : options.generatedTemplateCollectionMode === 'exploration'
-            ? getGeneratedVoicingTemplatesForChord(entryInput, { collectionMode: 'exploration' })
-            : options.generatedTemplateCollectionMode === 'qa-full'
-                ? getGeneratedVoicingTemplatesForChord(entryInput, { collectionMode: 'qa-full' })
+        : options.generatedTemplateCollectionMode === 'qa-full'
+            ? getGeneratedVoicingTemplatesForChord(entryInput, { collectionMode: 'qa-full' })
+            : options.generatedTemplateCollectionMode === 'default'
+                ? getGeneratedVoicingTemplatesForChord(entryInput, { collectionMode: 'default' })
             : getPrimaryGeneratedVoicingTemplatesForChord(entryInput);
 
     return {
@@ -246,7 +246,7 @@ export function getExploratoryVoicingsForChord(
     return getResolvedVoicingPoolForChord(entryInput, rootPitchClass, {
         ...options,
         applyChordModeSurfacing: false,
-        generatedTemplateCollectionMode: 'exploration',
+        generatedTemplateCollectionMode: options.generatedTemplateCollectionMode ?? 'default',
         includeCuratedCandidates: false,
         includeLegacyCandidates: false,
         includeArchetypeGeneratedCandidates: false,
@@ -261,7 +261,7 @@ export function getRankedExploratoryVoicingsForChord(
     return getRankedVoicingsForChord(entryInput, rootPitchClass, {
         ...options,
         applyChordModeSurfacing: false,
-        generatedTemplateCollectionMode: 'exploration',
+        generatedTemplateCollectionMode: options.generatedTemplateCollectionMode ?? 'default',
         includeCuratedCandidates: false,
         includeLegacyCandidates: false,
         includeArchetypeGeneratedCandidates: false,

@@ -102,7 +102,6 @@ describe('generated voicing candidates', () => {
         const sources = collectVoicingTemplateSourcesForChord('major-7', {
             includeCuratedCandidates: false,
             includeArchetypeGeneratedCandidates: true,
-            generatedTemplateCollectionMode: 'exploration',
         });
 
         expect(sources.generatedTemplates.length).toBeGreaterThan(0);
@@ -158,7 +157,7 @@ describe('generated voicing candidates', () => {
         expect(seed).toBeDefined();
     });
 
-    it('keeps generated exploration broader than public chord-mode surfacing', () => {
+    it('keeps default generated browsing broader than public chord-mode surfacing', () => {
         const exploratoryCandidates = getExploratoryVoicingsForChord('major', 0, {
             includeNonPlayableCandidates: true,
             maxRootFret: 15,
@@ -177,17 +176,17 @@ describe('generated voicing candidates', () => {
         expect(publicCandidates.some((candidate) => candidate.voicing.descriptor.inversion === 'inversion')).toBe(false);
     });
 
-    it('expands QA full generation beyond the default exploratory mode for review collection', () => {
-        const explorationStats = getGeneratedTemplateCollectionStatsForChord('major-7', {
-            collectionMode: 'exploration',
+    it('expands QA full generation beyond the default generated mode for review collection', () => {
+        const defaultStats = getGeneratedTemplateCollectionStatsForChord('major-7', {
+            collectionMode: 'default',
         });
         const qaFullStats = getGeneratedTemplateCollectionStatsForChord('major-7', {
             collectionMode: 'qa-full',
         });
 
-        expect(qaFullStats.rawTemplateCount).toBeGreaterThanOrEqual(explorationStats.rawTemplateCount);
-        expect(qaFullStats.dedupedTemplateCount).toBeGreaterThanOrEqual(explorationStats.dedupedTemplateCount);
-        expect(qaFullStats.ceilingHit).toBe(false);
+        expect(qaFullStats.rawTemplateCount).toBeGreaterThanOrEqual(defaultStats.rawTemplateCount);
+        expect(qaFullStats.dedupedTemplateCount).toBeGreaterThanOrEqual(defaultStats.dedupedTemplateCount);
+        expect(qaFullStats.ceilingHit).toBeNull();
     });
 
     it('dedupes exploratory generated templates by effective string signature', () => {
@@ -250,7 +249,7 @@ describe('generated voicing candidates', () => {
             expect(stats.rawTemplateCount).toBeGreaterThan(0);
             expect(stats.dedupedTemplateCount).toBeGreaterThan(0);
             expect(stats.rawTemplateCount).toBeGreaterThanOrEqual(stats.dedupedTemplateCount);
-            expect(stats.ceilingHit).toBe(false);
+            expect(stats.ceilingHit).toBeNull();
         }
     });
 
@@ -258,24 +257,24 @@ describe('generated voicing candidates', () => {
         const entry = resolveChordRegistryEntry('major-7');
         const seed = getExploratorySeedsForChord(entry)
             .find((candidateSeed) => {
-                const explorationTemplates = buildGeneratedTemplateVariants(entry, candidateSeed, {
-                    collectionMode: 'exploration',
+                const defaultTemplates = buildGeneratedTemplateVariants(entry, candidateSeed, {
+                    collectionMode: 'default',
                 });
                 const qaFullTemplates = buildGeneratedTemplateVariants(entry, candidateSeed, {
                     collectionMode: 'qa-full',
                 });
 
-                return qaFullTemplates.length > explorationTemplates.length;
+                return qaFullTemplates.length > defaultTemplates.length;
             });
 
         expect(seed).toBeDefined();
-        const explorationTemplates = buildGeneratedTemplateVariants(entry, seed!, {
-            collectionMode: 'exploration',
+        const defaultTemplates = buildGeneratedTemplateVariants(entry, seed!, {
+            collectionMode: 'default',
         });
         const qaFullTemplates = buildGeneratedTemplateVariants(entry, seed!, {
             collectionMode: 'qa-full',
         });
 
-        expect(qaFullTemplates.length).toBeGreaterThan(explorationTemplates.length);
+        expect(qaFullTemplates.length).toBeGreaterThan(defaultTemplates.length);
     });
 });

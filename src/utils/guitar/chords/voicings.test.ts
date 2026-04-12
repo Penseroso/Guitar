@@ -80,7 +80,7 @@ describe('voicing template adaptation', () => {
         expect(sources.generatedTemplates.length).toBeGreaterThan(0);
     });
 
-    it('keeps public source collection on the primary generated baseline while exploration can widen beyond it', () => {
+    it('keeps public source collection on the primary generated baseline while the default generated path can widen beyond it', () => {
         const publicSources = collectVoicingTemplateSourcesForChord('major-7');
         const primaryGenerated = getPrimaryGeneratedVoicingTemplatesForChord('major-7');
         const exploratoryGenerated = getGeneratedVoicingTemplatesForChord('major-7');

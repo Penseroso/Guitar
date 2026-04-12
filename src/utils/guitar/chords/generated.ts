@@ -35,20 +35,20 @@ interface GeneratedCoverageRecipe {
 }
 
 export interface GeneratedTemplateCollectionOptions {
-    collectionMode?: 'exploration' | 'qa-full';
+    collectionMode?: 'default' | 'qa-full';
 }
 
 interface GeneratedVariantCaps {
-    maxFillVariantsPerRecipe: number | null;
-    maxAssignmentsPerRecipe: number | null;
-    maxTemplateVariantsPerAssignment: number | null;
+    maxFillVariantsPerRecipe: number;
+    maxAssignmentsPerRecipe: number;
+    maxTemplateVariantsPerAssignment: number;
 }
 
 export interface GeneratedTemplateCollectionStats {
     seedCount: number;
     rawTemplateCount: number;
     dedupedTemplateCount: number;
-    ceilingHit: boolean;
+    ceilingHit: boolean | null;
 }
 
 const EXPLORATORY_STRINGS: GuitarStringIndex[] = [5, 4, 3, 2, 1, 0];
@@ -60,20 +60,10 @@ const DEFAULT_GENERATED_VARIANT_CAPS: GeneratedVariantCaps = {
     maxAssignmentsPerRecipe: 16,
     maxTemplateVariantsPerAssignment: 8,
 };
-const QA_FULL_GENERATED_VARIANT_CAPS: GeneratedVariantCaps = {
-    maxFillVariantsPerRecipe: null,
-    maxAssignmentsPerRecipe: null,
-    maxTemplateVariantsPerAssignment: null,
-};
-
-function getGeneratedVariantCaps(options: GeneratedTemplateCollectionOptions = {}): GeneratedVariantCaps {
+function getGeneratedVariantCaps(options: GeneratedTemplateCollectionOptions = {}): GeneratedVariantCaps | null {
     return options.collectionMode === 'qa-full'
-        ? QA_FULL_GENERATED_VARIANT_CAPS
+        ? null
         : DEFAULT_GENERATED_VARIANT_CAPS;
-}
-
-function hasReachedVariantCap(currentCount: number, cap: number | null): boolean {
-    return cap !== null && currentCount >= cap;
 }
 
 function buildDegreeIntervalMap(entry: ChordRegistryEntry): Map<string, number> {
@@ -410,13 +400,13 @@ function appendRecipeFillVariants(
     fillDegrees: string[],
     duplicationBudgets: Record<string, number>,
     degreeCounts: Map<string, number>,
-    caps: GeneratedVariantCaps,
+    caps: GeneratedVariantCaps | null,
     remainingSlots: number,
     startIndex: number,
     current: string[],
     results: string[][]
 ) {
-    if (hasReachedVariantCap(results.length, caps.maxFillVariantsPerRecipe)) {
+    if (caps && results.length >= caps.maxFillVariantsPerRecipe) {
         return;
     }
 
@@ -445,7 +435,7 @@ function appendRecipeFillVariants(
 function getRecipeFillVariants(
     recipe: GeneratedCoverageRecipe,
     policy: GeneratedChordPolicy,
-    caps: GeneratedVariantCaps,
+    caps: GeneratedVariantCaps | null,
     degreeCounts: Map<string, number>,
     remainingSlots: number
 ): string[][] {
@@ -468,7 +458,7 @@ function getRecipeFillVariants(
     return variants;
 }
 
-function buildUniquePermutations(values: string[], caps: GeneratedVariantCaps): string[][] {
+function buildUniquePermutations(values: string[], caps: GeneratedVariantCaps | null): string[][] {
     if (values.length <= 1) {
         return [values];
     }
@@ -483,7 +473,7 @@ function buildUniquePermutations(values: string[], caps: GeneratedVariantCaps): 
     const distinctValues = Array.from(counts.keys()).sort();
 
     const walk = () => {
-        if (hasReachedVariantCap(permutations.length, caps.maxAssignmentsPerRecipe)) {
+        if (caps && permutations.length >= caps.maxAssignmentsPerRecipe) {
             return;
         }
 
@@ -675,7 +665,7 @@ export function buildGeneratedTemplateStringVariants(
     const current: VoicingTemplateString[] = [];
 
     const walk = (index: number) => {
-        if (hasReachedVariantCap(results.length, caps.maxTemplateVariantsPerAssignment)) {
+        if (caps && results.length >= caps.maxTemplateVariantsPerAssignment) {
             return;
         }
 
@@ -733,22 +723,12 @@ export function buildGeneratedTemplateVariants(
     seed: GeneratedSearchSeed,
     options: GeneratedTemplateCollectionOptions = {}
 ): VoicingTemplate[] {
-    return buildGeneratedTemplateVariantsWithOptions(entry, seed, options);
-}
-
-function buildGeneratedTemplateVariantsWithOptions(
-    entry: ChordRegistryEntry,
-    seed: GeneratedSearchSeed,
-    options: GeneratedTemplateCollectionOptions = {}
-): VoicingTemplate[] {
     const policy = buildGeneratedChordPolicy(entry);
     const degreeAssignments = buildDegreeAssignmentsForSeed(entry, policy, seed, options);
 
     if (degreeAssignments.length === 0) {
         return [];
     }
-
-    const caps = getGeneratedVariantCaps(options);
 
     return degreeAssignments.flatMap((degrees, assignmentIndex) =>
         getAssignmentRootStringVariants(seed, degrees).flatMap((anchorRootString) =>
@@ -817,11 +797,11 @@ export function getGeneratedVoicingTemplatesForChord(
     const entry = resolveChordRegistryEntry(entryInput);
 
     return dedupeGeneratedTemplates(getExploratorySeedsForChord(entry)
-        .flatMap((seed) => buildGeneratedTemplateVariantsWithOptions(entry, seed, options)));
+        .flatMap((seed) => buildGeneratedTemplateVariants(entry, seed, options)));
 }
 
 export function getPrimaryGeneratedVoicingTemplatesForChord(entryInput: string | ChordRegistryEntry): VoicingTemplate[] {
-    return getGeneratedVoicingTemplatesForChord(entryInput, { collectionMode: 'exploration' })
+    return getGeneratedVoicingTemplatesForChord(entryInput, { collectionMode: 'default' })
         .filter(isPrimarySurfaceSeed);
 }
 
@@ -832,20 +812,19 @@ export function getGeneratedTemplateCollectionStatsForChord(
     const entry = resolveChordRegistryEntry(entryInput);
     const seeds = getExploratorySeedsForChord(entry);
     const caps = getGeneratedVariantCaps(options);
-    let ceilingHit = false;
+    let ceilingHit: boolean | null = caps ? false : null;
 
     const rawTemplates = seeds.flatMap((seed) => {
         const policy = buildGeneratedChordPolicy(entry);
         const assignments = buildDegreeAssignmentsForSeed(entry, policy, seed, options);
 
-        if (hasReachedVariantCap(assignments.length, caps.maxAssignmentsPerRecipe)) {
+        if (caps && assignments.length >= caps.maxAssignmentsPerRecipe) {
             ceilingHit = true;
         }
 
-        const variants = buildGeneratedTemplateVariantsWithOptions(entry, seed, options);
+        const variants = buildGeneratedTemplateVariants(entry, seed, options);
         if (
-            caps.maxAssignmentsPerRecipe !== null
-            && caps.maxTemplateVariantsPerAssignment !== null
+            caps
             && variants.length >= caps.maxAssignmentsPerRecipe * caps.maxTemplateVariantsPerAssignment
         ) {
             ceilingHit = true;

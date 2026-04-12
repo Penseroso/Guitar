@@ -82,7 +82,6 @@ describe('developer curated QA mode', () => {
         const defaultExploratoryCandidates = getExploratoryVoicingsForChord('major', 0, {
             maxRootFret: 15,
             dedupeResolvedCandidates: false,
-            generatedTemplateCollectionMode: 'exploration',
         });
         const rankedExploratoryCandidates = getRankedExploratoryVoicingsForChord('major', 0, {
             maxRootFret: 15,
