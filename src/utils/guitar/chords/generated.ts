@@ -39,9 +39,9 @@ export interface GeneratedTemplateCollectionOptions {
 }
 
 interface GeneratedVariantCaps {
-    maxFillVariantsPerRecipe: number;
-    maxAssignmentsPerRecipe: number;
-    maxTemplateVariantsPerAssignment: number;
+    maxFillVariantsPerRecipe: number | null;
+    maxAssignmentsPerRecipe: number | null;
+    maxTemplateVariantsPerAssignment: number | null;
 }
 
 export interface GeneratedTemplateCollectionStats {
@@ -61,15 +61,19 @@ const DEFAULT_GENERATED_VARIANT_CAPS: GeneratedVariantCaps = {
     maxTemplateVariantsPerAssignment: 8,
 };
 const QA_FULL_GENERATED_VARIANT_CAPS: GeneratedVariantCaps = {
-    maxFillVariantsPerRecipe: 256,
-    maxAssignmentsPerRecipe: 512,
-    maxTemplateVariantsPerAssignment: 128,
+    maxFillVariantsPerRecipe: null,
+    maxAssignmentsPerRecipe: null,
+    maxTemplateVariantsPerAssignment: null,
 };
 
 function getGeneratedVariantCaps(options: GeneratedTemplateCollectionOptions = {}): GeneratedVariantCaps {
     return options.collectionMode === 'qa-full'
         ? QA_FULL_GENERATED_VARIANT_CAPS
         : DEFAULT_GENERATED_VARIANT_CAPS;
+}
+
+function hasReachedVariantCap(currentCount: number, cap: number | null): boolean {
+    return cap !== null && currentCount >= cap;
 }
 
 function buildDegreeIntervalMap(entry: ChordRegistryEntry): Map<string, number> {
@@ -412,7 +416,7 @@ function appendRecipeFillVariants(
     current: string[],
     results: string[][]
 ) {
-    if (results.length >= caps.maxFillVariantsPerRecipe) {
+    if (hasReachedVariantCap(results.length, caps.maxFillVariantsPerRecipe)) {
         return;
     }
 
@@ -479,7 +483,7 @@ function buildUniquePermutations(values: string[], caps: GeneratedVariantCaps): 
     const distinctValues = Array.from(counts.keys()).sort();
 
     const walk = () => {
-        if (permutations.length >= caps.maxAssignmentsPerRecipe) {
+        if (hasReachedVariantCap(permutations.length, caps.maxAssignmentsPerRecipe)) {
             return;
         }
 
@@ -671,7 +675,7 @@ export function buildGeneratedTemplateStringVariants(
     const current: VoicingTemplateString[] = [];
 
     const walk = (index: number) => {
-        if (results.length >= caps.maxTemplateVariantsPerAssignment) {
+        if (hasReachedVariantCap(results.length, caps.maxTemplateVariantsPerAssignment)) {
             return;
         }
 
@@ -749,7 +753,6 @@ function buildGeneratedTemplateVariantsWithOptions(
     return degreeAssignments.flatMap((degrees, assignmentIndex) =>
         getAssignmentRootStringVariants(seed, degrees).flatMap((anchorRootString) =>
             buildGeneratedTemplateStringVariants(entry, seed, degrees, anchorRootString, options)
-                .slice(0, caps.maxTemplateVariantsPerAssignment)
                 .map((strings, variantIndex) => ({
                     id: `${entry.id}:${createGeneratedTemplateId(seed, anchorRootString, assignmentIndex, variantIndex)}`,
                     label: `Root ${anchorRootString + 1} exploratory ${seed.noteCount}-note`,
@@ -835,12 +838,16 @@ export function getGeneratedTemplateCollectionStatsForChord(
         const policy = buildGeneratedChordPolicy(entry);
         const assignments = buildDegreeAssignmentsForSeed(entry, policy, seed, options);
 
-        if (assignments.length >= caps.maxAssignmentsPerRecipe) {
+        if (hasReachedVariantCap(assignments.length, caps.maxAssignmentsPerRecipe)) {
             ceilingHit = true;
         }
 
         const variants = buildGeneratedTemplateVariantsWithOptions(entry, seed, options);
-        if (variants.length >= caps.maxAssignmentsPerRecipe * caps.maxTemplateVariantsPerAssignment) {
+        if (
+            caps.maxAssignmentsPerRecipe !== null
+            && caps.maxTemplateVariantsPerAssignment !== null
+            && variants.length >= caps.maxAssignmentsPerRecipe * caps.maxTemplateVariantsPerAssignment
+        ) {
             ceilingHit = true;
         }
 

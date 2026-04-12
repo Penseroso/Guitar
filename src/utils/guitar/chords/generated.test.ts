@@ -187,6 +187,7 @@ describe('generated voicing candidates', () => {
 
         expect(qaFullStats.rawTemplateCount).toBeGreaterThanOrEqual(explorationStats.rawTemplateCount);
         expect(qaFullStats.dedupedTemplateCount).toBeGreaterThanOrEqual(explorationStats.dedupedTemplateCount);
+        expect(qaFullStats.ceilingHit).toBe(false);
     });
 
     it('dedupes exploratory generated templates by effective string signature', () => {
@@ -249,6 +250,32 @@ describe('generated voicing candidates', () => {
             expect(stats.rawTemplateCount).toBeGreaterThan(0);
             expect(stats.dedupedTemplateCount).toBeGreaterThan(0);
             expect(stats.rawTemplateCount).toBeGreaterThanOrEqual(stats.dedupedTemplateCount);
+            expect(stats.ceilingHit).toBe(false);
         }
+    });
+
+    it('does not truncate QA full template variants with generator-side slices or caps', () => {
+        const entry = resolveChordRegistryEntry('major-7');
+        const seed = getExploratorySeedsForChord(entry)
+            .find((candidateSeed) => {
+                const explorationTemplates = buildGeneratedTemplateVariants(entry, candidateSeed, {
+                    collectionMode: 'exploration',
+                });
+                const qaFullTemplates = buildGeneratedTemplateVariants(entry, candidateSeed, {
+                    collectionMode: 'qa-full',
+                });
+
+                return qaFullTemplates.length > explorationTemplates.length;
+            });
+
+        expect(seed).toBeDefined();
+        const explorationTemplates = buildGeneratedTemplateVariants(entry, seed!, {
+            collectionMode: 'exploration',
+        });
+        const qaFullTemplates = buildGeneratedTemplateVariants(entry, seed!, {
+            collectionMode: 'qa-full',
+        });
+
+        expect(qaFullTemplates.length).toBeGreaterThan(explorationTemplates.length);
     });
 });
