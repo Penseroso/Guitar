@@ -1,0 +1,1317 @@
+{
+  "updatedAt": "2026-04-22T08:44:03.122Z",
+  "reviews": [
+    {
+      "chordType": "diminished-7",
+      "candidateId": "diminished-7:0:diminished-7:generated:b4:r4:s4321:n4:contiguous:neutral:baseline:1:a4:v0:10",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:33:18.854Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "diminished-7",
+      "candidateId": "diminished-7:0:diminished-7:generated:b5:r3:s54321:n5:contiguous:neutral:baseline:1:a5:v0:5",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:32:35.480Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "diminished-7",
+      "candidateId": "diminished-7:0:diminished-7:generated:b5:r5:s5432:n4:contiguous:neutral:baseline:1:a4:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:32:12.499Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "diminished-7",
+      "candidateId": "diminished-7:0:diminished-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a14:v0:15",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:33:24.111Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "diminished-7",
+      "candidateId": "diminished-7:0:diminished-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a14:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:32:19.624Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "diminished-7",
+      "candidateId": "diminished-7:0:diminished-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a19:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:32:12.110Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "diminished-7",
+      "candidateId": "diminished-7:0:diminished-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a38:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:32:32.247Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "diminished-7",
+      "candidateId": "diminished-7:0:diminished-7:generated:b6:r4:s65432:n5:contiguous:neutral:baseline:1:a5:v0:10",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:33:19.664Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "diminished-7",
+      "candidateId": "diminished-7:0:diminished-7:generated:b6:r6:s6543:n4:contiguous:neutral:baseline:1:a4:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:32:44.344Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "diminished-7",
+      "candidateId": "diminished-7:0:diminished-7:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a14:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:32:37.558Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "diminished-7",
+      "candidateId": "diminished-7:0:diminished-7:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a19:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:32:41.946Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "diminished-7",
+      "candidateId": "diminished-7:0:diminished-7:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a38:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:32:45.942Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-11",
+      "candidateId": "dominant-11:0:dominant-11:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a4:v0:15",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:41:55.913Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-11",
+      "candidateId": "dominant-11:0:dominant-11:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a4:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:41:23.297Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-11",
+      "candidateId": "dominant-11:0:dominant-11:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a10:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:41:28.966Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-11",
+      "candidateId": "dominant-11:0:dominant-11:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a4:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:41:29.800Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-13",
+      "candidateId": "dominant-13:0:dominant-13:0:root-6:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:42:12.453Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-13",
+      "candidateId": "dominant-13:0:dominant-13:1:root-5:15",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:42:15.467Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-13",
+      "candidateId": "dominant-13:0:dominant-13:1:root-5:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:42:03.934Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7",
+      "candidateId": "dominant-7:0:dominant-7:curated:root-4-reviewed-drop-2:10",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:29:33.110Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7",
+      "candidateId": "dominant-7:0:dominant-7:curated:root-5-reviewed-drop-2:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:28:30.378Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7",
+      "candidateId": "dominant-7:0:dominant-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a10:v0:15",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:29:35.103Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7",
+      "candidateId": "dominant-7:0:dominant-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a10:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:28:28.294Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7",
+      "candidateId": "dominant-7:0:dominant-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a12:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:28:45.597Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7",
+      "candidateId": "dominant-7:0:dominant-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a20:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:28:29.223Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7",
+      "candidateId": "dominant-7:0:dominant-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a32:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:28:46.652Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7",
+      "candidateId": "dominant-7:0:dominant-7:generated:b6:r6:s6543:n4:contiguous:neutral:baseline:1:a3:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:29:07.848Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7",
+      "candidateId": "dominant-7:0:dominant-7:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a10:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:28:47.381Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7",
+      "candidateId": "dominant-7:0:dominant-7:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a12:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:29:19.053Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7",
+      "candidateId": "dominant-7:0:dominant-7:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a20:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:28:57.748Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7",
+      "candidateId": "dominant-7:0:dominant-7:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a32:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:29:33.919Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7-flat-9",
+      "candidateId": "dominant-7-flat-9:0:dominant-7-flat-9:0:root-5:15",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:43:45.422Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7-flat-9",
+      "candidateId": "dominant-7-flat-9:0:dominant-7-flat-9:0:root-5:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:42:55.854Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7-flat-9",
+      "candidateId": "dominant-7-flat-9:0:dominant-7-flat-9:1:root-6:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:43:10.728Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7-flat-9",
+      "candidateId": "dominant-7-flat-9:0:dominant-7-flat-9:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a10:v0:15",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:43:44.486Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7-flat-9",
+      "candidateId": "dominant-7-flat-9:0:dominant-7-flat-9:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a10:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:43:01.396Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7-flat-9",
+      "candidateId": "dominant-7-flat-9:0:dominant-7-flat-9:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a3:v0:15",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:43:43.397Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7-flat-9",
+      "candidateId": "dominant-7-flat-9:0:dominant-7-flat-9:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a3:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:42:57.138Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7-flat-9",
+      "candidateId": "dominant-7-flat-9:0:dominant-7-flat-9:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a10:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:43:49.758Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-7-flat-9",
+      "candidateId": "dominant-7-flat-9:0:dominant-7-flat-9:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a3:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:43:48.708Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-9",
+      "candidateId": "dominant-9:0:dominant-9:0:root-6:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:40:14.671Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-9",
+      "candidateId": "dominant-9:0:dominant-9:curated:root-4-reviewed-upper-dominant-9:10",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:41:17.372Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-9",
+      "candidateId": "dominant-9:0:dominant-9:curated:root-5-reviewed-dominant-9:15",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:41:18.045Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-9",
+      "candidateId": "dominant-9:0:dominant-9:curated:root-5-reviewed-dominant-9:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:36:26.971Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-9",
+      "candidateId": "dominant-9:0:dominant-9:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a5:v0:15",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:41:20.417Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-9",
+      "candidateId": "dominant-9:0:dominant-9:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a5:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:39:58.232Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "dominant-9",
+      "candidateId": "dominant-9:0:dominant-9:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a5:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:40:39.902Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "half-diminished-7",
+      "candidateId": "half-diminished-7:0:half-diminished-7:generated:b4:r4:s4321:n4:contiguous:neutral:baseline:1:a3:v0:10",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:30:39.747Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "half-diminished-7",
+      "candidateId": "half-diminished-7:0:half-diminished-7:generated:b5:r5:s5432:n4:contiguous:neutral:baseline:1:a3:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:29:49.805Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "half-diminished-7",
+      "candidateId": "half-diminished-7:0:half-diminished-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a10:v0:15",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:31:54.395Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "half-diminished-7",
+      "candidateId": "half-diminished-7:0:half-diminished-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a10:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:29:47.112Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "half-diminished-7",
+      "candidateId": "half-diminished-7:0:half-diminished-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a12:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:29:52.099Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "half-diminished-7",
+      "candidateId": "half-diminished-7:0:half-diminished-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a20:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:29:48.252Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "half-diminished-7",
+      "candidateId": "half-diminished-7:0:half-diminished-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a32:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:29:53.030Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "half-diminished-7",
+      "candidateId": "half-diminished-7:0:half-diminished-7:generated:b6:r6:s6543:n4:contiguous:neutral:baseline:1:a3:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:30:19.197Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "half-diminished-7",
+      "candidateId": "half-diminished-7:0:half-diminished-7:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a10:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:29:54.513Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "half-diminished-7",
+      "candidateId": "half-diminished-7:0:half-diminished-7:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a12:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:30:18.177Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "half-diminished-7",
+      "candidateId": "half-diminished-7:0:half-diminished-7:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a20:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:30:31.153Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "half-diminished-7",
+      "candidateId": "half-diminished-7:0:half-diminished-7:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a32:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:30:39.006Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "hendrix-7-sharp-9",
+      "candidateId": "hendrix-7-sharp-9:0:hendrix-7-sharp-9:0:root-5:15",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:42:50.815Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "hendrix-7-sharp-9",
+      "candidateId": "hendrix-7-sharp-9:0:hendrix-7-sharp-9:0:root-5:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:42:21.228Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "hendrix-7-sharp-9",
+      "candidateId": "hendrix-7-sharp-9:0:hendrix-7-sharp-9:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a10:v0:15",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:42:51.723Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "hendrix-7-sharp-9",
+      "candidateId": "hendrix-7-sharp-9:0:hendrix-7-sharp-9:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a10:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:42:25.428Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "hendrix-7-sharp-9",
+      "candidateId": "hendrix-7-sharp-9:0:hendrix-7-sharp-9:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a10:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:42:48.657Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "hendrix-7-sharp-9",
+      "candidateId": "hendrix-7-sharp-9:0:hendrix-7-sharp-9:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a4:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:42:26.380Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major",
+      "candidateId": "major:0:major:curated:root-5-reviewed-caged:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:07:20.726Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major",
+      "candidateId": "major:0:major:generated:b3:r3:s321:n3:contiguous:neutral:baseline:1:a0:v0:5",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:08:46.671Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major",
+      "candidateId": "major:0:major:generated:b5:r5:s5432:n4:contiguous:neutral:baseline:1:a3:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:06:55.797Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major",
+      "candidateId": "major:0:major:generated:b5:r5:s5432:n4:contiguous:neutral:baseline:1:a4:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:07:22.392Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major",
+      "candidateId": "major:0:major:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a15:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:07:19.526Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major",
+      "candidateId": "major:0:major:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a19:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:06:56.441Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major",
+      "candidateId": "major:0:major:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a28:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:06:57.063Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major",
+      "candidateId": "major:0:major:generated:b6:r6:s6543:n4:contiguous:neutral:baseline:1:a3:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:08:43.738Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major",
+      "candidateId": "major:0:major:generated:b6:r6:s6543:n4:contiguous:neutral:baseline:1:a4:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:16:08.942Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major",
+      "candidateId": "major:0:major:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a15:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:08:55.625Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major",
+      "candidateId": "major:0:major:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a19:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:08:44.196Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major",
+      "candidateId": "major:0:major:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a28:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:08:54.741Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-6",
+      "candidateId": "major-6:0:major-6:curated:root-4-reviewed-upper-6:10",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:25:20.957Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-6",
+      "candidateId": "major-6:0:major-6:curated:root-5-reviewed-open-6:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:22:33.172Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-6",
+      "candidateId": "major-6:0:major-6:generated:b5:r5:s5432:n4:contiguous:neutral:baseline:1:a3:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:22:47.136Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-6",
+      "candidateId": "major-6:0:major-6:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a10:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:22:32.256Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-6",
+      "candidateId": "major-6:0:major-6:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a12:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:22:36.772Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-6",
+      "candidateId": "major-6:0:major-6:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a20:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:22:48.810Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-6",
+      "candidateId": "major-6:0:major-6:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a32:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:22:53.212Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-6",
+      "candidateId": "major-6:0:major-6:generated:b6:r6:s6543:n4:contiguous:neutral:baseline:1:a3:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:23:57.519Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-6",
+      "candidateId": "major-6:0:major-6:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a10:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:22:57.863Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-6",
+      "candidateId": "major-6:0:major-6:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a12:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:25:21.563Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-6",
+      "candidateId": "major-6:0:major-6:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a20:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:24:35.642Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-6",
+      "candidateId": "major-6:0:major-6:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a32:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:24:42.631Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-7",
+      "candidateId": "major-7:0:major-7:curated:root-4-reviewed-drop-2:10",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:21:21.223Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-7",
+      "candidateId": "major-7:0:major-7:curated:root-5-reviewed-drop-2:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:20:38.661Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-7",
+      "candidateId": "major-7:0:major-7:generated:b4:r4:s4321:n4:contiguous:neutral:baseline:1:a0:v0:10",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:20:48.921Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-7",
+      "candidateId": "major-7:0:major-7:generated:b5:r5:s5432:n4:contiguous:neutral:baseline:1:a0:v0:15",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:21:46.334Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-7",
+      "candidateId": "major-7:0:major-7:generated:b5:r5:s5432:n4:contiguous:neutral:baseline:1:a0:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:20:31.708Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-7",
+      "candidateId": "major-7:0:major-7:generated:b5:r5:s5432:n4:contiguous:neutral:baseline:1:a3:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:20:39.899Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-7",
+      "candidateId": "major-7:0:major-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a10:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:20:30.404Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-7",
+      "candidateId": "major-7:0:major-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a19:v0:15",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:21:47.779Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-7",
+      "candidateId": "major-7:0:major-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a19:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:20:31.109Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-7",
+      "candidateId": "major-7:0:major-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a20:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:20:33.830Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-7",
+      "candidateId": "major-7:0:major-7:generated:b6:r6:s6543:n4:contiguous:neutral:baseline:1:a3:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:21:19.872Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-7",
+      "candidateId": "major-7:0:major-7:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a20:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:20:48.471Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-9",
+      "candidateId": "major-9:0:major-9:0:root-6-drop-3:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:34:15.615Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-9",
+      "candidateId": "major-9:0:major-9:curated:root-4-reviewed-upper-major-9:10",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:35:55.462Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-9",
+      "candidateId": "major-9:0:major-9:curated:root-5-reviewed-major-9:15",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:35:55.906Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-9",
+      "candidateId": "major-9:0:major-9:curated:root-5-reviewed-major-9:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:33:41.174Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-9",
+      "candidateId": "major-9:0:major-9:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a3:v0:15",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:35:58.644Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-9",
+      "candidateId": "major-9:0:major-9:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a3:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:33:49.926Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "major-9",
+      "candidateId": "major-9:0:major-9:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a3:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:34:40.747Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor",
+      "candidateId": "minor:0:minor:curated:root-5-reviewed-caged:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:10:06.514Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor",
+      "candidateId": "minor:0:minor:generated:b3:r3:s321:n3:contiguous:neutral:baseline:1:a1:v0:5",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:10:11.541Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor",
+      "candidateId": "minor:0:minor:generated:b4:r4:s4321:n4:contiguous:neutral:baseline:1:a5:v0:10",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:10:49.641Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor",
+      "candidateId": "minor:0:minor:generated:b5:r5:s5432:n4:contiguous:neutral:baseline:1:a2:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:10:09.935Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor",
+      "candidateId": "minor:0:minor:generated:b5:r5:s5432:n4:contiguous:neutral:baseline:1:a5:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:09:53.127Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor",
+      "candidateId": "minor:0:minor:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a34:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:09:59.083Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor",
+      "candidateId": "minor:0:minor:generated:b6:r6:s6543:n4:contiguous:neutral:baseline:1:a2:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:15:36.932Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor",
+      "candidateId": "minor:0:minor:generated:b6:r6:s6543:n4:contiguous:neutral:baseline:1:a5:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:10:13.977Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor",
+      "candidateId": "minor:0:minor:generated:b6:r6:s6543:n4:contiguous:neutral:baseline:1:a7:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:10:36.405Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor",
+      "candidateId": "minor:0:minor:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a28:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:15:37.570Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor",
+      "candidateId": "minor:0:minor:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a34:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:10:35.561Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor",
+      "candidateId": "minor:0:minor:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a40:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:10:18.772Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor-7",
+      "candidateId": "minor-7:0:minor-7:curated:root-4-reviewed-drop-2:10",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:27:44.037Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor-7",
+      "candidateId": "minor-7:0:minor-7:curated:root-5-reviewed-drop-2:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:26:03.355Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor-7",
+      "candidateId": "minor-7:0:minor-7:generated:b5:r2:s54321:n5:contiguous:neutral:baseline:1:a3:v0:1",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:26:00.264Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor-7",
+      "candidateId": "minor-7:0:minor-7:generated:b5:r5:s5432:n4:contiguous:neutral:baseline:1:a1:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:26:11.103Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor-7",
+      "candidateId": "minor-7:0:minor-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a24:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:26:01.533Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor-7",
+      "candidateId": "minor-7:0:minor-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a29:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:26:26.936Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor-7",
+      "candidateId": "minor-7:0:minor-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a6:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:26:38.778Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor-7",
+      "candidateId": "minor-7:0:minor-7:generated:b6:r3:s65432:n5:contiguous:neutral:baseline:1:a3:v0:5",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:27:13.976Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor-7",
+      "candidateId": "minor-7:0:minor-7:generated:b6:r6:s6543:n4:contiguous:neutral:baseline:1:a1:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:26:41.831Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor-7",
+      "candidateId": "minor-7:0:minor-7:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a24:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:27:11.508Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor-7",
+      "candidateId": "minor-7:0:minor-7:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a29:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:27:47.636Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor-7",
+      "candidateId": "minor-7:0:minor-7:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a6:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:27:44.621Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor-9",
+      "candidateId": "minor-9:0:minor-9:0:root-6:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:36:20.737Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor-9",
+      "candidateId": "minor-9:0:minor-9:1:root-5:15",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:36:23.528Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor-9",
+      "candidateId": "minor-9:0:minor-9:1:root-5:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:36:22.080Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "minor-9",
+      "candidateId": "minor-9:0:minor-9:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a11:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:36:11.798Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "power-5",
+      "candidateId": "power-5:0:power-5:generated:b3:r3:s321:n3:contiguous:neutral:baseline:1:a1:v0:5",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:12:29.168Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "power-5",
+      "candidateId": "power-5:0:power-5:generated:b4:r4:s432:n3:contiguous:neutral:baseline:1:a1:v0:10",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:12:43.126Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "power-5",
+      "candidateId": "power-5:0:power-5:generated:b5:r5:s543:n3:contiguous:neutral:baseline:1:a1:v0:15",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:12:31.455Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "power-5",
+      "candidateId": "power-5:0:power-5:generated:b5:r5:s543:n3:contiguous:neutral:baseline:1:a1:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:12:13.618Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "power-5",
+      "candidateId": "power-5:0:power-5:generated:b6:r6:s654:n3:contiguous:neutral:baseline:1:a1:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:12:12.839Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus2",
+      "candidateId": "sus2:0:sus2:curated:root-5-reviewed-open-sus2:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:13:24.729Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus2",
+      "candidateId": "sus2:0:sus2:generated:b3:r3:s321:n3:contiguous:neutral:baseline:1:a0:v0:5",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:13:30.674Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus2",
+      "candidateId": "sus2:0:sus2:generated:b4:r4:s432:n3:contiguous:neutral:baseline:1:a0:v0:10",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:17:56.314Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus2",
+      "candidateId": "sus2:0:sus2:generated:b4:r4:s4321:n4:contiguous:neutral:baseline:1:a3:v0:10",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:17:55.692Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus2",
+      "candidateId": "sus2:0:sus2:generated:b5:r5:s543:n3:contiguous:neutral:baseline:1:a0:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:12:53.430Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus2",
+      "candidateId": "sus2:0:sus2:generated:b5:r5:s5432:n4:contiguous:neutral:baseline:1:a3:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:15:30.263Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus2",
+      "candidateId": "sus2:0:sus2:generated:b5:r5:s5432:n4:contiguous:neutral:baseline:1:a4:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:13:26.580Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus2",
+      "candidateId": "sus2:0:sus2:generated:b5:r5:s5432:n4:contiguous:neutral:baseline:1:a7:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:15:30.797Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus2",
+      "candidateId": "sus2:0:sus2:generated:b6:r6:s654:n3:contiguous:neutral:baseline:1:a0:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:16:53.537Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus2",
+      "candidateId": "sus2:0:sus2:generated:b6:r6:s6543:n4:contiguous:neutral:baseline:1:a3:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:16:54.018Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus2",
+      "candidateId": "sus2:0:sus2:generated:b6:r6:s6543:n4:contiguous:neutral:baseline:1:a4:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:17:07.608Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus2",
+      "candidateId": "sus2:0:sus2:generated:b6:r6:s6543:n4:contiguous:neutral:baseline:1:a7:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:16:54.551Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus4",
+      "candidateId": "sus4:0:sus4:curated:root-5-reviewed-open-sus4:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:19:03.365Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus4",
+      "candidateId": "sus4:0:sus4:generated:b3:r3:s321:n3:contiguous:neutral:baseline:1:a0:v0:5",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:19:19.864Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus4",
+      "candidateId": "sus4:0:sus4:generated:b4:r4:s432:n3:contiguous:neutral:baseline:1:a0:v0:10",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:20:10.348Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus4",
+      "candidateId": "sus4:0:sus4:generated:b5:r5:s543:n3:contiguous:neutral:baseline:1:a0:v0:3",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:18:11.217Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus4",
+      "candidateId": "sus4:0:sus4:generated:b5:r5:s5432:n4:contiguous:neutral:baseline:1:a3:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:18:53.097Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus4",
+      "candidateId": "sus4:0:sus4:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a3:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:19:19.288Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus4",
+      "candidateId": "sus4:0:sus4:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a7:v0:3",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:18:53.975Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus4",
+      "candidateId": "sus4:0:sus4:generated:b6:r6:s6543:n4:contiguous:neutral:baseline:1:a3:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:19:33.973Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus4",
+      "candidateId": "sus4:0:sus4:generated:b6:r6:s6543:n4:contiguous:neutral:baseline:1:a4:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:19:37.933Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus4",
+      "candidateId": "sus4:0:sus4:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a3:v0:8",
+      "decision": "accept",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:20:09.621Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    },
+    {
+      "chordType": "sus4",
+      "candidateId": "sus4:0:sus4:generated:b6:r6:s65432:n5:contiguous:neutral:baseline:1:a7:v0:8",
+      "decision": "reject",
+      "rootPitchClass": 0,
+      "reviewedAt": "2026-04-22T08:19:34.700Z",
+      "sourceSnapshotId": "surface-set:0:2026-04-22T07:10:50.967Z"
+    }
+  ]
+}
