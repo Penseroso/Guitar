@@ -206,15 +206,19 @@ describe('developer curated QA mode', () => {
             chordType: candidate.chordType,
             candidateId: candidate.candidateId,
             decision: 'borderline',
+            reason: 'possible but muddy',
         });
         expect(getCuratedQaDecisionForCandidate(reviews, candidate)).toBe('borderline');
+        expect(reviews[`${candidate.chordType}::${candidate.candidateId}`]?.reason).toBe('possible but muddy');
 
         reviews = recordCuratedQaDecision(reviews, {
             chordType: candidate.chordType,
             candidateId: candidate.candidateId,
             decision: 'reject',
+            reason: '  no clear identity  ',
         });
         expect(getCuratedQaDecisionForCandidate(reviews, candidate)).toBe('reject');
+        expect(reviews[`${candidate.chordType}::${candidate.candidateId}`]?.reason).toBe('no clear identity');
         expect(Object.keys(reviews)).toHaveLength(1);
     });
 
@@ -235,9 +239,11 @@ describe('developer curated QA mode', () => {
             candidateId: candidate.candidateId,
             decision: 'borderline',
             rootPitchClass: candidate.rootPitchClass,
+            reason: 'new session note',
         });
 
         expect(getCuratedQaDecisionForCandidate(sessionReviews, candidate)).toBe('borderline');
+        expect(sessionReviews[`${candidate.chordType}::${candidate.candidateId}`]?.reason).toBe('new session note');
         expect(getCuratedQaDecisionForCandidate(
             mergeCuratedQaReviewStates(persistedReviews, sessionReviews),
             candidate
@@ -248,6 +254,7 @@ describe('developer curated QA mode', () => {
             candidateId: candidate.candidateId,
             decision: 'accept',
             rootPitchClass: candidate.rootPitchClass,
+            reason: 'should be dropped',
         });
 
         expect(getCuratedQaDecisionForCandidate(sessionReviews, candidate)).toBeNull();

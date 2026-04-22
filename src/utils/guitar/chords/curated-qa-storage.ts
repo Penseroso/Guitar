@@ -34,6 +34,7 @@ function isValidReviewRecord(value: unknown): value is CuratedQaReviewRecord {
     return typeof candidate.chordType === 'string'
         && typeof candidate.candidateId === 'string'
         && (candidate.rootPitchClass === undefined || Number.isInteger(candidate.rootPitchClass))
+        && (candidate.reason === undefined || typeof candidate.reason === 'string')
         && isValidDecision(candidate.decision);
 }
 

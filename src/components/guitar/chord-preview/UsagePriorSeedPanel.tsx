@@ -3,150 +3,108 @@
 import React from 'react';
 
 import {
-    type CuratedQaAnalysisSummary,
     getVoicingFamilyLabel,
     getVoicingProvenanceLabel,
     getVoicingRegisterLabel,
-    groupCuratedQaCandidates,
 } from '../../../utils/guitar/chords';
 import {
-    getCuratedQaDecisionForCandidate,
-    getCuratedQaReviewForCandidate,
-    type CuratedQaCandidate,
-    type CuratedQaDecision,
-    type CuratedQaReviewState,
-} from '../../../utils/guitar/chords/curated-qa';
+    getUsagePriorDecisionForCandidate,
+    type UsagePriorDecision,
+    type UsagePriorReviewState,
+} from '../../../utils/guitar/chords/usage-prior';
+import {
+    groupUsagePriorSurfaceCandidates,
+    type UsagePriorSurfaceCandidate,
+} from '../../../utils/guitar/chords/usage-prior-surface';
+import type { UsagePriorAnalysisSummary } from '../../../utils/guitar/chords/usage-prior-analysis';
 import { CompactVoicingDiagram } from './CompactVoicingDiagram';
 
-interface CuratedQaPanelProps {
-    candidates: CuratedQaCandidate[];
-    persistedReviews: CuratedQaReviewState;
-    sessionReviews: CuratedQaReviewState;
-    effectiveReviews: CuratedQaReviewState;
-    onReview: (candidate: CuratedQaCandidate, decision: CuratedQaDecision) => void;
-    onReasonChange: (candidate: CuratedQaCandidate, reason: string) => void;
+interface UsagePriorSeedPanelProps {
+    candidates: UsagePriorSurfaceCandidate[];
+    persistedReviews: UsagePriorReviewState;
+    sessionReviews: UsagePriorReviewState;
+    effectiveReviews: UsagePriorReviewState;
+    onReview: (candidate: UsagePriorSurfaceCandidate, decision: UsagePriorDecision) => void;
     onSubmit: () => void;
     isSubmitting: boolean;
     hasPendingChanges: boolean;
     submitStatus: string | null;
     lastSavedAt: string | null;
-    analysis?: CuratedQaAnalysisSummary | null;
+    analysis?: UsagePriorAnalysisSummary | null;
 }
 
-function getCandidateMeta(candidate: CuratedQaCandidate): string[] {
+function getCandidateMeta(candidate: UsagePriorSurfaceCandidate): string[] {
+    const descriptor = candidate.voicingDescriptor;
     const tags = [
-        getVoicingFamilyLabel(candidate.voicing.descriptor.family),
-        getVoicingRegisterLabel(candidate.voicing.descriptor.registerBand),
-        getVoicingProvenanceLabel(candidate.voicing.descriptor.provenance),
+        getVoicingFamilyLabel(descriptor.family),
+        getVoicingRegisterLabel(descriptor.registerBand),
+        getVoicingProvenanceLabel(candidate.provenance),
+        descriptor.inversion,
+        `${descriptor.noteCount} notes`,
     ];
 
-    if (candidate.voicing.descriptor.rootString !== undefined) {
-        tags.push(`Root ${candidate.voicing.descriptor.rootString + 1}`);
+    if (descriptor.rootString !== undefined) {
+        tags.push(`Root ${descriptor.rootString + 1}`);
+    }
+
+    if (descriptor.optionalCoverageDegrees.length > 0) {
+        tags.push(`Optional ${descriptor.optionalCoverageDegrees.join(', ')}`);
     }
 
     return tags;
 }
 
-export function CuratedQaPanel({
+export function UsagePriorSeedPanel({
     candidates,
     persistedReviews,
     sessionReviews,
     effectiveReviews,
     onReview,
-    onReasonChange,
     onSubmit,
     isSubmitting,
     hasPendingChanges,
     submitStatus,
     lastSavedAt,
     analysis,
-}: CuratedQaPanelProps) {
+}: UsagePriorSeedPanelProps) {
     const reviewedCount = Object.keys(effectiveReviews).length;
     const acceptedCount = Object.values(effectiveReviews).filter((review) => review.decision === 'accept').length;
-    const borderlineCount = Object.values(effectiveReviews).filter((review) => review.decision === 'borderline').length;
     const rejectedCount = Object.values(effectiveReviews).filter((review) => review.decision === 'reject').length;
     const sessionReviewCount = Object.keys(sessionReviews).length;
     const persistedReviewCount = Object.keys(persistedReviews).length;
-    const candidateGroups = groupCuratedQaCandidates(candidates);
-    const weakCoveragePreview = analysis?.weakCoverageChordTypes.slice(0, 3) ?? [];
+    const candidateGroups = groupUsagePriorSurfaceCandidates(candidates);
 
     return (
         <section
-            className="rounded-[2rem] border border-amber-200/10 bg-[#080807] p-6"
-            aria-label="Developer curated QA"
+            className="rounded-[2rem] border border-emerald-200/10 bg-[#070909] p-6"
+            aria-label="Developer usage prior seed review"
         >
             <div className="flex flex-col gap-2 border-b border-white/5 pb-4">
-                <span className="text-[9px] font-black tracking-[0.35em] text-amber-100/45">Developer Only</span>
+                <span className="text-[9px] font-black tracking-[0.35em] text-emerald-100/45">Developer Only</span>
                 <div className="flex flex-wrap items-end justify-between gap-3">
                     <div className="flex flex-col gap-1">
-                        <h3 className="text-xl font-black tracking-tight text-white">Curated QA</h3>
+                        <h3 className="text-xl font-black tracking-tight text-white">Usage Prior Seed Review</h3>
                         <p className="text-xs text-white/55">
-                            Internal review surface for the current curated QA set. Choose accept, borderline, or reject in this session, then submit to persist those decisions into the QA snapshot.
+                            Review the current product surface set for usage-prior seeding. Submit saves the full review ledger and materializes accepted candidates into the prior export.
                         </p>
                     </div>
                     <div className="flex flex-col items-start gap-1 text-[10px] font-black tracking-[0.22em] text-white/32 md:items-end">
                         <span>{reviewedCount}/{candidates.length} reviewed</span>
-                        <span>{acceptedCount} accept · {borderlineCount} borderline · {rejectedCount} reject</span>
+                        <span>{acceptedCount} accepted · {rejectedCount} rejected</span>
                         <span>{sessionReviewCount} unsaved session edits · {persistedReviewCount} saved decisions loaded</span>
                         {analysis && (
-                            <span>{analysis.activeReviewCount} active · {analysis.staleReviewCount} stale saved reviews</span>
+                            <span>{analysis.unreviewedCount} unreviewed in current surface snapshot</span>
                         )}
                     </div>
                 </div>
             </div>
 
-            {analysis && (
-                <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-2">
-                    <div className="rounded-[1.4rem] border border-white/6 bg-white/[0.02] p-4">
-                        <span className="text-[10px] font-black tracking-[0.22em] text-white/36">Coverage</span>
-                        <p className="mt-2 text-xs text-white/58">
-                            {analysis.weakCoverageChordTypes.length === 0
-                                ? 'Active QA slices are fully covered.'
-                                : `Weak active coverage remains in ${analysis.weakCoverageChordTypes.length} chord slices.`}
-                        </p>
-                        {weakCoveragePreview.length > 0 && (
-                            <div className="mt-3 flex flex-wrap gap-2">
-                                {weakCoveragePreview.map((entry) => (
-                                    <span
-                                        key={entry.chordType}
-                                        className="rounded-full border border-white/8 px-2 py-1 text-[9px] font-black tracking-[0.14em] text-white/42"
-                                    >
-                                        {entry.chordType} {entry.activeReviewedCount}/{entry.candidateCount}
-                                    </span>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-                    <div className="rounded-[1.4rem] border border-white/6 bg-white/[0.02] p-4">
-                        <span className="text-[10px] font-black tracking-[0.22em] text-white/36">Review Drift</span>
-                        <p className="mt-2 text-xs text-white/58">
-                            {analysis.staleReviewCount === 0
-                                ? 'Saved reviews all map cleanly into the current exploratory QA slice.'
-                                : `${analysis.staleReviewCount} saved reviews are now stale and excluded from active slice coverage.`}
-                        </p>
-                        {analysis.staleReviewReferences.length > 0 && (
-                            <div className="mt-3 flex flex-wrap gap-2">
-                                {analysis.staleReviewReferences.slice(0, 3).map((entry) => (
-                                    <span
-                                        key={`${entry.chordType}-${entry.candidateId}`}
-                                        className="rounded-full border border-red-200/12 px-2 py-1 text-[9px] font-black tracking-[0.14em] text-red-100/52"
-                                    >
-                                        {entry.chordType} {entry.decision}
-                                    </span>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-                </div>
-            )}
-
             <div className="mt-5 flex flex-col gap-5">
                 {candidateGroups.map((group) => {
                     const groupReviews = group.candidates
-                        .map((candidate) => getCuratedQaDecisionForCandidate(effectiveReviews, candidate))
-                        .filter((decision): decision is CuratedQaDecision => decision !== null);
+                        .map((candidate) => getUsagePriorDecisionForCandidate(effectiveReviews, candidate))
+                        .filter((decision): decision is UsagePriorDecision => decision !== null);
                     const groupAcceptedCount = groupReviews.filter((decision) => decision === 'accept').length;
-                    const groupBorderlineCount = groupReviews.filter((decision) => decision === 'borderline').length;
                     const groupRejectedCount = groupReviews.filter((decision) => decision === 'reject').length;
 
                     return (
@@ -160,21 +118,20 @@ export function CuratedQaPanel({
                                         {group.chordLabel}
                                     </span>
                                     <h4 className="text-sm font-black tracking-[0.18em] text-white/80">
-                                        {group.chordTypeLabel} review slice
+                                        {group.chordTypeLabel} surface candidates
                                     </h4>
                                 </div>
                                 <div className="flex flex-col items-start gap-1 text-[10px] font-black tracking-[0.2em] text-white/32 md:items-end">
                                     <span>{groupReviews.length}/{group.candidates.length} reviewed</span>
-                                    <span>{groupAcceptedCount} accept · {groupBorderlineCount} borderline · {groupRejectedCount} reject</span>
+                                    <span>{groupAcceptedCount} accepted · {groupRejectedCount} rejected</span>
                                 </div>
                             </div>
 
                             <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
                                 {group.candidates.map((candidate) => {
-                                    const savedDecision = getCuratedQaDecisionForCandidate(persistedReviews, candidate);
-                                    const pendingDecision = getCuratedQaDecisionForCandidate(sessionReviews, candidate);
-                                    const decision = getCuratedQaDecisionForCandidate(effectiveReviews, candidate);
-                                    const effectiveReview = getCuratedQaReviewForCandidate(effectiveReviews, candidate);
+                                    const savedDecision = getUsagePriorDecisionForCandidate(persistedReviews, candidate);
+                                    const pendingDecision = getUsagePriorDecisionForCandidate(sessionReviews, candidate);
+                                    const decision = getUsagePriorDecisionForCandidate(effectiveReviews, candidate);
                                     const meta = getCandidateMeta(candidate);
 
                                     return (
@@ -188,7 +145,7 @@ export function CuratedQaPanel({
                                                         <span className="text-[10px] font-black tracking-[0.22em] text-white/65">
                                                             {candidate.chordLabel}
                                                         </span>
-                                                        <span className="rounded-full border border-amber-100/15 bg-amber-100/5 px-2 py-0.5 text-[9px] font-black tracking-[0.18em] text-amber-50/70">
+                                                        <span className="rounded-full border border-emerald-100/15 bg-emerald-100/5 px-2 py-0.5 text-[9px] font-black tracking-[0.18em] text-emerald-50/70">
                                                             {candidate.sourceLabel}
                                                         </span>
                                                     </div>
@@ -227,7 +184,7 @@ export function CuratedQaPanel({
                                                 )}
                                             </div>
 
-                                            <div className="mt-4 grid grid-cols-3 gap-2">
+                                            <div className="mt-4 grid grid-cols-2 gap-2">
                                                 <button
                                                     type="button"
                                                     onClick={() => onReview(candidate, 'accept')}
@@ -241,17 +198,6 @@ export function CuratedQaPanel({
                                                 </button>
                                                 <button
                                                     type="button"
-                                                    onClick={() => onReview(candidate, 'borderline')}
-                                                    className={`rounded-full border px-3 py-2 text-[10px] font-black tracking-[0.2em] transition-colors ${
-                                                        decision === 'borderline'
-                                                            ? 'border-amber-200/35 bg-amber-300/[0.12] text-amber-50'
-                                                            : 'border-white/10 bg-white/[0.02] text-white/68 hover:border-amber-200/20 hover:text-white'
-                                                    }`}
-                                                >
-                                                    Borderline
-                                                </button>
-                                                <button
-                                                    type="button"
                                                     onClick={() => onReview(candidate, 'reject')}
                                                     className={`rounded-full border px-3 py-2 text-[10px] font-black tracking-[0.2em] transition-colors ${
                                                         decision === 'reject'
@@ -262,26 +208,6 @@ export function CuratedQaPanel({
                                                     Reject
                                                 </button>
                                             </div>
-
-                                            {(decision === 'borderline' || decision === 'reject') && (
-                                                <div className="mt-3 flex flex-col gap-2">
-                                                    <label
-                                                        htmlFor={`qa-reason-${candidate.candidateId}`}
-                                                        className="text-[10px] font-black tracking-[0.16em] text-white/36"
-                                                    >
-                                                        Reason {pendingDecision ? '(unsaved)' : savedDecision ? '(saved)' : ''}
-                                                    </label>
-                                                    <textarea
-                                                        id={`qa-reason-${candidate.candidateId}`}
-                                                        value={effectiveReview?.reason ?? ''}
-                                                        onChange={(event) => onReasonChange(candidate, event.target.value)}
-                                                        placeholder={decision === 'borderline'
-                                                            ? 'Why is this plausible but uncertain?'
-                                                            : 'Why should the engine avoid learning this?'}
-                                                        className="min-h-[5.5rem] rounded-[1rem] border border-white/10 bg-white/[0.02] px-3 py-2 text-xs text-white/78 placeholder:text-white/26 focus:border-amber-200/30 focus:outline-none"
-                                                    />
-                                                </div>
-                                            )}
                                         </article>
                                     );
                                 })}
@@ -298,7 +224,7 @@ export function CuratedQaPanel({
                             ? `${sessionReviewCount} unsaved review updates pending submit`
                             : lastSavedAt
                                 ? `Saved ${new Date(lastSavedAt).toLocaleString()}`
-                                : 'No saved QA snapshot yet'}
+                                : 'No saved usage prior review ledger yet'}
                     </span>
                     {submitStatus && (
                         <span className="text-xs text-white/55">{submitStatus}</span>
@@ -308,11 +234,12 @@ export function CuratedQaPanel({
                     type="button"
                     onClick={onSubmit}
                     disabled={isSubmitting || !hasPendingChanges}
-                    className="rounded-full border border-amber-200/25 bg-amber-200/10 px-4 py-2 text-[10px] font-black tracking-[0.2em] text-amber-50 transition-colors hover:border-amber-100/40 hover:bg-amber-200/14 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="rounded-full border border-emerald-200/25 bg-emerald-200/10 px-4 py-2 text-[10px] font-black tracking-[0.2em] text-emerald-50 transition-colors hover:border-emerald-100/40 hover:bg-emerald-200/14 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                    {isSubmitting ? 'Submitting...' : hasPendingChanges ? 'Submit QA' : 'No Changes To Submit'}
+                    {isSubmitting ? 'Submitting...' : hasPendingChanges ? 'Submit Usage Prior Reviews' : 'No Changes To Submit'}
                 </button>
             </div>
         </section>
     );
 }
+

@@ -1,11 +1,12 @@
 {
-  "updatedAt": "2026-04-12T05:35:00.912Z",
+  "updatedAt": "2026-04-12T10:11:19.708Z",
   "reviews": [
     {
       "chordType": "dominant-7",
       "candidateId": "dominant-7:0:dominant-7:generated:b3:r2:s321:n3:contiguous:neutral:reduced:b7:a0:v0:1",
       "decision": "borderline",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "이론상 가능하지만 대표 보이싱으로는 약함"
     },
     {
       "chordType": "dominant-7",
@@ -17,73 +18,83 @@
       "chordType": "dominant-7",
       "candidateId": "dominant-7:0:dominant-7:generated:b5:r2:s5321:n4:skip:neutral:reduced:1:a10:v0:1",
       "decision": "borderline",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "이론상 가능하지만 대표 보이싱으로는 약함"
     },
     {
       "chordType": "dominant-7",
       "candidateId": "dominant-7:0:dominant-7:generated:b5:r2:s542:n3:skip:neutral:reduced:b7:a0:v0:1",
       "decision": "borderline",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "3번줄 뮤트가 어색함"
     },
     {
       "chordType": "dominant-7",
       "candidateId": "dominant-7:0:dominant-7:generated:b6:r2:s64321:n5:skip:neutral:baseline:3:a7:v0:1",
-      "decision": "borderline",
+      "decision": "accept",
       "rootPitchClass": 0
     },
     {
       "chordType": "dominant-7",
       "candidateId": "dominant-7:0:dominant-7:generated:b6:r3:s65432:n5:contiguous:neutral:reduced:1:a55:v0:5",
       "decision": "borderline",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "2,3번 줄 스트레치가 비실용적임"
     },
     {
       "chordType": "dominant-7",
       "candidateId": "dominant-7:0:dominant-7:generated:b6:r5:s6542:n4:skip:neutral:baseline:b7:a1:v0:3",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "손가락 운지가 불가능"
     },
     {
       "chordType": "dominant-7",
       "candidateId": "dominant-7:0:dominant-7:generated:b6:r6:s654321:n6:contiguous:neutral:baseline:1:a93:v0:8",
-      "decision": "reject",
+      "decision": "accept",
       "rootPitchClass": 0
     },
     {
       "chordType": "dominant-9",
       "candidateId": "dominant-9:0:dominant-9:generated:b5:r5:s5321:n4:skip:neutral:reduced:1:a5:v0:3",
       "decision": "borderline",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "1번줄 오픈스트링이 어색함"
     },
     {
       "chordType": "dominant-9",
       "candidateId": "dominant-9:0:dominant-9:generated:b5:r5:s5431:n4:skip:neutral:reduced:1:a3:v0:3",
       "decision": "borderline",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "뮤트와 오픈스트링 사용이 어색함"
     },
     {
       "chordType": "dominant-9",
       "candidateId": "dominant-9:0:dominant-9:generated:b6:r1:s654321:n6:contiguous:neutral:baseline:b7:a23:v0:8",
       "decision": "borderline",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "1번줄 스트레치가 비실용적"
     },
     {
       "chordType": "dominant-9",
       "candidateId": "dominant-9:0:dominant-9:generated:b6:r2:s654321:n6:contiguous:neutral:baseline:3:a16:v0:1",
       "decision": "borderline",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "오픈스트링 사용이 어색함"
     },
     {
       "chordType": "dominant-9",
       "candidateId": "dominant-9:0:dominant-9:generated:b6:r3:s65432:n5:contiguous:neutral:reduced:b7:a18:v0:5",
-      "decision": "reject",
-      "rootPitchClass": 0
+      "decision": "borderline",
+      "rootPitchClass": 0,
+      "reason": "1번줄 뮤트가 비실용적"
     },
     {
       "chordType": "dominant-9",
       "candidateId": "dominant-9:0:dominant-9:generated:b6:r6:s65321:n5:skip:neutral:baseline:1:a7:v0:8",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "손가락 운지가 불가능"
     },
     {
       "chordType": "major",
@@ -101,54 +112,61 @@
       "chordType": "major",
       "candidateId": "major:0:major:generated:b5:r1:s531:n3:skip:neutral:baseline:5:a0:v0:8",
       "decision": "borderline",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "2,4번 줄 뮤트가 비실용적임"
     },
     {
       "chordType": "major",
       "candidateId": "major:0:major:generated:b5:r2:s521:n3:skip:neutral:baseline:5:a0:v0:13",
       "decision": "borderline",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "3,4번 줄 뮤트가 비실용적임"
     },
     {
       "chordType": "major",
       "candidateId": "major:0:major:generated:b5:r2:s5432:n4:contiguous:neutral:baseline:1:a3:v0:1",
-      "decision": "borderline",
+      "decision": "accept",
       "rootPitchClass": 0
     },
     {
       "chordType": "major",
       "candidateId": "major:0:major:generated:b5:r5:s531:n3:skip:neutral:baseline:1:a1:v0:3",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "뮤트들이 비실용적임"
     },
     {
       "chordType": "major",
       "candidateId": "major:0:major:generated:b6:r2:s6532:n4:skip:neutral:baseline:3:a1:v0:1",
       "decision": "borderline",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "뮤트들이 비실용적임"
     },
     {
       "chordType": "major",
       "candidateId": "major:0:major:generated:b6:r3:s65431:n5:skip:neutral:baseline:5:a8:v0:5",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "손가락 운지가 불가능"
     },
     {
       "chordType": "major",
       "candidateId": "major:0:major:generated:b6:r3:s654321:n6:contiguous:neutral:baseline:1:a22:v0:5",
-      "decision": "reject",
-      "rootPitchClass": 0
+      "decision": "borderline",
+      "rootPitchClass": 0,
+      "reason": "손가락 운지가 비실용적임"
     },
     {
       "chordType": "major",
       "candidateId": "major:0:major:generated:b6:r3:s654321:n6:contiguous:neutral:baseline:5:a21:v0:5",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "손가락 운지가 불가능"
     },
     {
       "chordType": "major",
       "candidateId": "major:0:major:generated:b6:r4:s6431:n4:skip:neutral:baseline:3:a3:v0:10",
-      "decision": "borderline",
+      "decision": "accept",
       "rootPitchClass": 0
     },
     {
@@ -172,7 +190,7 @@
     {
       "chordType": "major-6",
       "candidateId": "major-6:0:major-6:generated:b6:r2:s64321:n5:skip:neutral:baseline:3:a7:v0:1",
-      "decision": "borderline",
+      "decision": "accept",
       "rootPitchClass": 0
     },
     {
@@ -185,13 +203,15 @@
       "chordType": "major-6",
       "candidateId": "major-6:0:major-6:generated:b6:r4:s6421:n4:skip:neutral:reduced:3:a5:v0:10",
       "decision": "borderline",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "손가락 스트레치가 비실용적임"
     },
     {
       "chordType": "major-6",
       "candidateId": "major-6:0:major-6:generated:b6:r6:s654321:n6:contiguous:neutral:reduced:1:a165:v0:8",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "손가락 운지가 불가능"
     },
     {
       "chordType": "major-7",
@@ -202,50 +222,57 @@
     {
       "chordType": "major-7",
       "candidateId": "major-7:0:major-7:generated:b5:r2:s521:n3:skip:neutral:reduced:7:a0:v0:1",
-      "decision": "reject",
-      "rootPitchClass": 0
+      "decision": "borderline",
+      "rootPitchClass": 0,
+      "reason": "3,4번 줄 뮤트가 비실용적임"
     },
     {
       "chordType": "major-7",
       "candidateId": "major-7:0:major-7:generated:b5:r5:s54321:n5:contiguous:neutral:baseline:1:a28:v0:3",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "손가락 운지가 불가능"
     },
     {
       "chordType": "major-7",
       "candidateId": "major-7:0:major-7:generated:b6:r2:s6432:n4:skip:neutral:baseline:5:a0:v0:1",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "손가락 운지가 불가능"
     },
     {
       "chordType": "major-7",
       "candidateId": "major-7:0:major-7:generated:b6:r4:s6421:n4:skip:neutral:reduced:3:a5:v0:10",
-      "decision": "reject",
+      "decision": "accept",
       "rootPitchClass": 0
     },
     {
       "chordType": "major-7",
       "candidateId": "major-7:0:major-7:generated:b6:r4:s654321:n6:contiguous:neutral:baseline:1:a12:v0:10",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "손가락 운지가 불가능"
     },
     {
       "chordType": "major-9",
       "candidateId": "major-9:0:major-9:generated:b4:r4:s4321:n4:contiguous:neutral:reduced:1:a0:v0:10",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "2번줄 스트레치가 불가능"
     },
     {
       "chordType": "major-9",
       "candidateId": "major-9:0:major-9:generated:b5:r5:s5421:n4:skip:neutral:reduced:1:a5:v0:3",
-      "decision": "reject",
-      "rootPitchClass": 0
+      "decision": "borderline",
+      "rootPitchClass": 0,
+      "reason": "뮤트 및 오픈스트링 사용이 비실용적"
     },
     {
       "chordType": "major-9",
       "candidateId": "major-9:0:major-9:generated:b6:r2:s65421:n5:skip:neutral:baseline:3:a3:v0:1",
-      "decision": "reject",
-      "rootPitchClass": 0
+      "decision": "borderline",
+      "rootPitchClass": 0,
+      "reason": "3번줄 뮤트가 비실용적"
     },
     {
       "chordType": "major-9",
@@ -257,13 +284,15 @@
       "chordType": "major-9",
       "candidateId": "major-9:0:major-9:generated:b6:r3:s65432:n5:contiguous:neutral:baseline:5:a2:v0:5",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "3번줄 스트레치가 불가능"
     },
     {
       "chordType": "major-9",
       "candidateId": "major-9:0:major-9:generated:b6:r6:s64321:n5:skip:neutral:baseline:1:a12:v0:8",
-      "decision": "reject",
-      "rootPitchClass": 0
+      "decision": "borderline",
+      "rootPitchClass": 0,
+      "reason": "해당 프랫에서 1번 줄 스트레치가 비실용적"
     },
     {
       "chordType": "minor",
@@ -280,44 +309,51 @@
     {
       "chordType": "minor",
       "candidateId": "minor:0:minor:generated:b5:r5:s5431:n4:skip:neutral:baseline:1:a11:v0:3",
-      "decision": "reject",
-      "rootPitchClass": 0
+      "decision": "borderline",
+      "rootPitchClass": 0,
+      "reason": "뮤트가 비실용적"
     },
     {
       "chordType": "minor",
       "candidateId": "minor:0:minor:generated:b6:r1:s631:n3:skip:neutral:reduced:b3:a2:v0:8",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "손가락 운지가 불가능"
     },
     {
       "chordType": "minor",
       "candidateId": "minor:0:minor:generated:b6:r1:s6531:n4:skip:neutral:baseline:b3:a2:v0:8",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "손가락 운지가 불가능"
     },
     {
       "chordType": "minor",
       "candidateId": "minor:0:minor:generated:b6:r2:s65432:n5:contiguous:neutral:baseline:5:a11:v0:1",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "손가락 운지가 불가능"
     },
     {
       "chordType": "minor",
       "candidateId": "minor:0:minor:generated:b6:r3:s654321:n6:contiguous:neutral:baseline:1:a58:v0:5",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "손가락 운지가 불가능"
     },
     {
       "chordType": "minor",
       "candidateId": "minor:0:minor:generated:b6:r6:s64321:n5:skip:neutral:baseline:1:a32:v0:8",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "손가락 운지가 불가능"
     },
     {
       "chordType": "minor-7",
       "candidateId": "minor-7:0:minor-7:generated:b3:r1:s321:n3:contiguous:neutral:reduced:b3:a0:v0:8",
       "decision": "borderline",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "음악적 범용성은 낮음"
     },
     {
       "chordType": "minor-7",
@@ -328,26 +364,29 @@
     {
       "chordType": "minor-7",
       "candidateId": "minor-7:0:minor-7:generated:b5:r5:s5431:n4:skip:neutral:baseline:1:a3:v0:3",
-      "decision": "reject",
+      "decision": "accept",
       "rootPitchClass": 0
     },
     {
       "chordType": "minor-7",
       "candidateId": "minor-7:0:minor-7:generated:b6:r1:s64321:n5:skip:neutral:reduced:b3:a18:v0:8",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "손가락 운지가 불가능"
     },
     {
       "chordType": "minor-7",
       "candidateId": "minor-7:0:minor-7:generated:b6:r3:s654321:n6:contiguous:neutral:baseline:1:a90:v0:5",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "손가락 운지가 불가능"
     },
     {
       "chordType": "minor-7",
       "candidateId": "minor-7:0:minor-7:generated:b6:r6:s6431:n4:skip:neutral:reduced:1:a14:v0:8",
-      "decision": "reject",
-      "rootPitchClass": 0
+      "decision": "borderline",
+      "rootPitchClass": 0,
+      "reason": "2번줄 뮤트와 1번줄 스트레치가 비실용적"
     },
     {
       "chordType": "sus2",
@@ -365,25 +404,29 @@
       "chordType": "sus2",
       "candidateId": "sus2:0:sus2:generated:b5:r5:s543:n3:contiguous:neutral:baseline:1:a0:v0:3",
       "decision": "borderline",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "일부 아르페지오 상황에서만 유효"
     },
     {
       "chordType": "sus2",
       "candidateId": "sus2:0:sus2:generated:b6:r2:s6521:n4:skip:neutral:baseline:2:a3:v0:13",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "손가락 운지가 불가능"
     },
     {
       "chordType": "sus2",
       "candidateId": "sus2:0:sus2:generated:b6:r2:s6542:n4:skip:neutral:baseline:5:a1:v0:1",
-      "decision": "reject",
-      "rootPitchClass": 0
+      "decision": "borderline",
+      "rootPitchClass": 0,
+      "reason": "3번줄 뮤트가 비실용적"
     },
     {
       "chordType": "sus2",
       "candidateId": "sus2:0:sus2:generated:b6:r6:s65321:n5:skip:neutral:baseline:1:a6:v0:8",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "손가락 운지가 불가능"
     },
     {
       "chordType": "sus4",
@@ -407,19 +450,22 @@
       "chordType": "sus4",
       "candidateId": "sus4:0:sus4:generated:b6:r2:s65321:n5:skip:neutral:baseline:4:a4:v0:1",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "손가락 운지가 불가능"
     },
     {
       "chordType": "sus4",
       "candidateId": "sus4:0:sus4:generated:b6:r3:s6432:n4:skip:neutral:baseline:5:a2:v0:5",
       "decision": "reject",
-      "rootPitchClass": 0
+      "rootPitchClass": 0,
+      "reason": "손가락 운지가 불가능"
     },
     {
       "chordType": "sus4",
       "candidateId": "sus4:0:sus4:generated:b6:r6:s631:n3:skip:neutral:reduced:1:a3:v0:8",
-      "decision": "reject",
-      "rootPitchClass": 0
+      "decision": "borderline",
+      "rootPitchClass": 0,
+      "reason": "2, 4번줄 뮤트가 비실용적"
     }
   ]
 }

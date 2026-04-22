@@ -132,6 +132,57 @@ export {
     getAcceptedSourceKinds,
 } from './curated-qa-analysis';
 
+export type {
+    UsagePriorDecision,
+    UsagePriorReviewRecord,
+    UsagePriorReviewState,
+} from './usage-prior';
+
+export {
+    getUsagePriorReviewKey,
+    recordUsagePriorDecision,
+    recordUsagePriorSessionDecision,
+    getUsagePriorDecisionForCandidate,
+    isDeveloperUsagePriorEnabled,
+    buildUsagePriorReviewState,
+    mergeUsagePriorReviewStates,
+} from './usage-prior';
+
+export type {
+    UsagePriorVoicingDescriptorSummary,
+    UsagePriorSurfaceCandidate,
+    UsagePriorSurfaceSetSnapshot,
+} from './usage-prior-surface';
+
+export {
+    USAGE_PRIOR_SURFACE_CHORD_IDS,
+    buildUsagePriorSurfaceSetSnapshot,
+    groupUsagePriorSurfaceCandidates,
+} from './usage-prior-surface';
+
+export type {
+    UsagePriorAnalysisSummary,
+} from './usage-prior-analysis';
+
+export {
+    buildUsagePriorAnalysisSummary,
+} from './usage-prior-analysis';
+
+export type {
+    UsagePriorReviewSnapshot,
+    UsagePriorAcceptedCandidate,
+    UsagePriorAcceptedExport,
+} from './usage-prior-storage';
+
+export {
+    USAGE_PRIOR_REVIEW_STORAGE_PATH,
+    USAGE_PRIOR_REVIEWED_EXPORT_PATH,
+    normalizeUsagePriorReviewSnapshot,
+    buildUsagePriorReviewSnapshot,
+    applyUsagePriorReviewUpdates,
+    buildUsagePriorAcceptedExport,
+} from './usage-prior-storage';
+
 export {
     deriveVoicingDescriptor,
     getVoicingDisplayName,

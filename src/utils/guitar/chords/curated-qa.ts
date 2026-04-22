@@ -26,6 +26,7 @@ export interface CuratedQaReviewRecord {
     candidateId: string;
     decision: CuratedQaDecision;
     rootPitchClass?: number;
+    reason?: string;
 }
 
 export type CuratedQaReviewState = Record<string, CuratedQaReviewRecord>;
@@ -150,9 +151,11 @@ export function recordCuratedQaDecision(
     currentState: CuratedQaReviewState,
     record: CuratedQaReviewRecord
 ): CuratedQaReviewState {
+    const normalizedRecord = normalizeCuratedQaReviewRecord(record);
+
     return {
         ...currentState,
-        [getCuratedQaReviewKey(record)]: record,
+        [getCuratedQaReviewKey(normalizedRecord)]: normalizedRecord,
     };
 }
 
@@ -190,17 +193,19 @@ export function recordCuratedQaSessionDecision(
     sessionState: CuratedQaReviewState,
     record: CuratedQaReviewRecord
 ): CuratedQaReviewState {
-    const persistedRecord = persistedState[getCuratedQaReviewKey(record)];
+    const normalizedRecord = normalizeCuratedQaReviewRecord(record);
+    const persistedRecord = persistedState[getCuratedQaReviewKey(normalizedRecord)];
 
     if (
         persistedRecord
-        && persistedRecord.decision === record.decision
-        && (persistedRecord.rootPitchClass ?? null) === (record.rootPitchClass ?? null)
+        && persistedRecord.decision === normalizedRecord.decision
+        && (persistedRecord.rootPitchClass ?? null) === (normalizedRecord.rootPitchClass ?? null)
+        && (persistedRecord.reason ?? null) === (normalizedRecord.reason ?? null)
     ) {
-        return clearCuratedQaDecision(sessionState, record);
+        return clearCuratedQaDecision(sessionState, normalizedRecord);
     }
 
-    return recordCuratedQaDecision(sessionState, record);
+    return recordCuratedQaDecision(sessionState, normalizedRecord);
 }
 
 export function getCuratedQaDecisionForCandidate(
@@ -208,6 +213,44 @@ export function getCuratedQaDecisionForCandidate(
     candidate: Pick<CuratedQaCandidate, 'chordType' | 'candidateId'>
 ): CuratedQaDecision | null {
     return currentState[getReviewKey(candidate.chordType, candidate.candidateId)]?.decision ?? null;
+}
+
+export function getCuratedQaReviewForCandidate(
+    currentState: CuratedQaReviewState,
+    candidate: Pick<CuratedQaCandidate, 'chordType' | 'candidateId'>
+): CuratedQaReviewRecord | null {
+    return currentState[getReviewKey(candidate.chordType, candidate.candidateId)] ?? null;
+}
+
+function normalizeCuratedQaReason(
+    decision: CuratedQaDecision,
+    reason: string | null | undefined
+): string | undefined {
+    if (decision === 'accept') {
+        return undefined;
+    }
+
+    const trimmed = reason?.trim();
+    return trimmed ? trimmed : undefined;
+}
+
+function normalizeCuratedQaReviewRecord(record: CuratedQaReviewRecord): CuratedQaReviewRecord {
+    const normalizedReason = normalizeCuratedQaReason(record.decision, record.reason);
+
+    return normalizedReason === undefined
+        ? {
+            chordType: record.chordType,
+            candidateId: record.candidateId,
+            decision: record.decision,
+            rootPitchClass: record.rootPitchClass,
+        }
+        : {
+            chordType: record.chordType,
+            candidateId: record.candidateId,
+            decision: record.decision,
+            rootPitchClass: record.rootPitchClass,
+            reason: normalizedReason,
+        };
 }
 
 export function isDeveloperCuratedQaEnabled(args: {
