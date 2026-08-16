@@ -238,6 +238,19 @@ export {
     orderChordSurfaceVoicingCandidates,
 } from './voicings';
 
+export type { VoicingSearchOptions } from './voicingSearch';
+export { searchDeductiveVoicings } from './voicingSearch';
+
+export type { VoicingPosition, VoicingStyleSpec } from './voicingStyles';
+
+export type { DeductiveChordSurfaceOptions } from './rankedVoicingSearch';
+export {
+    searchAndRankDeductiveVoicings,
+    getDeductiveChordSurfaceVoicingsForChord,
+} from './rankedVoicingSearch';
+
+export { identifyChordsForPitchClasses } from './chordRecognition';
+
 export type {
     HarmonicFunctionFit,
     FunctionalHarmonyKind,

@@ -9,7 +9,7 @@ import {
     CHORD_REGISTRY_LIST,
     type CuratedQaAnalysisSummary,
     type UsagePriorAnalysisSummary,
-    getChordSurfaceVoicingsForChord,
+    getDeductiveChordSurfaceVoicingsForChord,
     getCuratedQaCandidates,
     getChordTypeLabel,
     getChordTypeSuffix,
@@ -62,7 +62,7 @@ import { ChordModeWorkspace } from './workspaces/ChordModeWorkspace';
 import { ProgressionModeWorkspace } from './workspaces/ProgressionModeWorkspace';
 
 const CHORD_SELECTOR_ORDER_BY_FAMILY = {
-    triad: ['major', 'minor', 'power-5', 'sus2', 'sus4'],
+    triad: ['major', 'minor', 'power-5', 'augmented', 'diminished', 'sus2', 'sus4'],
     seventh: ['major-7', 'major-6', 'minor-7', 'dominant-7', 'half-diminished-7', 'diminished-7'],
     extended: ['major-9', 'minor-9', 'dominant-9', 'dominant-11', 'dominant-13', 'hendrix-7-sharp-9', 'dominant-7-flat-9'],
 } as const;
@@ -292,8 +292,8 @@ export default function ClientApp() {
     const requestedFutureVoicingId = harmonicWorkspace.selectedCandidateId;
     const chordSurfaceVoicingCandidates = useMemo(() => {
         try {
-            return getChordSurfaceVoicingsForChord(chordType, selectedKey, {
-                maxRootFret: 15,
+            return getDeductiveChordSurfaceVoicingsForChord(chordType, selectedKey, {
+                maxFret: 15,
                 maxCandidates: 12,
             });
         } catch {
