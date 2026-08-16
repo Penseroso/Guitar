@@ -41,18 +41,14 @@ import type {
 import {
     TUNING,
     SCALES,
-    getScaleIntervalLabels,
-    getScaleEngineIntervalLabels,
-    isDoubleStopSupported,
-    generateModeData,
 } from '../../utils/guitar/theory';
 import {
-    getHarmonicDoubleStops,
-    getPlayableDoubleStopsOnStrings,
     getNoteName,
 } from '../../utils/guitar/logic';
-import { Mode, HarmonicInterval, Fingering } from '../../utils/guitar/types';
+import { Mode, Fingering } from '../../utils/guitar/types';
 import { useProgression } from '../../hooks/useProgression';
+import { useScaleMode } from '../../hooks/useScaleMode';
+import { getScaleDerivedData } from '../../features/scale/utils/getScaleDerivedData';
 import {
     createHarmonicWorkspaceState,
     reduceHarmonicWorkspaceState,
@@ -137,14 +133,33 @@ export default function ClientApp() {
     const [showIntervals, setShowIntervals] = useState(false);
 
     // --- State: Scale Mode ---
-    const [scaleGroup, setScaleGroup] = useState('Diatonic Modes');
-    const [scaleName, setScaleName] = useState('Ionian');
-    const [previewScaleGroup, setPreviewScaleGroup] = useState<string | null>(null);
-    const [previewScaleName, setPreviewScaleName] = useState<string | null>(null);
-    const [showChordTones, setShowChordTones] = useState(false); // In scale mode, shows Triad of root
-    const [blueNote, setBlueNote] = useState(false);
-    const [sixthNote, setSixthNote] = useState(false);
-    const [secondNote, setSecondNote] = useState(false);
+    const {
+        scaleGroup,
+        scaleName,
+        previewScaleGroup,
+        previewScaleName,
+        effectiveScaleGroup,
+        effectiveScaleName,
+        hasPreview,
+        showChordTones,
+        blueNote,
+        sixthNote,
+        secondNote,
+        isDoubleStopActive,
+        doubleStopInterval,
+        setDoubleStopInterval,
+        doubleStopStrings,
+        setDoubleStopStrings,
+        commitScaleSelection,
+        handleRelatedPreviewToggle,
+        handleApplyPreview,
+        handleClearPreview,
+        onToggleChordTones,
+        onToggleBlueNote,
+        onToggleSixthNote,
+        onToggleSecondNote,
+        onToggleDoubleStop,
+    } = useScaleMode();
 
     // --- State: Chord Mode ---
     const [chordType, setChordType] = useState('major');
@@ -182,11 +197,6 @@ export default function ClientApp() {
     const [isSubmittingUsagePrior, setIsSubmittingUsagePrior] = useState(false);
     const [usagePriorSubmitStatus, setUsagePriorSubmitStatus] = useState<string | null>(null);
     const [usagePriorLastSavedAt, setUsagePriorLastSavedAt] = useState<string | null>(null);
-    // --- State: Double Stops (Scale Mode Feature) ---
-    const [isDoubleStopActive, setIsDoubleStopActive] = useState(false);
-    const [doubleStopInterval, setDoubleStopInterval] = useState<HarmonicInterval>(3);
-    const [doubleStopStrings, setDoubleStopStrings] = useState<[number, number]>([1, 2]);
-
     const {
         progressionName,
         progressionDoc,
@@ -219,100 +229,37 @@ export default function ClientApp() {
 
     // Actually the user said "?? (when changing), so watching key/scale is correct.
     // Adding `mode` ensures it resets if they change mode/key while in prog mode.
-    const hasPreview = previewScaleGroup !== null && previewScaleName !== null;
-    const effectiveScaleGroup = previewScaleGroup ?? scaleGroup;
-    const effectiveScaleName = previewScaleName ?? scaleName;
-
-    const isPreviewingScale = (group: string, name: string) =>
-        previewScaleGroup === group && previewScaleName === name;
-
-    const handleClearPreview = useCallback(() => {
-        setPreviewScaleGroup(null);
-        setPreviewScaleName(null);
-    }, []);
-
-    const commitScaleSelection = useCallback((group: string, name: string) => {
-        setScaleGroup(group);
-        setScaleName(name);
-        setBlueNote(false);
-        setSixthNote(false);
-        setSecondNote(false);
-        handleClearPreview();
-    }, [handleClearPreview]);
-
-    const handleRelatedPreviewToggle = (group: string, name: string) => {
-        if (isPreviewingScale(group, name)) {
-            handleClearPreview();
-            return;
-        }
-
-        setPreviewScaleGroup(group);
-        setPreviewScaleName(name);
-    };
-
-    const handleApplyPreview = useCallback(() => {
-        if (!previewScaleGroup || !previewScaleName) return;
-        commitScaleSelection(previewScaleGroup, previewScaleName);
-    }, [commitScaleSelection, previewScaleGroup, previewScaleName]);
-
-    const handleOpenScaleChordRecommendation = useCallback((payload: {
-        chordType: string;
-        rootPitchClass: number;
-    }) => {
-        setSelectedKey(payload.rootPitchClass);
-        setChordType(payload.chordType);
-        setMode('chord');
-    }, []);
 
     // --- Derived Data: Scales ---
-    const activeScaleIntervals = useMemo(() => {
-        return SCALES[effectiveScaleGroup]?.[effectiveScaleName] || SCALES['Diatonic Modes']['Ionian'];
-    }, [effectiveScaleGroup, effectiveScaleName]);
+    const scaleDerived = useMemo(
+        () => getScaleDerivedData(effectiveScaleGroup, effectiveScaleName, selectedKey, {
+            showChordTones,
+            blueNote,
+            sixthNote,
+            secondNote,
+            isDoubleStopActive,
+            doubleStopInterval,
+            doubleStopStrings,
+        }),
+        [
+            effectiveScaleGroup,
+            effectiveScaleName,
+            selectedKey,
+            showChordTones,
+            blueNote,
+            sixthNote,
+            secondNote,
+            isDoubleStopActive,
+            doubleStopInterval,
+            doubleStopStrings,
+        ]
+    );
+    const { diatonicChords, isDoubleStopAvailable, isDoubleStopVisible, isPentatonic, isMinorMode } = scaleDerived;
 
-    const diatonicChords = useMemo(() => {
-        const modeData = generateModeData(effectiveScaleGroup, effectiveScaleName);
-        return Object.entries(modeData).map(([interval, data]) => ({
-            degree: data.role,
-            color: data.color,
-            interval: parseInt(interval)
-        })).sort((a, b) => a.interval - b.interval);
-    }, [effectiveScaleGroup, effectiveScaleName]);
-
-    const scaleNotes = useMemo(() => {
-        return activeScaleIntervals.map(interval => (selectedKey + interval) % 12);
-    }, [selectedKey, activeScaleIntervals]);
-
-    const scaleIntervalLabels = useMemo(() => {
-        return getScaleIntervalLabels(effectiveScaleGroup, effectiveScaleName);
-    }, [effectiveScaleGroup, effectiveScaleName]);
-
-    const scaleEngineIntervalLabels = useMemo(() => {
-        return getScaleEngineIntervalLabels(effectiveScaleGroup, effectiveScaleName);
-    }, [effectiveScaleGroup, effectiveScaleName]);
-
-    const isDoubleStopAvailable = useMemo(() => {
-        return isDoubleStopSupported(effectiveScaleGroup, effectiveScaleName);
-    }, [effectiveScaleGroup, effectiveScaleName]);
-
-    const isDoubleStopVisible = isDoubleStopAvailable && isDoubleStopActive;
-
-    const isPentatonic = effectiveScaleName.includes('Pentatonic');
-
-    const modifierNotes = useMemo(() => {
-        const mods = [];
-        if (mode === 'scale') {
-            if (blueNote && effectiveScaleName.includes('Pentatonic')) {
-                mods.push((selectedKey + 6) % 12);
-            }
-            if (sixthNote && effectiveScaleName === 'Minor Pentatonic') {
-                mods.push((selectedKey + 9) % 12);
-            }
-            if (secondNote && effectiveScaleName === 'Minor Pentatonic') {
-                mods.push((selectedKey + 2) % 12);
-            }
-        }
-        return mods;
-    }, [mode, blueNote, sixthNote, secondNote, selectedKey, effectiveScaleName]);
+    const modifierNotes = useMemo(
+        () => (mode === 'scale' ? scaleDerived.modifierNotes : []),
+        [mode, scaleDerived.modifierNotes]
+    );
 
     // --- Derived Data: Chords ---
     const currentChordEntry = useMemo(() => {
@@ -419,12 +366,6 @@ export default function ClientApp() {
         return null;
     }, [focusedNodeId, progressionDoc]);
 
-    // --- Derived: Minor Mode detection for Picardy Third condition ---
-    const isMinorMode = useMemo(() => {
-        const minorKeywords = ['Minor', 'Aeolian', 'Dorian', 'Phrygian', 'Locrian'];
-        return minorKeywords.some(kw => effectiveScaleName.includes(kw));
-    }, [effectiveScaleName]);
-
     // --- Derived: Cadence position (focused node is last in whole progression) ---
     const isCadencePosition = useMemo(() => {
         if (!focusedNodeId) return false;
@@ -440,7 +381,7 @@ export default function ClientApp() {
     // --- Active Notes Calculation ---
     const activeNotes = useMemo(() => {
         if (mode === 'scale') {
-            return [...scaleNotes, ...modifierNotes];
+            return [...scaleDerived.scaleNotes, ...modifierNotes];
         }
         if (mode === 'chord') {
             if (fingering) return fingering.map(f => f.noteIdx);
@@ -451,46 +392,15 @@ export default function ClientApp() {
             return ionianScale.map(i => (selectedKey + i) % 12);
         }
         return [];
-    }, [mode, scaleNotes, modifierNotes, fingering, selectedKey]);
+    }, [mode, scaleDerived.scaleNotes, modifierNotes, fingering, selectedKey]);
 
     // --- Derived Data: Double Stops ---
-    const harmonicDoubleStopPairsByInterval = useMemo(() => {
-        const intervals: HarmonicInterval[] = [3, 4, 6];
-
-        return intervals.reduce<Record<HarmonicInterval, ReturnType<typeof getHarmonicDoubleStops>>>((acc, interval) => {
-            acc[interval] = getHarmonicDoubleStops(scaleNotes, scaleEngineIntervalLabels, interval);
-            return acc;
-        }, {
-            3: [],
-            4: [],
-            6: [],
-        });
-    }, [scaleNotes, scaleEngineIntervalLabels]);
-
-    const playableDoubleStops = useMemo(() => {
-        if (mode !== 'scale' || !isDoubleStopVisible) return [];
-
-        return getPlayableDoubleStopsOnStrings(
-            harmonicDoubleStopPairsByInterval[doubleStopInterval],
-            selectedKey,
-            TUNING,
-            doubleStopStrings
-        );
-    }, [mode, isDoubleStopVisible, harmonicDoubleStopPairsByInterval, doubleStopInterval, doubleStopStrings, selectedKey]);
+    const { harmonicDoubleStopPairsByInterval, playableDoubleStops } = scaleDerived;
 
     // --- Chord Tone Highlighting ---
     const currentChordTones = useMemo(() => {
         if (mode === 'scale') {
-            if (showChordTones) {
-                // User requested 1, 3, 5, 7.
-                // We filter the active scale's intervals to find these specific degrees.
-                // 0 (Root), 3/4 (Thirds), 7 (Fifth), 10/11 (Sevenths)
-                const targetIntervals = [0, 3, 4, 7, 10, 11];
-                return activeScaleIntervals
-                    .filter(interval => targetIntervals.includes(interval))
-                    .map(interval => (selectedKey + interval) % 12);
-            }
-            return [];
+            return scaleDerived.scaleChordTones;
         }
         if (mode === 'chord') {
             return [];
@@ -499,7 +409,7 @@ export default function ClientApp() {
             return progressionData?.tones || [];
         }
         return [];
-    }, [mode, showChordTones, selectedKey, progressionData, activeScaleIntervals]);
+    }, [mode, scaleDerived.scaleChordTones, progressionData]);
 
     const rootNote = useMemo(() => {
         if (mode === 'progression') {
@@ -842,17 +752,17 @@ export default function ClientApp() {
                     selectedScaleName={scaleName}
                     onScaleChange={commitScaleSelection}
                     showChordTones={showChordTones}
-                    onToggleChordTones={() => setShowChordTones(p => !p)}
+                    onToggleChordTones={onToggleChordTones}
                     isPentatonic={isPentatonic}
                     blueNote={blueNote}
-                    onToggleBlueNote={() => setBlueNote(p => !p)}
+                    onToggleBlueNote={onToggleBlueNote}
                     sixthNote={sixthNote}
-                    onToggleSixthNote={() => setSixthNote(p => !p)}
+                    onToggleSixthNote={onToggleSixthNote}
                     secondNote={secondNote}
-                    onToggleSecondNote={() => setSecondNote(p => !p)}
+                    onToggleSecondNote={onToggleSecondNote}
 
                     isDoubleStopActive={isDoubleStopActive}
-                    onToggleDoubleStop={() => setIsDoubleStopActive(p => !p)}
+                    onToggleDoubleStop={onToggleDoubleStop}
                     doubleStopInterval={doubleStopInterval}
                     onDoubleStopIntervalChange={setDoubleStopInterval}
                     doubleStopStrings={doubleStopStrings}
@@ -894,17 +804,17 @@ export default function ClientApp() {
                             showIntervals={showIntervals}
                             onToggleIntervals={() => setShowIntervals((prev) => !prev)}
                             showChordTones={showChordTones}
-                            onToggleChordTones={() => setShowChordTones((prev) => !prev)}
+                            onToggleChordTones={onToggleChordTones}
                             isPentatonic={isPentatonic}
                             blueNote={blueNote}
-                            onToggleBlueNote={() => setBlueNote((prev) => !prev)}
+                            onToggleBlueNote={onToggleBlueNote}
                             secondNote={secondNote}
-                            onToggleSecondNote={() => setSecondNote((prev) => !prev)}
+                            onToggleSecondNote={onToggleSecondNote}
                             sixthNote={sixthNote}
-                            onToggleSixthNote={() => setSixthNote((prev) => !prev)}
+                            onToggleSixthNote={onToggleSixthNote}
                             isDoubleStopAvailable={isDoubleStopAvailable}
                             isDoubleStopVisible={isDoubleStopVisible}
-                            onToggleDoubleStop={() => setIsDoubleStopActive((prev) => !prev)}
+                            onToggleDoubleStop={onToggleDoubleStop}
                             doubleStopInterval={doubleStopInterval}
                             onDoubleStopIntervalChange={setDoubleStopInterval}
                             doubleStopStrings={doubleStopStrings}
@@ -916,10 +826,9 @@ export default function ClientApp() {
                             rootNote={rootNote}
                             chordTones={currentChordTones}
                             modifierNotes={modifierNotes}
-                            scaleIntervalLabels={scaleIntervalLabels}
+                            scaleIntervalLabels={scaleDerived.scaleIntervalLabels}
                             fingering={fingering}
                             doubleStops={playableDoubleStops}
-                            onOpenChordRecommendation={handleOpenScaleChordRecommendation}
                         />
                     )}
 

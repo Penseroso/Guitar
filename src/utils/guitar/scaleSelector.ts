@@ -96,6 +96,18 @@ export function getVisibleScaleFamily(group: string): VisibleScaleFamily {
     return GROUP_TO_VISIBLE_FAMILY[group] || 'Diatonic Modes';
 }
 
+const MINOR_KEY_SCALE_NAME_KEYWORDS = ['Minor', 'Aeolian', 'Dorian', 'Phrygian', 'Locrian'];
+
+/**
+ * Legacy keyword classification, moved verbatim from ClientApp's inline `isMinorMode`.
+ * Note: this substring match classifies "Phrygian Dominant" as minor despite its major
+ * third (it matches via "Phrygian"). Preserved as-is — fixing the classification is a
+ * separate follow-up, not part of this structural move.
+ */
+export function isMinorKeyScale(scaleName: string): boolean {
+    return MINOR_KEY_SCALE_NAME_KEYWORDS.some((keyword) => scaleName.includes(keyword));
+}
+
 export function getVisibleScaleFamilyLabel(group: string) {
     return getVisibleScaleFamily(group);
 }
