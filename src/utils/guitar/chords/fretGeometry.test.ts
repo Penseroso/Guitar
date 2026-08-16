@@ -93,4 +93,49 @@ describe('evaluateHandPlayability', () => {
         expect(result.playable).toBe(false);
         expect(result.reason).toBe('exceeds-hand-span');
     });
+
+    it('rejects two non-adjacent strings sharing a fret when a string between them needs a lower fret (cannot reach behind a barre)', () => {
+        // string5@8 and string1@8 look like a "barre" by fret-value alone, but string4 in
+        // between needs fret 7 — behind the barre, physically unreachable by another finger.
+        const result = evaluateHandPlayability([
+            { string: 5, fret: 8 },
+            { string: 4, fret: 7 },
+            { string: 3, fret: 10 },
+            { string: 2, fret: 9 },
+            { string: 1, fret: 8 },
+        ]);
+
+        // The failed "barre" splits into 2 solo fingers (string5, string1) + 3 solo fingers
+        // (string4, string3, string2) = 5, over budget.
+        expect(result.playable).toBe(false);
+        expect(result.reason).toBe('too-many-fingers');
+    });
+
+    it('allows a barre with another finger arching over it in front (higher fret) on an inner string — classic F-shape technique', () => {
+        const result = evaluateHandPlayability([
+            { string: 5, fret: 1 },
+            { string: 4, fret: 1 },
+            { string: 3, fret: 3 },
+            { string: 2, fret: 2 },
+            { string: 1, fret: 1 },
+        ]);
+
+        // Barre at fret 1 across strings 5/4/1 (touches string3/2 too), string3@3 and string2@2
+        // are both in front of (>=) the barre — valid. 1 barre + 2 solo fingers = 3.
+        expect(result.fingerGroupCount).toBe(3);
+        expect(result.playable).toBe(true);
+    });
+
+    it('blocks a barre across a string meant to ring open', () => {
+        const result = evaluateHandPlayability(
+            [
+                { string: 5, fret: 3 },
+                { string: 3, fret: 3 },
+            ],
+            { openStrings: [4] }
+        );
+
+        // string5@3 and string3@3 can't barre across the open string4 in between — 2 solo fingers.
+        expect(result.fingerGroupCount).toBe(2);
+    });
 });
