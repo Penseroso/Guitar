@@ -1,4 +1,5 @@
-import { getRequiredChordDegrees, resolveChordRegistryEntry } from './helpers';
+import { deriveRequiredDegrees } from './degreeRequirements';
+import { resolveChordRegistryEntry } from './helpers';
 import { getVoicingFamilyLabel } from './descriptor';
 import { collectPlayedDegrees } from './resolver';
 import type { ChordRegistryEntry } from './registry';
@@ -246,7 +247,7 @@ export function scoreResolvedVoicing(
     const profile = getRankingProfile(mode);
     const entry = resolveChordRegistryEntry(entryInput);
     const playedDegrees = collectPlayedDegrees(voicing.notes);
-    const requiredDegrees = getRequiredChordDegrees(entry);
+    const requiredDegrees = deriveRequiredDegrees(entry);
     const matchedRequiredDegrees = voicing.missingRequiredDegrees
         ? requiredDegrees.filter((degree) => !voicing.missingRequiredDegrees?.includes(degree))
         : requiredDegrees.filter((degree) => playedDegrees.has(degree));

@@ -1,0 +1,95 @@
+import { buildDeductiveChordTones } from './degreeRequirements';
+import { resolveChordRegistryEntry } from './helpers';
+import { rankVoicingCandidates, type ScoreResolvedVoicingOptions } from './ranking';
+import { searchDeductiveVoicings, type VoicingSearchOptions } from './voicingSearch';
+import type { VoicingPosition, VoicingStyleSpec } from './voicingStyles';
+import type { ChordRegistryEntry } from './registry';
+import type { ResolvedVoicing, VoicingCandidate } from './types';
+
+/**
+ * Step 3 adapter: pipes the deductive generator (voicingSearch.ts) through the existing
+ * classification (descriptor.ts, already invoked inside the search) and scoring (ranking.ts)
+ * layers. Both were already generic over ResolvedVoicing/ChordTones shape — the only real
+ * adaptation needed was ranking.ts's required-degree lookup, which was pointed at the old
+ * per-chord-id table and silently saw zero required degrees for the new augmented/diminished
+ * entries; that now goes through the same deductive rule the generator itself uses.
+ */
+export function searchAndRankDeductiveVoicings(
+    entry: ChordRegistryEntry,
+    rootPitchClass: number,
+    style: VoicingStyleSpec,
+    searchOptions: VoicingSearchOptions = {},
+    rankOptions: ScoreResolvedVoicingOptions = {}
+): VoicingCandidate[] {
+    const voicings = searchDeductiveVoicings(entry, rootPitchClass, style, searchOptions);
+    const tones = buildDeductiveChordTones(entry, rootPitchClass);
+
+    return rankVoicingCandidates(voicings, entry, tones, rankOptions);
+}
+
+const DEFAULT_CHORD_SURFACE_STYLES: VoicingPosition[] = ['close', 'drop-2', 'drop-3', 'shell'];
+
+function getPlayedSignature(voicing: ResolvedVoicing): string {
+    return voicing.notes
+        .filter((note) => !note.isMuted)
+        .map((note) => `${note.string}:${note.fret}`)
+        .sort()
+        .join('|');
+}
+
+/** Same physical shape can come out of more than one style (e.g. 'close' and 'shell' coincide
+ *  for a triad where every degree happens to be required) — keep the first-seen occurrence. */
+function dedupeBySignature(voicings: ResolvedVoicing[]): ResolvedVoicing[] {
+    const seen = new Set<string>();
+    const deduped: ResolvedVoicing[] = [];
+    for (const voicing of voicings) {
+        const signature = getPlayedSignature(voicing);
+        if (seen.has(signature)) {
+            continue;
+        }
+        seen.add(signature);
+        deduped.push(voicing);
+    }
+    return deduped;
+}
+
+export interface DeductiveChordSurfaceOptions {
+    maxFret?: number;
+    maxCandidates?: number;
+    rankingMode?: ScoreResolvedVoicingOptions['mode'];
+    styles?: VoicingPosition[];
+    maxHandSpanMm?: number;
+    allowThumbOnLowE?: boolean;
+}
+
+/**
+ * Step 4 live-surface entry point: searches every voicing style (close/drop-2/drop-3/shell),
+ * merges and dedupes the results, then ranks them once as a single pool so styles compete on
+ * equal footing. This is the deductive-engine counterpart to voicings.ts's
+ * getChordSurfaceVoicingsForChord — kept as a separate function (not a rewrite of the old one)
+ * so the old curated/legacy/generated/archetype system stays fully intact until it's confirmed
+ * safe to delete.
+ */
+export function getDeductiveChordSurfaceVoicingsForChord(
+    entryInput: string | ChordRegistryEntry,
+    rootPitchClass: number,
+    options: DeductiveChordSurfaceOptions = {}
+): VoicingCandidate[] {
+    const entry = resolveChordRegistryEntry(entryInput);
+    const styles = options.styles ?? DEFAULT_CHORD_SURFACE_STYLES;
+    const maxCandidates = options.maxCandidates ?? 12;
+    const searchOptions: VoicingSearchOptions = {
+        maxFret: options.maxFret ?? 15,
+        maxHandSpanMm: options.maxHandSpanMm,
+        allowThumbOnLowE: options.allowThumbOnLowE,
+    };
+
+    const allVoicings = styles.flatMap((position) =>
+        searchDeductiveVoicings(entry, rootPitchClass, { position }, searchOptions)
+    );
+    const deduped = dedupeBySignature(allVoicings);
+    const tones = buildDeductiveChordTones(entry, rootPitchClass);
+    const ranked = rankVoicingCandidates(deduped, entry, tones, { mode: options.rankingMode });
+
+    return ranked.slice(0, maxCandidates);
+}
