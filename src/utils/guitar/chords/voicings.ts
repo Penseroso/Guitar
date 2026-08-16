@@ -308,18 +308,6 @@ export function getChordSurfaceVoicingsForChord(
     ).slice(0, maxCandidates);
 }
 
-export function orderChordModeVoicingCandidates(candidates: VoicingCandidate[]): VoicingCandidate[] {
-    return orderChordSurfaceVoicingCandidates(candidates);
-}
-
-export function getChordModeVoicingsForChord(
-    entryInput: string | ChordRegistryEntry,
-    rootPitchClass: number,
-    options: GetRankedVoicingsOptions = {}
-): VoicingCandidate[] {
-    return getChordSurfaceVoicingsForChord(entryInput, rootPitchClass, options);
-}
-
 export function getArchetypeGeneratedVoicingsForChord(
     entryInput: string | ChordRegistryEntry,
     rootPitchClass: number,

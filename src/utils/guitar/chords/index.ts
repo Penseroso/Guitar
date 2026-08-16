@@ -45,14 +45,10 @@ export {
     getChordRegistryEntryOrThrow,
     resolveChordRegistryEntry,
     buildChordDefinitionFromRegistryEntry,
-    buildChordDefinitionById,
     buildChordTonesFromRegistryEntry,
     buildChordTonesById,
     getRequiredChordDegrees,
-    getOptionalChordDegrees,
     getRequiredChordTones,
-    getOptionalChordTones,
-    getChordRegistryEntryFromLegacyTypeOrThrow,
     getChordTypeLabel,
     getChordTypeSuffix,
 } from './helpers';
@@ -236,12 +232,10 @@ export {
     collectVoicingTemplateSourcesForChord,
     getArchetypeGeneratedVoicingsForChord,
     getChordSurfaceVoicingsForChord,
-    getChordModeVoicingsForChord,
     getExploratoryVoicingsForChord,
     getRankedExploratoryVoicingsForChord,
     getRankedVoicingsForChord,
     orderChordSurfaceVoicingCandidates,
-    orderChordModeVoicingCandidates,
 } from './voicings';
 
 export type {

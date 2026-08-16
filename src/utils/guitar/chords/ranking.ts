@@ -1,15 +1,8 @@
 import { getRequiredChordDegrees, resolveChordRegistryEntry } from './helpers';
 import { getVoicingFamilyLabel } from './descriptor';
+import { collectPlayedDegrees } from './resolver';
 import type { ChordRegistryEntry } from './registry';
 import type { ChordTones, ResolvedVoicing, VoicingCandidate, VoicingRankingMode } from './types';
-
-function collectPlayedDegrees(voicing: ResolvedVoicing): Set<string> {
-    return new Set(
-        voicing.notes
-            .filter((note) => !note.isMuted && note.degree)
-            .map((note) => note.degree as string)
-    );
-}
 
 export interface VoicingScore {
     score: number;
@@ -252,7 +245,7 @@ export function scoreResolvedVoicing(
     const mode = options.mode ?? 'balanced';
     const profile = getRankingProfile(mode);
     const entry = resolveChordRegistryEntry(entryInput);
-    const playedDegrees = collectPlayedDegrees(voicing);
+    const playedDegrees = collectPlayedDegrees(voicing.notes);
     const requiredDegrees = getRequiredChordDegrees(entry);
     const matchedRequiredDegrees = voicing.missingRequiredDegrees
         ? requiredDegrees.filter((degree) => !voicing.missingRequiredDegrees?.includes(degree))

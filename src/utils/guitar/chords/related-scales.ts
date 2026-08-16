@@ -1,5 +1,4 @@
-import { buildScaleId } from '../scaleSelector';
-import { SCALES } from '../scales';
+import { buildScaleId, SCALE_LOOKUP_BY_NAME } from '../scaleSelector';
 import { resolveChordRegistryEntry } from './helpers';
 import type { ChordRegistryEntry } from './registry';
 import { interpretChordAgainstTonalCenter, type HarmonicFunctionFit } from './functional-interpretation';
@@ -21,18 +20,6 @@ export interface ChordRelatedScaleSuggestion {
     functionLabel: string;
     reason: string;
 }
-
-interface ScaleOption {
-    group: string;
-    name: string;
-}
-
-const SCALE_LOOKUP_BY_NAME = Object.entries(SCALES).reduce<Record<string, ScaleOption>>((lookup, [group, modes]) => {
-    Object.keys(modes).forEach((name) => {
-        lookup[name] = { group, name };
-    });
-    return lookup;
-}, {});
 
 function buildSuggestion(
     suggestions: ChordRelatedScaleSuggestion[],

@@ -48,14 +48,6 @@ export function buildChordDefinitionFromRegistryEntry(
     };
 }
 
-export function buildChordDefinitionById(
-    id: string,
-    rootPitchClass: number,
-    options: BuildChordDefinitionOptions = {}
-): ChordDefinition {
-    return buildChordDefinitionFromRegistryEntry(getChordRegistryEntryOrThrow(id), rootPitchClass, options);
-}
-
 export function buildChordTonesFromRegistryEntry(
     entryInput: string | ChordRegistryEntry,
     rootPitchClass: number
@@ -88,26 +80,22 @@ export function getRequiredChordDegrees(entryInput: string | ChordRegistryEntry)
     return entry.formula.degrees.filter((degree) => isRequiredChordDegree(entry, degree));
 }
 
-export function getOptionalChordDegrees(entryInput: string | ChordRegistryEntry): string[] {
-    const entry = resolveChordRegistryEntry(entryInput);
-    return entry.formula.degrees.filter((degree) => !isRequiredChordDegree(entry, degree));
+export function buildToneDegreeMap(entry: ChordRegistryEntry): Map<number, { degree: string; isRequired: boolean }> {
+    const tones = buildChordTonesFromRegistryEntry(entry, 0).tones;
+
+    return new Map(
+        tones.map((tone) => [
+            normalizePitchClass(tone.pitchClass),
+            {
+                degree: tone.degree,
+                isRequired: tone.isRequired ?? false,
+            },
+        ])
+    );
 }
 
 export function getRequiredChordTones(entryInput: string | ChordRegistryEntry, rootPitchClass: number): ChordTone[] {
     return buildChordTonesFromRegistryEntry(entryInput, rootPitchClass).tones.filter((tone) => tone.isRequired);
-}
-
-export function getOptionalChordTones(entryInput: string | ChordRegistryEntry, rootPitchClass: number): ChordTone[] {
-    return buildChordTonesFromRegistryEntry(entryInput, rootPitchClass).tones.filter((tone) => !tone.isRequired);
-}
-
-export function getChordRegistryEntryFromLegacyTypeOrThrow(legacyType: string): ChordRegistryEntry {
-    const entry = getChordRegistryEntryByLegacyType(legacyType);
-    if (!entry) {
-        throw new Error(`Unknown legacy chord type: ${legacyType}`);
-    }
-
-    return entry;
 }
 
 export function getChordTypeLabel(entryInput: string | ChordRegistryEntry): string {

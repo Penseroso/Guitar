@@ -1,5 +1,5 @@
 import { STANDARD_GUITAR_TUNING_PITCH_CLASSES } from '../tuning';
-import { buildChordTonesFromRegistryEntry, normalizePitchClass, resolveChordRegistryEntry } from './helpers';
+import { buildToneDegreeMap, normalizePitchClass, resolveChordRegistryEntry } from './helpers';
 import type { ChordRegistryEntry } from './registry';
 import type { GuitarStringIndex, VoicingTemplate, VoicingTemplateString } from './types';
 
@@ -155,20 +155,6 @@ const CURATED_VOICING_SEEDS: Partial<Record<ChordRegistryEntry['id'], CuratedVoi
         },
     ],
 };
-
-function buildToneDegreeMap(entry: ChordRegistryEntry): Map<number, { degree: string; isRequired: boolean }> {
-    const tones = buildChordTonesFromRegistryEntry(entry, 0).tones;
-
-    return new Map(
-        tones.map((tone) => [
-            normalizePitchClass(tone.pitchClass),
-            {
-                degree: tone.degree,
-                isRequired: tone.isRequired ?? false,
-            },
-        ])
-    );
-}
 
 function buildCuratedTemplateStrings(entry: ChordRegistryEntry, seed: CuratedVoicingSeed): VoicingTemplateString[] {
     const toneDegreeMap = buildToneDegreeMap(entry);

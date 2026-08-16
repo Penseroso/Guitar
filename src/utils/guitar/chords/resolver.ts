@@ -99,7 +99,7 @@ function getTemplateRootString(template: VoicingTemplate): number {
     return template.rootString ?? template.strings.find((stringValue) => stringValue.toneDegree === '1')?.string ?? 5;
 }
 
-function collectPlayedDegrees(notes: ResolvedVoicingNote[]): Set<string> {
+export function collectPlayedDegrees(notes: ResolvedVoicingNote[]): Set<string> {
     return new Set(
         notes
             .filter((note) => !note.isMuted && note.degree)

@@ -1,4 +1,4 @@
-import { GENERIC_SCALE_INTERVAL_LABELS, SCALE_REGISTRY, SCALES, getScaleIntervalLabels } from './scales';
+import { GENERIC_SCALE_INTERVAL_LABELS, SCALES, getScaleIntervalLabels } from './scales';
 
 export const SCALE_FAMILY_ORDER = ['Diatonic Modes', 'Harmonic Minor', 'Jazz Minor', 'Symmetric', 'Pentatonic'] as const;
 
@@ -38,7 +38,7 @@ const SCALE_NAME_LABELS: Record<string, string> = {
     'Minor Pentatonic': 'Minor Pent',
 };
 
-const SCALE_LOOKUP_BY_NAME = Object.entries(SCALES).reduce<Record<string, ScaleOption>>((acc, [group, modes]) => {
+export const SCALE_LOOKUP_BY_NAME = Object.entries(SCALES).reduce<Record<string, ScaleOption>>((acc, [group, modes]) => {
     Object.keys(modes).forEach((name) => {
         acc[name] = { group, name };
     });
@@ -136,20 +136,6 @@ export function getScaleFormula(group: string, name: string) {
     return intervals.map((interval) => labels[interval] || GENERIC_SCALE_INTERVAL_LABELS[interval] || `${interval}`);
 }
 
-export function getScaleMetadata(group: string, name: string) {
-    const registryEntry = SCALE_REGISTRY[group]?.[name];
-    const family = getVisibleScaleFamily(group);
-    const formula = getScaleFormula(group, name);
-
-    return {
-        family,
-        familyLabel: getVisibleScaleFamilyLabel(group),
-        formula,
-        parent: registryEntry?.parent ?? '',
-        subset: registryEntry?.subset ?? [],
-        degreeCount: SCALES[group]?.[name]?.length ?? 0,
-    };
-}
 
 export function getDefaultScaleForFamily(family: VisibleScaleFamily): ScaleOption {
     const group = SCALE_FAMILY_GROUP_MAP[family];

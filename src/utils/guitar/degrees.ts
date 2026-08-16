@@ -1,6 +1,6 @@
 // Pure Roman-numeral-degree theory — instrument-agnostic (no tuning/string/fret involved).
 
-import { NOTES_FLAT } from './notes';
+import { NOTES, NOTES_FLAT } from './notes';
 
 export const ROMAN_NUMERAL_CHORDS: Record<string, { interval: number; type: string }> = {
     'I': { interval: 0, type: 'Major' },
@@ -52,14 +52,11 @@ const CHORD_TYPE_SUFFIX: Record<string, string> = {
 
 /** Converts a displayDegree + coreDegree to a real chord name, e.g. 'Am', 'G7', 'Ab7' */
 export function degreeToChordName(displayDegree: string, coreDegree: string, rootKey: number): string {
-    const NOTES_SHARP = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-    const NOTES_FLAT_LOCAL = NOTES_FLAT;
-
     // Handle V7/x — secondary dominant
     if (displayDegree.startsWith('V7/')) {
         const { interval } = getChordFromDegree(coreDegree) || { interval: 0 };
         const chordRoot = (rootKey + interval + 7) % 12; // V of the target = a 5th above target
-        const noteName = NOTES_FLAT_LOCAL[chordRoot];
+        const noteName = NOTES_FLAT[chordRoot];
         return `${noteName}7`;
     }
 
@@ -67,7 +64,7 @@ export function degreeToChordName(displayDegree: string, coreDegree: string, roo
     if (displayDegree.startsWith('subV7/')) {
         const { interval } = getChordFromDegree(coreDegree) || { interval: 0 };
         const chordRoot = (rootKey + interval + 1) % 12; // b2 of target
-        const noteName = NOTES_FLAT_LOCAL[chordRoot];
+        const noteName = NOTES_FLAT[chordRoot];
         return `${noteName}7`;
     }
 
@@ -78,7 +75,7 @@ export function degreeToChordName(displayDegree: string, coreDegree: string, roo
     const chordRoot = (rootKey + degreeData.interval) % 12;
     // Use flats for minor/flat degrees, sharps otherwise
     const useFlat = displayDegree.startsWith('b') || degreeData.type === 'Minor';
-    const noteName = useFlat ? NOTES_FLAT_LOCAL[chordRoot] : NOTES_SHARP[chordRoot];
+    const noteName = useFlat ? NOTES_FLAT[chordRoot] : NOTES[chordRoot];
     const suffix = CHORD_TYPE_SUFFIX[degreeData.type] ?? '';
     return `${noteName}${suffix}`;
 }
