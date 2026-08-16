@@ -8,3 +8,7 @@ export const STANDARD_GUITAR_STRING_MIDI_PITCHES = [64, 59, 55, 50, 45, 40];
 // Backward-compatible aliases used by legacy theory/logic code.
 export const TUNING = STANDARD_GUITAR_TUNING_PITCH_CLASSES;
 export const STRING_MIDI_PITCHES = STANDARD_GUITAR_STRING_MIDI_PITCHES;
+
+// Fretboard hardware facts (inlay dot marker positions), same category as tuning/string pitches.
+export const INLAYS = [3, 5, 7, 9, 15, 17, 19, 21];
+export const DOUBLE_INLAYS = [12];
