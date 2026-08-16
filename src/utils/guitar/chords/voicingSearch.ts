@@ -104,14 +104,27 @@ export function searchDeductiveVoicings(
             }
         }
 
+        // A chord needs at least 3 distinct tones to read as a chord rather than a double-stop —
+        // except for formulas that are inherently 2-tone (power chords), which have nothing more
+        // to add. This is a hard floor, independent of which style/omission produced the notes.
+        const distinctPitchClasses = new Set(playedNotes.map((note) => note.pitchClass)).size;
+        const minDistinctPitchClasses = Math.min(3, entry.formula.degrees.length);
+        if (distinctPitchClasses < minDistinctPitchClasses) {
+            return;
+        }
+
         const fingeringPoints: FingeringPoint[] = playedNotes
             .filter((note) => note.fret > 0)
             .map((note) => ({ string: note.string, fret: note.fret }));
+        const openStrings = playedNotes
+            .filter((note) => note.fret === 0)
+            .map((note) => note.string);
 
         const playability = evaluateHandPlayability(fingeringPoints, {
             scaleLengthMm: options.scaleLengthMm,
             maxHandSpanMm: options.maxHandSpanMm,
             allowThumbOnLowE: options.allowThumbOnLowE,
+            openStrings,
         });
         if (!playability.playable) {
             return;

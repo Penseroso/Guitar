@@ -67,6 +67,12 @@ export function buildTargetVoicingNotes(entry: ChordRegistryEntry, style: Voicin
 
     if (style.position === 'shell') {
         const requiredDegrees = new Set(deriveRequiredDegrees(entry));
+        // A shell voicing that would drop below 3 tones is just a double-stop, not a chord —
+        // skip it entirely rather than let it degenerate (e.g. a plain triad's shell would be
+        // root+3rd only, since the natural 5th is optional).
+        if (requiredDegrees.size < 3) {
+            return [];
+        }
         for (const degree of entry.formula.degrees) {
             if (!requiredDegrees.has(degree)) {
                 omitDegrees.add(degree);

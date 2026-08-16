@@ -41,14 +41,30 @@ describe('searchDeductiveVoicings', () => {
         expect(hasDoubledDegree).toBe(true);
     });
 
-    it('also finds the minimal 2-note voicing (root + 3rd only, natural 5th omitted since it is optional)', () => {
+    it('never produces a 2-note "voicing" for a triad — that is a double-stop, not a chord', () => {
         const results = searchDeductiveVoicings(major, C_ROOT_PITCH_CLASS, { position: 'close' });
 
-        const hasMinimalVoicing = results.some((voicing) => {
+        for (const voicing of results) {
             const played = voicing.notes.filter((note) => !note.isMuted);
-            return played.length === 2 && new Set(played.map((n) => n.degree)).size === 2;
-        });
-        expect(hasMinimalVoicing).toBe(true);
+            const distinctPitchClasses = new Set(played.map((note) => note.pitchClass)).size;
+            expect(distinctPitchClasses).toBeGreaterThanOrEqual(3);
+        }
+
+        // shell style degenerates to root+3rd only for a plain triad (5th is optional) — should
+        // produce nothing rather than a dyad.
+        const shellResults = searchDeductiveVoicings(major, C_ROOT_PITCH_CLASS, { position: 'shell' });
+        expect(shellResults.length).toBe(0);
+    });
+
+    it('still allows the inherently 2-tone power chord (root + 5th, nothing else in the formula)', () => {
+        const power5 = CHORD_REGISTRY_LIST.find((entry) => entry.id === 'power-5')!;
+        const results = searchDeductiveVoicings(power5, C_ROOT_PITCH_CLASS, { position: 'close' });
+
+        expect(results.length).toBeGreaterThan(0);
+        for (const voicing of results) {
+            const played = voicing.notes.filter((note) => !note.isMuted);
+            expect(new Set(played.map((note) => note.pitchClass)).size).toBe(2);
+        }
     });
 
     it('finds the standard "x-3-2-0-x-x" style close-position C major grip on the A/D/G strings', () => {
