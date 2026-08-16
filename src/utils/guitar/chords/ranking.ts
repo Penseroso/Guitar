@@ -1,6 +1,7 @@
 import { deriveRequiredDegrees } from './degreeRequirements';
 import { resolveChordRegistryEntry } from './helpers';
 import { getVoicingFamilyLabel } from './descriptor';
+import { classifyFrettedGroups, type FingeringPoint } from './fretGeometry';
 import { collectPlayedDegrees } from './resolver';
 import type { ChordRegistryEntry } from './registry';
 import type { ChordTones, ResolvedVoicing, VoicingCandidate, VoicingRankingMode } from './types';
@@ -23,6 +24,12 @@ export interface VoicingShapeMetrics {
     mutedCount: number;
     lowStringMuteCount: number;
     internalMutedCount: number;
+    /** Of internalMutedCount, how many have no fretted neighbor on either side to lean on for a
+     *  free mute — these need a genuinely separate muting action and are the rare/costly ones. */
+    isolatedInternalMuteCount: number;
+    /** Of isolatedInternalMuteCount, how many are additionally flanked by open strings on both
+     *  sides — nothing physical damps them at all, the hardest case to keep clean. */
+    openFlankedIsolatedMuteCount: number;
     maxAdjacentFretJump: number;
     averageAdjacentFretJump: number;
     fretCenter: number;
@@ -30,6 +37,13 @@ export interface VoicingShapeMetrics {
     lowestPlayedString?: number;
     barreNoteCount: number;
     gripDensity: number;
+    /** Total string-count overlap between every pair of distinct forced barres in this voicing.
+     *  0 whenever there's at most one barre — a single barre spanning several strings while
+     *  other fingers arch over some of them for higher frets is completely normal (e.g. the
+     *  classic F-chord shape) and isn't penalized here. This is specifically for the rare case
+     *  of *two different* barres whose string-ranges overlap, meaning two separate fingers must
+     *  each lie flat across some of the same strings at different frets simultaneously. */
+    overlappingBarreSpan: number;
 }
 
 interface RankingProfile {
@@ -59,6 +73,9 @@ interface RankingProfile {
     gripDensityBonus: number;
     upperRegisterBonus: number;
     upperRegisterPenalty: number;
+    rootPositionBonus: number;
+    inversionPenalty: number;
+    overlappingBarreSpanPenalty: number;
 }
 
 const RANKING_PROFILES: Record<VoicingRankingMode, RankingProfile> = {
@@ -89,6 +106,9 @@ const RANKING_PROFILES: Record<VoicingRankingMode, RankingProfile> = {
         gripDensityBonus: 4,
         upperRegisterBonus: 2,
         upperRegisterPenalty: 0,
+        rootPositionBonus: 16,
+        inversionPenalty: 8,
+        overlappingBarreSpanPenalty: 10,
     },
     compact: {
         mode: 'compact',
@@ -117,6 +137,9 @@ const RANKING_PROFILES: Record<VoicingRankingMode, RankingProfile> = {
         gripDensityBonus: 7,
         upperRegisterBonus: 2,
         upperRegisterPenalty: 0,
+        rootPositionBonus: 14,
+        inversionPenalty: 7,
+        overlappingBarreSpanPenalty: 9,
     },
     beginner: {
         mode: 'beginner',
@@ -145,6 +168,9 @@ const RANKING_PROFILES: Record<VoicingRankingMode, RankingProfile> = {
         gripDensityBonus: 5,
         upperRegisterBonus: 0,
         upperRegisterPenalty: 2,
+        rootPositionBonus: 20,
+        inversionPenalty: 10,
+        overlappingBarreSpanPenalty: 14,
     },
     'upper-register': {
         mode: 'upper-register',
@@ -173,6 +199,9 @@ const RANKING_PROFILES: Record<VoicingRankingMode, RankingProfile> = {
         gripDensityBonus: 4,
         upperRegisterBonus: 10,
         upperRegisterPenalty: 6,
+        rootPositionBonus: 10,
+        inversionPenalty: 5,
+        overlappingBarreSpanPenalty: 6,
     },
 };
 
@@ -189,13 +218,31 @@ export function getVoicingShapeMetrics(voicing: ResolvedVoicing): VoicingShapeMe
     const playedStrings = playedNotes.map((note) => note.string).sort((left, right) => left - right);
     const firstPlayedString = playedStrings[0];
     const lastPlayedString = playedStrings[playedStrings.length - 1];
-    const internalMutedCount = mutedNotes.filter((note) => {
+    const internalMutedNotes = mutedNotes.filter((note) => {
         if (firstPlayedString === undefined || lastPlayedString === undefined) {
             return false;
         }
 
         return note.string > firstPlayedString && note.string < lastPlayedString;
-    }).length;
+    });
+    const internalMutedCount = internalMutedNotes.length;
+    // A muted string right next to a fretted finger gets deadened for free by that finger's
+    // flesh — the standard way real players achieve an "X" in a chord diagram. A muted string
+    // with no fretted neighbor on either side has nothing to lean on, so it needs its own
+    // deliberate muting action (fingertip resting flat, palm mute, etc.) — genuinely rarer.
+    const frettedStringSet = new Set(frettedNotes.map((note) => note.string));
+    const openStringSet = new Set(openNotes.map((note) => note.string));
+    const isolatedInternalMutes = internalMutedNotes.filter(
+        (note) => !frettedStringSet.has(note.string - 1) && !frettedStringSet.has(note.string + 1)
+    );
+    const isolatedInternalMuteCount = isolatedInternalMutes.length;
+    // Worst case within "isolated": both neighbors are open strings actively ringing, so there's
+    // no finger anywhere nearby to lean on and nothing damping the strings pressing in from
+    // either side during a strum — strictly harder to keep clean than an isolated mute at the
+    // edge of the grip or next to another muted string.
+    const openFlankedIsolatedMuteCount = isolatedInternalMutes.filter(
+        (note) => openStringSet.has(note.string - 1) && openStringSet.has(note.string + 1)
+    ).length;
     const adjacentJumps = playedNotes
         .slice(1)
         .map((note, index) => Math.abs(note.fret - playedNotes[index].fret));
@@ -206,15 +253,34 @@ export function getVoicingShapeMetrics(voicing: ResolvedVoicing): VoicingShapeMe
     const fretCenter = frettedNotes.length > 0
         ? frettedNotes.reduce((sum, note) => sum + note.fret, 0) / frettedNotes.length
         : 0;
-    const barreCounts = frettedNotes.reduce((accumulator, note) => {
-        accumulator.set(note.fret, (accumulator.get(note.fret) ?? 0) + 1);
-        return accumulator;
-    }, new Map<number, number>());
-    const barreNoteCount = Math.max(0, ...barreCounts.values());
     const stringRange = firstPlayedString !== undefined && lastPlayedString !== undefined
         ? (lastPlayedString - firstPlayedString) + 1
         : 0;
     const gripDensity = stringRange > 0 ? playedNotes.length / stringRange : 0;
+
+    const fingeringPoints: FingeringPoint[] = frettedNotes.map((note) => ({ string: note.string, fret: note.fret }));
+    const openStrings = openNotes.map((note) => note.string);
+    const frettedGroups = classifyFrettedGroups(fingeringPoints, openStrings);
+    // Only genuine forced barres count toward "dense same-fret grip" / skip-gap penalties —
+    // strings that just happen to share a fret while being independently fingered (e.g. open
+    // G's low-E and high-E strings, both fret 3, unrelated open strings between them) are two
+    // ordinary solo fingers, not a barre, and shouldn't be scored like one.
+    const barreGroups = frettedGroups.filter((group) => group.isBarre);
+    const barreNoteCount = barreGroups.reduce((max, group) => Math.max(max, group.strings.length), 0);
+    const barreRanges = barreGroups.map((group) => ({
+        min: Math.min(...group.strings),
+        max: Math.max(...group.strings),
+    }));
+    let overlappingBarreSpan = 0;
+    for (let i = 0; i < barreRanges.length; i++) {
+        for (let j = i + 1; j < barreRanges.length; j++) {
+            const overlapLo = Math.max(barreRanges[i].min, barreRanges[j].min);
+            const overlapHi = Math.min(barreRanges[i].max, barreRanges[j].max);
+            if (overlapLo <= overlapHi) {
+                overlappingBarreSpan += (overlapHi - overlapLo) + 1;
+            }
+        }
+    }
 
     return {
         playedCount: playedNotes.length,
@@ -223,6 +289,8 @@ export function getVoicingShapeMetrics(voicing: ResolvedVoicing): VoicingShapeMe
         mutedCount: mutedNotes.length,
         lowStringMuteCount,
         internalMutedCount,
+        isolatedInternalMuteCount,
+        openFlankedIsolatedMuteCount,
         maxAdjacentFretJump,
         averageAdjacentFretJump,
         fretCenter,
@@ -230,6 +298,7 @@ export function getVoicingShapeMetrics(voicing: ResolvedVoicing): VoicingShapeMe
         lowestPlayedString: lastPlayedString,
         barreNoteCount,
         gripDensity,
+        overlappingBarreSpan,
     };
 }
 
@@ -334,8 +403,24 @@ export function scoreResolvedVoicing(
         score += profile.internalMuteReward;
         reasons.push('Avoids internal muted-string gaps.');
     } else {
-        score -= metrics.internalMutedCount * profile.internalMutePenalty;
-        reasons.push(`Has ${metrics.internalMutedCount} internal muted-string gap${metrics.internalMutedCount === 1 ? '' : 's'}.`);
+        const adjacentCount = metrics.internalMutedCount - metrics.isolatedInternalMuteCount;
+        if (adjacentCount > 0) {
+            // Deadened for free by the neighboring fretted finger's flesh — the standard way an
+            // "X" happens in real playing, so it's only a light ding, not a real cost.
+            score -= adjacentCount * profile.internalMutePenalty * 0.25;
+            reasons.push(`Has ${adjacentCount} internal muted-string gap${adjacentCount === 1 ? '' : 's'} (naturally deadened by an adjacent finger).`);
+        }
+        if (metrics.isolatedInternalMuteCount > 0) {
+            // No fretted neighbor to lean on — needs its own deliberate muting action. One of
+            // these happens in real playing, but stacking two or more (each needing a separate
+            // dedicated mute) is rare enough that the cost should climb faster than linearly.
+            // An isolated mute flanked by open strings on both sides counts extra — nothing
+            // damps it at all, actively ringing strings pressing in from both directions.
+            const plainIsolated = metrics.isolatedInternalMuteCount - metrics.openFlankedIsolatedMuteCount;
+            const weightedUnits = plainIsolated + (metrics.openFlankedIsolatedMuteCount * 2);
+            score -= ((weightedUnits * (weightedUnits + 1)) / 2) * profile.internalMutePenalty;
+            reasons.push(`Has ${metrics.isolatedInternalMuteCount} isolated muted-string gap${metrics.isolatedInternalMuteCount === 1 ? '' : 's'} with no fretted neighbor to lean on${metrics.openFlankedIsolatedMuteCount > 0 ? ` (${metrics.openFlankedIsolatedMuteCount} flanked by open strings)` : ''}.`);
+        }
     }
 
     if (metrics.maxAdjacentFretJump <= 2) {
@@ -374,6 +459,11 @@ export function scoreResolvedVoicing(
     if (metrics.barreNoteCount >= 3) {
         score -= (metrics.barreNoteCount - 2) * profile.barreComplexityPenalty;
         reasons.push(`Dense same-fret grip across ${metrics.barreNoteCount} strings.`);
+    }
+
+    if (metrics.overlappingBarreSpan > 0) {
+        score -= metrics.overlappingBarreSpan * profile.overlappingBarreSpanPenalty;
+        reasons.push(`Needs two overlapping barres across ${metrics.overlappingBarreSpan} shared string${metrics.overlappingBarreSpan === 1 ? '' : 's'}.`);
     }
 
     if (metrics.lowStringMuteCount > 0) {
@@ -441,6 +531,22 @@ export function scoreResolvedVoicing(
         } else {
             score -= 28;
             reasons.push('Does not match specified bass.');
+        }
+    } else if (voicing.descriptor.inversion === 'root-position') {
+        score += profile.rootPositionBonus;
+        reasons.push('Keeps the root in the bass.');
+    } else if (voicing.descriptor.inversion === 'inversion') {
+        // Root-in-bass only matters once the voicing reaches down into the low strings (D/A/E,
+        // index >= 3) — a grip confined to the top strings (G/B/E) is a normal, idiomatic way to
+        // play without caring what the lowest note is (a bass player or the low strings of a
+        // fuller chord elsewhere are expected to cover the root), so it shouldn't be penalized
+        // for "not being root position" the way a full low-to-high chord would be.
+        const reachesLowStrings = (voicing.descriptor.lowestPlayedString ?? 0) >= 3;
+        if (reachesLowStrings) {
+            score -= profile.inversionPenalty;
+            reasons.push('Puts a non-root tone in the bass.');
+        } else {
+            reasons.push('Upper-string grip — bass note left open.');
         }
     }
 

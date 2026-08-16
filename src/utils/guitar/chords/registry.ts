@@ -139,6 +139,7 @@ export const CHORD_REGISTRY_LIST: ChordRegistryEntry[] = [
         quality: 'augmented',
         aliases: ['aug'],
         tags: ['triad', 'augmented'],
+        voicingHint: { rootStrings: [5, 4, 3], tags: ['triad', 'augmented'] },
     }),
     createChordRegistryEntry({
         id: 'diminished',
@@ -150,6 +151,7 @@ export const CHORD_REGISTRY_LIST: ChordRegistryEntry[] = [
         quality: 'diminished',
         aliases: ['dim', 'o'],
         tags: ['triad', 'diminished-family'],
+        voicingHint: { rootStrings: [5, 4, 3], tags: ['triad', 'diminished-family'] },
     }),
     createChordRegistryEntry({
         id: 'major-7',
