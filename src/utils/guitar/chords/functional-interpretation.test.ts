@@ -46,4 +46,26 @@ describe('functional harmonic interpretation', () => {
         expect(interpretation.harmonyKind).toBe('suspension');
         expect(interpretation.fit).toBe('color');
     });
+
+    it('spells the tritone degree as #IV when the active scale itself labels it #4 (Lydian family)', () => {
+        const interpretation = interpretChordAgainstTonalCenter('major-7', 6, {
+            selectedKey: 0,
+            tonicPitchClass: 0,
+            scaleGroup: 'Diatonic Modes',
+            scaleName: 'Lydian',
+        });
+
+        expect(interpretation.relativeDegree).toBe('#IV');
+    });
+
+    it('keeps bV for scales that label the tritone degree b5 (Locrian family)', () => {
+        const interpretation = interpretChordAgainstTonalCenter('half-diminished-7', 6, {
+            selectedKey: 0,
+            tonicPitchClass: 0,
+            scaleGroup: 'Diatonic Modes',
+            scaleName: 'Locrian',
+        });
+
+        expect(interpretation.relativeDegree).toBe('bV');
+    });
 });

@@ -116,6 +116,9 @@ export function getRelatedScaleSuggestionsForChord(
             buildSuggestion(suggestions, seen, 'Ionian', 'primary', interpretation.harmonyKind === 'tonic' ? 'functional' : 'color', functionLabel, 'Stable major-tonic fit with clear 3 and 7 support.');
             buildSuggestion(suggestions, seen, 'Lydian', 'color', interpretation.harmonyKind === 'modal-center' ? 'functional' : 'color', functionLabel, 'Bright major option when the harmonic reading welcomes #11 color.');
             buildSuggestion(suggestions, seen, 'Major Pentatonic', 'color', 'color', functionLabel, 'Reduces the color to the cleanest major consonances.');
+            buildSuggestion(suggestions, seen, 'Ionian #5', 'color', 'color', functionLabel, 'Adds a #5 tension over an otherwise major-tonic sound.');
+            buildSuggestion(suggestions, seen, 'Lydian #2', 'color', 'color', functionLabel, 'Extra bright Lydian color with a raised 2nd on top.');
+            buildSuggestion(suggestions, seen, 'Lydian Augmented', 'altered', 'color', functionLabel, 'Very bright, unstable major color combining a raised 4th and 5th.');
             break;
 
         case 'minor':
@@ -125,6 +128,10 @@ export function getRelatedScaleSuggestionsForChord(
             buildSuggestion(suggestions, seen, 'Aeolian', 'color', interpretation.harmonyKind === 'modal-center' ? 'functional' : 'color', functionLabel, 'Darker minor frame when the chord behaves more like a tonic area.');
             buildSuggestion(suggestions, seen, 'Jazz Minor', 'color', 'color', functionLabel, 'Adds brighter upper extensions around the minor shell.');
             buildSuggestion(suggestions, seen, 'Minor Pentatonic', 'modal', 'color', functionLabel, 'Keeps the minor function compact and riff-friendly.');
+            buildSuggestion(suggestions, seen, 'Harmonic Minor', 'color', 'color', functionLabel, 'Adds a raised-7th cadential pull inside an otherwise minor tonic sound.');
+            buildSuggestion(suggestions, seen, 'Dorian #4', 'color', 'color', functionLabel, 'Layers a Lydian-tinged #11 color over an otherwise Dorian minor sound.');
+            buildSuggestion(suggestions, seen, 'Dorian b2 (Assyrian)', 'modal', 'color', functionLabel, 'Phrygian-tinged minor color when the line wants a b2 above the root.');
+            buildSuggestion(suggestions, seen, 'Phrygian', 'color', 'color', functionLabel, 'Darkens the minor color further with a half-step above the root (b2).');
             break;
 
         case 'dominant-7':
@@ -133,6 +140,7 @@ export function getRelatedScaleSuggestionsForChord(
             buildSuggestion(suggestions, seen, 'Mixolydian', 'primary', interpretation.harmonyKind === 'dominant' || interpretation.harmonyKind === 'modal-center' ? 'functional' : 'color', functionLabel, 'Primary dominant collection with natural extensions intact.');
             buildSuggestion(suggestions, seen, 'Lydian Dominant', 'color', 'color', functionLabel, 'Adds #11 color without committing to full altered tension.');
             buildSuggestion(suggestions, seen, 'Altered scale', 'altered', interpretation.harmonyKind === 'dominant' ? 'functional' : 'color', functionLabel, 'High-tension dominant option when cadential pull should intensify.');
+            buildSuggestion(suggestions, seen, 'Mixolydian b6', 'color', 'color', functionLabel, 'Leans the dominant color toward a minor-key resolution with a lowered 6th.');
             break;
 
         case 'hendrix-7-sharp-9':
@@ -145,6 +153,7 @@ export function getRelatedScaleSuggestionsForChord(
         case 'half-diminished-7':
             buildSuggestion(suggestions, seen, 'Locrian', 'primary', 'functional', functionLabel, 'Core half-diminished fit against a minor cadential setup.');
             buildSuggestion(suggestions, seen, 'Locrian ♮2', 'color', 'functional', functionLabel, 'Common jazz/minor-key variation when the line wants a natural 2.');
+            buildSuggestion(suggestions, seen, 'Locrian #6', 'color', 'functional', functionLabel, 'Brighter half-diminished color from a raised 6th.');
             break;
 
         case 'diminished-7':

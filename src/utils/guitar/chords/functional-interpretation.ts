@@ -1,4 +1,5 @@
 import { getNoteName } from '../logic';
+import { SCALE_DISPLAY_FORMULAS } from '../scales';
 import { resolveChordRegistryEntry } from './helpers';
 import type { ChordRegistryEntry } from './registry';
 import type { HarmonicTonalContext } from './related-scales';
@@ -41,6 +42,21 @@ const INTERVAL_TO_DEGREE: Record<number, string> = {
     11: 'VII',
 };
 
+// Same ambiguity as scales.ts's INTERVAL_TO_ROMAN: the tritone degree is enharmonically both
+// "b5" and "#4". Spell it "#IV" when the active scale's own interval label says "#4" (Lydian
+// family), otherwise keep "bV" — matches the fix already applied in scales.ts's generateModeData.
+const TRITONE_INTERVAL = 6;
+const SHARP_FOUR_LABEL = '#4';
+
+function getRelativeDegreeLabel(relativeInterval: number, scaleGroup: string, scaleName: string): string {
+    if (relativeInterval === TRITONE_INTERVAL
+        && SCALE_DISPLAY_FORMULAS[scaleGroup]?.[scaleName]?.[TRITONE_INTERVAL] === SHARP_FOUR_LABEL) {
+        return '#IV';
+    }
+
+    return INTERVAL_TO_DEGREE[relativeInterval] ?? '?';
+}
+
 function getTonicPitchClass(tonalContext: HarmonicTonalContext, fallbackPitchClass: number) {
     return tonalContext.tonicPitchClass ?? tonalContext.selectedKey ?? fallbackPitchClass;
 }
@@ -53,11 +69,11 @@ export function interpretChordAgainstTonalCenter(
     const entry = resolveChordRegistryEntry(entryInput);
     const tonicPitchClass = getTonicPitchClass(tonalContext, chordRootPitchClass);
     const relativeInterval = (chordRootPitchClass - tonicPitchClass + 12) % 12;
-    const relativeDegree = INTERVAL_TO_DEGREE[relativeInterval] ?? '?';
-    const tonicNoteName = getNoteName(tonicPitchClass);
-    const chordRootNoteName = getNoteName(chordRootPitchClass);
     const scaleName = tonalContext.scaleName ?? '';
     const scaleFamily = tonalContext.scaleGroup ?? '';
+    const relativeDegree = getRelativeDegreeLabel(relativeInterval, scaleFamily, scaleName);
+    const tonicNoteName = getNoteName(tonicPitchClass);
+    const chordRootNoteName = getNoteName(chordRootPitchClass);
     const isDominantQuality = entry.tags?.includes('dominant') ?? false;
     const quality = entry.definition.quality ?? '';
     const isMinorQuality = quality.includes('minor') || entry.id === 'minor';

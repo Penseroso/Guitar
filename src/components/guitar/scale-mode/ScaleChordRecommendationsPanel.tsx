@@ -2,105 +2,68 @@
 
 import React from 'react';
 
-import type { ScaleChordRecommendation } from '../../../utils/guitar/scale-chord-recommendations';
-import { buildScaleChordRecommendations } from '../../../utils/guitar/scale-chord-recommendations';
+import type { ChordScaleSuggestionCategory } from '../../../utils/guitar/chords/related-scales';
+import { getChordContextsForScale } from '../../../utils/guitar/chords/scale-chord-context';
 
 interface ScaleChordRecommendationsPanelProps {
-    selectedKey: number;
     scaleGroup: string;
     scaleName: string;
-    onOpenChordRecommendation: (payload: {
-        chordType: string;
-        rootPitchClass: number;
-    }) => void;
 }
 
-function RecommendationSection({
-    title,
-    recommendations,
-    onOpenChordRecommendation,
-}: {
-    title: string;
-    recommendations: ScaleChordRecommendation[];
-    onOpenChordRecommendation: (payload: {
-        chordType: string;
-        rootPitchClass: number;
-    }) => void;
-}) {
-    return (
-        <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between gap-3">
-                <span className="text-[10px] font-black uppercase tracking-[0.24em] text-white/32">{title}</span>
-                <span className="text-[10px] font-black uppercase tracking-[0.18em] text-white/22">
-                    {recommendations.length}
-                </span>
-            </div>
+const CATEGORY_LABELS: Record<ChordScaleSuggestionCategory, string> = {
+    primary: 'Primary Fit',
+    color: 'Color Option',
+    altered: 'Altered Tension',
+    modal: 'Modal Color',
+};
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2.5">
-                {recommendations.map((recommendation) => (
-                    <div
-                        key={recommendation.id}
-                        className="rounded-[1rem] border border-white/6 bg-white/[0.02] px-3.5 py-3 flex items-center justify-between gap-3"
-                    >
-                        <div className="min-w-0 flex flex-col gap-1">
-                            <div className="flex flex-wrap items-center gap-2">
-                                <span className="text-[15px] font-bold leading-none text-white">{recommendation.symbol}</span>
-                                <span className="text-[10px] font-black tracking-[0.18em] text-white/35">
-                                    {recommendation.degree}
-                                </span>
-                                {recommendation.roleTag && (
-                                    <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.14em] text-white/45">
-                                        {recommendation.roleTag}
-                                    </span>
-                                )}
-                            </div>
-                        </div>
-
-                        <button
-                            onClick={() => onOpenChordRecommendation({
-                                chordType: recommendation.chordType,
-                                rootPitchClass: recommendation.rootPitchClass,
-                            })}
-                            className="shrink-0 rounded-full border border-cyan-200/20 bg-cyan-200/[0.08] px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.16em] text-cyan-50 transition-all hover:border-cyan-100/45 hover:bg-cyan-200/[0.14]"
-                        >
-                            Open Chord
-                        </button>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
-}
+const CATEGORY_ORDER: ChordScaleSuggestionCategory[] = ['primary', 'color', 'altered', 'modal'];
 
 export function ScaleChordRecommendationsPanel({
-    selectedKey,
     scaleGroup,
     scaleName,
-    onOpenChordRecommendation,
 }: ScaleChordRecommendationsPanelProps) {
-    const recommendations = React.useMemo(
-        () => buildScaleChordRecommendations(selectedKey, scaleGroup, scaleName),
-        [scaleGroup, scaleName, selectedKey]
+    const contexts = React.useMemo(
+        () => getChordContextsForScale(scaleGroup, scaleName),
+        [scaleGroup, scaleName]
     );
+
+    const groupedByCategory = React.useMemo(() => {
+        return CATEGORY_ORDER.map((category) => ({
+            category,
+            items: contexts.filter((context) => context.category === category),
+        })).filter((group) => group.items.length > 0);
+    }, [contexts]);
 
     return (
         <div className="flex flex-col gap-4 bg-[#050505]/50 border border-white/5 rounded-3xl p-6 backdrop-blur-sm animate-in fade-in duration-500">
             <div className="flex flex-col gap-1 border-b border-white/5 pb-3">
                 <span className="text-[10px] font-black uppercase text-white/40 tracking-[0.3em]">Scale Chords</span>
-                <span className="text-sm text-white/56">Practical chord options for the current scale.</span>
+                <span className="text-sm text-white/56">Chord qualities this scale works well over.</span>
             </div>
 
-            <RecommendationSection
-                title="Usable Chords"
-                recommendations={recommendations.usable}
-                onOpenChordRecommendation={onOpenChordRecommendation}
-            />
+            {groupedByCategory.map(({ category, items }) => (
+                <div key={category} className="flex flex-col gap-3">
+                    <span className="text-[10px] font-black uppercase tracking-[0.24em] text-white/32">
+                        {CATEGORY_LABELS[category]}
+                    </span>
 
-            <RecommendationSection
-                title="Characteristic Chords"
-                recommendations={recommendations.characteristic}
-                onOpenChordRecommendation={onOpenChordRecommendation}
-            />
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2.5">
+                        {items.map((item) => (
+                            <div
+                                key={item.chordId}
+                                title={item.reason}
+                                className="rounded-[1rem] border border-white/6 bg-white/[0.02] px-3.5 py-3 flex flex-col gap-1"
+                            >
+                                <span className="text-[15px] font-bold leading-none text-white">
+                                    {item.chordDisplayName || item.chordSymbol || item.chordId}
+                                </span>
+                                <span className="text-[11px] text-white/45 leading-snug">{item.reason}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            ))}
         </div>
     );
 }

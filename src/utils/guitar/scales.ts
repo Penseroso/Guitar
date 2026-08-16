@@ -199,6 +199,14 @@ const INTERVAL_TO_ROMAN: Record<number, string> = {
     11: 'VII'
 };
 
+// The tritone degree (6 semitones) is the one ambiguous spot in INTERVAL_TO_ROMAN: it's
+// enharmonically both "b5" and "#4", and which one is idiomatic depends on the scale. A scale
+// whose own interval label spells it "#4" (Lydian-family modes, Whole Tone) should get a "#IV"
+// chord root, not "bV" — otherwise the scale's note label and its own triad's roman numeral
+// contradict each other for the same pitch.
+const TRITONE_INTERVAL = 6;
+const SHARP_FOUR_LABEL = '#4';
+
 /**
  * Calculates absolute intervals for any given mode based on its parent scale.
  * Handles generic modulo operation based on the parent's length (N)
@@ -286,7 +294,9 @@ export function generateModeData(groupName: string, modeName: string): ScaleDict
         else if (int3 === 4 && int5 === 8) quality = 'Augmented';
 
         // 로마 숫자 파싱
-        let roman = INTERVAL_TO_ROMAN[rootInterval] || '?';
+        const usesSharpFourSpelling = rootInterval === TRITONE_INTERVAL
+            && SCALE_DISPLAY_FORMULAS[groupName]?.[modeName]?.[TRITONE_INTERVAL] === SHARP_FOUR_LABEL;
+        let roman = usesSharpFourSpelling ? '#IV' : (INTERVAL_TO_ROMAN[rootInterval] || '?');
         if (quality === 'Minor') roman = roman.toLowerCase();
         else if (quality === 'Diminished') roman = roman.toLowerCase() + '°';
         else if (quality === 'Augmented') roman = roman + '+';

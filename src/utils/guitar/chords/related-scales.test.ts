@@ -10,6 +10,9 @@ describe('chord related scale suggestions', () => {
             'Ionian',
             'Lydian',
             'Major Pentatonic',
+            'Ionian #5',
+            'Lydian #2',
+            'Lydian Augmented',
         ]);
         expect(suggestions[0]?.category).toBe('primary');
     });
@@ -21,6 +24,7 @@ describe('chord related scale suggestions', () => {
             'Mixolydian',
             'Lydian Dominant',
             'Altered scale',
+            'Mixolydian b6',
         ]);
     });
 
@@ -30,6 +34,7 @@ describe('chord related scale suggestions', () => {
         expect(suggestions.map((suggestion) => suggestion.name)).toEqual([
             'Locrian',
             'Locrian ♮2',
+            'Locrian #6',
         ]);
     });
 

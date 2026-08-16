@@ -47,10 +47,6 @@ interface ScaleModeWorkspaceProps {
     scaleIntervalLabels: Partial<Record<number, string>>;
     fingering?: Fingering[];
     doubleStops: PlayableDoubleStop[];
-    onOpenChordRecommendation: (payload: {
-        chordType: string;
-        rootPitchClass: number;
-    }) => void;
 }
 
 export function ScaleModeWorkspace({
@@ -91,7 +87,6 @@ export function ScaleModeWorkspace({
     scaleIntervalLabels,
     fingering,
     doubleStops,
-    onOpenChordRecommendation,
 }: ScaleModeWorkspaceProps) {
     return (
         <div className="relative z-10 w-full flex flex-col gap-6">
@@ -201,10 +196,8 @@ export function ScaleModeWorkspace({
             </div>
 
             <ScaleChordRecommendationsPanel
-                selectedKey={rootNote}
                 scaleGroup={effectiveScaleGroup}
                 scaleName={effectiveScaleName}
-                onOpenChordRecommendation={onOpenChordRecommendation}
             />
         </div>
     );
