@@ -4,6 +4,21 @@
 import { STRING_MIDI_PITCHES } from '@/domain/shared/tuning';
 import { DoubleStopPair, HarmonicInterval, PlayableDoubleStop } from './types';
 
+/** Harmonic intervals double-stops are offered for, in the order the UI should present them. */
+export const DOUBLE_STOP_HARMONIC_INTERVALS: HarmonicInterval[] = [3, 4, 6];
+
+/**
+ * Which string pairs are offered for a given harmonic interval, and in what order. A 6th needs a
+ * 2-string gap to stay within a comfortable fret stretch (an adjacent-string 6th reaches further
+ * than a 3rd/4th does) — every other interval uses directly adjacent strings. The first entry is
+ * the sensible default to fall back to when the interval changes.
+ */
+export function getDoubleStopStringPairOptions(interval: HarmonicInterval): [number, number][] {
+    return interval === 6
+        ? [[0, 2], [1, 3], [2, 4], [3, 5]]
+        : [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]];
+}
+
 function getGenericDegree(label: string): number | null {
     const degreeText = label.replace(/^[b#]+/, '');
     const parsedDegree = Number(degreeText);

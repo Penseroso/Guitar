@@ -7,6 +7,7 @@ import { RelatedScalesStrip } from './RelatedScalesStrip';
 import { TogglePill } from '../../ui/design-system/TogglePill';
 import { SlidersHorizontal } from 'lucide-react';
 import type { HarmonicInterval, PlayableDoubleStop } from '@/domain/scale/types';
+import { DOUBLE_STOP_HARMONIC_INTERVALS, getDoubleStopStringPairOptions } from '@/domain/scale/doubleStops';
 import type { Fingering } from '@/domain/shared/types';
 import { ScaleChordRecommendationsPanel } from '../cross-domain/ScaleChordRecommendationsPanel';
 
@@ -135,7 +136,7 @@ export function ScaleModeWorkspace({
                                     <div className="flex flex-col gap-2">
                                         <span className="text-[8px] font-black uppercase text-white/30 tracking-widest">Interval</span>
                                         <div className="flex gap-2">
-                                            {([3, 4, 6] as HarmonicInterval[]).map((int) => {
+                                            {DOUBLE_STOP_HARMONIC_INTERVALS.map((int) => {
                                                 const hasValidPairs = harmonicDoubleStopPairsByInterval[int].length > 0;
 
                                                 return (
@@ -144,7 +145,7 @@ export function ScaleModeWorkspace({
                                                         disabled={!hasValidPairs}
                                                         onClick={() => {
                                                             onDoubleStopIntervalChange(int);
-                                                            onDoubleStopStringsChange(int === 6 ? [0, 2] : [0, 1]);
+                                                            onDoubleStopStringsChange(getDoubleStopStringPairOptions(int)[0]);
                                                         }}
                                                         className={`flex-1 py-1.5 text-[9px] font-black rounded-lg border transition-all ${!hasValidPairs ? 'border-white/5 text-white/15 cursor-not-allowed opacity-40' : doubleStopInterval === int ? 'bg-white/10 text-white border-white/30 shadow-lg' : 'border-white/5 text-white/30 hover:text-white/70'}`}
                                                     >
@@ -158,10 +159,7 @@ export function ScaleModeWorkspace({
                                     <div className="flex flex-col gap-2 border-t border-white/5 pt-2">
                                         <span className="text-[8px] font-black uppercase text-white/30 tracking-widest">String Pair</span>
                                         <div className="flex gap-2 flex-wrap">
-                                            {(doubleStopInterval === 6
-                                                ? [[0, 2], [1, 3], [2, 4], [3, 5]]
-                                                : [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]]
-                                            ).map(([s1, s2]) => (
+                                            {getDoubleStopStringPairOptions(doubleStopInterval).map(([s1, s2]) => (
                                                 <button
                                                     key={`${s1}-${s2}`}
                                                     onClick={() => onDoubleStopStringsChange([s1, s2] as [number, number])}

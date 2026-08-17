@@ -1,4 +1,5 @@
 import {
+    DOUBLE_STOP_HARMONIC_INTERVALS,
     getHarmonicDoubleStops,
     getPlayableDoubleStopsOnStrings,
 } from './doubleStops';
@@ -47,7 +48,6 @@ export interface ScaleDerivedData {
 
 // Root, 3rds, 5th, 7ths — the degrees highlighted when "Chord Tones" is toggled on in scale mode.
 const SCALE_CHORD_TONE_TARGET_INTERVALS = [0, 3, 4, 7, 10, 11];
-const HARMONIC_INTERVALS: HarmonicInterval[] = [3, 4, 6];
 
 /**
  * Pure scale-theory pipeline: (scale selection, key, UI toggles) -> everything the
@@ -97,7 +97,7 @@ export function getScaleDerivedData(
             .map((interval) => (selectedKey + interval) % 12)
         : [];
 
-    const harmonicDoubleStopPairsByInterval = HARMONIC_INTERVALS.reduce<Record<HarmonicInterval, DoubleStopPair[]>>(
+    const harmonicDoubleStopPairsByInterval = DOUBLE_STOP_HARMONIC_INTERVALS.reduce<Record<HarmonicInterval, DoubleStopPair[]>>(
         (acc, interval) => {
             acc[interval] = getHarmonicDoubleStops(scaleNotes, scaleEngineIntervalLabels, interval);
             return acc;

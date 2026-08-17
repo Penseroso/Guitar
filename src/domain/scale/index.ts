@@ -33,7 +33,12 @@ export {
     getRelatedScales,
 } from './scaleSelector';
 
-export { getHarmonicDoubleStops, getPlayableDoubleStopsOnStrings } from './doubleStops';
+export {
+    DOUBLE_STOP_HARMONIC_INTERVALS,
+    getHarmonicDoubleStops,
+    getPlayableDoubleStopsOnStrings,
+    getDoubleStopStringPairOptions,
+} from './doubleStops';
 
 export type { HarmonicInterval, DoubleStopPair, PlayableDoubleStop } from './types';
 
