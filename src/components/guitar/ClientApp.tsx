@@ -194,7 +194,7 @@ export default function ClientApp() {
         try {
             return getDeductiveChordSurfaceVoicingsForChord(chordType, selectedKey, {
                 maxFret: 15,
-                maxCandidates: 12,
+                maxPerTechnique: 5,
             });
         } catch {
             return [];
