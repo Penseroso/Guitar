@@ -316,3 +316,47 @@ export function generateModeData(groupName: string, modeName: string): ScaleDict
 
     return modeData;
 }
+
+export interface ModalSibling {
+    group: string;
+    name: string;
+    /** Semitone offset (0-11) from the reference scale's tonic to this sibling's tonic. */
+    tonicOffset: number;
+}
+
+/**
+ * Every other named mode that rotates the same parent scale as (group, name) — e.g. Ionian's
+ * siblings are Dorian, Phrygian, Lydian, Mixolydian, Aeolian, Locrian: the exact same seven
+ * notes, just starting from a different degree. Purely structural — reads directly off
+ * SCALE_REGISTRY's existing parent/rootOffsetIndex, no new data.
+ *
+ * Subset scales (the two named pentatonics, which reduce a 7-note parent to 5 notes) are
+ * excluded on both sides: a pentatonic subset isn't a full rotation of the parent, and only 2 of
+ * the 5 possible pentatonic rotations are named in the registry, so "siblings" isn't a complete
+ * concept for them yet.
+ */
+export function getModalSiblings(group: string, name: string): ModalSibling[] {
+    const registryGroup = SCALE_REGISTRY[group] || SCALE_REGISTRY['Diatonic Modes'];
+    const modeInfo = registryGroup[name];
+    if (!modeInfo || modeInfo.subset) {
+        return [];
+    }
+
+    const parentIntervals = PARENT_SCALES[modeInfo.parent];
+    const tonicInterval = parentIntervals[modeInfo.rootOffsetIndex];
+    const siblings: ModalSibling[] = [];
+
+    for (const [siblingGroup, modes] of Object.entries(SCALE_REGISTRY)) {
+        for (const [siblingName, siblingInfo] of Object.entries(modes)) {
+            if (siblingInfo.subset) continue;
+            if (siblingInfo.parent !== modeInfo.parent) continue;
+            if (siblingGroup === group && siblingName === name) continue;
+
+            const siblingInterval = parentIntervals[siblingInfo.rootOffsetIndex];
+            const tonicOffset = ((siblingInterval - tonicInterval) % 12 + 12) % 12;
+            siblings.push({ group: siblingGroup, name: siblingName, tonicOffset });
+        }
+    }
+
+    return siblings;
+}

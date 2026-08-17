@@ -1,6 +1,6 @@
 // Scale domain: scale/mode theory engine, scale-family display/relation helpers, guitar
 // double-stop placement, and the derived-data pipeline scale-mode UI consumes.
-export type { ModeData, ScaleDictionary, ScaleIntervalLabels } from './scales';
+export type { ModeData, ScaleDictionary, ScaleIntervalLabels, ModalSibling } from './scales';
 export {
     SCALE_REGISTRY,
     GENERIC_SCALE_INTERVAL_LABELS,
@@ -11,6 +11,7 @@ export {
     getScaleEngineIntervalLabels,
     isDoubleStopSupported,
     generateModeData,
+    getModalSiblings,
 } from './scales';
 
 export type { VisibleScaleFamily, ScaleOption, ScaleRelation } from './scaleSelector';

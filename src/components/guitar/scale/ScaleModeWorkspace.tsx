@@ -197,6 +197,7 @@ export function ScaleModeWorkspace({
             <ScaleChordRecommendationsPanel
                 scaleGroup={effectiveScaleGroup}
                 scaleName={effectiveScaleName}
+                tonicPitchClass={rootNote}
             />
         </div>
     );
