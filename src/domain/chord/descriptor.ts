@@ -1,8 +1,10 @@
+import { resolveChordRegistryEntry } from './helpers';
 import type { ChordTones } from './types';
 import type {
     ConsecutiveStringWindow,
     GuitarStringIndex,
     PitchClass,
+    ResolvedVoicing,
     ResolvedVoicingNote,
     VoicingDescriptor,
     VoicingFamily,
@@ -257,6 +259,32 @@ export function deriveVoicingDescriptor(args: {
         satisfiesSlashBass: args.satisfiesSlashBass,
         provenance: args.provenance,
     };
+}
+
+/**
+ * The consecutiveStringWindow only when it covers the chord's *entire* formula — every required
+ * degree present (missingRequiredDegrees empty) and every optional one too
+ * (omittedOptionalDegrees empty), with nothing extra or duplicated (window.size matches the
+ * formula's own degree count exactly). Sized generically per chord rather than fixed at 3: a
+ * plain triad (major/minor/aug/dim, 3 formula tones) resolves to a 3-string window, but a 7th
+ * chord's formula has 4 tones (root/3rd/5th/7th) — its complete window needs 4 strings. A window
+ * that only covers a chord's *required* degrees (e.g. root/3rd/7th, skipping the optional 5th) is
+ * deliberately excluded here: for most 7th chords that's exactly 3 tones too, and always exactly
+ * coincides with VoicingTechniqueTag's 'shell' classification (see classifyVoicingFamily's
+ * shellLike) — a redundant window that would show nothing a "Shell" filter doesn't already show.
+ */
+export function getCompleteChordWindow(voicing: ResolvedVoicing): ConsecutiveStringWindow | null {
+    const window = voicing.descriptor.consecutiveStringWindow;
+    if (!window) {
+        return null;
+    }
+
+    const entry = resolveChordRegistryEntry(voicing.chord.id);
+    const isComplete = window.size === entry.formula.degrees.length
+        && voicing.descriptor.missingRequiredDegrees.length === 0
+        && voicing.descriptor.omittedOptionalDegrees.length === 0;
+
+    return isComplete ? window : null;
 }
 
 export function getVoicingFamilyLabel(family: VoicingFamily): string {

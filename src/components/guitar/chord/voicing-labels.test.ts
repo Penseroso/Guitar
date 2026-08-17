@@ -19,7 +19,7 @@ function resolveTestVoicing(
 }
 
 describe('voicing player-facing labels', () => {
-    it('labels a complete triad on 3 consecutive strings, in root position, as 3-string · Root', () => {
+    it('labels a complete triad on 3 consecutive strings, in root position, as Triad · Root', () => {
         const voicing = resolveTestVoicing('major', 0, {
             id: 'top-set-root',
             label: 'top-set root',
@@ -37,7 +37,7 @@ describe('voicing player-facing labels', () => {
         }, { rootFret: 5 });
 
         expect(getVoicingPresentationMeta(voicing)).toMatchObject({
-            primaryLabel: '3-string · Root',
+            primaryLabel: 'Triad · Root',
             secondaryLabel: 'top strings',
         });
     });
@@ -74,19 +74,17 @@ describe('voicing player-facing labels', () => {
             ],
         }, { rootFret: 10 });
 
-        expect(getVoicingPresentationMeta(majorFirstInversion).primaryLabel).toBe('3-string · 1st inv');
-        expect(getVoicingPresentationMeta(minorSecondInversion).primaryLabel).toBe('3-string · 2nd inv');
+        expect(getVoicingPresentationMeta(majorFirstInversion).primaryLabel).toBe('Triad · 1st inv');
+        expect(getVoicingPresentationMeta(minorSecondInversion).primaryLabel).toBe('Triad · 2nd inv');
     });
 
-    it('generalizes beyond major/minor: a complete seventh or suspended triad on 3 strings also gets a window label, but a bare 2-note power chord does not', () => {
-        // Regression: the old isStrictTopSetTriad hardcoded TOP_SET_TRIAD_IDS = {major, minor},
-        // so these were excluded purely because of chord id, not because they're structurally
-        // different. A major-7 missing only its optional 5th, or a sus4's complete 1-4-5, are
-        // just as legitimately "the chord's core tones on 3 consecutive strings" as a plain
-        // triad — the generalized rule (any chord family, nothing required missing) now
-        // recognizes both. A power chord is excluded on independent grounds: it's only 2 notes,
-        // below the 3-string floor "Root/1st inv/2nd inv" labeling needs to stay meaningful.
-        const majorSeventh = resolveTestVoicing('major-7', 0, {
+    it('excludes a 7th chord\'s 3-string shell-equivalent subset (redundant with Shell), but recognizes sus4 (a genuine 3-tone chord) as Triad and a complete 4-tone 7th-chord voicing as Quad', () => {
+        // Regression/behavior change: a major-7 voicing covering only root/3rd/7th (omitting the
+        // optional 5th) used to get a window label under the old "3 strings, nothing required
+        // missing" rule — but that's exactly major-7's *required* set, which always coincides
+        // with VoicingTechniqueTag's 'shell' classification (see classifyVoicingFamily's
+        // shellLike): a redundant window showing nothing "Shell" doesn't already. Excluded now.
+        const majorSeventhShellSubset = resolveTestVoicing('major-7', 0, {
             id: 'top-strings-maj7',
             label: 'top strings maj7',
             instrument: 'guitar',
@@ -101,6 +99,8 @@ describe('voicing player-facing labels', () => {
                 { string: 5, fretOffset: null },
             ],
         }, { rootFret: 8 });
+        // sus4's full formula genuinely has only 3 tones (1, 4, 5 — no separate "3rd" at all), so
+        // a 3-string window covering all of them is a real complete-chord window, not a subset.
         const suspended = resolveTestVoicing('sus4', 0, {
             id: 'top-strings-sus4',
             label: 'top strings sus4',
@@ -116,6 +116,23 @@ describe('voicing player-facing labels', () => {
                 { string: 5, fretOffset: null },
             ],
         }, { rootFret: 1 });
+        // major-7's full 4-tone formula (root/3rd/5th/7th) on 4 consecutive strings — genuinely
+        // new: the complete chord, not a shell subset, confined to a compact register.
+        const majorSeventhComplete = resolveTestVoicing('major-7', 0, {
+            id: 'quad-maj7',
+            label: 'complete maj7 quad',
+            instrument: 'guitar',
+            rootString: 0,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: 0, toneDegree: '1' },
+                { string: 1, fretOffset: -1, toneDegree: '7' },
+                { string: 2, fretOffset: 0, toneDegree: '3' },
+                { string: 3, fretOffset: -1, toneDegree: '5' },
+                { string: 4, fretOffset: null },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 8 });
         const powerChord = resolveTestVoicing('power-5', 0, {
             id: 'top-strings-power',
             label: 'top strings power',
@@ -132,9 +149,11 @@ describe('voicing player-facing labels', () => {
             ],
         }, { rootFret: 1 });
 
-        expect(getVoicingPresentationMeta(majorSeventh).primaryLabel.startsWith('3-string')).toBe(true);
-        expect(getVoicingPresentationMeta(suspended).primaryLabel.startsWith('3-string')).toBe(true);
-        expect(getVoicingPresentationMeta(powerChord).primaryLabel.startsWith('3-string')).toBe(false);
+        expect(getVoicingPresentationMeta(majorSeventhShellSubset).primaryLabel.startsWith('Triad')).toBe(false);
+        expect(getVoicingPresentationMeta(majorSeventhShellSubset).primaryLabel.startsWith('Quad')).toBe(false);
+        expect(getVoicingPresentationMeta(suspended).primaryLabel.startsWith('Triad')).toBe(true);
+        expect(getVoicingPresentationMeta(majorSeventhComplete).primaryLabel.startsWith('Quad')).toBe(true);
+        expect(getVoicingPresentationMeta(powerChord).primaryLabel.startsWith('Triad')).toBe(false);
     });
 
     it('labels rooted shapes by 6th, 5th, and 4th string root buckets', () => {

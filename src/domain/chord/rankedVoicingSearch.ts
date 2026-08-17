@@ -4,6 +4,7 @@ import {
     type ScoreResolvedVoicingOptions,
     type VoicingTechniqueTag,
 } from './deductiveRanking';
+import { getCompleteChordWindow } from './descriptor';
 import { buildDeductiveChordTones } from './degreeRequirements';
 import { resolveChordRegistryEntry } from './helpers';
 import { searchDeductiveVoicings, type VoicingSearchOptions } from './voicingSearch';
@@ -82,12 +83,14 @@ const DEFAULT_MAX_PER_TECHNIQUE = 5;
  * fallback for "none of the other three") is capped the same way as the rest, even though the UI
  * gives it no dedicated filter button, so it still contributes properly to "All".
  *
- * The triad-window fact (VoicingDescriptor.consecutiveStringWindow, size 3 — see
- * ChordModeWorkspace.tsx's "Triad" toggle) gets the same independent-bucket-and-cap treatment,
- * not just the four VoicingTechniqueTag values: without it, a triad-window voicing only survived
- * by chance if it *also* happened to rank in its technique's own top maxPerTechnique — competing
- * against every other voicing in that bucket on terms the scorer never rewards "being a triad"
- * for at all, since it isn't part of scoreResolvedVoicing's criteria. This bucket is additive, not
+ * The complete-chord-window fact (getCompleteChordWindow — "does this voicing's entire formula
+ * fit on N consecutive strings", see ChordModeWorkspace.tsx's Triad/Quad filter buttons) gets the
+ * same independent-bucket-and-cap treatment, not just the four VoicingTechniqueTag values, and
+ * grouped by size (a triad's complete window is 3 strings, a 7th chord's is 4 — "Quad") rather
+ * than a single fixed bucket: without it, a complete-window voicing only survived by chance if it
+ * *also* happened to rank in its technique's own top maxPerTechnique — competing against every
+ * other voicing in that bucket on terms the scorer never rewards "is a complete window" for at
+ * all, since it isn't part of scoreResolvedVoicing's criteria. These buckets are additive, not
  * exclusive — a voicing found here can simultaneously be one of its technique's picks too, so
  * selection is deduped by id before the final rank.
  *
@@ -122,15 +125,18 @@ export function getDeductiveChordSurfaceVoicingsForChord(
     const tones = buildDeductiveChordTones(entry, rootPitchClass);
 
     const byTechnique = new Map<VoicingTechniqueTag, ResolvedVoicing[]>();
-    const triadWindowVoicings: ResolvedVoicing[] = [];
+    const byWindowSize = new Map<number, ResolvedVoicing[]>();
     for (const voicing of deduped) {
         const tag = getVoicingTechniqueTag(voicing);
         const list = byTechnique.get(tag) ?? [];
         list.push(voicing);
         byTechnique.set(tag, list);
 
-        if (voicing.descriptor.consecutiveStringWindow?.size === 3) {
-            triadWindowVoicings.push(voicing);
+        const window = getCompleteChordWindow(voicing);
+        if (window) {
+            const windowList = byWindowSize.get(window.size) ?? [];
+            windowList.push(voicing);
+            byWindowSize.set(window.size, windowList);
         }
     }
 
@@ -141,9 +147,9 @@ export function getDeductiveChordSurfaceVoicingsForChord(
             selectedVoicings.set(candidate.voicing.id, candidate.voicing);
         }
     }
-    if (triadWindowVoicings.length > 0) {
-        const rankedTriadWindows = rankVoicingCandidates(triadWindowVoicings, entry, tones, rankOptions);
-        for (const candidate of rankedTriadWindows.slice(0, maxPerTechnique)) {
+    for (const voicings of byWindowSize.values()) {
+        const rankedWithinWindowSize = rankVoicingCandidates(voicings, entry, tones, rankOptions);
+        for (const candidate of rankedWithinWindowSize.slice(0, maxPerTechnique)) {
             selectedVoicings.set(candidate.voicing.id, candidate.voicing);
         }
     }

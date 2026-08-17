@@ -5,9 +5,9 @@ import React from 'react';
 import { Fretboard } from '../shared/Fretboard';
 import { TogglePill } from '../../ui/design-system/TogglePill';
 import { CompactVoicingDiagram } from './CompactVoicingDiagram';
-import { getVoicingTechniqueTag, type VoicingCandidate, type VoicingTechniqueTag } from '@/domain/chord';
+import { getCompleteChordWindow, getVoicingTechniqueTag, type VoicingCandidate, type VoicingTechniqueTag } from '@/domain/chord';
 import type { Fingering } from '@/domain/shared/types';
-import { getVoicingPresentationMeta } from './voicing-labels';
+import { getCompleteChordWindowName, getVoicingPresentationMeta } from './voicing-labels';
 
 // Presentational order (easiest/most-familiar to most-specialized), not the classification
 // priority deductiveRanking.ts uses to break ties when a voicing qualifies for more than one tag.
@@ -111,31 +111,45 @@ export function ChordModeWorkspace({
             .filter((section) => section.candidates.length > 0);
     }, [futureVoicingCandidates]);
 
-    // A voicing's registral footprint (consecutiveStringWindow) is a fact independent of its
-    // technique tag, but the filter row treats "Triad" as a fully separate view, not something
+    // A voicing's registral footprint (consecutiveStringWindow, "does this cover the chord's
+    // entire formula on N consecutive strings" — see getCompleteChordWindow) is a fact independent
+    // of its technique tag, but the filter row treats it as a fully separate view, not something
     // that combines with a technique selection — one filter is active at a time, same as Open/
     // Barre/Shell are mutually exclusive with each other. Composing them (e.g. "Barre voicings
     // that are also triads") sounds appealing but made every count in the row context-dependent
     // and confusing to reason about; a single active filter keeps every button's count simple and
-    // always exactly matches what's rendered.
-    const isTriadWindow = (candidate: VoicingCandidate) =>
-        candidate.voicing.descriptor.consecutiveStringWindow?.size === 3;
-    const totalTriadCandidateCount = futureVoicingCandidates.filter(isTriadWindow).length;
+    // always exactly matches what's rendered. Grouped by size (not just "3") since a 7th chord's
+    // complete window is 4 strings ("Quad"), not 3 — see getCompleteChordWindowName.
+    const groupedByWindowSize = React.useMemo(() => {
+        const groups = new Map<number, VoicingCandidate[]>();
+        for (const candidate of futureVoicingCandidates) {
+            const window = getCompleteChordWindow(candidate.voicing);
+            if (!window) {
+                continue;
+            }
+            const list = groups.get(window.size) ?? [];
+            list.push(candidate);
+            groups.set(window.size, list);
+        }
+        return [...groups.entries()]
+            .sort(([a], [b]) => a - b)
+            .map(([size, candidates]) => ({ size, candidates }));
+    }, [futureVoicingCandidates]);
 
-    const [selectedFilter, setSelectedFilter] = React.useState<VoicingTechniqueTag | 'all' | 'triad'>('all');
+    const [selectedFilter, setSelectedFilter] = React.useState<VoicingTechniqueTag | 'all' | number>('all');
     // Falls back to 'all' in render (rather than via an effect) whenever the current chord's
     // candidates no longer support the previously selected filter — e.g. switching to a chord
-    // type with no barre-technique shapes while "Barre" was selected, or no triad-window shapes
-    // while "Triad" was selected.
+    // type with no barre-technique shapes while "Barre" was selected, or no window of that size
+    // while a window-size filter was selected.
     const effectiveFilter =
-        (selectedFilter !== 'all' && selectedFilter !== 'triad' && !groupedByTechnique.some((section) => section.tag === selectedFilter))
-        || (selectedFilter === 'triad' && totalTriadCandidateCount === 0)
+        (typeof selectedFilter === 'string' && selectedFilter !== 'all' && !groupedByTechnique.some((section) => section.tag === selectedFilter))
+        || (typeof selectedFilter === 'number' && !groupedByWindowSize.some((section) => section.size === selectedFilter))
             ? 'all'
             : selectedFilter;
     const visibleCandidates = effectiveFilter === 'all'
         ? futureVoicingCandidates
-        : effectiveFilter === 'triad'
-            ? futureVoicingCandidates.filter(isTriadWindow)
+        : typeof effectiveFilter === 'number'
+            ? groupedByWindowSize.find((section) => section.size === effectiveFilter)?.candidates ?? []
             : groupedByTechnique.find((section) => section.tag === effectiveFilter)?.candidates ?? [];
 
     const hasEngineCandidates = futureVoicingCandidates.length > 0;
@@ -254,7 +268,7 @@ export function ChordModeWorkspace({
                             </span>
                         </div>
 
-                        {(groupedByTechnique.length > 1 || totalTriadCandidateCount > 0) && (
+                        {(groupedByTechnique.length > 1 || groupedByWindowSize.length > 0) && (
                             <div className="flex flex-wrap items-center gap-1.5">
                                 <button
                                     onClick={() => setSelectedFilter('all')}
@@ -280,19 +294,20 @@ export function ChordModeWorkspace({
                                     </button>
                                 ))}
 
-                                {totalTriadCandidateCount > 0 && (
+                                {groupedByWindowSize.map(({ size, candidates }) => (
                                     <button
-                                        onClick={() => setSelectedFilter('triad')}
-                                        title="3 consecutive strings, nothing required missing — a separate view, not combined with a technique filter"
+                                        key={size}
+                                        onClick={() => setSelectedFilter(size)}
+                                        title={`${size} consecutive strings covering the chord's entire formula — a separate view, not combined with a technique filter`}
                                         className={`ml-1 rounded-full border px-2.5 py-1 text-[10px] font-semibold leading-none transition-all ${
-                                            effectiveFilter === 'triad'
+                                            effectiveFilter === size
                                                 ? 'border-amber-200/45 bg-amber-300/[0.1] text-amber-50'
                                                 : 'border-white/10 bg-white/[0.02] text-white/65 hover:border-white/20 hover:text-white'
                                         }`}
                                     >
-                                        Triad · {totalTriadCandidateCount}
+                                        {getCompleteChordWindowName(size)} · {candidates.length}
                                     </button>
-                                )}
+                                ))}
                             </div>
                         )}
 

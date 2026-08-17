@@ -1,4 +1,5 @@
 import {
+    getCompleteChordWindow,
     getVoicingFamilyLabel,
     getVoicingProvenanceLabel,
     getVoicingTechniqueTag,
@@ -66,31 +67,18 @@ function getBassDegree(voicing: ResolvedVoicing): string | undefined {
 }
 
 /**
- * Generalizes the old "strict top-set triad" concept — which only ever checked strings 0-1-2
- * and only recognized major/minor chords by hardcoded id — to any 3-consecutive-string window
- * and any chord family: true when the voicing's played notes are exactly those 3 strings,
- * contiguous, with nothing harmonically missing. Deductive, reusing
- * descriptor.consecutiveStringWindow (computed once in descriptor.ts alongside the rest of the
- * voicing's structural facts) rather than re-deriving played-string contiguity here.
- *
- * Fixed at exactly 3 strings, not "3 or more": a 2-note dyad (e.g. a bare power chord) doesn't
- * have inversions in the usual sense, and a 4+-string contiguous window already has its own,
- * different label (getRootStringPrimaryLabel's 4th/5th/6th-string-root buckets) — widening this
- * to any size would make the two schemes compete for the same voicings instead of each covering
- * its own case.
- *
- * Deliberately does NOT require the 3rd note to be a *required* degree (matchedRequiredDegrees)
- * — a major triad's 5th is optional by deriveRequiredDegrees' rules (a bare 1-3 is still
- * unambiguously "major") but is still exactly the tone that completes the plain triad shape this
- * label is naming. "Nothing missing" (missingRequiredDegrees empty) is the only harmonic bar.
+ * A window naming a size a player recognizes ("Triad" for 3, "Quad" for 4). Not hardcoded as two
+ * separate cases — see getCompleteChordWindow below, which computes the size generically as
+ * "however many distinct tones this chord's own formula has." Sizes without a common name (5+)
+ * fall back to a plain "N-string" label rather than going unnamed.
  */
-function isExactRequiredDegreeWindow(voicing: ResolvedVoicing): boolean {
-    const window = voicing.descriptor.consecutiveStringWindow;
-    if (!window || window.size !== 3) {
-        return false;
-    }
+const COMPLETE_WINDOW_SIZE_NAMES: Record<number, string> = {
+    3: 'Triad',
+    4: 'Quad',
+};
 
-    return voicing.descriptor.missingRequiredDegrees.length === 0;
+export function getCompleteChordWindowName(size: number): string {
+    return COMPLETE_WINDOW_SIZE_NAMES[size] ?? `${size}-string`;
 }
 
 const INVERSION_POSITION_LABELS = ['Root', '1st inv', '2nd inv', '3rd inv', '4th inv', '5th inv'];
@@ -114,13 +102,13 @@ function getWindowPositionLabel(voicing: ResolvedVoicing): string | null {
 }
 
 function getConsecutiveWindowPrimaryLabel(voicing: ResolvedVoicing): string | null {
-    if (!isExactRequiredDegreeWindow(voicing)) {
+    const window = getCompleteChordWindow(voicing);
+    if (!window) {
         return null;
     }
 
-    const window = voicing.descriptor.consecutiveStringWindow as ConsecutiveStringWindow;
     const positionLabel = getWindowPositionLabel(voicing);
-    return positionLabel ? `${window.size}-string · ${positionLabel}` : null;
+    return positionLabel ? `${getCompleteChordWindowName(window.size)} · ${positionLabel}` : null;
 }
 
 /** "top strings" reads naturally only when the window actually starts at string 1 (index 0) —
@@ -167,8 +155,9 @@ function getSecondaryLabel(voicing: ResolvedVoicing): string | null {
         return [positionLabel, 'root omitted'].filter(Boolean).join(' · ');
     }
 
-    if (isExactRequiredDegreeWindow(voicing)) {
-        return getConsecutiveWindowSecondaryLabel(voicing.descriptor.consecutiveStringWindow as ConsecutiveStringWindow);
+    const completeWindow = getCompleteChordWindow(voicing);
+    if (completeWindow) {
+        return getConsecutiveWindowSecondaryLabel(completeWindow);
     }
 
     if (positionLabel === 'open') {

@@ -63,6 +63,7 @@ export {
 
 export {
     deriveVoicingDescriptor,
+    getCompleteChordWindow,
     getVoicingDisplayName,
     getVoicingDisplaySubtitle,
     getVoicingFamilyLabel,
