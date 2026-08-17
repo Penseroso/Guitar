@@ -118,9 +118,21 @@ export function ChordModeWorkspace({
     const effectiveTechnique = selectedTechnique !== 'all' && !groupedByTechnique.some((section) => section.tag === selectedTechnique)
         ? 'all'
         : selectedTechnique;
-    const visibleCandidates = effectiveTechnique === 'all'
+    const techniqueFilteredCandidates = effectiveTechnique === 'all'
         ? futureVoicingCandidates
         : groupedByTechnique.find((section) => section.tag === effectiveTechnique)?.candidates ?? [];
+
+    // Orthogonal to technique (a triad window can be Open, Barre, or Standard at once — see
+    // domain/chord/types.ts's ConsecutiveStringWindow) — a separate toggle, not another button in
+    // the mutually-exclusive technique row above.
+    const isTriadWindow = (candidate: VoicingCandidate) =>
+        candidate.voicing.descriptor.consecutiveStringWindow?.size === 3;
+    const triadCandidateCount = techniqueFilteredCandidates.filter(isTriadWindow).length;
+    const [triadOnly, setTriadOnly] = React.useState(false);
+    const effectiveTriadOnly = triadOnly && triadCandidateCount > 0;
+    const visibleCandidates = effectiveTriadOnly
+        ? techniqueFilteredCandidates.filter(isTriadWindow)
+        : techniqueFilteredCandidates;
 
     const hasEngineCandidates = futureVoicingCandidates.length > 0;
     const chordWorkspaceEmptyMessage = !hasEngineCandidates
@@ -238,31 +250,49 @@ export function ChordModeWorkspace({
                             </span>
                         </div>
 
-                        {groupedByTechnique.length > 1 && (
-                            <div className="flex flex-wrap gap-1.5">
-                                <button
-                                    onClick={() => setSelectedTechnique('all')}
-                                    className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold leading-none transition-all ${
-                                        effectiveTechnique === 'all'
-                                            ? 'border-cyan-200/45 bg-cyan-300/[0.1] text-cyan-50'
-                                            : 'border-white/10 bg-white/[0.02] text-white/65 hover:border-white/20 hover:text-white'
-                                    }`}
-                                >
-                                    All
-                                </button>
-                                {groupedByTechnique.map(({ tag, candidates }) => (
+                        {(groupedByTechnique.length > 1 || triadCandidateCount > 0) && (
+                            <div className="flex flex-wrap items-center gap-1.5">
+                                {groupedByTechnique.length > 1 && (
+                                    <>
+                                        <button
+                                            onClick={() => setSelectedTechnique('all')}
+                                            className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold leading-none transition-all ${
+                                                effectiveTechnique === 'all'
+                                                    ? 'border-cyan-200/45 bg-cyan-300/[0.1] text-cyan-50'
+                                                    : 'border-white/10 bg-white/[0.02] text-white/65 hover:border-white/20 hover:text-white'
+                                            }`}
+                                        >
+                                            All
+                                        </button>
+                                        {groupedByTechnique.map(({ tag, candidates }) => (
+                                            <button
+                                                key={tag}
+                                                onClick={() => setSelectedTechnique(tag)}
+                                                className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold leading-none transition-all ${
+                                                    effectiveTechnique === tag
+                                                        ? 'border-cyan-200/45 bg-cyan-300/[0.1] text-cyan-50'
+                                                        : 'border-white/10 bg-white/[0.02] text-white/65 hover:border-white/20 hover:text-white'
+                                                }`}
+                                            >
+                                                {TECHNIQUE_SECTION_LABELS[tag]} · {candidates.length}
+                                            </button>
+                                        ))}
+                                    </>
+                                )}
+
+                                {triadCandidateCount > 0 && (
                                     <button
-                                        key={tag}
-                                        onClick={() => setSelectedTechnique(tag)}
-                                        className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold leading-none transition-all ${
-                                            effectiveTechnique === tag
-                                                ? 'border-cyan-200/45 bg-cyan-300/[0.1] text-cyan-50'
+                                        onClick={() => setTriadOnly((prev) => !prev)}
+                                        title="3 consecutive strings, nothing required missing — orthogonal to technique, e.g. an Open triad or a Barre triad both qualify"
+                                        className={`ml-1 rounded-full border px-2.5 py-1 text-[10px] font-semibold leading-none transition-all ${
+                                            effectiveTriadOnly
+                                                ? 'border-amber-200/45 bg-amber-300/[0.1] text-amber-50'
                                                 : 'border-white/10 bg-white/[0.02] text-white/65 hover:border-white/20 hover:text-white'
                                         }`}
                                     >
-                                        {TECHNIQUE_SECTION_LABELS[tag]} · {candidates.length}
+                                        Triad · {triadCandidateCount}
                                     </button>
-                                ))}
+                                )}
                             </div>
                         )}
 
