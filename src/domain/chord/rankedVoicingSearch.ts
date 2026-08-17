@@ -82,11 +82,20 @@ const DEFAULT_MAX_PER_TECHNIQUE = 5;
  * fallback for "none of the other three") is capped the same way as the rest, even though the UI
  * gives it no dedicated filter button, so it still contributes properly to "All".
  *
+ * The triad-window fact (VoicingDescriptor.consecutiveStringWindow, size 3 — see
+ * ChordModeWorkspace.tsx's "Triad" toggle) gets the same independent-bucket-and-cap treatment,
+ * not just the four VoicingTechniqueTag values: without it, a triad-window voicing only survived
+ * by chance if it *also* happened to rank in its technique's own top maxPerTechnique — competing
+ * against every other voicing in that bucket on terms the scorer never rewards "being a triad"
+ * for at all, since it isn't part of scoreResolvedVoicing's criteria. This bucket is additive, not
+ * exclusive — a voicing found here can simultaneously be one of its technique's picks too, so
+ * selection is deduped by id before the final rank.
+ *
  * The final returned order is a fresh rank over just the selected (already-capped) voicings, not
- * the union of already-sorted per-technique slices — scores are recomputed here for correct
- * combined ordering/tie-breaking, which is cheap since the capped pool is small. Each voicing's
- * score never depends on which other voicings are in the pool, so this doesn't change any
- * individual score, only the final combined ordering.
+ * the union of already-sorted per-bucket slices — scores are recomputed here for correct combined
+ * ordering/tie-breaking, which is cheap since the capped pool is small. Each voicing's score never
+ * depends on which other voicings are in the pool, so this doesn't change any individual score,
+ * only the final combined ordering.
  */
 export function getDeductiveChordSurfaceVoicingsForChord(
     entryInput: string | ChordRegistryEntry,
@@ -113,18 +122,31 @@ export function getDeductiveChordSurfaceVoicingsForChord(
     const tones = buildDeductiveChordTones(entry, rootPitchClass);
 
     const byTechnique = new Map<VoicingTechniqueTag, ResolvedVoicing[]>();
+    const triadWindowVoicings: ResolvedVoicing[] = [];
     for (const voicing of deduped) {
         const tag = getVoicingTechniqueTag(voicing);
         const list = byTechnique.get(tag) ?? [];
         list.push(voicing);
         byTechnique.set(tag, list);
+
+        if (voicing.descriptor.consecutiveStringWindow?.size === 3) {
+            triadWindowVoicings.push(voicing);
+        }
     }
 
-    const selectedVoicings: ResolvedVoicing[] = [];
+    const selectedVoicings = new Map<string, ResolvedVoicing>();
     for (const voicings of byTechnique.values()) {
         const rankedWithinTechnique = rankVoicingCandidates(voicings, entry, tones, rankOptions);
-        selectedVoicings.push(...rankedWithinTechnique.slice(0, maxPerTechnique).map((c) => c.voicing));
+        for (const candidate of rankedWithinTechnique.slice(0, maxPerTechnique)) {
+            selectedVoicings.set(candidate.voicing.id, candidate.voicing);
+        }
+    }
+    if (triadWindowVoicings.length > 0) {
+        const rankedTriadWindows = rankVoicingCandidates(triadWindowVoicings, entry, tones, rankOptions);
+        for (const candidate of rankedTriadWindows.slice(0, maxPerTechnique)) {
+            selectedVoicings.set(candidate.voicing.id, candidate.voicing);
+        }
     }
 
-    return rankVoicingCandidates(selectedVoicings, entry, tones, rankOptions);
+    return rankVoicingCandidates([...selectedVoicings.values()], entry, tones, rankOptions);
 }

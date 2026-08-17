@@ -31,8 +31,13 @@ describe('getDeductiveChordSurfaceVoicingsForChord', () => {
         }
     });
 
-    it('never returns more than maxPerTechnique candidates for any single technique', () => {
-        const candidates = getDeductiveChordSurfaceVoicingsForChord('dominant-7', 0, { maxPerTechnique: 3 });
+    it('bounds how many of any single technique can appear, even counting triad-window overlap', () => {
+        // A technique's own bucket is capped at maxPerTechnique, but a voicing of that same
+        // technique can *also* separately qualify via the independent triad-window bucket (see
+        // "gives triad-window candidates their own independent bucket" below) — so the true bound
+        // per technique is up to two bucket-caps' worth, not exactly maxPerTechnique.
+        const maxPerTechnique = 3;
+        const candidates = getDeductiveChordSurfaceVoicingsForChord('dominant-7', 0, { maxPerTechnique });
 
         const countByTechnique = new Map<string, number>();
         for (const candidate of candidates) {
@@ -41,8 +46,24 @@ describe('getDeductiveChordSurfaceVoicingsForChord', () => {
         }
 
         for (const count of countByTechnique.values()) {
-            expect(count).toBeLessThanOrEqual(3);
+            expect(count).toBeLessThanOrEqual(maxPerTechnique * 2);
         }
+    });
+
+    it('gives triad-window candidates their own independent bucket, same as a technique', () => {
+        // Regression: without its own bucket, a triad-window voicing (consecutiveStringWindow
+        // size 3) only survived by chance if it also ranked in its own technique's top
+        // maxPerTechnique — competing against every other voicing in that bucket on criteria
+        // that never reward "being a triad" at all. Verified concretely: C major's default
+        // (maxPerTechnique: 5) pool used to surface only 1 triad-window candidate out of 20 that
+        // exist in the full search space; it should now surface up to maxPerTechnique of them.
+        const candidates = getDeductiveChordSurfaceVoicingsForChord('major', 0, { maxPerTechnique: 5 });
+        const triadWindowCount = candidates.filter(
+            (c) => c.voicing.descriptor.consecutiveStringWindow?.size === 3
+        ).length;
+
+        expect(triadWindowCount).toBeGreaterThan(1);
+        expect(triadWindowCount).toBeLessThanOrEqual(5);
     });
 
     it('never returns the same physical shape twice even though multiple styles are searched', () => {

@@ -111,28 +111,32 @@ export function ChordModeWorkspace({
             .filter((section) => section.candidates.length > 0);
     }, [futureVoicingCandidates]);
 
-    const [selectedTechnique, setSelectedTechnique] = React.useState<VoicingTechniqueTag | 'all'>('all');
-    // Falls back to 'all' in render (rather than via an effect) whenever the current chord's
-    // candidates no longer include the previously selected technique — e.g. switching to a chord
-    // type with no barre-technique shapes while "Barre" was selected.
-    const effectiveTechnique = selectedTechnique !== 'all' && !groupedByTechnique.some((section) => section.tag === selectedTechnique)
-        ? 'all'
-        : selectedTechnique;
-    const techniqueFilteredCandidates = effectiveTechnique === 'all'
-        ? futureVoicingCandidates
-        : groupedByTechnique.find((section) => section.tag === effectiveTechnique)?.candidates ?? [];
-
-    // Orthogonal to technique (a triad window can be Open, Barre, or Standard at once — see
-    // domain/chord/types.ts's ConsecutiveStringWindow) — a separate toggle, not another button in
-    // the mutually-exclusive technique row above.
+    // A voicing's registral footprint (consecutiveStringWindow) is a fact independent of its
+    // technique tag, but the filter row treats "Triad" as a fully separate view, not something
+    // that combines with a technique selection — one filter is active at a time, same as Open/
+    // Barre/Shell are mutually exclusive with each other. Composing them (e.g. "Barre voicings
+    // that are also triads") sounds appealing but made every count in the row context-dependent
+    // and confusing to reason about; a single active filter keeps every button's count simple and
+    // always exactly matches what's rendered.
     const isTriadWindow = (candidate: VoicingCandidate) =>
         candidate.voicing.descriptor.consecutiveStringWindow?.size === 3;
-    const triadCandidateCount = techniqueFilteredCandidates.filter(isTriadWindow).length;
-    const [triadOnly, setTriadOnly] = React.useState(false);
-    const effectiveTriadOnly = triadOnly && triadCandidateCount > 0;
-    const visibleCandidates = effectiveTriadOnly
-        ? techniqueFilteredCandidates.filter(isTriadWindow)
-        : techniqueFilteredCandidates;
+    const totalTriadCandidateCount = futureVoicingCandidates.filter(isTriadWindow).length;
+
+    const [selectedFilter, setSelectedFilter] = React.useState<VoicingTechniqueTag | 'all' | 'triad'>('all');
+    // Falls back to 'all' in render (rather than via an effect) whenever the current chord's
+    // candidates no longer support the previously selected filter — e.g. switching to a chord
+    // type with no barre-technique shapes while "Barre" was selected, or no triad-window shapes
+    // while "Triad" was selected.
+    const effectiveFilter =
+        (selectedFilter !== 'all' && selectedFilter !== 'triad' && !groupedByTechnique.some((section) => section.tag === selectedFilter))
+        || (selectedFilter === 'triad' && totalTriadCandidateCount === 0)
+            ? 'all'
+            : selectedFilter;
+    const visibleCandidates = effectiveFilter === 'all'
+        ? futureVoicingCandidates
+        : effectiveFilter === 'triad'
+            ? futureVoicingCandidates.filter(isTriadWindow)
+            : groupedByTechnique.find((section) => section.tag === effectiveFilter)?.candidates ?? [];
 
     const hasEngineCandidates = futureVoicingCandidates.length > 0;
     const chordWorkspaceEmptyMessage = !hasEngineCandidates
@@ -250,47 +254,43 @@ export function ChordModeWorkspace({
                             </span>
                         </div>
 
-                        {(groupedByTechnique.length > 1 || triadCandidateCount > 0) && (
+                        {(groupedByTechnique.length > 1 || totalTriadCandidateCount > 0) && (
                             <div className="flex flex-wrap items-center gap-1.5">
-                                {groupedByTechnique.length > 1 && (
-                                    <>
-                                        <button
-                                            onClick={() => setSelectedTechnique('all')}
-                                            className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold leading-none transition-all ${
-                                                effectiveTechnique === 'all'
-                                                    ? 'border-cyan-200/45 bg-cyan-300/[0.1] text-cyan-50'
-                                                    : 'border-white/10 bg-white/[0.02] text-white/65 hover:border-white/20 hover:text-white'
-                                            }`}
-                                        >
-                                            All
-                                        </button>
-                                        {groupedByTechnique.map(({ tag, candidates }) => (
-                                            <button
-                                                key={tag}
-                                                onClick={() => setSelectedTechnique(tag)}
-                                                className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold leading-none transition-all ${
-                                                    effectiveTechnique === tag
-                                                        ? 'border-cyan-200/45 bg-cyan-300/[0.1] text-cyan-50'
-                                                        : 'border-white/10 bg-white/[0.02] text-white/65 hover:border-white/20 hover:text-white'
-                                                }`}
-                                            >
-                                                {TECHNIQUE_SECTION_LABELS[tag]} · {candidates.length}
-                                            </button>
-                                        ))}
-                                    </>
-                                )}
-
-                                {triadCandidateCount > 0 && (
+                                <button
+                                    onClick={() => setSelectedFilter('all')}
+                                    className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold leading-none transition-all ${
+                                        effectiveFilter === 'all'
+                                            ? 'border-cyan-200/45 bg-cyan-300/[0.1] text-cyan-50'
+                                            : 'border-white/10 bg-white/[0.02] text-white/65 hover:border-white/20 hover:text-white'
+                                    }`}
+                                >
+                                    All
+                                </button>
+                                {groupedByTechnique.map(({ tag, candidates }) => (
                                     <button
-                                        onClick={() => setTriadOnly((prev) => !prev)}
-                                        title="3 consecutive strings, nothing required missing — orthogonal to technique, e.g. an Open triad or a Barre triad both qualify"
+                                        key={tag}
+                                        onClick={() => setSelectedFilter(tag)}
+                                        className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold leading-none transition-all ${
+                                            effectiveFilter === tag
+                                                ? 'border-cyan-200/45 bg-cyan-300/[0.1] text-cyan-50'
+                                                : 'border-white/10 bg-white/[0.02] text-white/65 hover:border-white/20 hover:text-white'
+                                        }`}
+                                    >
+                                        {TECHNIQUE_SECTION_LABELS[tag]} · {candidates.length}
+                                    </button>
+                                ))}
+
+                                {totalTriadCandidateCount > 0 && (
+                                    <button
+                                        onClick={() => setSelectedFilter('triad')}
+                                        title="3 consecutive strings, nothing required missing — a separate view, not combined with a technique filter"
                                         className={`ml-1 rounded-full border px-2.5 py-1 text-[10px] font-semibold leading-none transition-all ${
-                                            effectiveTriadOnly
+                                            effectiveFilter === 'triad'
                                                 ? 'border-amber-200/45 bg-amber-300/[0.1] text-amber-50'
                                                 : 'border-white/10 bg-white/[0.02] text-white/65 hover:border-white/20 hover:text-white'
                                         }`}
                                     >
-                                        Triad · {triadCandidateCount}
+                                        Triad · {totalTriadCandidateCount}
                                     </button>
                                 )}
                             </div>
