@@ -36,6 +36,35 @@ function buildWorkspaceCandidate(rootFret = 3, id = 'workspace-major'): VoicingC
     };
 }
 
+function buildStandardWorkspaceCandidate(id = 'workspace-standard'): VoicingCandidate {
+    // Mid-neck grip with no open strings and no forced barre — should get no technique badge.
+    const chord = buildChordDefinitionFromRegistryEntry('major-7', 0);
+    const tones = buildChordTonesFromRegistryEntry('major-7', 0);
+    const voicing = resolveVoicingTemplate(chord, tones, {
+        id,
+        label: 'fourth string root',
+        instrument: 'guitar',
+        rootString: 3,
+        source: 'generated',
+        strings: [
+            { string: 0, fretOffset: null },
+            { string: 1, fretOffset: -2, toneDegree: '5' },
+            { string: 2, fretOffset: -1, toneDegree: '3' },
+            { string: 3, fretOffset: 0, toneDegree: '1' },
+            { string: 4, fretOffset: null },
+            { string: 5, fretOffset: null },
+        ],
+    }, { rootFret: 10 });
+
+    return {
+        voicing,
+        score: 100,
+        reasons: [],
+        matchedRequiredDegrees: ['1', '3', '7'],
+        missingRequiredDegrees: [],
+    };
+}
+
 describe('ChordModeWorkspace', () => {
     it('does not render a Playable badge in the normal chord workspace', () => {
         const candidate = buildWorkspaceCandidate();
@@ -190,5 +219,75 @@ describe('ChordModeWorkspace', () => {
 
         expect(markup).toContain('diagram');
         expect(markup).not.toContain('Recommended');
+    });
+
+    it('renders the open/shell/barre technique badge when present, and omits it when the tag is standard', () => {
+        const openCandidate = buildWorkspaceCandidate();
+        const standardCandidate = buildStandardWorkspaceCandidate();
+        const openPresentation = getVoicingPresentationMeta(openCandidate.voicing);
+        const standardPresentation = getVoicingPresentationMeta(standardCandidate.voicing);
+
+        expect(openPresentation.techniqueLabel).toBe('Open');
+        expect(standardPresentation.techniqueLabel).toBeNull();
+
+        const openMarkup = renderToStaticMarkup(
+            <ChordModeWorkspace
+                chordType="major"
+                onChordTypeChange={() => {}}
+                chordSelectorGroups={[{
+                    id: 'triad',
+                    label: 'Triads',
+                    options: [{ id: 'major', stateValue: 'major', label: 'maj' }],
+                }]}
+                chordPreviewTitle="C"
+                activeFutureCandidate={openCandidate}
+                activeFuturePresentation={openPresentation}
+                fretboardContainerRef={{ current: null }}
+                tuning={[4, 9, 2, 7, 11, 4]}
+                activeNotes={[]}
+                rootNote={0}
+                chordTones={[]}
+                modifierNotes={[]}
+                showChordTones={false}
+                showIntervals={false}
+                onToggleIntervals={() => {}}
+                fingering={undefined}
+                futureVoicingCandidates={[openCandidate]}
+                onSelectFutureVoicing={() => {}}
+                activeFutureVoicingId={openCandidate.voicing.id}
+            />
+        );
+        const standardMarkup = renderToStaticMarkup(
+            <ChordModeWorkspace
+                chordType="major-7"
+                onChordTypeChange={() => {}}
+                chordSelectorGroups={[{
+                    id: 'seventh',
+                    label: 'Sevenths',
+                    options: [{ id: 'major-7', stateValue: 'major-7', label: 'maj7' }],
+                }]}
+                chordPreviewTitle="Cmaj7"
+                activeFutureCandidate={standardCandidate}
+                activeFuturePresentation={standardPresentation}
+                fretboardContainerRef={{ current: null }}
+                tuning={[4, 9, 2, 7, 11, 4]}
+                activeNotes={[]}
+                rootNote={0}
+                chordTones={[]}
+                modifierNotes={[]}
+                showChordTones={false}
+                showIntervals={false}
+                onToggleIntervals={() => {}}
+                fingering={undefined}
+                futureVoicingCandidates={[standardCandidate]}
+                onSelectFutureVoicing={() => {}}
+                activeFutureVoicingId={standardCandidate.voicing.id}
+            />
+        );
+
+        expect(openMarkup).toContain('Open');
+        expect(standardMarkup).not.toContain('>Shell<');
+        expect(standardMarkup).not.toContain('>Barre<');
+        expect(standardMarkup).not.toContain('>Open<');
     });
 });

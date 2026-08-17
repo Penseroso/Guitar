@@ -79,6 +79,7 @@ function classifyVoicingFamily(args: {
     noteCount: number;
     hasRoot: boolean;
     matchedRequiredDegrees: string[];
+    missingRequiredDegrees: string[];
     optionalCoverageDegrees: string[];
     playedStrings: GuitarStringIndex[];
     span: number;
@@ -88,39 +89,54 @@ function classifyVoicingFamily(args: {
         noteCount,
         hasRoot,
         matchedRequiredDegrees,
+        missingRequiredDegrees,
         optionalCoverageDegrees,
         playedStrings,
         span,
         registerBand,
     } = args;
     const playedStringSpan = getPlayedStringSpan(playedStrings);
-    const requiredCoverageCount = matchedRequiredDegrees.length;
-    const upperRegisterGrip = registerBand === 'upper' && noteCount <= 4 && playedStringSpan <= 3;
-    const shellLike = noteCount <= 4
-        && requiredCoverageCount >= Math.min(3, noteCount)
+    // Degree-coverage-based, not a fixed magic number — chords vary in how many degrees are
+    // actually required (2 for a plain triad/sus chord, 3 for a seventh chord, 4 for an altered
+    // chord), so "required coverage" has to be measured against each chord's own total.
+    const coversAllRequired = missingRequiredDegrees.length === 0;
+    const totalRequiredDegrees = matchedRequiredDegrees.length + missingRequiredDegrees.length;
+    // Guide-tone/shell voicing: every required degree present, nothing else — allow one
+    // duplicated tone (e.g. a doubled root) since that doesn't add harmonic content.
+    const shellLike = hasRoot
+        && coversAllRequired
         && optionalCoverageDegrees.length === 0
+        && noteCount <= totalRequiredDegrees + 1
         && playedStringSpan <= 3;
-    const spreadLike = span >= 5 || playedStringSpan >= 4;
+    const upperRegisterGrip = registerBand === 'upper' && noteCount <= 4 && playedStringSpan <= 3;
     const compactLike = noteCount <= 4 && span <= 2 && playedStringSpan <= 3;
     const closeLike = noteCount <= 4 && span <= 4 && playedStringSpan <= 3;
-    const fullLike = noteCount >= 5
-        && requiredCoverageCount >= 3
-        && (optionalCoverageDegrees.length > 0 || playedStrings.length >= 5);
+    // Full voicing: covers every required degree plus color tones and/or duplication across at
+    // least 5 strings — e.g. a full 6-string open/barre triad with the root and 5th doubled.
+    const fullLike = hasRoot
+        && coversAllRequired
+        && noteCount >= 5
+        && (optionalCoverageDegrees.length > 0 || noteCount > totalRequiredDegrees)
+        && playedStrings.length >= 5;
+    // A wide *string* span from duplicating tones across all six strings (a full open/barre
+    // chord) isn't the same thing as a wide *fret* span (a genuine drop-2/drop-3 spread voicing)
+    // — fullLike already claims the former, so spreadLike only needs to catch the latter.
+    const spreadLike = !fullLike && (span >= 5 || playedStringSpan >= 4);
 
     if (!hasRoot) {
         return 'rootless';
-    }
-
-    if (upperRegisterGrip) {
-        return 'upper-register';
     }
 
     if (shellLike) {
         return 'shell';
     }
 
-    if (fullLike && !spreadLike) {
+    if (fullLike) {
         return 'full';
+    }
+
+    if (upperRegisterGrip) {
+        return 'upper-register';
     }
 
     if (compactLike) {
@@ -135,7 +151,7 @@ function classifyVoicingFamily(args: {
         return 'spread';
     }
 
-    return fullLike ? 'full' : 'close';
+    return 'close';
 }
 
 export function deriveVoicingDescriptor(args: {
@@ -181,6 +197,7 @@ export function deriveVoicingDescriptor(args: {
         noteCount: playedNotes.length,
         hasRoot,
         matchedRequiredDegrees,
+        missingRequiredDegrees,
         optionalCoverageDegrees,
         playedStrings,
         span: args.span,

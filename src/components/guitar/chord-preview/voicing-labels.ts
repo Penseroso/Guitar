@@ -1,7 +1,9 @@
 import {
     getVoicingFamilyLabel,
     getVoicingProvenanceLabel,
+    getVoicingTechniqueTag,
     type ResolvedVoicing,
+    type VoicingTechniqueTag,
 } from '../../../utils/guitar/chords';
 
 export interface VoicingPresentationMeta {
@@ -9,6 +11,18 @@ export interface VoicingPresentationMeta {
     secondaryLabel: string | null;
     sourceLabel: string | null;
     familyLabel: string | null;
+    techniqueLabel: string | null;
+}
+
+const TECHNIQUE_LABELS: Record<VoicingTechniqueTag, string | null> = {
+    shell: 'Shell',
+    barre: 'Barre',
+    open: 'Open',
+    standard: null,
+};
+
+function getTechniqueLabel(voicing: ResolvedVoicing): string | null {
+    return TECHNIQUE_LABELS[getVoicingTechniqueTag(voicing)];
 }
 
 const TOP_SET_TRIAD_IDS = new Set(['major', 'minor']);
@@ -148,6 +162,7 @@ export function getVoicingPresentationMeta(voicing?: ResolvedVoicing): VoicingPr
             secondaryLabel: null,
             sourceLabel: null,
             familyLabel: null,
+            techniqueLabel: null,
         };
     }
 
@@ -156,5 +171,6 @@ export function getVoicingPresentationMeta(voicing?: ResolvedVoicing): VoicingPr
         secondaryLabel: getSecondaryLabel(voicing),
         sourceLabel: getVoicingProvenanceLabel(descriptor.provenance),
         familyLabel: null,
+        techniqueLabel: getTechniqueLabel(voicing),
     };
 }

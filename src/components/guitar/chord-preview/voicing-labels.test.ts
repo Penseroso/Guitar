@@ -222,4 +222,75 @@ describe('voicing player-facing labels', () => {
             secondaryLabel: '3fr · root omitted',
         });
     });
+
+    it('exposes an open/shell/barre technique badge for known shapes, and null for the plain/no-voicing case', () => {
+        const shell = resolveTestVoicing('minor-7', 0, {
+            id: 'upper-shell-m7',
+            label: 'upper shell',
+            instrument: 'guitar',
+            rootString: 3,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: 1, toneDegree: 'b7' },
+                { string: 1, fretOffset: 1, toneDegree: 'b3' },
+                { string: 2, fretOffset: null },
+                { string: 3, fretOffset: 0, toneDegree: '1' },
+                { string: 4, fretOffset: null },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 10 });
+        const open = resolveTestVoicing('major', 0, {
+            id: 'full-open-triad',
+            label: 'full open triad',
+            instrument: 'guitar',
+            rootString: 4,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: 0, toneDegree: '1' },
+                { string: 1, fretOffset: 1, toneDegree: '5', isOptional: true },
+                { string: 2, fretOffset: 0, toneDegree: '1' },
+                { string: 3, fretOffset: 2, toneDegree: '3' },
+                { string: 4, fretOffset: 3, toneDegree: '5', isOptional: true },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 0 });
+        // Classic F-shape barre: fret1 across strings 5/4/1/0, with strings 3/2 arching in front
+        // at frets 3/2 — same forced-barre geometry as the fretGeometry.ts F-chord regression.
+        const barre = resolveTestVoicing('major', 0, {
+            id: 'f-shape-barre',
+            label: 'f-shape barre',
+            instrument: 'guitar',
+            rootString: 5,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: 0, toneDegree: '1' },
+                { string: 1, fretOffset: 0, toneDegree: '5' },
+                { string: 2, fretOffset: 1, toneDegree: '1' },
+                { string: 3, fretOffset: 2, toneDegree: '3' },
+                { string: 4, fretOffset: 0, toneDegree: '5' },
+                { string: 5, fretOffset: 0, toneDegree: '1' },
+            ],
+        }, { rootFret: 1 });
+        const midNeckStandard = resolveTestVoicing('major-7', 0, {
+            id: 'fourth-string-root-standard',
+            label: 'fourth string root',
+            instrument: 'guitar',
+            rootString: 3,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: null },
+                { string: 1, fretOffset: -2, toneDegree: '5' },
+                { string: 2, fretOffset: -1, toneDegree: '3' },
+                { string: 3, fretOffset: 0, toneDegree: '1' },
+                { string: 4, fretOffset: null },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 10 });
+
+        expect(getVoicingPresentationMeta(shell).techniqueLabel).toBe('Shell');
+        expect(getVoicingPresentationMeta(open).techniqueLabel).toBe('Open');
+        expect(getVoicingPresentationMeta(barre).techniqueLabel).toBe('Barre');
+        expect(getVoicingPresentationMeta(midNeckStandard).techniqueLabel).toBeNull();
+        expect(getVoicingPresentationMeta(undefined).techniqueLabel).toBeNull();
+    });
 });

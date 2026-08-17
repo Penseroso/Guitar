@@ -144,6 +144,11 @@ export function ChordModeWorkspace({
                                         {activeFuturePresentation.secondaryLabel}
                                     </span>
                                 )}
+                                {activeFutureCandidate && activeFuturePresentation.techniqueLabel && (
+                                    <span className="mb-1 inline-flex items-center rounded-full border border-cyan-200/20 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-cyan-200/70">
+                                        {activeFuturePresentation.techniqueLabel}
+                                    </span>
+                                )}
                             </div>
                         </div>
 
@@ -224,7 +229,14 @@ export function ChordModeWorkspace({
                                                 />
                                             </div>
                                             <div className="min-w-0 flex flex-col gap-1">
-                                                <span className="text-[13px] font-bold leading-tight text-white">{presentation.primaryLabel}</span>
+                                                <div className="flex items-center gap-1.5">
+                                                    <span className="text-[13px] font-bold leading-tight text-white">{presentation.primaryLabel}</span>
+                                                    {presentation.techniqueLabel && (
+                                                        <span className="inline-flex items-center rounded-full border border-cyan-200/20 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-[0.14em] text-cyan-200/70">
+                                                            {presentation.techniqueLabel}
+                                                        </span>
+                                                    )}
+                                                </div>
                                                 {presentation.secondaryLabel && (
                                                     <span className="text-[10px] leading-tight text-white/52">{presentation.secondaryLabel}</span>
                                                 )}

@@ -233,6 +233,63 @@ describe('voicing descriptor derivation', () => {
         expect(getVoicingDisplaySubtitle(voicing.descriptor)).toBe('6-note · 2 roots · low register');
     });
 
+    it('classifies a shell voicing confined to the upper strings as shell, not upper-register', () => {
+        // Root+3rd+b7 only (no 5th) on strings 0/1/3 — the single most common real shape for a
+        // shell voicing, confined to the top strings the way most shell voicings are played.
+        // Before the classifyVoicingFamily rebuild, upperRegisterGrip was checked first and
+        // silently swallowed every shell-shaped voicing that happened to sit up there — this
+        // exact shape as the 'upper-m7' fixture above, just without the optional 5th — used to
+        // come out as 'upper-register' instead.
+        const entry = resolveChordRegistryEntry('minor-7');
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+        const voicing = resolveVoicingTemplate(chord, tones, {
+            id: 'upper-shell-m7',
+            label: 'upper shell',
+            instrument: 'guitar',
+            rootString: 3,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: 1, toneDegree: 'b7' },
+                { string: 1, fretOffset: 1, toneDegree: 'b3' },
+                { string: 2, fretOffset: null },
+                { string: 3, fretOffset: 0, toneDegree: '1' },
+                { string: 4, fretOffset: null },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 10 });
+
+        expect(voicing.descriptor.family).toBe('shell');
+        expect(voicing.descriptor.registerBand).toBe('upper');
+    });
+
+    it('classifies a full 6-string open/barre triad as full, not spread', () => {
+        // All three triad tones duplicated across all six strings (e.g. open-C-shaped) — wide
+        // string span but narrow fret span. Before the rebuild, spreadLike's string-span check
+        // claimed this before fullLike ever got a chance, and fullLike's magic-number required-
+        // coverage check (>=3) was unreachable for a triad (only 2 required degrees) anyway.
+        const entry = resolveChordRegistryEntry('major');
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+        const voicing = resolveVoicingTemplate(chord, tones, {
+            id: 'full-open-triad',
+            label: 'full open triad',
+            instrument: 'guitar',
+            rootString: 4,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: 0, toneDegree: '1' },
+                { string: 1, fretOffset: 1, toneDegree: '5', isOptional: true },
+                { string: 2, fretOffset: 0, toneDegree: '1' },
+                { string: 3, fretOffset: 2, toneDegree: '3' },
+                { string: 4, fretOffset: 3, toneDegree: '5', isOptional: true },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 0 });
+
+        expect(voicing.descriptor.family).toBe('full');
+    });
+
     it('captures root distribution explicitly and normalizes compatibility rootString to the lowest root string', () => {
         const entry = resolveChordRegistryEntry('major');
         const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
