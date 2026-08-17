@@ -1,4 +1,5 @@
-// Future-facing chord domain surface. Legacy chord-gallery types remain in ../types and ../theory.
+// Chord domain surface — the deductive voicing engine (search, ranking, classification) plus
+// chord-registry theory and the cross-domain interpretation layer built on top of it.
 export type {
     PitchClass,
     GuitarStringIndex,
@@ -17,7 +18,6 @@ export type {
     ResolvedVoicing,
     VoicingCandidate,
     ChordInterpretationCandidate,
-    VoicingRankingMode,
 } from './types';
 
 export type {
@@ -61,125 +61,6 @@ export {
 } from './semantics';
 
 export {
-    buildVoicingTemplateFromLegacyShape,
-    getLegacyVoicingTemplatesForChord,
-    getLegacyShapeKeyForChord,
-    getVoicingTemplatesForChord,
-    getVoicingTemplatesByLegacyType,
-} from './templates';
-
-export {
-    getCuratedVoicingTemplatesForChord,
-} from './curated';
-
-export type {
-    CuratedQaChordId,
-    CuratedQaDecision,
-    CuratedQaReviewRecord,
-    CuratedQaReviewState,
-    CuratedQaCandidate,
-} from './curated-qa';
-
-export {
-    CURATED_QA_REVIEW_CHORD_IDS,
-    getCuratedQaReviewKey,
-    recordCuratedQaDecision,
-    getCuratedQaDecisionForCandidate,
-    isDeveloperCuratedQaEnabled,
-    getCuratedQaCandidates,
-    getCuratedQaCandidatesForChord,
-    groupCuratedQaCandidates,
-} from './curated-qa';
-
-export type {
-    CuratedQaReviewSnapshot,
-} from './curated-qa-storage';
-
-export {
-    CURATED_QA_REVIEW_STORAGE_PATH,
-    normalizeCuratedQaReviewSnapshot,
-    buildCuratedQaReviewSnapshot,
-} from './curated-qa-storage';
-
-export type {
-    CuratedQaReviewBuckets,
-    VoicingStructuralProfile,
-} from './curated-qa-comparison';
-
-export {
-    getCuratedQaReviewsByDecision,
-    partitionCuratedQaReviews,
-    getVoicingSignature,
-    getVoicingStructuralProfile,
-    isStructurallyCloseToAcceptedReference,
-    matchesRejectedReferencePattern,
-    prefersAcceptedReferenceOverRejected,
-} from './curated-qa-comparison';
-
-export type {
-    CuratedQaAnalysisBucket,
-    CuratedQaAnalysisSummary,
-    CuratedQaChordTypeAnalysis,
-    CuratedQaDecisionCounts,
-} from './curated-qa-analysis';
-
-export {
-    buildCuratedQaAnalysisSummary,
-    getAcceptedSourceKinds,
-} from './curated-qa-analysis';
-
-export type {
-    UsagePriorDecision,
-    UsagePriorReviewRecord,
-    UsagePriorReviewState,
-} from './usage-prior';
-
-export {
-    getUsagePriorReviewKey,
-    recordUsagePriorDecision,
-    recordUsagePriorSessionDecision,
-    getUsagePriorDecisionForCandidate,
-    isDeveloperUsagePriorEnabled,
-    buildUsagePriorReviewState,
-    mergeUsagePriorReviewStates,
-} from './usage-prior';
-
-export type {
-    UsagePriorVoicingDescriptorSummary,
-    UsagePriorSurfaceCandidate,
-    UsagePriorSurfaceSetSnapshot,
-} from './usage-prior-surface';
-
-export {
-    USAGE_PRIOR_SURFACE_CHORD_IDS,
-    buildUsagePriorSurfaceSetSnapshot,
-    groupUsagePriorSurfaceCandidates,
-} from './usage-prior-surface';
-
-export type {
-    UsagePriorAnalysisSummary,
-} from './usage-prior-analysis';
-
-export {
-    buildUsagePriorAnalysisSummary,
-} from './usage-prior-analysis';
-
-export type {
-    UsagePriorReviewSnapshot,
-    UsagePriorAcceptedCandidate,
-    UsagePriorAcceptedExport,
-} from './usage-prior-storage';
-
-export {
-    USAGE_PRIOR_REVIEW_STORAGE_PATH,
-    USAGE_PRIOR_REVIEWED_EXPORT_PATH,
-    normalizeUsagePriorReviewSnapshot,
-    buildUsagePriorReviewSnapshot,
-    applyUsagePriorReviewUpdates,
-    buildUsagePriorAcceptedExport,
-} from './usage-prior-storage';
-
-export {
     deriveVoicingDescriptor,
     getVoicingDisplayName,
     getVoicingDisplaySubtitle,
@@ -188,19 +69,9 @@ export {
     getVoicingProvenanceLabel,
 } from './descriptor';
 
-export {
-    ARCHETYPE_GENERATED_CHORD_IDS,
-    getArchetypePlanForChord,
-    getArchetypeGeneratedVoicingTemplatesForChord,
-} from './archetype-generated';
-
-export {
-    getGeneratedVoicingTemplatesForChord,
-    getPrimaryGeneratedVoicingTemplatesForChord,
-} from './generated';
-
+// resolveVoicingTemplate has no production caller left (the old template-based engine that used
+// it is gone) — it's kept only as test-fixture infrastructure for the new engine's test suites.
 export type { ResolveVoicingOptions } from './resolver';
-
 export {
     getCandidateRootFretsForTemplate,
     resolveVoicingNote,
@@ -226,19 +97,6 @@ export {
     buildVoicingCandidate,
     rankVoicingCandidates,
 } from './deductiveRanking';
-
-export type { GetRankedVoicingsOptions } from './voicings';
-
-export {
-    collectChordModeTemplateRolesForChord,
-    collectVoicingTemplateSourcesForChord,
-    getArchetypeGeneratedVoicingsForChord,
-    getChordSurfaceVoicingsForChord,
-    getExploratoryVoicingsForChord,
-    getRankedExploratoryVoicingsForChord,
-    getRankedVoicingsForChord,
-    orderChordSurfaceVoicingCandidates,
-} from './voicings';
 
 export type { VoicingSearchOptions } from './voicingSearch';
 export { searchDeductiveVoicings } from './voicingSearch';

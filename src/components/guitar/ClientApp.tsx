@@ -7,37 +7,12 @@ import { getProgressionPlaybackData } from '../../features/progression/utils/get
 import {
     CHORD_FAMILIES,
     CHORD_REGISTRY_LIST,
-    type CuratedQaAnalysisSummary,
-    type UsagePriorAnalysisSummary,
     getDeductiveChordSurfaceVoicingsForChord,
-    getCuratedQaCandidates,
     getChordTypeLabel,
     getChordTypeSuffix,
     resolveChordRegistryEntry,
     type ResolvedVoicing,
 } from '../../utils/guitar/chords';
-import {
-    isDeveloperCuratedQaEnabled,
-    mergeCuratedQaReviewStates,
-    recordCuratedQaSessionDecision,
-    recordCuratedQaDecision,
-    type CuratedQaDecision,
-    type CuratedQaReviewRecord,
-    type CuratedQaReviewState,
-} from '../../utils/guitar/chords/curated-qa';
-import {
-    isDeveloperUsagePriorEnabled,
-    mergeUsagePriorReviewStates,
-    recordUsagePriorDecision,
-    recordUsagePriorSessionDecision,
-    type UsagePriorDecision,
-    type UsagePriorReviewRecord,
-    type UsagePriorReviewState,
-} from '../../utils/guitar/chords/usage-prior';
-import type {
-    UsagePriorSurfaceCandidate,
-    UsagePriorSurfaceSetSnapshot,
-} from '../../utils/guitar/chords/usage-prior-surface';
 import {
     TUNING,
     SCALES,
@@ -54,8 +29,6 @@ import {
     reduceHarmonicWorkspaceState,
 } from '../../features/harmonic-workspace/state';
 import { resolveBridgeSelection } from './chord-preview/bridge';
-import { CuratedQaPanel } from './chord-preview/CuratedQaPanel';
-import { UsagePriorSeedPanel } from './chord-preview/UsagePriorSeedPanel';
 import { getVoicingPresentationMeta } from './chord-preview/voicing-labels';
 import { ScaleModeWorkspace } from './workspaces/ScaleModeWorkspace';
 import { ChordModeWorkspace } from './workspaces/ChordModeWorkspace';
@@ -83,33 +56,6 @@ const CHORD_SELECTOR_GROUPS = CHORD_FAMILIES.map((family) => {
         })),
     };
 }).filter((group) => group.options.length > 0);
-
-function isPersistedCuratedQaReview(value: unknown): value is CuratedQaReviewRecord {
-    if (!value || typeof value !== 'object') {
-        return false;
-    }
-
-    const candidate = value as Partial<CuratedQaReviewRecord>;
-    return typeof candidate.chordType === 'string'
-        && typeof candidate.candidateId === 'string'
-        && (candidate.rootPitchClass === undefined || Number.isInteger(candidate.rootPitchClass))
-        && (candidate.reason === undefined || typeof candidate.reason === 'string')
-        && (candidate.decision === 'accept' || candidate.decision === 'borderline' || candidate.decision === 'reject');
-}
-
-function isPersistedUsagePriorReview(value: unknown): value is UsagePriorReviewRecord {
-    if (!value || typeof value !== 'object') {
-        return false;
-    }
-
-    const candidate = value as Partial<UsagePriorReviewRecord>;
-    return typeof candidate.chordType === 'string'
-        && typeof candidate.candidateId === 'string'
-        && (candidate.rootPitchClass === undefined || Number.isInteger(candidate.rootPitchClass))
-        && (candidate.reviewedAt === undefined || typeof candidate.reviewedAt === 'string')
-        && (candidate.sourceSnapshotId === undefined || typeof candidate.sourceSnapshotId === 'string')
-        && (candidate.decision === 'accept' || candidate.decision === 'reject');
-}
 
 function buildResolvedVoicingFingering(voicing?: ResolvedVoicing): Fingering[] | undefined {
     if (!voicing) {
@@ -163,40 +109,6 @@ export default function ClientApp() {
 
     // --- State: Chord Mode ---
     const [chordType, setChordType] = useState('major');
-    const [isCuratedQaEnabled] = useState(() => {
-        if (typeof window === 'undefined') {
-            return false;
-        }
-
-        return isDeveloperCuratedQaEnabled({
-            nodeEnv: process.env.NODE_ENV,
-            search: window.location.search,
-        });
-    });
-    const [isUsagePriorEnabled] = useState(() => {
-        if (typeof window === 'undefined') {
-            return false;
-        }
-
-        return isDeveloperUsagePriorEnabled({
-            nodeEnv: process.env.NODE_ENV,
-            search: window.location.search,
-        });
-    });
-    const [persistedCuratedQaReviews, setPersistedCuratedQaReviews] = useState<CuratedQaReviewState>({});
-    const [curatedQaSessionReviews, setCuratedQaSessionReviews] = useState<CuratedQaReviewState>({});
-    const [curatedQaAnalysis, setCuratedQaAnalysis] = useState<CuratedQaAnalysisSummary | null>(null);
-    const [isSubmittingCuratedQa, setIsSubmittingCuratedQa] = useState(false);
-    const [curatedQaSubmitStatus, setCuratedQaSubmitStatus] = useState<string | null>(null);
-    const [curatedQaLastSavedAt, setCuratedQaLastSavedAt] = useState<string | null>(null);
-    const [usagePriorCandidates, setUsagePriorCandidates] = useState<UsagePriorSurfaceCandidate[]>([]);
-    const [usagePriorSurfaceSnapshotId, setUsagePriorSurfaceSnapshotId] = useState<string | null>(null);
-    const [persistedUsagePriorReviews, setPersistedUsagePriorReviews] = useState<UsagePriorReviewState>({});
-    const [usagePriorSessionReviews, setUsagePriorSessionReviews] = useState<UsagePriorReviewState>({});
-    const [usagePriorAnalysis, setUsagePriorAnalysis] = useState<UsagePriorAnalysisSummary | null>(null);
-    const [isSubmittingUsagePrior, setIsSubmittingUsagePrior] = useState(false);
-    const [usagePriorSubmitStatus, setUsagePriorSubmitStatus] = useState<string | null>(null);
-    const [usagePriorLastSavedAt, setUsagePriorLastSavedAt] = useState<string | null>(null);
     const {
         progressionName,
         progressionDoc,
@@ -450,297 +362,6 @@ export default function ClientApp() {
         };
     }, [mode, hasPreview, handleApplyPreview, handleClearPreview]);
 
-    const curatedQaCandidates = useMemo(() => {
-        if (!isCuratedQaEnabled) {
-            return [];
-        }
-
-        return getCuratedQaCandidates(selectedKey);
-    }, [isCuratedQaEnabled, selectedKey]);
-
-    const curatedQaEffectiveReviews = useMemo(
-        () => mergeCuratedQaReviewStates(persistedCuratedQaReviews, curatedQaSessionReviews),
-        [persistedCuratedQaReviews, curatedQaSessionReviews]
-    );
-    const usagePriorEffectiveReviews = useMemo(
-        () => mergeUsagePriorReviewStates(persistedUsagePriorReviews, usagePriorSessionReviews),
-        [persistedUsagePriorReviews, usagePriorSessionReviews]
-    );
-
-    const handleCuratedQaReview = useCallback((candidate: (typeof curatedQaCandidates)[number], decision: CuratedQaDecision) => {
-        const persistedRecord = persistedCuratedQaReviews[`${candidate.chordType}::${candidate.candidateId}`];
-        const effectiveRecord = curatedQaEffectiveReviews[`${candidate.chordType}::${candidate.candidateId}`];
-
-        setCuratedQaSessionReviews((currentState) => recordCuratedQaSessionDecision(persistedCuratedQaReviews, currentState, {
-            chordType: candidate.chordType,
-            candidateId: candidate.candidateId,
-            decision,
-            rootPitchClass: candidate.rootPitchClass,
-            reason: decision === 'accept'
-                ? undefined
-                : (
-                    effectiveRecord?.decision === decision
-                        ? effectiveRecord.reason
-                        : persistedRecord?.decision === decision
-                            ? persistedRecord.reason
-                            : undefined
-                ),
-        }));
-        setCuratedQaSubmitStatus(null);
-    }, [curatedQaEffectiveReviews, persistedCuratedQaReviews]);
-
-    const handleCuratedQaReasonChange = useCallback((candidate: (typeof curatedQaCandidates)[number], reason: string) => {
-        const effectiveRecord = curatedQaEffectiveReviews[`${candidate.chordType}::${candidate.candidateId}`];
-        const decision = effectiveRecord?.decision;
-
-        if (!decision || decision === 'accept') {
-            return;
-        }
-
-        setCuratedQaSessionReviews((currentState) => recordCuratedQaSessionDecision(persistedCuratedQaReviews, currentState, {
-            chordType: candidate.chordType,
-            candidateId: candidate.candidateId,
-            decision,
-            rootPitchClass: candidate.rootPitchClass,
-            reason,
-        }));
-        setCuratedQaSubmitStatus(null);
-    }, [curatedQaEffectiveReviews, persistedCuratedQaReviews]);
-
-    useEffect(() => {
-        if (!isCuratedQaEnabled) {
-            return;
-        }
-
-        let isCancelled = false;
-
-        void (async () => {
-            try {
-                const response = await fetch('/api/dev/curated-qa', { method: 'GET' });
-                if (!response.ok) {
-                    throw new Error(`Unable to load curated QA state (${response.status})`);
-                }
-
-                const payload = await response.json() as {
-                    analysis?: CuratedQaAnalysisSummary;
-                    updatedAt?: string | null;
-                    reviews?: Array<{ chordType: string; candidateId: string; decision: CuratedQaDecision; rootPitchClass?: number; reason?: string }>;
-                };
-
-                if (isCancelled) {
-                    return;
-                }
-
-                const nextState = (payload.reviews ?? []).reduce<CuratedQaReviewState>((accumulator, review) => {
-                    if (!isPersistedCuratedQaReview(review)) {
-                        return accumulator;
-                    }
-
-                    return recordCuratedQaDecision(accumulator, review);
-                }, {});
-
-                setPersistedCuratedQaReviews(nextState);
-                setCuratedQaSessionReviews({});
-                setCuratedQaAnalysis(payload.analysis ?? null);
-                setCuratedQaLastSavedAt(payload.updatedAt ?? null);
-                setCuratedQaSubmitStatus(payload.updatedAt ? 'Loaded saved curated QA decisions.' : null);
-            } catch {
-                if (!isCancelled) {
-                    setPersistedCuratedQaReviews({});
-                    setCuratedQaSessionReviews({});
-                    setCuratedQaAnalysis(null);
-                    setCuratedQaSubmitStatus('Unable to load saved curated QA decisions.');
-                }
-            }
-        })();
-
-        return () => {
-            isCancelled = true;
-        };
-    }, [isCuratedQaEnabled]);
-
-    const handleUsagePriorReview = useCallback((candidate: UsagePriorSurfaceCandidate, decision: UsagePriorDecision) => {
-        setUsagePriorSessionReviews((currentState) => recordUsagePriorSessionDecision(persistedUsagePriorReviews, currentState, {
-            chordType: candidate.chordType,
-            candidateId: candidate.candidateId,
-            decision,
-            rootPitchClass: candidate.rootPitchClass,
-            reviewedAt: new Date().toISOString(),
-            sourceSnapshotId: usagePriorSurfaceSnapshotId ?? undefined,
-        }));
-        setUsagePriorSubmitStatus(null);
-    }, [persistedUsagePriorReviews, usagePriorSurfaceSnapshotId]);
-
-    useEffect(() => {
-        if (!isUsagePriorEnabled) {
-            return;
-        }
-
-        let isCancelled = false;
-
-        void (async () => {
-            try {
-                const response = await fetch('/api/dev/usage-prior', { method: 'GET' });
-                if (!response.ok) {
-                    throw new Error(`Unable to load usage prior state (${response.status})`);
-                }
-
-                const payload = await response.json() as {
-                    analysis?: UsagePriorAnalysisSummary;
-                    updatedAt?: string | null;
-                    reviews?: UsagePriorReviewRecord[];
-                    surfaceSnapshot?: UsagePriorSurfaceSetSnapshot;
-                };
-
-                if (isCancelled) {
-                    return;
-                }
-
-                const nextState = (payload.reviews ?? []).reduce<UsagePriorReviewState>((accumulator, review) => {
-                    if (!isPersistedUsagePriorReview(review)) {
-                        return accumulator;
-                    }
-
-                    return recordUsagePriorDecision(accumulator, review);
-                }, {});
-
-                setUsagePriorCandidates(payload.surfaceSnapshot?.candidates ?? []);
-                setUsagePriorSurfaceSnapshotId(payload.surfaceSnapshot?.snapshotId ?? null);
-                setPersistedUsagePriorReviews(nextState);
-                setUsagePriorSessionReviews({});
-                setUsagePriorAnalysis(payload.analysis ?? null);
-                setUsagePriorLastSavedAt(payload.updatedAt ?? null);
-                setUsagePriorSubmitStatus(payload.updatedAt ? 'Loaded saved usage prior reviews.' : null);
-            } catch {
-                if (!isCancelled) {
-                    setUsagePriorCandidates([]);
-                    setUsagePriorSurfaceSnapshotId(null);
-                    setPersistedUsagePriorReviews({});
-                    setUsagePriorSessionReviews({});
-                    setUsagePriorAnalysis(null);
-                    setUsagePriorSubmitStatus('Unable to load saved usage prior reviews.');
-                }
-            }
-        })();
-
-        return () => {
-            isCancelled = true;
-        };
-    }, [isUsagePriorEnabled]);
-
-    const handleSubmitCuratedQa = useCallback(async () => {
-        const submittedReviews = Object.values(curatedQaSessionReviews);
-
-        if (submittedReviews.length === 0) {
-            setCuratedQaSubmitStatus('Select accept, borderline, or reject before submitting QA.');
-            return;
-        }
-
-        setIsSubmittingCuratedQa(true);
-        setCuratedQaSubmitStatus(null);
-
-        try {
-            const response = await fetch('/api/dev/curated-qa', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    submittedReviews,
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error(`Unable to save curated QA state (${response.status})`);
-            }
-
-            const payload = await response.json() as {
-                updatedAt?: string | null;
-                analysis?: CuratedQaAnalysisSummary;
-                reviews?: Array<{ chordType: string; candidateId: string; decision: CuratedQaDecision; rootPitchClass?: number; reason?: string }>;
-                saved?: boolean;
-                submittedCount?: number;
-            };
-            const nextPersistedState = (payload.reviews ?? []).reduce<CuratedQaReviewState>((accumulator, review) => {
-                if (!isPersistedCuratedQaReview(review)) {
-                    return accumulator;
-                }
-
-                return recordCuratedQaDecision(accumulator, review);
-            }, {});
-
-            setPersistedCuratedQaReviews(nextPersistedState);
-            setCuratedQaSessionReviews({});
-            setCuratedQaAnalysis(payload.analysis ?? null);
-            setCuratedQaLastSavedAt(payload.updatedAt ?? null);
-            setCuratedQaSubmitStatus(payload.saved === false
-                ? 'No submitted QA decisions were saved.'
-                : `Saved ${payload.submittedCount ?? submittedReviews.length} submitted QA decisions.`);
-        } catch {
-            setCuratedQaSubmitStatus('Failed to save curated QA decisions.');
-        } finally {
-            setIsSubmittingCuratedQa(false);
-        }
-    }, [curatedQaSessionReviews]);
-
-    const handleSubmitUsagePrior = useCallback(async () => {
-        const submittedReviews = Object.values(usagePriorSessionReviews);
-
-        if (submittedReviews.length === 0) {
-            setUsagePriorSubmitStatus('Select accept or reject before submitting usage prior reviews.');
-            return;
-        }
-
-        setIsSubmittingUsagePrior(true);
-        setUsagePriorSubmitStatus(null);
-
-        try {
-            const response = await fetch('/api/dev/usage-prior', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    submittedReviews,
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error(`Unable to save usage prior state (${response.status})`);
-            }
-
-            const payload = await response.json() as {
-                updatedAt?: string | null;
-                analysis?: UsagePriorAnalysisSummary;
-                reviews?: UsagePriorReviewRecord[];
-                surfaceSnapshot?: UsagePriorSurfaceSetSnapshot;
-                saved?: boolean;
-                submittedCount?: number;
-            };
-            const nextPersistedState = (payload.reviews ?? []).reduce<UsagePriorReviewState>((accumulator, review) => {
-                if (!isPersistedUsagePriorReview(review)) {
-                    return accumulator;
-                }
-
-                return recordUsagePriorDecision(accumulator, review);
-            }, {});
-
-            setUsagePriorCandidates(payload.surfaceSnapshot?.candidates ?? usagePriorCandidates);
-            setUsagePriorSurfaceSnapshotId(payload.surfaceSnapshot?.snapshotId ?? usagePriorSurfaceSnapshotId);
-            setPersistedUsagePriorReviews(nextPersistedState);
-            setUsagePriorSessionReviews({});
-            setUsagePriorAnalysis(payload.analysis ?? null);
-            setUsagePriorLastSavedAt(payload.updatedAt ?? null);
-            setUsagePriorSubmitStatus(payload.saved === false
-                ? 'No submitted usage prior reviews were saved.'
-                : `Saved ${payload.submittedCount ?? submittedReviews.length} submitted usage prior reviews and refreshed accept-only export.`);
-        } catch {
-            setUsagePriorSubmitStatus('Failed to save usage prior reviews.');
-        } finally {
-            setIsSubmittingUsagePrior(false);
-        }
-    }, [usagePriorCandidates, usagePriorSessionReviews, usagePriorSurfaceSnapshotId]);
-
     return (
         <div className="min-h-screen bg-[#050505] text-[#a0a0a0] selection:bg-white/20 p-8 flex flex-col items-center gap-12 overflow-x-hidden font-sans">
             <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -833,62 +454,27 @@ export default function ClientApp() {
                     )}
 
                     {mode === 'chord' && (
-                        <div className="flex flex-col gap-6">
-                            <ChordModeWorkspace
-                                chordType={chordType}
-                                onChordTypeChange={setChordType}
-                                chordSelectorGroups={CHORD_SELECTOR_GROUPS}
-                                chordPreviewTitle={chordPreviewTitle}
-                                activeFutureCandidate={activeFutureCandidate}
-                                activeFuturePresentation={activeFuturePresentation}
-                                fretboardContainerRef={fretboardContainerRef}
-                                tuning={TUNING}
-                                activeNotes={activeNotes}
-                                rootNote={rootNote}
-                                chordTones={currentChordTones}
-                                modifierNotes={modifierNotes}
-                                showChordTones={showChordTones}
-                                showIntervals={showIntervals}
-                                onToggleIntervals={() => setShowIntervals((prev) => !prev)}
-                                fingering={fingering}
-                                futureVoicingCandidates={chordSurfaceVoicingCandidates}
-                                onSelectFutureVoicing={handleSelectFutureVoicing}
-                                activeFutureVoicingId={activeFutureVoicingId}
-                            />
-
-                            {isCuratedQaEnabled && (
-                                <CuratedQaPanel
-                                    candidates={curatedQaCandidates}
-                                    persistedReviews={persistedCuratedQaReviews}
-                                    sessionReviews={curatedQaSessionReviews}
-                                effectiveReviews={curatedQaEffectiveReviews}
-                                onReview={handleCuratedQaReview}
-                                onReasonChange={handleCuratedQaReasonChange}
-                                onSubmit={handleSubmitCuratedQa}
-                                    isSubmitting={isSubmittingCuratedQa}
-                                    hasPendingChanges={Object.keys(curatedQaSessionReviews).length > 0}
-                                    submitStatus={curatedQaSubmitStatus}
-                                    lastSavedAt={curatedQaLastSavedAt}
-                                    analysis={curatedQaAnalysis}
-                                />
-                            )}
-
-                            {isUsagePriorEnabled && (
-                                <UsagePriorSeedPanel
-                                    candidates={usagePriorCandidates}
-                                    persistedReviews={persistedUsagePriorReviews}
-                                    sessionReviews={usagePriorSessionReviews}
-                                    effectiveReviews={usagePriorEffectiveReviews}
-                                    onReview={handleUsagePriorReview}
-                                    onSubmit={handleSubmitUsagePrior}
-                                    isSubmitting={isSubmittingUsagePrior}
-                                    hasPendingChanges={Object.keys(usagePriorSessionReviews).length > 0}
-                                    submitStatus={usagePriorSubmitStatus}
-                                    lastSavedAt={usagePriorLastSavedAt}
-                                    analysis={usagePriorAnalysis}
-                                />
-                            )}
-                        </div>
+                        <ChordModeWorkspace
+                            chordType={chordType}
+                            onChordTypeChange={setChordType}
+                            chordSelectorGroups={CHORD_SELECTOR_GROUPS}
+                            chordPreviewTitle={chordPreviewTitle}
+                            activeFutureCandidate={activeFutureCandidate}
+                            activeFuturePresentation={activeFuturePresentation}
+                            fretboardContainerRef={fretboardContainerRef}
+                            tuning={TUNING}
+                            activeNotes={activeNotes}
+                            rootNote={rootNote}
+                            chordTones={currentChordTones}
+                            modifierNotes={modifierNotes}
+                            showChordTones={showChordTones}
+                            showIntervals={showIntervals}
+                            onToggleIntervals={() => setShowIntervals((prev) => !prev)}
+                            fingering={fingering}
+                            futureVoicingCandidates={chordSurfaceVoicingCandidates}
+                            onSelectFutureVoicing={handleSelectFutureVoicing}
+                            activeFutureVoicingId={activeFutureVoicingId}
+                        />
                     )}
 
                     {mode === 'progression' && (

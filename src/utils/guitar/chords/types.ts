@@ -134,8 +134,6 @@ export interface VoicingCandidate {
     missingRequiredDegrees: string[];
 }
 
-export type VoicingRankingMode = 'balanced' | 'compact' | 'beginner' | 'upper-register';
-
 export interface ChordInterpretationCandidate {
     definition: ChordDefinition;
     tones: ChordTones;
