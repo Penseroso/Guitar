@@ -30,6 +30,23 @@ examples from this codebase's own history:
 If a UI component needs an inline `if`/`useMemo` to decide something musically meaningful, that's usually a
 sign the decision belongs in `domain/` instead.
 
+### Reference sources
+
+Independent, established sources used to validate this app's own deductive logic — never imported at runtime,
+only as devDependency fixtures/checks that catch this codebase's math disagreeing with a source that didn't
+derive its data the same way (so the two can't share the same bug):
+
+- [`@tombatossals/chords-db`](https://github.com/tombatossals/chords-db) — real guitar chord-voicing fingering
+  data, currently used in `domain/chord/voicingSearch.fixtures.test.ts` to confirm the deductive voicing engine
+  reproduces/ranks well-known real-world shapes.
+- [`tonal`](https://github.com/tonaljs/tonal) — an actively-maintained TypeScript music theory library with its
+  own independently-computed scale/chord/mode relationships. Not yet wired in; earmarked for the same
+  fixture-test role as chords-db, cross-checking `domain/scale`/`domain/chord`'s scale-chord-relationship logic
+  (e.g. `SCALE_REGISTRY`, `related-scales.ts`) against it.
+- [ianring.com/musictheory](https://ianring.com/musictheory/scales/) — a deep, well-regarded manual reference
+  for scale/mode-family relationships (every 12-EDO pitch-class set, cataloged). No API to integrate; useful for
+  sanity-checking theory by hand, not as a test fixture.
+
 ## Getting Started
 
 First, run the development server:
