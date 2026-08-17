@@ -129,7 +129,7 @@ export const CircleOfFifths: React.FC<CircleOfFifthsProps> = ({ selectedKey, onK
                             />
                             <text x={majorNotePos.x} y={majorNotePos.y} textAnchor="middle" dominantBaseline="central" fill={majorNoteTextColor} fontSize={ENHARMONIC_TIE_PITCH_CLASSES[keyIndex]?.major ? "11" : "14"} fontWeight={isTonicMajor ? "800" : "400"} className="pointer-events-none tracking-widest">
                                 {ENHARMONIC_TIE_PITCH_CLASSES[keyIndex]?.major
-                                    ? `${getKeyName(keyIndex)}/${ENHARMONIC_TIE_PITCH_CLASSES[keyIndex].major}`
+                                    ? `${ENHARMONIC_TIE_PITCH_CLASSES[keyIndex].major}/${getKeyName(keyIndex)}`
                                     : getKeyName(keyIndex)}
                             </text>
 
@@ -145,7 +145,7 @@ export const CircleOfFifths: React.FC<CircleOfFifthsProps> = ({ selectedKey, onK
                             {isDiatonicFamily && (
                                 <text x={minorNotePos.x} y={minorNotePos.y} textAnchor="middle" dominantBaseline="central" fill={minorNoteTextColor} fontSize={ENHARMONIC_TIE_PITCH_CLASSES[relativeMinorIndex]?.minor ? "9" : "12"} fontWeight="300" className="pointer-events-none">
                                     {ENHARMONIC_TIE_PITCH_CLASSES[relativeMinorIndex]?.minor
-                                        ? `${getMinorKeyName(relativeMinorIndex).toLowerCase()}/${ENHARMONIC_TIE_PITCH_CLASSES[relativeMinorIndex].minor}`
+                                        ? `${ENHARMONIC_TIE_PITCH_CLASSES[relativeMinorIndex].minor}/${getMinorKeyName(relativeMinorIndex).toLowerCase()}`
                                         : getMinorKeyName(relativeMinorIndex).toLowerCase()}
                                 </text>
                             )}
