@@ -31,7 +31,7 @@ export interface HandPlayabilityOptions {
 
 export interface HandPlayabilityResult {
     playable: boolean;
-    reason?: 'too-many-fingers' | 'exceeds-hand-span';
+    reason?: 'too-many-fingers' | 'exceeds-hand-span' | 'barre-behind-unreachable-position';
     usesThumb: boolean;
     fingerGroupCount: number;
 }
@@ -113,6 +113,48 @@ function countFingerGroups(points: FingeringPoint[], openStringSet: Set<GuitarSt
 }
 
 /**
+ * A *real* forced barre (3+ strings — a 2-string same-fret coincidence is always also playable as
+ * two ordinary independent fingers, so it carries none of a true barre's positional constraint;
+ * see classifyTechniqueTag's identical "3+ strings" bar for the same reasoning) must sit at the
+ * fret closest to the nut relative to every other group whose reach doesn't nest with its own —
+ * the hand's fingers fan out with the barring finger nearest the nut and later fingers
+ * progressively farther away, so a group needing a real barre can't sit *farther* from the nut
+ * than a simpler, independent group outside its reach. Nesting is checked symmetrically: either
+ * group's string-range containing the other's is the standard "arch over" relationship (e.g. the
+ * classic movable A-shape/E-shape barre chord, where a wide low barre reaches under a narrower
+ * higher group, or that narrower group is what's being checked against a wider one it sits inside
+ * of) and is always fine regardless of which side is at the lower fret. Only two truly
+ * side-by-side, non-overlapping groups where the simpler one sits nearer the nut are impossible:
+ * a simpler finger already claimed the position nearer the nut, and the barring finger —
+ * necessarily a later one, since it isn't nearest the nut — would have to reach behind it.
+ */
+function hasBarreBehindAnUnnestedGroup(groups: FretGroup[]): boolean {
+    const barreGroups = groups.filter((group) => group.isBarre && group.strings.length >= 3);
+    if (barreGroups.length === 0) {
+        return false;
+    }
+
+    for (const barre of barreGroups) {
+        const barreMin = Math.min(...barre.strings);
+        const barreMax = Math.max(...barre.strings);
+        for (const other of groups) {
+            if (other === barre) {
+                continue;
+            }
+            const otherMin = Math.min(...other.strings);
+            const otherMax = Math.max(...other.strings);
+            const isNested = (barreMin <= otherMin && barreMax >= otherMax)
+                || (otherMin <= barreMin && otherMax >= barreMax);
+            if (!isNested && other.fret < barre.fret) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+/**
  * Deductive hand-playability check — no captured hand-measurement data, just fixed physical
  * facts: a fretting hand has 4 fingers; several strings sharing one fret can be covered by a
  * single barring finger, but only when that finger's reach across the fretboard doesn't
@@ -171,6 +213,11 @@ export function evaluateHandPlayability(
 
     if (fingerGroupCount > MAX_FRETTING_FINGERS) {
         return { playable: false, reason: 'too-many-fingers', usesThumb, fingerGroupCount };
+    }
+
+    const spanGroups = classifyFrettedGroups(spanPoints, Array.from(openStringSet));
+    if (hasBarreBehindAnUnnestedGroup(spanGroups)) {
+        return { playable: false, reason: 'barre-behind-unreachable-position', usesThumb, fingerGroupCount };
     }
 
     const spanFrets = Array.from(new Set(spanPoints.map((point) => point.fret))).sort((a, b) => a - b);
