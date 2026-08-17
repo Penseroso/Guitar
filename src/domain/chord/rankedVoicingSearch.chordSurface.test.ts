@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
+import { getVoicingTechniqueTag } from './deductiveRanking';
 import { getDeductiveChordSurfaceVoicingsForChord } from './rankedVoicingSearch';
 
 describe('getDeductiveChordSurfaceVoicingsForChord', () => {
@@ -38,6 +39,22 @@ describe('getDeductiveChordSurfaceVoicingsForChord', () => {
         // Mirrors how voicings.ts's getChordSurfaceVoicingsForChord accepts string | ChordRegistryEntry.
         const byString = getDeductiveChordSurfaceVoicingsForChord('minor-7', 2, { maxCandidates: 5 });
         expect(byString.length).toBeGreaterThan(0);
+    });
+
+    it('never lets one dominant technique crowd every other technique out of a tight cap', () => {
+        // Regression: a plain global-rank-then-slice would return only the single best-scoring
+        // technique at a tight maxCandidates for several chords (verified: dominant-7's naive
+        // top-4 was 100% Open, dropping Barre/Shell/Standard entirely even though good voicings
+        // of each exist). Every technique present in the full pool must survive a tight cap.
+        for (const chordId of ['dominant-7', 'major-7', 'minor-7']) {
+            const full = getDeductiveChordSurfaceVoicingsForChord(chordId, 0, { maxCandidates: 200 });
+            const fullTechniques = new Set(full.map((c) => getVoicingTechniqueTag(c.voicing)));
+
+            const capped = getDeductiveChordSurfaceVoicingsForChord(chordId, 0, { maxCandidates: 4 });
+            const cappedTechniques = new Set(capped.map((c) => getVoicingTechniqueTag(c.voicing)));
+
+            expect(cappedTechniques).toEqual(fullTechniques);
+        }
     });
 
     it('respects a custom maxFret bound across all styles', () => {

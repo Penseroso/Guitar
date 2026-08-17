@@ -5,9 +5,19 @@ import React from 'react';
 import { Fretboard } from '../shared/Fretboard';
 import { TogglePill } from '../../ui/design-system/TogglePill';
 import { CompactVoicingDiagram } from './CompactVoicingDiagram';
-import { type VoicingCandidate } from '@/domain/chord';
+import { getVoicingTechniqueTag, type VoicingCandidate, type VoicingTechniqueTag } from '@/domain/chord';
 import type { Fingering } from '@/domain/shared/types';
 import { getVoicingPresentationMeta } from './voicing-labels';
+
+// Presentational order (easiest/most-familiar to most-specialized), not the classification
+// priority deductiveRanking.ts uses to break ties when a voicing qualifies for more than one tag.
+const TECHNIQUE_SECTION_ORDER: VoicingTechniqueTag[] = ['open', 'standard', 'barre', 'shell'];
+const TECHNIQUE_SECTION_LABELS: Record<VoicingTechniqueTag, string> = {
+    open: 'Open',
+    standard: 'Standard',
+    barre: 'Barre',
+    shell: 'Shell',
+};
 
 interface ChordSelectorOption {
     id: string;
@@ -84,6 +94,30 @@ export function ChordModeWorkspace({
 
         return segments.join(' · ');
     }, []);
+
+    const groupedByTechnique = React.useMemo(() => {
+        const groups = new Map<VoicingTechniqueTag, VoicingCandidate[]>();
+        for (const candidate of futureVoicingCandidates) {
+            const tag = getVoicingTechniqueTag(candidate.voicing);
+            const list = groups.get(tag) ?? [];
+            list.push(candidate);
+            groups.set(tag, list);
+        }
+        return TECHNIQUE_SECTION_ORDER
+            .map((tag) => ({ tag, candidates: groups.get(tag) ?? [] }))
+            .filter((section) => section.candidates.length > 0);
+    }, [futureVoicingCandidates]);
+
+    const [selectedTechnique, setSelectedTechnique] = React.useState<VoicingTechniqueTag | 'all'>('all');
+    // Falls back to 'all' in render (rather than via an effect) whenever the current chord's
+    // candidates no longer include the previously selected technique — e.g. switching to a chord
+    // type with no barre-technique shapes while "Barre" was selected.
+    const effectiveTechnique = selectedTechnique !== 'all' && !groupedByTechnique.some((section) => section.tag === selectedTechnique)
+        ? 'all'
+        : selectedTechnique;
+    const visibleCandidates = effectiveTechnique === 'all'
+        ? futureVoicingCandidates
+        : groupedByTechnique.find((section) => section.tag === effectiveTechnique)?.candidates ?? [];
 
     const hasEngineCandidates = futureVoicingCandidates.length > 0;
     const chordWorkspaceEmptyMessage = !hasEngineCandidates
@@ -197,12 +231,40 @@ export function ChordModeWorkspace({
                                 <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Voicing</span>
                             </div>
                             <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/25">
-                                {futureVoicingCandidates.length} choices
+                                {visibleCandidates.length} choices
                             </span>
                         </div>
 
+                        {groupedByTechnique.length > 1 && (
+                            <div className="flex flex-wrap gap-1.5">
+                                <button
+                                    onClick={() => setSelectedTechnique('all')}
+                                    className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold leading-none transition-all ${
+                                        effectiveTechnique === 'all'
+                                            ? 'border-cyan-200/45 bg-cyan-300/[0.1] text-cyan-50'
+                                            : 'border-white/10 bg-white/[0.02] text-white/65 hover:border-white/20 hover:text-white'
+                                    }`}
+                                >
+                                    All
+                                </button>
+                                {groupedByTechnique.map(({ tag, candidates }) => (
+                                    <button
+                                        key={tag}
+                                        onClick={() => setSelectedTechnique(tag)}
+                                        className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold leading-none transition-all ${
+                                            effectiveTechnique === tag
+                                                ? 'border-cyan-200/45 bg-cyan-300/[0.1] text-cyan-50'
+                                                : 'border-white/10 bg-white/[0.02] text-white/65 hover:border-white/20 hover:text-white'
+                                        }`}
+                                    >
+                                        {TECHNIQUE_SECTION_LABELS[tag]} · {candidates.length}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2.5">
-                            {futureVoicingCandidates.map((candidate) => {
+                            {visibleCandidates.map((candidate) => {
                                 const presentation = getVoicingPresentationMeta(candidate.voicing);
                                 const isActive = candidate.voicing.id === activeFutureVoicingId;
 
@@ -231,11 +293,6 @@ export function ChordModeWorkspace({
                                             <div className="min-w-0 flex flex-col gap-1">
                                                 <div className="flex items-center gap-1.5">
                                                     <span className="text-[13px] font-bold leading-tight text-white">{presentation.primaryLabel}</span>
-                                                    {presentation.techniqueLabel && (
-                                                        <span className="inline-flex items-center rounded-full border border-cyan-200/20 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-[0.14em] text-cyan-200/70">
-                                                            {presentation.techniqueLabel}
-                                                        </span>
-                                                    )}
                                                 </div>
                                                 {presentation.secondaryLabel && (
                                                     <span className="text-[10px] leading-tight text-white/52">{presentation.secondaryLabel}</span>
