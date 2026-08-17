@@ -41,19 +41,26 @@ describe('getDeductiveChordSurfaceVoicingsForChord', () => {
         expect(byString.length).toBeGreaterThan(0);
     });
 
-    it('never lets one dominant technique crowd every other technique out of a tight cap', () => {
+    it('never lets one dominant technique crowd Open/Barre/Shell out of a tight cap ("standard" is not guaranteed)', () => {
         // Regression: a plain global-rank-then-slice would return only the single best-scoring
         // technique at a tight maxCandidates for several chords (verified: dominant-7's naive
         // top-4 was 100% Open, dropping Barre/Shell/Standard entirely even though good voicings
-        // of each exist). Every technique present in the full pool must survive a tight cap.
+        // of each exist). Open/Barre/Shell present in the full pool must survive a tight cap;
+        // 'standard' isn't a technique a player deliberately picks (it's just "none of the other
+        // three"), so it's excluded from the guarantee and may legitimately get crowded out.
+        const GUARANTEED = new Set(['open', 'barre', 'shell']);
         for (const chordId of ['dominant-7', 'major-7', 'minor-7']) {
             const full = getDeductiveChordSurfaceVoicingsForChord(chordId, 0, { maxCandidates: 200 });
-            const fullTechniques = new Set(full.map((c) => getVoicingTechniqueTag(c.voicing)));
+            const fullGuaranteedTechniques = new Set(
+                full.map((c) => getVoicingTechniqueTag(c.voicing)).filter((tag) => GUARANTEED.has(tag))
+            );
 
             const capped = getDeductiveChordSurfaceVoicingsForChord(chordId, 0, { maxCandidates: 4 });
-            const cappedTechniques = new Set(capped.map((c) => getVoicingTechniqueTag(c.voicing)));
+            const cappedGuaranteedTechniques = new Set(
+                capped.map((c) => getVoicingTechniqueTag(c.voicing)).filter((tag) => GUARANTEED.has(tag))
+            );
 
-            expect(cappedTechniques).toEqual(fullTechniques);
+            expect(cappedGuaranteedTechniques).toEqual(fullGuaranteedTechniques);
         }
     });
 

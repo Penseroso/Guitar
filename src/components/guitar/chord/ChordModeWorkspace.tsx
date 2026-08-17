@@ -11,10 +11,13 @@ import { getVoicingPresentationMeta } from './voicing-labels';
 
 // Presentational order (easiest/most-familiar to most-specialized), not the classification
 // priority deductiveRanking.ts uses to break ties when a voicing qualifies for more than one tag.
-const TECHNIQUE_SECTION_ORDER: VoicingTechniqueTag[] = ['open', 'standard', 'barre', 'shell'];
-const TECHNIQUE_SECTION_LABELS: Record<VoicingTechniqueTag, string> = {
+// 'standard' (deductiveRanking.ts's fallback for "none of the other three") is deliberately not
+// a filterable category here — it isn't a technique a player sets out to pick, so it's just left
+// mixed into "All" rather than given its own button (and rankedVoicingSearch.ts doesn't reserve
+// it shelf space in the candidate selection either — see GUARANTEED_TECHNIQUES there).
+const TECHNIQUE_SECTION_ORDER: Exclude<VoicingTechniqueTag, 'standard'>[] = ['open', 'barre', 'shell'];
+const TECHNIQUE_SECTION_LABELS: Record<Exclude<VoicingTechniqueTag, 'standard'>, string> = {
     open: 'Open',
-    standard: 'Standard',
     barre: 'Barre',
     shell: 'Shell',
 };

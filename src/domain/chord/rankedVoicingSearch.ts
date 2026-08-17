@@ -65,12 +65,17 @@ export interface DeductiveChordSurfaceOptions {
     scaleLengthMm?: number;
 }
 
-// Each technique that has any candidates at all keeps at least this many of its own top-ranked
-// voicings in the result, so a technique never silently disappears from the surface (and from
-// any UI that groups/filters by technique) just because a different technique dominates the
-// global ranking — e.g. a chord whose best-scoring shapes are mostly Open could otherwise crowd
-// every Barre voicing out of the top maxCandidates even when good barre shapes exist.
+// Every technique EXCEPT 'standard' that has any candidates at all keeps at least this many of
+// its own top-ranked voicings in the result, so a technique never silently disappears from the
+// surface (and from any UI that groups/filters by technique) just because a different technique
+// dominates the global ranking — e.g. a chord whose best-scoring shapes are mostly Open could
+// otherwise crowd every Barre voicing out of the top maxCandidates even when good barre shapes
+// exist. 'standard' is excluded from the guarantee (and from technique-based UI grouping) because
+// it isn't a technique a player deliberately reaches for — it's just "none of the other three
+// applied," so reserving it shelf space wouldn't serve the same purpose; it still competes for
+// whatever budget is left purely by rank, same as before this guarantee existed.
 const MIN_PER_TECHNIQUE = 3;
+const GUARANTEED_TECHNIQUES: VoicingTechniqueTag[] = ['open', 'barre', 'shell'];
 
 /**
  * Step 4 live-surface entry point: searches every voicing style (close/drop-2/drop-3/shell),
@@ -103,22 +108,25 @@ export function getDeductiveChordSurfaceVoicingsForChord(
         scaleLengthMm: options.scaleLengthMm,
     });
 
-    const byTechnique = new Map<VoicingTechniqueTag, VoicingCandidate[]>();
+    const byGuaranteedTechnique = new Map<VoicingTechniqueTag, VoicingCandidate[]>();
     for (const candidate of ranked) {
         const tag = getVoicingTechniqueTag(candidate.voicing);
-        const list = byTechnique.get(tag) ?? [];
+        if (!GUARANTEED_TECHNIQUES.includes(tag)) {
+            continue;
+        }
+        const list = byGuaranteedTechnique.get(tag) ?? [];
         list.push(candidate);
-        byTechnique.set(tag, list);
+        byGuaranteedTechnique.set(tag, list);
     }
 
     // Scale the per-technique guarantee down if maxCandidates is too small to fit
-    // MIN_PER_TECHNIQUE for every technique present, so the guarantee never blows the cap.
-    const perTechniqueGuarantee = byTechnique.size > 0
-        ? Math.max(1, Math.min(MIN_PER_TECHNIQUE, Math.floor(maxCandidates / byTechnique.size)))
+    // MIN_PER_TECHNIQUE for every guaranteed technique present, so it never blows the cap.
+    const perTechniqueGuarantee = byGuaranteedTechnique.size > 0
+        ? Math.max(1, Math.min(MIN_PER_TECHNIQUE, Math.floor(maxCandidates / byGuaranteedTechnique.size)))
         : 0;
 
     const selectedIds = new Set<string>();
-    for (const candidates of byTechnique.values()) {
+    for (const candidates of byGuaranteedTechnique.values()) {
         for (const candidate of candidates.slice(0, perTechniqueGuarantee)) {
             selectedIds.add(candidate.voicing.id);
         }
