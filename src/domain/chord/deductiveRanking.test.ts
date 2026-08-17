@@ -445,7 +445,7 @@ describe('scoreResolvedVoicing — deductive scoring terms', () => {
 
     // USER INSTRUCTION (explicitly requested): an Open-technique voicing that mutes one of
     // strings 2-4 (the B/G/D core) should be penalized, on top of whatever the general
-    // mute-naturalness terms above already apply — see OPEN_INNER_STRING_INDICES in
+    // mute-naturalness terms above already apply — see INNER_STRING_INDICES in
     // deductiveRanking.ts.
     it('penalizes an Open voicing that mutes an inner string (2-4), and explains why', () => {
         const entry = resolveChordRegistryEntry('major');
@@ -488,13 +488,20 @@ describe('scoreResolvedVoicing — deductive scoring terms', () => {
         expect(mutedScore.score).toBeLessThan(playedScore.score);
     });
 
-    it('does not apply the open-inner-mute penalty to a Barre-technique voicing', () => {
+    // Regression/behavior change: this penalty used to be Open-only, on the reasoning that a
+    // Barre voicing's inner mute is "naturally deadened" by the barre finger anyway. A real
+    // reported case (Cm7's ["x",8,8,8,10,8]-style shapes) showed that reasoning was incomplete —
+    // an inner string muted *inside* a barre's own span, while a *different* finger is
+    // independently fretting a different fret elsewhere, is still a genuinely awkward case, not
+    // simply "free" because a barre finger happens to be nearby. Now penalized for Barre too.
+    it('applies the inner-mute penalty to a Barre-technique voicing when a different finger frets elsewhere', () => {
         const entry = resolveChordRegistryEntry('major');
         const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
         const tones = buildChordTonesFromRegistryEntry(entry, 0);
 
         // Same F-shape-style barre as above, but string 2 (an inner string) is muted instead of
-        // independently fretted — still a real barre (fret-1 group across strings 0,1,4,5).
+        // independently fretted — still a real barre (fret-1 group across strings 0,1,4,5) — and
+        // string 3 is a separate finger fretting a different fret (2), matching the reported case.
         const barreWithInnerMute = resolveVoicingTemplate(chord, tones, {
             id: 'barre-inner-mute',
             label: 'barre with inner mute',
@@ -515,7 +522,7 @@ describe('scoreResolvedVoicing — deductive scoring terms', () => {
 
         const scored = scoreResolvedVoicing(barreWithInnerMute, entry, tones);
 
-        expect(scored.reasons.some((r) => r.includes('strings 2-4'))).toBe(false);
+        expect(scored.reasons.some((r) => r.includes('Barre voicing mutes') && r.includes('strings 2-4'))).toBe(true);
     });
 });
 
