@@ -4,6 +4,15 @@ export type VoicingProvenanceSourceKind = 'legacy-import' | 'generated' | 'arche
 export type VoicingRegisterBand = 'low' | 'mid' | 'high' | 'upper';
 export type VoicingFamily = 'shell' | 'compact' | 'close' | 'spread' | 'upper-register' | 'rootless' | 'full';
 
+/** The unbroken run of strings a voicing's played notes occupy — a fact about registral
+ *  footprint (where on the neck / how many strings), independent of technique (open/barre/
+ *  shell/standard, see VoicingTechniqueTag). A voicing can be e.g. both 'open' and confined to a
+ *  3-string window at once; these are orthogonal axes, not competing categories. */
+export interface ConsecutiveStringWindow {
+    startString: GuitarStringIndex;
+    size: number;
+}
+
 export interface ChordTone {
     degree: string;
     interval: number;
@@ -79,6 +88,7 @@ export interface VoicingDescriptor {
     omittedOptionalDegrees: string[];
     registerBand: VoicingRegisterBand;
     family: VoicingFamily;
+    consecutiveStringWindow: ConsecutiveStringWindow | null;
     inversion: 'root-position' | 'inversion' | 'slash-bass' | 'rootless';
     hasRoot: boolean;
     satisfiesSlashBass?: boolean;

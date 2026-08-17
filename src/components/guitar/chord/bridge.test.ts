@@ -33,6 +33,7 @@ function makeCandidate(id: string, playable: boolean, score: number): VoicingCan
                 omittedOptionalDegrees: [],
                 registerBand: 'mid',
                 family: 'compact',
+                consecutiveStringWindow: null,
                 inversion: 'root-position',
                 hasRoot: true,
                 provenance: {

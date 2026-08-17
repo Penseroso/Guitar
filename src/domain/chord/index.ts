@@ -14,6 +14,7 @@ export type {
     VoicingDescriptor,
     VoicingFamily,
     VoicingRegisterBand,
+    ConsecutiveStringWindow,
     ResolvedVoicingNote,
     ResolvedVoicing,
     VoicingCandidate,

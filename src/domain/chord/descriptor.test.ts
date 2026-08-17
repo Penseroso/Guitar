@@ -320,3 +320,79 @@ describe('voicing descriptor derivation', () => {
         expect(getVoicingDisplaySubtitle(voicing.descriptor)).toBe('5-note · 2 roots · low register · inversion');
     });
 });
+
+describe('consecutiveStringWindow — registral footprint, independent of technique', () => {
+    it('recognizes a contiguous window anywhere on the neck, not just strings 1-2-3 (top set)', () => {
+        const entry = resolveChordRegistryEntry('major');
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+
+        // Same shape as a top-set triad, but shifted down to strings 3-4-5 (indices 2,3,4) —
+        // deliberately not the top 3 strings, to prove this isn't hardcoded to strings 0-1-2.
+        const midNeckWindow = resolveVoicingTemplate(chord, tones, {
+            id: 'mid-neck-window',
+            label: 'mid-neck triad',
+            instrument: 'guitar',
+            rootString: 3,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: null },
+                { string: 1, fretOffset: null },
+                { string: 2, fretOffset: 0, toneDegree: '5' },
+                { string: 3, fretOffset: 0, toneDegree: '1' },
+                { string: 4, fretOffset: 2, toneDegree: '3' },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 5 });
+
+        expect(midNeckWindow.descriptor.consecutiveStringWindow).toEqual({ startString: 2, size: 3 });
+    });
+
+    it('returns null when played strings have a gap, even if the outer strings match a window size', () => {
+        const entry = resolveChordRegistryEntry('major');
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+
+        const gappedShape = resolveVoicingTemplate(chord, tones, {
+            id: 'gapped-shape',
+            label: 'gapped',
+            instrument: 'guitar',
+            rootString: 4,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: null },
+                { string: 1, fretOffset: null },
+                { string: 2, fretOffset: 0, toneDegree: '5', isOptional: true },
+                { string: 3, fretOffset: null },
+                { string: 4, fretOffset: 0, toneDegree: '1' },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 3 });
+
+        expect(gappedShape.descriptor.consecutiveStringWindow).toBeNull();
+    });
+
+    it('reports the full played-string span for a 6-string voicing, not just a 3-string subset', () => {
+        const entry = resolveChordRegistryEntry('major');
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+
+        const fullOpen = resolveVoicingTemplate(chord, tones, {
+            id: 'full-open-window',
+            label: 'full open',
+            instrument: 'guitar',
+            rootString: 4,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: 0, toneDegree: '1' },
+                { string: 1, fretOffset: 1, toneDegree: '5', isOptional: true },
+                { string: 2, fretOffset: 0, toneDegree: '1' },
+                { string: 3, fretOffset: 2, toneDegree: '3' },
+                { string: 4, fretOffset: 3, toneDegree: '5', isOptional: true },
+                { string: 5, fretOffset: 3, toneDegree: '1', isOptional: true },
+            ],
+        }, { rootFret: 0 });
+
+        expect(fullOpen.descriptor.consecutiveStringWindow).toEqual({ startString: 0, size: 6 });
+    });
+});

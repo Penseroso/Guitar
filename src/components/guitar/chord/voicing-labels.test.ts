@@ -19,7 +19,7 @@ function resolveTestVoicing(
 }
 
 describe('voicing player-facing labels', () => {
-    it('labels a strict top-string major triad in root position as Top-set · Root', () => {
+    it('labels a complete triad on 3 consecutive strings, in root position, as 3-string · Root', () => {
         const voicing = resolveTestVoicing('major', 0, {
             id: 'top-set-root',
             label: 'top-set root',
@@ -37,12 +37,12 @@ describe('voicing player-facing labels', () => {
         }, { rootFret: 5 });
 
         expect(getVoicingPresentationMeta(voicing)).toMatchObject({
-            primaryLabel: 'Top-set · Root',
+            primaryLabel: '3-string · Root',
             secondaryLabel: 'top strings',
         });
     });
 
-    it('labels major and minor top-set inversions correctly', () => {
+    it('labels major and minor 3-consecutive-string inversions correctly', () => {
         const majorFirstInversion = resolveTestVoicing('major', 0, {
             id: 'top-set-first-inv',
             label: 'top-set first inversion',
@@ -74,11 +74,18 @@ describe('voicing player-facing labels', () => {
             ],
         }, { rootFret: 10 });
 
-        expect(getVoicingPresentationMeta(majorFirstInversion).primaryLabel).toBe('Top-set · 1st inv');
-        expect(getVoicingPresentationMeta(minorSecondInversion).primaryLabel).toBe('Top-set · 2nd inv');
+        expect(getVoicingPresentationMeta(majorFirstInversion).primaryLabel).toBe('3-string · 1st inv');
+        expect(getVoicingPresentationMeta(minorSecondInversion).primaryLabel).toBe('3-string · 2nd inv');
     });
 
-    it('does not apply Top-set to seventh, suspended, or power chords on the top strings', () => {
+    it('generalizes beyond major/minor: a complete seventh or suspended triad on 3 strings also gets a window label, but a bare 2-note power chord does not', () => {
+        // Regression: the old isStrictTopSetTriad hardcoded TOP_SET_TRIAD_IDS = {major, minor},
+        // so these were excluded purely because of chord id, not because they're structurally
+        // different. A major-7 missing only its optional 5th, or a sus4's complete 1-4-5, are
+        // just as legitimately "the chord's core tones on 3 consecutive strings" as a plain
+        // triad — the generalized rule (any chord family, nothing required missing) now
+        // recognizes both. A power chord is excluded on independent grounds: it's only 2 notes,
+        // below the 3-string floor "Root/1st inv/2nd inv" labeling needs to stay meaningful.
         const majorSeventh = resolveTestVoicing('major-7', 0, {
             id: 'top-strings-maj7',
             label: 'top strings maj7',
@@ -125,9 +132,9 @@ describe('voicing player-facing labels', () => {
             ],
         }, { rootFret: 1 });
 
-        expect(getVoicingPresentationMeta(majorSeventh).primaryLabel.startsWith('Top-set')).toBe(false);
-        expect(getVoicingPresentationMeta(suspended).primaryLabel.startsWith('Top-set')).toBe(false);
-        expect(getVoicingPresentationMeta(powerChord).primaryLabel.startsWith('Top-set')).toBe(false);
+        expect(getVoicingPresentationMeta(majorSeventh).primaryLabel.startsWith('3-string')).toBe(true);
+        expect(getVoicingPresentationMeta(suspended).primaryLabel.startsWith('3-string')).toBe(true);
+        expect(getVoicingPresentationMeta(powerChord).primaryLabel.startsWith('3-string')).toBe(false);
     });
 
     it('labels rooted shapes by 6th, 5th, and 4th string root buckets', () => {

@@ -1,5 +1,6 @@
 import type { ChordTones } from './types';
 import type {
+    ConsecutiveStringWindow,
     GuitarStringIndex,
     PitchClass,
     ResolvedVoicingNote,
@@ -57,6 +58,20 @@ function getPlayedStringSpan(playedStrings: GuitarStringIndex[]): number {
     }
 
     return playedStrings[playedStrings.length - 1] - playedStrings[0];
+}
+
+/** Deductive: works for any window size/position (not hardcoded to strings 0-1-2) — a voicing
+ *  qualifies whenever its played strings form an unbroken run, wherever on the neck that is. */
+function getConsecutiveStringWindow(playedStrings: GuitarStringIndex[]): ConsecutiveStringWindow | null {
+    if (playedStrings.length === 0) {
+        return null;
+    }
+
+    const startString = playedStrings[0];
+    const endString = playedStrings[playedStrings.length - 1];
+    const isContiguous = endString - startString + 1 === playedStrings.length;
+
+    return isContiguous ? { startString, size: playedStrings.length } : null;
 }
 
 function getRegisterBand(minFret: number, maxFret: number, playedStrings: GuitarStringIndex[]): VoicingRegisterBand {
@@ -236,6 +251,7 @@ export function deriveVoicingDescriptor(args: {
         omittedOptionalDegrees,
         registerBand,
         family,
+        consecutiveStringWindow: getConsecutiveStringWindow(playedStrings),
         inversion,
         hasRoot,
         satisfiesSlashBass: args.satisfiesSlashBass,
