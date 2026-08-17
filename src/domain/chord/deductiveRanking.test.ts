@@ -34,7 +34,6 @@ describe('getVoicingShapeMetrics — barre-aware grouping and mute naturalness',
         const metrics = getVoicingShapeMetrics(voicing);
 
         expect(metrics.barreNoteCount).toBe(0);
-        expect(metrics.overlappingBarreSpan).toBe(0);
         // 6 played notes, but only 4 independent fingers (fret2, fret3-string5, fret3-string0,
         // and nothing for the 3 open strings) — well below the 4-finger budget.
         expect(metrics.fingerGroupCount).toBeLessThanOrEqual(4);
@@ -48,7 +47,6 @@ describe('getVoicingShapeMetrics — barre-aware grouping and mute naturalness',
         const metrics = getVoicingShapeMetrics(voicing);
 
         expect(metrics.barreNoteCount).toBe(4);
-        expect(metrics.overlappingBarreSpan).toBe(0);
         // 1 barre finger + 2 independent fingers (fret3, fret2) = 3 fingers total, not 6.
         expect(metrics.fingerGroupCount).toBe(3);
     });
@@ -77,7 +75,17 @@ describe('getVoicingShapeMetrics — barre-aware grouping and mute naturalness',
         expect(getVoicingShapeMetrics(mutedFlanked).openFlankedIsolatedMuteCount).toBe(0);
     });
 
-    it('penalizes two separate forced barres whose string-ranges overlap', () => {
+    // Regression: this used to carry a "two overlapping barres" penalty, on the assumption that a
+    // low barre's range overlapping a separate higher-fret barre's range was a rare, physically
+    // awkward double-barre. It isn't — this exact shape (x-3-x-5-3-3 muted at strings 2 and 5 aside)
+    // is the classic movable A-shape barre chord: the index finger flat-barres the low fret across
+    // the full width while a second finger arches over a subset of those same strings at a higher
+    // fret in front of it (canFormBarre's own "in front of the barre" case). A rigorous check of
+    // canFormBarre's rules shows two *simultaneously valid* forced barres can only ever be nested
+    // this way — a staggered (non-nested) overlap always leaves one barre's real fretted note
+    // sitting behind the other's span, which canFormBarre already rejects — so "two overlapping
+    // barres" was unreachable as a real penalty case and has been removed rather than patched.
+    it('does not penalize the classic A-shape/E-shape movable barre chord (a low barre nested under a higher one)', () => {
         const voicing = voicingFromNotes([
             muted(5), note(4, 3), note(3, 5), muted(2), note(1, 5), note(0, 3),
         ]);
@@ -85,7 +93,6 @@ describe('getVoicingShapeMetrics — barre-aware grouping and mute naturalness',
         const metrics = getVoicingShapeMetrics(voicing);
 
         expect(metrics.barreNoteCount).toBe(2);
-        expect(metrics.overlappingBarreSpan).toBeGreaterThan(0);
     });
 
     it('computes real physical hand span (mm) using the fretboard log-spacing formula, not raw fret count', () => {
@@ -285,6 +292,39 @@ describe('scoreResolvedVoicing — deductive scoring terms', () => {
 
         expect(getVoicingShapeMetrics(barreShape).fingerGroupCount).toBe(3);
         expect(scored.reasons.some((r) => r.includes('independent fretting finger'))).toBe(true);
+    });
+
+    it('does not penalize the standard A-shape movable barre C major (x-3-5-5-5-3) as an overlapping-barre case', () => {
+        // Regression for a real reported issue: this exact shape used to carry a "Needs two
+        // overlapping barres" penalty (-30) purely because the low fret-3 barre's numeric string
+        // range (0-4) contains the higher fret-5 barre's range (1-3) — but that's just the
+        // ordinary A-shape technique, not a rare double-barre. See the nested-barre test in
+        // getVoicingShapeMetrics above for the underlying fix.
+        const entry = resolveChordRegistryEntry('major');
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+
+        const aShapeBarre = resolveVoicingTemplate(chord, tones, {
+            id: 'a-shape-barre-c-major',
+            label: 'A-shape barre',
+            instrument: 'guitar',
+            rootString: 4,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: 0, toneDegree: '5' },
+                { string: 1, fretOffset: 2, toneDegree: '3' },
+                { string: 2, fretOffset: 2, toneDegree: '1' },
+                { string: 3, fretOffset: 2, toneDegree: '5' },
+                { string: 4, fretOffset: 0, toneDegree: '1' },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 3 });
+
+        expect(getVoicingTechniqueTag(aShapeBarre)).toBe('barre');
+
+        const scored = scoreResolvedVoicing(aShapeBarre, entry, tones);
+
+        expect(scored.reasons.some((r) => r.toLowerCase().includes('overlapping barre'))).toBe(false);
     });
 
     // USER INSTRUCTION (explicitly requested): an Open-technique voicing that mutes one of

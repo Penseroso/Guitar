@@ -61,9 +61,6 @@ export interface VoicingShapeMetrics {
     fingerGroupCount: number;
     /** Widest single forced barre, in strings covered (0 if there's no real barre). */
     barreNoteCount: number;
-    /** Total string-count overlap between every pair of distinct forced barres — see ranking
-     *  history: 0 whenever there's at most one barre; only the rare two-barres-at-once case. */
-    overlappingBarreSpan: number;
     /** Real physical distance (mm) between the lowest and highest fretted point, via the same
      *  logarithmic fret-spacing formula the hard playability gate uses — physically accurate at
      *  every neck position, unlike a raw fret-count span (a "4 fret" reach means something very
@@ -89,7 +86,6 @@ const WEIGHTS = {
     handSpanComfortMax: 20,
     fingerEconomyPerFinger: -6,
     barreWidthPenaltyPerString: -2,
-    overlappingBarreSpanPenalty: -10,
     internalMuteAdjacentPenalty: -1.5,
     internalMuteIsolatedPenalty: -6,
     /** USER INSTRUCTION — see OPEN_INNER_STRING_INDICES. Stacks on top of the two mute-naturalness
@@ -153,20 +149,6 @@ export function getVoicingShapeMetrics(
     );
     const barreGroups = frettedGroups.filter((group) => group.isBarre);
     const barreNoteCount = barreGroups.reduce((max, group) => Math.max(max, group.strings.length), 0);
-    const barreRanges = barreGroups.map((group) => ({
-        min: Math.min(...group.strings),
-        max: Math.max(...group.strings),
-    }));
-    let overlappingBarreSpan = 0;
-    for (let i = 0; i < barreRanges.length; i++) {
-        for (let j = i + 1; j < barreRanges.length; j++) {
-            const overlapLo = Math.max(barreRanges[i].min, barreRanges[j].min);
-            const overlapHi = Math.min(barreRanges[i].max, barreRanges[j].max);
-            if (overlapLo <= overlapHi) {
-                overlappingBarreSpan += (overlapHi - overlapLo) + 1;
-            }
-        }
-    }
 
     const frettedValues = frettedNotes.map((note) => note.fret);
     const minFret = frettedValues.length > 0 ? Math.min(...frettedValues) : 0;
@@ -182,7 +164,6 @@ export function getVoicingShapeMetrics(
         openFlankedIsolatedMuteCount,
         fingerGroupCount,
         barreNoteCount,
-        overlappingBarreSpan,
         spanMm,
         minFret,
         maxFret,
@@ -275,11 +256,6 @@ export function scoreResolvedVoicing(
     if (metrics.barreNoteCount >= 3) {
         score += (metrics.barreNoteCount - 2) * WEIGHTS.barreWidthPenaltyPerString;
         reasons.push(`Wide barre across ${metrics.barreNoteCount} strings.`);
-    }
-
-    if (metrics.overlappingBarreSpan > 0) {
-        score += metrics.overlappingBarreSpan * WEIGHTS.overlappingBarreSpanPenalty;
-        reasons.push(`Needs two overlapping barres across ${metrics.overlappingBarreSpan} shared string${metrics.overlappingBarreSpan === 1 ? '' : 's'}.`);
     }
 
     // --- Mute naturalness ----------------------------------------------------------------------
