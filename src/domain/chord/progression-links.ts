@@ -1,5 +1,5 @@
 import { PROGRESSION_LIBRARY } from '@/domain/progression/progressions';
-import { getNoteName } from '@/domain/shared/notes';
+import { getKeyName } from '@/domain/shared/keys';
 import { resolveChordRegistryEntry } from './helpers';
 import type { ChordRegistryEntry } from './registry';
 import type { HarmonicTonalContext } from './related-scales';
@@ -108,8 +108,8 @@ export function getProgressionLinksForChord(
         scaleGroup: tonalContext?.scaleGroup ?? 'Diatonic Modes',
         scaleName: tonalContext?.scaleName ?? 'Ionian',
     });
-    const tonicTarget = getNoteName(tonicPitchClass);
-    const backTarget = getNoteName((tonicPitchClass + 10) % 12);
+    const tonicTarget = getKeyName(tonicPitchClass);
+    const backTarget = getKeyName((tonicPitchClass + 10) % 12);
 
     let hints: ChordProgressionHint[];
 

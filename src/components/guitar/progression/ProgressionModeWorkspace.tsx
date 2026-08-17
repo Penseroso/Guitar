@@ -16,7 +16,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { ProgressionInspector } from './ProgressionInspector';
 import type { ProgressionPlaybackData } from '@/domain/progression/getProgressionPlaybackData';
 import { degreeToChordName, getChordFromDegree } from '@/domain/progression/degrees';
-import { getNoteName } from '@/domain/shared/notes';
+import { getKeyName } from '@/domain/shared/keys';
 import type {
     ChordNode,
     HarmonicFunction,
@@ -55,7 +55,7 @@ function DraggablePaletteItem({ degree, selectedKey, color }: { degree: string; 
 
     const { interval, type } = getChordFromDegree(degree);
     const rootNoteIdx = (selectedKey + interval) % 12;
-    const rootText = getNoteName(rootNoteIdx);
+    const rootText = getKeyName(rootNoteIdx);
     const suffix = type === 'Minor' ? 'm' : type === 'Diminished' ? 'dim' : '';
     const displayName = `${rootText}${suffix}`;
 

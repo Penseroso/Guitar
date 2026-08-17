@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { ChordScaleSuggestionCategory } from '@/domain/chord/related-scales';
 import { getChordContextsForScale, getModalSiblingChordsForScale } from '@/domain/chord/scale-chord-context';
-import { getNoteName } from '@/domain/shared/notes';
+import { getKeyName } from '@/domain/shared/keys';
 
 interface ScaleChordRecommendationsPanelProps {
     scaleGroup: string;
@@ -89,11 +89,11 @@ export function ScaleChordRecommendationsPanel({
                         {otherTonics.map((item) => (
                             <div
                                 key={`${item.rootPitchClass}-${item.chordId}`}
-                                title={`Same notes as ${getNoteName(tonicPitchClass)} ${scaleName}, reinterpreted as ${getNoteName(item.rootPitchClass)} ${item.siblingScaleName}.`}
+                                title={`Same notes as ${getKeyName(tonicPitchClass)} ${scaleName}, reinterpreted as ${getKeyName(item.rootPitchClass)} ${item.siblingScaleName}.`}
                                 className="rounded-[1rem] border border-white/6 bg-white/[0.02] px-3.5 py-3 flex flex-col gap-1"
                             >
                                 <span className="text-[15px] font-bold leading-none text-white">
-                                    {getNoteName(item.rootPitchClass)} {item.chordDisplayName || item.chordSymbol || item.chordId}
+                                    {getKeyName(item.rootPitchClass)} {item.chordDisplayName || item.chordSymbol || item.chordId}
                                 </span>
                                 <span className="text-[11px] text-white/45 leading-snug">{item.siblingScaleName}</span>
                             </div>

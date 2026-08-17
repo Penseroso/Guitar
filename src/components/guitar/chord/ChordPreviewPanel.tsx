@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { NOTES } from '@/domain/shared/notes';
+import { getKeyName } from '@/domain/shared/keys';
 
 interface ChordPreviewPanelProps {
     selectedKey: number;
@@ -29,7 +29,7 @@ export const ChordPreviewPanel: React.FC<ChordPreviewPanelProps> = ({
                     <span className="text-xl font-black text-white">{chordPreviewTitle}</span>
                 </div>
                 <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.22em] text-white/55">
-                    {NOTES[selectedKey]}
+                    {getKeyName(selectedKey)}
                 </span>
             </div>
 

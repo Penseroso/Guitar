@@ -1,6 +1,6 @@
 // Pure Roman-numeral-degree theory — instrument-agnostic (no tuning/string/fret involved).
 
-import { NOTES, NOTES_FLAT } from '@/domain/shared/notes';
+import { getKeyName } from '@/domain/shared/keys';
 
 export const ROMAN_NUMERAL_CHORDS: Record<string, { interval: number; type: string }> = {
     'I': { interval: 0, type: 'Major' },
@@ -56,7 +56,7 @@ export function degreeToChordName(displayDegree: string, coreDegree: string, roo
     if (displayDegree.startsWith('V7/')) {
         const { interval } = getChordFromDegree(coreDegree) || { interval: 0 };
         const chordRoot = (rootKey + interval + 7) % 12; // V of the target = a 5th above target
-        const noteName = NOTES_FLAT[chordRoot];
+        const noteName = getKeyName(chordRoot);
         return `${noteName}7`;
     }
 
@@ -64,7 +64,7 @@ export function degreeToChordName(displayDegree: string, coreDegree: string, roo
     if (displayDegree.startsWith('subV7/')) {
         const { interval } = getChordFromDegree(coreDegree) || { interval: 0 };
         const chordRoot = (rootKey + interval + 1) % 12; // b2 of target
-        const noteName = NOTES_FLAT[chordRoot];
+        const noteName = getKeyName(chordRoot);
         return `${noteName}7`;
     }
 
@@ -73,9 +73,7 @@ export function degreeToChordName(displayDegree: string, coreDegree: string, roo
     if (!degreeData) return displayDegree;
 
     const chordRoot = (rootKey + degreeData.interval) % 12;
-    // Use flats for minor/flat degrees, sharps otherwise
-    const useFlat = displayDegree.startsWith('b') || degreeData.type === 'Minor';
-    const noteName = useFlat ? NOTES_FLAT[chordRoot] : NOTES[chordRoot];
+    const noteName = getKeyName(chordRoot);
     const suffix = CHORD_TYPE_SUFFIX[degreeData.type] ?? '';
     return `${noteName}${suffix}`;
 }

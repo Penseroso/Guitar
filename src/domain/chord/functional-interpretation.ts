@@ -1,4 +1,4 @@
-import { getNoteName } from '@/domain/shared/notes';
+import { getKeyName } from '@/domain/shared/keys';
 import { SCALE_DISPLAY_FORMULAS } from '@/domain/scale/scales';
 import { resolveChordRegistryEntry } from './helpers';
 import type { ChordRegistryEntry } from './registry';
@@ -72,8 +72,8 @@ export function interpretChordAgainstTonalCenter(
     const scaleName = tonalContext.scaleName ?? '';
     const scaleFamily = tonalContext.scaleGroup ?? '';
     const relativeDegree = getRelativeDegreeLabel(relativeInterval, scaleFamily, scaleName);
-    const tonicNoteName = getNoteName(tonicPitchClass);
-    const chordRootNoteName = getNoteName(chordRootPitchClass);
+    const tonicNoteName = getKeyName(tonicPitchClass);
+    const chordRootNoteName = getKeyName(chordRootPitchClass);
     const isDominantQuality = entry.tags?.includes('dominant') ?? false;
     const quality = entry.definition.quality ?? '';
     const isMinorQuality = quality.includes('minor') || entry.id === 'minor';

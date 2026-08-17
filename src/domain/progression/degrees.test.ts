@@ -29,6 +29,15 @@ describe('degreeToChordName', () => {
         // subV7/V in the key of C targets G (root 7); the b2-of-target formula gives root 8 = Ab7.
         expect(degreeToChordName('subV7/V', 'V', 0)).toBe('Ab7');
     });
+
+    it('uses conventional key-signature spelling regardless of degree/quality, not a sharp-by-default heuristic', () => {
+        // Regression: the old implementation only used flats when the degree symbol started with
+        // 'b' or the chord was minor, defaulting to sharps otherwise — so "V" in the key of Db
+        // (root 1) used to come out "G#" instead of the correct "Ab".
+        expect(degreeToChordName('V', 'V', 1)).toBe('Ab');
+        // Same failure mode for a major (non-'b', non-minor) degree in the key of Ab (root 8).
+        expect(degreeToChordName('IV', 'IV', 8)).toBe('Db');
+    });
 });
 
 describe('getChordTones', () => {

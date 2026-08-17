@@ -15,7 +15,7 @@ import {
 } from '@/domain/chord';
 import { TUNING } from '@/domain/shared/tuning';
 import { SCALES } from '@/domain/scale/scales';
-import { getNoteName } from '@/domain/shared/notes';
+import { getKeyName } from '@/domain/shared/keys';
 import { Mode, Fingering } from '@/domain/shared/types';
 import { useProgression } from './progression/useProgression';
 import { useScaleMode } from './scale/useScaleMode';
@@ -231,7 +231,7 @@ export default function ClientApp() {
             ? 'No voicing candidates for this chord'
             : 'No candidate selected';
     const chordPreviewTitle = useMemo(() => {
-        const root = getNoteName(selectedKey);
+        const root = getKeyName(selectedKey);
         if (!currentChordEntry) {
             return `${root} ${chordType}`;
         }

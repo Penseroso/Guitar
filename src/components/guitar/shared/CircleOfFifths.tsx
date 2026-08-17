@@ -1,6 +1,5 @@
 import React from 'react';
-import { NOTES } from '@/domain/shared/notes';
-import { getCircleOfFifthsOrder, getRelativeMinor } from '@/domain/shared/keys';
+import { getCircleOfFifthsOrder, getRelativeMinor, getKeyName, getMinorKeyName, ENHARMONIC_TIE_PITCH_CLASSES } from '@/domain/shared/keys';
 import { generateModeData } from '@/domain/scale/scales';
 
 const polarToCartesian = (centerX: number, centerY: number, radius: number, angleInDegrees: number) => {
@@ -35,6 +34,12 @@ interface CircleOfFifthsProps {
 
 export const CircleOfFifths: React.FC<CircleOfFifthsProps> = ({ selectedKey, onKeySelect, selectedScaleGroup, selectedScaleName }) => {
     const fifthsOrder = getCircleOfFifthsOrder();
+
+    // getRelativeMinor() is a fixed diatonic-key-signature formula (major - 3 semitones) — it
+    // only means "relative minor" for the Diatonic Modes family. Harmonic/Jazz Minor aren't
+    // fifths-generated scales (adjacent-by-fifth keys share far fewer notes than in the diatonic
+    // case), so the inner ring has no coherent meaning to show outside that family.
+    const isDiatonicFamily = (selectedScaleGroup || 'Diatonic Modes') === 'Diatonic Modes';
 
     // --- [MODUS v2.5] Dynamic Algorithm Pattern ---
     // 하드코딩된 SCALE_DEFINITIONS 객체를 완전히 폐기하고,
@@ -71,7 +76,7 @@ export const CircleOfFifths: React.FC<CircleOfFifthsProps> = ({ selectedKey, onK
                     const endAngle = i * 30 + 15 - gap;
 
                     const majorRole = getDiatonicRole(keyIndex, selectedKey);
-                    const minorRole = getDiatonicRole(relativeMinorIndex, selectedKey);
+                    const minorRole = isDiatonicFamily ? getDiatonicRole(relativeMinorIndex, selectedKey) : null;
                     const isTonicMajor = majorRole?.role === 'I';
 
                     // --- [MODUS v2.4] Radial Spacing 적용 (반경 분리 및 플로팅) ---
@@ -122,22 +127,28 @@ export const CircleOfFifths: React.FC<CircleOfFifthsProps> = ({ selectedKey, onK
                                 className="cursor-pointer hover:fill-white/10 transition-colors duration-300"
                                 onClick={() => onKeySelect(keyIndex)}
                             />
-                            <text x={majorNotePos.x} y={majorNotePos.y} textAnchor="middle" dominantBaseline="central" fill={majorNoteTextColor} fontSize="14" fontWeight={isTonicMajor ? "800" : "400"} className="pointer-events-none tracking-widest">
-                                {NOTES[keyIndex]}
+                            <text x={majorNotePos.x} y={majorNotePos.y} textAnchor="middle" dominantBaseline="central" fill={majorNoteTextColor} fontSize={ENHARMONIC_TIE_PITCH_CLASSES[keyIndex]?.major ? "11" : "14"} fontWeight={isTonicMajor ? "800" : "400"} className="pointer-events-none tracking-widest">
+                                {ENHARMONIC_TIE_PITCH_CLASSES[keyIndex]?.major
+                                    ? `${getKeyName(keyIndex)}/${ENHARMONIC_TIE_PITCH_CLASSES[keyIndex].major}`
+                                    : getKeyName(keyIndex)}
                             </text>
 
-                            {/* 3. Inner-Mid Ring: Minor Note */}
+                            {/* 3. Inner-Mid Ring: Minor Note (diatonic-family only — see isDiatonicFamily above) */}
                             <path
                                 d={minorNotePath}
                                 fill={minorNoteFill}
                                 stroke={strokeColor}
                                 strokeWidth="0.5"
-                                className="cursor-pointer hover:fill-white/10 transition-colors duration-300"
-                                onClick={() => onKeySelect(relativeMinorIndex)}
+                                className={isDiatonicFamily ? "cursor-pointer hover:fill-white/10 transition-colors duration-300" : undefined}
+                                onClick={isDiatonicFamily ? () => onKeySelect(relativeMinorIndex) : undefined}
                             />
-                            <text x={minorNotePos.x} y={minorNotePos.y} textAnchor="middle" dominantBaseline="central" fill={minorNoteTextColor} fontSize="12" fontWeight="300" className="pointer-events-none">
-                                {NOTES[relativeMinorIndex]}m
-                            </text>
+                            {isDiatonicFamily && (
+                                <text x={minorNotePos.x} y={minorNotePos.y} textAnchor="middle" dominantBaseline="central" fill={minorNoteTextColor} fontSize={ENHARMONIC_TIE_PITCH_CLASSES[relativeMinorIndex]?.minor ? "9" : "12"} fontWeight="300" className="pointer-events-none">
+                                    {ENHARMONIC_TIE_PITCH_CLASSES[relativeMinorIndex]?.minor
+                                        ? `${getMinorKeyName(relativeMinorIndex).toLowerCase()}/${ENHARMONIC_TIE_PITCH_CLASSES[relativeMinorIndex].minor}`
+                                        : getMinorKeyName(relativeMinorIndex).toLowerCase()}
+                                </text>
+                            )}
 
                             {/* 4. Innermost Ring: Minor Degree (Floating Tab) */}
                             <path

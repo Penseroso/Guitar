@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Zap, Target, Compass, Disc } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { NOTES } from '@/domain/shared/notes';
+import { getKeyName } from '@/domain/shared/keys';
 import { TabsRail } from '../ui/design-system/TabsRail';
 import { KeyButton } from '../ui/design-system/KeyButton';
 import { CircleOfFifths } from './shared/CircleOfFifths';
@@ -139,10 +139,10 @@ export const Controls: React.FC<ControlsProps> = ({
                                     transition={{ duration: 0.4, ease: 'easeOut' }}
                                     className="grid grid-cols-4 gap-3 max-w-lg w-full"
                                 >
-                                    {NOTES.map((note, index) => (
+                                    {Array.from({ length: 12 }, (_, index) => (
                                         <KeyButton
                                             key={`key-${index}`}
-                                            note={note}
+                                            note={getKeyName(index)}
                                             isActive={selectedKey === index}
                                             onClick={() => onKeyChange(index)}
                                         />

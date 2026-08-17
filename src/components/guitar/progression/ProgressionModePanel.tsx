@@ -1,7 +1,7 @@
 import React from 'react';
 import { Activity } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { getNoteName } from '@/domain/shared/notes';
+import { getKeyName } from '@/domain/shared/keys';
 
 interface ProgressionModePanelProps {
     selectedKey: number;
@@ -40,7 +40,7 @@ export const ProgressionModePanel: React.FC<ProgressionModePanelProps> = ({
                         animate={{ scale: 1, opacity: 1 }}
                         className="text-7xl font-black text-white tracking-tighter leading-none drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]"
                     >
-                        {getNoteName(selectedKey)}
+                        {getKeyName(selectedKey)}
                     </motion.h2>
                     <span className="text-[10px] font-black tracking-[0.4em] text-white/20 uppercase mt-2">Tonic</span>
                 </div>
