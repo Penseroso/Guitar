@@ -215,15 +215,17 @@ export {
 export type {
     VoicingShapeMetrics,
     VoicingScore,
-} from './ranking';
+    VoicingTechniqueTag,
+    ScoreResolvedVoicingOptions,
+} from './deductiveRanking';
 
 export {
     getVoicingShapeMetrics,
-    VOICING_RANKING_MODES,
+    getVoicingTechniqueTag,
     scoreResolvedVoicing,
     buildVoicingCandidate,
     rankVoicingCandidates,
-} from './ranking';
+} from './deductiveRanking';
 
 export type { GetRankedVoicingsOptions } from './voicings';
 

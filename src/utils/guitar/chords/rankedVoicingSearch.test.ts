@@ -47,8 +47,8 @@ describe('searchAndRankDeductiveVoicings', () => {
         }
     });
 
-    it('supports the beginner ranking mode without throwing and still returns sorted results', () => {
-        const candidates = searchAndRankDeductiveVoicings(major, 0, { position: 'close' }, {}, { mode: 'beginner' });
+    it('accepts physical ranking overrides (scale length / hand span) without throwing and still returns sorted results', () => {
+        const candidates = searchAndRankDeductiveVoicings(major, 0, { position: 'close' }, {}, { maxHandSpanMm: 90 });
 
         expect(candidates.length).toBeGreaterThan(0);
         for (let i = 1; i < candidates.length; i++) {

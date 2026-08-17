@@ -1,6 +1,6 @@
+import { rankVoicingCandidates, type ScoreResolvedVoicingOptions } from './deductiveRanking';
 import { buildDeductiveChordTones } from './degreeRequirements';
 import { resolveChordRegistryEntry } from './helpers';
-import { rankVoicingCandidates, type ScoreResolvedVoicingOptions } from './ranking';
 import { searchDeductiveVoicings, type VoicingSearchOptions } from './voicingSearch';
 import type { VoicingPosition, VoicingStyleSpec } from './voicingStyles';
 import type { ChordRegistryEntry } from './registry';
@@ -8,11 +8,9 @@ import type { ResolvedVoicing, VoicingCandidate } from './types';
 
 /**
  * Step 3 adapter: pipes the deductive generator (voicingSearch.ts) through the existing
- * classification (descriptor.ts, already invoked inside the search) and scoring (ranking.ts)
- * layers. Both were already generic over ResolvedVoicing/ChordTones shape — the only real
- * adaptation needed was ranking.ts's required-degree lookup, which was pointed at the old
- * per-chord-id table and silently saw zero required degrees for the new augmented/diminished
- * entries; that now goes through the same deductive rule the generator itself uses.
+ * classification (descriptor.ts, already invoked inside the search) and the deductive-engine-only
+ * scoring layer (deductiveRanking.ts) — a clean rebuild of the old ranking.ts, scoped to the
+ * invariants this search actually guarantees (see deductiveRanking.ts's module docstring).
  */
 export function searchAndRankDeductiveVoicings(
     entry: ChordRegistryEntry,
@@ -56,10 +54,10 @@ function dedupeBySignature(voicings: ResolvedVoicing[]): ResolvedVoicing[] {
 export interface DeductiveChordSurfaceOptions {
     maxFret?: number;
     maxCandidates?: number;
-    rankingMode?: ScoreResolvedVoicingOptions['mode'];
     styles?: VoicingPosition[];
     maxHandSpanMm?: number;
     allowThumbOnLowE?: boolean;
+    scaleLengthMm?: number;
 }
 
 /**
@@ -89,7 +87,10 @@ export function getDeductiveChordSurfaceVoicingsForChord(
     );
     const deduped = dedupeBySignature(allVoicings);
     const tones = buildDeductiveChordTones(entry, rootPitchClass);
-    const ranked = rankVoicingCandidates(deduped, entry, tones, { mode: options.rankingMode });
+    const ranked = rankVoicingCandidates(deduped, entry, tones, {
+        maxHandSpanMm: options.maxHandSpanMm,
+        scaleLengthMm: options.scaleLengthMm,
+    });
 
     return ranked.slice(0, maxCandidates);
 }
