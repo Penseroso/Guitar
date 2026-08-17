@@ -286,6 +286,81 @@ describe('scoreResolvedVoicing — deductive scoring terms', () => {
         expect(getVoicingShapeMetrics(barreShape).fingerGroupCount).toBe(3);
         expect(scored.reasons.some((r) => r.includes('independent fretting finger'))).toBe(true);
     });
+
+    // USER INSTRUCTION (explicitly requested): an Open-technique voicing that mutes one of
+    // strings 2-4 (the B/G/D core) should be penalized, on top of whatever the general
+    // mute-naturalness terms above already apply — see OPEN_INNER_STRING_INDICES in
+    // deductiveRanking.ts.
+    it('penalizes an Open voicing that mutes an inner string (2-4), and explains why', () => {
+        const entry = resolveChordRegistryEntry('major');
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+
+        const openStrings = {
+            id: 'open-inner-string-played',
+            label: 'open, inner string played',
+            instrument: 'guitar' as const,
+            rootString: 4 as const,
+            source: 'generated' as const,
+            strings: [
+                { string: 0 as const, fretOffset: 0, toneDegree: '1' },
+                { string: 1 as const, fretOffset: 1, toneDegree: '5', isOptional: true },
+                { string: 2 as const, fretOffset: 0, toneDegree: '1' },
+                { string: 3 as const, fretOffset: 2, toneDegree: '3' },
+                { string: 4 as const, fretOffset: 3, toneDegree: '5', isOptional: true },
+                { string: 5 as const, fretOffset: null },
+            ],
+        };
+        const openWithInnerMute = {
+            ...openStrings,
+            id: 'open-inner-string-muted',
+            label: 'open, inner string muted',
+            strings: openStrings.strings.map((s) => (s.string === 1 ? { string: 1 as const, fretOffset: null } : s)),
+        };
+
+        const playedVoicing = resolveVoicingTemplate(chord, tones, openStrings, { rootFret: 0 });
+        const mutedVoicing = resolveVoicingTemplate(chord, tones, openWithInnerMute, { rootFret: 0 });
+
+        expect(getVoicingTechniqueTag(playedVoicing)).toBe('open');
+        expect(getVoicingTechniqueTag(mutedVoicing)).toBe('open');
+
+        const playedScore = scoreResolvedVoicing(playedVoicing, entry, tones);
+        const mutedScore = scoreResolvedVoicing(mutedVoicing, entry, tones);
+
+        expect(mutedScore.reasons.some((r) => r.includes('mutes') && r.includes('strings 2-4'))).toBe(true);
+        expect(playedScore.reasons.some((r) => r.includes('strings 2-4'))).toBe(false);
+        expect(mutedScore.score).toBeLessThan(playedScore.score);
+    });
+
+    it('does not apply the open-inner-mute penalty to a Barre-technique voicing', () => {
+        const entry = resolveChordRegistryEntry('major');
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+
+        // Same F-shape-style barre as above, but string 2 (an inner string) is muted instead of
+        // independently fretted — still a real barre (fret-1 group across strings 0,1,4,5).
+        const barreWithInnerMute = resolveVoicingTemplate(chord, tones, {
+            id: 'barre-inner-mute',
+            label: 'barre with inner mute',
+            instrument: 'guitar',
+            rootString: 5,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: 0, toneDegree: '1' },
+                { string: 1, fretOffset: 0, toneDegree: '5' },
+                { string: 2, fretOffset: null },
+                { string: 3, fretOffset: 2, toneDegree: '3' },
+                { string: 4, fretOffset: 0, toneDegree: '5' },
+                { string: 5, fretOffset: 0, toneDegree: '1' },
+            ],
+        }, { rootFret: 1 });
+
+        expect(getVoicingTechniqueTag(barreWithInnerMute)).toBe('barre');
+
+        const scored = scoreResolvedVoicing(barreWithInnerMute, entry, tones);
+
+        expect(scored.reasons.some((r) => r.includes('strings 2-4'))).toBe(false);
+    });
 });
 
 describe('rankVoicingCandidates', () => {

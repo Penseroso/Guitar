@@ -77,6 +77,14 @@ export interface VoicingShapeMetrics {
  *  hand-span comfort term for why this matters more than it would with a raw fret-count span. */
 const TRIVIAL_HAND_SPAN_MM = 40;
 
+/**
+ * USER INSTRUCTION (explicitly requested, not derived from the shape/geometry data like the rest
+ * of this file's terms): string indices 1-3 are strings 2-4 (B/G/D — see tuning.ts's "String 1 ->
+ * String 6, high E -> low E" ordering), the core strings an Open-technique voicing is expected to
+ * let ring freely. See the openInnerStringMutePenalty use below.
+ */
+const OPEN_INNER_STRING_INDICES = new Set([1, 2, 3]);
+
 const WEIGHTS = {
     handSpanComfortMax: 20,
     fingerEconomyPerFinger: -6,
@@ -84,6 +92,9 @@ const WEIGHTS = {
     overlappingBarreSpanPenalty: -10,
     internalMuteAdjacentPenalty: -1.5,
     internalMuteIsolatedPenalty: -6,
+    /** USER INSTRUCTION — see OPEN_INNER_STRING_INDICES. Stacks on top of the two mute-naturalness
+     *  terms above rather than replacing them; this one is technique-scoped (Open only). */
+    openInnerStringMutePenalty: -8,
     lowPositionBonus: 10,
     standardPositionBonus: 4,
     highPositionPenalty: -4,
@@ -380,6 +391,18 @@ export function scoreResolvedVoicing(
         score += metrics.playedCount * WEIGHTS.fullnessBonusPerString;
         if (metrics.playedCount >= 5) {
             reasons.push(`Full ${techniqueTag} voicing (${metrics.playedCount} strings ringing).`);
+        }
+    }
+
+    // --- USER INSTRUCTION: Open voicings that mute a core inner string (2-4) — see
+    // OPEN_INNER_STRING_INDICES / openInnerStringMutePenalty above for the rationale. ---------
+    if (techniqueTag === 'open') {
+        const mutedInnerStringCount = voicing.notes.filter(
+            (note) => note.isMuted && OPEN_INNER_STRING_INDICES.has(note.string)
+        ).length;
+        if (mutedInnerStringCount > 0) {
+            score += mutedInnerStringCount * WEIGHTS.openInnerStringMutePenalty;
+            reasons.push(`Open voicing mutes ${mutedInnerStringCount} of strings 2-4, undercutting the open-ring feel.`);
         }
     }
 
