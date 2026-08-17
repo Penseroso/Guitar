@@ -66,6 +66,23 @@ describe('getDeductiveChordSurfaceVoicingsForChord', () => {
         expect(triadWindowCount).toBeLessThanOrEqual(5);
     });
 
+    it('no longer overlaps Barre with Triad/Quad (a compact same-fret voicing is not also "barre")', () => {
+        // USER INSTRUCTION-driven fix: MIN_PLAYED_STRINGS_FOR_BARRE in deductiveRanking.ts. Before
+        // it, a compact 4-note voicing with a real 3-string barre (e.g. a closed 7th-chord shape)
+        // was tagged 'barre' *and* qualified as a complete-window "Quad" — the same handful of
+        // shapes showed up under both filter buttons. Verified concretely: major-7/dominant-7/
+        // minor-7 each had 1-2 such overlapping candidates before the fix.
+        for (const chordId of ['major-7', 'dominant-7', 'minor-7', 'major', 'minor']) {
+            const candidates = getDeductiveChordSurfaceVoicingsForChord(chordId, 0, { maxPerTechnique: 5 });
+            const overlap = candidates.filter((c) => {
+                const size = c.voicing.descriptor.consecutiveStringWindow?.size;
+                return getVoicingTechniqueTag(c.voicing) === 'barre' && (size === 3 || size === 4);
+            });
+
+            expect(overlap).toEqual([]);
+        }
+    });
+
     it('never returns the same physical shape twice even though multiple styles are searched', () => {
         const candidates = getDeductiveChordSurfaceVoicingsForChord('dominant-7', 0, { maxPerTechnique: 100 });
 

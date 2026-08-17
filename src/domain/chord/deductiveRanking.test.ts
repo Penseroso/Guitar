@@ -199,6 +199,30 @@ describe('getVoicingTechniqueTag — shell/barre/open/standard classification', 
 
         expect(getVoicingTechniqueTag(voicing)).toBe('open');
     });
+
+    // USER INSTRUCTION: 'barre' means a wide, ringing chord (5-6 strings), not just any shape with
+    // a real forced barre — a compact voicing with a real 3-string barre but only 4 notes total
+    // should read as 'standard' (or Triad/Quad, a different axis) instead. Motivated by a real
+    // overlap: this exact shape (a 3-string barre plus one more note, 4 notes total) is also a
+    // complete 4-tone "Quad" window, so tagging it 'barre' too meant the same handful of shapes
+    // showed up under both buttons.
+    it('does not tag a compact 4-note voicing as barre even with a real 3-string barre (MIN_PLAYED_STRINGS_FOR_BARRE)', () => {
+        const compactBarre = voicingFromNotes([
+            note(3, 12), note(2, 12), note(1, 12), note(0, 10),
+        ]);
+
+        expect(getVoicingShapeMetrics(compactBarre).barreNoteCount).toBe(3);
+        expect(getVoicingTechniqueTag(compactBarre)).toBe('standard');
+    });
+
+    it('still tags a 5-string barre voicing as barre (at the MIN_PLAYED_STRINGS_FOR_BARRE floor)', () => {
+        const fiveStringBarre = voicingFromNotes([
+            note(4, 3), note(3, 3), note(2, 3), note(1, 5), note(0, 4),
+        ]);
+
+        expect(getVoicingShapeMetrics(fiveStringBarre).barreNoteCount).toBe(3);
+        expect(getVoicingTechniqueTag(fiveStringBarre)).toBe('barre');
+    });
 });
 
 describe('scoreResolvedVoicing — deductive scoring terms', () => {

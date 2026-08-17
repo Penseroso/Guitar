@@ -217,16 +217,28 @@ export function getVoicingShapeMetrics(
     };
 }
 
+// USER INSTRUCTION: 'barre' is reserved for a voicing that actually rings a full, wide chord (5-6
+// strings) — a real forced barre width (barreNoteCount >= 3) alone isn't enough. Without this, a
+// compact 4-note voicing that merely happens to share a fret across a few strings (e.g.
+// [12,12,12,10,x,x], 4 notes total) got tagged 'barre' too, and since a compact 4-note voicing is
+// exactly what a "Quad" complete-chord window also is, the two ended up describing the same small
+// set of shapes under two different buttons. Barre now means what a player actually reaches for
+// it to mean — a wide, ringing chord shape — while a compact same-fret-sharing voicing surfaces
+// under Quad/Triad (if it qualifies) or 'standard' instead, not double-counted as 'barre' too.
+const MIN_PLAYED_STRINGS_FOR_BARRE = 5;
+
 /** Priority: shell (a harmonic-density property) beats barre, which beats open, since each is
  *  progressively less specific/defining when more than one applies to the same voicing. Two
  *  adjacent strings coincidentally sharing a fret (e.g. open Am's x02210) is reachable as a
  *  physically-forceable 2-string barre but isn't what guitarists mean by "barre chord" — the
- *  tag is reserved for a real forced barre spanning 3+ strings. */
+ *  tag is reserved for a real forced barre spanning 3+ strings, ringing a wide enough chord (see
+ *  MIN_PLAYED_STRINGS_FOR_BARRE) to actually read as "a barre chord" rather than a compact
+ *  closed-position voicing that happens to share a fret across part of its shape. */
 function classifyTechniqueTag(voicing: ResolvedVoicing, metrics: VoicingShapeMetrics): VoicingTechniqueTag {
     if (voicing.descriptor.family === 'shell') {
         return 'shell';
     }
-    if (metrics.barreNoteCount >= 3) {
+    if (metrics.barreNoteCount >= 3 && metrics.playedCount >= MIN_PLAYED_STRINGS_FOR_BARRE) {
         return 'barre';
     }
     if (metrics.openStringCount > 0) {
