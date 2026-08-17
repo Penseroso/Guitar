@@ -5,11 +5,12 @@ import {
     classifyFrettedGroups,
     getFretDistanceMm,
     type FingeringPoint,
+    type FretGroup,
 } from './fretGeometry';
 import { resolveChordRegistryEntry } from './helpers';
 import { collectPlayedDegrees } from './resolver';
 import type { ChordRegistryEntry } from './registry';
-import type { ChordTones, ResolvedVoicing, VoicingCandidate } from './types';
+import type { ChordTones, ResolvedVoicing, ResolvedVoicingNote, VoicingCandidate } from './types';
 
 /**
  * Deductive-engine-only scoring layer — a rebuild of the old ranking.ts scoring function,
@@ -61,6 +62,11 @@ export interface VoicingShapeMetrics {
     fingerGroupCount: number;
     /** Widest single forced barre, in strings covered (0 if there's no real barre). */
     barreNoteCount: number;
+    /** USER INSTRUCTION — see isDiagonalRollShape below for the rationale. True when every
+     *  independently-fretted (non-barre) note advances by the same single fret step across
+     *  consecutive strings, in one direction — a "rolling" hand motion rather than scattered
+     *  finger placements, even though both need the same raw finger count. */
+    isDiagonalRollShape: boolean;
     /** Real physical distance (mm) between the lowest and highest fretted point, via the same
      *  logarithmic fret-spacing formula the hard playability gate uses — physically accurate at
      *  every neck position, unlike a raw fret-count span (a "4 fret" reach means something very
@@ -85,6 +91,12 @@ const OPEN_INNER_STRING_INDICES = new Set([1, 2, 3]);
 const WEIGHTS = {
     handSpanComfortMax: 20,
     fingerEconomyPerFinger: -6,
+    /** USER INSTRUCTION — see isDiagonalRollShape. A flat credit, not a per-finger multiplier:
+     *  it's crediting the *pattern* (one smooth glide) rather than pretending the finger count
+     *  itself was lower, so it partially offsets fingerEconomyPerFinger's penalty without
+     *  canceling it — a diagonal roll is easier than the same finger count scattered, but still
+     *  not as easy as genuinely needing fewer fingers. */
+    diagonalRollBonus: 12,
     barreWidthPenaltyPerString: -2,
     internalMuteAdjacentPenalty: -1.5,
     internalMuteIsolatedPenalty: -6,
@@ -110,6 +122,40 @@ const WEIGHTS = {
      *  make structurally impossible. If this ever fires, something upstream is broken. */
     structuralSafetyNetPenalty: -500,
 } as const;
+
+/**
+ * USER INSTRUCTION (explicitly requested, not derived like the rest of this file's geometry
+ * terms): a "diagonal roll" — every independently-fretted (non-barre) note landing on the next
+ * consecutive string exactly one fret higher or lower than the previous, consistently in one
+ * direction — is a well-known, comfortable guitar technique (the hand glides along one diagonal
+ * line) despite needing the same raw finger count as a scattered shape with no such pattern; the
+ * classic movable maj7 grip x-x-10-9-8-7 is exactly this case. Requires at least 2 independent
+ * fretted notes (a single leftover finger next to a barre isn't "rolling" anything), and the
+ * *entire* set of independent notes must form one unbroken, constant-step run — a partial
+ * diagonal mixed with scattered fingers elsewhere doesn't qualify.
+ */
+function isDiagonalRollShape(frettedNotes: ResolvedVoicingNote[], barreGroups: FretGroup[]): boolean {
+    const barreStrings = new Set(barreGroups.flatMap((group) => group.strings));
+    const independentNotes = frettedNotes.filter((note) => !barreStrings.has(note.string));
+    if (independentNotes.length < 2) {
+        return false;
+    }
+
+    const step = independentNotes[1].fret - independentNotes[0].fret;
+    if (Math.abs(step) !== 1) {
+        return false;
+    }
+
+    for (let i = 1; i < independentNotes.length; i++) {
+        const stringStep = independentNotes[i].string - independentNotes[i - 1].string;
+        const fretStep = independentNotes[i].fret - independentNotes[i - 1].fret;
+        if (stringStep !== 1 || fretStep !== step) {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 export function getVoicingShapeMetrics(
     voicing: ResolvedVoicing,
@@ -164,6 +210,7 @@ export function getVoicingShapeMetrics(
         openFlankedIsolatedMuteCount,
         fingerGroupCount,
         barreNoteCount,
+        isDiagonalRollShape: isDiagonalRollShape(frettedNotes, barreGroups),
         spanMm,
         minFret,
         maxFret,
@@ -247,6 +294,12 @@ export function scoreResolvedVoicing(
     if (metrics.fingerGroupCount > 1) {
         score += (metrics.fingerGroupCount - 1) * WEIGHTS.fingerEconomyPerFinger;
         reasons.push(`Needs ${metrics.fingerGroupCount} independent fretting fingers.`);
+
+        // USER INSTRUCTION — see isDiagonalRollShape in getVoicingShapeMetrics.
+        if (metrics.isDiagonalRollShape) {
+            score += WEIGHTS.diagonalRollBonus;
+            reasons.push('Fingers form one smooth diagonal roll rather than a scattered reach.');
+        }
     } else {
         reasons.push('Needs at most one fretting finger.');
     }

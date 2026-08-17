@@ -114,6 +114,45 @@ describe('getVoicingShapeMetrics — barre-aware grouping and mute naturalness',
 
         expect(getVoicingShapeMetrics(voicing).spanMm).toBe(0);
     });
+
+    // USER INSTRUCTION (explicitly requested): a "diagonal roll" — the classic movable maj7 grip
+    // x-x-10-9-8-7 is the motivating example — gets credit for needing the same finger count as a
+    // scattered shape but in a smoother, one-directional pattern. See isDiagonalRollShape.
+    it('recognizes a diagonal roll — every independent finger one fret off the last, on the next string', () => {
+        const roll = voicingFromNotes([
+            muted(5), muted(4), note(3, 10), note(2, 9), note(1, 8), note(0, 7),
+        ]);
+
+        expect(getVoicingShapeMetrics(roll).isDiagonalRollShape).toBe(true);
+    });
+
+    it('does not recognize a roll when the fret step is inconsistent', () => {
+        // Frets 7, 9, 8, 10 across strings 0-3: no consistent single-fret step, and (deliberately)
+        // no two strings share a fret at all, so this isn't confounded by an accidental barre.
+        const notARoll = voicingFromNotes([
+            muted(5), muted(4), note(3, 10), note(2, 8), note(1, 9), note(0, 7),
+        ]);
+
+        expect(getVoicingShapeMetrics(notARoll).isDiagonalRollShape).toBe(false);
+    });
+
+    it('does not recognize a roll across a gap (a muted string skipped mid-run)', () => {
+        const gappedRoll = voicingFromNotes([
+            muted(5), note(4, 3), muted(3), note(2, 9), note(1, 8), note(0, 7),
+        ]);
+
+        expect(getVoicingShapeMetrics(gappedRoll).isDiagonalRollShape).toBe(false);
+    });
+
+    it('does not recognize a roll from a single leftover finger next to a barre', () => {
+        // Barre at fret 1 across strings 5/4/1/0 (F-shape), plus one independent finger — one
+        // note alone isn't "rolling" anything, even though it's technically 1 fret off nothing.
+        const oneExtraFinger = voicingFromNotes([
+            note(5, 1), note(4, 1), note(3, 3), muted(2), note(1, 1), note(0, 1),
+        ]);
+
+        expect(getVoicingShapeMetrics(oneExtraFinger).isDiagonalRollShape).toBe(false);
+    });
 });
 
 describe('getVoicingTechniqueTag — shell/barre/open/standard classification', () => {
@@ -292,6 +331,59 @@ describe('scoreResolvedVoicing — deductive scoring terms', () => {
 
         expect(getVoicingShapeMetrics(barreShape).fingerGroupCount).toBe(3);
         expect(scored.reasons.some((r) => r.includes('independent fretting finger'))).toBe(true);
+    });
+
+    // USER INSTRUCTION (explicitly requested): the classic movable maj7 grip x-x-10-9-8-7 —
+    // reported as missing from the surfaced results, traced to the finger-economy penalty giving
+    // it no credit for the pattern (4 fingers, but one smooth diagonal glide, not scattered).
+    it('credits the classic diagonal maj7 grip (x-x-10-9-8-7) over an equal-finger-count scattered shape', () => {
+        const entry = resolveChordRegistryEntry('major-7');
+        const chord = buildChordDefinitionFromRegistryEntry(entry, 0);
+        const tones = buildChordTonesFromRegistryEntry(entry, 0);
+
+        const diagonalRoll = resolveVoicingTemplate(chord, tones, {
+            id: 'diagonal-maj7',
+            label: 'x-x-10-9-8-7',
+            instrument: 'guitar',
+            rootString: 3,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: 0, toneDegree: '7' },
+                { string: 1, fretOffset: 1, toneDegree: '5' },
+                { string: 2, fretOffset: 2, toneDegree: '3' },
+                { string: 3, fretOffset: 3, toneDegree: '1' },
+                { string: 4, fretOffset: null },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 7 });
+        // Same 4 independent fingers, same frets used, but scattered across strings instead of
+        // one consistent diagonal — isolates the pattern, not just "needs 4 fingers", as the
+        // difference between the two.
+        const scattered = resolveVoicingTemplate(chord, tones, {
+            id: 'scattered-maj7',
+            label: 'scattered equivalent',
+            instrument: 'guitar',
+            rootString: 3,
+            source: 'generated',
+            strings: [
+                { string: 0, fretOffset: 3, toneDegree: '7' },
+                { string: 1, fretOffset: 0, toneDegree: '5' },
+                { string: 2, fretOffset: 2, toneDegree: '3' },
+                { string: 3, fretOffset: 1, toneDegree: '1' },
+                { string: 4, fretOffset: null },
+                { string: 5, fretOffset: null },
+            ],
+        }, { rootFret: 7 });
+
+        expect(getVoicingShapeMetrics(diagonalRoll).isDiagonalRollShape).toBe(true);
+        expect(getVoicingShapeMetrics(scattered).isDiagonalRollShape).toBe(false);
+
+        const rollScore = scoreResolvedVoicing(diagonalRoll, entry, tones);
+        const scatteredScore = scoreResolvedVoicing(scattered, entry, tones);
+
+        expect(rollScore.reasons.some((r) => r.includes('diagonal roll'))).toBe(true);
+        expect(scatteredScore.reasons.some((r) => r.includes('diagonal roll'))).toBe(false);
+        expect(rollScore.score).toBeGreaterThan(scatteredScore.score);
     });
 
     it('does not penalize the standard A-shape movable barre C major (x-3-5-5-5-3) as an overlapping-barre case', () => {
