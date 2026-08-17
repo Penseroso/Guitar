@@ -1,4 +1,4 @@
-import { buildScaleId } from '../scaleSelector';
+import { buildScaleId } from '@/domain/scale/scaleSelector';
 import { CHORD_REGISTRY_LIST } from './registry';
 import { getRelatedScaleSuggestionsForChord, type ChordScaleSuggestionCategory } from './related-scales';
 

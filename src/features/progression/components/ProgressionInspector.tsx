@@ -1,8 +1,8 @@
 import React from 'react';
 import { Compass, Trash2, Volume2, Zap } from 'lucide-react';
-import { degreeToChordName } from '../../../utils/guitar/logic';
-import type { ChordNode } from '../../../utils/guitar/types';
-import type { ProgressionPlaybackData } from '../utils/getProgressionPlaybackData';
+import { degreeToChordName } from '@/domain/progression/degrees';
+import type { ChordNode } from '@/domain/progression/types';
+import type { ProgressionPlaybackData } from '@/domain/progression/getProgressionPlaybackData';
 
 type ProgressionInspectorProps = {
     focusedNode: ChordNode;

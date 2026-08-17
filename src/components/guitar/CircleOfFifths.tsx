@@ -1,7 +1,7 @@
 import React from 'react';
-import { NOTES } from '../../utils/guitar/theory';
-import { getCircleOfFifthsOrder, getRelativeMinor } from '../../utils/guitar/logic';
-import { generateModeData } from '../../utils/guitar/scales';
+import { NOTES } from '@/domain/shared/notes';
+import { getCircleOfFifthsOrder, getRelativeMinor } from '@/domain/shared/keys';
+import { generateModeData } from '@/domain/scale/scales';
 
 const polarToCartesian = (centerX: number, centerY: number, radius: number, angleInDegrees: number) => {
     const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;

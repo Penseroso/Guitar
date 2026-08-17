@@ -2,9 +2,9 @@ import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 
-import { buildChordDefinitionFromRegistryEntry, buildChordTonesFromRegistryEntry } from '../../../utils/guitar/chords';
-import { resolveVoicingTemplate } from '../../../utils/guitar/chords/resolver';
-import type { VoicingCandidate } from '../../../utils/guitar/chords/types';
+import { buildChordDefinitionFromRegistryEntry, buildChordTonesFromRegistryEntry } from '@/domain/chord';
+import { resolveVoicingTemplate } from '@/domain/chord/resolver';
+import type { VoicingCandidate } from '@/domain/chord/types';
 import { getVoicingPresentationMeta } from '../chord-preview/voicing-labels';
 import { ChordModeWorkspace } from './ChordModeWorkspace';
 

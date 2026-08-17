@@ -1,7 +1,7 @@
 import {
     STANDARD_GUITAR_STRING_MIDI_PITCHES,
     STANDARD_GUITAR_TUNING_PITCH_CLASSES,
-} from '../tuning';
+} from '@/domain/shared/tuning';
 import {
     buildChordDefinitionFromRegistryEntry,
     buildChordTonesFromRegistryEntry,

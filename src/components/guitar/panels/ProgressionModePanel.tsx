@@ -1,7 +1,7 @@
 import React from 'react';
 import { Activity } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { getNoteName } from '../../../utils/guitar/logic';
+import { getNoteName } from '@/domain/shared/notes';
 
 interface ProgressionModePanelProps {
     selectedKey: number;

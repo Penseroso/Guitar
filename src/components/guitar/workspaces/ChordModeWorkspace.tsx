@@ -5,8 +5,8 @@ import React from 'react';
 import { Fretboard } from '../../Fretboard';
 import { TogglePill } from '../../ui/design-system/TogglePill';
 import { CompactVoicingDiagram } from '../chord-preview/CompactVoicingDiagram';
-import { type VoicingCandidate } from '../../../utils/guitar/chords';
-import type { Fingering } from '../../../utils/guitar/types';
+import { type VoicingCandidate } from '@/domain/chord';
+import type { Fingering } from '@/domain/shared/types';
 import { getVoicingPresentationMeta } from '../chord-preview/voicing-labels';
 
 interface ChordSelectorOption {

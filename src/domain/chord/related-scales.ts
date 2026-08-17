@@ -1,4 +1,4 @@
-import { buildScaleId, SCALE_LOOKUP_BY_NAME } from '../scaleSelector';
+import { buildScaleId, SCALE_LOOKUP_BY_NAME } from '@/domain/scale/scaleSelector';
 import { resolveChordRegistryEntry } from './helpers';
 import type { ChordRegistryEntry } from './registry';
 import { interpretChordAgainstTonalCenter, type HarmonicFunctionFit } from './functional-interpretation';

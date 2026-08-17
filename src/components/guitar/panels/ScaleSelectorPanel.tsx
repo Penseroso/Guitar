@@ -5,7 +5,7 @@ import {
     getDefaultScaleForFamily,
     getVisibleScaleFamily,
     type VisibleScaleFamily,
-} from '../../../utils/guitar/scaleSelector';
+} from '@/domain/scale/scaleSelector';
 import { SelectPill } from '../../ui/design-system/SelectPill';
 import { ScaleOrbit } from '../scale-selector/ScaleOrbit';
 

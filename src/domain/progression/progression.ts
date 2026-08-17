@@ -1,5 +1,5 @@
 import { HarmonicFunction, ChordNode, Measure, ProgressionDocument } from './types';
-import { ProgressionData } from './theory';
+import { ProgressionData } from './progressions';
 
 export type ProgressionDraftApplyMode = 'replace' | 'append' | 'insert-after-focus' | 'stage-only';
 

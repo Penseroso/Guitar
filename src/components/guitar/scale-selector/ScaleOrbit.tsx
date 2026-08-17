@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { getScaleDisplayName, getScaleFamilyModes, getScaleOrbitLabel } from '../../../utils/guitar/scaleSelector';
+import { getScaleDisplayName, getScaleFamilyModes, getScaleOrbitLabel } from '@/domain/scale/scaleSelector';
 import { ScaleOrbitNode } from './ScaleOrbitNode';
 
 interface ScaleOrbitProps {

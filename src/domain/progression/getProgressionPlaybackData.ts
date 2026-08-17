@@ -1,5 +1,5 @@
-import { getChordFromDegree, getChordTones } from '../../../utils/guitar/logic';
-import type { ProgressionDocument } from '../../../utils/guitar/types';
+import { getChordFromDegree, getChordTones } from './degrees';
+import type { ProgressionDocument } from './types';
 
 export type ProgressionPlaybackData = {
     currentStepDegree: string;

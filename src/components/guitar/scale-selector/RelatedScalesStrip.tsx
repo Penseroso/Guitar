@@ -1,5 +1,5 @@
 import React from 'react';
-import { buildScaleId, getRelatedScales, getScaleDisplayName } from '../../../utils/guitar/scaleSelector';
+import { buildScaleId, getRelatedScales, getScaleDisplayName } from '@/domain/scale/scaleSelector';
 import { RelatedScaleChip } from './RelatedScaleChip';
 
 interface RelatedScalesStripProps {

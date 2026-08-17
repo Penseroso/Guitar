@@ -1,11 +1,11 @@
 import { useCallback, useState } from 'react';
 import type { DragEndEvent } from '@dnd-kit/core';
-import { HarmonicFunction, ChordNode, ProgressionDocument } from '../utils/guitar/types';
-import { PROGRESSION_LIBRARY } from '../utils/guitar/theory';
-import { 
-    cloneDoc, 
-    clampIndex, 
-    insertNodeIntoMeasure, 
+import { HarmonicFunction, ChordNode, ProgressionDocument } from '@/domain/progression/types';
+import { PROGRESSION_LIBRARY } from '@/domain/progression/progressions';
+import {
+    cloneDoc,
+    clampIndex,
+    insertNodeIntoMeasure,
     parsePresetToMeasures,
     injectSecondaryDominant,
     injectTritoneSubstitution,
@@ -13,7 +13,7 @@ import {
     togglePicardyThird,
     injectFlatSix,
     injectFlatSeven
-} from '../utils/guitar/progression';
+} from '@/domain/progression/progression';
 
 export const useProgression = () => {
     const [progressionName, setProgressionName] = useState('pop-punk');

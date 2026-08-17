@@ -2,8 +2,8 @@
 
 import React from 'react';
 
-import type { ChordScaleSuggestionCategory } from '../../../utils/guitar/chords/related-scales';
-import { getChordContextsForScale } from '../../../utils/guitar/chords/scale-chord-context';
+import type { ChordScaleSuggestionCategory } from '@/domain/chord/related-scales';
+import { getChordContextsForScale } from '@/domain/chord/scale-chord-context';
 
 interface ScaleChordRecommendationsPanelProps {
     scaleGroup: string;

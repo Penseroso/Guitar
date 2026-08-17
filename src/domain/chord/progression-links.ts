@@ -1,5 +1,5 @@
-import { PROGRESSION_LIBRARY } from '../theory';
-import { getNoteName } from '../logic';
+import { PROGRESSION_LIBRARY } from '@/domain/progression/progressions';
+import { getNoteName } from '@/domain/shared/notes';
 import { resolveChordRegistryEntry } from './helpers';
 import type { ChordRegistryEntry } from './registry';
 import type { HarmonicTonalContext } from './related-scales';

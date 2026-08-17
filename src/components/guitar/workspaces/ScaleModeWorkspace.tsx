@@ -6,7 +6,8 @@ import { Fretboard } from '../../Fretboard';
 import { RelatedScalesStrip } from '../scale-selector/RelatedScalesStrip';
 import { TogglePill } from '../../ui/design-system/TogglePill';
 import { SlidersHorizontal } from 'lucide-react';
-import type { HarmonicInterval, Fingering, PlayableDoubleStop } from '../../../utils/guitar/types';
+import type { HarmonicInterval, PlayableDoubleStop } from '@/domain/scale/types';
+import type { Fingering } from '@/domain/shared/types';
 import { ScaleChordRecommendationsPanel } from '../scale-mode/ScaleChordRecommendationsPanel';
 
 interface ScaleModeWorkspaceProps {

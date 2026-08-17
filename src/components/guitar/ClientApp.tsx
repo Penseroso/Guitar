@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback, useReducer } from 'react';
 import { Controls } from './Controls';
 import { useProgressionAudio } from '../../features/progression/hooks/useProgressionAudio';
-import { getProgressionPlaybackData } from '../../features/progression/utils/getProgressionPlaybackData';
+import { getProgressionPlaybackData } from '@/domain/progression/getProgressionPlaybackData';
 import {
     CHORD_FAMILIES,
     CHORD_REGISTRY_LIST,
@@ -12,18 +12,14 @@ import {
     getChordTypeSuffix,
     resolveChordRegistryEntry,
     type ResolvedVoicing,
-} from '../../utils/guitar/chords';
-import {
-    TUNING,
-    SCALES,
-} from '../../utils/guitar/theory';
-import {
-    getNoteName,
-} from '../../utils/guitar/logic';
-import { Mode, Fingering } from '../../utils/guitar/types';
+} from '@/domain/chord';
+import { TUNING } from '@/domain/shared/tuning';
+import { SCALES } from '@/domain/scale/scales';
+import { getNoteName } from '@/domain/shared/notes';
+import { Mode, Fingering } from '@/domain/shared/types';
 import { useProgression } from '../../hooks/useProgression';
 import { useScaleMode } from '../../hooks/useScaleMode';
-import { getScaleDerivedData } from '../../features/scale/utils/getScaleDerivedData';
+import { getScaleDerivedData } from '@/domain/scale/getScaleDerivedData';
 import {
     createHarmonicWorkspaceState,
     reduceHarmonicWorkspaceState,

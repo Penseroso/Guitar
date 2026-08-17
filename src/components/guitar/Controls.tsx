@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Zap, Target, Compass, Disc } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { NOTES } from '../../utils/guitar/theory';
+import { NOTES } from '@/domain/shared/notes';
 import { TabsRail } from '../ui/design-system/TabsRail';
 import { KeyButton } from '../ui/design-system/KeyButton';
 import { CircleOfFifths } from './CircleOfFifths';
 import { ProgressionModePanel } from './panels/ProgressionModePanel';
 import { ScaleSelectorPanel } from './panels/ScaleSelectorPanel';
 import { ProgressionPresetPanel } from './panels/ProgressionPresetPanel';
-import { HarmonicInterval } from '../../utils/guitar/types';
+import { HarmonicInterval } from '@/domain/scale/types';
 
 interface ControlsProps {
     selectedKey: number;

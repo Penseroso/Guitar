@@ -1,4 +1,4 @@
-import type { VoicingCandidate } from '../../../utils/guitar/chords';
+import type { VoicingCandidate } from '@/domain/chord';
 
 export type BridgeSelectionSource = 'requested' | 'first-available' | 'none';
 

@@ -1,17 +1,17 @@
 import {
     getHarmonicDoubleStops,
     getPlayableDoubleStopsOnStrings,
-} from '../../../utils/guitar/logic';
+} from './doubleStops';
 import {
-    TUNING,
     SCALES,
     generateModeData,
     getScaleIntervalLabels,
     getScaleEngineIntervalLabels,
     isDoubleStopSupported,
-} from '../../../utils/guitar/theory';
-import { getVisibleScaleFamily, isMinorKeyScale } from '../../../utils/guitar/scaleSelector';
-import type { DoubleStopPair, HarmonicInterval, PlayableDoubleStop } from '../../../utils/guitar/types';
+} from './scales';
+import { getVisibleScaleFamily, isMinorKeyScale } from './scaleSelector';
+import type { DoubleStopPair, HarmonicInterval, PlayableDoubleStop } from './types';
+import { TUNING } from '@/domain/shared/tuning';
 
 export interface ScaleDerivedDataToggles {
     showChordTones: boolean;
@@ -52,7 +52,7 @@ const HARMONIC_INTERVALS: HarmonicInterval[] = [3, 4, 6];
 /**
  * Pure scale-theory pipeline: (scale selection, key, UI toggles) -> everything the
  * scale-mode fretboard/panels need to render. No React, no browser APIs — mirrors
- * features/progression/utils/getProgressionPlaybackData.ts.
+ * domain/progression/getProgressionPlaybackData.ts.
  */
 export function getScaleDerivedData(
     scaleGroup: string,

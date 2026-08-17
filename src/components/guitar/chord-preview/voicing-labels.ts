@@ -4,7 +4,7 @@ import {
     getVoicingTechniqueTag,
     type ResolvedVoicing,
     type VoicingTechniqueTag,
-} from '../../../utils/guitar/chords';
+} from '@/domain/chord';
 
 export interface VoicingPresentationMeta {
     primaryLabel: string;

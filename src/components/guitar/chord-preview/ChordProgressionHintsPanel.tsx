@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { ChordProgressionContext, ProgressionHandoffPayload } from '../../../utils/guitar/chords';
+import type { ChordProgressionContext, ProgressionHandoffPayload } from '@/domain/chord';
 
 interface ChordProgressionHintsPanelProps {
     context: ChordProgressionContext;

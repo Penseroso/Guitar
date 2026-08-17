@@ -1,6 +1,6 @@
 // Pure Roman-numeral-degree theory — instrument-agnostic (no tuning/string/fret involved).
 
-import { NOTES, NOTES_FLAT } from './notes';
+import { NOTES, NOTES_FLAT } from '@/domain/shared/notes';
 
 export const ROMAN_NUMERAL_CHORDS: Record<string, { interval: number; type: string }> = {
     'I': { interval: 0, type: 'Major' },

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { SCALE_REGISTRY } from '../scales';
+import { SCALE_REGISTRY } from '@/domain/scale/scales';
 import { getChordContextsForScale } from './scale-chord-context';
 
 describe('getChordContextsForScale', () => {

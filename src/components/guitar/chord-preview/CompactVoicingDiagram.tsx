@@ -2,9 +2,9 @@
 
 import React from 'react';
 
-import { getNoteName } from '../../../utils/guitar/logic';
-import type { ResolvedVoicing } from '../../../utils/guitar/chords';
-import { getVoicingDisplayName } from '../../../utils/guitar/chords';
+import { getNoteName } from '@/domain/shared/notes';
+import type { ResolvedVoicing } from '@/domain/chord';
+import { getVoicingDisplayName } from '@/domain/chord';
 
 interface CompactVoicingDiagramProps {
     voicing: ResolvedVoicing;

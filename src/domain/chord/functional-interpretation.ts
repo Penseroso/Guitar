@@ -1,5 +1,5 @@
-import { getNoteName } from '../logic';
-import { SCALE_DISPLAY_FORMULAS } from '../scales';
+import { getNoteName } from '@/domain/shared/notes';
+import { SCALE_DISPLAY_FORMULAS } from '@/domain/scale/scales';
 import { resolveChordRegistryEntry } from './helpers';
 import type { ChordRegistryEntry } from './registry';
 import type { HarmonicTonalContext } from './related-scales';

@@ -14,13 +14,14 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 
 import { ProgressionInspector } from '../../../features/progression/components/ProgressionInspector';
-import type { ProgressionPlaybackData } from '../../../features/progression/utils/getProgressionPlaybackData';
-import { degreeToChordName, getChordFromDegree, getNoteName } from '../../../utils/guitar/logic';
+import type { ProgressionPlaybackData } from '@/domain/progression/getProgressionPlaybackData';
+import { degreeToChordName, getChordFromDegree } from '@/domain/progression/degrees';
+import { getNoteName } from '@/domain/shared/notes';
 import type {
     ChordNode,
     HarmonicFunction,
     Measure,
-} from '../../../utils/guitar/types';
+} from '@/domain/progression/types';
 
 type ResizePreview = {
     nodeId: string;

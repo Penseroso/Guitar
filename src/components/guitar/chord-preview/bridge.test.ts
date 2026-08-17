@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import type { VoicingCandidate } from '../../../utils/guitar/chords';
+import type { VoicingCandidate } from '@/domain/chord';
 import { getBridgeSelectionKey, getReasonPreview, resolveBridgeSelection } from './bridge';
 
 function makeCandidate(id: string, playable: boolean, score: number): VoicingCandidate {

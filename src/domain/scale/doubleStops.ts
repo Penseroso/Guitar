@@ -1,7 +1,7 @@
 // Guitar-interpretation layer: which scale-degree pairs form playable double stops, and
 // where they fall on the fretboard. Shared across scale/chord/progression modes.
 
-import { STRING_MIDI_PITCHES } from './tuning';
+import { STRING_MIDI_PITCHES } from '@/domain/shared/tuning';
 import { DoubleStopPair, HarmonicInterval, PlayableDoubleStop } from './types';
 
 function getGenericDegree(label: string): number | null {

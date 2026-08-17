@@ -2,7 +2,7 @@ import { deriveVoicingDescriptor, buildVoicingProvenance } from './descriptor';
 import { buildDeductiveChordTones, deriveRequiredDegrees } from './degreeRequirements';
 import { evaluateHandPlayability, type FingeringPoint } from './fretGeometry';
 import { buildTargetVoicingNotes, type VoicingStyleSpec } from './voicingStyles';
-import { STANDARD_GUITAR_STRING_MIDI_PITCHES } from '../tuning';
+import { STANDARD_GUITAR_STRING_MIDI_PITCHES } from '@/domain/shared/tuning';
 import type { ChordRegistryEntry } from './registry';
 import type { GuitarStringIndex, ResolvedVoicing, ResolvedVoicingNote } from './types';
 

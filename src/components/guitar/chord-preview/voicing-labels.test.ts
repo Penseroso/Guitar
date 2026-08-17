@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildChordDefinitionFromRegistryEntry, buildChordTonesFromRegistryEntry } from '../../../utils/guitar/chords';
-import { resolveVoicingTemplate } from '../../../utils/guitar/chords/resolver';
+import { buildChordDefinitionFromRegistryEntry, buildChordTonesFromRegistryEntry } from '@/domain/chord';
+import { resolveVoicingTemplate } from '@/domain/chord/resolver';
 import { getVoicingPresentationMeta } from './voicing-labels';
 
 function resolveTestVoicing(

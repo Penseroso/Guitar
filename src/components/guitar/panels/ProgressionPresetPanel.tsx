@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layers } from 'lucide-react';
 import { SelectPill } from '../../ui/design-system/SelectPill';
-import { PROGRESSION_LIBRARY } from '../../../utils/guitar/theory';
+import { PROGRESSION_LIBRARY } from '@/domain/progression/progressions';
 
 interface ProgressionPresetPanelProps {
     progressionName: string;

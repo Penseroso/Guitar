@@ -2,9 +2,9 @@
 
 import React from 'react';
 
-import { getScaleDisplayName, getVisibleScaleFamilyLabel } from '../../../utils/guitar/scaleSelector';
-import type { ChordRelatedScaleSuggestion } from '../../../utils/guitar/chords';
-import { getNoteName } from '../../../utils/guitar/logic';
+import { getScaleDisplayName, getVisibleScaleFamilyLabel } from '@/domain/scale/scaleSelector';
+import type { ChordRelatedScaleSuggestion } from '@/domain/chord';
+import { getNoteName } from '@/domain/shared/notes';
 
 interface ChordRelatedScalesPanelProps {
     rootPitchClass: number;

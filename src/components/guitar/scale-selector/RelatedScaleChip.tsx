@@ -1,5 +1,5 @@
 import React from 'react';
-import { getScaleDisplayName, getVisibleScaleFamilyLabel } from '../../../utils/guitar/scaleSelector';
+import { getScaleDisplayName, getVisibleScaleFamilyLabel } from '@/domain/scale/scaleSelector';
 
 interface RelatedScaleChipProps {
     group: string;

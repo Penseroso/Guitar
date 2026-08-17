@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import type { HarmonicInterval } from '../utils/guitar/types';
+import type { HarmonicInterval } from '@/domain/scale/types';
 
 export const useScaleMode = () => {
     const [scaleGroup, setScaleGroup] = useState('Diatonic Modes');
