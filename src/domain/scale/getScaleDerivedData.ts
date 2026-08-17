@@ -78,7 +78,7 @@ export function getScaleDerivedData(
     const isDoubleStopVisible = isDoubleStopAvailable && toggles.isDoubleStopActive;
 
     const isPentatonic = getVisibleScaleFamily(scaleGroup) === 'Pentatonic';
-    const isMinorMode = isMinorKeyScale(scaleName);
+    const isMinorMode = isMinorKeyScale(scaleGroup, scaleName);
 
     const modifierNotes: number[] = [];
     if (toggles.blueNote && isPentatonic) {

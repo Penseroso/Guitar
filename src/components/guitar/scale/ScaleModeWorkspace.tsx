@@ -3,7 +3,6 @@
 import React from 'react';
 
 import { Fretboard } from '../shared/Fretboard';
-import { RelatedScalesStrip } from './RelatedScalesStrip';
 import { TogglePill } from '../../ui/design-system/TogglePill';
 import { SlidersHorizontal } from 'lucide-react';
 import type { HarmonicInterval, PlayableDoubleStop } from '@/domain/scale/types';
@@ -12,15 +11,8 @@ import type { Fingering } from '@/domain/shared/types';
 import { ScaleChordRecommendationsPanel } from '../cross-domain/ScaleChordRecommendationsPanel';
 
 interface ScaleModeWorkspaceProps {
-    effectiveScaleGroup: string;
-    effectiveScaleName: string;
     scaleGroup: string;
     scaleName: string;
-    previewScaleGroup: string | null;
-    previewScaleName: string | null;
-    onPreviewToggle: (group: string, name: string) => void;
-    onApplyPreview: () => void;
-    onClearPreview: () => void;
     showIntervals: boolean;
     onToggleIntervals: () => void;
     showChordTones: boolean;
@@ -52,15 +44,8 @@ interface ScaleModeWorkspaceProps {
 }
 
 export function ScaleModeWorkspace({
-    effectiveScaleGroup,
-    effectiveScaleName,
     scaleGroup,
     scaleName,
-    previewScaleGroup,
-    previewScaleName,
-    onPreviewToggle,
-    onApplyPreview,
-    onClearPreview,
     showIntervals,
     onToggleIntervals,
     showChordTones,
@@ -92,20 +77,6 @@ export function ScaleModeWorkspace({
 }: ScaleModeWorkspaceProps) {
     return (
         <div className="relative z-10 w-full flex flex-col gap-6">
-            <div className="px-6">
-                <RelatedScalesStrip
-                    sourceScaleGroup={effectiveScaleGroup}
-                    sourceScaleName={effectiveScaleName}
-                    committedScaleGroup={scaleGroup}
-                    committedScaleName={scaleName}
-                    previewScaleGroup={previewScaleGroup}
-                    previewScaleName={previewScaleName}
-                    onPreviewToggle={onPreviewToggle}
-                    onApplyPreview={onApplyPreview}
-                    onClearPreview={onClearPreview}
-                />
-            </div>
-
             <div className="flex flex-col gap-4 bg-[#050505]/50 border border-white/5 rounded-3xl p-6 backdrop-blur-sm animate-in fade-in slide-in-from-top-4 duration-500">
                 <div className="flex items-center gap-2 border-b border-white/5 pb-3 mb-2">
                     <SlidersHorizontal size={14} className="text-white/40" />
@@ -119,7 +90,7 @@ export function ScaleModeWorkspace({
                     {isPentatonic && (
                         <TogglePill label="Add Blue Note" isActive={blueNote} onToggle={onToggleBlueNote} />
                     )}
-                    {isPentatonic && effectiveScaleName === "Minor Pentatonic" && (
+                    {isPentatonic && scaleName === "Minor Pentatonic" && (
                         <>
                             <TogglePill label="Add 2 (9th)" isActive={secondNote} onToggle={onToggleSecondNote} />
                             <TogglePill label="Add 6th Note" isActive={sixthNote} onToggle={onToggleSixthNote} />
@@ -195,8 +166,8 @@ export function ScaleModeWorkspace({
             </div>
 
             <ScaleChordRecommendationsPanel
-                scaleGroup={effectiveScaleGroup}
-                scaleName={effectiveScaleName}
+                scaleGroup={scaleGroup}
+                scaleName={scaleName}
                 tonicPitchClass={rootNote}
             />
         </div>

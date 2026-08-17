@@ -253,6 +253,44 @@ for (const group in SCALE_REGISTRY) {
  * 각 음에 쌓아 올린 3화음(Triad)을 계산하여 로마 숫자와 테마 색상을 동적 할당합니다.
  * 펜타토닉 등 결손 음계는 `subset` 필드를 이용해 필터링합니다.
  */
+export type TriadQuality = 'Major' | 'Minor' | 'Diminished' | 'Augmented';
+
+/** Stacks the scale's own 3rd and 5th degrees above degree `d` and classifies the resulting triad. */
+function getStackedTriadQuality(fullRotatedIntervals: number[], N: number, d: number): TriadQuality {
+    const rootInterval = fullRotatedIntervals[d];
+    const thirdNodeIndex = (d + 2) % N;
+    const fifthNodeIndex = (d + 4) % N;
+
+    const thirdInterval = fullRotatedIntervals[thirdNodeIndex] + (thirdNodeIndex < d ? 12 : 0);
+    const fifthInterval = fullRotatedIntervals[fifthNodeIndex] + (fifthNodeIndex < d ? 12 : 0);
+
+    const int3 = thirdInterval - rootInterval;
+    const int5 = fifthInterval - rootInterval;
+
+    if (int3 === 3 && int5 === 7) return 'Minor';
+    if (int3 === 3 && int5 === 6) return 'Diminished';
+    if (int3 === 4 && int5 === 8) return 'Augmented';
+    return 'Major'; // int3 === 4 && int5 === 7
+}
+
+/**
+ * The quality of the triad built on a scale's own tonic (degree 0), stacking the scale's own
+ * 3rd and 5th degrees rather than reading the scale's name. This is the deductive replacement
+ * for what used to be a name-keyword guess (see scaleSelector.ts's isMinorKeyScale): a scale
+ * like "Phrygian Dominant" matches the substring "Phrygian" but actually has a major 3rd (it's
+ * the 5th mode of harmonic minor, functioning as a dominant/major-tonic sound), so keyword
+ * matching got it wrong. Stacking the scale's actual degrees gets it right for every mode,
+ * including exotic ones, with no per-scale-name table at all.
+ */
+export function getScaleTonicTriadQuality(groupName: string, modeName: string): TriadQuality {
+    const registryGroup = SCALE_REGISTRY[groupName] || SCALE_REGISTRY['Diatonic Modes'];
+    const modeInfo = registryGroup[modeName] || SCALE_REGISTRY['Diatonic Modes']['Aeolian'];
+    const parentIntervals = PARENT_SCALES[modeInfo.parent];
+    const N = parentIntervals.length;
+    const fullRotatedIntervals = calculateScaleIntervals(parentIntervals, modeInfo.rootOffsetIndex);
+    return getStackedTriadQuality(fullRotatedIntervals, N, 0);
+}
+
 export function generateModeData(groupName: string, modeName: string): ScaleDictionary {
     const registryGroup = SCALE_REGISTRY[groupName] || SCALE_REGISTRY['Diatonic Modes'];
     const modeInfo = registryGroup[modeName] || SCALE_REGISTRY['Diatonic Modes']['Aeolian'];
@@ -277,21 +315,7 @@ export function generateModeData(groupName: string, modeName: string): ScaleDict
             continue;
         }
 
-        // 3도씩 쌓아 3화음 구성
-        const thirdNodeIndex = (d + 2) % N;
-        const fifthNodeIndex = (d + 4) % N;
-
-        const thirdInterval = fullRotatedIntervals[thirdNodeIndex] + (thirdNodeIndex < d ? 12 : 0);
-        const fifthInterval = fullRotatedIntervals[fifthNodeIndex] + (fifthNodeIndex < d ? 12 : 0);
-
-        const int3 = thirdInterval - rootInterval;
-        const int5 = fifthInterval - rootInterval;
-
-        // 화음 성질 판정
-        let quality = 'Major'; // int3 === 4 && int5 === 7
-        if (int3 === 3 && int5 === 7) quality = 'Minor';
-        else if (int3 === 3 && int5 === 6) quality = 'Diminished';
-        else if (int3 === 4 && int5 === 8) quality = 'Augmented';
+        const quality = getStackedTriadQuality(fullRotatedIntervals, N, d);
 
         // 로마 숫자 파싱
         const usesSharpFourSpelling = rootInterval === TRITONE_INTERVAL

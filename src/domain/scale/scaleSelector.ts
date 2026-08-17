@@ -1,4 +1,4 @@
-import { GENERIC_SCALE_INTERVAL_LABELS, SCALES, getScaleIntervalLabels } from './scales';
+import { GENERIC_SCALE_INTERVAL_LABELS, SCALES, getScaleIntervalLabels, getScaleTonicTriadQuality } from './scales';
 
 export const SCALE_FAMILY_ORDER = ['Diatonic Modes', 'Harmonic Minor', 'Jazz Minor', 'Symmetric', 'Pentatonic'] as const;
 
@@ -25,10 +25,6 @@ export interface ScaleOption {
     name: string;
 }
 
-export interface ScaleRelation extends ScaleOption {
-    scaleId: string;
-}
-
 const SCALE_NAME_LABELS: Record<string, string> = {
     'Altered scale': 'Altered',
     'Dorian b2 (Assyrian)': 'Dorian b2',
@@ -45,67 +41,24 @@ export const SCALE_LOOKUP_BY_NAME = Object.entries(SCALES).reduce<Record<string,
     return acc;
 }, {});
 
-const relationNames = {
-    Ionian: ['Lydian', 'Mixolydian', 'Major Pentatonic', 'Lydian Augmented'],
-    Dorian: ['Aeolian', 'Jazz Minor', 'Dorian b2 (Assyrian)', 'Minor Pentatonic'],
-    Phrygian: ['Dorian b2 (Assyrian)', 'Phrygian Dominant', 'Aeolian', 'Locrian'],
-    Lydian: ['Ionian', 'Lydian Dominant', 'Lydian #2', 'Lydian Augmented'],
-    Mixolydian: ['Lydian Dominant', 'Mixolydian b6', 'Ionian', 'Whole Tone'],
-    Aeolian: ['Dorian', 'Harmonic Minor', 'Jazz Minor', 'Minor Pentatonic'],
-    Locrian: ['Locrian ♮2', 'Ultralocrian', 'Altered scale', 'Phrygian'],
-    'Harmonic Minor': ['Aeolian', 'Jazz Minor', 'Dorian', 'Minor Pentatonic'],
-    'Locrian #6': ['Locrian', 'Locrian ♮2', 'Ultralocrian', 'Dorian b2 (Assyrian)'],
-    'Ionian #5': ['Lydian Augmented', 'Ionian', 'Whole Tone', 'Lydian #2'],
-    'Dorian #4': ['Dorian', 'Jazz Minor', 'Harmonic Minor', 'Lydian Dominant'],
-    'Phrygian Dominant': ['Mixolydian b6', 'Phrygian', 'Altered scale', 'Whole Tone'],
-    'Lydian #2': ['Lydian', 'Lydian Augmented', 'Ionian #5', 'Whole Tone'],
-    Ultralocrian: ['Altered scale', 'Locrian', 'Locrian ♮2', 'Diminished'],
-    'Jazz Minor': ['Dorian', 'Harmonic Minor', 'Aeolian', 'Minor Pentatonic'],
-    'Dorian b2 (Assyrian)': ['Phrygian', 'Dorian', 'Locrian ♮2', 'Minor Pentatonic'],
-    'Lydian Augmented': ['Ionian #5', 'Lydian', 'Whole Tone', 'Lydian #2'],
-    'Lydian Dominant': ['Mixolydian', 'Whole Tone', 'Altered scale', 'Lydian'],
-    'Mixolydian b6': ['Phrygian Dominant', 'Mixolydian', 'Aeolian', 'Altered scale'],
-    'Locrian ♮2': ['Locrian', 'Dorian b2 (Assyrian)', 'Ultralocrian', 'Altered scale'],
-    'Altered scale': ['Lydian Dominant', 'Whole Tone', 'Ultralocrian', 'Diminished'],
-    Diminished: ['Altered scale', 'Whole Tone', 'Lydian Dominant', 'Ultralocrian'],
-    'Whole Tone': ['Lydian Dominant', 'Altered scale', 'Ionian #5', 'Lydian Augmented'],
-    'Major Pentatonic': ['Ionian', 'Lydian', 'Mixolydian'],
-    'Minor Pentatonic': ['Aeolian', 'Dorian', 'Harmonic Minor', 'Jazz Minor'],
-} satisfies Record<string, string[]>;
-
 export function buildScaleId(group: string, name: string) {
     return `${group}::${name}`;
 }
-
-export function parseScaleId(scaleId: string): ScaleRelation {
-    const [group, name] = scaleId.split('::');
-    return { group, name, scaleId };
-}
-
-export const SCALE_RELATION_MAP: Record<string, string[]> = Object.entries(relationNames).reduce((acc, [name, related]) => {
-    const source = SCALE_LOOKUP_BY_NAME[name];
-    if (!source) return acc;
-    acc[buildScaleId(source.group, source.name)] = related
-        .map((relatedName) => SCALE_LOOKUP_BY_NAME[relatedName])
-        .filter((item): item is ScaleOption => Boolean(item))
-        .map((item) => buildScaleId(item.group, item.name));
-    return acc;
-}, {} as Record<string, string[]>);
 
 export function getVisibleScaleFamily(group: string): VisibleScaleFamily {
     return GROUP_TO_VISIBLE_FAMILY[group] || 'Diatonic Modes';
 }
 
-const MINOR_KEY_SCALE_NAME_KEYWORDS = ['Minor', 'Aeolian', 'Dorian', 'Phrygian', 'Locrian'];
-
 /**
- * Legacy keyword classification, moved verbatim from ClientApp's inline `isMinorMode`.
- * Note: this substring match classifies "Phrygian Dominant" as minor despite its major
- * third (it matches via "Phrygian"). Preserved as-is — fixing the classification is a
- * separate follow-up, not part of this structural move.
+ * Whether a scale's own tonic triad is minor-quality — used to decide whether minor-key UI
+ * (e.g. the Picardy-third hint) applies. Deductive: stacks the scale's own 3rd/5th degrees via
+ * getScaleTonicTriadQuality rather than guessing from the scale's name. The former name-keyword
+ * version classified "Phrygian Dominant" as minor (it substring-matches "Phrygian") despite that
+ * scale having a major 3rd — group is required now because the same mode name never recurs
+ * across groups in this registry, but the triad quality is a property of (group, name) together.
  */
-export function isMinorKeyScale(scaleName: string): boolean {
-    return MINOR_KEY_SCALE_NAME_KEYWORDS.some((keyword) => scaleName.includes(keyword));
+export function isMinorKeyScale(group: string, scaleName: string): boolean {
+    return getScaleTonicTriadQuality(group, scaleName) === 'Minor';
 }
 
 export function getVisibleScaleFamilyLabel(group: string) {
@@ -141,10 +94,4 @@ export function getDefaultScaleForFamily(family: VisibleScaleFamily): ScaleOptio
     const group = SCALE_FAMILY_GROUP_MAP[family];
     const [name] = Object.keys(SCALES[group] || {});
     return { group, name };
-}
-
-export function getRelatedScales(scaleId: string, limit = 5): ScaleRelation[] {
-    return (SCALE_RELATION_MAP[scaleId] || [])
-        .slice(0, limit)
-        .map(parseScaleId);
 }

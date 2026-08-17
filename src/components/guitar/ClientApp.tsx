@@ -78,11 +78,6 @@ export default function ClientApp() {
     const {
         scaleGroup,
         scaleName,
-        previewScaleGroup,
-        previewScaleName,
-        effectiveScaleGroup,
-        effectiveScaleName,
-        hasPreview,
         showChordTones,
         blueNote,
         sixthNote,
@@ -93,9 +88,6 @@ export default function ClientApp() {
         doubleStopStrings,
         setDoubleStopStrings,
         commitScaleSelection,
-        handleRelatedPreviewToggle,
-        handleApplyPreview,
-        handleClearPreview,
         onToggleChordTones,
         onToggleBlueNote,
         onToggleSixthNote,
@@ -140,7 +132,7 @@ export default function ClientApp() {
 
     // --- Derived Data: Scales ---
     const scaleDerived = useMemo(
-        () => getScaleDerivedData(effectiveScaleGroup, effectiveScaleName, selectedKey, {
+        () => getScaleDerivedData(scaleGroup, scaleName, selectedKey, {
             showChordTones,
             blueNote,
             sixthNote,
@@ -150,8 +142,8 @@ export default function ClientApp() {
             doubleStopStrings,
         }),
         [
-            effectiveScaleGroup,
-            effectiveScaleName,
+            scaleGroup,
+            scaleName,
             selectedKey,
             showChordTones,
             blueNote,
@@ -181,9 +173,9 @@ export default function ClientApp() {
     const tonalContext = useMemo(() => ({
         selectedKey,
         tonicPitchClass: selectedKey,
-        scaleGroup: effectiveScaleGroup,
-        scaleName: effectiveScaleName,
-    }), [effectiveScaleGroup, effectiveScaleName, selectedKey]);
+        scaleGroup,
+        scaleName,
+    }), [scaleGroup, scaleName, selectedKey]);
     const [harmonicWorkspace, dispatchHarmonicWorkspace] = useReducer(
         reduceHarmonicWorkspaceState,
         createHarmonicWorkspaceState(futureVoicingScopeKey, tonalContext)
@@ -341,23 +333,6 @@ export default function ClientApp() {
         }
     }, [mode, fingering, selectedKey]);
 
-    useEffect(() => {
-        if (mode !== 'scale' || !hasPreview) return;
-
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') {
-                handleClearPreview();
-            } else if (event.key === 'Enter') {
-                handleApplyPreview();
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [mode, hasPreview, handleApplyPreview, handleClearPreview]);
-
     return (
         <div className="min-h-screen bg-[#050505] text-[#a0a0a0] selection:bg-white/20 p-8 flex flex-col items-center gap-12 overflow-x-hidden font-sans">
             <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -409,15 +384,8 @@ export default function ClientApp() {
 
                     {mode === 'scale' && (
                         <ScaleModeWorkspace
-                            effectiveScaleGroup={effectiveScaleGroup}
-                            effectiveScaleName={effectiveScaleName}
                             scaleGroup={scaleGroup}
                             scaleName={scaleName}
-                            previewScaleGroup={previewScaleGroup}
-                            previewScaleName={previewScaleName}
-                            onPreviewToggle={handleRelatedPreviewToggle}
-                            onApplyPreview={handleApplyPreview}
-                            onClearPreview={handleClearPreview}
                             showIntervals={showIntervals}
                             onToggleIntervals={() => setShowIntervals((prev) => !prev)}
                             showChordTones={showChordTones}
