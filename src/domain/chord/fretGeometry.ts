@@ -8,6 +8,13 @@ export const DEFAULT_THUMB_MAX_REACH_FRETS = 3;
 export const MAX_FRETTING_FINGERS = 4;
 export const THUMB_ELIGIBLE_STRING: GuitarStringIndex = 5; // low E — thumb-over technique
 
+/** A group of 2 strings coincidentally sharing a fret is always equally playable as two ordinary
+ *  independent fingers, so it carries none of a *real* barre's distinguishing weight/positional
+ *  consequences — this is the single shared threshold for "wide enough to actually count as a
+ *  barre" that every consumer (technique classification, barre-width scoring, the barre-ordering
+ *  playability gate) must agree on, rather than three independently hardcoded "3"s. */
+export const MIN_STRINGS_FOR_REAL_BARRE = 3;
+
 export function getFretDistanceMm(fretA: number, fretB: number, scaleLengthMm: number = DEFAULT_SCALE_LENGTH_MM): number {
     const low = Math.min(fretA, fretB);
     const high = Math.max(fretA, fretB);
@@ -129,7 +136,7 @@ function countFingerGroups(points: FingeringPoint[], openStringSet: Set<GuitarSt
  * necessarily a later one, since it isn't nearest the nut — would have to reach behind it.
  */
 function hasBarreBehindAnUnnestedGroup(groups: FretGroup[]): boolean {
-    const barreGroups = groups.filter((group) => group.isBarre && group.strings.length >= 3);
+    const barreGroups = groups.filter((group) => group.isBarre && group.strings.length >= MIN_STRINGS_FOR_REAL_BARRE);
     if (barreGroups.length === 0) {
         return false;
     }

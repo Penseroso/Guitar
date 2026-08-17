@@ -2,6 +2,7 @@ import { deriveRequiredDegrees } from './degreeRequirements';
 import {
     DEFAULT_MAX_HAND_SPAN_MM,
     DEFAULT_SCALE_LENGTH_MM,
+    MIN_STRINGS_FOR_REAL_BARRE,
     classifyFrettedGroups,
     getFretDistanceMm,
     type FingeringPoint,
@@ -241,7 +242,7 @@ function classifyTechniqueTag(voicing: ResolvedVoicing, metrics: VoicingShapeMet
     if (voicing.descriptor.family === 'shell') {
         return 'shell';
     }
-    if (metrics.barreNoteCount >= 3 && metrics.playedCount >= MIN_PLAYED_STRINGS_FOR_BARRE) {
+    if (metrics.barreNoteCount >= MIN_STRINGS_FOR_REAL_BARRE && metrics.playedCount >= MIN_PLAYED_STRINGS_FOR_BARRE) {
         return 'barre';
     }
     if (metrics.openStringCount > 0) {
@@ -321,7 +322,7 @@ export function scoreResolvedVoicing(
 
     // --- Barre width (supplements finger economy — a wide barre costs the same one "finger"
     // but isn't as easy to fret cleanly as a narrow one) -----------------------------------
-    if (metrics.barreNoteCount >= 3) {
+    if (metrics.barreNoteCount >= MIN_STRINGS_FOR_REAL_BARRE) {
         score += (metrics.barreNoteCount - 2) * WEIGHTS.barreWidthPenaltyPerString;
         reasons.push(`Wide barre across ${metrics.barreNoteCount} strings.`);
     }
