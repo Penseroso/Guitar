@@ -1,6 +1,7 @@
 // Pure Roman-numeral-degree theory — instrument-agnostic (no tuning/string/fret involved).
 
 import { getKeyName } from '@/domain/shared/keys';
+import { getChordRegistryEntryByLegacyType } from '@/domain/chord/registry';
 
 export const ROMAN_NUMERAL_CHORDS: Record<string, { interval: number; type: string }> = {
     'I': { interval: 0, type: 'Major' },
@@ -78,19 +79,13 @@ export function degreeToChordName(displayDegree: string, coreDegree: string, roo
     return `${noteName}${suffix}`;
 }
 
+/**
+ * Reuses the chord registry's own formula (via its legacyType label, e.g. "Minor 7") instead of
+ * keeping a second, hand-duplicated interval table here — one source of truth for chord
+ * intervals, shared with everything else that resolves a chord by name.
+ */
 export function getChordTones(chordType: string, root: number): number[] {
-    const chordIntervals: Record<string, number[]> = {
-        "Major": [0, 4, 7],
-        "Minor": [0, 3, 7],
-        "Diminished": [0, 3, 6],
-        "Augmented": [0, 4, 8],
-        "Major 7": [0, 4, 7, 11],
-        "Dominant 7": [0, 4, 7, 10],
-        "Minor 7": [0, 3, 7, 10],
-        "7": [0, 4, 7, 10]
-    };
-
-    const intervals = chordIntervals[chordType] || [0, 4, 7];
+    const intervals = getChordRegistryEntryByLegacyType(chordType)?.formula.intervals ?? [0, 4, 7];
     return intervals.map(i => (root + i) % 12);
 }
 

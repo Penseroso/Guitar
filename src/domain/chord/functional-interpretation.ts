@@ -1,4 +1,5 @@
 import { getKeyName } from '@/domain/shared/keys';
+import { isMinorKeyScale } from '@/domain/scale/scaleSelector';
 import { SCALE_DISPLAY_FORMULAS } from '@/domain/scale/scales';
 import { resolveChordRegistryEntry } from './helpers';
 import type { ChordRegistryEntry } from './registry';
@@ -75,12 +76,19 @@ export function interpretChordAgainstTonalCenter(
     const tonicNoteName = getKeyName(tonicPitchClass);
     const chordRootNoteName = getKeyName(chordRootPitchClass);
     const isDominantQuality = entry.tags?.includes('dominant') ?? false;
-    const quality = entry.definition.quality ?? '';
-    const isMinorQuality = quality.includes('minor') || entry.id === 'minor';
+    // Reads the chord's own formula rather than guessing from its quality label — 'diminished'
+    // and 'diminished-seventh' both have a minor 3rd (same predominant-leaning pull as 'minor')
+    // but neither quality string contains the substring "minor", so a name-based check missed
+    // them (only the special-cased 'half-diminished-7' below was ever patched around this).
+    const isMinorQuality = entry.formula.degrees.includes('b3');
     const isSuspended = entry.tags?.includes('suspended') ?? false;
     const isPowerChord = entry.id === 'power-5';
     const isBorrowedDegree = [3, 8, 10].includes(relativeInterval);
-    const isModalFrame = ['Lydian', 'Mixolydian', 'Dorian', 'Aeolian', 'Minor Pentatonic', 'Major Pentatonic', 'Jazz Minor', 'Harmonic Minor'].includes(scaleName);
+    // Any tonal frame other than Ionian is "modal" relative to the classical major/minor system —
+    // deductive, not a curated allowlist (the old list of 8 names silently excluded Phrygian,
+    // Locrian, and every Harmonic/Jazz-Minor-family and Symmetric scale, so their tonic chords
+    // were mislabeled as plain classical "Tonic Center" instead of a mode-specific center).
+    const isModalFrame = Boolean(scaleName) && scaleName !== 'Ionian';
 
     if (isPowerChord) {
         return {
@@ -149,7 +157,7 @@ export function interpretChordAgainstTonalCenter(
     }
 
     if (relativeInterval === 0) {
-        const isModalCenter = isModalFrame && scaleName !== 'Ionian';
+        const isModalCenter = isModalFrame;
         return {
             chordRootPitchClass,
             tonicPitchClass,
@@ -181,7 +189,12 @@ export function interpretChordAgainstTonalCenter(
         };
     }
 
-    if (isBorrowedDegree || scaleFamily.includes('Minor')) {
+    // Reuses isMinorKeyScale (stacked tonic-triad quality, see domain/scale/scaleSelector.ts)
+    // rather than checking whether the *group* name contains "Minor" — that check missed every
+    // minor-quality mode living inside the 'Diatonic Modes' group (Dorian, Phrygian, Aeolian),
+    // since only 'Harmonic Minor Modes'/'Jazz Minor Modes' contain the substring.
+    const isMinorKeyFrame = Boolean(scaleFamily) && Boolean(scaleName) && isMinorKeyScale(scaleFamily, scaleName);
+    if (isBorrowedDegree || isMinorKeyFrame) {
         return {
             chordRootPitchClass,
             tonicPitchClass,

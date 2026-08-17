@@ -63,10 +63,7 @@ export interface DeductiveChordSurfaceOptions {
 /**
  * Step 4 live-surface entry point: searches every voicing style (close/drop-2/drop-3/shell),
  * merges and dedupes the results, then ranks them once as a single pool so styles compete on
- * equal footing. This is the deductive-engine counterpart to voicings.ts's
- * getChordSurfaceVoicingsForChord — kept as a separate function (not a rewrite of the old one)
- * so the old curated/legacy/generated/archetype system stays fully intact until it's confirmed
- * safe to delete.
+ * equal footing.
  */
 export function getDeductiveChordSurfaceVoicingsForChord(
     entryInput: string | ChordRegistryEntry,
