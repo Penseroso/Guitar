@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo, useRef, useCallback, useReducer } from 'react';
 import { Controls } from './Controls';
-import { useProgressionAudio } from '../../features/progression/hooks/useProgressionAudio';
+import { useProgressionAudio } from './progression/useProgressionAudio';
 import { getProgressionPlaybackData } from '@/domain/progression/getProgressionPlaybackData';
 import {
     CHORD_FAMILIES,
@@ -17,18 +17,18 @@ import { TUNING } from '@/domain/shared/tuning';
 import { SCALES } from '@/domain/scale/scales';
 import { getNoteName } from '@/domain/shared/notes';
 import { Mode, Fingering } from '@/domain/shared/types';
-import { useProgression } from '../../hooks/useProgression';
-import { useScaleMode } from '../../hooks/useScaleMode';
+import { useProgression } from './progression/useProgression';
+import { useScaleMode } from './scale/useScaleMode';
 import { getScaleDerivedData } from '@/domain/scale/getScaleDerivedData';
 import {
     createHarmonicWorkspaceState,
     reduceHarmonicWorkspaceState,
 } from '../../features/harmonic-workspace/state';
-import { resolveBridgeSelection } from './chord-preview/bridge';
-import { getVoicingPresentationMeta } from './chord-preview/voicing-labels';
-import { ScaleModeWorkspace } from './workspaces/ScaleModeWorkspace';
-import { ChordModeWorkspace } from './workspaces/ChordModeWorkspace';
-import { ProgressionModeWorkspace } from './workspaces/ProgressionModeWorkspace';
+import { resolveBridgeSelection } from './chord/bridge';
+import { getVoicingPresentationMeta } from './chord/voicing-labels';
+import { ScaleModeWorkspace } from './scale/ScaleModeWorkspace';
+import { ChordModeWorkspace } from './chord/ChordModeWorkspace';
+import { ProgressionModeWorkspace } from './progression/ProgressionModeWorkspace';
 
 const CHORD_SELECTOR_ORDER_BY_FAMILY = {
     triad: ['major', 'minor', 'power-5', 'augmented', 'diminished', 'sus2', 'sus4'],

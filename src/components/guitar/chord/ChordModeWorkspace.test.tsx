@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { buildChordDefinitionFromRegistryEntry, buildChordTonesFromRegistryEntry } from '@/domain/chord';
 import { resolveVoicingTemplate } from '@/domain/chord/resolver';
 import type { VoicingCandidate } from '@/domain/chord/types';
-import { getVoicingPresentationMeta } from '../chord-preview/voicing-labels';
+import { getVoicingPresentationMeta } from './voicing-labels';
 import { ChordModeWorkspace } from './ChordModeWorkspace';
 
 function buildWorkspaceCandidate(rootFret = 3, id = 'workspace-major'): VoicingCandidate {

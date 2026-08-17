@@ -2,13 +2,13 @@
 
 import React from 'react';
 
-import { Fretboard } from '../../Fretboard';
-import { RelatedScalesStrip } from '../scale-selector/RelatedScalesStrip';
+import { Fretboard } from '../shared/Fretboard';
+import { RelatedScalesStrip } from './RelatedScalesStrip';
 import { TogglePill } from '../../ui/design-system/TogglePill';
 import { SlidersHorizontal } from 'lucide-react';
 import type { HarmonicInterval, PlayableDoubleStop } from '@/domain/scale/types';
 import type { Fingering } from '@/domain/shared/types';
-import { ScaleChordRecommendationsPanel } from '../scale-mode/ScaleChordRecommendationsPanel';
+import { ScaleChordRecommendationsPanel } from '../cross-domain/ScaleChordRecommendationsPanel';
 
 interface ScaleModeWorkspaceProps {
     effectiveScaleGroup: string;

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { NOTES } from '@/domain/shared/notes';
 import { TUNING, INLAYS, DOUBLE_INLAYS } from '@/domain/shared/tuning';
 import { FretboardProps } from '@/domain/shared/types';
-import styles from '../styles/fretboard.module.css';
+import styles from '@/styles/fretboard.module.css';
 
 // Precise Fret Widths for columns 0 to 24
 const FRET_WIDTHS = [

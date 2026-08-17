@@ -4,7 +4,7 @@
  */
 
 import { useCallback, useRef } from 'react';
-import { audioEngine } from '../../../utils/audio/audioEngine';
+import { audioEngine } from '@/utils/audio/audioEngine';
 import { resolveProgressionChordPitches } from '@/domain/progression/resolveProgressionChordPitches';
 
 export function useProgressionAudio() {

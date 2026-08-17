@@ -13,7 +13,7 @@ import {
 } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 
-import { ProgressionInspector } from '../../../features/progression/components/ProgressionInspector';
+import { ProgressionInspector } from './ProgressionInspector';
 import type { ProgressionPlaybackData } from '@/domain/progression/getProgressionPlaybackData';
 import { degreeToChordName, getChordFromDegree } from '@/domain/progression/degrees';
 import { getNoteName } from '@/domain/shared/notes';

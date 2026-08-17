@@ -2,12 +2,12 @@
 
 import React from 'react';
 
-import { Fretboard } from '../../Fretboard';
+import { Fretboard } from '../shared/Fretboard';
 import { TogglePill } from '../../ui/design-system/TogglePill';
-import { CompactVoicingDiagram } from '../chord-preview/CompactVoicingDiagram';
+import { CompactVoicingDiagram } from './CompactVoicingDiagram';
 import { type VoicingCandidate } from '@/domain/chord';
 import type { Fingering } from '@/domain/shared/types';
-import { getVoicingPresentationMeta } from '../chord-preview/voicing-labels';
+import { getVoicingPresentationMeta } from './voicing-labels';
 
 interface ChordSelectorOption {
     id: string;

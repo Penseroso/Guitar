@@ -7,7 +7,7 @@ import {
     type VisibleScaleFamily,
 } from '@/domain/scale/scaleSelector';
 import { SelectPill } from '../../ui/design-system/SelectPill';
-import { ScaleOrbit } from '../scale-selector/ScaleOrbit';
+import { ScaleOrbit } from './ScaleOrbit';
 
 interface ScaleSelectorPanelProps {
     selectedScaleGroup: string;
