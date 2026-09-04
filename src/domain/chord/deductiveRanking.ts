@@ -44,6 +44,9 @@ export interface VoicingScore {
 export interface ScoreResolvedVoicingOptions {
     scaleLengthMm?: number;
     maxHandSpanMm?: number;
+    /** R&D-only scoring calibration hook. Production callers use the documented defaults; the
+     *  benchmark can vary generic, non-corpus features without carrying a shape lookup table. */
+    weightOverrides?: Partial<DeductiveRankingWeights>;
 }
 
 export interface VoicingShapeMetrics {
@@ -92,7 +95,7 @@ const TRIVIAL_HAND_SPAN_MM = 40;
  */
 const INNER_STRING_INDICES = new Set([1, 2, 3]);
 
-const WEIGHTS = {
+export const DEFAULT_DEDUCTIVE_RANKING_WEIGHTS = {
     handSpanComfortMax: 20,
     fingerEconomyPerFinger: -6,
     /** USER INSTRUCTION — see isDiagonalRollShape. A flat credit, not a per-finger multiplier:
@@ -126,6 +129,10 @@ const WEIGHTS = {
      *  make structurally impossible. If this ever fires, something upstream is broken. */
     structuralSafetyNetPenalty: -500,
 } as const;
+
+export type DeductiveRankingWeights = {
+    [Key in keyof typeof DEFAULT_DEDUCTIVE_RANKING_WEIGHTS]: number;
+};
 
 /**
  * USER INSTRUCTION (explicitly requested, not derived like the rest of this file's geometry
@@ -273,6 +280,10 @@ export function scoreResolvedVoicing(
         ? [...voicing.missingRequiredDegrees]
         : requiredDegrees.filter((degree) => !playedDegrees.has(degree));
     const metrics = getVoicingShapeMetrics(voicing, scaleLengthMm);
+    const weights: DeductiveRankingWeights = {
+        ...DEFAULT_DEDUCTIVE_RANKING_WEIGHTS,
+        ...options.weightOverrides,
+    };
     const reasons: string[] = [];
     let score = 0;
 
@@ -287,7 +298,7 @@ export function scoreResolvedVoicing(
         : false;
     const hasUnexpectedMissingDegree = missingRequiredDegrees.some((degree) => degree !== '1');
     if (!voicing.playable || hasUnexpectedMissingDegree || hasOutOfFormulaTone) {
-        score += WEIGHTS.structuralSafetyNetPenalty;
+        score += weights.structuralSafetyNetPenalty;
         reasons.push('Fails a structural constraint the search should already guarantee.');
     }
 
@@ -301,19 +312,19 @@ export function scoreResolvedVoicing(
     const comfortRatio = metrics.spanMm <= trivialSpanMm
         ? 1
         : Math.max(0, 1 - (metrics.spanMm - trivialSpanMm) / Math.max(1, maxHandSpanMm - trivialSpanMm));
-    score += comfortRatio * WEIGHTS.handSpanComfortMax;
+    score += comfortRatio * weights.handSpanComfortMax;
     if (metrics.spanMm > trivialSpanMm) {
         reasons.push(`Hand span ${metrics.spanMm.toFixed(0)}mm of ${maxHandSpanMm}mm allowed.`);
     }
 
     // --- Finger economy ------------------------------------------------------------------------
     if (metrics.fingerGroupCount > 1) {
-        score += (metrics.fingerGroupCount - 1) * WEIGHTS.fingerEconomyPerFinger;
+        score += (metrics.fingerGroupCount - 1) * weights.fingerEconomyPerFinger;
         reasons.push(`Needs ${metrics.fingerGroupCount} independent fretting fingers.`);
 
         // USER INSTRUCTION — see isDiagonalRollShape in getVoicingShapeMetrics.
         if (metrics.isDiagonalRollShape) {
-            score += WEIGHTS.diagonalRollBonus;
+            score += weights.diagonalRollBonus;
             reasons.push('Fingers form one smooth diagonal roll rather than a scattered reach.');
         }
     } else {
@@ -323,7 +334,7 @@ export function scoreResolvedVoicing(
     // --- Barre width (supplements finger economy — a wide barre costs the same one "finger"
     // but isn't as easy to fret cleanly as a narrow one) -----------------------------------
     if (metrics.barreNoteCount >= MIN_STRINGS_FOR_REAL_BARRE) {
-        score += (metrics.barreNoteCount - 2) * WEIGHTS.barreWidthPenaltyPerString;
+        score += (metrics.barreNoteCount - 2) * weights.barreWidthPenaltyPerString;
         reasons.push(`Wide barre across ${metrics.barreNoteCount} strings.`);
     }
 
@@ -331,44 +342,44 @@ export function scoreResolvedVoicing(
     if (metrics.internalMutedCount > 0) {
         const adjacentCount = metrics.internalMutedCount - metrics.isolatedInternalMuteCount;
         if (adjacentCount > 0) {
-            score += adjacentCount * WEIGHTS.internalMuteAdjacentPenalty;
+            score += adjacentCount * weights.internalMuteAdjacentPenalty;
             reasons.push(`${adjacentCount} internal muted-string gap${adjacentCount === 1 ? '' : 's'} naturally deadened by an adjacent finger.`);
         }
         if (metrics.isolatedInternalMuteCount > 0) {
             const plainIsolated = metrics.isolatedInternalMuteCount - metrics.openFlankedIsolatedMuteCount;
             const weightedUnits = plainIsolated + (metrics.openFlankedIsolatedMuteCount * 2);
-            score += ((weightedUnits * (weightedUnits + 1)) / 2) * WEIGHTS.internalMuteIsolatedPenalty;
+            score += ((weightedUnits * (weightedUnits + 1)) / 2) * weights.internalMuteIsolatedPenalty;
             reasons.push(`${metrics.isolatedInternalMuteCount} isolated muted-string gap${metrics.isolatedInternalMuteCount === 1 ? '' : 's'} with no fretted neighbor to lean on${metrics.openFlankedIsolatedMuteCount > 0 ? ` (${metrics.openFlankedIsolatedMuteCount} flanked by open strings)` : ''}.`);
         }
     }
 
     // --- Fretboard position -------------------------------------------------------------------
     if (metrics.maxFret <= 7) {
-        score += WEIGHTS.lowPositionBonus;
+        score += weights.lowPositionBonus;
         reasons.push('Lives in a low-to-mid fret region.');
     } else if (metrics.maxFret <= 12) {
-        score += WEIGHTS.standardPositionBonus;
+        score += weights.standardPositionBonus;
         reasons.push('Lives in a standard fret region.');
     } else {
-        score += WEIGHTS.highPositionPenalty;
+        score += weights.highPositionPenalty;
         reasons.push('Lives in a high fret region.');
     }
 
     // --- Open-string usage ---------------------------------------------------------------------
     if (metrics.openStringCount > 0 && metrics.maxFret <= 5) {
-        score += Math.min(metrics.openStringCount, 2) * WEIGHTS.openStringBonus;
+        score += Math.min(metrics.openStringCount, 2) * weights.openStringBonus;
         reasons.push(`Uses ${metrics.openStringCount} practical open string${metrics.openStringCount === 1 ? '' : 's'}.`);
     } else if (metrics.openStringCount >= 3 && metrics.maxFret >= 8) {
-        score += WEIGHTS.highOpenMixPenalty;
+        score += weights.highOpenMixPenalty;
         reasons.push('Mixes several open strings with a high fret position.');
     }
 
     // --- Root presence (the one recognized exception to the structural safety net) -----------
     if (voicing.descriptor.hasRoot) {
-        score += WEIGHTS.rootPresenceBonus;
+        score += weights.rootPresenceBonus;
         reasons.push('Contains the chord root.');
     } else {
-        score += WEIGHTS.rootPresencePenalty;
+        score += weights.rootPresencePenalty;
         reasons.push('Omits the chord root.');
     }
 
@@ -381,10 +392,10 @@ export function scoreResolvedVoicing(
     const rootOccurrences = voicing.descriptor.rootOccurrences ?? [];
     if (rootStringHints?.length && rootOccurrences.length > 0) {
         if (rootOccurrences.some((string) => rootStringHints.includes(string))) {
-            score += WEIGHTS.rootHintBonus;
+            score += weights.rootHintBonus;
             reasons.push('Matches the registry root-string hint.');
         } else {
-            score += WEIGHTS.rootHintPenalty;
+            score += weights.rootHintPenalty;
             reasons.push('Root string falls outside the registry hint.');
         }
     }
@@ -392,14 +403,14 @@ export function scoreResolvedVoicing(
     // --- Root-in-bass / inversion ---------------------------------------------------------------
     if (voicing.chord.slashBassPitchClass !== undefined) {
         if (voicing.satisfiesSlashBass) {
-            score += WEIGHTS.slashBassBonus;
+            score += weights.slashBassBonus;
             reasons.push('Respects the specified bass note.');
         } else {
-            score += WEIGHTS.slashBassPenalty;
+            score += weights.slashBassPenalty;
             reasons.push('Does not match the specified bass.');
         }
     } else if (voicing.descriptor.inversion === 'root-position') {
-        score += WEIGHTS.rootInBassBonus;
+        score += weights.rootInBassBonus;
         reasons.push('Keeps the root in the bass.');
     } else if (voicing.descriptor.inversion === 'inversion') {
         // Root-in-bass only matters once the voicing reaches down into the low strings — a grip
@@ -407,7 +418,7 @@ export function scoreResolvedVoicing(
         // lowest note is.
         const reachesLowStrings = (voicing.descriptor.lowestPlayedString ?? 0) >= 3;
         if (reachesLowStrings) {
-            score += WEIGHTS.rootInBassPenalty;
+            score += weights.rootInBassPenalty;
             reasons.push('Puts a non-root tone in the bass.');
         } else {
             reasons.push('Upper-string grip — bass note left open.');
@@ -424,7 +435,7 @@ export function scoreResolvedVoicing(
             (tone) => !tone.isRequired && playedPitchClasses.has(tone.pitchClass)
         ).length;
         if (optionalCoverage > 0) {
-            score += optionalCoverage * WEIGHTS.colorToneBonus;
+            score += optionalCoverage * weights.colorToneBonus;
             reasons.push(`Includes ${optionalCoverage} optional color tone${optionalCoverage === 1 ? '' : 's'}.`);
         }
     }
@@ -433,7 +444,7 @@ export function scoreResolvedVoicing(
     // two tags only; shell is deliberately minimal, standard has no strong prior either way) ---
     const techniqueTag = classifyTechniqueTag(voicing, metrics);
     if (techniqueTag === 'open' || techniqueTag === 'barre') {
-        score += metrics.playedCount * WEIGHTS.fullnessBonusPerString;
+        score += metrics.playedCount * weights.fullnessBonusPerString;
         if (metrics.playedCount >= 5) {
             reasons.push(`Full ${techniqueTag} voicing (${metrics.playedCount} strings ringing).`);
         }
@@ -446,7 +457,7 @@ export function scoreResolvedVoicing(
             (note) => note.isMuted && INNER_STRING_INDICES.has(note.string)
         ).length;
         if (mutedInnerStringCount > 0) {
-            score += mutedInnerStringCount * WEIGHTS.innerStringMutePenalty;
+            score += mutedInnerStringCount * weights.innerStringMutePenalty;
             reasons.push(`${techniqueTag === 'open' ? 'Open' : 'Barre'} voicing mutes ${mutedInnerStringCount} of strings 2-4, undercutting the ${techniqueTag === 'open' ? 'open-ring' : 'clean-barre'} feel.`);
         }
     }
