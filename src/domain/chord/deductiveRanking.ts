@@ -1,6 +1,6 @@
 import { deriveRequiredDegrees } from './degreeRequirements';
 import {
-    DEFAULT_MAX_HAND_SPAN_MM,
+    DEFAULT_COMFORTABLE_HAND_SPAN_MM,
     DEFAULT_SCALE_LENGTH_MM,
     MIN_STRINGS_FOR_REAL_BARRE,
     classifyFrettedGroups,
@@ -263,7 +263,7 @@ export function scoreResolvedVoicing(
 ): VoicingScore {
     const entry = resolveChordRegistryEntry(entryInput);
     const scaleLengthMm = options.scaleLengthMm ?? DEFAULT_SCALE_LENGTH_MM;
-    const maxHandSpanMm = options.maxHandSpanMm ?? DEFAULT_MAX_HAND_SPAN_MM;
+    const maxHandSpanMm = options.maxHandSpanMm ?? DEFAULT_COMFORTABLE_HAND_SPAN_MM;
     const playedDegrees = collectPlayedDegrees(voicing.notes);
     const requiredDegrees = deriveRequiredDegrees(entry);
     const matchedRequiredDegrees = voicing.missingRequiredDegrees

@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "policyVersion": "phase0-v1",
+  "generatedAt": "2026-09-04T09:54:51.294Z",
+  "input": {
+    "metadataEntries": 26181,
+    "resolved": 26160,
+    "excluded": 21,
+    "resolutionRate": 0.999198,
+    "exclusionReasons": {
+      "metadata-path-not-found": 21
+    }
+  },
+  "inventory": {
+    "tokenFiles": 26160,
+    "totalTokens": 116685978,
+    "format": {
+      "gp3": 13821,
+      "gp4": 12311,
+      "gp5": 28
+    },
+    "originalSplit": {
+      "training": 23698,
+      "validation": 2462
+    },
+    "downtune": {
+      "downtune:-1": 1989,
+      "downtune:-2": 1210,
+      "downtune:-3": 373,
+      "downtune:-4": 226,
+      "downtune:-5": 177,
+      "downtune:-6": 16,
+      "downtune:0": 22169
+    },
+    "guitarNoteTokens": 43090388,
+    "negativeFretNotes": 633318,
+    "string7Notes": 102683,
+    "maxFret": 34
+  },
+  "duplicates": {
+    "exactMusicBody": {
+      "groups": 830,
+      "files": 1694,
+      "maxGroupSize": 4
+    },
+    "normalizedArtistTitleCandidates": {
+      "groups": 2562,
+      "files": 6030,
+      "maxGroupSize": 10
+    }
+  },
+  "splits": {
+    "songGrouped": {
+      "groupCount": 22107,
+      "training": 23591,
+      "validation": 2569,
+      "validationRatio": 0.098203,
+      "exactBodyLeakageGroups": 0,
+      "identityLeakageGroups": 0
+    },
+    "artistGrouped": {
+      "groupCount": 8291,
+      "training": 23665,
+      "validation": 2495,
+      "validationRatio": 0.095375,
+      "exactBodyLeakageGroups": 0,
+      "identityLeakageGroups": 0,
+      "knownArtistLeakageGroups": 0
+    }
+  },
+  "reproducibility": {
+    "manifestSha256": "b7a2f935a798c9ebcb91ec6ee70929ef6f725760261ef7ff18e40325c81765a2",
+    "metadataSha256": "669127e39b5fa23430d01f4173c1bd2a4c2b5d4a01e7bfdf372e85097bdce049",
+    "benchmarkPayloadSha256": "c76c0f41023f1bc7c3810548dacc39e4386764d1438e2c5fd43354a6b0f2b8c0"
+  },
+  "evidenceTiers": {
+    "reference": "Independent explicit fingering fixtures, currently chords-db; never learned from DadaGP.",
+    "corpus": "Deduplicated direct DadaGP observations whose strength depends on song, artist, and transposition support.",
+    "exploratory": "Single occurrences, ambiguous chords, non-product cohorts, or inferred key/scale/context; never a hard-rule gate."
+  }
+}

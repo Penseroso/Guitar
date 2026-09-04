@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "policyVersion": "phase1-evidence-v1",
+  "generatedAt": "2026-09-04T09:55:54.763Z",
+  "phase0ManifestSha256": "b7a2f935a798c9ebcb91ec6ee70929ef6f725760261ef7ff18e40325c81765a2",
+  "thresholds": {
+    "referenceFalseRejectRate": 0.02,
+    "strongTopologyFamilyFalseRejectRate": 0.01,
+    "strongSongMacroFalseRejectRate": 0.01,
+    "eligibleSongMacroFalseRejectRate": 0.02,
+    "minimumRelativeImprovement": 0.5,
+    "generatorRecallNonInferiorityMargin": -0.0025
+  },
+  "reference": {
+    "representedChordFamilies": 19,
+    "missingChordFamilies": [
+      "power-5"
+    ],
+    "labeledPositions": 914,
+    "annotatedPositions": 914,
+    "uniqueAbsoluteShapes": 902,
+    "rejectedUniqueShapes": 0,
+    "falseRejectRate": 0,
+    "holdoutShapes": 285,
+    "holdoutRejected": 0,
+    "holdoutFalseRejectRate": 0,
+    "rejectionReasons": {},
+    "positionsByChord": {
+      "augmented": {
+        "total": 48,
+        "rejected": 0
+      },
+      "diminished": {
+        "total": 48,
+        "rejected": 0
+      },
+      "diminished-7": {
+        "total": 48,
+        "rejected": 0
+      },
+      "dominant-11": {
+        "total": 48,
+        "rejected": 0
+      },
+      "dominant-13": {
+        "total": 48,
+        "rejected": 0
+      },
+      "dominant-7": {
+        "total": 48,
+        "rejected": 0
+      },
+      "dominant-7-flat-9": {
+        "total": 48,
+        "rejected": 0
+      },
+      "dominant-9": {
+        "total": 49,
+        "rejected": 0
+      },
+      "half-diminished-7": {
+        "total": 48,
+        "rejected": 0
+      },
+      "hendrix-7-sharp-9": {
+        "total": 48,
+        "rejected": 0
+      },
+      "major": {
+        "total": 48,
+        "rejected": 0
+      },
+      "major-6": {
+        "total": 48,
+        "rejected": 0
+      },
+      "major-7": {
+        "total": 48,
+        "rejected": 0
+      },
+      "major-9": {
+        "total": 48,
+        "rejected": 0
+      },
+      "minor": {
+        "total": 48,
+        "rejected": 0
+      },
+      "minor-7": {
+        "total": 49,
+        "rejected": 0
+      },
+      "minor-9": {
+        "total": 48,
+        "rejected": 0
+      },
+      "sus2": {
+        "total": 48,
+        "rejected": 0
+      },
+      "sus4": {
+        "total": 48,
+        "rejected": 0
+      }
+    }
+  },
+  "corpus": {
+    "parsedOnsets": 16677108,
+    "primaryOnsets": 3906835,
+    "ambiguousOnsets": 689452,
+    "exploratoryOnsets": 12080821,
+    "uniqueAbsoluteShapes": 6782,
+    "relativeFamilies": 3753,
+    "strongFamilies": 1070,
+    "veryStrongFamilies": 267,
+    "referenceCorroboratedStrongFamilies": 76,
+    "strongTopologyRejectedFamilies": 0,
+    "strongTopologyFalseRejectRate": 0,
+    "veryStrongTopologyRejectedFamilies": 0,
+    "referenceCorroboratedRejectedFamilies": 0,
+    "veryStrongAbsoluteRejectedShapes": 0,
+    "strongSongMacro": {
+      "total": 133136,
+      "rejected": 5,
+      "rate": 0.000038
+    },
+    "strongSongHoldout": {
+      "total": 13147,
+      "rejected": 2,
+      "rate": 0.000152
+    },
+    "strongArtistHoldout": {
+      "total": 12428,
+      "rejected": 2,
+      "rate": 0.000161
+    },
+    "eligibleSongMacro": {
+      "total": 137442,
+      "rejected": 253,
+      "rate": 0.001841
+    },
+    "eligibleSongHoldout": {
+      "total": 13589,
+      "rejected": 27,
+      "rate": 0.001987
+    },
+    "eligibleArtistHoldout": {
+      "total": 12755,
+      "rejected": 27,
+      "rate": 0.002117
+    },
+    "topologyFamilyViolations": 0,
+    "handSpanMonotonicityViolations": 0
+  },
+  "generator": {
+    "songMacroTotal": 137442,
+    "songMacroReproduced": 135501,
+    "recall": 0.985878,
+    "deltaFromFrozenBaseline": 0.04148000000000007
+  },
+  "baseline": {
+    "createdThisRun": false,
+    "referenceFalseRejectRate": 0.114191,
+    "corpusStrongSongMacroRate": 0.036654,
+    "generatorRecall": 0.944398,
+    "corpusRelativeImprovement": 0.9989632782233862,
+    "newlyRejectedReference": 0
+  },
+  "gates": {
+    "referenceOverall": true,
+    "referenceHoldout": true,
+    "noNewReferenceRejects": true,
+    "veryStrongTopology": true,
+    "corroboratedStrong": true,
+    "strongTopologyRate": true,
+    "strongSongMacro": true,
+    "strongSongHoldout": true,
+    "strongArtistHoldout": true,
+    "eligibleSongMacro": true,
+    "eligibleSongHoldout": true,
+    "eligibleArtistHoldout": true,
+    "veryStrongAbsolute": true,
+    "corpusRelativeImprovement": true,
+    "transpositionTopology": true,
+    "handSpanMonotonicity": true,
+    "generatorNonInferiority": true
+  },
+  "failedGates": [],
+  "decision": "GO",
+  "reproducibility": {
+    "payloadSha256": "e196896e0ea0e878d766b1305b6d369c663bf074984f96323b2e67bd093e5415"
+  }
+}
