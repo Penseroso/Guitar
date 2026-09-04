@@ -36,13 +36,27 @@ describe('evaluateHandPlayability', () => {
         expect(result.playable).toBe(true);
     });
 
-    it('rejects a shape needing more than 4 fingers when the thumb is not allowed', () => {
+    it('keeps five inferred groups as uncertain because coordinates cannot expose every roll or partial barre', () => {
         const result = evaluateHandPlayability([
             { string: 5, fret: 1 },
             { string: 4, fret: 2 },
             { string: 3, fret: 3 },
             { string: 2, fret: 4 },
             { string: 1, fret: 5 },
+        ]);
+
+        expect(result.playable).toBe(true);
+        expect(result.fingerGroupCount).toBe(5);
+    });
+
+    it('rejects six independently fretted groups', () => {
+        const result = evaluateHandPlayability([
+            { string: 5, fret: 1 },
+            { string: 4, fret: 2 },
+            { string: 3, fret: 3 },
+            { string: 2, fret: 4 },
+            { string: 1, fret: 5 },
+            { string: 0, fret: 6 },
         ]);
 
         expect(result.playable).toBe(false);
@@ -81,10 +95,10 @@ describe('evaluateHandPlayability', () => {
 
         expect(result.usesThumb).toBe(false);
         expect(result.playable).toBe(false);
-        expect(result.reason).toBe('too-many-fingers');
+        expect(result.reason).toBe('exceeds-hand-span');
     });
 
-    it('rejects a shape whose fret span exceeds the hand-span limit', () => {
+    it('rejects a shape whose physical span exceeds the hard impossibility limit', () => {
         const result = evaluateHandPlayability([
             { string: 5, fret: 1 },
             { string: 1, fret: 10 },
@@ -94,7 +108,7 @@ describe('evaluateHandPlayability', () => {
         expect(result.reason).toBe('exceeds-hand-span');
     });
 
-    it('rejects two non-adjacent strings sharing a fret when a string between them needs a lower fret (cannot reach behind a barre)', () => {
+    it('does not collapse separated same-fret notes into a barre across a lower intervening fret', () => {
         // string5@8 and string1@8 look like a "barre" by fret-value alone, but string4 in
         // between needs fret 7 — behind the barre, physically unreachable by another finger.
         const result = evaluateHandPlayability([
@@ -105,10 +119,10 @@ describe('evaluateHandPlayability', () => {
             { string: 1, fret: 8 },
         ]);
 
-        // The failed "barre" splits into 2 solo fingers (string5, string1) + 3 solo fingers
-        // (string4, string3, string2) = 5, over budget.
-        expect(result.playable).toBe(false);
-        expect(result.reason).toBe('too-many-fingers');
+        // The failed wide barre remains five inferred groups. Five is retained as uncertain rather
+        // than hard-impossible because coordinate-only input cannot expose every roll/technique.
+        expect(result.playable).toBe(true);
+        expect(result.fingerGroupCount).toBe(5);
     });
 
     it('allows a barre with another finger arching over it in front (higher fret) on an inner string — classic F-shape technique', () => {
@@ -139,10 +153,7 @@ describe('evaluateHandPlayability', () => {
         expect(result.fingerGroupCount).toBe(2);
     });
 
-    // Regression for a real reported issue (Cmaj7's [12,12,12,10,10,8]): a wide (3+ string) real
-    // barre sitting *farther* from the nut than a simpler, non-nested group is physically
-    // impossible — the barring finger would have to reach behind an earlier, simpler finger.
-    it('rejects a real (3+ string) barre sitting farther from the nut than a simpler, non-overlapping group', () => {
+    it('allows a high mini-barre behind lower independent groups', () => {
         const result = evaluateHandPlayability([
             { string: 0, fret: 12 },
             { string: 1, fret: 12 },
@@ -152,8 +163,21 @@ describe('evaluateHandPlayability', () => {
             { string: 5, fret: 8 },
         ]);
 
-        expect(result.playable).toBe(false);
-        expect(result.reason).toBe('barre-behind-unreachable-position');
+        expect(result.playable).toBe(true);
+        expect(result.fingerGroupCount).toBe(3);
+    });
+
+    it('uses a reachable partial mini-barre instead of treating a same-fret set as all-or-nothing', () => {
+        const result = evaluateHandPlayability([
+            { string: 0, fret: 5 },
+            { string: 1, fret: 5 },
+            { string: 2, fret: 5 },
+            { string: 3, fret: 4 },
+            { string: 4, fret: 5 },
+        ]);
+
+        expect(result.playable).toBe(true);
+        expect(result.fingerGroupCount).toBe(3);
     });
 
     it('does not apply the barre-ordering constraint to a 2-string same-fret coincidence (classic open E major, 0-2-2-1-0-0)', () => {
