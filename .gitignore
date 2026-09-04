@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local research corpus and private per-song benchmark artifacts.
+# Only aggregate, non-identifying Phase 0 results belong in the repository.
+/DadaGP-v1.1/
+/.dadagp/

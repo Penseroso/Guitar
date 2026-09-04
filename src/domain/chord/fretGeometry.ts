@@ -3,9 +3,15 @@ import type { GuitarStringIndex } from './types';
 // Pure fretboard physics — no chord/harmony knowledge. Standard 25.5" scale by default;
 // fret n sits scaleLength * (1 - 2^(-n/12)) from the nut (12-tone-equal-temperament fret rule).
 export const DEFAULT_SCALE_LENGTH_MM = 647.7; // 25.5"
-export const DEFAULT_MAX_HAND_SPAN_MM = 95;
+/** Corpus-backed impossibility cutoff. The former 95mm value rejected many independently repeated
+ *  3-5 fret stretches; 95mm remains the ranking comfort reference below. */
+export const DEFAULT_MAX_HAND_SPAN_MM = 180;
+export const DEFAULT_COMFORTABLE_HAND_SPAN_MM = 95;
 export const DEFAULT_THUMB_MAX_REACH_FRETS = 3;
 export const MAX_FRETTING_FINGERS = 4;
+/** Geometry alone can over-count a roll or partial barre that the tab format does not annotate.
+ * Five inferred groups are therefore uncertain/awkward, not proof of impossibility. */
+export const MAX_HARD_FINGER_GROUPS = 5;
 export const THUMB_ELIGIBLE_STRING: GuitarStringIndex = 5; // low E — thumb-over technique
 
 /** A group of 2 strings coincidentally sharing a fret is always equally playable as two ordinary
@@ -38,7 +44,7 @@ export interface HandPlayabilityOptions {
 
 export interface HandPlayabilityResult {
     playable: boolean;
-    reason?: 'too-many-fingers' | 'exceeds-hand-span' | 'barre-behind-unreachable-position';
+    reason?: 'too-many-fingers' | 'exceeds-hand-span';
     usesThumb: boolean;
     fingerGroupCount: number;
 }
@@ -112,60 +118,64 @@ export function classifyFrettedGroups(points: FingeringPoint[], openStrings: Gui
     }));
 }
 
-/** Barre-aware finger count for a set of fretting points — strings sharing a fret only collapse
- *  into one virtual finger when `canFormBarre` says that barre is physically reachable. */
-function countFingerGroups(points: FingeringPoint[], openStringSet: Set<GuitarStringIndex>): number {
-    const groups = classifyFrettedGroups(points, Array.from(openStringSet));
-    return groups.reduce((count, group) => count + (group.isBarre ? 1 : group.strings.length), 0);
-}
+/** Minimum fingers needed at one fret. A same-fret set is not all-or-nothing: a player can use a
+ * mini-barre for one reachable run and a separate finger for another point at that fret. */
+function countMinimumFingerGroupsAtFret(
+    fret: number,
+    stringsAtFret: GuitarStringIndex[],
+    fretByString: Map<GuitarStringIndex, number>,
+    openStringSet: Set<GuitarStringIndex>
+): number {
+    const strings = [...stringsAtFret].sort((a, b) => a - b);
+    const fullMask = (1 << strings.length) - 1;
+    const candidates: number[] = strings.map((_, index) => 1 << index);
 
-/**
- * A *real* forced barre (3+ strings — a 2-string same-fret coincidence is always also playable as
- * two ordinary independent fingers, so it carries none of a true barre's positional constraint;
- * see classifyTechniqueTag's identical "3+ strings" bar for the same reasoning) must sit at the
- * fret closest to the nut relative to every other group whose reach doesn't nest with its own —
- * the hand's fingers fan out with the barring finger nearest the nut and later fingers
- * progressively farther away, so a group needing a real barre can't sit *farther* from the nut
- * than a simpler, independent group outside its reach. Nesting is checked symmetrically: either
- * group's string-range containing the other's is the standard "arch over" relationship (e.g. the
- * classic movable A-shape/E-shape barre chord, where a wide low barre reaches under a narrower
- * higher group, or that narrower group is what's being checked against a wider one it sits inside
- * of) and is always fine regardless of which side is at the lower fret. Only two truly
- * side-by-side, non-overlapping groups where the simpler one sits nearer the nut are impossible:
- * a simpler finger already claimed the position nearer the nut, and the barring finger —
- * necessarily a later one, since it isn't nearest the nut — would have to reach behind it.
- */
-function hasBarreBehindAnUnnestedGroup(groups: FretGroup[]): boolean {
-    const barreGroups = groups.filter((group) => group.isBarre && group.strings.length >= MIN_STRINGS_FOR_REAL_BARRE);
-    if (barreGroups.length === 0) {
-        return false;
-    }
-
-    for (const barre of barreGroups) {
-        const barreMin = Math.min(...barre.strings);
-        const barreMax = Math.max(...barre.strings);
-        for (const other of groups) {
-            if (other === barre) {
-                continue;
+    for (let left = 0; left < strings.length; left++) {
+        for (let right = left + 1; right < strings.length; right++) {
+            const minString = strings[left];
+            const maxString = strings[right];
+            const covered = strings.filter((string) => string >= minString && string <= maxString);
+            if (!canFormBarre(fret, covered, fretByString, openStringSet)) continue;
+            let mask = 0;
+            for (let index = 0; index < strings.length; index++) {
+                if (strings[index] >= minString && strings[index] <= maxString) mask |= 1 << index;
             }
-            const otherMin = Math.min(...other.strings);
-            const otherMax = Math.max(...other.strings);
-            const isNested = (barreMin <= otherMin && barreMax >= otherMax)
-                || (otherMin <= barreMin && otherMax >= barreMax);
-            if (!isNested && other.fret < barre.fret) {
-                return true;
-            }
+            candidates.push(mask);
         }
     }
 
-    return false;
+    const minimum = Array.from({ length: fullMask + 1 }, () => Number.POSITIVE_INFINITY);
+    minimum[0] = 0;
+    for (let mask = 0; mask <= fullMask; mask++) {
+        if (!Number.isFinite(minimum[mask])) continue;
+        for (const candidate of candidates) {
+            minimum[mask | candidate] = Math.min(minimum[mask | candidate], minimum[mask] + 1);
+        }
+    }
+    return minimum[fullMask];
+}
+
+/** Barre-aware minimum finger count across every fret. */
+function countFingerGroups(points: FingeringPoint[], openStringSet: Set<GuitarStringIndex>): number {
+    const fretByString = new Map<GuitarStringIndex, number>();
+    const pointsByFret = new Map<number, GuitarStringIndex[]>();
+    for (const point of points) {
+        fretByString.set(point.string, point.fret);
+        const strings = pointsByFret.get(point.fret) ?? [];
+        strings.push(point.string);
+        pointsByFret.set(point.fret, strings);
+    }
+    return [...pointsByFret.entries()].reduce(
+        (count, [fret, strings]) => count + countMinimumFingerGroupsAtFret(fret, strings, fretByString, openStringSet),
+        0
+    );
 }
 
 /**
- * Deductive hand-playability check — no captured hand-measurement data, just fixed physical
- * facts: a fretting hand has 4 fingers; several strings sharing one fret can be covered by a
- * single barring finger, but only when that finger's reach across the fretboard doesn't
- * conflict with an open string or a lower fret required behind it (see `canFormBarre`).
+ * Deductive hand-playability check. Four fingers remain the thumb-allocation threshold, while
+ * coordinate-only shapes with five inferred groups remain uncertain because the input cannot
+ * expose every roll or partial barre; six groups are still a hard rejection. Several strings
+ * sharing a fret can be split across reachable mini-barres instead of being treated all-or-none.
  * The thumb can optionally reach around to fret the low E string (string index 5) only, and
  * only within a short distance of where the rest of the hand sits — it doesn't consume one of
  * the 4 fingers when used.
@@ -218,13 +228,8 @@ export function evaluateHandPlayability(
         }
     }
 
-    if (fingerGroupCount > MAX_FRETTING_FINGERS) {
+    if (fingerGroupCount > MAX_HARD_FINGER_GROUPS) {
         return { playable: false, reason: 'too-many-fingers', usesThumb, fingerGroupCount };
-    }
-
-    const spanGroups = classifyFrettedGroups(spanPoints, Array.from(openStringSet));
-    if (hasBarreBehindAnUnnestedGroup(spanGroups)) {
-        return { playable: false, reason: 'barre-behind-unreachable-position', usesThumb, fingerGroupCount };
     }
 
     const spanFrets = Array.from(new Set(spanPoints.map((point) => point.fret))).sort((a, b) => a - b);
