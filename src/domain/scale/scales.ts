@@ -298,10 +298,7 @@ export function generateModeData(groupName: string, modeName: string): ScaleDict
     const parentIntervals = PARENT_SCALES[modeInfo.parent];
     const N = parentIntervals.length; // Dynamic N-note parent scale
 
-    // 1단계: 부모 스케일 순환시켜 모드 절대 인터벌 배열 도출 (subset 필터 적용)
-    const rotatedIntervals = calculateScaleIntervals(parentIntervals, modeInfo.rootOffsetIndex, modeInfo.subset);
-    // 화음(Triad) 계산 로직을 돌리기 위해서는 subset이 빠진 풀(Full) 모드 배열이 필요할 수 있습니다.
-    // 하지만 현재 구조상 subset이 빠진 배열에서도 3도씩 쌓아 화음을 구성하려고 시도합니다.
+    // 부모 스케일을 순환시켜 모드의 절대 인터벌 배열 도출
     const fullRotatedIntervals = calculateScaleIntervals(parentIntervals, modeInfo.rootOffsetIndex);
 
     const modeData: ScaleDictionary = {};

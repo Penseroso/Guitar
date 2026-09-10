@@ -119,72 +119,15 @@ export const Fretboard: React.FC<FretboardProps> = ({
 
                     {strings.map((s) => (
                         <React.Fragment key={`string-row-${s}`}>
-                            {frets.map((f) => {
-                                // Logic for Note
-                                const noteIdx = (tuning[s] + f) % 12;
-                                const specificFinger = fingering?.find(fico => fico.string === s && fico.fret === f);
-                                const isRoot = noteIdx === rootNote;
-                                const isChordTone = chordTones.includes(noteIdx);
-                                const isModifier = modifierNotes.includes(noteIdx);
-                                const isActive = activeNotes.includes(noteIdx);
-
-                                let shouldShow = false;
-                                if (fingering) shouldShow = !!specificFinger;
-                                else shouldShow = isActive || isModifier;
-
-                                // Determine Style
-                                let dotClass = styles.noteScale;
-                                let label = NOTES[noteIdx];
-
-                                if (showIntervals) {
-                                    label = getIntervalLabel(noteIdx);
-                                }
-
-                                if (fingering && specificFinger) {
-                                    if (specificFinger.label === 'X') {
-                                        label = 'X';
-                                    } else if (specificFinger.label && !showIntervals) {
-                                        label = NOTES[noteIdx];
-                                    } else if (showIntervals) {
-                                        label = getIntervalLabel(noteIdx);
-                                    }
-                                    if (specificFinger.label === 'R' || (showIntervals && label === 'R')) {
-                                        dotClass = styles.noteRoot;
-                                    } else {
-                                        const diff = (noteIdx - rootNote + 12) % 12;
-                                        if (diff === 3 || diff === 4) dotClass = styles.note3rd;
-                                        else if (diff === 7) dotClass = styles.note5th;
-                                        else if (diff === 10 || diff === 11) dotClass = styles.note7th;
-                                        else dotClass = styles.noteChordTone;
-                                    }
-                                } else {
-                                    if (isRoot) dotClass = styles.noteRoot;
-                                    else if (showChordTones && isChordTone) {
-                                        const diff = (noteIdx - rootNote + 12) % 12;
-                                        if (diff === 3 || diff === 4) dotClass = styles.note3rd;
-                                        else if (diff === 7) dotClass = styles.note5th;
-                                        else if (diff === 10 || diff === 11) dotClass = styles.note7th;
-                                        else dotClass = styles.noteChordTone;
-                                    }
-                                    else if (isModifier) {
-                                        const diff = (noteIdx - rootNote + 12) % 12;
-                                        if (diff === 2) dotClass = styles.note2nd;
-                                        else if (diff === 6) dotClass = styles.noteB5;
-                                        else if (diff === 9) dotClass = styles.note6th;
-                                        else dotClass = styles.noteModifier;
-                                    }
-                                }
-
-                                return (
-                                    <div
-                                        key={`cell-${s}-${f}`}
-                                        className={`${f === 0 ? styles.nutCell : styles.fretCell}`}
-                                        style={{ gridRow: s + 1, gridColumn: f + 1 }}
-                                    >
-                                        {/* Background Cell Content if any */}
-                                    </div>
-                                );
-                            })}
+                            {frets.map((f) => (
+                                <div
+                                    key={`cell-${s}-${f}`}
+                                    className={`${f === 0 ? styles.nutCell : styles.fretCell}`}
+                                    style={{ gridRow: s + 1, gridColumn: f + 1 }}
+                                >
+                                    {/* Background Cell Content if any */}
+                                </div>
+                            ))}
                         </React.Fragment>
                     ))}
 
