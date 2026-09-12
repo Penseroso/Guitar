@@ -44,3 +44,12 @@ next-env.d.ts
 # Only aggregate, non-identifying Phase 0 results belong in the repository.
 /DadaGP-v1.1/
 /.dadagp/
+
+# DadaGP utilization-plan docs (rights-pending; kept local only, never pushed).
+/DADAGP_ROADMAP.md
+/DADAGP_BENCHMARK_POLICY.md
+/DADAGP_RIGHTS_MATRIX.md
+/DADAGP_VALIDATION.md
+/DADAGP_PHASE*_PLAN.md
+/DADAGP_PHASE*_REPORT.md
+/DADAGP_PHASE*_SUMMARY.json
