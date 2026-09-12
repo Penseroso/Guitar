@@ -46,7 +46,7 @@ interface ResolvedVoicingSeed {
     };
 }
 
-interface EmpiricalVoicingGuardrailState {
+interface WideSpanGuardrailState {
     exceedsSpanGuardrail: boolean;
 }
 
@@ -107,10 +107,10 @@ export function collectPlayedDegrees(notes: ResolvedVoicingNote[]): Set<string> 
     );
 }
 
-export function getEmpiricalVoicingGuardrailState(span: number): EmpiricalVoicingGuardrailState {
+export function getWideSpanGuardrailState(span: number): WideSpanGuardrailState {
     return {
-        // Empirical P2a guardrail: this is a pragmatic cutoff for current generator output,
-        // not a theory claim about what is musically valid on guitar.
+        // Pragmatic cutoff for current generator output, not a theory claim about what is
+        // musically valid on guitar.
         exceedsSpanGuardrail: span >= 4,
     };
 }
@@ -268,7 +268,7 @@ function resolveVoicingSeed(
         ? undefined
         : lowestPlayedNote?.pitchClass === requestedSlashBassPitchClass;
     const hasInvalidFrets = playedFrets.some((fret) => fret < 0);
-    const guardrailState = getEmpiricalVoicingGuardrailState(span);
+    const guardrailState = getWideSpanGuardrailState(span);
     const violatesConstraintRange = (
         (constraints.minFret !== undefined && playedFrets.some((fret) => fret < constraints.minFret!)) ||
         (constraints.maxFret !== undefined && playedFrets.some((fret) => fret > constraints.maxFret!)) ||

@@ -3,7 +3,7 @@ import type { GuitarStringIndex } from './types';
 // Pure fretboard physics — no chord/harmony knowledge. Standard 25.5" scale by default;
 // fret n sits scaleLength * (1 - 2^(-n/12)) from the nut (12-tone-equal-temperament fret rule).
 export const DEFAULT_SCALE_LENGTH_MM = 647.7; // 25.5"
-/** Corpus-backed impossibility cutoff. The former 95mm value rejected many independently repeated
+/** Physical impossibility cutoff. The former 95mm value wrongly rejected many reachable
  *  3-5 fret stretches; 95mm remains the ranking comfort reference below. */
 export const DEFAULT_MAX_HAND_SPAN_MM = 180;
 export const DEFAULT_COMFORTABLE_HAND_SPAN_MM = 95;

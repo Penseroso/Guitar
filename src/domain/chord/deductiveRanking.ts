@@ -44,8 +44,7 @@ export interface VoicingScore {
 export interface ScoreResolvedVoicingOptions {
     scaleLengthMm?: number;
     maxHandSpanMm?: number;
-    /** R&D-only scoring calibration hook. Production callers use the documented defaults; the
-     *  benchmark can vary generic, non-corpus features without carrying a shape lookup table. */
+    /** Testing/calibration-only scoring hook. Production callers use the documented defaults. */
     weightOverrides?: Partial<DeductiveRankingWeights>;
 }
 
