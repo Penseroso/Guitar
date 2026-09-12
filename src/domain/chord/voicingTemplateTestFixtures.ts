@@ -9,6 +9,7 @@ import {
     type BuildChordDefinitionOptions,
 } from './helpers';
 import { buildVoicingProvenance, deriveVoicingDescriptor } from './descriptor';
+import { collectPlayedDegrees } from './deductiveRanking';
 import { getChordRegistryEntry, type ChordRegistryEntry } from './registry';
 import { isFormulaClosedChordFamily } from './semantics';
 import type {
@@ -22,6 +23,14 @@ import type {
     VoicingTemplate,
     VoicingTemplateString,
 } from './types';
+
+/**
+ * The old template-based voicing engine. It has no production caller left — voicingSearch.ts's
+ * backtracking generator replaced it — but its note-placement math is still the most convenient
+ * way to build a realistic ResolvedVoicing fixture from a hand-authored string layout, so it
+ * lives on purely as test infrastructure for deductiveRanking.test.ts, descriptor.test.ts, and
+ * the chord UI's component tests.
+ */
 
 export interface ResolveVoicingOptions {
     tuning?: PitchClass[];
@@ -99,17 +108,9 @@ function getTemplateRootString(template: VoicingTemplate): number {
     return template.rootString ?? template.strings.find((stringValue) => stringValue.toneDegree === '1')?.string ?? 5;
 }
 
-export function collectPlayedDegrees(notes: ResolvedVoicingNote[]): Set<string> {
-    return new Set(
-        notes
-            .filter((note) => !note.isMuted && note.degree)
-            .map((note) => note.degree as string)
-    );
-}
-
-export function getWideSpanGuardrailState(span: number): WideSpanGuardrailState {
+function getWideSpanGuardrailState(span: number): WideSpanGuardrailState {
     return {
-        // Pragmatic cutoff for current generator output, not a theory claim about what is
+        // Pragmatic cutoff for this legacy generator's output, not a theory claim about what is
         // musically valid on guitar.
         exceedsSpanGuardrail: span >= 4,
     };

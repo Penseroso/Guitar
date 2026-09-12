@@ -73,7 +73,7 @@ export {
 
 // resolveVoicingTemplate has no production caller left (the old template-based engine that used
 // it is gone) — it's kept only as test-fixture infrastructure for the new engine's test suites.
-export type { ResolveVoicingOptions } from './resolver';
+export type { ResolveVoicingOptions } from './voicingTemplateTestFixtures';
 export {
     getCandidateRootFretsForTemplate,
     resolveVoicingNote,
@@ -83,7 +83,7 @@ export {
     resolveVoicingTemplatesAcrossPositions,
     resolveVoicingTemplatesForChord,
     resolveVoicingTemplatesAcrossPositionsForChord,
-} from './resolver';
+} from './voicingTemplateTestFixtures';
 
 export type {
     VoicingShapeMetrics,
@@ -132,14 +132,3 @@ export type {
 export {
     getRelatedScaleSuggestionsForChord,
 } from './related-scales';
-
-export type {
-    HarmonicRoleLabel,
-    ProgressionHandoffPayload,
-    ChordProgressionHint,
-    ChordProgressionContext,
-} from './progression-links';
-
-export {
-    getProgressionLinksForChord,
-} from './progression-links';

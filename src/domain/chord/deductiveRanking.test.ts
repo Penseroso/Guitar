@@ -8,7 +8,7 @@ import {
 } from './deductiveRanking';
 import { getFretDistanceMm } from './fretGeometry';
 import { buildChordDefinitionFromRegistryEntry, buildChordTonesFromRegistryEntry, resolveChordRegistryEntry } from './helpers';
-import { resolveVoicingTemplate } from './resolver';
+import { resolveVoicingTemplate } from './voicingTemplateTestFixtures';
 import type { ResolvedVoicing, ResolvedVoicingNote, VoicingDescriptor } from './types';
 
 function voicingFromNotes(notes: ResolvedVoicingNote[], descriptor?: Partial<VoicingDescriptor>): ResolvedVoicing {

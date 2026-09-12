@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { getVoicingDisplayName, getVoicingDisplaySubtitle } from './descriptor';
 import { buildChordDefinitionFromRegistryEntry, buildChordTonesFromRegistryEntry, getChordTypeLabel, getChordTypeSuffix, resolveChordRegistryEntry } from './helpers';
-import { resolveVoicingTemplate } from './resolver';
+import { resolveVoicingTemplate } from './voicingTemplateTestFixtures';
 
 describe('voicing descriptor derivation', () => {
     it('uses natural compact major and minor display language', () => {

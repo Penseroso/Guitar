@@ -9,7 +9,6 @@ import {
     type FretGroup,
 } from './fretGeometry';
 import { resolveChordRegistryEntry } from './helpers';
-import { collectPlayedDegrees } from './resolver';
 import type { ChordRegistryEntry } from './registry';
 import type { ChordTones, ResolvedVoicing, ResolvedVoicingNote, VoicingCandidate } from './types';
 
@@ -31,6 +30,14 @@ import type { ChordTones, ResolvedVoicing, ResolvedVoicingNote, VoicingCandidate
  * span and barre classification, descriptor.ts's degree coverage) rather than an opaque tuned
  * point pile.
  */
+
+export function collectPlayedDegrees(notes: ResolvedVoicingNote[]): Set<string> {
+    return new Set(
+        notes
+            .filter((note) => !note.isMuted && note.degree)
+            .map((note) => note.degree as string)
+    );
+}
 
 export type VoicingTechniqueTag = 'shell' | 'barre' | 'open' | 'standard';
 
