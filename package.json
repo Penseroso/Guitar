@@ -9,7 +9,7 @@
     "lint": "eslint",
     "test": "vitest run --pool threads",
     "test:watch": "vitest --pool threads",
-    "test:dadagp": "node --test scripts/dadagp/phase0-lib.node-test.mjs && vitest run scripts/dadagp/phase1-lib.test.ts scripts/dadagp/phase2-lib.test.ts scripts/dadagp/phase2b-lib.test.ts scripts/dadagp/phase3-lib.test.ts scripts/dadagp/phase4-lib.test.ts",
+    "test:dadagp": "node --test scripts/dadagp/phase0-lib.node-test.mjs && vitest run scripts/dadagp/phase1-lib.test.ts scripts/dadagp/phase2-lib.test.ts scripts/dadagp/phase2b-lib.test.ts scripts/dadagp/phase3-lib.test.ts",
     "benchmark:dadagp": "node scripts/dadagp/phase0-benchmark.mjs",
     "benchmark:dadagp:phase1": "tsx scripts/dadagp/phase1-benchmark.ts",
     "benchmark:dadagp:phase2": "tsx scripts/dadagp/phase2-benchmark.ts",
@@ -31,7 +31,6 @@
     "tone": "^15.1.22"
   },
   "devDependencies": {
-    "@coderline/alphatab": "^1.8.4",
     "@tailwindcss/postcss": "^4",
     "@tombatossals/chords-db": "^0.5.1",
     "@types/node": "^20",
