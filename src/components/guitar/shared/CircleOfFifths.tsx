@@ -30,9 +30,11 @@ interface CircleOfFifthsProps {
     onKeySelect: (key: number) => void;
     selectedScaleGroup?: string;
     selectedScaleName?: string;
+    rootOnly?: boolean;
+    rootOptionIdPrefix?: string;
 }
 
-export const CircleOfFifths: React.FC<CircleOfFifthsProps> = ({ selectedKey, onKeySelect, selectedScaleGroup, selectedScaleName }) => {
+export const CircleOfFifths: React.FC<CircleOfFifthsProps> = ({ selectedKey, onKeySelect, selectedScaleGroup, selectedScaleName, rootOnly = false, rootOptionIdPrefix }) => {
     const fifthsOrder = getCircleOfFifthsOrder();
 
     // getRelativeMinor() is a fixed diatonic-key-signature formula (major - 3 semitones) — it
@@ -60,13 +62,28 @@ export const CircleOfFifths: React.FC<CircleOfFifthsProps> = ({ selectedKey, onK
 
     return (
         <div className="w-full h-full flex justify-center items-center p-2 bg-[#050505]">
-            <svg viewBox="-160 -160 320 320" className="w-full h-full max-w-[440px] max-h-[440px] overflow-visible drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)]">
+            <svg viewBox="-160 -160 320 320" role={rootOnly ? 'presentation' : undefined} className="w-full h-full max-w-[440px] max-h-[440px] overflow-visible drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)]">
 
                 {/* MODUS Design: 배경 궤도선 (Orbital Guide) */}
                 <circle cx="0" cy="0" r="148" fill="none" stroke="#ffffff05" strokeWidth="0.5" strokeDasharray="2 4" />
 
                 {/* 4개의 링 구조 렌더링 */}
                 {fifthsOrder.map((keyIndex, i) => {
+                    if (rootOnly) {
+                        const selected = selectedKey === keyIndex;
+                        const notePosition = polarToCartesian(0, 0, 106, i * 30);
+                        const name = ENHARMONIC_TIE_PITCH_CLASSES[keyIndex]?.major
+                            ? `${ENHARMONIC_TIE_PITCH_CLASSES[keyIndex].major}/${getKeyName(keyIndex)}` : getKeyName(keyIndex);
+                        return <g key={`root-${keyIndex}`} id={rootOptionIdPrefix ? `${rootOptionIdPrefix}-${keyIndex}` : undefined}
+                            role="option" aria-label={name} aria-selected={selected} onClick={() => onKeySelect(keyIndex)}>
+                            <path d={describeWedge(0, 0, 70, 142, i * 30 - 12.5, i * 30 + 12.5)}
+                                fill={selected ? '#f8fafc' : '#ffffff08'} stroke="#ffffff18" strokeWidth="0.5"
+                                className="cursor-pointer hover:opacity-75 transition-opacity" />
+                            <text x={notePosition.x} y={notePosition.y} textAnchor="middle" dominantBaseline="central"
+                                fill={selected ? '#050505' : '#f8fafc'} fontSize={name.length > 2 ? 12 : 16}
+                                fontWeight={selected ? 700 : 500} className="pointer-events-none">{name}</text>
+                        </g>;
+                    }
                     const relativeMinorIndex = getRelativeMinor(keyIndex);
 
                     // --- [MODUS v2.4] Wedge Gaps 적용 ---

@@ -31,11 +31,12 @@ import { ChordModeWorkspace } from './chord/ChordModeWorkspace';
 import { ChordExplorationPanel } from './chord/ChordExplorationPanel';
 import { useChordExploration } from './chord/useChordExploration';
 import type { ChordPlayingContext } from '@/domain/chord/exploration';
+import { getChordToneChoices } from './chord/tone-labels';
 import { ProgressionModeWorkspace } from './progression/ProgressionModeWorkspace';
 
 const CHORD_SELECTOR_ORDER_BY_FAMILY = {
     triad: ['major', 'minor', 'power-5', 'augmented', 'diminished', 'sus2', 'sus4'],
-    seventh: ['major-7', 'major-6', 'minor-7', 'dominant-7', 'half-diminished-7', 'diminished-7'],
+    seventh: ['major-6', 'major-7', 'minor-7', 'dominant-7', 'half-diminished-7', 'diminished-7'],
     extended: ['major-9', 'minor-9', 'dominant-9', 'dominant-11', 'dominant-13', 'hendrix-7-sharp-9', 'dominant-7-flat-9'],
 } as const;
 
@@ -417,7 +418,7 @@ export default function ClientApp() {
                         <ChordModeWorkspace
                             chordType={chordType} onChordTypeChange={setChordType}
                             chordSelectorGroups={CHORD_SELECTOR_GROUPS}
-                            root={selectedKey} onRootChange={setSelectedKey} scaleGroup={scaleGroup} scaleName={scaleName}
+                            root={selectedKey} onRootChange={setSelectedKey}
                             context={chordPlayingContext}
                             onContextChange={(context) => {
                                 if (activeFutureVoicingId) handleSelectFutureVoicing(activeFutureVoicingId);
@@ -426,10 +427,14 @@ export default function ClientApp() {
                             explorationPanel={<ChordExplorationPanel
                                 key={`${chordType}:${selectedKey}`}
                                 context={chordPlayingContext} response={exploration.response} onRetry={exploration.retry}
+                                onContextChange={(context) => {
+                                    if (activeFutureVoicingId) handleSelectFutureVoicing(activeFutureVoicingId);
+                                    setChordPlayingContext(context);
+                                }}
                                 selectedId={activeFutureVoicingId} onSelect={handleSelectFutureVoicing}
                                 title={chordPreviewTitle} showIntervals={showIntervals}
                                 onToggleIntervals={() => setShowIntervals(previous => !previous)}
-                                degrees={chordPreviewFormula}
+                                toneChoices={currentChordEntry ? getChordToneChoices(currentChordEntry, selectedKey) : []}
                                 selectionReplaced={!!requestedFutureVoicingId && !!activeFutureVoicingId && requestedFutureVoicingId !== activeFutureVoicingId}
                             />}
                         />
@@ -473,7 +478,6 @@ export default function ClientApp() {
         </div>
     );
 }
-
 
 
 

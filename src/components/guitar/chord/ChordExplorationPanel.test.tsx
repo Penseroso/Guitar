@@ -4,10 +4,13 @@ import { describe, expect, it } from 'vitest';
 import { generateExplorationPool, rankExplorationPool } from '@/domain/chord/exploration';
 import { ChordExplorationPanel } from './ChordExplorationPanel';
 import type { ExplorationWorkerResponse } from './chord-exploration.worker';
+import { getChordToneChoices } from './tone-labels';
+import { resolveChordRegistryEntry } from '@/domain/chord';
 
 function render(response: ExplorationWorkerResponse | null, selectedId: string | null = null) {
-    return renderToStaticMarkup(<ChordExplorationPanel context="standalone" title="C" onToggleIntervals={() => {}} response={response}
-        onRetry={() => {}} selectedId={selectedId} onSelect={() => {}} showIntervals={false} degrees={['1', '3', '5']} />);
+    return renderToStaticMarkup(<ChordExplorationPanel context="standalone" onContextChange={() => {}} title="C" onToggleIntervals={() => {}} response={response}
+        onRetry={() => {}} selectedId={selectedId} onSelect={() => {}} showIntervals={false}
+        toneChoices={getChordToneChoices(resolveChordRegistryEntry('major'), 0)} />);
 }
 
 describe('exploration states', () => {
@@ -24,15 +27,14 @@ describe('exploration states', () => {
         const candidates = rankExplorationPool(pool);
         const selected = candidates[100];
         const markup = render({ status: 'ready', candidates }, selected.voicing.id);
-        expect(markup).toContain(`Showing 6 of ${candidates.length} voicings`);
+        expect(markup).toContain(`data-results-count="${candidates.length}"`);
+        expect(markup).toContain(`data-selected-id="${selected.voicing.id}"`);
         expect(markup).toContain('Selected voicing');
         expect(markup).toContain('Show more');
-        expect(markup).not.toContain('Recommended voicings');
-        expect(markup).not.toContain('Explore all voicings');
-        expect(markup.match(/Sounds:/g)?.length).toBe(1);
         expect(markup).toContain('Play voicing');
-        expect(markup).toContain('Sounds:');
-        expect(markup.match(/data-voicing-id=/g)?.length).toBe(6);
-        expect(markup).not.toContain('Triad ·');
+        expect(markup.match(/data-voicing-id=/g)!.length).toBeLessThan(candidates.length);
+        expect(markup).toContain('Bass C · 1');
+        expect(markup).toContain('Top');
+        expect(markup).toContain('strings 6 to 1:');
     });
 });

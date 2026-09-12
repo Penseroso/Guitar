@@ -1,38 +1,82 @@
 "use client";
 
-import React from 'react';
+import React, { useId, useRef, useState } from 'react';
 import type { ChordPlayingContext } from '@/domain/chord/exploration';
 import { RootDial } from './RootDial';
-import { SelectPill } from '../../ui/design-system/SelectPill';
-import { TogglePill } from '../../ui/design-system/TogglePill';
+import { ChoiceGroup } from './ChoiceGroup';
 import styles from './chord-ui.module.css';
 
-interface Props {
+interface SelectorGroup {
+    id: string;
+    label: string;
+    options: { id: string; stateValue: string; label: string }[];
+}
+
+const familyLabels: Record<string, string> = { triad: 'Basic', seventh: '6 / 7', extended: 'Extended' };
+const qualityNames: Record<string, string> = {
+    major: 'Major', minor: 'Minor', 'power-5': 'Power chord', augmented: 'Augmented', diminished: 'Diminished',
+    sus2: 'Suspended second', sus4: 'Suspended fourth', 'major-6': 'Major sixth', 'major-7': 'Major seventh',
+    'minor-7': 'Minor seventh', 'dominant-7': 'Dominant seventh', 'half-diminished-7': 'Half diminished seventh',
+    'diminished-7': 'Diminished seventh', 'major-9': 'Major ninth', 'minor-9': 'Minor ninth',
+    'dominant-9': 'Dominant ninth', 'dominant-11': 'Dominant eleventh', 'dominant-13': 'Dominant thirteenth',
+    'hendrix-7-sharp-9': 'Dominant seventh sharp ninth', 'dominant-7-flat-9': 'Dominant seventh flat ninth',
+};
+
+function ChordTypeSelector({ value, groups, onChange }: {
+    value: string; groups: SelectorGroup[]; onChange: (value: string) => void;
+}) {
+    const currentFamily = groups.find(group => group.options.some(option => option.stateValue === value))?.id ?? groups[0]?.id;
+    const [browsingFamily, setBrowsingFamily] = useState(currentFamily);
+    const [previousValue, setPreviousValue] = useState(value);
+    if (previousValue !== value) {
+        setPreviousValue(value);
+        setBrowsingFamily(currentFamily);
+    }
+    const active = groups.find(group => group.id === browsingFamily) ?? groups[0];
+    const id = useId();
+    const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+    return <div className={styles.chordType}>
+        <p className={styles.controlLabel}>Chord type <span className={styles.currentQuality}>{qualityNames[value] ?? value}</span></p>
+        <div role="tablist" aria-label="Chord family" className={styles.familyTabs}>
+            {groups.map((group, index) => <button key={group.id} ref={element => { tabs.current[index] = element; }}
+                id={id + '-' + group.id} type="button" role="tab" aria-selected={group.id === active?.id}
+                aria-controls={id + '-choices'} tabIndex={group.id === active?.id ? 0 : -1}
+                onClick={() => setBrowsingFamily(group.id)} onKeyDown={event => {
+                    const next = event.key === 'ArrowRight' ? (index + 1) % groups.length
+                        : event.key === 'ArrowLeft' ? (index + groups.length - 1) % groups.length
+                            : event.key === 'Home' ? 0 : event.key === 'End' ? groups.length - 1 : null;
+                    if (next !== null) { event.preventDefault(); tabs.current[next]?.focus(); }
+                }}>{familyLabels[group.id] ?? group.label}</button>)}
+        </div>
+        {active && <div id={id + '-choices'} role="tabpanel" aria-labelledby={id + '-' + active.id} className={styles.qualityChoices}>
+            <ChoiceGroup label="Chord quality" value={value} compact onChange={onChange}
+                options={active.options.map(option => ({ value: option.stateValue,
+                    label: option.id === 'augmented' ? 'aug' : option.id === 'diminished' ? 'dim'
+                        : option.label.replace(/b/g, '♭').replace(/#/g, '♯'),
+                    accessibleLabel: qualityNames[option.id] ?? option.label }))} />
+        </div>}
+    </div>;
+}
+
+export function ChordModeWorkspace({ chordType, onChordTypeChange, chordSelectorGroups, root, onRootChange,
+    context, onContextChange, explorationPanel }: {
     chordType: string;
     onChordTypeChange: (value: string) => void;
-    chordSelectorGroups: { id: string; label: string; options: { id: string; stateValue: string; label: string }[] }[];
+    chordSelectorGroups: SelectorGroup[];
     root: number;
-    scaleGroup: string;
-    scaleName: string;
     onRootChange: (root: number) => void;
     context: ChordPlayingContext;
     onContextChange: (context: ChordPlayingContext) => void;
     explorationPanel: React.ReactNode;
-}
-
-export function ChordModeWorkspace({ chordType, onChordTypeChange, chordSelectorGroups, root, onRootChange, scaleGroup, scaleName,
-    context, onContextChange, explorationPanel }: Props) {
+}) {
     return <section className={styles.workspace} aria-label="Chord workspace">
         <div className={styles.inputs}>
-            <RootDial value={root} onChange={onRootChange} scaleGroup={scaleGroup} scaleName={scaleName} />
-            <div className={styles.inputRow}>
-                <div className={styles.field}><span>Chord type</span><SelectPill comfortable label="Chord type" value={chordType}
-                    onChange={onChordTypeChange} options={chordSelectorGroups.flatMap(group => group.options.map(option => ({ value: option.stateValue, label: option.label })))} /></div>
-            </div>
-            <div>
-                <TogglePill id="chord-accompaniment" comfortable label="Include accompaniment voicings" isActive={context === 'accompaniment'}
-                    onToggle={() => onContextChange(context === 'standalone' ? 'accompaniment' : 'standalone')} />
-                {context === 'accompaniment' && <p className={styles.small}>Includes rootless and two-note shapes that rely on accompaniment.</p>}
+            <RootDial value={root} onChange={onRootChange} />
+            <ChordTypeSelector value={chordType} groups={chordSelectorGroups} onChange={onChordTypeChange} />
+            <div className={styles.context}>
+                <ChoiceGroup label="Playing context" value={context} onChange={value => onContextChange(value as ChordPlayingContext)}
+                    options={[{ value: 'standalone', label: 'Standalone' }, { value: 'accompaniment', label: 'Accompaniment' }]} />
+                {context === 'accompaniment' && <p className={styles.small}>Allows rootless and two-note shapes when other parts supply the harmony.</p>}
             </div>
         </div>
         {explorationPanel}

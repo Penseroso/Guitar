@@ -10,6 +10,13 @@ interface CompactVoicingDiagramProps {
     labelMode?: 'degree' | 'note' | 'none';
 }
 
+export function describeVoicingShape(voicing: ResolvedVoicing): string {
+    return 'strings 6 to 1: ' + Array.from({ length: 6 }, (_, index) => {
+        const note = voicing.notes.find(note => note.string === 5 - index && !note.isMuted);
+        return !note ? 'muted' : note.fret === 0 ? 'open' : 'fret ' + note.fret;
+    }).join(', ');
+}
+
 export function CompactVoicingDiagram({
     voicing,
     labelMode = 'degree',
@@ -45,7 +52,7 @@ export function CompactVoicingDiagram({
                 height={height}
                 viewBox={`0 0 ${width} ${height}`}
                 className="overflow-visible"
-                aria-label="Guitar voicing diagram"
+                aria-label={'Guitar voicing, ' + describeVoicingShape(voicing)}
                 role="img"
             >
                 <rect width={width} height={height} fill="transparent" />
@@ -61,15 +68,15 @@ export function CompactVoicingDiagram({
                     />
                 ) : (
                     <text
-                        x={getStringX(5) - 24}
+                        x={getStringX(5) - 12}
                         y={getFretLineY(0) + fretSpacing / 2}
                         fill="#94a3b8"
-                        fontSize="12"
+                        fontSize="10"
                         fontWeight="bold"
-                        textAnchor="start"
+                        textAnchor="end"
                         alignmentBaseline="middle"
                     >
-                        {minFret}fr
+                        {minFret}
                     </text>
                 )}
 
@@ -155,7 +162,7 @@ export function CompactVoicingDiagram({
                             <circle
                                 cx={getStringX(note.string)}
                                 cy={getFretCenterY(note.fret)}
-                                r="8"
+                                r="9"
                                 fill={isRoot ? '#f8fafc' : '#050505'}
                                 stroke={isRoot ? '#f8fafc' : '#475569'}
                                 strokeWidth="2"
@@ -165,7 +172,7 @@ export function CompactVoicingDiagram({
                                     x={getStringX(note.string)}
                                     y={getFretCenterY(note.fret)}
                                     fill={isRoot ? '#020617' : '#e2e8f0'}
-                                    fontSize="8"
+                                    fontSize="12"
                                     fontWeight="bold"
                                     fontFamily="monospace"
                                     textAnchor="middle"

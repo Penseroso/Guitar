@@ -1,12 +1,12 @@
 # Chord selection and exploration
 
-Decision updated 2026-09-12. Implementation is local; deployment and user-study approval are separate decisions.
+Decision updated 2026-09-12. The CHORD UI revision follows an audit of `3dc7ef8`. Implementation is local; final regression checks, deployment and user-study approval are separate decisions.
 
 ## Product contract
 
 A player should be able to choose a first voicing, hear its actual sounding pitches, understand what changes between alternatives, and find candidates that meet their conditions. A short recommendation list must not define the searchable universe.
 
-The selected voicing and its playback are the first task. One ranked list starts with six candidates and reveals twelve more at a time. Position, bass and top conditions sit beside that list; additional conditions open in one step. Active conditions remain visible as removable chips. Filters act on the full pool and never replace the selected shape.
+The selected voicing and its playback are the first task. One ranked candidate pool supports both the starting choices and further exploration. Filters act on the full pool and never replace the selected shape. Applied conditions remain visible and removable even when their controls are closed. Display budgets, card layouts and disclosure placement are UI decisions, not constraints on generation or ranking.
 
 The search scope is six-string standard tuning, frets 0–15, the current hand model and non-decreasing pitches from thick to thin strings. It is not a claim to cover every human fingering. Stopped fret position excludes open strings and is independent of sounding MIDI register. Open-string usage has its own filter.
 
@@ -28,17 +28,27 @@ Independent-chord context retains the existing root and minimum-tone rules. Acco
 
 The UI uses the existing preference function, including its low-position, root-bass and fullness preferences. Facts may be deductively calculated; the preference weights are product choices, not musical truths. Generation and assessment improvements do not silently authorize weight changes.
 
-## Interaction and design contract
+## Interaction and design decisions
 
-Keep the original shared application header and mode tabs above the CHORD body. Reuse SelectPill, KeyButton and TogglePill, with optional comfortable sizing for CHORD rather than overriding their visual styles. Preserve their default appearance in other modes. Action controls use the existing muted, rounded visual treatment.
+This revision is limited to CHORD. The shared application header, mode navigation and page shell remain in place. SCALE and PROG retain their layouts and control behavior. CHORD uses the app's dark surfaces, muted borders, rounded controls and clear selected states. Reusing the visual language does not require using a dropdown for every choice. CHORD-specific radio choices and action styles are scoped to its workspace. The shared circle has an opt-in root-only presentation; its default Scale presentation remains unchanged.
 
-The root is one KeyButton. Pressing it expands the unchanged Scale-mode CircleOfFifths near the button. The circle stays stationary: hold, point at a key and release to confirm. A short click keeps it open for direct selection or arrow keys and Enter; Escape cancels. A preview does not regenerate candidates. The borrowed circle retains the scale display context, but selecting a key changes only the chord root, never its quality or ranking policy. The helper text makes that distinction explicit. There is no separate Circle button or top alignment marker.
+The root has one trigger with an expanded state and a linked popup. Opening it shows a stationary circle containing twelve roots near the trigger. It carries no scale-mode context, relative-minor ring or chord-quality meaning. A normal click or tap opens the picker and another selects a root; holding and sliding is an optional shortcut. The manual popover stays open through the opening touch gesture. Arrow keys and Home/End preview roots; Enter or Space confirms. Escape, Close and outside interaction dismiss it; focus returns appropriately without trapping normal Tab navigation. Previewing does not start a worker. Committing changes the root only, and the popup remains usable after scroll or resize.
 
-Position uses two range handles for stopped-fret bounds (0 through 15), with one-fret keyboard steps. Handles cannot cross. Open strings are a separate condition. Bass, top, string count, open strings, root and coverage use the shared SelectPill with keyboard selection. Rootless conditions offer a direct focus link to the accompaniment toggle; they never enable it implicitly.
+Chord quality is chosen from visible radio choices. Basic, 6 / 7 and Extended tabs browse families without changing the active chord or starting a search. The current quality name remains visible when browsing another family. Choosing a quality radio commits the request. Family tabs and quality radios have separate keyboard and selected-state semantics. Standalone and Accompaniment are both visible choices, with a short explanation when accompaniment is active.
 
-Details are shown once for the selected voicing. Cards show geometry, position, density, bass/top and concise omissions or uncertainty. Playing a card selects it; selecting alone does not play. Full fretboard is an inline desktop expansion or a mobile dialog; its labels use the resolved degrees including extensions. Root or quality changes reset filters and pagination. Context changes retain filters and any still-available selected physical shape, with a notice if the old selection becomes unavailable.
+The fret-range slider is always visible above the results. Its two handles constrain stopped frets from 0 through 15; they cannot cross and remain adjustable when they coincide. Pointer dragging, one-fret arrow steps, Home/End and five-fret Page Up/Down are supported. Open strings have their own condition. One Filters disclosure reveals direct radio choices for Bass, Top, sounding strings, open strings, root inclusion and chord-tone coverage. There are no nested select menus. View results closes the disclosure and moves focus to the result count. Non-position conditions have removable chips; the slider itself continues to show the applied fret range.
 
-Do not equate loading audio with playback duration. All primary controls have a 44px minimum hit height (48px for the main play action) and visible keyboard focus. The mobile page must expose the selected shape and playback in the first viewport and must not clip mode tabs. Visual disclosure must preserve candidate identity and search state.
+Bass and Top show note name plus degree in filter choices, active summaries, the selected voicing and candidate cards: for example, `B♭ · ♭7` or `D · 9` in C. Note spelling follows the chosen root letter and chord degree, preserving extensions and necessary double accidentals; F♯ major's seventh is `E♯ · 7`. These are presentation labels. Internal degrees such as `b7` and `9`, filter values, pitch facts and candidate identities are unchanged. Root inclusion is named separately from the root selector, and coverage choices explain whether all formula tones or omissions are required.
+
+The selected shape, chord name, Bass/Top and main Play action form the first information group. Details, Notes/Intervals and Full fretboard are secondary controls. Candidate cards show geometry, position, sounding-string count, Bass/Top, omissions and uncertainty without repeating the position heading. Selection is shown in text as well as styling. A separate compact Play action selects and plays that candidate; selecting alone does not play. Geometry descriptions give diagrams and card actions meaningful accessible names. Details disclose factual pitches, formula coverage and model assumptions for the selected voicing.
+
+Full fretboard opens a content-height modal on desktop and mobile. The neck scrolls horizontally to the selected stopped frets; open strings are also summarized in text so their information remains available when the nut is off-screen. The modal retains selected-shape playback, resolved degree labels including extensions, keyboard scrolling, Escape/Close and trigger focus restoration. Opening or closing it does not change the pool, filters or selection.
+
+Root or quality changes reset filters and pagination. Context changes retain filters and any still-available selected physical shape, with a notice if that selection becomes unavailable. Clear filters and Reset conditions change conditions only; they do not reset the playing context. If root omission or two-note conditions yield no standalone matches, an explicit Enable accompaniment action explains and changes the context. No filter implicitly enables accompaniment or relaxes another condition.
+
+Audio loads only after a play request. Only the latest request may play or update its loading/error state; unmount cancels pending work. Import/start failures expose a retry through Play. Loading indicates preparation, not playback duration. Controls need visible keyboard focus and usable hit areas in both dimensions, including actual circle targets and slider handles, rather than only a tall bounding box.
+
+The current display starts with six candidates and adds twelve on Show more. Desktop pairs the selected shape with the browser; mobile places the selected shape before the browser. These budgets and layouts may change independently of the domain contracts. The first-screen design target is access to the selected shape and playback in ordinary mobile portrait sizes. At smaller heights or enlarged text, readable, reachable content and unclipped mode navigation take priority over preserving a fixed pixel arrangement.
 
 User task validation with five guitar players remains pending: first playback, alternative comparison, position/bass/top discovery and understanding rootless accompaniment. Automated checks do not establish human usability.
 
@@ -67,9 +77,27 @@ If current weights or ranking behavior differ, the audit exits nonzero and reque
 
 ## Validation and next gate
 
-Implemented regressions cover legacy-pool reachability, composed filters, empty results, pagination, rootless guide-tone semantics, altered/extended required tones, stable shape identity, sounding-pitch playback, explicit UI states and selection outside the initial list. The old surface tests remain with the offline comparator. Product regressions assert factual presentation and a shared default/exploration path.
+The test suite distinguishes contracts from an earlier screen design:
 
-`npm run test:chord:browser` exercises the built app on localhost:3003 against a dedicated headless Chrome debugging instance on localhost:9333. Start that browser with a temporary profile, never a personal profile. It checks the real worker, pool identity, pagination, selected-shape preservation, accompaniment, playback selection, the anchored root picker, full-neck access and control bounds at five viewport widths. Screenshots are saved under `.next/`. Human listening and preference evaluation remain separate.
+| Classification | Treatment |
+| --- | --- |
+| Product functionality, state and accessibility | Preserve full-pool filtering, candidate identity, pagination reachability, selection retention, explicit context, distinct loading/error/empty states, actual-note playback, keyboard operation, focus recovery and control reachability. |
+| Implementation-specific layout and style | Replace exact RGB values, SVG viewBox/transform counts, popup pixel offsets, fixed card counts, exact helper text and inline-versus-modal assumptions with acceptance checks for the chosen interaction and readable responsive layout. |
+| Legacy constraints | Remove UI tests that prohibit old heading strings or count pressed controls as a proxy for architecture. Keep old category/quota tests only with the offline comparator; they do not prescribe live CHORD categories or card quotas. |
+
+Domain regressions and the frozen-weight audit remain separate protection for pool reachability, composed conditions, rootless guide-tone semantics, altered/extended required tones, physical identity and sounding pitches. UI label tests check all registry qualities across twelve roots without changing ASCII degree values. Audio coordinator tests inspect actual engine arguments and state callbacks for out-of-order imports/starts, cancellation, failures and retry. They do not infer audible success from the absence of an alert.
+
+`npm run test:chord:browser` targets the built app on localhost:3003 and a dedicated headless Chrome debugging instance on localhost:9333. Start that browser with a temporary profile, never a personal profile. Acceptance uses real pointer, touch and keyboard input for root opening/selection, family browsing versus quality commitment, fret adjustment, filtering, card selection/playback and modal access. It checks meaningful state and candidate IDs rather than old copy or layout selectors. Include short mobile viewports, desktop, enlarged text/reflow, open disclosures and popups, reachable close/actions, and full-fretboard scrolling. Screenshots under `.next/` support visual review; their creation alone does not prove usability or visual consistency.
+
+Validation on 2026-09-12, base `3dc7ef8` plus this UI working tree:
+
+- 33 test files / 265 tests passed; ESLint and the production build passed.
+- The current-source audit checked 240 queries and 561,216 candidates with no coverage failures, no changed ranking queries and no differences in the 23 frozen weights. Decision: keep the baseline. Generation/ranking p50 was 55 ms, p95 111 ms, maximum 164 ms on this machine.
+- Chromium acceptance passed against the production build at 320×568, 390×667, 390×844, 768×900, 1024×900 and 1440×900, plus 720×450 reflow. It covered family browsing, direct choices, composed filters/context, physical selection, playback selection, overlapping slider handles, root tap/keyboard/hold, high stopped frets with open strings, worker failure/retry and cancellation. There were no browser exceptions or page overflow. The selected Play action ended at y=672 in the 390×844 viewport; smaller heights require scrolling.
+- Native dialog checks prevent background controls receiving focus and verify Escape/trigger recovery. Browser chrome may receive focus during Tab traversal; this is not a background-page focus escape. Touch-drag acceptance uses a timed movement trajectory rather than a single instantaneous jump.
+- Audio engine arguments and race/error handling are covered by unit tests; browser activation without an error is not a listening test. Screenshots were visually inspected for CHORD and the existing SCALE/PROG surfaces.
+
+Local implementation/regression gate: **GO**. Release claims of improved human usability or playability remain **pending** until the five-player task validation and listening checks are completed. Automated checks, human listening and preference evaluation are distinct evidence.
 
 The audit compares baseline top-K, nearest-position selection (target fret 12) and a bounded diversity hypothesis at K=6 and K=12. The diversity hypothesis retains the first choice and greedily selects differing bass/top pitches, degrees, density and omissions only within the best 2K baseline candidates. This quality bound can itself restrict high-position access. No policy is promoted by these geometry diagnostics.
 
