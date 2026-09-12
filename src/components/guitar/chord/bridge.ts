@@ -2,8 +2,8 @@ import type { VoicingCandidate } from '@/domain/chord';
 
 export type BridgeSelectionSource = 'requested' | 'first-available' | 'none';
 
-export interface BridgeSelectionResolution {
-    activeCandidate: VoicingCandidate | null;
+export interface BridgeSelectionResolution<Candidate extends VoicingCandidate = VoicingCandidate> {
+    activeCandidate: Candidate | null;
     activeCandidateId: string | null;
     activeIndex: number;
     hasPlayableCandidates: boolean;
@@ -20,12 +20,12 @@ export function getBridgeSelectionKey(chordType: string, selectedKey: number): s
     return `${chordType}::${selectedKey}`;
 }
 
-export function resolveBridgeSelection(
-    candidates: VoicingCandidate[],
+export function resolveBridgeSelection<Candidate extends VoicingCandidate>(
+    candidates: Candidate[],
     requestedCandidateId?: string | null
-): BridgeSelectionResolution {
+): BridgeSelectionResolution<Candidate> {
     // The bridge does not impose ranking or browsing policy. It trusts the caller's
-    // candidate order, so chord mode can stay aligned with its fret-first list.
+    // full candidate pool; display limits and filters do not replace selection.
     if (candidates.length === 0) {
         return {
             activeCandidate: null,

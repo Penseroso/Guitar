@@ -10,6 +10,7 @@ export interface Fingering {
 }
 
 export interface FretboardProps {
+    noteLabelsByPosition?: Partial<Record<string, string>>;
     tuning?: number[];
     activeNotes: number[];
     rootNote: number;

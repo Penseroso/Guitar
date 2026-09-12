@@ -7,9 +7,11 @@ interface TogglePillProps {
     colorTheme?: 'amber' | 'indigo' | 'purple' | 'chord-tones';
     hideDot?: boolean;
     className?: string;
+    id?: string;
+    comfortable?: boolean;
 }
 
-export const TogglePill: React.FC<TogglePillProps> = ({ label, isActive, onToggle, colorTheme = 'amber', hideDot = false, className = '' }) => {
+export const TogglePill: React.FC<TogglePillProps> = ({ label, isActive, onToggle, colorTheme = 'amber', hideDot = false, className = '', id, comfortable = false }) => {
     let togglePillBgClass = "bg-white/5";
     let toggleDotClass = "bg-white/10";
 
@@ -25,17 +27,19 @@ export const TogglePill: React.FC<TogglePillProps> = ({ label, isActive, onToggl
 
     return (
         <button
+            id={id}
+            aria-pressed={isActive}
             onClick={onToggle}
             className={[
                 "w-full flex items-center justify-between p-4",
                 "bg-white/[0.015] border border-white/5 rounded-2xl group cursor-pointer hover:bg-white/[0.04] transition-all",
-                "focus:outline-none",
+                "min-h-11 focus-visible:outline-2 focus-visible:outline-cyan-200 focus-visible:outline-offset-2",
                 className
             ].join(" ")}
         >
             <span className={[
-                "text-[10px] font-black tracking-widest uppercase transition-colors text-left",
-                isActive || hideDot ? "text-white/80" : "text-white/40 group-hover:text-white/60"
+                comfortable ? "text-sm font-semibold tracking-wide transition-colors text-left" : "text-[10px] font-black tracking-widest uppercase transition-colors text-left",
+                isActive || hideDot || comfortable ? "text-white/80" : "text-white/40 group-hover:text-white/60"
             ].join(" ")}>
                 {label}
             </span>

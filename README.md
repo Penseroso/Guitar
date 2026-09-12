@@ -30,7 +30,15 @@ examples from this codebase's own history:
 If a UI component needs an inline `if`/`useMemo` to decide something musically meaningful, that's usually a
 sign the decision belongs in `domain/` instead.
 
-### Reference sources
+### Chord exploration
+
+Chord mode places the selected voicing and playback first, with one full-pool filtered list. It reuses the shared UI components, offers a root picker through the stationary circle, and adjusts fret position with range handles.
+It searches the full supported pool with composable position, string and harmony conditions,
+and plays the actual selected voicing. See [the product boundaries and ranking audit](docs/chord-exploration.md).
+Run `npm run audit:chord` for a read-only
+all-registry coverage and frozen-weight audit. Alternative surface policies remain offline comparisons.
+
+### Reference sources used by tests
 
 Independent, established sources used to validate this app's own deductive logic — never imported at runtime,
 only as devDependency fixtures/checks that catch this codebase's math disagreeing with a source that didn't

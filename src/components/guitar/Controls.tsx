@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Zap, Target, Compass, Disc } from 'lucide-react';
+import { Target, Compass, Disc } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getKeyName } from '@/domain/shared/keys';
-import { TabsRail } from '../ui/design-system/TabsRail';
+import { WorkspaceHeader } from './shared/WorkspaceHeader';
 import { KeyButton } from '../ui/design-system/KeyButton';
 import { CircleOfFifths } from './shared/CircleOfFifths';
 import { ProgressionModePanel } from './progression/ProgressionModePanel';
@@ -66,25 +66,7 @@ export const Controls: React.FC<ControlsProps> = ({
     return (
         <>
             <div className="col-span-1 lg:col-span-8 flex flex-col w-full h-full">
-                <header className="flex justify-between items-end border-b border-white/5 pb-8 mb-8">
-                    <div className="flex flex-col gap-1">
-                        <h1 className="text-4xl font-black tracking-tighter text-white flex items-baseline gap-1">
-                            <span className="font-extralight opacity-40 uppercase text-lg tracking-[0.3em]">the</span> MODUS
-                        </h1>
-                        <span className="text-[10px] font-black tracking-[0.4em] uppercase opacity-30 flex items-center gap-2 mt-1">
-                            <Zap size={10} /> Harmonic Workstation
-                        </span>
-                    </div>
-                    <TabsRail
-                        tabs={[
-                            { id: 'scale', label: 'Scale' },
-                            { id: 'chord', label: 'Chord' },
-                            { id: 'progression', label: 'Prog' },
-                        ]}
-                        activeId={mode}
-                        onChange={(id) => onModeChange(id as 'scale' | 'chord' | 'progression')}
-                    />
-                </header>
+                <WorkspaceHeader mode={mode} onModeChange={onModeChange} />
 
                 <div className="bg-[#0a0a0a] border border-white/5 rounded-[2.5rem] p-10 min-h-[580px] relative overflow-hidden shadow-[inset_0_0_80px_rgba(0,0,0,0.5)]">
                     <div className="absolute top-8 left-10 flex flex-col gap-3 z-20">

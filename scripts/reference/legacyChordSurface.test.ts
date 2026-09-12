@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { getVoicingTechniqueTag } from './deductiveRanking';
-import { getDeductiveChordSurfaceVoicingsForChord } from './rankedVoicingSearch';
+import { getVoicingTechniqueTag } from '../../src/domain/chord/deductiveRanking';
+import { getDeductiveChordSurfaceVoicingsForChord } from './legacyChordSurface';
 
 describe('getDeductiveChordSurfaceVoicingsForChord', () => {
     it('returns results ranked best-first', () => {

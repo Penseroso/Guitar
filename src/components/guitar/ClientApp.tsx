@@ -7,7 +7,6 @@ import { getProgressionPlaybackData } from '@/domain/progression/getProgressionP
 import {
     CHORD_FAMILIES,
     CHORD_REGISTRY_LIST,
-    getDeductiveChordSurfaceVoicingsForChord,
     getChordTypeLabel,
     getChordTypeSuffix,
     resolveChordRegistryEntry,
@@ -27,7 +26,11 @@ import {
 import { resolveBridgeSelection } from './chord/bridge';
 import { getVoicingPresentationMeta } from './chord/voicing-labels';
 import { ScaleModeWorkspace } from './scale/ScaleModeWorkspace';
+import { WorkspaceHeader } from './shared/WorkspaceHeader';
 import { ChordModeWorkspace } from './chord/ChordModeWorkspace';
+import { ChordExplorationPanel } from './chord/ChordExplorationPanel';
+import { useChordExploration } from './chord/useChordExploration';
+import type { ChordPlayingContext } from '@/domain/chord/exploration';
 import { ProgressionModeWorkspace } from './progression/ProgressionModeWorkspace';
 
 const CHORD_SELECTOR_ORDER_BY_FAMILY = {
@@ -97,6 +100,8 @@ export default function ClientApp() {
 
     // --- State: Chord Mode ---
     const [chordType, setChordType] = useState('major');
+    const [chordPlayingContext, setChordPlayingContext] = useState<ChordPlayingContext>('standalone');
+    const exploration = useChordExploration(mode === 'chord', chordType, selectedKey, chordPlayingContext);
     const {
         progressionName,
         progressionDoc,
@@ -190,16 +195,8 @@ export default function ClientApp() {
     }, [futureVoicingScopeKey, tonalContext]);
 
     const requestedFutureVoicingId = harmonicWorkspace.selectedCandidateId;
-    const chordSurfaceVoicingCandidates = useMemo(() => {
-        try {
-            return getDeductiveChordSurfaceVoicingsForChord(chordType, selectedKey, {
-                maxFret: 15,
-                maxPerTechnique: 5,
-            });
-        } catch {
-            return [];
-        }
-    }, [chordType, selectedKey]);
+    const chordSurfaceVoicingCandidates = useMemo(() =>
+        exploration.response?.status === 'ready' ? exploration.response.candidates : [], [exploration.response]);
     const futureVoicingSelection = useMemo(
         () => resolveBridgeSelection(chordSurfaceVoicingCandidates, requestedFutureVoicingId),
         [chordSurfaceVoicingCandidates, requestedFutureVoicingId]
@@ -211,7 +208,7 @@ export default function ClientApp() {
         [activeFutureCandidate]
     );
     const activeFuturePresentation = useMemo(
-        () => getVoicingPresentationMeta(activeFutureCandidate?.voicing),
+        () => getVoicingPresentationMeta(activeFutureCandidate),
         [activeFutureCandidate]
     );
     const chordPreviewPrimaryLabel = activeFutureCandidate
@@ -234,9 +231,7 @@ export default function ClientApp() {
         ? getChordTypeLabel(currentChordEntry)
         : chordType;
     const chordPreviewFormula = currentChordEntry?.formula.degrees ?? [];
-    const chordPreviewPosition = activeFutureCandidate?.voicing.rootFret !== undefined
-        ? `${activeFutureCandidate.voicing.rootFret}fr position`
-        : null;
+    const chordPreviewPosition = activeFuturePresentation.positionLabel;
 
     const handleSelectFutureVoicing = useCallback((candidateId: string) => {
         dispatchHarmonicWorkspace({
@@ -334,10 +329,11 @@ export default function ClientApp() {
     }, [mode, fingering, selectedKey]);
 
     return (
-        <div className="min-h-screen bg-[#050505] text-[#a0a0a0] selection:bg-white/20 p-8 flex flex-col items-center gap-12 overflow-x-hidden font-sans">
+        <div className={`min-h-screen bg-[#050505] text-[#a0a0a0] selection:bg-white/20 ${mode === 'chord' ? 'p-3 sm:p-8' : 'p-8'} flex flex-col items-center gap-12 overflow-x-hidden font-sans`}>
             <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                {mode === 'chord' && <div className="col-span-1 lg:col-span-8"><WorkspaceHeader mode={mode} onModeChange={setMode} /></div>}
                 {/* 1. Controls (Left & Right Racks handled internally) */}
-                <Controls
+                {mode !== 'chord' && <Controls
                     selectedKey={selectedKey}
                     onKeyChange={setSelectedKey}
                     selectedScaleGroup={scaleGroup}
@@ -372,15 +368,15 @@ export default function ClientApp() {
 
                     progressionName={progressionName}
                     onProgressionChange={applyPreset}
-                />
+                />}
 
                 {/* 2. Visualizations (Footer Rack) */}
-                <div className="col-span-1 lg:col-span-12 bg-[#0a0a0a] border border-white/5 rounded-[3rem] p-12 relative group shadow-2xl overflow-hidden mt-4">
+                <div className={mode === 'chord' ? 'col-span-1 lg:col-span-12 min-w-0' : 'col-span-1 lg:col-span-12 bg-[#0a0a0a] border border-white/5 rounded-[3rem] p-12 relative group shadow-2xl overflow-hidden mt-4'}>
                     {/* Decorative Grid */}
-                    <div
+                    {mode !== 'chord' && <div
                         className="absolute inset-0 opacity-[0.02] pointer-events-none"
                         style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '20px 20px' }}
-                    />
+                    />}
 
                     {mode === 'scale' && (
                         <ScaleModeWorkspace
@@ -419,25 +415,23 @@ export default function ClientApp() {
 
                     {mode === 'chord' && (
                         <ChordModeWorkspace
-                            chordType={chordType}
-                            onChordTypeChange={setChordType}
+                            chordType={chordType} onChordTypeChange={setChordType}
                             chordSelectorGroups={CHORD_SELECTOR_GROUPS}
-                            chordPreviewTitle={chordPreviewTitle}
-                            activeFutureCandidate={activeFutureCandidate}
-                            activeFuturePresentation={activeFuturePresentation}
-                            fretboardContainerRef={fretboardContainerRef}
-                            tuning={TUNING}
-                            activeNotes={activeNotes}
-                            rootNote={rootNote}
-                            chordTones={currentChordTones}
-                            modifierNotes={modifierNotes}
-                            showChordTones={showChordTones}
-                            showIntervals={showIntervals}
-                            onToggleIntervals={() => setShowIntervals((prev) => !prev)}
-                            fingering={fingering}
-                            futureVoicingCandidates={chordSurfaceVoicingCandidates}
-                            onSelectFutureVoicing={handleSelectFutureVoicing}
-                            activeFutureVoicingId={activeFutureVoicingId}
+                            root={selectedKey} onRootChange={setSelectedKey} scaleGroup={scaleGroup} scaleName={scaleName}
+                            context={chordPlayingContext}
+                            onContextChange={(context) => {
+                                if (activeFutureVoicingId) handleSelectFutureVoicing(activeFutureVoicingId);
+                                setChordPlayingContext(context);
+                            }}
+                            explorationPanel={<ChordExplorationPanel
+                                key={`${chordType}:${selectedKey}`}
+                                context={chordPlayingContext} response={exploration.response} onRetry={exploration.retry}
+                                selectedId={activeFutureVoicingId} onSelect={handleSelectFutureVoicing}
+                                title={chordPreviewTitle} showIntervals={showIntervals}
+                                onToggleIntervals={() => setShowIntervals(previous => !previous)}
+                                degrees={chordPreviewFormula}
+                                selectionReplaced={!!requestedFutureVoicingId && !!activeFutureVoicingId && requestedFutureVoicingId !== activeFutureVoicingId}
+                            />}
                         />
                     )}
 

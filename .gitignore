@@ -39,10 +39,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# Local research corpus, benchmark scripts, and private per-song benchmark artifacts,
-# including the DadaGP utilization-plan docs and phase summaries (rights-pending;
-# local only, never pushed).
-/DadaGP-v1.1/
-/.dadagp/
-/scripts/dadagp/

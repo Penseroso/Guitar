@@ -33,6 +33,9 @@ export interface VoicingSearchOptions {
     maxHandSpanMm?: number;
     allowThumbOnLowE?: boolean;
     requireRoot?: boolean;
+    /** Explicit accompaniment context permits root omission and two-note guide tones.
+     * Formula identity is retained in the descriptor; omitted roots are not relabelled. */
+    context?: 'standalone' | 'accompaniment';
 }
 
 /**
@@ -55,7 +58,8 @@ export function searchDeductiveVoicings(
 ): ResolvedVoicing[] {
     const tuningMidi = options.tuningMidi ?? STANDARD_GUITAR_STRING_MIDI_PITCHES;
     const maxFret = options.maxFret ?? 15;
-    const requireRoot = options.requireRoot ?? true;
+    const accompaniment = options.context === 'accompaniment';
+    const requireRoot = options.requireRoot ?? !accompaniment;
 
     const targetNotes = buildTargetVoicingNotes(entry, style);
     if (targetNotes.length === 0) {
@@ -68,7 +72,10 @@ export function searchDeductiveVoicings(
     }));
 
     const requiredDegreeSet = new Set(
-        deriveRequiredDegrees(entry).filter((degree) => candidates.some((candidate) => candidate.degree === degree))
+        deriveRequiredDegrees(entry).filter((degree) =>
+            (degree !== '1' || requireRoot)
+            && candidates.some((candidate) => candidate.degree === degree)
+        )
     );
     // drop-2/drop-3 pin the lowest-sounding voice to whatever voicingStyles.ts's octave-drop
     // transform moved to the bottom of the stack — everything above stays free to duplicate.
@@ -108,7 +115,7 @@ export function searchDeductiveVoicings(
         // except for formulas that are inherently 2-tone (power chords), which have nothing more
         // to add. This is a hard floor, independent of which style/omission produced the notes.
         const distinctPitchClasses = new Set(playedNotes.map((note) => note.pitchClass)).size;
-        const minDistinctPitchClasses = Math.min(3, entry.formula.degrees.length);
+        const minDistinctPitchClasses = Math.min(accompaniment ? 2 : 3, entry.formula.degrees.length);
         if (distinctPitchClasses < minDistinctPitchClasses) {
             return;
         }

@@ -105,10 +105,8 @@ export { searchDeductiveVoicings } from './voicingSearch';
 
 export type { VoicingPosition, VoicingStyleSpec } from './voicingStyles';
 
-export type { DeductiveChordSurfaceOptions } from './rankedVoicingSearch';
 export {
     searchAndRankDeductiveVoicings,
-    getDeductiveChordSurfaceVoicingsForChord,
 } from './rankedVoicingSearch';
 
 export { identifyChordsForPitchClasses } from './chordRecognition';

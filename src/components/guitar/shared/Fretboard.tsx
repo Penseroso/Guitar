@@ -23,6 +23,7 @@ export const Fretboard: React.FC<FretboardProps> = ({
     showChordTones,
     showIntervals = false,
     scaleIntervalLabels,
+    noteLabelsByPosition,
     fingering,
     doubleStops = []
 }) => {
@@ -69,7 +70,7 @@ export const Fretboard: React.FC<FretboardProps> = ({
                 {/* Fret Labels Row (Outside of Board) */}
                 <div style={{ display: 'grid', gridTemplateColumns: gridTemplateColumns, marginBottom: '0.5rem' }}>
                     {frets.map(f => (
-                        <div key={`label-${f}`} className={styles.fretLabel}>
+                        <div key={`label-${f}`} data-fret={f} className={styles.fretLabel}>
                             {f > 0 ? f : 'Nut'}
                         </div>
                     ))}
@@ -200,7 +201,7 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                     let label = NOTES[noteIdx];
 
                                     if (showIntervals) {
-                                        label = getIntervalLabel(noteIdx);
+                                        label = noteLabelsByPosition?.[`${s}:${f}`] ?? getIntervalLabel(noteIdx);
                                     }
 
                                     if (fingering && specificFinger) {
@@ -210,7 +211,7 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                         } else if (specificFinger.label && !showIntervals) {
                                             label = NOTES[noteIdx];
                                         } else if (showIntervals) {
-                                            label = getIntervalLabel(noteIdx);
+                                            label = noteLabelsByPosition?.[`${s}:${f}`] ?? getIntervalLabel(noteIdx);
                                         }
 
                                         if (label !== 'X') {

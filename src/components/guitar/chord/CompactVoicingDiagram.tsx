@@ -4,7 +4,6 @@ import React from 'react';
 
 import { getNoteName } from '@/domain/shared/notes';
 import type { ResolvedVoicing } from '@/domain/chord';
-import { getVoicingDisplayName } from '@/domain/chord';
 
 interface CompactVoicingDiagramProps {
     voicing: ResolvedVoicing;
@@ -46,7 +45,7 @@ export function CompactVoicingDiagram({
                 height={height}
                 viewBox={`0 0 ${width} ${height}`}
                 className="overflow-visible"
-                aria-label={`${getVoicingDisplayName(voicing.descriptor)} diagram`}
+                aria-label="Guitar voicing diagram"
                 role="img"
             >
                 <rect width={width} height={height} fill="transparent" />
