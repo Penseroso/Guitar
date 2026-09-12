@@ -9,6 +9,7 @@
     "lint": "eslint",
     "test": "vitest run --pool threads",
     "audit:chord": "tsx scripts/chord-exploration-audit.ts",
+    "research:chord": "tsx scripts/preference/run.ts",
     "test:chord:browser": "node scripts/chord-browser-smoke.mjs",
     "test:watch": "vitest --pool threads"
   },
