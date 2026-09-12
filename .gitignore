@@ -40,16 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Local research corpus and private per-song benchmark artifacts.
-# Only aggregate, non-identifying Phase 0 results belong in the repository.
+# Local research corpus and private per-song benchmark artifacts, including the DadaGP
+# utilization-plan docs and phase summaries (rights-pending; local only, never pushed).
 /DadaGP-v1.1/
 /.dadagp/
-
-# DadaGP utilization-plan docs (rights-pending; kept local only, never pushed).
-/DADAGP_ROADMAP.md
-/DADAGP_BENCHMARK_POLICY.md
-/DADAGP_RIGHTS_MATRIX.md
-/DADAGP_VALIDATION.md
-/DADAGP_PHASE*_PLAN.md
-/DADAGP_PHASE*_REPORT.md
-/DADAGP_PHASE*_SUMMARY.json
