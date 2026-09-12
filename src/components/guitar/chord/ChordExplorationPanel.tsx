@@ -13,6 +13,7 @@ import { useVoicingAudio } from './useVoicingAudio';
 import { ChordDialog } from './ChordDialog';
 import { ChordNeckView } from './ChordNeckView';
 import { ChoiceGroup, type ChordChoice } from './ChoiceGroup';
+import { ChoiceRail } from './ChoiceRail';
 import { FretRangeControl } from './FretRangeControl';
 import { formatChordToneLabel, formatDegreeLabel } from './tone-labels';
 import styles from './chord-ui.module.css';
@@ -147,23 +148,32 @@ export function ChordExplorationPanel({ context, onContextChange, response, onRe
             <div className={styles.row}>
                 <h2 className="text-lg font-semibold">Voicings</h2>
                 <button className={styles.action} aria-expanded={filtersOpen} aria-controls={id + '-filters'}
-                    onClick={() => setFiltersOpen(open => !open)}>Filters{activeFilters.length ? ' (' + activeFilters.length + ')' : ''}</button>
+                    onClick={() => setFiltersOpen(open => !open)}>Filters{activeFilters.length + Number(context === 'accompaniment') ? ' (' + (activeFilters.length + Number(context === 'accompaniment')) + ')' : ''}</button>
             </div>
             <FretRangeControl min={filters.minFret} max={filters.maxFret} onChange={(minFret, maxFret) => {
                 setFilters(previous => ({ ...previous, minFret, maxFret })); setVisibleCount(EXPLORATION_START_SIZE);
             }} />
             {filtersOpen && <div id={id + '-filters'}>
                 <div className={styles.filterBody}>
-                    <ChoiceGroup label="Bass" value={filters.bassDegree ?? ''} options={degreeOptions} onChange={value => update('bassDegree', value || null)} />
-                    <ChoiceGroup label="Top" value={filters.topDegree ?? ''} options={degreeOptions} onChange={value => update('topDegree', value || null)} />
-                    <ChoiceGroup label="Sounding strings" value={String(filters.stringCount ?? '')}
-                        options={[{ value: '', label: 'Any' }, ...[2, 3, 4, 5, 6].map(count => ({ value: String(count), label: String(count) }))]}
+                    <div className={styles.accompaniment}>
+                        <label className={styles.contextSwitch}>
+                            <input type="checkbox" checked={context === 'accompaniment'} aria-describedby={id + '-context-help'}
+                                onChange={event => onContextChange(event.target.checked ? 'accompaniment' : 'standalone')} />
+                            <span className={styles.switchTrack} aria-hidden="true" />
+                            <span>Include accompaniment shapes</span>
+                        </label>
+                        <p id={id + '-context-help'} className={styles.small}>Adds rootless and two-note voicings for playing with a bass player or other instruments.</p>
+                    </div>
+                    <ChoiceRail label="Bass" value={filters.bassDegree ?? ''} options={degreeOptions} onChange={value => update('bassDegree', value || null)} />
+                    <ChoiceRail label="Top" value={filters.topDegree ?? ''} options={degreeOptions} onChange={value => update('topDegree', value || null)} />
+                    <ChoiceRail label="Sounding strings" value={String(filters.stringCount ?? '')} expandAny
+                        options={[...[2, 3, 4, 5, 6].map(count => ({ value: String(count), label: String(count) })), { value: '', label: 'Any' }]}
                         onChange={value => update('stringCount', value ? Number(value) : null)} />
-                    <ChoiceGroup label="Open strings" value={filters.openStrings} options={openOptions}
+                    <ChoiceRail label="Open strings" value={filters.openStrings} options={openOptions}
                         onChange={value => update('openStrings', value as ExplorationFilters['openStrings'])} />
-                    <ChoiceGroup label="Root inclusion" value={filters.root} options={rootOptions}
+                    <ChoiceRail label="Root inclusion" value={filters.root} options={rootOptions}
                         onChange={value => update('root', value as ExplorationFilters['root'])} />
-                    <ChoiceGroup label="Chord-tone coverage" value={filters.coverage} options={coverageOptions}
+                    <ChoiceRail label="Chord-tone coverage" value={filters.coverage} options={coverageOptions}
                         onChange={value => update('coverage', value as ExplorationFilters['coverage'])} />
                 </div>
                 <p className={styles.small}>Bass is the lowest sounding note; Top is the highest. All tones means the complete chord formula. With omissions means at least one tone is absent.</p>
@@ -171,6 +181,10 @@ export function ChordExplorationPanel({ context, onContextChange, response, onRe
                     setFiltersOpen(false);
                     requestAnimationFrame(() => { resultHeading.current?.focus({ preventScroll: true }); resultHeading.current?.scrollIntoView({ block: 'nearest' }); });
                 }}>View results{response?.status === 'ready' ? ' (' + query.matchCount + ')' : ''}</button>
+            </div>}
+            {context === 'accompaniment' && <div className={styles.chips}>
+                <button className={styles.action + ' ' + styles.chip} aria-label="Exclude accompaniment shapes"
+                    onClick={() => onContextChange('standalone')}>Accompaniment included ×</button>
             </div>}
             {(activeFilters.length > 0 || positionActive) && <div className={styles.chips} aria-label="Active filters">
                 {activeFilters.map(key => <button className={styles.action + ' ' + styles.chip} key={key}

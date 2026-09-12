@@ -419,11 +419,6 @@ export default function ClientApp() {
                             chordType={chordType} onChordTypeChange={setChordType}
                             chordSelectorGroups={CHORD_SELECTOR_GROUPS}
                             root={selectedKey} onRootChange={setSelectedKey}
-                            context={chordPlayingContext}
-                            onContextChange={(context) => {
-                                if (activeFutureVoicingId) handleSelectFutureVoicing(activeFutureVoicingId);
-                                setChordPlayingContext(context);
-                            }}
                             explorationPanel={<ChordExplorationPanel
                                 key={`${chordType}:${selectedKey}`}
                                 context={chordPlayingContext} response={exploration.response} onRetry={exploration.retry}
@@ -478,7 +473,6 @@ export default function ClientApp() {
         </div>
     );
 }
-
 
 
 

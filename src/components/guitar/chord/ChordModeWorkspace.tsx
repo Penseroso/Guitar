@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useId, useRef, useState } from 'react';
-import type { ChordPlayingContext } from '@/domain/chord/exploration';
 import { RootDial } from './RootDial';
 import { ChoiceGroup } from './ChoiceGroup';
 import styles from './chord-ui.module.css';
@@ -59,25 +58,18 @@ function ChordTypeSelector({ value, groups, onChange }: {
 }
 
 export function ChordModeWorkspace({ chordType, onChordTypeChange, chordSelectorGroups, root, onRootChange,
-    context, onContextChange, explorationPanel }: {
+    explorationPanel }: {
     chordType: string;
     onChordTypeChange: (value: string) => void;
     chordSelectorGroups: SelectorGroup[];
     root: number;
     onRootChange: (root: number) => void;
-    context: ChordPlayingContext;
-    onContextChange: (context: ChordPlayingContext) => void;
     explorationPanel: React.ReactNode;
 }) {
     return <section className={styles.workspace} aria-label="Chord workspace">
         <div className={styles.inputs}>
             <RootDial value={root} onChange={onRootChange} />
             <ChordTypeSelector value={chordType} groups={chordSelectorGroups} onChange={onChordTypeChange} />
-            <div className={styles.context}>
-                <ChoiceGroup label="Playing context" value={context} onChange={value => onContextChange(value as ChordPlayingContext)}
-                    options={[{ value: 'standalone', label: 'Standalone' }, { value: 'accompaniment', label: 'Accompaniment' }]} />
-                {context === 'accompaniment' && <p className={styles.small}>Allows rootless and two-note shapes when other parts supply the harmony.</p>}
-            </div>
         </div>
         {explorationPanel}
     </section>;

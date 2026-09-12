@@ -170,10 +170,47 @@ try {
     assert.equal(await evaluate(section + '.querySelector("[data-selected-id]").innerText.includes("Bass E · 3")'), true);
     assert.equal(await evaluate(section + '.querySelector("[data-selected-id]").innerText.includes("Top B♭ · ♭7")'), true);
     assert.equal(await evaluate('!!document.querySelector("[role=alert]")'), false, 'Audio start error');
-    await select('Playing context', 'standalone'); await ready();
+    await activate(query('[aria-label="Exclude accompaniment shapes"]')); await ready();
     assert.equal(await evaluate(results + '.dataset.resultsCount'), '0', 'Context silently relaxed filters');
     assert.ok(await evaluate(section + '.innerText.includes("Previous voicing is unavailable")'));
     await click('Clear filters');
+    await activate(filterButton);
+    const stringRail = query('[data-choice-rail="Sounding strings"]');
+    const stringChoice = value => stringRail + '.querySelector(' + JSON.stringify('input[value="' + value + '"]') + ')';
+    assert.deepEqual(await evaluate(stringRail + '.querySelectorAll("input") && Array.from(' + stringRail + '.querySelectorAll("input"),e=>e.value)'), ['2','3','4','5','6','']);
+    await select('Sounding strings', '3');
+    const beforeRail = await evaluate(results + '.dataset.resultsCount');
+    const railStarts = await evaluate('window.chordWorkerStarts');
+    let railFrom = await point(stringChoice('3'));
+    let railTo = await point(stringChoice('6'));
+    await pressAt(railFrom);
+    for (let step=1; step<=6; step++) {
+        await moveTo({ x: railFrom.x + (railTo.x-railFrom.x)*step/6, y: railFrom.y }); await pause(25);
+    }
+    assert.equal(await evaluate(stringChoice('3') + '.checked'), true, 'Rail preview committed before release');
+    assert.equal(await evaluate(results + '.dataset.resultsCount'), beforeRail, 'Rail preview filtered results');
+    await releaseAt(railTo); await pause(100);
+    assert.equal(await evaluate(stringChoice('6') + '.checked'), true, 'Rail drag did not commit');
+    await key('ArrowRight', 39);
+    assert.equal(await evaluate(stringChoice('') + '.checked'), true, 'Keyboard cannot reach terminal Any');
+    assert.equal(await evaluate(stringRail + '.querySelector("[data-any]").dataset.any'), 'true');
+    assert.equal(await evaluate('window.chordWorkerStarts'), railStarts, 'Rail filters regenerated the pool');
+    await select('Sounding strings', '3');
+    railFrom = await point(stringChoice('3')); railTo = await point(stringChoice('5'));
+    await pressAt(railFrom); await moveTo(railTo); await send('Input.dispatchTouchEvent', { type: 'touchCancel', touchPoints: [] });
+    assert.equal(await evaluate(stringChoice('3') + '.checked'), true, 'Cancelled drag committed a filter');
+    await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
+    await select('Sounding strings', '');
+    assert.equal(await evaluate('getComputedStyle(' + stringRail + '.querySelector("[aria-hidden]"),"::after").animationName'), 'none', 'Reduced motion still animates Any');
+    await send('Emulation.setEmulatedMedia', { features: [] });
+    await activate(query('input[type="checkbox"]'));
+    await ready();
+    await select('Sounding strings', '2');
+    assert.ok(Number(await evaluate(results + '.dataset.resultsCount')) > 0, 'Accompaniment switch did not enable two-note shapes');
+    await click('Clear filters');
+    assert.equal(await evaluate(query('input[type="checkbox"]') + '.checked'), true, 'Clear filters changed playing context');
+    await activate(query('input[type="checkbox"]')); await ready();
+    await activate(filterButton);
     await click('Extended'); await select('Chord quality', 'dominant-9'); await waitFor(title + ' === "C9"', 'C9 failed');
     await activate(filterButton);
     await select('Top', '9');
@@ -285,6 +322,7 @@ try {
     throw error;
 } finally {
     if (injection) await send('Page.removeScriptToEvaluateOnNewDocument', { identifier: injection.identifier });
+    await send('Emulation.setEmulatedMedia', { features: [] });
     await send('Emulation.clearDeviceMetricsOverride');
     await send('Emulation.setTouchEmulationEnabled', { enabled: false });
     ws.close();

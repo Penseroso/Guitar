@@ -38,10 +38,15 @@
 .familyTabs button[aria-selected="true"] { background: #ffffff16; color: white; }
 .qualityChoices { grid-column: 1 / -1; }
 .qualityChoices .choices { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.context { grid-column: 1 / -1; }
-.context .choices { flex-wrap: nowrap; }
-.context .choice { flex: 1; }
-.context p { margin-top: 6px; }
+.accompaniment { grid-column: 1 / -1; padding-bottom: 14px; border-bottom: 1px solid var(--chord-border); }
+.contextSwitch { position: relative; display: flex; align-items: center; gap: 12px; min-height: 44px; cursor: pointer; }
+.contextSwitch input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.switchTrack { width: 40px; height: 24px; border-radius: 24px; background: #ffffff25; padding: 3px; flex: none; transition: background 180ms ease; }
+.switchTrack::after { content: ''; display: block; width: 18px; height: 18px; border-radius: 50%; background: #aaa; transition: transform 180ms ease; }
+.contextSwitch input:checked + .switchTrack { background: #eee; }
+.contextSwitch input:checked + .switchTrack::after { transform: translateX(16px); background: #111; }
+.contextSwitch:has(input:focus-visible) { outline: 2px solid #bae6fd; outline-offset: 2px; border-radius: 12px; }
+@media (prefers-reduced-motion: reduce) { .switchTrack, .switchTrack::after { transition: none; } }
 .choiceGroup { border: 0; padding: 0; margin: 0; min-width: 0; }
 .choiceGroup legend { color: var(--chord-muted); font-size: 12px; margin-bottom: 6px; }
 .choices { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -91,11 +96,10 @@
     .filterBody { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (min-width: 1024px) {
-    .inputs { grid-template-columns: 64px minmax(0, 1fr) 264px; gap: 12px 20px; }
+    .inputs { grid-template-columns: 64px minmax(0, 1fr); gap: 12px 20px; }
     .chordType { display: block; }
     .familyTabs { margin-top: 6px; }
     .qualityChoices { margin-top: 8px; }
-    .context { grid-column: 3; }
     .layout { grid-template-columns: 320px minmax(0, 1fr); }
     .selected { position: sticky; top: 16px; }
     .cards { grid-template-columns: 1fr; }
