@@ -21,4 +21,8 @@ export interface FretboardProps {
     scaleIntervalLabels?: Partial<Record<number, string>>;
     fingering?: Fingering[];
     doubleStops?: PlayableDoubleStop[];
+    /** Optional: makes every string/fret cell (including the nut) clickable/focusable, for
+     *  direct-manipulation input surfaces (e.g. reverse chord-shape entry). Purely additive —
+     *  omitting it leaves the fretboard exactly as display-only as before. */
+    onCellClick?: (string: number, fret: number) => void;
 }

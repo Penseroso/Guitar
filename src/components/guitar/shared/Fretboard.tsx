@@ -25,7 +25,8 @@ export const Fretboard: React.FC<FretboardProps> = ({
     scaleIntervalLabels,
     noteLabelsByPosition,
     fingering,
-    doubleStops = []
+    doubleStops = [],
+    onCellClick,
 }) => {
     // Generate fret indices [0...24]
     const frets = useMemo(() => Array.from({ length: 25 }, (_, i) => i), []);
@@ -124,7 +125,14 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                 <div
                                     key={`cell-${s}-${f}`}
                                     className={`${f === 0 ? styles.nutCell : styles.fretCell}`}
-                                    style={{ gridRow: s + 1, gridColumn: f + 1 }}
+                                    style={{ gridRow: s + 1, gridColumn: f + 1, cursor: onCellClick ? 'pointer' : undefined }}
+                                    role={onCellClick ? 'button' : undefined}
+                                    tabIndex={onCellClick ? 0 : undefined}
+                                    aria-label={onCellClick ? `String ${s + 1}, fret ${f}` : undefined}
+                                    onClick={onCellClick ? () => onCellClick(s, f) : undefined}
+                                    onKeyDown={onCellClick ? (event) => {
+                                        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onCellClick(s, f); }
+                                    } : undefined}
                                 >
                                     {/* Background Cell Content if any */}
                                 </div>
@@ -249,7 +257,14 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                         <div
                                             key={`note-${s}-${f}`}
                                             className={styles.noteCell}
-                                            style={{ gridRow: s + 1, gridColumn: f + 1 }}
+                                            style={{ gridRow: s + 1, gridColumn: f + 1, cursor: onCellClick ? 'pointer' : undefined }}
+                                            role={onCellClick ? 'button' : undefined}
+                                            tabIndex={onCellClick ? 0 : undefined}
+                                            aria-label={onCellClick ? `String ${s + 1}, fret ${f} (currently placed) — click to remove` : undefined}
+                                            onClick={onCellClick ? () => onCellClick(s, f) : undefined}
+                                            onKeyDown={onCellClick ? (event) => {
+                                                if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onCellClick(s, f); }
+                                            } : undefined}
                                         >
                                             <div className={`${styles.noteDot} ${dotClass} ${(!isDoubleStop && doubleStops.length > 0) ? styles.faded : ''}`}>
                                                 {label}

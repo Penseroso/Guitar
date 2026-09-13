@@ -18,6 +18,36 @@ function engine() {
     return { start: vi.fn(async () => {}), playChord: vi.fn<(notes: string[]) => void>() };
 }
 
+describe('reverse shape playback (playMidi)', () => {
+    it('plays an arbitrary MIDI list under its own id, sharing the same cancel token as play()', async () => {
+        const audio = engine();
+        const state = vi.fn();
+        const playback = createVoicingPlayback(async () => audio, state);
+        await playback.playMidi('shape-preview', [60, 64, 67]);
+        expect(audio.playChord).toHaveBeenCalledExactlyOnceWith(['C4', 'E4', 'G4']);
+        expect(state.mock.calls).toEqual([
+            [{ error: null, loadingCandidateId: 'shape-preview' }],
+            [{ error: null, loadingCandidateId: null }],
+        ]);
+    });
+
+    it('cancels a pending playMidi the same way it cancels play()', async () => {
+        const gate = deferred<void>();
+        const audio = engine();
+        audio.start.mockReturnValueOnce(gate.promise);
+        const state = vi.fn();
+        const playback = createVoicingPlayback(async () => audio, state);
+        const pending = playback.playMidi('shape-preview', [60]);
+        await Promise.resolve();
+        playback.cancel();
+        const calls = state.mock.calls.length;
+        gate.resolve();
+        await pending;
+        expect(audio.playChord).not.toHaveBeenCalled();
+        expect(state).toHaveBeenCalledTimes(calls);
+    });
+});
+
 describe('voicing playback requests', () => {
     let first: PresentationCandidate;
     let second: PresentationCandidate;

@@ -29,6 +29,7 @@
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
     overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
 }
+.intentToggle { margin-bottom: 16px; }
 .inputs { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: start; margin-bottom: 20px; }
 .chordType { display: contents; }
 .controlLabel { grid-column: 2; grid-row: 1; min-height: 18px; }
@@ -79,6 +80,12 @@
 .empty { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; color: #fde68a; font-size: 12px; }
 .empty p { width: 100%; }
 .cards { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 12px; }
+.reversePanel { display: flex; flex-direction: column; gap: 16px; }
+.reverseControls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.readingCard { display: flex; flex-direction: column; gap: 4px; padding: 12px; background: #ffffff03; border: 1px solid var(--chord-border); border-radius: 20px; min-width: 0; }
+.readingCard ul { margin: 4px 0; padding-left: 18px; display: flex; flex-direction: column; gap: 2px; }
+.readingTitle { background: none; border: 0; padding: 0; margin: 0; text-align: left; cursor: pointer; color: #f4f4f5; }
+.readingTitle[aria-pressed="true"] { text-decoration: underline; text-underline-offset: 3px; color: #7dd3fc; }
 .card { display: grid; grid-template-columns: minmax(0, 1fr) 44px; align-items: center; gap: 4px; padding: 8px; background: #ffffff03; border: 1px solid var(--chord-border); border-radius: 20px; min-width: 0; }
 .cardSelected { border-color: #ffffff50; background: #ffffff09; }
 .workspace .cardSelect { display: grid; grid-template-columns: 136px minmax(0, 1fr); align-items: center; gap: 4px; width: 100%; padding: 0; border: 0; background: transparent; text-align: left; border-radius: 12px; min-width: 0; }

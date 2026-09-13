@@ -57,20 +57,32 @@ function ChordTypeSelector({ value, groups, onChange }: {
     </div>;
 }
 
-export function ChordModeWorkspace({ chordType, onChordTypeChange, chordSelectorGroups, root, onRootChange,
-    explorationPanel }: {
+export type ChordWorkspaceIntent = 'forward' | 'reverse';
+
+export function ChordModeWorkspace({ intent, onIntentChange, chordType, onChordTypeChange, chordSelectorGroups, root, onRootChange,
+    explorationPanel, reversePanel }: {
+    intent: ChordWorkspaceIntent;
+    onIntentChange: (intent: ChordWorkspaceIntent) => void;
     chordType: string;
     onChordTypeChange: (value: string) => void;
     chordSelectorGroups: SelectorGroup[];
     root: number;
     onRootChange: (root: number) => void;
     explorationPanel: React.ReactNode;
+    reversePanel: React.ReactNode;
 }) {
     return <section className={styles.workspace} aria-label="Chord workspace">
-        <div className={styles.inputs}>
-            <RootDial value={root} onChange={onRootChange} />
-            <ChordTypeSelector value={chordType} groups={chordSelectorGroups} onChange={onChordTypeChange} />
+        <div className={styles.intentToggle}>
+            <ChoiceGroup label="Chord workflow" compact name="chord-mode-intent" value={intent}
+                onChange={(value) => onIntentChange(value as ChordWorkspaceIntent)}
+                options={[{ value: 'forward', label: 'Find voicings' }, { value: 'reverse', label: 'Name a shape' }]} />
         </div>
-        {explorationPanel}
+        {intent === 'forward' ? <>
+            <div className={styles.inputs}>
+                <RootDial value={root} onChange={onRootChange} />
+                <ChordTypeSelector value={chordType} groups={chordSelectorGroups} onChange={onChordTypeChange} />
+            </div>
+            {explorationPanel}
+        </> : reversePanel}
     </section>;
 }

@@ -22,16 +22,24 @@ import {
 import { getVoicingPresentationMeta } from './chord/voicing-labels';
 import { ScaleModeWorkspace } from './scale/ScaleModeWorkspace';
 import { WorkspaceHeader } from './shared/WorkspaceHeader';
-import { ChordModeWorkspace } from './chord/ChordModeWorkspace';
+import { ChordModeWorkspace, type ChordWorkspaceIntent } from './chord/ChordModeWorkspace';
 import { ChordExplorationPanel } from './chord/ChordExplorationPanel';
 import { useChordExploration } from './chord/useChordExploration';
 import { getChordToneChoices } from './chord/tone-labels';
+import { ReverseChordPanel } from './chord/reverse/ReverseChordPanel';
+import { SILENT_SHAPE_STATES, type ShapeStates } from '@/domain/chord/reverse/enteredShape';
 import { ProgressionModeWorkspace } from './progression/ProgressionModeWorkspace';
 
 const CHORD_SELECTOR_ORDER_BY_FAMILY = {
     triad: ['major', 'minor', 'power-5', 'augmented', 'diminished', 'sus2', 'sus4'],
-    seventh: ['major-6', 'major-7', 'minor-7', 'dominant-7', 'half-diminished-7', 'diminished-7'],
-    extended: ['major-9', 'minor-9', 'dominant-9', 'dominant-11', 'dominant-13', 'hendrix-7-sharp-9', 'dominant-7-flat-9'],
+    seventh: [
+        'major-6', 'major-7', 'minor-7', 'dominant-7', 'half-diminished-7', 'diminished-7',
+        'minor-6', 'minor-major-7', 'dominant-7-sus4', 'dominant-7-sharp-5', 'dominant-7-flat-5', 'major-7-sharp-5',
+    ],
+    extended: [
+        'major-9', 'minor-9', 'dominant-9', 'dominant-11', 'dominant-13', 'hendrix-7-sharp-9', 'dominant-7-flat-9',
+        'add9', 'minor-add9', 'six-nine', 'minor-11', 'minor-13',
+    ],
 } as const;
 
 const CHORD_SELECTOR_GROUPS = CHORD_FAMILIES.map((family) => {
@@ -95,6 +103,12 @@ export default function ClientApp() {
     // --- State: Chord Mode ---
     const [chordType, setChordType] = useState('major');
     const [chordPlayingContext, setChordPlayingContext] = useState<ResolvedRequest['interpretation']['context']>('standalone');
+
+    // --- State: Chord Mode — Reverse ("Name a shape") ---
+    // Kept entirely separate from the forward request state above — there is no handoff back
+    // into Forward; the two are independent workflows within Chord mode.
+    const [chordIntent, setChordIntent] = useState<ChordWorkspaceIntent>('forward');
+    const [reverseShapeStates, setReverseShapeStates] = useState<ShapeStates>(SILENT_SHAPE_STATES);
     const {
         progressionName,
         progressionDoc,
@@ -189,6 +203,7 @@ export default function ClientApp() {
 
     const requestedFutureVoicingId = harmonicWorkspace.scopeKey===futureVoicingScopeKey?harmonicWorkspace.selectedCandidateId:null;
     const exploration = useChordExploration(mode === 'chord', chordType, selectedKey, chordPlayingContext,requestedFutureVoicingId);
+
     const activeFutureCandidate = exploration.selected;
     const activeFutureVoicingId = activeFutureCandidate?.candidate.allocationId??null;
     const activeFutureVoicingFingering = useMemo(
@@ -401,6 +416,7 @@ export default function ClientApp() {
 
                     {mode === 'chord' && (
                         <ChordModeWorkspace
+                            intent={chordIntent} onIntentChange={setChordIntent}
                             chordType={chordType} onChordTypeChange={setChordType}
                             chordSelectorGroups={CHORD_SELECTOR_GROUPS}
                             root={selectedKey} onRootChange={setSelectedKey}
@@ -415,6 +431,10 @@ export default function ClientApp() {
                                 title={chordPreviewTitle} showIntervals={showIntervals}
                                 onToggleIntervals={() => setShowIntervals(previous => !previous)}
                                 toneChoices={currentChordEntry ? getChordToneChoices(currentChordEntry, selectedKey) : []}
+                            />}
+                            reversePanel={<ReverseChordPanel
+                                states={reverseShapeStates} onStatesChange={setReverseShapeStates}
+                                onStartFromVoicing={activeFutureCandidate ? () => setReverseShapeStates(activeFutureCandidate.candidate.states as unknown as ShapeStates) : undefined}
                             />}
                         />
                     )}

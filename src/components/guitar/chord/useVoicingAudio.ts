@@ -13,5 +13,5 @@ export function useVoicingAudio() {
     const cancel=useCallback(()=>{
         playback.cancel();setState({error:null,loadingCandidateId:null});
     },[playback]);
-    return { play: playback.play, cancel, ...state };
+    return { play: playback.play, playMidi: playback.playMidi, cancel, ...state };
 }
