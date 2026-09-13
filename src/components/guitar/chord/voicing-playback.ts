@@ -1,4 +1,5 @@
-import { getExplorationPlaybackNotes, type ExplorationCandidate } from '@/domain/chord/exploration';
+import { getPlaybackMidi,midiNoteLabel } from '@/domain/chord/engine/presentation';
+import type { PresentationCandidate } from '@/domain/chord/engine/types';
 
 interface VoicingAudioEngine {
     start(): Promise<void>;
@@ -17,15 +18,15 @@ export function createVoicingPlayback(
     let request = 0;
     return {
         cancel() { request += 1; },
-        async play(candidate: ExplorationCandidate) {
+        async play(candidate: PresentationCandidate) {
             const token = ++request;
-            onState({ error: null, loadingCandidateId: candidate.voicing.id });
+            onState({ error: null, loadingCandidateId: candidate.candidate.allocationId });
             let error: string | null = null;
             try {
                 const engine = await loadEngine();
                 if (token !== request) return;
                 await engine.start();
-                if (token === request) engine.playChord(getExplorationPlaybackNotes(candidate));
+                if (token === request) engine.playChord(getPlaybackMidi(candidate).map(midiNoteLabel));
             } catch {
                 error = 'Audio could not start. Select Play voicing to try again.';
             } finally {

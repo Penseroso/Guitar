@@ -13,7 +13,7 @@ The specification's archived documentation-only authorization note is superseded
 | 5 Classic ranking | Complete | 94 focused/legacy tests; 480 requests/1,647,041 identical baseline survivors; all 20 weights/features match; 45,864 isolated ledger checks |
 | 6 Session/pages | Complete | 57 engine tests; cached/replay exact rows, ledgers, cursors and counts; every-node checkpoint recovery; widest-default and larger custom-scope diagnostics |
 | 7 Worker | Complete | 74 engine/client tests; 18 real Chrome worker assertions; typed revisions, bounded chunks, task yields, cancellation and pause/Continue |
-| 8 Atomic live cutover | Pending | |
+| 8 Atomic live cutover | Complete | Full suite 630 passed/34 existing skips; final focused 41 passed; 30 real Chrome UI checks; scoped production lint and release build pass in current workspace |
 | 9 Integrated verification | Pending | |
 | 10 Retirement/readiness | Pending | |
 
@@ -40,3 +40,13 @@ Stage 7: real Chrome 152 DedicatedWorker smoke passes 18 assertions. Latest sing
 - Node v22.16.0. Vite requires subprocess access; ordinary sandbox tests fail with `spawn EPERM`, while approved execution passes.
 - Baseline full typecheck has 21 errors in archived physical comparator source and TS5097 in `scripts/physical-feasibility/compare.ts`. These are pre-existing and frozen artifacts will not be edited.
 - Baseline `eslint src --quiet` passes. Unscoped lint traverses private generated research files and reports 277 errors/9,446 warnings, plus existing research-script errors. Scoped production validation and unscoped failures will be reported distinctly.
+
+## Stage 8 integration notes
+
+The `guitar-engine/1` browser version uses the new worker, bounded session controller, independent selection, replacement pages and actual-MIDI audio together. A transitive TypeScript import guard excludes legacy search/boolean eligibility, array adapters and offline models from these live roots. Compatibility adapters are opt-in and return explicit notices and typed collection exhaustion.
+
+The initial page has six cards and subsequent pages twelve. Cursor history is bounded to 64 entries (first plus 63 recent); Previous only traverses adjacent retained pages, while First page makes every earlier result reachable again. This engineering storage choice does not change a candidate, view or ordering key. Details preserve all fourteen terms, profile provenance, omissions and reason-specific uncertainty. Request changes and cancellation invalidate pending audio. No human-benefit claim is made.
+
+Slider drags now keep a local accessible preview and send one committed view on release; keyboard changes commit directly. Chrome checks verify zero worker SET_VIEW messages during the drag and one on release. This also resolved a first-touch reset failure exposed by the smoke test. Thirty real-browser assertions pass, including replacement pages, off-page/filter selection, context invalidation, uncertainty playback, details, touch reset, modal focus/Escape and 390-pixel reflow. Maximum observed cards: 12; maximum message: 93,147 bytes. Screenshots and `engine-ui-browser.json` are durable evidence; viewport emulation is not a real-mobile performance measurement.
+
+During stage 8, previously present untracked `docs/research` and some offline comparison files became absent from the shared workspace through an external change. This implementation did not remove them or change TypeScript exclusions. Current full typecheck/build passes therefore do **not** mean the archived baseline errors were fixed. Earlier hash-verified census/shadow/ranking evidence remains recorded; fresh verification of missing frozen inputs is unavailable and will be disclosed in readiness evidence.

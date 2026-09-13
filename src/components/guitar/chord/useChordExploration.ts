@@ -1,38 +1,33 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import type { ChordPlayingContext } from '@/domain/chord/exploration';
-import type { ExplorationWorkerResponse } from './chord-exploration.worker';
+import { useCallback,useEffect,useState,useSyncExternalStore } from 'react';
+import { createExplorationController,DEFAULT_ENGINE_VIEW,LIVE_ENGINE_VERSION,type EngineExplorationState } from './explorationController';
+import type { PresentationCandidate,ViewRequest } from '@/domain/chord/engine/types';
 
-export function useChordExploration(enabled: boolean, chordId: string, rootPitchClass: number, context: ChordPlayingContext) {
-    const [attempt, setAttempt] = useState(0);
-    const key = JSON.stringify([chordId, rootPitchClass, context, attempt]);
-    const [result, setResult] = useState<{ key: string; response: ExplorationWorkerResponse } | null>(null);
+export { LIVE_ENGINE_VERSION };
+export interface EngineExploration extends EngineExplorationState {
+    setView:(input:Partial<ViewRequest>|ViewRequest)=>void;
+    select:(candidate:PresentationCandidate|string)=>void;
+    nextPage:()=>void;previousPage:()=>void;firstPage:()=>void;retry:()=>void;continueSearch:()=>void;cancel:()=>void;
+}
 
-    useEffect(() => {
-        if (!enabled) return;
-        let active = true;
-        let worker: Worker | undefined;
-        const fail = () => {
-            if (active) setResult({ key, response: { status: 'error', message: 'Voicing search could not start. Try again.' } });
-        };
-        try {
-            worker = new Worker(new URL('./chord-exploration.worker.ts', import.meta.url));
-            worker.onmessage = ({ data }: MessageEvent<ExplorationWorkerResponse>) => {
-                if (active) setResult({ key, response: data });
-            };
-            worker.onerror = fail;
-            worker.onmessageerror = fail;
-            worker.postMessage({ chordId, rootPitchClass, context });
-        } catch {
-            // Same asynchronous state transition as a worker error.
-            queueMicrotask(fail);
-        }
-        return () => { active = false; worker?.terminate(); };
-    }, [enabled, chordId, rootPitchClass, context, key]);
-
-    return {
-        response: enabled && result?.key === key ? result.response : null,
-        retry: () => setAttempt((value) => value + 1),
-    };
+export function useChordExploration(enabled:boolean,chordId:string,rootPitchClass:number,context:'standalone'|'accompaniment',requestedCandidateId?:string|null):EngineExploration {
+    const [attempt,setAttempt]=useState(0);
+    const [controller]=useState(()=>createExplorationController(()=>new Worker(new URL('./engine.worker.ts',import.meta.url))));
+    const state=useSyncExternalStore(controller.subscribe,controller.getSnapshot,controller.getServerSnapshot);
+    const requestEpoch=JSON.stringify([LIVE_ENGINE_VERSION,enabled,chordId,rootPitchClass,context,attempt]);
+    useEffect(()=>{controller.restoreRequestedId(requestedCandidateId??null);},[controller,requestedCandidateId]);
+    useEffect(()=>{
+        if(enabled)controller.start({chordId,rootPitchClass,context,requestEpoch});else controller.stop();
+        return()=>controller.stop();
+    },[controller,enabled,chordId,rootPitchClass,context,requestEpoch]);
+    const retry=useCallback(()=>setAttempt(value=>value+1),[]);
+    // Hide a previous request synchronously, before effect cleanup/new worker setup.
+    const changed=state.requestEpoch!==requestEpoch;
+    const sameHarmony=state.request?.interpretation.chordId===chordId&&state.request?.interpretation.rootPitchClass===rootPitchClass;
+    const visible=changed?{...state,phase:enabled?'loading' as const:'idle' as const,request:null,page:null,summary:null,
+        selected:sameHarmony?state.selected:null,selectionStale:sameHarmony&&state.selected!==null,
+        view:sameHarmony?state.view:DEFAULT_ENGINE_VIEW,canPrevious:false,error:null}:state;
+    return {...visible,requestEpoch,setView:controller.setView,select:controller.select,nextPage:controller.nextPage,
+        previousPage:controller.previousPage,firstPage:controller.firstPage,retry,continueSearch:controller.continueSearch,cancel:controller.cancel};
 }

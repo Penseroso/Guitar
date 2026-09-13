@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useCallback,useEffect, useState } from 'react';
 import { createVoicingPlayback, type VoicingPlaybackState } from './voicing-playback';
 
 export function useVoicingAudio() {
@@ -10,5 +10,8 @@ export function useVoicingAudio() {
         setState,
     ));
     useEffect(() => () => playback.cancel(), [playback]);
-    return { play: playback.play, ...state };
+    const cancel=useCallback(()=>{
+        playback.cancel();setState({error:null,loadingCandidateId:null});
+    },[playback]);
+    return { play: playback.play, cancel, ...state };
 }

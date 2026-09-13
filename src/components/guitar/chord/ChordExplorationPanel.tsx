@@ -1,13 +1,11 @@
 "use client";
 
-import React, { useId, useRef, useState } from 'react';
+import React, { useEffect, useId, useRef, useState } from 'react';
 import { Play } from 'lucide-react';
-import {
-    DEFAULT_EXPLORATION_FILTERS, EXPLORATION_PAGE_SIZE, EXPLORATION_START_SIZE,
-    matchesExplorationFilters, midiNoteLabel, queryExploration,
-    type ChordPlayingContext, type ExplorationCandidate, type ExplorationFilters,
-} from '@/domain/chord/exploration';
-import type { ExplorationWorkerResponse } from './chord-exploration.worker';
+import type { PresentationCandidate, ResolvedRequest, ViewRequest } from '@/domain/chord/engine/types';
+import { createViewMatcher } from '@/domain/chord/engine/view';
+import { diagramVoicing, midiNoteLabel, physicalReasonText, positionLabel } from '@/domain/chord/engine/presentation';
+import type { EngineExploration } from './useChordExploration';
 import { CompactVoicingDiagram, describeVoicingShape } from './CompactVoicingDiagram';
 import { useVoicingAudio } from './useVoicingAudio';
 import { ChordDialog } from './ChordDialog';
@@ -19,219 +17,126 @@ import { formatChordToneLabel, formatDegreeLabel } from './tone-labels';
 import styles from './chord-ui.module.css';
 
 interface Props {
-    context: ChordPlayingContext;
-    onContextChange: (context: ChordPlayingContext) => void;
-    response: ExplorationWorkerResponse | null;
-    onRetry: () => void;
-    selectedId: string | null;
-    onSelect: (id: string) => void;
-    showIntervals: boolean;
-    onToggleIntervals: () => void;
-    toneChoices: ChordChoice[];
-    title: string;
-    selectionReplaced?: boolean;
+    engine: EngineExploration; context: 'standalone' | 'accompaniment';
+    onContextChange: (context: 'standalone' | 'accompaniment') => void;
+    onSelect?: (id: string) => void; showIntervals: boolean; onToggleIntervals: () => void;
+    toneChoices: ChordChoice[]; title: string;
 }
-
-function position(candidate: ExplorationCandidate) {
-    const { minStoppedFret: min, maxStoppedFret: max } = candidate.facts;
-    return max ? min === max ? 'Fret ' + min : 'Frets ' + min + '–' + max : 'Open strings only';
+function ends(row: PresentationCandidate, request: ResolvedRequest | null) {
+    const label = (end: PresentationCandidate['facts']['bass']) => request
+        ? formatChordToneLabel(request.interpretation.rootPitchClass, end.tone, end.midi - request.interpretation.rootPitchClass)
+        : midiNoteLabel(end.midi) + ' · ' + formatDegreeLabel(end.tone);
+    return { bass: label(row.facts.bass), top: label(row.facts.top) };
 }
-
-function ends(candidate: ExplorationCandidate) {
-    const root = candidate.voicing.chord.rootPitchClass;
-    return {
-        bass: formatChordToneLabel(root, candidate.facts.bassDegree, candidate.facts.bassMidi - root),
-        top: formatChordToneLabel(root, candidate.facts.topDegree, candidate.facts.topMidi - root),
-    };
-}
-
-function Exceptions({ candidate }: { candidate: ExplorationCandidate }) {
-    return <>
-        {candidate.facts.omittedDegrees.length > 0 && <p className={styles.warning}>
-            {!candidate.facts.hasRoot ? 'Rootless · ' : ''}Omits {candidate.facts.omittedDegrees.map(formatDegreeLabel).join(', ')}
-        </p>}
-        {candidate.assessment.status === 'uncertain' && <p className={styles.warning}>Check reach on your guitar</p>}
-    </>;
-}
-
-export function VoicingFactsView({ candidate }: { candidate: ExplorationCandidate }) {
-    const { facts, assessment } = candidate;
-    return <div className={styles.facts}>
-        <p>Sounds: {facts.midiNotes.map(midiNoteLabel).join(' · ')}</p>
-        <p>Degrees: {facts.degrees.map(formatDegreeLabel).join(', ')} · {facts.omittedDegrees.length ? 'Omits ' + facts.omittedDegrees.map(formatDegreeLabel).join(', ') : 'Complete formula'}</p>
-        <p>{facts.openStringCount} open strings · Reach {Math.round(facts.spanMm)} mm</p>
-        <p>Estimated finger groups: {assessment.estimatedFingerGroups}. Comfort depends on your hand and technique.</p>
-        {!facts.hasRoot && <p className={styles.warning}>Other parts or musical context supply the omitted root.</p>}
-        <p className={styles.small}>Standard tuning · search frets 0–15</p>
-        <p className={styles.small}>Ranking model assumptions</p>
-        <ul className="list-disc pl-4">{candidate.reasons.map((reason, index) => <li key={index}>{reason}</li>)}</ul>
+function Assessment({ candidate }: { candidate: PresentationCandidate }) {
+    return <div className={styles.small} data-assessment={candidate.physical.status}>
+        <p>{candidate.physical.status === 'PASS' ? 'PASS · generic static-fretting heuristic' : 'UNCERTAIN · physical assessment unresolved'}</p>
+        {candidate.physical.reasonCodes.length > 0 && <ul className={styles.warning}>{candidate.physical.reasonCodes.map(reason => <li key={reason}>{physicalReasonText(reason)}</li>)}</ul>}
+        {candidate.facts.omittedFormula.length > 0 && <p className={styles.warning}>{!candidate.facts.rootStrings.length ? 'Root omitted · ' : ''}Omits {candidate.facts.omittedFormula.map(formatDegreeLabel).join(', ')}</p>}
     </div>;
 }
-
-const filterLabels: Record<keyof ExplorationFilters, string> = {
-    minFret: 'Min fret', maxFret: 'Max fret', bassDegree: 'Bass', topDegree: 'Top', stringCount: 'Strings',
-    root: 'Root inclusion', openStrings: 'Open strings', coverage: 'Chord-tone coverage',
-};
+export function VoicingFactsView({ candidate, request = null }: { candidate: PresentationCandidate; request?: ResolvedRequest | null }) {
+    const { facts, physical, rank } = candidate;
+    const profile = request?.physicalProfile.key === physical.profileKey ? request.physicalProfile : null;
+    return <div className={styles.facts}>
+        <p>Sounds: {candidate.candidate.sounding.map(note => midiNoteLabel(note.midi)).join(' · ')}</p>
+        <p>Degrees: {facts.covered.map(formatDegreeLabel).join(', ')} · {facts.omittedFormula.length ? 'Omits ' + facts.omittedFormula.map(formatDegreeLabel).join(', ') : 'Complete formula'}</p>
+        <p>{facts.openCount} open strings · Stopped-wire span {(physical.metrics.stoppedWireSpanUm / 1000).toFixed(1)} mm</p>
+        <p>Partial-cover groups: {physical.metrics.partialCoverGroups} (partial-cover-v1 heuristic).</p>
+        {physical.metrics.thumbFallback?.reliedOn && <p>Thumb fallback considered: non-thumb groups {physical.metrics.thumbFallback.nonThumbGroups}, non-thumb span {(physical.metrics.thumbFallback.nonThumbSpanUm / 1000).toFixed(1)} mm. Full-target warnings remain applicable.</p>}
+        <Assessment candidate={candidate} />
+        <p>Human validation: absent. These group estimates and heuristic results do not establish a playable fingering.</p>
+        {profile && <><p>Profile: {profile.scope}. Scale length {(profile.scaleLengthUm / 1000).toFixed(1)} mm ({profile.scaleSource}).</p>
+            <p>Warning span {(profile.warningSpanUm / 1000).toFixed(1)} mm; severe span {(profile.severeSpanUm / 1000).toFixed(1)} mm. Thumb {profile.allowedThumb ? 'allowed' : 'not included'}; omitted strings {profile.omittedStrings === 'unplayed' ? 'unplayed' : 'require left-hand damping'}.</p></>}
+        {request?.requestKey === candidate.candidate.requestKey && <><p>Tuning MIDI: {request.structural.instrument.tuningMidi.join(', ')} (strings 1–6); modeled frets 0–{request.structural.instrument.maxModeledFret}.</p>
+            <p>Required tones: {request.structural.required.map(formatDegreeLabel).join(', ')}. Minimum distinct tones: {request.structural.minDistinctPitchClasses}.</p>
+            <details><summary>Request defaults and explicit choices</summary><ul>{request.origins.map((origin, index) => <li key={index}>{origin.field}: {origin.origin} · {origin.rule}</li>)}</ul></details></>}
+        <p>Deterministic ordering: {rank.policy}. Score {rank.scoreNumerator}/{rank.denominator}; ordering preference only, independent of physical status.</p>
+        <table style={{ width: '100%', tableLayout: 'fixed', overflowWrap: 'anywhere' }}><caption>All 14 ranking terms, including zero contributions</caption><thead><tr><th scope="col">Term</th><th scope="col">Contribution</th><th scope="col">Inputs and interpretation</th></tr></thead>
+            <tbody>{rank.ledger.map(term => <tr key={term.id} data-ledger-term={term.id}><th scope="row">{term.id.replace(/-/g, ' ')}</th><td>{term.numerator}/{term.denominator}</td><td>{Object.entries(term.inputs).map(([key, value]) => key + ': ' + String(value)).join('; ')} · {term.interpretation} · {term.featureVersion}</td></tr>)}</tbody>
+        </table>
+    </div>;
+}
 const openOptions = [{ value: 'any', label: 'Any' }, { value: 'require', label: 'At least one' }, { value: 'exclude', label: 'None' }];
 const rootOptions = [{ value: 'any', label: 'Any' }, { value: 'include', label: 'Present' }, { value: 'omit', label: 'Omitted' }];
 const coverageOptions = [{ value: 'any', label: 'Any' }, { value: 'complete', label: 'All tones' }, { value: 'omissions', label: 'With omissions' }];
+const defaultView: ViewRequest = { schema: 'view-v1', position: null, soundingCount: null, stringSet: null, open: 'any', root: 'any', coverage: 'any', bass: null, top: null, statuses: ['PASS', 'UNCERTAIN'], order: { kind: 'classic' } };
+const toneValue = (extreme: ViewRequest['bass']) => extreme && 'tone' in extreme ? extreme.tone : '';
 
-export function ChordExplorationPanel({ context, onContextChange, response, onRetry, selectedId, onSelect, showIntervals,
-    onToggleIntervals, toneChoices, title, selectionReplaced }: Props) {
-    const [filters, setFilters] = useState<ExplorationFilters>({ ...DEFAULT_EXPLORATION_FILTERS });
-    const [visibleCount, setVisibleCount] = useState(EXPLORATION_START_SIZE);
-    const [filtersOpen, setFiltersOpen] = useState(false);
-    const [detailsOpen, setDetailsOpen] = useState(false);
-    const [neckOpen, setNeckOpen] = useState(false);
-    const resultHeading = useRef<HTMLHeadingElement>(null);
-    const id = useId();
+export function ChordExplorationPanel({ engine, context, onContextChange, onSelect, showIntervals, onToggleIntervals, toneChoices, title }: Props) {
+    const [filtersOpen, setFiltersOpen] = useState(false), [detailsOpen, setDetailsOpen] = useState(false), [neckOpen, setNeckOpen] = useState(false);
+    const resultHeading = useRef<HTMLHeadingElement>(null), id = useId();
     const audio = useVoicingAudio();
-    const candidates = response?.status === 'ready' ? response.candidates : [];
-    const query = queryExploration(candidates, filters, visibleCount);
-    const selected = candidates.find(candidate => candidate.voicing.id === selectedId);
-    const activeFilters = (Object.keys(filters) as (keyof ExplorationFilters)[])
-        .filter(key => key !== 'minFret' && key !== 'maxFret' && filters[key] !== DEFAULT_EXPLORATION_FILTERS[key]);
-    const positionActive = filters.minFret !== 0 || filters.maxFret !== 15;
+    useEffect(() => { audio.cancel(); return () => audio.cancel(); }, [audio.cancel, engine.requestEpoch]);
+    useEffect(() => { if (engine.phase === 'error' || engine.phase === 'cancelled') audio.cancel(); }, [audio.cancel, engine.phase]);
+    const cancelSearch = () => { audio.cancel(); engine.cancel(); };
+    const { selected, view, summary } = engine, page = engine.phase === 'ready' ? engine.page : null;
+    const busy = ['idle', 'loading', 'running'].includes(engine.phase);
     const degreeOptions = [{ value: '', label: 'Any' }, ...toneChoices];
-    function update<K extends keyof ExplorationFilters>(key: K, value: ExplorationFilters[K]) {
-        setFilters(previous => ({ ...previous, [key]: value }));
-        setVisibleCount(EXPLORATION_START_SIZE);
-    }
-    function reset() { setFilters({ ...DEFAULT_EXPLORATION_FILTERS }); setVisibleCount(EXPLORATION_START_SIZE); }
-    function play(candidate: ExplorationCandidate) { onSelect(candidate.voicing.id); void audio.play(candidate); }
-    function filterValue(key: keyof ExplorationFilters) {
-        const value = filters[key];
-        if (key === 'bassDegree' || key === 'topDegree') return toneChoices.find(choice => choice.value === value)?.label;
-        const options = key === 'root' ? rootOptions : key === 'openStrings' ? openOptions : key === 'coverage' ? coverageOptions : [];
-        return options.find(option => option.value === value)?.label ?? String(value);
-    }
-    const playButton = (candidate: ExplorationCandidate, primary = false) => <button type="button"
-        className={styles.action + ' ' + (primary ? styles.primary : styles.cardPlay)}
-        disabled={audio.loadingCandidateId === candidate.voicing.id}
-        aria-label={(primary ? 'Play voicing: ' : 'Play: ') + describeVoicingShape(candidate.voicing)}
-        aria-busy={audio.loadingCandidateId === candidate.voicing.id}
-        data-play-id={candidate.voicing.id} onClick={() => play(candidate)}>
-        <Play size={16} aria-hidden="true" />
-        {primary ? audio.loadingCandidateId === candidate.voicing.id ? 'Loading…' : 'Play voicing' : <span className={styles.srOnly}>Play</span>}
-    </button>;
-    const selectedEnds = selected ? ends(selected) : null;
-
+    const outsideView = !!selected && !engine.selectionStale && !!engine.request && !createViewMatcher(engine.request, view).matches(selected.candidate.states, selected.physical.status);
+    const chips: { label: string; value: string; clear: Partial<ViewRequest> }[] = [];
+    if (view.position) chips.push({ label: 'Fret range', value: `${view.position.low}–${view.position.high}`, clear: { position: null } });
+    for (const key of ['bass', 'top'] as const) if (view[key]) chips.push({ label: key === 'bass' ? 'Bass' : 'Top', value: toneChoices.find(choice => choice.value === toneValue(view[key]))?.label ?? JSON.stringify(view[key]), clear: { [key]: null } });
+    if (view.soundingCount !== null) chips.push({ label: 'Strings', value: String(view.soundingCount), clear: { soundingCount: null } });
+    for (const [key, label, options] of [['open', 'Open strings', openOptions], ['root', 'Root inclusion', rootOptions], ['coverage', 'Chord-tone coverage', coverageOptions]] as const) if (view[key] !== 'any') chips.push({ label, value: options.find(option => option.value === view[key])!.label, clear: { [key]: 'any' } });
+    if (view.statuses.length === 1) chips.push({ label: 'Assessment', value: view.statuses[0], clear: { statuses: ['PASS', 'UNCERTAIN'] } });
+    const reset = () => engine.setView(defaultView);
+    const select = (candidate: PresentationCandidate) => { engine.select(candidate); onSelect?.(candidate.candidate.allocationId); };
+    const playButton = (candidate: PresentationCandidate, primary = false) => {
+        const candidateId = candidate.candidate.allocationId, stale = candidate === selected && engine.selectionStale;
+        return <button type="button" className={styles.action + ' ' + (primary ? styles.primary : styles.cardPlay)} disabled={stale || audio.loadingCandidateId === candidateId} aria-busy={audio.loadingCandidateId === candidateId}
+            aria-label={(primary ? 'Play voicing: ' : 'Play: ') + describeVoicingShape(diagramVoicing(candidate))} data-play-id={candidateId} onClick={() => { if (!stale) { select(candidate); void audio.play(candidate); } }}>
+            <Play size={16} aria-hidden="true" />{primary ? audio.loadingCandidateId === candidateId ? 'Loading…' : 'Play voicing' : <span className={styles.srOnly}>Play</span>}
+        </button>;
+    };
+    const selectedEnds = selected ? ends(selected, engine.request) : null;
     return <section aria-label="Chord voicings" className={styles.layout}>
-        {selected ? <aside className={styles.selected} aria-label="Selected voicing" data-selected-id={selected.voicing.id}>
-            <div className={styles.hero}>
-                <CompactVoicingDiagram voicing={selected.voicing} labelMode={showIntervals ? 'degree' : 'note'} />
-                <div className={styles.heroInfo}>
-                    <h2 className="text-2xl font-semibold">{title}</h2>
-                    <p className={styles.small}>{position(selected)}</p>
-                    <div className={styles.endNotes}><p>Bass {selectedEnds!.bass}</p><p>Top {selectedEnds!.top}</p></div>
-                    {playButton(selected, true)}
-                </div>
-            </div>
-            <Exceptions candidate={selected} />
-            {!matchesExplorationFilters(selected, filters) && <p role="status" className={styles.warning}>Selected voicing is outside these filters. Choose another to change it.</p>}
-            {selectionReplaced && <p role="status" className={styles.warning}>Previous voicing is unavailable in this context. Selected the first available voicing.</p>}
-            <div className={styles.selectedTools}>
-                <button className={styles.action} aria-expanded={detailsOpen} aria-controls={id + '-details'} onClick={() => setDetailsOpen(open => !open)}>Details</button>
+        {engine.error && <div role="alert" className={styles.warning} style={{ gridColumn: '1 / -1' }}><p>{engine.error.message}</p><button className={styles.action} onClick={engine.retry}>Retry search</button></div>}
+        {selected ? <aside className={styles.selected} aria-label="Selected voicing" data-selected-id={selected.candidate.allocationId} data-selection-stale={engine.selectionStale}>
+            <div className={styles.hero}><CompactVoicingDiagram voicing={diagramVoicing(selected)} labelMode={showIntervals ? 'degree' : 'note'} /><div className={styles.heroInfo}>
+                <h2 className="text-2xl font-semibold">{title}</h2><p className={styles.small}>{positionLabel(selected)}</p><div className={styles.endNotes}><p>Bass {selectedEnds!.bass}</p><p>Top {selectedEnds!.top}</p></div>{playButton(selected, true)}</div></div>
+            <Assessment candidate={selected} /><p className={styles.small}>Human validation: absent.</p>
+            {engine.selectionStale && <p role="status" className={styles.warning}>Previous selection awaits validation for this request. Playback is unavailable.</p>}
+            {outsideView && <p role="status" className={styles.warning}>Selected voicing is outside these filters. Choose another to change it.</p>}
+            {engine.selectionNotice && <p role="status" className={styles.warning}>{engine.selectionNotice}</p>}
+            <div className={styles.selectedTools}><button className={styles.action} aria-expanded={detailsOpen} aria-controls={id + '-details'} onClick={() => setDetailsOpen(open => !open)}>Details</button>
                 <button className={styles.action} aria-haspopup="dialog" onClick={() => setNeckOpen(true)}>Full fretboard</button>
-                <ChoiceGroup label="Diagram labels" compact value={showIntervals ? 'degree' : 'note'}
-                    onChange={value => { if ((value === 'degree') !== showIntervals) onToggleIntervals(); }}
-                    options={[{ value: 'note', label: 'Notes' }, { value: 'degree', label: 'Intervals' }]} />
-            </div>
-            {detailsOpen && <div id={id + '-details'} className={styles.details}><VoicingFactsView candidate={selected} /></div>}
-        </aside> : <div className={styles.selected}>
-            {!response && <p role="status">Finding voicings…</p>}
-            {response?.status === 'error' && <div role="alert"><p>{response.message}</p><button className={styles.action} onClick={onRetry}>Retry search</button></div>}
-            {response?.status === 'unsupported' && <p role="status">{response.message}</p>}
-            {response?.status === 'ready' && <p role="status">No candidates within this search model.</p>}
-        </div>}
+                <ChoiceGroup label="Diagram labels" compact value={showIntervals ? 'degree' : 'note'} onChange={value => { if ((value === 'degree') !== showIntervals) onToggleIntervals(); }} options={[{ value: 'note', label: 'Notes' }, { value: 'degree', label: 'Intervals' }]} />
+            </div>{detailsOpen && <div id={id + '-details'} className={styles.details}><VoicingFactsView candidate={selected} request={engine.request} /></div>}
+        </aside> : <div className={styles.selected}>{busy && <p role="status">Finding voicings…</p>}{engine.selectionNotice && <p role="status" className={styles.warning}>{engine.selectionNotice}</p>}{page?.outcome === 'structurally-empty' && <p role="status">No allocations satisfy this structural request.</p>}</div>}
         <div className={styles.browser}>
-            <div className={styles.row}>
-                <h2 className="text-lg font-semibold">Voicings</h2>
-                <button className={styles.action} aria-expanded={filtersOpen} aria-controls={id + '-filters'}
-                    onClick={() => setFiltersOpen(open => !open)}>Filters{activeFilters.length + Number(context === 'accompaniment') ? ' (' + (activeFilters.length + Number(context === 'accompaniment')) + ')' : ''}</button>
-            </div>
-            <FretRangeControl min={filters.minFret} max={filters.maxFret} onChange={(minFret, maxFret) => {
-                setFilters(previous => ({ ...previous, minFret, maxFret })); setVisibleCount(EXPLORATION_START_SIZE);
-            }} />
-            {filtersOpen && <div id={id + '-filters'}>
-                <div className={styles.filterBody}>
-                    <div className={styles.accompaniment}>
-                        <label className={styles.contextSwitch}>
-                            <input type="checkbox" checked={context === 'accompaniment'} aria-describedby={id + '-context-help'}
-                                onChange={event => onContextChange(event.target.checked ? 'accompaniment' : 'standalone')} />
-                            <span className={styles.switchTrack} aria-hidden="true" />
-                            <span>Include accompaniment shapes</span>
-                        </label>
-                        <p id={id + '-context-help'} className={styles.small}>Adds rootless and two-note voicings for playing with a bass player or other instruments.</p>
-                    </div>
-                    <ChoiceRail label="Bass" value={filters.bassDegree ?? ''} options={degreeOptions} onChange={value => update('bassDegree', value || null)} />
-                    <ChoiceRail label="Top" value={filters.topDegree ?? ''} options={degreeOptions} onChange={value => update('topDegree', value || null)} />
-                    <ChoiceRail label="Sounding strings" value={String(filters.stringCount ?? '')} expandAny
-                        options={[...[2, 3, 4, 5, 6].map(count => ({ value: String(count), label: String(count) })), { value: '', label: 'Any' }]}
-                        onChange={value => update('stringCount', value ? Number(value) : null)} />
-                    <ChoiceRail label="Open strings" value={filters.openStrings} options={openOptions}
-                        onChange={value => update('openStrings', value as ExplorationFilters['openStrings'])} />
-                    <ChoiceRail label="Root inclusion" value={filters.root} options={rootOptions}
-                        onChange={value => update('root', value as ExplorationFilters['root'])} />
-                    <ChoiceRail label="Chord-tone coverage" value={filters.coverage} options={coverageOptions}
-                        onChange={value => update('coverage', value as ExplorationFilters['coverage'])} />
-                </div>
-                <p className={styles.small}>Bass is the lowest sounding note; Top is the highest. All tones means the complete chord formula. With omissions means at least one tone is absent.</p>
-                <button className={styles.resultsLink} onClick={() => {
-                    setFiltersOpen(false);
-                    requestAnimationFrame(() => { resultHeading.current?.focus({ preventScroll: true }); resultHeading.current?.scrollIntoView({ block: 'nearest' }); });
-                }}>View results{response?.status === 'ready' ? ' (' + query.matchCount + ')' : ''}</button>
+            <div className={styles.row}><h2 className="text-lg font-semibold">Voicings</h2><button className={styles.action} aria-expanded={filtersOpen} aria-controls={id + '-filters'} onClick={() => setFiltersOpen(open => !open)}>Filters{chips.length + Number(context === 'accompaniment') ? ` (${chips.length + Number(context === 'accompaniment')})` : ''}</button></div>
+            <FretRangeControl min={view.position?.low ?? 0} max={view.position?.high ?? 15} onChange={(low, high) => engine.setView({ position: low === 0 && high === 15 ? null : { low, high } })} />
+            {filtersOpen && <div id={id + '-filters'}><div className={styles.filterBody}>
+                <div className={styles.accompaniment}><label className={styles.contextSwitch}><input type="checkbox" checked={context === 'accompaniment'} aria-describedby={id + '-context-help'} onChange={event => onContextChange(event.target.checked ? 'accompaniment' : 'standalone')} /><span className={styles.switchTrack} aria-hidden="true" /><span>Include accompaniment shapes</span></label>
+                    <p id={id + '-context-help'} className={styles.small}>Makes the root optional and allows at least two distinct tones while preserving required chord identity tones.</p></div>
+                <ChoiceRail label="Bass" value={toneValue(view.bass)} options={degreeOptions} onChange={value => engine.setView({ bass: value ? { tone: value } : null })} />
+                <ChoiceRail label="Top" value={toneValue(view.top)} options={degreeOptions} onChange={value => engine.setView({ top: value ? { tone: value } : null })} />
+                <ChoiceRail label="Sounding strings" value={String(view.soundingCount ?? '')} expandAny options={[...[2, 3, 4, 5, 6].map(count => ({ value: String(count), label: String(count) })), { value: '', label: 'Any' }]} onChange={value => engine.setView({ soundingCount: value ? Number(value) : null })} />
+                <ChoiceRail label="Open strings" value={view.open} options={openOptions} onChange={value => engine.setView({ open: value as ViewRequest['open'] })} />
+                <ChoiceRail label="Root inclusion" value={view.root} options={rootOptions} onChange={value => engine.setView({ root: value as ViewRequest['root'] })} />
+                <ChoiceRail label="Chord-tone coverage" value={view.coverage} options={coverageOptions} onChange={value => engine.setView({ coverage: value as ViewRequest['coverage'] })} />
+                <ChoiceRail label="Physical assessment" value={view.statuses.length === 2 ? 'both' : view.statuses[0]} options={[{ value: 'both', label: 'Both' }, { value: 'PASS', label: 'PASS' }, { value: 'UNCERTAIN', label: 'UNCERTAIN' }]} onChange={value => engine.setView({ statuses: value === 'both' ? ['PASS', 'UNCERTAIN'] : [value as 'PASS' | 'UNCERTAIN'] })} />
+            </div><p className={styles.small}>Bass is the lowest sounding note; Top is the highest. All tones means the complete chord formula. With omissions means at least one formula tone is absent. Assessment filters do not change ranking.</p>
+                <button className={styles.resultsLink} onClick={() => { setFiltersOpen(false); requestAnimationFrame(() => { resultHeading.current?.focus({ preventScroll: true }); resultHeading.current?.scrollIntoView({ block: 'nearest' }); }); }}>View results{page ? ` (${page.summary.matching})` : ''}</button>
             </div>}
-            {context === 'accompaniment' && <div className={styles.chips}>
-                <button className={styles.action + ' ' + styles.chip} aria-label="Exclude accompaniment shapes"
-                    onClick={() => onContextChange('standalone')}>Accompaniment included ×</button>
-            </div>}
-            {(activeFilters.length > 0 || positionActive) && <div className={styles.chips} aria-label="Active filters">
-                {activeFilters.map(key => <button className={styles.action + ' ' + styles.chip} key={key}
-                    aria-label={'Remove ' + filterLabels[key] + ' filter'} onClick={() => update(key, DEFAULT_EXPLORATION_FILTERS[key])}>
-                    {filterLabels[key]}: {filterValue(key)} ×
-                </button>)}
-                <button className={styles.action} onClick={reset}>Clear filters</button>
-            </div>}
-            {response?.status === 'ready' && <>
-                <h3 ref={resultHeading} tabIndex={-1} className={styles.small} aria-live="polite" data-results-count={query.matchCount}>
-                    {query.matchCount} voicings · {query.visible.length} shown
-                </h3>
-                {query.matchCount === 0 && query.totalCount > 0 && <div className={styles.empty} role="status">
-                    <p>No voicings match these conditions.</p>
-                    {context === 'standalone' && (filters.root === 'omit' || filters.stringCount === 2) && <>
-                        <p>Accompaniment allows rootless and two-note shapes when other parts supply the harmony.</p>
-                        <button className={styles.action} onClick={() => onContextChange('accompaniment')}>Enable accompaniment</button>
-                    </>}
-                    <button className={styles.action} onClick={reset}>Reset conditions</button>
-                </div>}
-                <div className={styles.cards}>
-                    {query.visible.map(candidate => {
-                        const labels = ends(candidate);
-                        return <article key={candidate.voicing.id} className={styles.card + (candidate.voicing.id === selectedId ? ' ' + styles.cardSelected : '')}>
-                            <button className={styles.cardSelect} data-voicing-id={candidate.voicing.id} aria-pressed={candidate.voicing.id === selectedId}
-                                aria-label={'Select voicing: ' + describeVoicingShape(candidate.voicing)} onClick={() => onSelect(candidate.voicing.id)}>
-                                <CompactVoicingDiagram voicing={candidate.voicing} labelMode={showIntervals ? 'degree' : 'note'} />
-                                <div className={styles.cardInfo}>
-                                    {candidate.voicing.id === selectedId && <span className={styles.selectionMark}>✓ Selected</span>}
-                                    <p>{position(candidate)}</p>
-                                    <p className={styles.small}>{candidate.facts.playedStrings.length} strings</p>
-                                    <div className={styles.endNotes}><p>Bass {labels.bass}</p><p>Top {labels.top}</p></div>
-                                    <Exceptions candidate={candidate} />
-                                </div>
-                            </button>
-                            {playButton(candidate)}
-                        </article>;
-                    })}
-                </div>
-                {query.hasMore && <button className={styles.action + ' ' + styles.showMore} onClick={() => setVisibleCount(count => count + EXPLORATION_PAGE_SIZE)}>Show more</button>}
+            {context === 'accompaniment' && <div className={styles.chips}><button className={styles.action + ' ' + styles.chip} aria-label="Exclude accompaniment shapes" onClick={() => onContextChange('standalone')}>Accompaniment included ×</button></div>}
+            {chips.length > 0 && <div className={styles.chips} aria-label="Active filters">{chips.map(chip => <button className={styles.action + ' ' + styles.chip} key={chip.label} aria-label={`Remove ${chip.label} filter`} onClick={() => engine.setView(chip.clear)}>{chip.label}: {chip.value} ×</button>)}<button className={styles.action} onClick={reset}>Clear filters</button></div>}
+            {!page && summary?.completeness === 'partial' && <p role="status" aria-live="polite">At least {summary.matching} matching voicings found; search incomplete. {summary.pass} PASS · {summary.uncertain} UNCERTAIN assessed so far.</p>}
+            {busy && <button className={styles.action} onClick={cancelSearch}>Cancel search</button>}
+            {engine.phase === 'paused' && <div role="status"><p>Search paused at its time budget. Counts are incomplete.</p><button className={styles.action} onClick={() => engine.continueSearch()}>Continue search</button><button className={styles.action} onClick={cancelSearch}>Cancel search</button></div>}
+            {engine.phase === 'cancelled' && <div role="status"><p>Search cancelled. No exact result has been committed.</p><button className={styles.action} onClick={engine.retry}>Retry search</button></div>}
+            {page && <><h3 ref={resultHeading} tabIndex={-1} className={styles.small} aria-live="polite" data-results-count={page.summary.matching}>{page.summary.matching} matching voicings · {page.rows.length} on this page</h3>
+                <p className={styles.small}>{page.summary.structural} structural allocations · {page.summary.pass} PASS · {page.summary.uncertain} UNCERTAIN · {page.summary.reject} REJECT. Matching: {page.summary.matchingPass} PASS · {page.summary.matchingUncertain} UNCERTAIN.</p>
+                {page.outcome === 'no-matches' && <div className={styles.empty} role="status"><p>No voicings match these conditions.</p>{context === 'standalone' && (view.root === 'omit' || view.soundingCount === 2) && <><p>Accompaniment permits an optional root and a two-tone floor; required identity tones still apply.</p><button className={styles.action} onClick={() => onContextChange('accompaniment')}>Enable accompaniment</button></>}<button className={styles.action} onClick={reset}>Reset conditions</button></div>}
+                <div className={styles.cards}>{page.rows.map(candidate => { const labels = ends(candidate, engine.request), candidateId = candidate.candidate.allocationId, isSelected = candidateId === selected?.candidate.allocationId;
+                    return <article key={candidateId} className={styles.card + (isSelected ? ' ' + styles.cardSelected : '')}><button className={styles.cardSelect} data-voicing-id={candidateId} aria-pressed={isSelected} aria-label={'Select voicing: ' + describeVoicingShape(diagramVoicing(candidate))} onClick={() => select(candidate)}>
+                        <CompactVoicingDiagram voicing={diagramVoicing(candidate)} labelMode={showIntervals ? 'degree' : 'note'} /><div className={styles.cardInfo}>{isSelected && <span className={styles.selectionMark}>✓ Selected</span>}<p>{positionLabel(candidate)}</p><p className={styles.small}>{candidate.facts.soundingCount} strings · Result {candidate.displayRank}</p><div className={styles.endNotes}><p>Bass {labels.bass}</p><p>Top {labels.top}</p></div><Assessment candidate={candidate} /></div>
+                    </button>{playButton(candidate)}</article>;
+                })}</div><nav aria-label="Voicing result pages" className={styles.row}><button className={styles.action} onClick={engine.firstPage}>First page</button><button className={styles.action} disabled={!engine.canPrevious} onClick={engine.previousPage}>Previous page</button><button className={styles.action} disabled={!page.nextCursor} onClick={engine.nextPage}>Next page</button></nav>
             </>}
         </div>
         {audio.error && <p role="alert" className={styles.warning}>{audio.error}</p>}
-        {neckOpen && selected && <ChordDialog title="Full fretboard" onClose={() => setNeckOpen(false)}>
-            <div className={styles.row}><p>{title} · {position(selected)}</p>{playButton(selected, true)}</div>
-            <ChordNeckView candidate={selected} showIntervals={showIntervals} />
-            {audio.error && <p role="alert" className={styles.warning}>{audio.error}</p>}
-        </ChordDialog>}
+        {neckOpen && selected && <ChordDialog title="Full fretboard" onClose={() => setNeckOpen(false)}><div className={styles.row}><p>{title} · {positionLabel(selected)}</p>{playButton(selected, true)}</div>{engine.request ? <ChordNeckView candidate={selected} rootPitchClass={engine.request.interpretation.rootPitchClass} showIntervals={showIntervals} /> : <p role="status">Waiting for the current request to validate this snapshot.</p>}{audio.error && <p role="alert" className={styles.warning}>{audio.error}</p>}</ChordDialog>}
     </section>;
 }

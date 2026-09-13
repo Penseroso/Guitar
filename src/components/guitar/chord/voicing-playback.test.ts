@@ -1,6 +1,11 @@
 import { beforeAll, describe, expect, it, vi } from 'vitest';
-import { generateExplorationPool, getExplorationPlaybackNotes, rankExplorationPool, type ExplorationCandidate } from '@/domain/chord/exploration';
+import { EngineSession } from '@/domain/chord/engine/session';
+import { allocationId } from '@/domain/chord/engine/identity';
+import { getPlaybackMidi,midiNoteLabel } from '@/domain/chord/engine/presentation';
+import type { PresentationCandidate } from '@/domain/chord/engine/types';
 import { createVoicingPlayback } from './voicing-playback';
+
+const getPlaybackNotes=(row:PresentationCandidate)=>getPlaybackMidi(row).map(midiNoteLabel);
 
 function deferred<T>() {
     let resolve!: (value: T) => void;
@@ -14,14 +19,20 @@ function engine() {
 }
 
 describe('voicing playback requests', () => {
-    let first: ExplorationCandidate;
-    let second: ExplorationCandidate;
+    let first: PresentationCandidate;
+    let second: PresentationCandidate;
     beforeAll(() => {
-        const pool = generateExplorationPool({ chordId: 'major', rootPitchClass: 0, context: 'standalone' });
-        if (pool.status !== 'ready') throw new Error(pool.message);
-        const candidates = rankExplorationPool(pool);
-        first = candidates.find(candidate => candidate.facts.midiNotes.length === 6)!;
-        second = candidates.find(candidate => candidate.voicing.id !== first.voicing.id)!;
+        const session=new EngineSession({schema:'intent-v1',chordId:'major',rootPitchClass:0});
+        first=session.lookup(allocationId([64,59,55,50,45,40],[0,1,0,2,3,3]));
+        const damping=new EngineSession({schema:'intent-v1',chordId:'major',rootPitchClass:0,physical:{omittedStrings:'require-left-hand-damping'}});
+        second=damping.lookup(allocationId([64,59,55,50,45,40],[0,8,9,10,-1,-1]));
+    });
+
+    it('plays an uncertain crossing with exact repeated MIDI pitches and never substitutes formula notes',async()=>{
+        const audio=engine(),playback=createVoicingPlayback(async()=>audio,vi.fn());
+        expect(second.physical.status).toBe('UNCERTAIN');
+        await playback.play(second);
+        expect(audio.playChord).toHaveBeenCalledExactlyOnceWith(['C4','E4','E4','G4']);
     });
 
     it('loads only on play and passes every sounding note with its octave and doubling', async () => {
@@ -33,13 +44,14 @@ describe('voicing playback requests', () => {
         expect(state).not.toHaveBeenCalled();
         await playback.play(first);
         expect(audio.start).toHaveBeenCalledOnce();
-        expect(audio.playChord).toHaveBeenCalledExactlyOnceWith(getExplorationPlaybackNotes(first));
+        expect(audio.playChord).toHaveBeenCalledExactlyOnceWith(getPlaybackNotes(first));
         const notes = audio.playChord.mock.calls[0][0];
         expect(notes).toHaveLength(6);
+        expect(notes).toEqual(['G2','C3','E3','G3','C4','E4']);
         expect(new Set(notes.map(note => note.replace(/-?\d+$/, ''))).size).toBeLessThan(notes.length);
         expect(notes.every(note => /\d$/.test(note))).toBe(true);
         expect(state.mock.calls).toEqual([
-            [{ error: null, loadingCandidateId: first.voicing.id }],
+            [{ error: null, loadingCandidateId: first.candidate.allocationId }],
             [{ error: null, loadingCandidateId: null }],
         ]);
     });
@@ -58,7 +70,7 @@ describe('voicing playback requests', () => {
         await pendingFirst;
         expect(oldAudio.start).not.toHaveBeenCalled();
         expect(oldAudio.playChord).not.toHaveBeenCalled();
-        expect(newAudio.playChord).toHaveBeenCalledExactlyOnceWith(getExplorationPlaybackNotes(second));
+        expect(newAudio.playChord).toHaveBeenCalledExactlyOnceWith(getPlaybackNotes(second));
         expect(state).toHaveBeenCalledTimes(calls);
     });
 
@@ -76,7 +88,7 @@ describe('voicing playback requests', () => {
         if (completion === 'resolve') oldStart.resolve();
         else oldStart.reject(new Error('Old start failed'));
         await pendingFirst;
-        expect(audio.playChord).toHaveBeenCalledExactlyOnceWith(getExplorationPlaybackNotes(second));
+        expect(audio.playChord).toHaveBeenCalledExactlyOnceWith(getPlaybackNotes(second));
         expect(state).toHaveBeenCalledTimes(calls);
         expect(state).toHaveBeenLastCalledWith({ error: null, loadingCandidateId: null });
     });
@@ -112,9 +124,9 @@ describe('voicing playback requests', () => {
         expect(audio.playChord).not.toHaveBeenCalled();
         expect(state).toHaveBeenLastCalledWith({ error: expect.any(String), loadingCandidateId: null });
         const retry = playback.play(second);
-        expect(state).toHaveBeenLastCalledWith({ error: null, loadingCandidateId: second.voicing.id });
+        expect(state).toHaveBeenLastCalledWith({ error: null, loadingCandidateId: second.candidate.allocationId });
         await retry;
-        expect(audio.playChord).toHaveBeenCalledExactlyOnceWith(getExplorationPlaybackNotes(second));
+        expect(audio.playChord).toHaveBeenCalledExactlyOnceWith(getPlaybackNotes(second));
         expect(state).toHaveBeenLastCalledWith({ error: null, loadingCandidateId: null });
     });
 });

@@ -4,14 +4,10 @@ import React, { useState, useEffect, useMemo, useRef, useCallback, useReducer } 
 import { Controls } from './Controls';
 import { useProgressionAudio } from './progression/useProgressionAudio';
 import { getProgressionPlaybackData } from '@/domain/progression/getProgressionPlaybackData';
-import {
-    CHORD_FAMILIES,
-    CHORD_REGISTRY_LIST,
-    getChordTypeLabel,
-    getChordTypeSuffix,
-    resolveChordRegistryEntry,
-    type ResolvedVoicing,
-} from '@/domain/chord';
+import {CHORD_FAMILIES,CHORD_REGISTRY_LIST} from '@/domain/chord/registry';
+import {getChordTypeLabel,getChordTypeSuffix} from '@/domain/chord/helpers';
+import {engineEntry} from '@/domain/chord/engine/catalog';
+import type {PresentationCandidate,ResolvedRequest} from '@/domain/chord/engine/types';
 import { TUNING } from '@/domain/shared/tuning';
 import { SCALES } from '@/domain/scale/scales';
 import { getKeyName } from '@/domain/shared/keys';
@@ -23,14 +19,12 @@ import {
     createHarmonicWorkspaceState,
     reduceHarmonicWorkspaceState,
 } from '../../features/harmonic-workspace/state';
-import { resolveBridgeSelection } from './chord/bridge';
 import { getVoicingPresentationMeta } from './chord/voicing-labels';
 import { ScaleModeWorkspace } from './scale/ScaleModeWorkspace';
 import { WorkspaceHeader } from './shared/WorkspaceHeader';
 import { ChordModeWorkspace } from './chord/ChordModeWorkspace';
 import { ChordExplorationPanel } from './chord/ChordExplorationPanel';
 import { useChordExploration } from './chord/useChordExploration';
-import type { ChordPlayingContext } from '@/domain/chord/exploration';
 import { getChordToneChoices } from './chord/tone-labels';
 import { ProgressionModeWorkspace } from './progression/ProgressionModeWorkspace';
 
@@ -57,18 +51,17 @@ const CHORD_SELECTOR_GROUPS = CHORD_FAMILIES.map((family) => {
     };
 }).filter((group) => group.options.length > 0);
 
-function buildResolvedVoicingFingering(voicing?: ResolvedVoicing): Fingering[] | undefined {
-    if (!voicing) {
+function buildResolvedVoicingFingering(row?: PresentationCandidate|null): Fingering[] | undefined {
+    if (!row) {
         return undefined;
     }
 
-    return voicing.notes
-        .filter((note) => !note.isMuted)
+    return row.candidate.sounding
         .map((note) => ({
             string: note.string,
             fret: note.fret,
-            noteIdx: note.pitchClass,
-            label: note.isRoot ? 'R' : note.degree,
+            noteIdx: note.midi%12,
+            label: note.tone==='1' ? 'R' : note.tone,
         }));
 }
 
@@ -101,8 +94,7 @@ export default function ClientApp() {
 
     // --- State: Chord Mode ---
     const [chordType, setChordType] = useState('major');
-    const [chordPlayingContext, setChordPlayingContext] = useState<ChordPlayingContext>('standalone');
-    const exploration = useChordExploration(mode === 'chord', chordType, selectedKey, chordPlayingContext);
+    const [chordPlayingContext, setChordPlayingContext] = useState<ResolvedRequest['interpretation']['context']>('standalone');
     const {
         progressionName,
         progressionDoc,
@@ -170,7 +162,7 @@ export default function ClientApp() {
     // --- Derived Data: Chords ---
     const currentChordEntry = useMemo(() => {
         try {
-            return resolveChordRegistryEntry(chordType);
+            return engineEntry(chordType);
         } catch {
             return null;
         }
@@ -195,18 +187,13 @@ export default function ClientApp() {
         });
     }, [futureVoicingScopeKey, tonalContext]);
 
-    const requestedFutureVoicingId = harmonicWorkspace.selectedCandidateId;
-    const chordSurfaceVoicingCandidates = useMemo(() =>
-        exploration.response?.status === 'ready' ? exploration.response.candidates : [], [exploration.response]);
-    const futureVoicingSelection = useMemo(
-        () => resolveBridgeSelection(chordSurfaceVoicingCandidates, requestedFutureVoicingId),
-        [chordSurfaceVoicingCandidates, requestedFutureVoicingId]
-    );
-    const activeFutureCandidate = futureVoicingSelection.activeCandidate;
-    const activeFutureVoicingId = futureVoicingSelection.activeCandidateId;
+    const requestedFutureVoicingId = harmonicWorkspace.scopeKey===futureVoicingScopeKey?harmonicWorkspace.selectedCandidateId:null;
+    const exploration = useChordExploration(mode === 'chord', chordType, selectedKey, chordPlayingContext,requestedFutureVoicingId);
+    const activeFutureCandidate = exploration.selected;
+    const activeFutureVoicingId = activeFutureCandidate?.candidate.allocationId??null;
     const activeFutureVoicingFingering = useMemo(
-        () => buildResolvedVoicingFingering(activeFutureCandidate?.voicing),
-        [activeFutureCandidate]
+        () => exploration.selectionStale?undefined:buildResolvedVoicingFingering(activeFutureCandidate),
+        [activeFutureCandidate,exploration.selectionStale]
     );
     const activeFuturePresentation = useMemo(
         () => getVoicingPresentationMeta(activeFutureCandidate),
@@ -214,12 +201,10 @@ export default function ClientApp() {
     );
     const chordPreviewPrimaryLabel = activeFutureCandidate
         ? activeFuturePresentation.primaryLabel
-        : 'No voicing available';
+        : 'No voicing selected';
     const chordPreviewSecondaryLabel = activeFutureCandidate
-        ? activeFuturePresentation.secondaryLabel
-        : chordSurfaceVoicingCandidates.length === 0
-            ? 'No voicing candidates for this chord'
-            : 'No candidate selected';
+        ? exploration.selectionStale?'Previous request · revalidating selection':activeFuturePresentation.secondaryLabel
+        : exploration.phase==='ready'?'No matching selection':'Search not complete';
     const chordPreviewTitle = useMemo(() => {
         const root = getKeyName(selectedKey);
         if (!currentChordEntry) {
@@ -421,16 +406,15 @@ export default function ClientApp() {
                             root={selectedKey} onRootChange={setSelectedKey}
                             explorationPanel={<ChordExplorationPanel
                                 key={`${chordType}:${selectedKey}`}
-                                context={chordPlayingContext} response={exploration.response} onRetry={exploration.retry}
+                                context={chordPlayingContext} engine={exploration}
                                 onContextChange={(context) => {
                                     if (activeFutureVoicingId) handleSelectFutureVoicing(activeFutureVoicingId);
                                     setChordPlayingContext(context);
                                 }}
-                                selectedId={activeFutureVoicingId} onSelect={handleSelectFutureVoicing}
+                                onSelect={handleSelectFutureVoicing}
                                 title={chordPreviewTitle} showIntervals={showIntervals}
                                 onToggleIntervals={() => setShowIntervals(previous => !previous)}
                                 toneChoices={currentChordEntry ? getChordToneChoices(currentChordEntry, selectedKey) : []}
-                                selectionReplaced={!!requestedFutureVoicingId && !!activeFutureVoicingId && requestedFutureVoicingId !== activeFutureVoicingId}
                             />}
                         />
                     )}
@@ -473,8 +457,6 @@ export default function ClientApp() {
         </div>
     );
 }
-
-
 
 
 

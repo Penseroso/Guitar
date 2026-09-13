@@ -6,11 +6,11 @@ import { getNoteName } from '@/domain/shared/notes';
 import type { ResolvedVoicing } from '@/domain/chord';
 
 interface CompactVoicingDiagramProps {
-    voicing: ResolvedVoicing;
+    voicing: Pick<ResolvedVoicing,'notes'>;
     labelMode?: 'degree' | 'note' | 'none';
 }
 
-export function describeVoicingShape(voicing: ResolvedVoicing): string {
+export function describeVoicingShape(voicing: Pick<ResolvedVoicing,'notes'>): string {
     return 'strings 6 to 1: ' + Array.from({ length: 6 }, (_, index) => {
         const note = voicing.notes.find(note => note.string === 5 - index && !note.isMuted);
         return !note ? 'muted' : note.fret === 0 ? 'open' : 'fret ' + note.fret;
