@@ -1,0 +1,476 @@
+{
+  "schema": "engine-session-check-v1",
+  "createdAt": "2026-09-13T01:39:43.377Z",
+  "node": "v22.16.0",
+  "platform": "win32",
+  "arch": "x64",
+  "sourceHashes": {
+    "src/domain/chord/engine/session.ts": "4d25e6e0ebc24094c9b868bc1cfcf3fc2fdabfebc8423d11f81f935b0e00f8e1",
+    "src/domain/chord/engine/packedStore.ts": "f9b18fbd96f5864508d304318ad7a2821b185ded47ef0111c19b28ddd239ec34",
+    "src/domain/chord/engine/pageHeap.ts": "5b0af7c93578202abf19d9b206f570a3e84868592b38d51685f4d6618cfd66d0",
+    "src/domain/chord/engine/view.ts": "7c2d2cadd2500b75f45e7060655e2c18506156f8efd4b2943ba9e058034ed9eb",
+    "src/domain/chord/engine/facts.ts": "80ab55737942d53208ebb44cf2659e954045d5fb1b3770a01c08e0f7a59ce1d1",
+    "src/domain/chord/engine/classicFeatures.ts": "e14bc57e03687df60880e206103d245b4eba8314d5ed3c8b34164801eab635a4",
+    "src/domain/chord/engine/physical.ts": "057612ea89fcf8f72a720b2f227359da4b3c724537838396ed3a574013604e33",
+    "src/domain/chord/engine/deterministicRanking.ts": "38245e8a3a77b397569d5275697118219e2c3d6abf5adf9e2cd8ef66413f941d"
+  },
+  "methodology": "Single-run Node integration diagnostics. Full packed and forced120-byte replay compare exact pages, cursors, complete ledgers and status partitions. View counts independently check literal stopped-position facts over the complete pool. Process memory includes other objects and garbage collection timing; retained/accounted store buffers are reported separately. No browser latency, phone result, human-playability or comfort claim.",
+  "setupMs": 2.9607000000000028,
+  "elapsedMs": 5306.2272,
+  "compactBuffer": {
+    "rows": 267524,
+    "retainedBytes": 8650752,
+    "accountedBytes": 10813440
+  },
+  "packedRowBytes": 32,
+  "exactDefaultPartitions": {
+    "structural": 267524,
+    "assessed": 267524,
+    "pass": 8243,
+    "uncertain": 259281,
+    "reject": 0,
+    "survivors": 267524,
+    "matching": 267524,
+    "matchingPass": 8243,
+    "matchingUncertain": 259281,
+    "completeness": "exact",
+    "hasMore": true,
+    "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+    "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+    "viewKey": "{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}",
+    "versions": {
+      "engine": "guitar-engine/1",
+      "structural": "structural-v1",
+      "realization": "identity-v1",
+      "physical": "physical-screen-v1",
+      "geometry": "geometry-um-v1",
+      "ranking": "classic-v1",
+      "features": "legacy-rank-features-v1",
+      "numeric": "rank-int-v1",
+      "protocol": "engine-worker-v1",
+      "empirical": {
+        "enabled": false
+      }
+    },
+    "rankMode": "classic-v1",
+    "rawBound": "729000"
+  },
+  "independentViewPartitions": {
+    "matching": 4879,
+    "pass": 3863,
+    "uncertain": 1016
+  },
+  "deepLookup": {
+    "id": "shape-v1:64,59,55,50,45,40:15,15,15,15,15,15",
+    "compactMs": 0.07589999999981956,
+    "replayMs": 0.04709999999977299,
+    "offInitial18": true,
+    "exactlyEqual": true
+  },
+  "checkpointAfterCompletedCache": "pass",
+  "corruptCheckpointAccumulator": "rejected",
+  "staleViewCursor": "rejected",
+  "disposeRetainedBytes": 0,
+  "failures": [],
+  "measurements": [
+    {
+      "name": "default compact first exact 6",
+      "elapsedMs": 797.6905,
+      "rows": 6,
+      "summary": {
+        "structural": 267524,
+        "pass": 8243,
+        "uncertain": 259281,
+        "reject": 0,
+        "survivors": 267524,
+        "matching": 267524,
+        "matchingPass": 8243,
+        "matchingUncertain": 259281,
+        "assessed": 267524,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "compact",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}",
+        "versions": {
+          "engine": "guitar-engine/1",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v1",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "729000",
+        "visitedNodes": 769341,
+        "retainedBufferBytes": 8650752,
+        "accountedBufferBytes": 10813440
+      },
+      "processMemoryBefore": {
+        "rss": 81199104,
+        "heapTotal": 13692928,
+        "heapUsed": 10156504,
+        "external": 2725451,
+        "arrayBuffers": 140758
+      },
+      "processMemoryAfter": {
+        "rss": 104742912,
+        "heapTotal": 27586560,
+        "heapUsed": 10377424,
+        "external": 11366729,
+        "arrayBuffers": 8781996
+      },
+      "processHeapDeltaBytes": 220920,
+      "processArrayBufferDeltaBytes": 8641238
+    },
+    {
+      "name": "default forced replay first exact 6",
+      "elapsedMs": 784.1288999999999,
+      "rows": 6,
+      "summary": {
+        "structural": 267524,
+        "pass": 8243,
+        "uncertain": 259281,
+        "reject": 0,
+        "survivors": 267524,
+        "matching": 267524,
+        "matchingPass": 8243,
+        "matchingUncertain": 259281,
+        "assessed": 267524,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "replay",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}",
+        "versions": {
+          "engine": "guitar-engine/1",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v1",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "729000",
+        "visitedNodes": 769341,
+        "retainedBufferBytes": 0,
+        "accountedBufferBytes": 0
+      },
+      "processMemoryBefore": {
+        "rss": 104747008,
+        "heapTotal": 27586560,
+        "heapUsed": 10381584,
+        "external": 11366729,
+        "arrayBuffers": 8781996
+      },
+      "processMemoryAfter": {
+        "rss": 104824832,
+        "heapTotal": 27848704,
+        "heapUsed": 17969024,
+        "external": 11366729,
+        "arrayBuffers": 8781996
+      },
+      "processHeapDeltaBytes": 7587440,
+      "processArrayBufferDeltaBytes": 0
+    },
+    {
+      "name": "completed compact next exact 12",
+      "elapsedMs": 208.9476000000002,
+      "rows": 12,
+      "summary": {
+        "structural": 267524,
+        "pass": 8243,
+        "uncertain": 259281,
+        "reject": 0,
+        "survivors": 267524,
+        "matching": 267524,
+        "matchingPass": 8243,
+        "matchingUncertain": 259281,
+        "assessed": 267524,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "compact",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}",
+        "versions": {
+          "engine": "guitar-engine/1",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v1",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "729000",
+        "visitedNodes": 267524,
+        "retainedBufferBytes": 8650752,
+        "accountedBufferBytes": 10813440
+      },
+      "processMemoryBefore": {
+        "rss": 104906752,
+        "heapTotal": 27848704,
+        "heapUsed": 18124408,
+        "external": 11396785,
+        "arrayBuffers": 8781996
+      },
+      "processMemoryAfter": {
+        "rss": 105066496,
+        "heapTotal": 28635136,
+        "heapUsed": 11937080,
+        "external": 11396785,
+        "arrayBuffers": 8781996
+      },
+      "processHeapDeltaBytes": -6187328,
+      "processArrayBufferDeltaBytes": 0
+    },
+    {
+      "name": "forced replay next exact 12",
+      "elapsedMs": 813.8059000000003,
+      "rows": 12,
+      "summary": {
+        "structural": 267524,
+        "pass": 8243,
+        "uncertain": 259281,
+        "reject": 0,
+        "survivors": 267524,
+        "matching": 267524,
+        "matchingPass": 8243,
+        "matchingUncertain": 259281,
+        "assessed": 267524,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "replay",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}",
+        "versions": {
+          "engine": "guitar-engine/1",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v1",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "729000",
+        "visitedNodes": 769341,
+        "retainedBufferBytes": 0,
+        "accountedBufferBytes": 0
+      },
+      "processMemoryBefore": {
+        "rss": 105066496,
+        "heapTotal": 28635136,
+        "heapUsed": 11937592,
+        "external": 11396785,
+        "arrayBuffers": 8781996
+      },
+      "processMemoryAfter": {
+        "rss": 122085376,
+        "heapTotal": 45412352,
+        "heapUsed": 23682280,
+        "external": 11396785,
+        "arrayBuffers": 8781996
+      },
+      "processHeapDeltaBytes": 11744688,
+      "processArrayBufferDeltaBytes": 0
+    },
+    {
+      "name": "completed compact position10..15 near12 exact 6",
+      "elapsedMs": 198.2736,
+      "rows": 6,
+      "summary": {
+        "structural": 267524,
+        "pass": 8243,
+        "uncertain": 259281,
+        "reject": 0,
+        "survivors": 267524,
+        "matching": 4879,
+        "matchingPass": 3863,
+        "matchingUncertain": 1016,
+        "assessed": 267524,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "compact",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"near-position\",\"targetFret\":12},\"position\":{\"high\":15,\"low\":10},\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}",
+        "versions": {
+          "engine": "guitar-engine/1",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v1",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "729000",
+        "visitedNodes": 267524,
+        "retainedBufferBytes": 8650752,
+        "accountedBufferBytes": 10813440
+      },
+      "processMemoryBefore": {
+        "rss": 122085376,
+        "heapTotal": 45412352,
+        "heapUsed": 23964488,
+        "external": 11396785,
+        "arrayBuffers": 8781996
+      },
+      "processMemoryAfter": {
+        "rss": 122953728,
+        "heapTotal": 45412352,
+        "heapUsed": 21030832,
+        "external": 11396785,
+        "arrayBuffers": 8781996
+      },
+      "processHeapDeltaBytes": -2933656,
+      "processArrayBufferDeltaBytes": 0
+    },
+    {
+      "name": "forced replay position10..15 near12 exact 6",
+      "elapsedMs": 513.4575,
+      "rows": 6,
+      "summary": {
+        "structural": 267524,
+        "pass": 8243,
+        "uncertain": 259281,
+        "reject": 0,
+        "survivors": 267524,
+        "matching": 4879,
+        "matchingPass": 3863,
+        "matchingUncertain": 1016,
+        "assessed": 267524,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "replay",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"near-position\",\"targetFret\":12},\"position\":{\"high\":15,\"low\":10},\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}",
+        "versions": {
+          "engine": "guitar-engine/1",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v1",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "729000",
+        "visitedNodes": 769341,
+        "retainedBufferBytes": 0,
+        "accountedBufferBytes": 0
+      },
+      "processMemoryBefore": {
+        "rss": 122953728,
+        "heapTotal": 45412352,
+        "heapUsed": 21031208,
+        "external": 11396785,
+        "arrayBuffers": 8781996
+      },
+      "processMemoryAfter": {
+        "rss": 123027456,
+        "heapTotal": 45412352,
+        "heapUsed": 15073016,
+        "external": 11396785,
+        "arrayBuffers": 8781996
+      },
+      "processHeapDeltaBytes": -5958192,
+      "processArrayBufferDeltaBytes": 0
+    },
+    {
+      "name": "custom frets0..18 forced replay first exact 6",
+      "elapsedMs": 1757.9548999999997,
+      "rows": 6,
+      "summary": {
+        "structural": 567923,
+        "pass": 12412,
+        "uncertain": 555511,
+        "reject": 0,
+        "survivors": 567923,
+        "matching": 567923,
+        "matchingPass": 12412,
+        "matchingUncertain": 555511,
+        "assessed": 567923,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "replay",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":18,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}",
+        "versions": {
+          "engine": "guitar-engine/1",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v1",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "1464100",
+        "visitedNodes": 1518133,
+        "retainedBufferBytes": 0,
+        "accountedBufferBytes": 0
+      },
+      "processMemoryBefore": {
+        "rss": 123580416,
+        "heapTotal": 45412352,
+        "heapUsed": 18017944,
+        "external": 11544285,
+        "arrayBuffers": 8929496
+      },
+      "processMemoryAfter": {
+        "rss": 123023360,
+        "heapTotal": 45936640,
+        "heapUsed": 22204656,
+        "external": 11413213,
+        "arrayBuffers": 8798424
+      },
+      "processHeapDeltaBytes": 4186712,
+      "processArrayBufferDeltaBytes": -131072
+    }
+  ]
+}

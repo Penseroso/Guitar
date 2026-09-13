@@ -11,7 +11,7 @@ The specification's archived documentation-only authorization note is superseded
 | 3 Structural iterator | Complete | 502 production tests passed; 480-request frozen census parity, exact 1,647,041 baseline allocations retained, zero duplicates; scoped typecheck/lint |
 | 4 Physical assessment | Complete | 57 focused/legacy tests passed; independent 15,625-pattern cover oracle; 88-case shadow 79 PASS/9 UNCERTAIN/0 REJECT; 54 frozen hashes unchanged |
 | 5 Classic ranking | Complete | 94 focused/legacy tests; 480 requests/1,647,041 identical baseline survivors; all 20 weights/features match; 45,864 isolated ledger checks |
-| 6 Session/pages | Pending | |
+| 6 Session/pages | Complete | 57 engine tests; cached/replay exact rows, ledgers, cursors and counts; every-node checkpoint recovery; widest-default and larger custom-scope diagnostics |
 | 7 Worker | Pending | |
 | 8 Atomic live cutover | Pending | |
 | 9 Integrated verification | Pending | |
@@ -32,6 +32,8 @@ Stage 3 census: old-policy structural total 14,152,934; identity-v1 total 15,943
 Stage 4 shadow: explicit required-damping interpretation yields 77 PASS/11 UNCERTAIN/0 REJECT; only the two archived internal-damping demands change status. All four former boolean exclusions survive as UNCERTAIN. Integer-span drift from archived floating geometry is at most 0.49445 micrometres with no verdict drift. The geometry table is independently reproduced using Decimal power at 80 digits and exp/log at 110 digits. No new solver or human validation was performed. New engine typecheck, scoped lint and diff checks pass; old live geometry/ranking sources remain unchanged.
 
 Stage 5 control: every same-pool score matches after only the specified span quantization (maximum 0.0001650963-point difference). All 480 full orders change under the new integer/tuple comparator; ordered top-6 differs in 129 requests, ordered top-18 in 373. These are ordered-prefix comparisons, not membership or human-preference outcomes. Exact ledger sums, every preference branch, immutable metadata and permutation conservation pass. `engine-ranking-control.json` records source hashes and diagnostics. No live path was changed.
+
+Stage 6: C dominant-11 accompaniment yields 267,524 survivors (8,243 PASS, 259,281 UNCERTAIN, zero REJECT), identical between packed and forced-replay paths. Rows use 32 bytes plus reserved two uint32 indices; this fixture retains 8,650,752 bytes, accounts 10,813,440 bytes, and replay retains zero pool bytes. Single-run Node diagnostics: first page 798 ms compact/784 ms replay; next 12 cached 209 ms/replay 814 ms; direct lookup 0.076/0.047 ms. The cached page result is near/above the desktop browser budget before transport/render, requiring measurement and possibly set-preserving optimization. Frets 0–18 replay completes in 1,758 ms. These are not browser gate results. Checkpoint tests caught and fixed zero-budget false-completion and restoring into an existing complete-cache defects. Evidence: `engine-session-check.json`.
 
 - Node v22.16.0. Vite requires subprocess access; ordinary sandbox tests fail with `spawn EPERM`, while approved execution passes.
 - Baseline full typecheck has 21 errors in archived physical comparator source and TS5097 in `scripts/physical-feasibility/compare.ts`. These are pre-existing and frozen artifacts will not be edited.
