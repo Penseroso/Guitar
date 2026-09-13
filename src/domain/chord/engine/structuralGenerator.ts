@@ -36,7 +36,6 @@ export function compileStructuralMatcher(request: StructuralRequest): (states: S
             if(p.kind==='root'&&!!(mask&(1<<request.rootPitchClass))!==(p.mode==='include')) return false;
             if(p.kind==='formula-coverage'&&(bitCount(mask)===formula.length)!==(p.mode==='complete')) return false;
             if(p.kind==='bass'&&!matchesExtreme(min,p.value)||p.kind==='top'&&!matchesExtreme(max,p.value)) return false;
-            if(p.kind==='legacy-bass-subset'&&!matchesExtreme(min,{tone:p.tone})) return false;
             if(p.kind==='stopped-position'&&(maxStop<0||minStop<p.low||maxStop>p.high)) return false;
         }
         return subsets.every(match=>match(states));

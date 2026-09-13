@@ -1,5 +1,7 @@
 # Chord preference evaluation
 
+Stage 10 status: research is closed. The historical harness was moved to `.research/stage-10-archive/scripts/preference/`; the commands below document the frozen study procedure and are not current production commands.
+
 This offline harness studies additional evidence for chord exploration. It cannot export a runtime profile or change the application. The engine baseline is `3dc7ef8`; domain differences or changed frozen weights block evaluation. The current generator, formula rules, playable geometry, full candidate pool, explicit filters, selection and playback remain application contracts.
 
 ## Input authority and quarantine
@@ -7,8 +9,8 @@ This offline harness studies additional evidence for chord exploration. It canno
 Supply the authoritative external encoder/decoder and its compatible Python environment explicitly. The adapter calls the decoder directly; differential tests also exercise its encoder. The private certification report records the reference revision and source hash, parser/adapter hashes, input hashes, accepted files and failures. Neither the external source nor raw inputs belong in Git.
 
 ```text
-npx tsx scripts/preference/certify.ts --manifest=PATH --raw-root=PATH --decoder=PATH --python=PATH --output=.research/certification-RUN
-npx tsx scripts/preference/run.ts --manifest=PATH --raw-root=PATH --observations=.research/certification-RUN/observations.jsonl --certification=.research/certification-RUN/certification.json --output=.research/preference-RUN
+npx tsx .research/stage-10-archive/scripts/preference/certify.ts --manifest=PATH --raw-root=PATH --decoder=PATH --python=PATH --output=.research/certification-RUN
+npx tsx .research/stage-10-archive/scripts/preference/run.ts --manifest=PATH --raw-root=PATH --observations=.research/certification-RUN/observations.jsonl --certification=.research/certification-RUN/certification.json --output=.research/preference-RUN
 ```
 
 The default study includes data and ranking audits. `--stage=data` or `--stage=ranking` may be used separately with distinct output directories. Certification is mandatory for either stage. An old cache, changed parser or mismatched manifest fails the gate. Complete runs are immutable. Detailed outputs, source identities, examples and any provenance stay under ignored `.research/`.
@@ -26,7 +28,7 @@ Interpretation is deliberately limited:
 
 Matching an attack signature to a product voicing does not prove that unobserved strings were muted. Pitch labels describe notated fret pitches, not a reconstructed performance with bends, release envelopes or all previously sounding strings. These limitations are another reason frequency evidence alone cannot authorize product adoption.
 
-Run conformance fixtures with `REFERENCE_PYTHON` and `REFERENCE_DECODER` set, then `npx vitest run scripts/preference/frames.test.ts`. Without the external environment, these tests are explicitly skipped; ordinary unit tests do not certify a dataset. Fixtures cover ties, rests, ringing, ghost/dead notes, duplicate strings, initial silence, interleaved instruments, absent terminal waits, orphan effects, duration corrections and an encoder/decoder roundtrip.
+The frozen conformance command was `npx vitest run .research/stage-10-archive/scripts/preference/frames.test.ts` with `REFERENCE_PYTHON` and `REFERENCE_DECODER` set. Without the external environment, these tests are explicitly skipped; ordinary unit tests do not certify a dataset. Fixtures cover ties, rests, ringing, ghost/dead notes, duplicate strings, initial silence, interleaved instruments, absent terminal waits, orphan effects, duration corrections and an encoder/decoder roundtrip.
 
 ## Experiments and preserved boundaries
 

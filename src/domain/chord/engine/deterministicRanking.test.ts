@@ -1,6 +1,5 @@
 import { expect,it } from 'vitest';
 import { CLASSIC_WEIGHTS, compareRank, rankingLedger, scoreFeatures, SCORE_DENOMINATOR as Q, TERM_IDS } from './deterministicRanking';
-import { DEFAULT_DEDUCTIVE_RANKING_WEIGHTS } from '../deductiveRanking';
 import type { ClassicFeaturesV1, Six } from './types';
 
 const base:ClassicFeaturesV1={version:'legacy-rank-features-v1',spanUm:0,wholeFretGroups:1,largestBarreContacts:0,diagonalPattern:false,
@@ -8,11 +7,14 @@ const base:ClassicFeaturesV1={version:'legacy-rank-features-v1',spanUm:0,wholeFr
     rootPresent:true,rootHint:'absent',rootBass:true,representativeBassString:5,hasExplicitSlash:false,optionalCoveredCount:0,legacyTechnique:'Standard',unplayedCoreStringCount:0};
 const term=(f:ClassicFeaturesV1,id:string)=>rankingLedger(f).find(t=>t.id===id)!.numerator;
 
-it('pins all 20 retained weights to the immutable baseline control',()=>{
-    const {structuralSafetyNetPenalty,slashBassBonus,slashBassPenalty,...retained}=DEFAULT_DEDUCTIVE_RANKING_WEIGHTS;
-    expect([structuralSafetyNetPenalty,slashBassBonus,slashBassPenalty]).toEqual([-500,24,-28]);
-    expect(Object.values(CLASSIC_WEIGHTS).sort((a,b)=>a-b)).toEqual(Object.values(retained).sort((a,b)=>a-b));
-    expect(Object.keys(CLASSIC_WEIGHTS)).toHaveLength(20);
+it('pins all 20 classic-v1 weights directly',()=>{
+    expect(CLASSIC_WEIGHTS).toEqual({
+        spanEnvelopeMax:20,groupEconomy:-6,diagonalPattern:12,groupedContactSize:-2,
+        adjacentInternalGap:-1.5,isolatedInternalGap:-6,coreStringGap:-8,
+        lowPosition:10,standardPosition:4,highPosition:-4,openTexture:3,highOpenMix:-4,
+        rootPresence:6,rootAbsence:-12,rootBass:16,rootedInversion:-8,
+        optionalCoverage:2,ringingDensity:3,rootHintMatch:8,rootHintMiss:-3,
+    });
 });
 it('quantizes the span term exactly at both boundaries and one micrometre either side',()=>{
     for(const [s,n] of [[0,20*Q],[39999,20*Q],[40000,20*Q],[40001,40*54999],[94999,40],[95000,0],[95001,0]]) expect(term({...base,spanUm:s},'span-envelope')).toBe(n);

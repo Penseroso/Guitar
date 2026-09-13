@@ -1,10 +1,10 @@
 # Final Engine Specification
 
-Status: **GO for integrated implementation; NO-GO for production rollout until the validation gates below pass.**
+Status: **IMPLEMENTED as `guitar-engine/2`; RELEASE-GATE GO.** Stage 10 retired the superseded compatibility paths after verifying that they had no legitimate callers. The layer contracts and policy decisions below remain authoritative.
 
 Rollout gates are limited to correctness, layer-contract invariants, browser/performance, accessibility, and truthful uncertainty presentation. The five-player task check is future formative validation, not a rollout prerequisite. Without appropriate human validation, claims of improved preference, human playability or comfort are prohibited; passing engineering gates does not authorize those claims.
 
-Specification: `guitar-engine/1`. Adjudicated 2026-09-13 against production baseline `a79007f0919b5b7f34657caa99f6d30a787c2a49`. This document changes no production code. Historical phase numbers and roadmaps are non-operative. MUST/SHALL express implementation requirements; numerical resource targets are engineering budgets, not measured results.
+Design baseline: `guitar-engine/1`; integrated production version: `guitar-engine/2`. Adjudicated 2026-09-13 against production baseline `a79007f0919b5b7f34657caa99f6d30a787c2a49`. Historical source mappings and migration requirements describe the cutover that produced v2; after Stage 10 they are not active compatibility APIs. MUST/SHALL express the preserved engine contracts; numerical resource targets are engineering budgets, not measured results.
 
 ## 1. Executive architecture decision
 

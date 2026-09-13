@@ -131,8 +131,7 @@ export type StructuralPredicate =
   | { kind: 'formula-coverage'; mode: 'complete' | 'omissions' }
   | { kind: 'bass' | 'top'; value: Extreme }
   | { kind: 'stopped-position'; low: number; high: number }
-  | { kind: 'subset'; value: Subset }
-  | { kind: 'legacy-bass-subset'; tone: ToneId }; // adapter only, never new UI input
+  | { kind: 'subset'; value: Subset };
 export type PhysicalReason =
   | 'groups-over-four' | 'groups-over-five' | 'span-over-warning' | 'span-over-severe'
   | 'thumb-fallback-relied-on' | 'unsupported-damping' | 'unsupported-profile'
@@ -153,7 +152,7 @@ export interface SearchIntent {
   completeFormula?: boolean;
   slashBassPitchClass?: number;
   subset?: Subset;
-  requirements?: readonly StructuralPredicate[]; // legacy-bass-subset disallowed here
+  requirements?: readonly StructuralPredicate[];
   physical?: Partial<Omit<PhysicalProfile, 'key' | 'screenVersion' | 'numericVersion'>>;
 }
 export interface ViewRequest {

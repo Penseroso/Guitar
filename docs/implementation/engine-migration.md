@@ -1,13 +1,11 @@
-# Engine v1 migration
+# Engine migration status
 
-The live CHORD path selects `guitar-engine/1` through `LIVE_ENGINE_VERSION`. Its worker, controller, selected snapshot, page panel and audio adapter are one atomic application version. Rollback requires an explicit application version rollback with disclosure of the old search scope; query failure only offers Retry.
+The live cutover to `guitar-engine/2` is complete. `useChordExploration.ts` starts only `engine.worker.ts`; that worker uses `workerService.ts` and `EngineSession`. The production UI consumes `PresentationCandidate` rows from the v2 worker protocol.
 
-The initial exact page contains six records; subsequent pages replace it with twelve. History stores cursors. Selection has its own snapshot and remains usable outside a view or page. Context changes revalidate it; root/quality changes reset it. Pending revalidation is visible and disables playback. Every playback uses the allocation's actual MIDI multiset, including repeated pitches.
+Stage 10 removed the superseded worker, boolean bridge, legacy search/ranking/template modules, adapter-only predicate, allocation-ID migration helper, and their isolated tests after verifying that no legitimate caller remained. The chord-domain barrel no longer exports retired search or ranking APIs. Stable `shape-v1` IDs remain unchanged.
 
-PASS is the named generic static-fretting heuristic; UNCERTAIN is retained and independently filterable. Details show specific reasons, profile/default provenance, omissions and every deterministic ledger term. Neither a score nor PASS establishes human playability, comfort or preference improvement. Human validation is absent. The five-player check remains future formative validation, outside current rollout gates.
+`classicFeatures.ts` and the version label `legacy-rank-features-v1` remain active because they implement the frozen `classic-v1` ranking inputs. Their name does not indicate a retired engine route. Scale/progression chord recognition, registry, helpers, semantics, and presentation types remain active shared domain code.
 
-New consumers use the engine request/session APIs. `engine/legacyAdapters.ts` provides explicit migration notices for old IDs, spacing aliases, bass-only drop semantics and deprecated Physical options. Saved route IDs require explicit saved tuning. Complete collectors are opt-in CLI/test APIs with an explicit byte budget; exhaustion returns a typed failure, never a successful truncated pool. The eligibility boolean adapter carries its assessment and mandatory deprecation text. None is imported by the browser path.
+Research and historical diagnostic tools are archived under the ignored local `.research/stage-10-archive/` tree. Frozen architecture, policy, research decisions, readiness summaries, and final release evidence remain under `docs/`. Production imports from `.research` and research scripts are prohibited by the live boundary test.
 
-Recognition, SCALE and progression contracts remain separate. Engine diminished-7 labels use `bb7`; recognition retains its historical vocabulary through scoped translation. Existing baseline search/scorer sources remain available for offline controls pending the specification's conditional retirement stage.
-
-Validation evidence and rollout status are recorded in `engine-progress.md` and the final integration report. This local cutover is not deployment authorization.
+No engine, policy, threshold, ranking, vocabulary, PASS/UNCERTAIN/REJECT, or candidate-reachability semantics changed during cleanup.

@@ -1,5 +1,6 @@
-// Chord domain surface — the deductive voicing engine (search, ranking, classification) plus
-// chord-registry theory and the cross-domain interpretation layer built on top of it.
+// Public chord-theory and presentation types. The live voicing engine is exposed
+// through explicit domain/chord/engine/* modules so legacy search cannot become an
+// accidental production dependency through this barrel.
 export type {
     PitchClass,
     GuitarStringIndex,
@@ -8,16 +9,8 @@ export type {
     ChordTones,
     VoicingTemplateString,
     VoicingTemplate,
-    VoicingConstraints,
-    VoicingProvenance,
-    VoicingProvenanceSourceKind,
-    VoicingDescriptor,
-    VoicingFamily,
-    VoicingRegisterBand,
-    ConsecutiveStringWindow,
     ResolvedVoicingNote,
     ResolvedVoicing,
-    VoicingCandidate,
     ChordInterpretationCandidate,
 } from './types';
 
@@ -60,54 +53,6 @@ export {
     isFormulaClosedChordFamily,
     buildNormalizedChordTonesForEntry,
 } from './semantics';
-
-export {
-    deriveVoicingDescriptor,
-    getCompleteChordWindow,
-    getVoicingDisplayName,
-    getVoicingDisplaySubtitle,
-    getVoicingFamilyLabel,
-    getVoicingRegisterLabel,
-    getVoicingProvenanceLabel,
-} from './descriptor';
-
-// resolveVoicingTemplate has no production caller left (the old template-based engine that used
-// it is gone) — it's kept only as test-fixture infrastructure for the new engine's test suites.
-export type { ResolveVoicingOptions } from './voicingTemplateTestFixtures';
-export {
-    getCandidateRootFretsForTemplate,
-    resolveVoicingNote,
-    resolveVoicingTemplate,
-    resolveVoicingTemplateAcrossPositions,
-    resolveVoicingTemplates,
-    resolveVoicingTemplatesAcrossPositions,
-    resolveVoicingTemplatesForChord,
-    resolveVoicingTemplatesAcrossPositionsForChord,
-} from './voicingTemplateTestFixtures';
-
-export type {
-    VoicingShapeMetrics,
-    VoicingScore,
-    VoicingTechniqueTag,
-    ScoreResolvedVoicingOptions,
-} from './deductiveRanking';
-
-export {
-    getVoicingShapeMetrics,
-    getVoicingTechniqueTag,
-    scoreResolvedVoicing,
-    buildVoicingCandidate,
-    rankVoicingCandidates,
-} from './deductiveRanking';
-
-export type { VoicingSearchOptions } from './voicingSearch';
-export { searchDeductiveVoicings } from './voicingSearch';
-
-export type { VoicingPosition, VoicingStyleSpec } from './voicingStyles';
-
-export {
-    searchAndRankDeductiveVoicings,
-} from './rankedVoicingSearch';
 
 export { identifyChordsForPitchClasses } from './chordRecognition';
 

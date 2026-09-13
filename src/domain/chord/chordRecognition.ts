@@ -8,7 +8,7 @@ function normalizePitchClass(value: number): number {
 }
 
 /**
- * Reverse of the forward generator (voicingSearch.ts): given a set of pitch classes actually
+ * Reverse of forward chord realization: given a set of pitch classes actually
  * being played, finds every (chord id, root) reading that's harmonically consistent with them —
  * i.e. every required degree for that reading is present. Genuinely different chords can share
  * every note (e.g. Am7 and C6 are both {A, C, E, G}); this returns all such readings tied at the

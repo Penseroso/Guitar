@@ -3,10 +3,6 @@ import { createClassicProjector } from './classicFeatures';
 import { compileRequest } from './requestPolicy';
 import { createGeometry } from './geometry';
 import { partialCoverGroups } from './contactHypotheses';
-import { getVoicingShapeMetrics, getVoicingTechniqueTag } from '../deductiveRanking';
-import { searchDeductiveVoicings } from '../voicingSearch';
-import { CHORD_REGISTRY_LIST } from '../registry';
-import type { Six } from './types';
 
 const intent = { schema:'intent-v1', chordId:'major',rootPitchClass:0 } as const;
 describe('pinned classic coordinate features', () => {
@@ -26,26 +22,6 @@ describe('pinned classic coordinate features', () => {
         expect(open).toMatchObject({wholeFretGroups:1,largestBarreContacts:2,legacyTechnique:'Open',openCount:4});
         const dim = createClassicProjector(compileRequest({...intent,chordId:'diminished-7',rootPitchClass:2}))([1,0,1,0,-1,-1]);
         expect(dim).toMatchObject({legacyTechnique:'Shell',optionalCoveredCount:0,openCount:2});
-    });
-    it('preserves exact old metrics and technique over every quality on a small domain', () => {
-        for (const entry of CHORD_REGISTRY_LIST) {
-            const request = compileRequest({...intent,chordId:entry.id,instrument:{kind:'six-single-strings-12edo',tuningMidi:[64,59,55,50,45,40],maxModeledFret:3}});
-            const projector = createClassicProjector(request);
-            const baseline = searchDeductiveVoicings(entry,0,{position:'close'},{maxFret:3});
-            for (const voicing of baseline) {
-                const states = Array<number>(6).fill(-1);
-                for (const note of voicing.notes) if (!note.isMuted) states[note.string] = note.fret;
-                const actual = projector(states as unknown as Six<number>);
-                const old = getVoicingShapeMetrics(voicing);
-                expect(actual).toMatchObject({wholeFretGroups:old.fingerGroupCount,largestBarreContacts:old.barreNoteCount,
-                    diagonalPattern:old.isDiagonalRollShape,adjacentInternalGaps:old.internalMutedCount-old.isolatedInternalMuteCount,
-                    isolatedInternalGaps:old.isolatedInternalMuteCount,openFlankedIsolatedGaps:old.openFlankedIsolatedMuteCount,
-                    maxStoppedFret:old.maxFret,openCount:old.openStringCount,soundingCount:old.playedCount,
-                    optionalCoveredCount:voicing.descriptor.optionalCoverageDegrees.length});
-                expect(actual.legacyTechnique.toLowerCase()).toBe(getVoicingTechniqueTag(voicing));
-                expect(Math.abs(actual.spanUm-old.spanMm*1000)).toBeLessThanOrEqual(0.501);
-            }
-        }
     });
     it('resolves tied bass by physical index and keeps hints independent of root order', () => {
         const request = compileRequest({...intent,instrument:{kind:'six-single-strings-12edo',tuningMidi:[60,64,67,60,64,60],maxModeledFret:0}});

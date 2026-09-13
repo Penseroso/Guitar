@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { allocationId, parseAllocationId, migrateAllocationId } from './identity';
+import { allocationId, parseAllocationId } from './identity';
 import { canonical, record } from './validation';
 import { ENGINE_VERSIONS } from './versions';
 
@@ -13,7 +13,6 @@ describe('engine identity and boundary contracts', () => {
             expect(parseAllocationId(allocationId(tuning, states))).toEqual({ tuning, states });
         }
         expect(allocationId(tuning, [0,-1,-1,-1,-1,-1])).not.toBe(allocationId(tuning, [-1,5,-1,-1,-1,-1]));
-        expect(migrateAllocationId('shape:64,59,55,50,45,40:0,x,3,2,1,x')).toBe('shape-v1:64,59,55,50,45,40:0,-1,3,2,1,-1');
     });
     it('rejects malformed and noncanonical state rather than repairing it', () => {
         for (const id of ['shape-v1:064,59,55,50,45,40:0,0,0,0,0,0', 'shape-v1:64,59:0,1', 'shape-v1:64,59,55,50,45,40:37,0,0,0,0,0']) expect(() => parseAllocationId(id)).toThrow();
