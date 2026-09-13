@@ -31,5 +31,7 @@ it('guards structural and ranking boundaries and offline runtime exclusion', () 
         expect(imports.join('\n')).not.toMatch(/\.research|scripts\/preference|DadaGP|empirical-ranking/);
         if (name === 'structuralGenerator.ts') expect(imports.join('\n')).not.toMatch(/physical|Ranking|classicFeatures|components|fretGeometry/);
         if (name === 'deterministicRanking.ts') expect(code).not.toMatch(/\.status|reasonCodes|playable|localeCompare/);
+        if (name === 'classicFeatures.ts') expect(imports.join('\n')).not.toMatch(/physical|deductiveRanking|descriptor|exploration/);
+        if (name === 'physical.ts') expect(imports.join('\n')).not.toMatch(/classicFeatures|Ranking|descriptor|voicingSearch|registry|catalog/);
     }
 });
