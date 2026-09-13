@@ -45,6 +45,7 @@ export function VoicingFactsView({ candidate, request = null }: { candidate: Pre
         <p>Partial-cover groups: {physical.metrics.partialCoverGroups} (partial-cover-v1 heuristic).</p>
         {physical.metrics.thumbFallback?.reliedOn && <p>Thumb fallback considered: non-thumb groups {physical.metrics.thumbFallback.nonThumbGroups}, non-thumb span {(physical.metrics.thumbFallback.nonThumbSpanUm / 1000).toFixed(1)} mm. Full-target warnings remain applicable.</p>}
         <Assessment candidate={candidate} />
+        <p>{candidate.recommendation.eligible ? 'Selected by the recommendation policy.' : 'Outside the recommendation policy; available in All voicings.'} Recommended is product policy membership. PASS / UNCERTAIN is separate Physical evidence; neither overrides the other.</p>
         <p>Human validation: absent. These group estimates and heuristic results do not establish a playable fingering.</p>
         {profile && <><p>Profile: {profile.scope}. Scale length {(profile.scaleLengthUm / 1000).toFixed(1)} mm ({profile.scaleSource}).</p>
             <p>Warning span {(profile.warningSpanUm / 1000).toFixed(1)} mm; severe span {(profile.severeSpanUm / 1000).toFixed(1)} mm. Thumb {profile.allowedThumb ? 'allowed' : 'not included'}; omitted strings {profile.omittedStrings === 'unplayed' ? 'unplayed' : 'require left-hand damping'}.</p></>}
@@ -74,7 +75,7 @@ export function ChordExplorationPanel({ engine, context, onContextChange, onSele
     const { selected, view, summary } = engine, page = engine.phase === 'ready' ? engine.page : null;
     const busy = ['idle', 'loading', 'running'].includes(engine.phase);
     const degreeOptions = [{ value: '', label: 'Any' }, ...toneChoices];
-    const outsideView = !!selected && !engine.selectionStale && !!engine.request && !createViewMatcher(engine.request, view).matches(selected.candidate.states, selected.physical.status);
+    const outsideView = !!selected && !engine.selectionStale && !!engine.request && (!createViewMatcher(engine.request, view).matches(selected.candidate.states, selected.physical.status)||engine.surface==='recommended'&&!selected.recommendation.eligible);
     const chips: { label: string; value: string; clear: Partial<ViewRequest> }[] = [];
     if (view.position) chips.push({ label: 'Fret range', value: `${view.position.low}–${view.position.high}`, clear: { position: null } });
     for (const key of ['bass', 'top'] as const) if (view[key]) chips.push({ label: key === 'bass' ? 'Bass' : 'Top', value: toneChoices.find(choice => choice.value === toneValue(view[key]))?.label ?? JSON.stringify(view[key]), clear: { [key]: null } });
@@ -92,13 +93,14 @@ export function ChordExplorationPanel({ engine, context, onContextChange, onSele
     };
     const selectedEnds = selected ? ends(selected, engine.request) : null;
     return <section aria-label="Chord voicings" className={styles.layout}>
+        <div style={{gridColumn:'1 / -1'}}><ChoiceGroup label="Voicing surface" value={engine.surface} options={[{value:'recommended',label:'Recommended'},{value:'all',label:'All voicings'}]} onChange={value=>engine.setSurface(value as 'recommended'|'all')} /></div>
         {engine.error && <div role="alert" className={styles.warning} style={{ gridColumn: '1 / -1' }}><p>{engine.error.message}</p><button className={styles.action} onClick={engine.retry}>Retry search</button></div>}
         {selected ? <aside className={styles.selected} aria-label="Selected voicing" data-selected-id={selected.candidate.allocationId} data-selection-stale={engine.selectionStale}>
             <div className={styles.hero}><CompactVoicingDiagram voicing={diagramVoicing(selected)} labelMode={showIntervals ? 'degree' : 'note'} /><div className={styles.heroInfo}>
                 <h2 className="text-2xl font-semibold">{title}</h2><p className={styles.small}>{positionLabel(selected)}</p><div className={styles.endNotes}><p>Bass {selectedEnds!.bass}</p><p>Top {selectedEnds!.top}</p></div>{playButton(selected, true)}</div></div>
             <Assessment candidate={selected} /><p className={styles.small}>Human validation: absent.</p>
             {engine.selectionStale && <p role="status" className={styles.warning}>Previous selection awaits validation for this request. Playback is unavailable.</p>}
-            {outsideView && <p role="status" className={styles.warning}>Selected voicing is outside these filters. Choose another to change it.</p>}
+            {outsideView && <p role="status" className={styles.warning}>Selected voicing is outside this surface or these filters. Choose another to change it.</p>}
             {engine.selectionNotice && <p role="status" className={styles.warning}>{engine.selectionNotice}</p>}
             <div className={styles.selectedTools}><button className={styles.action} aria-expanded={detailsOpen} aria-controls={id + '-details'} onClick={() => setDetailsOpen(open => !open)}>Details</button>
                 <button ref={neckTrigger} className={styles.action} aria-haspopup="dialog" onClick={() => setNeckOpen(true)}>Full fretboard</button>
@@ -128,7 +130,8 @@ export function ChordExplorationPanel({ engine, context, onContextChange, onSele
             {engine.phase === 'paused' && <div role="status"><p>Search paused at its time budget. Counts are incomplete.</p><button className={styles.action} onClick={() => engine.continueSearch()}>Continue search</button><button className={styles.action} onClick={cancelSearch}>Cancel search</button></div>}
             {engine.phase === 'cancelled' && <div role="status"><p>Search cancelled. No exact result has been committed.</p><button className={styles.action} onClick={engine.retry}>Retry search</button></div>}
             {page && <><h3 ref={resultHeading} tabIndex={-1} className={styles.small} aria-live="polite" data-results-count={page.summary.matching}>{page.summary.matching} matching voicings · {page.rows.length} on this page</h3>
-                <p className={styles.small}>{page.summary.structural} structural allocations · {page.summary.pass} PASS · {page.summary.uncertain} UNCERTAIN · {page.summary.reject} REJECT. Matching: {page.summary.matchingPass} PASS · {page.summary.matchingUncertain} UNCERTAIN.</p>
+                <p className={styles.small}>{page.summary.structural} structural allocations · {page.summary.pass} PASS · {page.summary.uncertain} UNCERTAIN · {page.summary.reject} REJECT. Explicit filters: {page.summary.explicitMatching}. Matching: {page.summary.matchingPass} PASS · {page.summary.matchingUncertain} UNCERTAIN.</p>
+                {page.outcome==='no-matches'&&engine.surface==='recommended'&&<p>No voicings meet this recommendation policy for these filters. <button className={styles.action} onClick={()=>engine.setSurface('all')}>All voicings</button></p>}
                 {page.outcome === 'no-matches' && <div className={styles.empty} role="status"><p>No voicings match these conditions.</p>{context === 'standalone' && (view.root === 'omit' || view.soundingCount === 2) && <><p>Accompaniment permits an optional root and a two-tone floor; required identity tones still apply.</p><button className={styles.action} onClick={() => onContextChange('accompaniment')}>Enable accompaniment</button></>}<button className={styles.action} onClick={reset}>Reset conditions</button></div>}
                 <div className={styles.cards}>{page.rows.map(candidate => { const labels = ends(candidate, engine.request), candidateId = candidate.candidate.allocationId, isSelected = candidateId === selected?.candidate.allocationId;
                     return <article key={candidateId} className={styles.card + (isSelected ? ' ' + styles.cardSelected : '')}><button className={styles.cardSelect} data-voicing-id={candidateId} aria-pressed={isSelected} aria-label={'Select voicing: ' + describeVoicingShape(diagramVoicing(candidate))} onClick={() => select(candidate)}>

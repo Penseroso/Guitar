@@ -6,6 +6,9 @@ import { EngineError } from './errors';
 import { createFactsProjector } from './facts';
 import { allocationId, migrateAllocationId, parseAllocationId, sixIntegers } from './identity';
 import { createPhysicalScreen } from './physical';
+import { createDemandProjector } from './physicalDemand';
+import { createVocabularyMatcher } from './practicalVocabulary';
+import { surfacePartition } from './recommendedSurface';
 import { compileRequest } from './requestPolicy';
 import { compileStructuralMatcher, materializeStructural, StructuralIterator } from './structuralGenerator';
 import { canonical, choice, freeze, integer, record } from './validation';
@@ -135,12 +138,15 @@ function collectResolved(request: ResolvedRequest, options: { maxBytes: number }
     try {
         const iterator = new StructuralIterator(request.structural), screen = createPhysicalScreen(request.physicalProfile);
         const projector = createClassicProjector(request, screen.geometry), facts = createFactsProjector(request, screen.geometry);
+        const projectDemand=createDemandProjector(request.physicalProfile),matchVocabulary=createVocabularyMatcher(request);
         const rows: PresentationCandidate[] = [], encoder = new TextEncoder(); let bytes = 0;
         for (;;) {
             const batch = iterator.nextBatch(256);
             for (const states of batch.candidates) {
                 const candidate = materializeStructural(states, request.structural, request.requestKey);
-                const row: PresentationCandidate = { candidate, physical: screen.assess(candidate), facts: facts(states), rank: rankCandidate(candidate, projector(states)), displayRank: null, labels: [] };
+                const physical=screen.assess(candidate),demand=projectDemand(states,physical),vocabulary=matchVocabulary(states);
+                const row: PresentationCandidate = { candidate, physical, facts: facts(states), rank: rankCandidate(candidate, projector(states)), displayRank: null, labels: [],demand,vocabulary,
+                    recommendation:{version:'recommended-surface-v2',eligible:surfacePartition(true,physical.status,demand,vocabulary)<2} };
                 bytes += encoder.encode(JSON.stringify(row)).byteLength * 4 + 512;
                 if (bytes > options.maxBytes) throw new EngineError('resource-exhausted', 'Complete collection exceeds its explicit output resource budget. No partial result was returned.', 'maxBytes');
                 rows.push(row);

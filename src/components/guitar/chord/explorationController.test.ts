@@ -3,6 +3,7 @@ import { createExplorationController,DEFAULT_ENGINE_VIEW } from './explorationCo
 import type { EngineWorkerPort } from './engineClient';
 import { EngineSession,type ExactPage } from '@/domain/chord/engine/session';
 import { createViewMatcher } from '@/domain/chord/engine/view';
+import { createSurfaceRequest } from '@/domain/chord/engine/surfaceRequest';
 import { ENGINE_VERSIONS } from '@/domain/chord/engine/versions';
 import type { InputMessage } from '@/domain/chord/engine/workerProtocol';
 
@@ -12,7 +13,13 @@ function fixture() {
     const controller=createExplorationController(()=>{
         const port:EngineWorkerPort={postMessage:vi.fn(value=>sent.push(value as InputMessage)),terminate:vi.fn(),onmessage:null,onerror:null,onmessageerror:null};ports.push(port);return port;
     });
-    const send=(kind:string,payload:unknown,meta:InputMessage=sent.at(-1)!,port=ports.at(-1)!)=>port.onmessage?.({data:{...meta,kind,payload}} as MessageEvent);
+    const send=(kind:string,payload:unknown,meta:InputMessage=sent.at(-1)!,port=ports.at(-1)!)=>{
+        if(kind==='ACCEPTED'){
+            const p=payload as {request:EngineSession['request'];view:unknown};
+            payload={...p,versions:ENGINE_VERSIONS,surface:createSurfaceRequest(p.request,{schema:'surface-request-v2',surface:'recommended',view:p.view}).wrapper};
+        }
+        port.onmessage?.({data:{...meta,kind,payload}} as MessageEvent);
+    };
     const start=()=>sent.filter(message=>message.kind==='START').at(-1)!;
     const accepted=(session:EngineSession,meta:InputMessage=start())=>send('ACCEPTED',{request:session.request,view:createViewMatcher(session.request).view,versions:ENGINE_VERSIONS},meta);
     const complete=(page:ExactPage,meta:InputMessage=start())=>send('EXACT_PAGE',{page,chunkIndex:0,chunkCount:1},meta);

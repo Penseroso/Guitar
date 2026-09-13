@@ -1,13 +1,14 @@
 import { describe,expect,it } from 'vitest';
 import { EngineSession } from './session';
 import { createViewMatcher } from './view';
+import { createSurfaceRequest } from './surfaceRequest';
 import { ENGINE_VERSIONS } from './versions';
 import { MAX_MESSAGE_BYTES,messageBytes,parseInput,parseOutput,RevisionGate,PageChunkAssembler,type OutputMessage } from './workerProtocol';
 
 const intent={schema:'intent-v1',chordId:'major',rootPitchClass:0,context:'accompaniment',
     instrument:{kind:'six-single-strings-12edo',tuningMidi:[60,64,67,60,64,67],maxModeledFret:0}};
 const session=new EngineSession(intent),scan=session.begin();scan.step(1);const partial=scan.summary();while(!scan.step()){}const page=scan.finish();
-const message=<K extends string,P>(kind:K,payload:P,operationId=1)=>({protocol:'engine-worker-v1' as const,sessionId:'session-a',requestRevision:1,viewRevision:1,operationId,kind,payload});
+const message=<K extends string,P>(kind:K,payload:P,operationId=1)=>({protocol:'engine-worker-v2' as const,sessionId:'session-a',requestRevision:1,viewRevision:1,operationId,kind,payload});
 const exact=()=>message('EXACT_PAGE',{page,chunkIndex:0,chunkCount:1});
 type Mutable<T>={-readonly [K in keyof T]:T[K] extends object?Mutable<T[K]>:T[K]};
 const clone=<T>(value:T):Mutable<T>=>JSON.parse(JSON.stringify(value));
@@ -31,7 +32,7 @@ describe('closed bounded worker transport',()=>{
         }
     });
     it('accepts all output states and exact immutable content without enumeration',()=>{
-        const accepted=message('ACCEPTED',{request:session.request,view:createViewMatcher(session.request).view,versions:ENGINE_VERSIONS});
+        const accepted=message('ACCEPTED',{request:session.request,view:createViewMatcher(session.request).view,surface:createSurfaceRequest(session.request).wrapper,versions:ENGINE_VERSIONS});
         const row={...page.rows[0],displayRank:null};
         for(const output of [accepted,exact(),message('PROGRESS',{summary:partial,elapsedMs:1.5}),
             message('LOOKUP_RESULT',{candidate:row}),message('DETAILS_RESULT',{candidate:row}),

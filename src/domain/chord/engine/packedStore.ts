@@ -2,6 +2,7 @@ import type { ScreenResult } from './physical';
 import type { PhysicalReason, Six } from './types';
 import { EngineError } from './errors';
 import { integer } from './validation';
+import type { SurfacePartition } from './recommendedSurface';
 
 export const PACKED_ROW_BYTES=32;
 export const ROW_BUDGET_BYTES=32*1024*1024;
@@ -43,7 +44,14 @@ export class PackedStore {
         const thumb=screen.metrics.thumbFallback;
         chunk.setUint8(offset+10,thumb?(thumb.reliedOn?3:1):0);chunk.setUint8(offset+11,thumb?.nonThumbGroups??0);
         chunk.setInt32(offset+12,screen.metrics.stoppedWireSpanUm,true);chunk.setInt32(offset+16,thumb?.nonThumbSpanUm??0,true);
-        chunk.setInt32(offset+20,scoreNumerator,true);this.count++;return true;
+        chunk.setInt32(offset+20,scoreNumerator,true);chunk.setUint8(offset+24,255);this.count++;return true;
+    }
+    partition(index:number):number {
+        integer(index,0,this.count-1,'row index');return this.chunks[Math.floor(index/4096)].getUint8((index%4096)*PACKED_ROW_BYTES+24);
+    }
+    setPartition(index:number,value:SurfacePartition) {
+        integer(index,0,this.count-1,'row index');integer(value,0,2,'partition');
+        this.chunks[Math.floor(index/4096)].setUint8((index%4096)*PACKED_ROW_BYTES+24,value);
     }
     read(index:number):StoredRow {
         integer(index,0,this.count-1,'row index');

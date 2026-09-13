@@ -52,7 +52,7 @@ export function createEngineClient(options:ClientOptions) {
     function post(kind:InputMessage['kind'],payload:unknown,lane:'scan'|'lookup'|'details'|'control') {
         if(!worker||disposed||cancelled)throw new EngineError('worker-unavailable','Start or retry the engine session first.');
         const next=++operationId;
-        const message={protocol:'engine-worker-v1',sessionId,requestRevision,viewRevision,operationId:next,kind,payload} as InputMessage;
+        const message={protocol:'engine-worker-v2',sessionId,requestRevision,viewRevision,operationId:next,kind,payload} as InputMessage;
         if(messageBytes(message)>MAX_MESSAGE_BYTES)throw new EngineError('transport-error','Engine request exceeds the message budget.');
         gate.expect(lane,next);if(lane==='scan')assembly.reset();
         worker.postMessage(message);return next;

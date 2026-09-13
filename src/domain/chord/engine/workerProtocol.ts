@@ -2,6 +2,10 @@ import { EngineError,type EngineDiagnostic } from './errors';
 import { parseAllocationId } from './identity';
 import { compileRequest } from './requestPolicy';
 import { createViewMatcher } from './view';
+import { createSurfaceRequest,type SurfaceRequest } from './surfaceRequest';
+import { createDemandProjector } from './physicalDemand';
+import { createVocabularyMatcher } from './practicalVocabulary';
+import { surfacePartition } from './recommendedSurface';
 import { canonical,record,integer,choice } from './validation';
 import { compileStructuralMatcher } from './structuralGenerator';
 import { ENGINE_VERSIONS } from './versions';
@@ -11,7 +15,7 @@ import type { PresentationCandidate,ResolvedRequest,ViewRequest } from './types'
 
 export const MAX_MESSAGE_BYTES=1048576;
 export interface Envelope<T,K extends string=string> {
-    protocol:'engine-worker-v1';sessionId:string;requestRevision:number;viewRevision:number;operationId:number;kind:K;payload:T;
+    protocol:'engine-worker-v2';sessionId:string;requestRevision:number;viewRevision:number;operationId:number;kind:K;payload:T;
 }
 interface Inputs {
     START:{intent:unknown;view?:unknown;pageSize?:number;uninterrupted?:boolean};
@@ -20,7 +24,7 @@ interface Inputs {
     CONTINUE:{uninterrupted?:boolean};DISPOSE:Record<string,never>;
 }
 interface Outputs {
-    ACCEPTED:{request:ResolvedRequest;view:ViewRequest;versions:typeof ENGINE_VERSIONS};
+    ACCEPTED:{request:ResolvedRequest;view:ViewRequest;surface:SurfaceRequest;versions:typeof ENGINE_VERSIONS};
     PROGRESS:{summary:PageSummary;elapsedMs:number};
     EXACT_PAGE:{page:ExactPage;chunkIndex:number;chunkCount:number};
     LOOKUP_RESULT:{candidate:PresentationCandidate};DETAILS_RESULT:{candidate:PresentationCandidate};
@@ -50,7 +54,7 @@ export function messageBytes(value:unknown):number {
 function envelope(value:unknown,kinds:readonly string[]) {
     if(messageBytes(value)>MAX_MESSAGE_BYTES)fail('Worker message exceeds one MiB.');
     const e=obj(value,['protocol','sessionId','requestRevision','viewRevision','operationId','kind','payload'],'envelope');
-    oneOf(e.protocol,['engine-worker-v1']);string(e.sessionId);
+    oneOf(e.protocol,['engine-worker-v2']);string(e.sessionId);
     int(e.requestRevision,1);int(e.viewRevision,1);int(e.operationId,1);oneOf(e.kind,kinds);
     if(!('payload' in e))fail('Missing payload.');return e;
 }
@@ -85,7 +89,7 @@ function resolved(value:unknown):ResolvedRequest {
     for(const raw of array(r.origins,128)) {const o=obj(raw,['field','origin','rule'],'origin');string(o.field);string(o.rule);oneOf(o.origin,['user','default','preset']);}
     return value as ResolvedRequest;
 }
-const countKeys=['structural','pass','uncertain','reject','survivors','matching','matchingPass','matchingUncertain','assessed'] as const;
+const countKeys=['structural','pass','uncertain','reject','survivors','matching','matchingPass','matchingUncertain','assessed','explicitMatching'] as const;
 function summary(value:unknown):PageSummary {
     const s=obj(value,[...countKeys,'completeness','hasMore','mode','requestKey','profileKey','viewKey','versions','rankMode','rawBound','visitedNodes','retainedBufferBytes','accountedBufferBytes'],'summary');
     for(const key of countKeys)int(s[key]);
@@ -96,7 +100,7 @@ function summary(value:unknown):PageSummary {
     int(s.visitedNodes);int(s.retainedBufferBytes,0,33554432);int(s.accountedBufferBytes,0,33554432);
     const c=s as unknown as PageSummary;
     if(c.structural>Number(bound)||c.structural!==c.pass+c.uncertain+c.reject||c.survivors!==c.pass+c.uncertain||c.assessed!==c.structural
-        ||c.matching!==c.matchingPass+c.matchingUncertain||c.matching>c.survivors||c.matchingPass>c.pass||c.matchingUncertain>c.uncertain
+        ||c.matching!==c.matchingPass+c.matchingUncertain||c.matching>c.explicitMatching||c.explicitMatching>c.survivors||c.matchingPass>c.pass||c.matchingUncertain>c.uncertain
         ||c.retainedBufferBytes>c.accountedBufferBytes)fail('Invalid count or buffer partitions.');
     return c;
 }
@@ -105,7 +109,7 @@ const ledgerFields=[['spanUm','flatUntilUm','zeroAtUm'],['wholeFretGroups'],['wh
     ['isolatedInternalGaps','openFlankedIsolatedGaps','weightedUnits'],['maxStoppedFret'],['openCount','maxStoppedFret'],['rootPresent'],['rootHint'],
     ['hasExplicitSlash','rootBass','rootPresent','representativeBassString'],['optionalCoveredCount','rolePolicy'],['soundingCount','legacyTechnique'],['unplayedCoreStringCount','legacyTechnique']];
 function presentation(value:unknown,contexts:Map<string,ResolvedRequest>):PresentationCandidate {
-    const p=obj(value,['candidate','physical','facts','rank','displayRank','labels'],'presentation');
+    const p=obj(value,['candidate','physical','facts','rank','displayRank','labels','demand','vocabulary','recommendation'],'presentation');
     const c=obj(p.candidate,['allocationId','requestKey','states','sounding','covered','omittedFormula'],'candidate');
     const id=string(c.allocationId),parsed=parseAllocationId(id),requestKey=string(c.requestKey);same(c.states,parsed.states);
     let context=contexts.get(requestKey);
@@ -160,13 +164,18 @@ function presentation(value:unknown,contexts:Map<string,ResolvedRequest>):Presen
         for(const input of Object.values(inputs))if(typeof input!=='string'&&typeof input!=='boolean'&&(typeof input!=='number'||!Number.isFinite(input)))fail('Invalid ledger input.');
     });
     same(sum,r.scoreNumerator);if(p.displayRank!==null)int(p.displayRank,1);strings(p.labels,32);
+    const assessment=physical as unknown as PresentationCandidate['physical'];
+    const demand=createDemandProjector(context.physicalProfile)(parsed.states,assessment),vocabulary=createVocabularyMatcher(context)(parsed.states);
+    same(p.demand,demand);same(p.vocabulary,vocabulary);
+    same(p.recommendation,{version:'recommended-surface-v2',eligible:surfacePartition(true,assessment.status,demand,vocabulary)<2});
     return value as PresentationCandidate;
 }
 function cursor(value:unknown,s:PageSummary) {
     if(value===null)return;
-    const c=obj(value,['schema','requestKey','profileKey','viewKey','versions','last'],'cursor');oneOf(c.schema,['cursor-v1']);
+    const c=obj(value,['schema','requestKey','profileKey','viewKey','versions','last'],'cursor');oneOf(c.schema,['surface-cursor-v2']);
     same(c.requestKey,s.requestKey);same(c.profileKey,s.profileKey);same(c.viewKey,s.viewKey);same(c.versions,ENGINE_VERSIONS);
-    const last=obj(c.last,['allocationId','scoreNumerator','tie','distance'],'cursor key');const parsed=parseAllocationId(string(last.allocationId));
+    const last=obj(c.last,['allocationId','scoreNumerator','tie','distance','partition'],'cursor key');const parsed=parseAllocationId(string(last.allocationId));
+    int(last.partition,0,1);
     same(last.tie,parsed.states);int(last.scoreNumerator,-2147483648,2147483647);int(last.distance,0,2147483647);
 }
 export function parseOutput(value:unknown):OutputMessage {
@@ -174,10 +183,11 @@ export function parseOutput(value:unknown):OutputMessage {
         // Scoped to one bounded message: no history-proportional request cache.
         const contexts=new Map<string,ResolvedRequest>();
         const e=envelope(value,['ACCEPTED','PROGRESS','EXACT_PAGE','LOOKUP_RESULT','DETAILS_RESULT','PAUSED','CANCELLED','ERROR','PROVISIONAL_PAGE']);
-        const fields:Record<string,string[]>={ACCEPTED:['request','view','versions'],PROGRESS:['summary','elapsedMs'],EXACT_PAGE:['page','chunkIndex','chunkCount'],
+        const fields:Record<string,string[]>={ACCEPTED:['request','view','surface','versions'],PROGRESS:['summary','elapsedMs'],EXACT_PAGE:['page','chunkIndex','chunkCount'],
             LOOKUP_RESULT:['candidate'],DETAILS_RESULT:['candidate'],PAUSED:['summary','reason','resume','elapsedMs'],CANCELLED:['summary','resume'],ERROR:['diagnostic','resume'],PROVISIONAL_PAGE:['rows','summary']};
         const p=obj(e.payload,fields[e.kind as string],'payload');
-        if(e.kind==='ACCEPTED'){const request=resolved(p.request);same(createViewMatcher(request,p.view).view,p.view);same(p.versions,ENGINE_VERSIONS);}
+        if(e.kind==='ACCEPTED'){const request=resolved(p.request);same(createViewMatcher(request,p.view).view,p.view);
+            const surface=createSurfaceRequest(request,p.surface);same(surface.wrapper,p.surface);same(surface.view,p.view);same(p.versions,ENGINE_VERSIONS);}
         if(e.kind==='LOOKUP_RESULT'||e.kind==='DETAILS_RESULT')presentation(p.candidate,contexts);
         if(e.kind==='PROGRESS'||e.kind==='PAUSED'||e.kind==='PROVISIONAL_PAGE'){const s=summary(p.summary);if(s.completeness!=='partial')fail('Progress or pause cannot claim exact completion.');}
         if(e.kind==='PROGRESS'||e.kind==='PAUSED')finite(p.elapsedMs);

@@ -19,6 +19,6 @@ it('decodes independent signed six-string snapshots across every chunk boundary'
     const retained = store.read(4095);
     store.read(4096);
     expect(retained).toEqual(expected[4095]);
-    (retained.states as number[])[0] = 36;
+    (retained.states as unknown as number[])[0] = 36;
     expect(store.read(4095)).toEqual(expected[4095]);
 });

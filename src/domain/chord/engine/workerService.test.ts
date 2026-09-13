@@ -11,7 +11,7 @@ function harness(timeBudgetMs=10000) {
     const messages:OutputMessage[]=[],tasks:(()=>void)[]=[];
     const service=createWorkerService({send:message=>{expect(messageBytes(message)).toBeLessThanOrEqual(MAX_MESSAGE_BYTES);messages.push(parseOutput(message));},
         now:()=>++clock,yieldTask:()=>new Promise<void>(resolve=>tasks.push(resolve)),timeBudgetMs});
-    const send=(kind:string,payload:unknown={},operationId=1,viewRevision=1,requestRevision=1,sessionId='test')=>service.receive({protocol:'engine-worker-v1',sessionId,requestRevision,viewRevision,operationId,kind,payload});
+    const send=(kind:string,payload:unknown={},operationId=1,viewRevision=1,requestRevision=1,sessionId='test')=>service.receive({protocol:'engine-worker-v2',sessionId,requestRevision,viewRevision,operationId,kind,payload});
     async function pump(until:()=>boolean) {
         for(let i=0;i<20000&&!until();i++){tasks.shift()?.();await Promise.resolve();await Promise.resolve();}
         expect(until()).toBe(true);

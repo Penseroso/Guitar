@@ -17,7 +17,7 @@ const page = scan.finish();
 const noop = () => {};
 function state(patch: Partial<EngineExploration> = {}): EngineExploration {
     return { ...INITIAL_ENGINE_STATE, phase: 'ready', request: session.request, page, summary: page.summary,
-        selected: page.rows[0], setView: noop, select: noop, nextPage: noop, previousPage: noop, firstPage: noop, retry: noop,
+        selected: page.rows[0], setView: noop, setSurface:noop, select: noop, nextPage: noop, previousPage: noop, firstPage: noop, retry: noop,
         continueSearch: noop, cancel: noop, ...patch };
 }
 function render(engine: EngineExploration) {
@@ -26,6 +26,16 @@ function render(engine: EngineExploration) {
 }
 
 describe('integrated engine presentation', () => {
+    it('keeps Recommended plus UNCERTAIN warnings visible and policy copy separate from Physical status',()=>{
+        const uncertain=new EngineSession({...intent,physical:{warningSpanUm:0,severeSpanUm:180000}});
+        const selected=uncertain.lookup('shape-v1:64,59,55,50,45,40:0,1,0,2,3,-1');
+        expect(selected.recommendation.eligible).toBe(true);expect(selected.physical.status).toBe('UNCERTAIN');
+        const markup=render(state({request:uncertain.request,selected,surface:'recommended'}));
+        for(const reason of selected.physical.reasonCodes)expect(markup).toContain(physicalReasonText(reason));
+        const detail=renderToStaticMarkup(<VoicingFactsView candidate={selected} request={uncertain.request}/>);
+        expect(detail).toContain('Selected by the recommendation policy.');expect(detail).toContain('separate Physical evidence');
+        expect(markup).not.toMatch(/Documented reference shape|wide-or-complex|product-extrapolated|CAGED|Demand tier/);
+    });
     it('shows six exact rows, independent status totals and accessible cursor navigation', () => {
         const markup = render(state());
         expect(markup).toContain(`data-results-count="${page.summary.matching}"`);
@@ -42,7 +52,7 @@ describe('integrated engine presentation', () => {
         const view = createViewMatcher(session.request, { root: 'omit' }).view;
         const markup = render(state({ selected, view }));
         expect(markup).toContain(`data-selected-id="${selected.candidate.allocationId}"`);
-        expect(markup).toContain('Selected voicing is outside these filters.');
+        expect(markup).toContain('Selected voicing is outside this surface or these filters.');
         expect(markup.match(/data-voicing-id=/g)).toHaveLength(6);
         expect(markup).toContain('Play voicing');
     });
@@ -82,7 +92,7 @@ describe('integrated engine presentation', () => {
         const openScan = open.begin(); while (!openScan.step()) { /* tiny all-open fixture */ }
         const openPage = openScan.finish();
         const markup = render(state({ request: open.request, page: openPage, selected: openPage.rows[0], summary: openPage.summary }));
-        expect(markup).toContain('All open'); expect(markup).not.toContain('outside these filters');
+        expect(markup).toContain('All open'); expect(markup).not.toContain('outside this surface or these filters');
         expect(markup).not.toContain('Fret 0</p>');
     });
     it('disables Next at an exact final page even when its boundary cursor is retained', () => {

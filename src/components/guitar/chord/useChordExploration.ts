@@ -6,6 +6,7 @@ import type { PresentationCandidate,ViewRequest } from '@/domain/chord/engine/ty
 
 export { LIVE_ENGINE_VERSION };
 export interface EngineExploration extends EngineExplorationState {
+    setSurface:(surface:'recommended'|'all')=>void;
     setView:(input:Partial<ViewRequest>|ViewRequest)=>void;
     select:(candidate:PresentationCandidate|string)=>void;
     nextPage:()=>void;previousPage:()=>void;firstPage:()=>void;retry:()=>void;continueSearch:()=>void;cancel:()=>void;
@@ -27,7 +28,7 @@ export function useChordExploration(enabled:boolean,chordId:string,rootPitchClas
     const sameHarmony=state.request?.interpretation.chordId===chordId&&state.request?.interpretation.rootPitchClass===rootPitchClass;
     const visible=changed?{...state,phase:enabled?'loading' as const:'idle' as const,request:null,page:null,summary:null,
         selected:sameHarmony?state.selected:null,selectionStale:sameHarmony&&state.selected!==null,
-        view:sameHarmony?state.view:DEFAULT_ENGINE_VIEW,canPrevious:false,error:null}:state;
-    return {...visible,requestEpoch,setView:controller.setView,select:controller.select,nextPage:controller.nextPage,
+        view:sameHarmony?state.view:DEFAULT_ENGINE_VIEW,surface:sameHarmony?state.surface:'recommended' as const,canPrevious:false,error:null}:state;
+    return {...visible,requestEpoch,setView:controller.setView,setSurface:controller.setSurface,select:controller.select,nextPage:controller.nextPage,
         previousPage:controller.previousPage,firstPage:controller.firstPage,retry,continueSearch:controller.continueSearch,cancel:controller.cancel};
 }

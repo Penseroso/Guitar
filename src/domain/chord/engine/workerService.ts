@@ -1,6 +1,6 @@
 import { EngineSession, type ExactPage, type PageScan } from './session';
 import { EngineError, diagnostic } from './errors';
-import { createViewMatcher } from './view';
+import { createSurfaceRequest } from './surfaceRequest';
 import { ENGINE_VERSIONS } from './versions';
 import { MAX_MESSAGE_BYTES, messageBytes, parseInput, type InputMessage, type OutputMessage } from './workerProtocol';
 
@@ -102,7 +102,7 @@ export function createWorkerService(options:WorkerServiceOptions) {
         let message:InputMessage;
         try{message=parseInput(input);}catch(value){
             const raw=input as Partial<Meta>|null;
-            const fallback:Meta={protocol:'engine-worker-v1',sessionId:typeof raw?.sessionId==='string'&&raw.sessionId?raw.sessionId:'invalid',
+            const fallback:Meta={protocol:'engine-worker-v2',sessionId:typeof raw?.sessionId==='string'&&raw.sessionId?raw.sessionId:'invalid',
                 requestRevision:Number.isSafeInteger(raw?.requestRevision)&&raw!.requestRevision!>0?raw!.requestRevision!:1,
                 viewRevision:Number.isSafeInteger(raw?.viewRevision)&&raw!.viewRevision!>0?raw!.viewRevision!:1,
                 operationId:Number.isSafeInteger(raw?.operationId)&&raw!.operationId!>0?raw!.operationId!:1};
@@ -117,15 +117,15 @@ export function createWorkerService(options:WorkerServiceOptions) {
                 latest.scan=meta.operationId;
                 session=new EngineSession(message.payload.intent,{cacheBudgetBytes:options.cacheBudgetBytes});
                 viewInput=message.payload.view??{};
-                const view=createViewMatcher(session.request,viewInput).view;
-                send(meta,'ACCEPTED',{request:session.request,view,versions:ENGINE_VERSIONS});
+                const resolved=createSurfaceRequest(session.request,viewInput);
+                send(meta,'ACCEPTED',{request:session.request,view:resolved.view,surface:resolved.wrapper,versions:ENGINE_VERSIONS});
                 begin(meta,message.payload.pageSize??6,null,message.payload.uninterrupted??false);return;
             }
             if(!scope||!session||meta.sessionId!==scope.sessionId||meta.requestRevision!==scope.requestRevision)return;
             if(message.kind==='SET_VIEW') {
                 if(meta.viewRevision<=scope.viewRevision||meta.operationId<=latest.scan)return;
-                const validated=createViewMatcher(session.request,message.payload.view);
-                scope=meta;latest.scan=meta.operationId;viewInput=validated.view;
+                const validated=createSurfaceRequest(session.request,message.payload.view);
+                scope=meta;latest.scan=meta.operationId;viewInput=validated.wrapper;
                 begin(meta,message.payload.pageSize??6);return;
             }
             if(meta.viewRevision!==scope.viewRevision)return;

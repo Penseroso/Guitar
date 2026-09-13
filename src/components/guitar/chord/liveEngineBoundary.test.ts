@@ -28,7 +28,7 @@ it('keeps the atomic browser path outside legacy search, boolean eligibility and
         }
     }
     expect(visited.size).toBeGreaterThan(25);
-    expect(LIVE_ENGINE_VERSION).toBe('guitar-engine/1');
+    expect(LIVE_ENGINE_VERSION).toBe('guitar-engine/2');
     const app = readFileSync(resolve('src/components/guitar/ClientApp.tsx'), 'utf8');
     expect(app).not.toMatch(/resolveBridgeSelection|exploration\.candidates|hasPlayableCandidates|\.voicing\.playable/);
 });

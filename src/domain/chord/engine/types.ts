@@ -1,4 +1,6 @@
-// Logical contracts from guitar-engine/1. Packed execution representations are separate.
+import type { DemandRecord } from './demandContract';
+import type { VocabularyMatch } from './vocabularyContract';
+// Logical contracts. Packed execution representations are separate.
 export type StringIndex = 0 | 1 | 2 | 3 | 4 | 5; // physical order: high E side first
 export type Six<T> = readonly [T, T, T, T, T, T];
 export type StringState = -1 | number; // validated integer: -1 unplayed, 0 open, >0 stopped
@@ -110,6 +112,9 @@ export interface PresentationCandidate {
   rank: RankRecord;
   displayRank: number | null; // null until exact page; distinct from preference score
   labels: readonly string[];
+  demand: DemandRecord;
+  vocabulary: VocabularyMatch;
+  recommendation: {version:'recommended-surface-v2';eligible:boolean};
 }
 
 export type Extreme = { tone: ToneId } | { pitchClass: number } | { midi: number };

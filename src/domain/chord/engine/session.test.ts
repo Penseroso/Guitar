@@ -43,7 +43,7 @@ it('returns the exact independently fully sorted order with all partition counts
     const request=session.request,iterator=new StructuralIterator(request.structural),physical=createPhysicalScreen(request.physicalProfile),projector=createClassicProjector(request);
     const full=[];let pass=0,uncertain=0;
     for(;;){const batch=iterator.nextBatch();for(const states of batch.candidates){const assessment=physical.metrics(states);if(assessment.status==='PASS')pass++;else uncertain++;
-        full.push({tie:states,scoreNumerator:scoreFeatures(projector(states)),distance:0});}if(batch.done)break;}
+        full.push({tie:states,scoreNumerator:scoreFeatures(projector(states)),distance:0,partition:0});}if(batch.done)break;}
     const expected=full.sort(compareOrder).map(r=>allocationId(request.structural.instrument.tuningMidi,r.tie));
     const page=finish(session.begin());
     expect(page.summary).toMatchObject({completeness:'exact',structural:full.length,pass,uncertain,reject:0,survivors:full.length,matching:full.length,matchingPass:pass,matchingUncertain:uncertain});
@@ -123,7 +123,7 @@ it('restores a checkpoint into a formerly cached session without treating its ta
 it('rejects impossible checkpoint counters and missing heap rows',()=>{
     const session=new EngineSession(intent,{cacheBudgetBytes:0}),scan=session.begin();scan.step(1);
     const checkpoint=scan.checkpoint();
-    const impossible={...checkpoint,counts:{...checkpoint.counts,structural:1,pass:1,survivors:1,matching:1,matchingPass:1,assessed:1},afterCount:1};
+    const impossible={...checkpoint,counts:{...checkpoint.counts,structural:1,pass:1,survivors:1,matching:1,matchingPass:1,assessed:1,explicitMatching:1},afterCount:1};
     expect(()=>session.begin({},6,null,impossible)).toThrow(/accumulator/);
     expect(()=>session.begin({},6,null,{...checkpoint,afterCount:1})).toThrow();
 });

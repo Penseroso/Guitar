@@ -6,8 +6,9 @@ import { diagnostic,type EngineDiagnostic } from '@/domain/chord/engine/errors';
 import type { OutputMessage } from '@/domain/chord/engine/workerProtocol';
 import type { ExactPage,PageCursor,PageSummary } from '@/domain/chord/engine/session';
 import type { PresentationCandidate,ResolvedRequest,ViewRequest } from '@/domain/chord/engine/types';
+import type { SurfaceRequest } from '@/domain/chord/engine/surfaceRequest';
 
-export const LIVE_ENGINE_VERSION='guitar-engine/1' as const;
+export const LIVE_ENGINE_VERSION='guitar-engine/2' as const;
 export const DEFAULT_ENGINE_VIEW:ViewRequest=Object.freeze({schema:'view-v1',position:null,soundingCount:null,stringSet:null,
     open:'any',root:'any',coverage:'any',bass:null,top:null,statuses:Object.freeze(['PASS','UNCERTAIN'] as const),order:Object.freeze({kind:'classic'})});
 export interface EngineExplorationState {
@@ -15,9 +16,10 @@ export interface EngineExplorationState {
     request:ResolvedRequest|null;page:ExactPage|null;summary:PageSummary|null;
     selected:PresentationCandidate|null;selectionStale:boolean;selectionNotice:string|null;
     view:ViewRequest;error:EngineDiagnostic|null;canPrevious:boolean;requestEpoch:string;
+    surface:SurfaceRequest['surface'];
 }
 export const INITIAL_ENGINE_STATE:EngineExplorationState=Object.freeze({phase:'idle',request:null,page:null,summary:null,
-    selected:null,selectionStale:false,selectionNotice:null,view:DEFAULT_ENGINE_VIEW,error:null,canPrevious:false,requestEpoch:'idle'});
+    selected:null,selectionStale:false,selectionNotice:null,view:DEFAULT_ENGINE_VIEW,surface:'recommended',error:null,canPrevious:false,requestEpoch:'idle'});
 export interface ExplorationRequest {chordId:string;rootPitchClass:number;context:'standalone'|'accompaniment';requestEpoch:string}
 interface LookupIntent {id:string;operationId:number|null}
 interface HistoryEntry {after:PageCursor|null;size:number;ordinal:number}
@@ -30,6 +32,7 @@ export function createExplorationController(createWorker:()=>EngineWorkerPort) {
     let requestedId:string|null=null,pendingLookup:LookupIntent|null=null,lastLookupOperation:number|null=null,mayAutoSelect=true,replacement=false;
     let history:HistoryEntry[]=[{after:null,size:6,ordinal:0}],historyIndex=0;
     const listeners=new Set<()=>void>();
+    function surfaceView():SurfaceRequest{return {schema:'surface-request-v2',surface:state.surface,view:state.view};}
     function publish(patch:Partial<EngineExplorationState>){state=Object.freeze({...state,...patch});for(const listener of listeners)listener();}
     function resetHistory(){history=[{after:null,size:6,ordinal:0}];historyIndex=0;}
     function canPrevious(){return historyIndex>0&&history[historyIndex-1].ordinal===history[historyIndex].ordinal-1;}
@@ -49,9 +52,9 @@ export function createExplorationController(createWorker:()=>EngineWorkerPort) {
     }
     function receive(message:OutputMessage) {
         if(message.kind==='ACCEPTED') {
-            const queuedView=canonical(state.view)!==canonical(message.payload.view);
+            const queuedView=canonical(surfaceView())!==canonical(message.payload.surface);
             publish({request:message.payload.request,view:queuedView?state.view:message.payload.view,phase:'running',error:null});
-            if(queuedView)client?.setView(state.view,6);
+            if(queuedView)client?.setView(surfaceView(),6);
             runLookup();return;
         }
         if(message.kind==='PROGRESS'||message.kind==='PROVISIONAL_PAGE'){publish({phase:'running',summary:message.payload.summary,error:null});return;}
@@ -80,9 +83,9 @@ export function createExplorationController(createWorker:()=>EngineWorkerPort) {
         lastLookupOperation=null;
         pendingLookup=target?{id:target,operationId:null}:null;mayAutoSelect=!target;replacement=false;
         publish({phase:'loading',request:null,page:null,summary:null,selected:retained,selectionStale:retained!==null,
-            selectionNotice:null,view,error:null,canPrevious:false,requestEpoch:next.requestEpoch});
+            selectionNotice:null,view,surface:sameHarmony?state.surface:'recommended',error:null,canPrevious:false,requestEpoch:next.requestEpoch});
         client=createEngineClient({createWorker,onMessage:message=>{if(active&&generation===ticket)receive(message);},onFailure:error=>{if(active&&generation===ticket)failure(error);}});
-        client.start({schema:'intent-v1',chordId:next.chordId,rootPitchClass:next.rootPitchClass,context:next.context},view,6);
+        client.start({schema:'intent-v1',chordId:next.chordId,rootPitchClass:next.rootPitchClass,context:next.context},surfaceView(),6);
     }
     function restoreRequestedId(id:string|null) {
         requestedId=id;if(!active||!id||pendingLookup?.id===id||state.selected?.candidate.allocationId===id)return;
@@ -95,8 +98,15 @@ export function createExplorationController(createWorker:()=>EngineWorkerPort) {
             view=createViewMatcher(request,{...state.view,...viewInput}).view;}
         catch(error){publish({error:diagnostic(error)});return;}
         if(canonical(view)===canonical(state.view))return;
-        resetHistory();publish({view,page:null,summary:null,phase:state.request?'running':'loading',error:null,canPrevious:false});
-        if(state.request){client.setView(view,6);runLookup();}
+        resetHistory();publish({view,surface:view.order.kind==='near-position'?'all':state.surface,page:null,summary:null,phase:state.request?'running':'loading',error:null,canPrevious:false});
+        if(state.request){client.setView(surfaceView(),6);runLookup();}
+    }
+    function setSurface(surface:SurfaceRequest['surface']) {
+        if(!active||!client||surface===state.surface)return;
+        if(surface!=='recommended'&&surface!=='all')return;
+        const view=surface==='recommended'?{...state.view,order:{kind:'classic' as const}}:state.view;
+        resetHistory();publish({surface,view,page:null,summary:null,phase:state.request?'running':'loading',error:null,canPrevious:false});
+        if(state.request){client.setView(surfaceView(),6);runLookup();}
     }
     function select(candidate:PresentationCandidate|string) {
         if(!active)return;
@@ -124,5 +134,5 @@ export function createExplorationController(createWorker:()=>EngineWorkerPort) {
     function cancel(){if(active&&client){client.cancel();publish({phase:'cancelled',page:null,error:null});}}
     return Object.freeze({getSnapshot:()=>state,getServerSnapshot:()=>INITIAL_ENGINE_STATE,
         subscribe:(listener:()=>void)=>{listeners.add(listener);return()=>{listeners.delete(listener);};},
-        start,stop,restoreRequestedId,setView,select,nextPage,previousPage,firstPage,continueSearch,cancel});
+        start,stop,restoreRequestedId,setView,setSurface,select,nextPage,previousPage,firstPage,continueSearch,cancel});
 }
