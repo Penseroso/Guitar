@@ -52,7 +52,7 @@ export function VoicingFactsView({ candidate, request = null }: { candidate: Pre
         {request?.requestKey === candidate.candidate.requestKey && <><p>Tuning MIDI: {request.structural.instrument.tuningMidi.join(', ')} (strings 1–6); modeled frets 0–{request.structural.instrument.maxModeledFret}.</p>
             <p>Required tones: {request.structural.required.map(formatDegreeLabel).join(', ')}. Minimum distinct tones: {request.structural.minDistinctPitchClasses}.</p>
             <details><summary>Request defaults and explicit choices</summary><ul>{request.origins.map((origin, index) => <li key={index}>{origin.field}: {origin.origin} · {origin.rule}</li>)}</ul></details></>}
-        <p>Deterministic ordering: {rank.policy}. Score {rank.scoreNumerator}/{rank.denominator}; ordering preference only, independent of physical status.</p>
+        <p>Base preference: {rank.policy}. Score {rank.scoreNumerator}/{rank.denominator}; ordering preference only, independent of physical status. Recommended uses the separate recommendation policy.</p>
         <table style={{ width: '100%', tableLayout: 'fixed', overflowWrap: 'anywhere' }}><caption>All 14 ranking terms, including zero contributions</caption><thead><tr><th scope="col">Term</th><th scope="col">Contribution</th><th scope="col">Inputs and interpretation</th></tr></thead>
             <tbody>{rank.ledger.map(term => <tr key={term.id} data-ledger-term={term.id}><th scope="row">{term.id.replace(/-/g, ' ')}</th><td>{term.numerator}/{term.denominator}</td><td>{Object.entries(term.inputs).map(([key, value]) => key + ': ' + String(value)).join('; ')} · {term.interpretation} · {term.featureVersion}</td></tr>)}</tbody>
         </table>

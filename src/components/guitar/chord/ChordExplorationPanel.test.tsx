@@ -34,7 +34,18 @@ describe('integrated engine presentation', () => {
         for(const reason of selected.physical.reasonCodes)expect(markup).toContain(physicalReasonText(reason));
         const detail=renderToStaticMarkup(<VoicingFactsView candidate={selected} request={uncertain.request}/>);
         expect(detail).toContain('Selected by the recommendation policy.');expect(detail).toContain('separate Physical evidence');
+        expect(detail).toContain('Base preference: classic-v1');expect(detail).toContain('Recommended uses the separate recommendation policy.');
         expect(markup).not.toMatch(/Documented reference shape|wide-or-complex|product-extrapolated|CAGED|Demand tier/);
+    });
+    it('explains a PASS selection outside Recommended without a physical-unsuitability claim',()=>{
+        const request=new EngineSession({...intent,context:'accompaniment'});
+        const selected=request.lookup('shape-v1:64,59,55,50,45,40:0,5,5,2,3,-1');
+        expect(selected.physical.status).toBe('PASS');expect(selected.recommendation.eligible).toBe(false);
+        const markup=render(state({request:request.request,selected,surface:'recommended'}));
+        expect(markup).toContain('outside this surface or these filters');
+        const detail=renderToStaticMarkup(<VoicingFactsView candidate={selected} request={request.request}/>);
+        expect(detail).toContain('Outside the recommendation policy; available in All voicings.');
+        expect(detail).not.toMatch(/unsuitable|unplayable|uncomfortable|anatomically/);
     });
     it('shows six exact rows, independent status totals and accessible cursor navigation', () => {
         const markup = render(state());

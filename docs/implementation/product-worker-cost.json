@@ -1,0 +1,938 @@
+{
+  "schema": "engine-worker-cost-v1",
+  "measuredAt": "2026-09-13T08:20:52.634Z",
+  "browser": "Chrome/152.0.7977.84",
+  "scope": "Actual DedicatedWorker request/response, main-thread parseOutput validation and post-GC CDP heaps. Dedicated-worker and harness-page heap values include runtime/bundle/instrumentation allocations; they are not exact engine-only heap attribution.",
+  "sourceHashes": {
+    "src/domain/chord/engine/packedStore.ts": "55b8f979c6c1f920b62a763a0471f0d30c1ffc54639a77d625c67dcc85e6fc2a",
+    "src/domain/chord/engine/workerService.ts": "32027c0936d917b04366d79391ce7dcc9d4a709a40991ee25fec924e57fb8cf0",
+    "src/domain/chord/engine/workerProtocol.ts": "c5a30c6756b29c07e67336df362e14c782840584bd6a25b77043d53ebe23c264",
+    "src/domain/chord/engine/session.ts": "534ea5641eb5f09baa251598185c6b59e60f2219365016221c9bfdbbfc0fdc75",
+    "src/domain/chord/engine/physicalDemand.ts": "b54a6d2b4ec9b29370d8680c4ec488d2f94a92e6ce6d6a1d40b6b7a566839df0",
+    "src/domain/chord/engine/practicalVocabulary.ts": "0702d81b93f8524fb74457e031dc64ce5d4e42aec6bee693eb46ae3db3b1a1ff",
+    "src/domain/chord/engine/practicalVocabularyData.json": "28ca079b2ef8f2bb48aff95c882fa91b406226c8340165efec9be69dc433b22f",
+    "src/domain/chord/engine/recommendedSurface.ts": "3e87260eca8c9cdd89a0e5086123d2d8795b4b99080fb85833626558dd8d9096"
+  },
+  "measurements": [
+    {
+      "scenario": "major standalone complete pool + 30 distinct direct lookups",
+      "firstExactPageMs": 165.79999999701977,
+      "summary": {
+        "structural": 13331,
+        "pass": 992,
+        "uncertain": 12339,
+        "reject": 0,
+        "survivors": 13331,
+        "matching": 628,
+        "matchingPass": 628,
+        "matchingUncertain": 0,
+        "assessed": 13331,
+        "explicitMatching": 13331,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "compact",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"major\",\"context\":\"standalone\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\"],\"formulaKey\":\"catalog-v1:major\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":3,\"predicates\":[],\"required\":[\"1\",\"3\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"request\":{\"schema\":\"surface-request-v2\",\"surface\":\"recommended\",\"view\":{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}},\"versions\":{\"demand\":\"physical-demand-policy-v1\",\"demandGeometry\":\"demand-geometry-um-v1\",\"empirical\":{\"enabled\":false},\"engine\":\"guitar-engine/2\",\"features\":\"legacy-rank-features-v1\",\"geometry\":\"geometry-um-v1\",\"numeric\":\"rank-int-v1\",\"physical\":\"physical-screen-v1\",\"product\":\"product-policy-v2.1\",\"protocol\":\"engine-worker-v2\",\"ranking\":\"classic-v1\",\"realization\":\"identity-v1\",\"structural\":\"structural-v1\",\"surface\":\"recommended-surface-v2\",\"surfaceCursor\":\"surface-cursor-v2\",\"surfaceRequest\":\"surface-request-v2\",\"translation\":\"practical-exact-translation-v1\",\"vocabulary\":\"practical-vocabulary-v1\"}}",
+        "versions": {
+          "engine": "guitar-engine/2",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v2",
+          "product": "product-policy-v2.1",
+          "demand": "physical-demand-policy-v1",
+          "demandGeometry": "demand-geometry-um-v1",
+          "vocabulary": "practical-vocabulary-v1",
+          "translation": "practical-exact-translation-v1",
+          "surface": "recommended-surface-v2",
+          "surfaceRequest": "surface-request-v2",
+          "surfaceCursor": "surface-cursor-v2",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "22500",
+        "visitedNodes": 31441,
+        "retainedBufferBytes": 524288,
+        "accountedBufferBytes": 655360
+      },
+      "lookup": {
+        "samples": [
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:3,5,5,5,3,-1",
+            "elapsedMs": 0.7999999970197678,
+            "arrivalMs": 0.29999999701976776,
+            "parseMs": 0.5,
+            "bytes": 8017
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,1,0,2,3,-1",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.29999999701976776,
+            "bytes": 8021
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:8,8,9,10,10,8",
+            "elapsedMs": 0.7999999970197678,
+            "arrivalMs": 0.29999999701976776,
+            "parseMs": 0.4000000059604645,
+            "bytes": 8075
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:12,13,12,10,-1,-1",
+            "elapsedMs": 0.9000000059604645,
+            "arrivalMs": 0.4000000059604645,
+            "parseMs": 0.3999999910593033,
+            "bytes": 8008
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:12,13,12,14,15,-1",
+            "elapsedMs": 0.5999999940395355,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.3999999910593033,
+            "bytes": 8054
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:8,5,5,5,-1,-1",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.29999999701976776,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7977
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,-1,0,2,3,-1",
+            "elapsedMs": 0.6000000089406967,
+            "arrivalMs": 0.29999999701976776,
+            "parseMs": 0.30000001192092896,
+            "bytes": 7892
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,8,9,10,-1,8",
+            "elapsedMs": 0.3999999910593033,
+            "arrivalMs": 0.19999998807907104,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7987
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,8,9,10,-1,-1",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.29999999701976776,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7939
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:8,8,9,10,-1,8",
+            "elapsedMs": 0.3999999910593033,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7996
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,5,5,5,3,-1",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.29999999701976776,
+            "bytes": 7980
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,5,0,5,3,-1",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.29999999701976776,
+            "bytes": 7972
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,8,0,10,10,8",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.20000000298023224,
+            "bytes": 8023
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,8,9,10,10,8",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.29999999701976776,
+            "bytes": 8023
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,-1,0,2,3,-1",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.10000000894069672,
+            "parseMs": 0.3999999910593033,
+            "bytes": 7941
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,5,5,5,7,8",
+            "elapsedMs": 0.7999999970197678,
+            "arrivalMs": 0.29999999701976776,
+            "parseMs": 0.4000000059604645,
+            "bytes": 8018
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,5,0,5,3,-1",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7931
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,5,0,-1,3,-1",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7943
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,8,0,10,-1,8",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0,
+            "parseMs": 0.29999999701976776,
+            "bytes": 7983
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:3,-1,0,2,3,-1",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.4000000059604645,
+            "bytes": 7938
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,5,5,5,7,8",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.19999998807907104,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7977
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,1,0,2,3,-1",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.30000001192092896,
+            "bytes": 7933
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:3,5,0,5,3,-1",
+            "elapsedMs": 0.5999999940395355,
+            "arrivalMs": 0.19999998807907104,
+            "parseMs": 0.30000001192092896,
+            "bytes": 7970
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,1,0,-1,3,-1",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7943
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,-1,5,5,3,-1",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.29999999701976776,
+            "bytes": 7943
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,5,-1,5,3,-1",
+            "elapsedMs": 0.3999999910593033,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.29999999701976776,
+            "bytes": 7943
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,8,9,10,-1,-1",
+            "elapsedMs": 0.9000000059604645,
+            "arrivalMs": 0.4000000059604645,
+            "parseMs": 0.3999999910593033,
+            "bytes": 7903
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:8,8,9,10,-1,-1",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.29999999701976776,
+            "bytes": 7945
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,-1,0,2,3,0",
+            "elapsedMs": 0.6000000089406967,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.29999999701976776,
+            "bytes": 7935
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,8,-1,10,10,8",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.19999998807907104,
+            "parseMs": 0.30000001192092896,
+            "bytes": 7994
+          }
+        ],
+        "p50Ms": 0.5,
+        "p95Ms": 0.9000000059604645,
+        "maxMs": 0.9000000059604645
+      }
+    },
+    {
+      "scenario": "dominant-11 accompaniment complete pool + 30 distinct direct lookups",
+      "firstExactPageMs": 1362.7000000029802,
+      "summary": {
+        "structural": 267524,
+        "pass": 8243,
+        "uncertain": 259281,
+        "reject": 0,
+        "survivors": 267524,
+        "matching": 3455,
+        "matchingPass": 3455,
+        "matchingUncertain": 0,
+        "assessed": 267524,
+        "explicitMatching": 267524,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "compact",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"request\":{\"schema\":\"surface-request-v2\",\"surface\":\"recommended\",\"view\":{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}},\"versions\":{\"demand\":\"physical-demand-policy-v1\",\"demandGeometry\":\"demand-geometry-um-v1\",\"empirical\":{\"enabled\":false},\"engine\":\"guitar-engine/2\",\"features\":\"legacy-rank-features-v1\",\"geometry\":\"geometry-um-v1\",\"numeric\":\"rank-int-v1\",\"physical\":\"physical-screen-v1\",\"product\":\"product-policy-v2.1\",\"protocol\":\"engine-worker-v2\",\"ranking\":\"classic-v1\",\"realization\":\"identity-v1\",\"structural\":\"structural-v1\",\"surface\":\"recommended-surface-v2\",\"surfaceCursor\":\"surface-cursor-v2\",\"surfaceRequest\":\"surface-request-v2\",\"translation\":\"practical-exact-translation-v1\",\"vocabulary\":\"practical-vocabulary-v1\"}}",
+        "versions": {
+          "engine": "guitar-engine/2",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v2",
+          "product": "product-policy-v2.1",
+          "demand": "physical-demand-policy-v1",
+          "demandGeometry": "demand-geometry-um-v1",
+          "vocabulary": "practical-vocabulary-v1",
+          "translation": "practical-exact-translation-v1",
+          "surface": "recommended-surface-v2",
+          "surfaceRequest": "surface-request-v2",
+          "surfaceCursor": "surface-cursor-v2",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "729000",
+        "visitedNodes": 769341,
+        "retainedBufferBytes": 8650752,
+        "accountedBufferBytes": 10813440
+      },
+      "lookup": {
+        "samples": [
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,3,3,3,3,-1",
+            "elapsedMs": 0.699999988079071,
+            "arrivalMs": 0.29999999701976776,
+            "parseMs": 0.3999999910593033,
+            "bytes": 8171
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:3,3,3,3,3,-1",
+            "elapsedMs": 0.6000000089406967,
+            "arrivalMs": 0.30000001192092896,
+            "parseMs": 0.29999999701976776,
+            "bytes": 8167
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:6,6,0,0,7,8",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.29999999701976776,
+            "parseMs": 0.20000000298023224,
+            "bytes": 8236
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,6,7,8,8,8",
+            "elapsedMs": 0.5999999940395355,
+            "arrivalMs": 0.29999999701976776,
+            "parseMs": 0.29999999701976776,
+            "bytes": 8233
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:10,11,0,0,8,8",
+            "elapsedMs": 0.5999999940395355,
+            "arrivalMs": 0.19999998807907104,
+            "parseMs": 0.4000000059604645,
+            "bytes": 8241
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:6,6,0,0,8,8",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.30000001192092896,
+            "bytes": 8221
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,6,7,8,-1,8",
+            "elapsedMs": 0.5999999940395355,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.3999999910593033,
+            "bytes": 8192
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,6,7,8,8,8",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.10000000894069672,
+            "parseMs": 0.29999999701976776,
+            "bytes": 8197
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,11,10,0,8,8",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.20000000298023224,
+            "bytes": 8243
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:10,11,0,8,8,8",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.30000001192092896,
+            "bytes": 8249
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,8,9,8,8,8",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.19999998807907104,
+            "parseMs": 0.20000000298023224,
+            "bytes": 8222
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,-1,3,3,3,-1",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.19999998807907104,
+            "parseMs": 0.30000001192092896,
+            "bytes": 8140
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,5,3,3,3,-1",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.30000001192092896,
+            "bytes": 8193
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:6,5,0,0,8,8",
+            "elapsedMs": 0.699999988079071,
+            "arrivalMs": 0.19999998807907104,
+            "parseMs": 0.5,
+            "bytes": 8235
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,6,0,8,8,8",
+            "elapsedMs": 0.3999999910593033,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.29999999701976776,
+            "bytes": 8228
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:6,6,0,8,8,8",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.30000001192092896,
+            "parseMs": 0.19999998807907104,
+            "bytes": 8232
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,8,10,8,8,8",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.29999999701976776,
+            "bytes": 8237
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:8,8,9,8,8,8",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.10000000894069672,
+            "parseMs": 0.3999999910593033,
+            "bytes": 8224
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,11,10,0,8,8",
+            "elapsedMs": 0.29999999701976776,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.20000000298023224,
+            "bytes": 8207
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:6,6,0,0,-1,8",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.29999999701976776,
+            "bytes": 8187
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,8,9,8,8,8",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.29999999701976776,
+            "bytes": 8183
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,11,10,8,8,8",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.29999999701976776,
+            "bytes": 8250
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:8,8,10,8,8,8",
+            "elapsedMs": 0.7000000029802322,
+            "arrivalMs": 0.29999999701976776,
+            "parseMs": 0.29999999701976776,
+            "bytes": 8242
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,1,3,3,3,-1",
+            "elapsedMs": 0.3999999910593033,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.29999999701976776,
+            "bytes": 8193
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:3,5,3,3,3,-1",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.29999999701976776,
+            "bytes": 8188
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,6,0,8,-1,8",
+            "elapsedMs": 0.7000000029802322,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.5,
+            "bytes": 8187
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:6,6,0,8,-1,8",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.10000000894069672,
+            "parseMs": 0.29999999701976776,
+            "bytes": 8191
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,8,10,8,-1,8",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.4000000059604645,
+            "bytes": 8203
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,6,0,8,8,8",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.29999999701976776,
+            "bytes": 8192
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,8,10,8,8,8",
+            "elapsedMs": 0.5999999940395355,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.3999999910593033,
+            "bytes": 8201
+          }
+        ],
+        "p50Ms": 0.5,
+        "p95Ms": 0.7000000029802322,
+        "maxMs": 0.7000000029802322
+      }
+    },
+    {
+      "scenario": "50 complete small-domain query/context changes plus 50 exact view changes, then same wide request and one retained lookup snapshot",
+      "changes": 100,
+      "elapsedMs": 2286.199999988079,
+      "summary": {
+        "structural": 267524,
+        "pass": 8243,
+        "uncertain": 259281,
+        "reject": 0,
+        "survivors": 267524,
+        "matching": 3455,
+        "matchingPass": 3455,
+        "matchingUncertain": 0,
+        "assessed": 267524,
+        "explicitMatching": 267524,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "compact",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"request\":{\"schema\":\"surface-request-v2\",\"surface\":\"recommended\",\"view\":{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}},\"versions\":{\"demand\":\"physical-demand-policy-v1\",\"demandGeometry\":\"demand-geometry-um-v1\",\"empirical\":{\"enabled\":false},\"engine\":\"guitar-engine/2\",\"features\":\"legacy-rank-features-v1\",\"geometry\":\"geometry-um-v1\",\"numeric\":\"rank-int-v1\",\"physical\":\"physical-screen-v1\",\"product\":\"product-policy-v2.1\",\"protocol\":\"engine-worker-v2\",\"ranking\":\"classic-v1\",\"realization\":\"identity-v1\",\"structural\":\"structural-v1\",\"surface\":\"recommended-surface-v2\",\"surfaceCursor\":\"surface-cursor-v2\",\"surfaceRequest\":\"surface-request-v2\",\"translation\":\"practical-exact-translation-v1\",\"vocabulary\":\"practical-vocabulary-v1\"}}",
+        "versions": {
+          "engine": "guitar-engine/2",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v2",
+          "product": "product-policy-v2.1",
+          "demand": "physical-demand-policy-v1",
+          "demandGeometry": "demand-geometry-um-v1",
+          "vocabulary": "practical-vocabulary-v1",
+          "translation": "practical-exact-translation-v1",
+          "surface": "recommended-surface-v2",
+          "surfaceRequest": "surface-request-v2",
+          "surfaceCursor": "surface-cursor-v2",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "729000",
+        "visitedNodes": 769341,
+        "retainedBufferBytes": 8650752,
+        "accountedBufferBytes": 10813440
+      }
+    },
+    {
+      "scenario": "Large fret-36 replay memory fixture",
+      "elapsedMs": 10003.60000000894,
+      "state": "PAUSED",
+      "summary": {
+        "structural": 2164639,
+        "pass": 34040,
+        "uncertain": 2130599,
+        "reject": 0,
+        "survivors": 2164639,
+        "matching": 13760,
+        "matchingPass": 13760,
+        "matchingUncertain": 0,
+        "assessed": 2164639,
+        "explicitMatching": 2164639,
+        "completeness": "partial",
+        "hasMore": "unknown",
+        "mode": "replay",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":36,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"request\":{\"schema\":\"surface-request-v2\",\"surface\":\"recommended\",\"view\":{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}},\"versions\":{\"demand\":\"physical-demand-policy-v1\",\"demandGeometry\":\"demand-geometry-um-v1\",\"empirical\":{\"enabled\":false},\"engine\":\"guitar-engine/2\",\"features\":\"legacy-rank-features-v1\",\"geometry\":\"geometry-um-v1\",\"numeric\":\"rank-int-v1\",\"physical\":\"physical-screen-v1\",\"product\":\"product-policy-v2.1\",\"protocol\":\"engine-worker-v2\",\"ranking\":\"classic-v1\",\"realization\":\"identity-v1\",\"structural\":\"structural-v1\",\"surface\":\"recommended-surface-v2\",\"surfaceCursor\":\"surface-cursor-v2\",\"surfaceRequest\":\"surface-request-v2\",\"translation\":\"practical-exact-translation-v1\",\"vocabulary\":\"practical-vocabulary-v1\"}}",
+        "versions": {
+          "engine": "guitar-engine/2",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v2",
+          "product": "product-policy-v2.1",
+          "demand": "physical-demand-policy-v1",
+          "demandGeometry": "demand-geometry-um-v1",
+          "vocabulary": "practical-vocabulary-v1",
+          "translation": "practical-exact-translation-v1",
+          "surface": "recommended-surface-v2",
+          "surfaceRequest": "surface-request-v2",
+          "surfaceCursor": "surface-cursor-v2",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "57760000",
+        "visitedNodes": 6126080,
+        "retainedBufferBytes": 0,
+        "accountedBufferBytes": 0
+      }
+    }
+  ],
+  "memory": [
+    {
+      "scenario": "Initial compact worker/harness baseline",
+      "worker": {
+        "available": true,
+        "usedSize": 489100,
+        "totalSize": 1310720,
+        "embedderHeapUsedSize": 15400,
+        "backingStorageSize": 373829
+      },
+      "main": {
+        "available": true,
+        "usedSize": 621756,
+        "totalSize": 1572864,
+        "embedderHeapUsedSize": 301728,
+        "backingStorageSize": 129845
+      }
+    },
+    {
+      "scenario": "major standalone completed compact pool",
+      "summary": {
+        "structural": 13331,
+        "pass": 992,
+        "uncertain": 12339,
+        "reject": 0,
+        "survivors": 13331,
+        "matching": 628,
+        "matchingPass": 628,
+        "matchingUncertain": 0,
+        "assessed": 13331,
+        "explicitMatching": 13331,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "compact",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"major\",\"context\":\"standalone\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\"],\"formulaKey\":\"catalog-v1:major\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":3,\"predicates\":[],\"required\":[\"1\",\"3\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"request\":{\"schema\":\"surface-request-v2\",\"surface\":\"recommended\",\"view\":{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}},\"versions\":{\"demand\":\"physical-demand-policy-v1\",\"demandGeometry\":\"demand-geometry-um-v1\",\"empirical\":{\"enabled\":false},\"engine\":\"guitar-engine/2\",\"features\":\"legacy-rank-features-v1\",\"geometry\":\"geometry-um-v1\",\"numeric\":\"rank-int-v1\",\"physical\":\"physical-screen-v1\",\"product\":\"product-policy-v2.1\",\"protocol\":\"engine-worker-v2\",\"ranking\":\"classic-v1\",\"realization\":\"identity-v1\",\"structural\":\"structural-v1\",\"surface\":\"recommended-surface-v2\",\"surfaceCursor\":\"surface-cursor-v2\",\"surfaceRequest\":\"surface-request-v2\",\"translation\":\"practical-exact-translation-v1\",\"vocabulary\":\"practical-vocabulary-v1\"}}",
+        "versions": {
+          "engine": "guitar-engine/2",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v2",
+          "product": "product-policy-v2.1",
+          "demand": "physical-demand-policy-v1",
+          "demandGeometry": "demand-geometry-um-v1",
+          "vocabulary": "practical-vocabulary-v1",
+          "translation": "practical-exact-translation-v1",
+          "surface": "recommended-surface-v2",
+          "surfaceRequest": "surface-request-v2",
+          "surfaceCursor": "surface-cursor-v2",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "22500",
+        "visitedNodes": 31441,
+        "retainedBufferBytes": 524288,
+        "accountedBufferBytes": 655360
+      },
+      "worker": {
+        "available": true,
+        "usedSize": 817300,
+        "totalSize": 1572864,
+        "embedderHeapUsedSize": 15400,
+        "backingStorageSize": 898117
+      },
+      "main": {
+        "available": true,
+        "usedSize": 889328,
+        "totalSize": 1572864,
+        "embedderHeapUsedSize": 301648,
+        "backingStorageSize": 332457
+      }
+    },
+    {
+      "scenario": "dominant-11 accompaniment completed compact pool",
+      "summary": {
+        "structural": 267524,
+        "pass": 8243,
+        "uncertain": 259281,
+        "reject": 0,
+        "survivors": 267524,
+        "matching": 3455,
+        "matchingPass": 3455,
+        "matchingUncertain": 0,
+        "assessed": 267524,
+        "explicitMatching": 267524,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "compact",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"request\":{\"schema\":\"surface-request-v2\",\"surface\":\"recommended\",\"view\":{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}},\"versions\":{\"demand\":\"physical-demand-policy-v1\",\"demandGeometry\":\"demand-geometry-um-v1\",\"empirical\":{\"enabled\":false},\"engine\":\"guitar-engine/2\",\"features\":\"legacy-rank-features-v1\",\"geometry\":\"geometry-um-v1\",\"numeric\":\"rank-int-v1\",\"physical\":\"physical-screen-v1\",\"product\":\"product-policy-v2.1\",\"protocol\":\"engine-worker-v2\",\"ranking\":\"classic-v1\",\"realization\":\"identity-v1\",\"structural\":\"structural-v1\",\"surface\":\"recommended-surface-v2\",\"surfaceCursor\":\"surface-cursor-v2\",\"surfaceRequest\":\"surface-request-v2\",\"translation\":\"practical-exact-translation-v1\",\"vocabulary\":\"practical-vocabulary-v1\"}}",
+        "versions": {
+          "engine": "guitar-engine/2",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v2",
+          "product": "product-policy-v2.1",
+          "demand": "physical-demand-policy-v1",
+          "demandGeometry": "demand-geometry-um-v1",
+          "vocabulary": "practical-vocabulary-v1",
+          "translation": "practical-exact-translation-v1",
+          "surface": "recommended-surface-v2",
+          "surfaceRequest": "surface-request-v2",
+          "surfaceCursor": "surface-cursor-v2",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "729000",
+        "visitedNodes": 769341,
+        "retainedBufferBytes": 8650752,
+        "accountedBufferBytes": 10813440
+      },
+      "worker": {
+        "available": true,
+        "usedSize": 874972,
+        "totalSize": 1835008,
+        "embedderHeapUsedSize": 15400,
+        "backingStorageSize": 9024581
+      },
+      "main": {
+        "available": true,
+        "usedSize": 920376,
+        "totalSize": 1572864,
+        "embedderHeapUsedSize": 301648,
+        "backingStorageSize": 332457
+      }
+    },
+    {
+      "scenario": "Same C dominant-11 accompaniment after 100 query/context/view changes",
+      "summary": {
+        "structural": 267524,
+        "pass": 8243,
+        "uncertain": 259281,
+        "reject": 0,
+        "survivors": 267524,
+        "matching": 3455,
+        "matchingPass": 3455,
+        "matchingUncertain": 0,
+        "assessed": 267524,
+        "explicitMatching": 267524,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "compact",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"request\":{\"schema\":\"surface-request-v2\",\"surface\":\"recommended\",\"view\":{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}},\"versions\":{\"demand\":\"physical-demand-policy-v1\",\"demandGeometry\":\"demand-geometry-um-v1\",\"empirical\":{\"enabled\":false},\"engine\":\"guitar-engine/2\",\"features\":\"legacy-rank-features-v1\",\"geometry\":\"geometry-um-v1\",\"numeric\":\"rank-int-v1\",\"physical\":\"physical-screen-v1\",\"product\":\"product-policy-v2.1\",\"protocol\":\"engine-worker-v2\",\"ranking\":\"classic-v1\",\"realization\":\"identity-v1\",\"structural\":\"structural-v1\",\"surface\":\"recommended-surface-v2\",\"surfaceCursor\":\"surface-cursor-v2\",\"surfaceRequest\":\"surface-request-v2\",\"translation\":\"practical-exact-translation-v1\",\"vocabulary\":\"practical-vocabulary-v1\"}}",
+        "versions": {
+          "engine": "guitar-engine/2",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v2",
+          "product": "product-policy-v2.1",
+          "demand": "physical-demand-policy-v1",
+          "demandGeometry": "demand-geometry-um-v1",
+          "vocabulary": "practical-vocabulary-v1",
+          "translation": "practical-exact-translation-v1",
+          "surface": "recommended-surface-v2",
+          "surfaceRequest": "surface-request-v2",
+          "surfaceCursor": "surface-cursor-v2",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "729000",
+        "visitedNodes": 769341,
+        "retainedBufferBytes": 8650752,
+        "accountedBufferBytes": 10813440
+      },
+      "worker": {
+        "available": true,
+        "usedSize": 1059800,
+        "totalSize": 1835008,
+        "embedderHeapUsedSize": 15400,
+        "backingStorageSize": 9024581
+      },
+      "main": {
+        "available": true,
+        "usedSize": 975484,
+        "totalSize": 1835008,
+        "embedderHeapUsedSize": 301648,
+        "backingStorageSize": 332457
+      }
+    },
+    {
+      "scenario": "Fret-36 C dominant-11 accompaniment forced replay at completion or truthful pause",
+      "summary": {
+        "structural": 2164639,
+        "pass": 34040,
+        "uncertain": 2130599,
+        "reject": 0,
+        "survivors": 2164639,
+        "matching": 13760,
+        "matchingPass": 13760,
+        "matchingUncertain": 0,
+        "assessed": 2164639,
+        "explicitMatching": 2164639,
+        "completeness": "partial",
+        "hasMore": "unknown",
+        "mode": "replay",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":36,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"request\":{\"schema\":\"surface-request-v2\",\"surface\":\"recommended\",\"view\":{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}},\"versions\":{\"demand\":\"physical-demand-policy-v1\",\"demandGeometry\":\"demand-geometry-um-v1\",\"empirical\":{\"enabled\":false},\"engine\":\"guitar-engine/2\",\"features\":\"legacy-rank-features-v1\",\"geometry\":\"geometry-um-v1\",\"numeric\":\"rank-int-v1\",\"physical\":\"physical-screen-v1\",\"product\":\"product-policy-v2.1\",\"protocol\":\"engine-worker-v2\",\"ranking\":\"classic-v1\",\"realization\":\"identity-v1\",\"structural\":\"structural-v1\",\"surface\":\"recommended-surface-v2\",\"surfaceCursor\":\"surface-cursor-v2\",\"surfaceRequest\":\"surface-request-v2\",\"translation\":\"practical-exact-translation-v1\",\"vocabulary\":\"practical-vocabulary-v1\"}}",
+        "versions": {
+          "engine": "guitar-engine/2",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v2",
+          "product": "product-policy-v2.1",
+          "demand": "physical-demand-policy-v1",
+          "demandGeometry": "demand-geometry-um-v1",
+          "vocabulary": "practical-vocabulary-v1",
+          "translation": "practical-exact-translation-v1",
+          "surface": "recommended-surface-v2",
+          "surfaceRequest": "surface-request-v2",
+          "surfaceCursor": "surface-cursor-v2",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "57760000",
+        "visitedNodes": 6126080,
+        "retainedBufferBytes": 0,
+        "accountedBufferBytes": 0
+      },
+      "worker": {
+        "available": true,
+        "usedSize": 792064,
+        "totalSize": 1310720,
+        "embedderHeapUsedSize": 15656,
+        "backingStorageSize": 373849
+      },
+      "main": {
+        "available": true,
+        "usedSize": 965432,
+        "totalSize": 1835008,
+        "embedderHeapUsedSize": 301568,
+        "backingStorageSize": 332457
+      }
+    }
+  ],
+  "limits": [
+    "Lookup coverage is C major standalone and C dominant-11 accompaniment, 30 requests each; not all 480 requests.",
+    "Lookup elapsed time includes the main-thread production parseOutput validator and measurement JSON-byte accounting; arrival and parse durations are also recorded separately.",
+    "Memory stress is 100 completed small-domain query/context/view changes followed by a same-wide-request comparison. Two post-GC endpoints cannot prove absence of every leak.",
+    "Large fret-36 replay is measured at the truthful ten-second pause and then cancelled if it has not completed; no partial state is claimed exact.",
+    "No product rendering, synthesis, or representative physical-mobile measurements."
+  ],
+  "passed": true,
+  "widestDefaultFixture": {
+    "chordId": "dominant-11",
+    "rootPitchClass": 0,
+    "context": "accompaniment",
+    "structuralCount": 267524,
+    "censusSha256": "41f6a6bf7778565869c26cfe0e96f24218e965818a48936730a7d8617f37d52b"
+  },
+  "workerHeapDeltaAfter100Changes": {
+    "usedSize": 184828,
+    "backingStorageSize": 0
+  },
+  "maximumMessageBytes": 249775,
+  "protocolErrors": []
+}

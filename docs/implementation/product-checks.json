@@ -1,0 +1,339 @@
+{
+  "schema": "product-integration-checks-v1",
+  "recordedAt": "2026-09-13T08:26:43.348Z",
+  "baseline": "32f9d3f8a71dc0d2a5f18520bfad738e67ba26c0",
+  "implementationCommit": "00dc4895b8e366692c283eed3c16aa2b78ba51b3",
+  "unit": {
+    "command": "node node_modules/vitest/vitest.mjs run --pool threads",
+    "success": true,
+    "passed": 642,
+    "failed": 0,
+    "skipped": 34,
+    "files": 89,
+    "priorAttempt": {
+      "outcome": "one workerService pause/continue test exceeded 5000ms while typecheck and lint ran concurrently",
+      "observedMs": 6020,
+      "resolution": "Unchanged complete suite passed without concurrent checks; test duration 4343ms. No timeout/assertion changes."
+    }
+  },
+  "typecheck": {
+    "command": "node node_modules/typescript/bin/tsc --noEmit --incremental false --pretty false",
+    "exitCode": 0
+  },
+  "build": {
+    "command": "npm run build",
+    "exitCode": 0,
+    "buildId": "FMjDGjRhqWxf4MVLwfgcT"
+  },
+  "scopedLint": {
+    "command": "node node_modules/eslint/bin/eslint.js src scripts/engine-integration --max-warnings 0",
+    "exitCode": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "repositoryLint": {
+    "command": "node node_modules/eslint/bin/eslint.js . --ignore-pattern .tmp-policy-baseline/**",
+    "exitCode": 1,
+    "errors": 357,
+    "warnings": 9456,
+    "files": [
+      {
+        "path": ".research/generator-constraint-study-v1/adversarial.ts",
+        "errors": 1,
+        "warnings": 0
+      },
+      {
+        "path": ".research/generator-constraint-study-v1/counterexamples.cjs",
+        "errors": 3,
+        "warnings": 0
+      },
+      {
+        "path": ".research/generator-constraint-study-v1/engineering-optimized-p5.ts",
+        "errors": 5,
+        "warnings": 0
+      },
+      {
+        "path": ".research/generator-constraint-study-v1/engineering-runner.ts",
+        "errors": 5,
+        "warnings": 0
+      },
+      {
+        "path": ".research/generator-constraint-study-v1/run-adversarial.cjs",
+        "errors": 5,
+        "warnings": 0
+      },
+      {
+        "path": ".research/generator-constraint-study-v1/run-engineering.cjs",
+        "errors": 5,
+        "warnings": 0
+      },
+      {
+        "path": ".research/generator-constraint-study-v1/run-optimized-p5.cjs",
+        "errors": 5,
+        "warnings": 0
+      },
+      {
+        "path": ".research/generator-constraint-study-v1/verify-study.cjs",
+        "errors": 4,
+        "warnings": 0
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/server/app/_global-error/page.js",
+        "errors": 15,
+        "warnings": 22
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/server/app/_not-found/page.js",
+        "errors": 15,
+        "warnings": 21
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/server/app/favicon.ico/route.js",
+        "errors": 8,
+        "warnings": 33
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/server/app/page.js",
+        "errors": 20,
+        "warnings": 1225
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/server/chunks/103.js",
+        "errors": 3,
+        "warnings": 333
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/server/chunks/725.js",
+        "errors": 0,
+        "warnings": 17
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/server/chunks/740.js",
+        "errors": 0,
+        "warnings": 75
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/server/chunks/988.js",
+        "errors": 2,
+        "warnings": 502
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/server/middleware-build-manifest.js",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/server/webpack-runtime.js",
+        "errors": 2,
+        "warnings": 10
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/F-etmSSzDHoQ-tjS1fFfI/_buildManifest.js",
+        "errors": 0,
+        "warnings": 4
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/F-etmSSzDHoQ-tjS1fFfI/_ssgManifest.js",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/chunks/335-ce6d5fe832a23306.js",
+        "errors": 4,
+        "warnings": 1114
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/chunks/387.0990cddf32ad88b5.js",
+        "errors": 0,
+        "warnings": 11
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/chunks/446.9f3b84c08c540e01.js",
+        "errors": 0,
+        "warnings": 2
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/chunks/839.7b096209b0b89601.js",
+        "errors": 0,
+        "warnings": 17
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/chunks/87c73c54-4584b83e8281e545.js",
+        "errors": 0,
+        "warnings": 768
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/chunks/968-8ed2aea14a0ac4b2.js",
+        "errors": 2,
+        "warnings": 521
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/chunks/app/_global-error/page-327b769f8d5a8082.js",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/chunks/app/_not-found/page-a17dbce826bfa0ed.js",
+        "errors": 0,
+        "warnings": 7
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/chunks/app/layout-8cfcb6a3235a1fb6.js",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/chunks/app/page-42673fae938f7e8f.js",
+        "errors": 0,
+        "warnings": 119
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/chunks/framework-b9860bd015778422.js",
+        "errors": 0,
+        "warnings": 696
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/chunks/main-4c8b2143e7403b7f.js",
+        "errors": 0,
+        "warnings": 280
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/chunks/main-app-ebc0c7949da1cb58.js",
+        "errors": 0,
+        "warnings": 2
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/chunks/next/dist/client/components/builtin/app-error-327b769f8d5a8082.js",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/chunks/next/dist/client/components/builtin/forbidden-327b769f8d5a8082.js",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/chunks/next/dist/client/components/builtin/global-error-52a18fee425acb05.js",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/chunks/next/dist/client/components/builtin/not-found-327b769f8d5a8082.js",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/chunks/next/dist/client/components/builtin/unauthorized-327b769f8d5a8082.js",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/chunks/polyfills-42372ed130431b0a.js",
+        "errors": 10,
+        "warnings": 358
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/static/chunks/webpack-097c97b515c0b0cd.js",
+        "errors": 0,
+        "warnings": 16
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/types/app/layout.ts",
+        "errors": 26,
+        "warnings": 4
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/types/app/page.ts",
+        "errors": 26,
+        "warnings": 4
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/types/routes.d.ts",
+        "errors": 1,
+        "warnings": 0
+      },
+      {
+        "path": ".research/p5-integration-checkout/.next/types/validator.ts",
+        "errors": 24,
+        "warnings": 4
+      },
+      {
+        "path": ".research/p5-validation-chrome-profile/Default/Extensions/ghbmnnjooekpmoecnnnilnnbdlolhkhi/1.110.1_0/offscreendocument_main.js",
+        "errors": 17,
+        "warnings": 446
+      },
+      {
+        "path": ".research/p5-validation-chrome-profile/Default/Extensions/ghbmnnjooekpmoecnnnilnnbdlolhkhi/1.110.1_0/service_worker_bin_prod.js",
+        "errors": 20,
+        "warnings": 447
+      },
+      {
+        "path": ".research/p5-validation-chrome-profile/Default/Extensions/nmmhkkegccagdldgiimedpiccmgmieda/1.0.0.6_0/craw_background.js",
+        "errors": 7,
+        "warnings": 1460
+      },
+      {
+        "path": ".research/p5-validation-chrome-profile/Default/Extensions/nmmhkkegccagdldgiimedpiccmgmieda/1.0.0.6_0/craw_window.js",
+        "errors": 7,
+        "warnings": 492
+      },
+      {
+        "path": ".research/p5-validation-chrome-profile/WasmTtsEngine/20260826.1/background_compiled.js",
+        "errors": 5,
+        "warnings": 48
+      },
+      {
+        "path": ".research/p5-validation-chrome-profile/WasmTtsEngine/20260826.1/bindings_main.js",
+        "errors": 10,
+        "warnings": 165
+      },
+      {
+        "path": ".research/p5-validation-chrome-profile/WasmTtsEngine/20260826.1/offscreen_compiled.js",
+        "errors": 14,
+        "warnings": 214
+      },
+      {
+        "path": "scripts/physical-envelope-v2/census.ts",
+        "errors": 7,
+        "warnings": 0
+      },
+      {
+        "path": "scripts/web-voicing-corpus-v2/analyze-sitewide.ts",
+        "errors": 38,
+        "warnings": 1
+      },
+      {
+        "path": "scripts/web-voicing-corpus-v2/analyze.mjs",
+        "errors": 0,
+        "warnings": 1
+      },
+      {
+        "path": "scripts/web-voicing-corpus-v2/evaluate.ts",
+        "errors": 19,
+        "warnings": 2
+      },
+      {
+        "path": "scripts/web-voicing-corpus-v2/map-sitewide.ts",
+        "errors": 5,
+        "warnings": 0
+      },
+      {
+        "path": "scripts/web-voicing-corpus-v2/report-sitewide.mjs",
+        "errors": 0,
+        "warnings": 5
+      },
+      {
+        "path": "scripts/web-voicing-corpus-v2/verify-sitewide.ts",
+        "errors": 17,
+        "warnings": 1
+      }
+    ],
+    "scope": "Existing frozen research/study scripts and archived build/browser material remain unchanged. Only the generated Stage-9 comparison snapshot is additionally ignored."
+  },
+  "frozenValidation": true,
+  "notes": [
+    "No new research, model fitting, deployment or frozen artifact modification.",
+    "The ordinary shipping matcher/build does not read frozen research files.",
+    "Full suite still includes existing research checkout tests; no research exclusion was added."
+  ]
+}

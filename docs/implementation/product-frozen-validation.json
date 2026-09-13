@@ -1,0 +1,29 @@
+{
+  "schema": "product-frozen-validation-v1",
+  "measuredAt": "2026-09-13T08:22:49.397Z",
+  "checks": [
+    "reproduces every frozen observation and the 162 conflicts without fitting",
+    "matches the exact1530 vocabulary and keeps77 extrapolations distinct, with no cross-quality or open translation leakage"
+  ],
+  "passed": true,
+  "mapped": 1454,
+  "excluded": 56,
+  "compact": 1292,
+  "passConflicts": 141,
+  "uncertainConflicts": 21,
+  "closedB": 109,
+  "closedA": 2,
+  "closedC": 1,
+  "exactOpen": 99,
+  "uniqueObserved": 1453,
+  "extrapolated": 77,
+  "uniqueVocabulary": 1530,
+  "queryPlacementProbes": 765840,
+  "sourceHashes": {
+    "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/proposed-vocabulary.json": "f274602f41a4f292a5a47d073cb88dd317522548830434023670aaf67b475298",
+    "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/source-observed-placements.json": "4e990b7c5bef92426fb9fcf652e367a45f4ae75e769487a19ed5e991cc1273df",
+    "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/product-extrapolated-placements.json": "1259c90bbb19017239216386ef865895598121d4f49679478e1b3d5c6ff1066c",
+    ".research/web-voicing-corpus-v2/sitewide-practical-mapping/rows.jsonl": "25e5d1a9a95747c197a959958e1d55e841c4d2962ab78b9319cfec8a588216fd",
+    "src/domain/chord/engine/practicalVocabularyData.json": "28ca079b2ef8f2bb48aff95c882fa91b406226c8340165efec9be69dc433b22f"
+  }
+}

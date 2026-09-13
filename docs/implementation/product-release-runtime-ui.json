@@ -1,0 +1,90 @@
+{
+  "schema": "engine-release-runtime-ui-v1",
+  "measuredAt": "2026-09-13T08:24:11.766Z",
+  "url": "http://localhost:3004",
+  "buildId": "FMjDGjRhqWxf4MVLwfgcT",
+  "scope": "Actual release application in desktop Chrome/Firefox/WebKit, with keyboard interaction and 390 CSS-pixel reflow. No physical-mobile, hearing, or human-preference claim.",
+  "sourceHashes": {
+    "src/components/guitar/ClientApp.tsx": "5eea34c66c26fda8cf889e9595eeb8e42ad1f4a389ec088e39674297e68ac2c0",
+    "src/components/guitar/chord/ChordExplorationPanel.tsx": "acef571772c1fa9a7571341b6735dd8b9336f20d77ddfa771c451f4aad8ebe87",
+    "src/components/guitar/chord/ChordDialog.tsx": "465443f606c5eba3ac557866b703b5a839de8fc80175691caff6dfd0cd9dede9",
+    "src/components/guitar/chord/explorationController.ts": "0ccfe46b3c1cf53a7736b631c9ad0dd77ebd944ba3719192bbcb83edb0920d8b",
+    "src/components/guitar/chord/useChordExploration.ts": "1de3f57f9cf30d30a3ea8a1f1611c6bd92ca56e597f752c1a3466cad2d47227f"
+  },
+  "browsers": [
+    {
+      "name": "Chrome",
+      "version": "152.0.7977.84",
+      "status": "PASS",
+      "checks": [
+        "Chord entry renders six exact cards",
+        "Recommended default and primary UI omit all internal policy/template controls",
+        "All expands full reachability without changing selection",
+        "Keyboard surface switch restores identical Recommended first page and selected identity",
+        "Next page renders twelve cards and retains selection",
+        "Details shows fourteen terms, heuristic limits, absent human validation and scale provenance",
+        "Root-omit exact no-match view retains and explains outside-filter selection",
+        "Accompaniment context produces matches and revalidates selected identity",
+        "Full-fretboard dialog closes with Escape and restores trigger focus",
+        "390-pixel viewport has no page-level horizontal overflow"
+      ],
+      "reflow": {
+        "viewport": 390,
+        "document": 390,
+        "body": 390
+      },
+      "screenshot": "docs/implementation/screenshots/product-chrome-390px.png",
+      "pageErrors": []
+    },
+    {
+      "name": "Firefox",
+      "version": "153.0",
+      "status": "PASS",
+      "checks": [
+        "Chord entry renders six exact cards",
+        "Recommended default and primary UI omit all internal policy/template controls",
+        "All expands full reachability without changing selection",
+        "Keyboard surface switch restores identical Recommended first page and selected identity",
+        "Next page renders twelve cards and retains selection",
+        "Details shows fourteen terms, heuristic limits, absent human validation and scale provenance",
+        "Root-omit exact no-match view retains and explains outside-filter selection",
+        "Accompaniment context produces matches and revalidates selected identity",
+        "Full-fretboard dialog closes with Escape and restores trigger focus",
+        "390-pixel viewport has no page-level horizontal overflow"
+      ],
+      "reflow": {
+        "viewport": 390,
+        "document": 390,
+        "body": 390
+      },
+      "screenshot": "docs/implementation/screenshots/product-firefox-390px.png",
+      "pageErrors": []
+    },
+    {
+      "name": "WebKit",
+      "version": "26.5",
+      "status": "PASS",
+      "checks": [
+        "Chord entry renders six exact cards",
+        "Recommended default and primary UI omit all internal policy/template controls",
+        "All expands full reachability without changing selection",
+        "Keyboard surface switch restores identical Recommended first page and selected identity",
+        "Next page renders twelve cards and retains selection",
+        "Details shows fourteen terms, heuristic limits, absent human validation and scale provenance",
+        "Root-omit exact no-match view retains and explains outside-filter selection",
+        "Accompaniment context produces matches and revalidates selected identity",
+        "Full-fretboard dialog closes with Escape and restores trigger focus",
+        "390-pixel viewport has no page-level horizontal overflow"
+      ],
+      "reflow": {
+        "viewport": 390,
+        "document": 390,
+        "body": 390
+      },
+      "screenshot": "docs/implementation/screenshots/product-webkit-390px.png",
+      "pageErrors": []
+    }
+  ],
+  "allPassed": true,
+  "resolvedHistory": []
+}
