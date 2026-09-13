@@ -164,22 +164,33 @@ export class PageScan {
         return freeze({schema:'scan-checkpoint-v1',requestKey:this.session.request.requestKey,viewKey:this.view.key,pageSize:this.pageSize,
             after:this.after,iterator:this.iterator.checkpoint(),counts:{...this.counts},afterCount:this.afterCount,heap:this.heap.sorted()});
     }
-    finish():ExactPage {
+    private *materializePage():Generator<void,ExactPage> {
         if(!this.session.isCurrent(this.serial))throw new EngineError('contract-error','This scan has been superseded.');
         if(!this.done)throw new EngineError('contract-error','An incomplete scan cannot return an exact page.');
         if(this.result)return this.result;
         this.validateCounts(this.counts);
         const ordered=this.heap.sorted();
-        const rows=ordered.map((row,i)=>{
+        const rows:PresentationCandidate[]=[];
+        for(let i=0;i<ordered.length;i++) {
+            const row=ordered[i];
             const candidate=this.session.lookup(allocationId(this.session.request.structural.instrument.tuningMidi,row.tie));
             if(candidate.rank.scoreNumerator!==row.scoreNumerator||candidate.physical.status!==row.status)throw new EngineError('contract-error','Packed and materialized results differ.');
-            return freeze({...candidate,displayRank:this.counts.matching-this.afterCount+i+1});
-        });
+            rows.push(freeze({...candidate,displayRank:this.counts.matching-this.afterCount+i+1}));
+            yield;
+            if(!this.session.isCurrent(this.serial))throw new EngineError('contract-error','This scan has been superseded.');
+        }
         const last=ordered.at(-1);
         const nextCursor:PageCursor|null=last?{schema:'cursor-v1',requestKey:this.session.request.requestKey,profileKey:this.session.request.physicalProfile.key,
             viewKey:this.view.key,versions:ENGINE_VERSIONS,last:{scoreNumerator:last.scoreNumerator,tie:last.tie,distance:last.distance,allocationId:rows[rows.length-1].candidate.allocationId}}:null;
         this.result=freeze({rows,summary:this.summary(),nextCursor,outcome:this.counts.structural===0?'structurally-empty':this.counts.matching===0?'no-matches':'results'});
         return this.result;
+    }
+    finish():ExactPage {
+        const work=this.materializePage();for(;;){const step=work.next();if(step.done)return step.value;}
+    }
+    async finishAsync(yieldTask:()=>Promise<void>,now:()=>number=()=>performance.now()):Promise<ExactPage> {
+        const work=this.materializePage();let slice=now();
+        for(;;){const step=work.next();if(step.done)return step.value;if(now()-slice>=8){await yieldTask();slice=now();}}
     }
     private validateCounts(c:Counts){
         record(c,['structural','pass','uncertain','reject','survivors','matching','matchingPass','matchingUncertain','assessed'],'counts','contract-error');

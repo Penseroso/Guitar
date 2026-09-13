@@ -7,7 +7,7 @@ export function createGeometry(scaleLengthUm: number) {
     const spans = new Int32Array(37 * 37);
     for (let lo = 0; lo <= 36; lo++) for (let hi = lo; hi <= 36; hi++) {
         const product = BigInt(scaleLengthUm) * BigInt(WIRE_REMAINDER_Q[lo] - WIRE_REMAINDER_Q[hi]);
-        const distance = Number((product + 500000000000n) / 1000000000000n);
+        const distance = Number((product + BigInt(500000000000)) / BigInt(1000000000000));
         spans[lo * 37 + hi] = spans[hi * 37 + lo] = distance;
     }
     return Object.freeze({

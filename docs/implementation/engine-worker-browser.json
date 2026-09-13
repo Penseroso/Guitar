@@ -1,0 +1,156 @@
+{
+  "schema": "engine-worker-browser-v1",
+  "measuredAt": "2026-09-13T01:54:45.600Z",
+  "browser": "Chrome/152.0.7977.84",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+  "cdpProtocol": "1.3",
+  "os": "win32 10.0.26200",
+  "cpu": "AMD Ryzen 5 7500F 6-Core Processor             ",
+  "logicalProcessors": 12,
+  "totalMemoryBytes": 34025402368,
+  "build": "esbuild production-domain bundle, isolated static harness; not a Next release/UI benchmark",
+  "sourceHashes": {
+    "src/components/guitar/chord/engine.worker.ts": "67a42a6fe95d830c98b8bc0777c99a3aa7a5838be8ef561c18502fa73c88d61b",
+    "src/domain/chord/engine/workerService.ts": "614b6dfea30f0fe8aff464b77e87ee34f9273cffcc61e7081a3f8c8c0c1a91c1",
+    "src/domain/chord/engine/workerProtocol.ts": "87820c546304728eed2d7a67f51bfae63c43c897d1320e62ec3e0e613175775d"
+  },
+  "passed": true,
+  "assertions": [
+    "C major produces six exact first-page rows",
+    "PASS and UNCERTAIN independently account for all structural rows",
+    "Partial progress precedes the exact page",
+    "Cursor returns twelve additional rows",
+    "Successive exact pages have no repeated allocation IDs",
+    "Direct lookup resolves an allocation outside the initial page",
+    "SET_VIEW changes matching rows under the new view revision",
+    "SET_VIEW preserves structural universe counts",
+    "Broad dominant 11 query retains uncertain survivors",
+    "Rapid START supersedes old request without an old exact result",
+    "Replacement request completes with its own revision",
+    "Cooperative cancellation acknowledged within 100 ms",
+    "No cancelled request publishes a late exact page",
+    "Invalid protocol schema returns typed transport ERROR",
+    "Test-only 1 ms budget pauses with truthful partial counts and resumable state",
+    "Continue reaches the same exact structural count",
+    "Pause/continue preserves exact first-page allocation ordering",
+    "Every observed worker message stays within 1 MiB"
+  ],
+  "measurements": [
+    {
+      "scenario": "C major standalone first exact page",
+      "acceptedMs": 10,
+      "exactPageMs": 82.70000000298023,
+      "summary": {
+        "structural": 13331,
+        "pass": 992,
+        "uncertain": 12339,
+        "reject": 0,
+        "survivors": 13331,
+        "matching": 13331,
+        "matchingPass": 992,
+        "matchingUncertain": 12339,
+        "assessed": 13331,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "compact",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"major\",\"context\":\"standalone\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\"],\"formulaKey\":\"catalog-v1:major\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":3,\"predicates\":[],\"required\":[\"1\",\"3\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}",
+        "versions": {
+          "engine": "guitar-engine/1",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v1",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "22500",
+        "visitedNodes": 31441,
+        "retainedBufferBytes": 524288,
+        "accountedBufferBytes": 655360
+      },
+      "responseBytes": 49211
+    },
+    {
+      "scenario": "C major next twelve rows",
+      "elapsedMs": 15.700000002980232,
+      "responseBytes": 93150
+    },
+    {
+      "scenario": "Direct lookup",
+      "elapsedMs": 0.30000001192092896,
+      "responseBytes": 7462
+    },
+    {
+      "scenario": "Completed-pool view change",
+      "elapsedMs": 10.799999997019768,
+      "responseBytes": 49276
+    },
+    {
+      "scenario": "C dominant 11 accompaniment first exact page",
+      "elapsedMs": 1165.7000000029802,
+      "responseBytes": 51121,
+      "summary": {
+        "structural": 267524,
+        "pass": 8243,
+        "uncertain": 259281,
+        "reject": 0,
+        "survivors": 267524,
+        "matching": 267524,
+        "matchingPass": 8243,
+        "matchingUncertain": 259281,
+        "assessed": 267524,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "compact",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}",
+        "versions": {
+          "engine": "guitar-engine/1",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v1",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "729000",
+        "visitedNodes": 769341,
+        "retainedBufferBytes": 8650752,
+        "accountedBufferBytes": 10813440
+      }
+    },
+    {
+      "scenario": "Cancellation acknowledgement",
+      "elapsedMs": 4.100000008940697,
+      "responseBytes": 3111
+    },
+    {
+      "scenario": "Test-only pause then uninterrupted Continue",
+      "resumedMs": 978.0999999940395,
+      "partialStructuralCount": 1236
+    }
+  ],
+  "maximumMessageBytes": 93150,
+  "workerRuns": 2,
+  "device": "Windows desktop; no mobile emulation or physical mobile measurement",
+  "limits": [
+    "Single smoke run per scenario; not the >=30-run 480-request performance matrix.",
+    "Desktop Chromium only; no Firefox, WebKit or real mobile measurement.",
+    "No product UI, accessibility, render, audio or main-thread heap acceptance claim."
+  ]
+}
