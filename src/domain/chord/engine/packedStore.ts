@@ -48,7 +48,10 @@ export class PackedStore {
     read(index:number):StoredRow {
         integer(index,0,this.count-1,'row index');
         const chunk=this.chunks[Math.floor(index/4096)],offset=(index%4096)*PACKED_ROW_BYTES;
-        const states=Array.from({length:6},(_,s)=>chunk.getInt8(offset+s)) as unknown as Six<number>;
+        // A fixed six-string record needs no per-row Array.from callback/iterator.
+        // Keep a fresh array: page heaps and callers may retain this snapshot.
+        const states:Six<number>=[chunk.getInt8(offset),chunk.getInt8(offset+1),chunk.getInt8(offset+2),
+            chunk.getInt8(offset+3),chunk.getInt8(offset+4),chunk.getInt8(offset+5)];
         return {states,status:chunk.getUint8(offset+6)===0?'PASS':'UNCERTAIN',scoreNumerator:chunk.getInt32(offset+20,true)};
     }
 }

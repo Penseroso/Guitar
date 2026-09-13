@@ -1,0 +1,862 @@
+{
+  "schema": "engine-worker-cost-v1",
+  "measuredAt": "2026-09-13T02:56:11.444Z",
+  "browser": "Chrome/152.0.7977.84",
+  "scope": "Actual DedicatedWorker request/response, main-thread parseOutput validation and post-GC CDP heaps. Dedicated-worker and harness-page heap values include runtime/bundle/instrumentation allocations; they are not exact engine-only heap attribution.",
+  "sourceHashes": {
+    "src/domain/chord/engine/packedStore.ts": "ccee506d0af3e6beec9440c8c8051706471d1b0b21476352d81ec9f76617c2a1",
+    "src/domain/chord/engine/workerService.ts": "614b6dfea30f0fe8aff464b77e87ee34f9273cffcc61e7081a3f8c8c0c1a91c1",
+    "src/domain/chord/engine/workerProtocol.ts": "87820c546304728eed2d7a67f51bfae63c43c897d1320e62ec3e0e613175775d",
+    "src/domain/chord/engine/session.ts": "1b31a2141b97599679f9f0a8b77cbf64712a51dd00fd94deaae520d68b78fbed"
+  },
+  "measurements": [
+    {
+      "scenario": "major standalone complete pool + 30 distinct direct lookups",
+      "firstExactPageMs": 88.59999999403954,
+      "summary": {
+        "structural": 13331,
+        "pass": 992,
+        "uncertain": 12339,
+        "reject": 0,
+        "survivors": 13331,
+        "matching": 13331,
+        "matchingPass": 992,
+        "matchingUncertain": 12339,
+        "assessed": 13331,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "compact",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"major\",\"context\":\"standalone\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\"],\"formulaKey\":\"catalog-v1:major\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":3,\"predicates\":[],\"required\":[\"1\",\"3\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}",
+        "versions": {
+          "engine": "guitar-engine/1",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v1",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "22500",
+        "visitedNodes": 31441,
+        "retainedBufferBytes": 524288,
+        "accountedBufferBytes": 655360
+      },
+      "lookup": {
+        "samples": [
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,-1,0,2,3,-1",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.29999999701976776,
+            "bytes": 7374
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,8,9,10,-1,8",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7463
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,8,9,10,-1,-1",
+            "elapsedMs": 0.3999999910593033,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.29999999701976776,
+            "bytes": 7415
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:8,8,9,10,-1,8",
+            "elapsedMs": 0.30000001192092896,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.10000000894069672,
+            "bytes": 7472
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,5,5,5,3,-1",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.30000001192092896,
+            "bytes": 7456
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,5,0,5,3,-1",
+            "elapsedMs": 0.3999999910593033,
+            "arrivalMs": 0.19999998807907104,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7448
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:3,5,5,5,3,-1",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7450
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,1,0,2,3,-1",
+            "elapsedMs": 0.29999999701976776,
+            "arrivalMs": 0.10000000894069672,
+            "parseMs": 0.09999999403953552,
+            "bytes": 7449
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,8,0,10,10,8",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7500
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,8,9,10,10,8",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.10000000894069672,
+            "parseMs": 0.29999999701976776,
+            "bytes": 7500
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,-1,0,2,3,-1",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.30000001192092896,
+            "bytes": 7423
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,5,5,5,7,8",
+            "elapsedMs": 0.29999999701976776,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7495
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:8,8,9,10,10,8",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.09999999403953552,
+            "bytes": 7509
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,5,0,5,3,-1",
+            "elapsedMs": 0.29999999701976776,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7408
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,5,0,-1,3,-1",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7420
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,8,0,10,-1,8",
+            "elapsedMs": 0.3999999910593033,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.29999999701976776,
+            "bytes": 7460
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:3,-1,0,2,3,-1",
+            "elapsedMs": 0.29999999701976776,
+            "arrivalMs": 0.10000000894069672,
+            "parseMs": 0.19999998807907104,
+            "bytes": 7419
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,5,5,5,7,8",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7454
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,1,0,2,3,-1",
+            "elapsedMs": 0.29999999701976776,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7410
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:3,5,0,5,3,-1",
+            "elapsedMs": 0.29999999701976776,
+            "arrivalMs": 0.10000000894069672,
+            "parseMs": 0.19999998807907104,
+            "bytes": 7447
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,1,0,-1,3,-1",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.10000000894069672,
+            "bytes": 7420
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,-1,5,5,3,-1",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7420
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,5,-1,5,3,-1",
+            "elapsedMs": 0.29999999701976776,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.10000000894069672,
+            "bytes": 7420
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,8,9,10,-1,-1",
+            "elapsedMs": 0.29999999701976776,
+            "arrivalMs": 0.10000000894069672,
+            "parseMs": 0.19999998807907104,
+            "bytes": 7380
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:8,8,9,10,-1,-1",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.29999999701976776,
+            "bytes": 7422
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,-1,0,2,3,0",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7417
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,8,-1,10,10,8",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.10000000894069672,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7471
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,-1,0,-1,7,8",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7377
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,8,9,10,-1,8",
+            "elapsedMs": 0.29999999701976776,
+            "arrivalMs": 0,
+            "parseMs": 0.19999998807907104,
+            "bytes": 7428
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:3,1,0,2,3,-1",
+            "elapsedMs": 0.29999999701976776,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.10000000894069672,
+            "bytes": 7449
+          }
+        ],
+        "p50Ms": 0.4000000059604645,
+        "p95Ms": 0.5,
+        "maxMs": 0.5
+      }
+    },
+    {
+      "scenario": "dominant-11 accompaniment complete pool + 30 distinct direct lookups",
+      "firstExactPageMs": 959.7000000029802,
+      "summary": {
+        "structural": 267524,
+        "pass": 8243,
+        "uncertain": 259281,
+        "reject": 0,
+        "survivors": 267524,
+        "matching": 267524,
+        "matchingPass": 8243,
+        "matchingUncertain": 259281,
+        "assessed": 267524,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "compact",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}",
+        "versions": {
+          "engine": "guitar-engine/1",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v1",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "729000",
+        "visitedNodes": 769341,
+        "retainedBufferBytes": 8650752,
+        "accountedBufferBytes": 10813440
+      },
+      "lookup": {
+        "samples": [
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,3,3,3,3,-1",
+            "elapsedMs": 0.5999999940395355,
+            "arrivalMs": 0.29999999701976776,
+            "parseMs": 0.29999999701976776,
+            "bytes": 7652
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:3,3,3,3,3,-1",
+            "elapsedMs": 0.6000000089406967,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.4000000059604645,
+            "bytes": 7648
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:6,6,0,0,7,8",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.29999999701976776,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7713
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,6,7,8,8,8",
+            "elapsedMs": 0.3999999910593033,
+            "arrivalMs": 0.19999998807907104,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7710
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:10,11,0,0,8,8",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7718
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:6,6,0,0,8,8",
+            "elapsedMs": 0.29999999701976776,
+            "arrivalMs": 0.10000000894069672,
+            "parseMs": 0.19999998807907104,
+            "bytes": 7698
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,6,7,8,-1,8",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7669
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,6,7,8,8,8",
+            "elapsedMs": 0.30000001192092896,
+            "arrivalMs": 0,
+            "parseMs": 0.30000001192092896,
+            "bytes": 7674
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,11,10,0,8,8",
+            "elapsedMs": 0.29999999701976776,
+            "arrivalMs": 0.19999998807907104,
+            "parseMs": 0.10000000894069672,
+            "bytes": 7720
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:10,11,0,8,8,8",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.29999999701976776,
+            "bytes": 7726
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,8,9,8,8,8",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.19999998807907104,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7703
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,-1,3,3,3,-1",
+            "elapsedMs": 0.29999999701976776,
+            "arrivalMs": 0,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7621
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,5,3,3,3,-1",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.10000000894069672,
+            "parseMs": 0.29999999701976776,
+            "bytes": 7670
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:6,5,0,0,8,8",
+            "elapsedMs": 0.5999999940395355,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.29999999701976776,
+            "bytes": 7712
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,6,0,8,8,8",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.10000000894069672,
+            "parseMs": 0.19999998807907104,
+            "bytes": 7705
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:6,6,0,8,8,8",
+            "elapsedMs": 0.29999999701976776,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7709
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,8,10,8,8,8",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.10000000894069672,
+            "parseMs": 0.3999999910593033,
+            "bytes": 7714
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:8,8,9,8,8,8",
+            "elapsedMs": 0.30000001192092896,
+            "arrivalMs": 0,
+            "parseMs": 0.30000001192092896,
+            "bytes": 7705
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,11,10,0,8,8",
+            "elapsedMs": 0.3999999910593033,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7684
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:6,6,0,0,-1,8",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.09999999403953552,
+            "bytes": 7664
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:-1,8,9,8,8,8",
+            "elapsedMs": 0.3999999910593033,
+            "arrivalMs": 0.09999999403953552,
+            "parseMs": 0.29999999701976776,
+            "bytes": 7664
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,11,10,8,8,8",
+            "elapsedMs": 0.30000001192092896,
+            "arrivalMs": 0.10000000894069672,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7727
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:8,8,10,8,8,8",
+            "elapsedMs": 0.3999999910593033,
+            "arrivalMs": 0.19999998807907104,
+            "parseMs": 0.10000000894069672,
+            "bytes": 7719
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,1,3,3,3,-1",
+            "elapsedMs": 0.29999999701976776,
+            "arrivalMs": 0.10000000894069672,
+            "parseMs": 0.19999998807907104,
+            "bytes": 7670
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:6,5,0,3,3,-1",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.10000000894069672,
+            "parseMs": 0.29999999701976776,
+            "bytes": 7663
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:3,5,3,3,3,-1",
+            "elapsedMs": 0.30000001192092896,
+            "arrivalMs": 0,
+            "parseMs": 0.30000001192092896,
+            "bytes": 7665
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,11,12,0,8,8",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7729
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:12,11,0,0,8,8",
+            "elapsedMs": 0.5,
+            "arrivalMs": 0.19999998807907104,
+            "parseMs": 0.30000001192092896,
+            "bytes": 7728
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:0,6,0,8,-1,8",
+            "elapsedMs": 0.4000000059604645,
+            "arrivalMs": 0.20000000298023224,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7664
+          },
+          {
+            "allocationId": "shape-v1:64,59,55,50,45,40:6,6,0,8,-1,8",
+            "elapsedMs": 0.29999999701976776,
+            "arrivalMs": 0,
+            "parseMs": 0.20000000298023224,
+            "bytes": 7668
+          }
+        ],
+        "p50Ms": 0.4000000059604645,
+        "p95Ms": 0.5999999940395355,
+        "maxMs": 0.6000000089406967
+      }
+    },
+    {
+      "scenario": "50 complete small-domain query/context changes plus 50 exact view changes, then same wide request and one retained lookup snapshot",
+      "changes": 100,
+      "elapsedMs": 1607.9000000059605,
+      "summary": {
+        "structural": 267524,
+        "pass": 8243,
+        "uncertain": 259281,
+        "reject": 0,
+        "survivors": 267524,
+        "matching": 267524,
+        "matchingPass": 8243,
+        "matchingUncertain": 259281,
+        "assessed": 267524,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "compact",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}",
+        "versions": {
+          "engine": "guitar-engine/1",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v1",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "729000",
+        "visitedNodes": 769341,
+        "retainedBufferBytes": 8650752,
+        "accountedBufferBytes": 10813440
+      }
+    },
+    {
+      "scenario": "Large fret-36 replay memory fixture",
+      "elapsedMs": 10008.70000000298,
+      "state": "PAUSED",
+      "summary": {
+        "structural": 2910857,
+        "pass": 34040,
+        "uncertain": 2876817,
+        "reject": 0,
+        "survivors": 2910857,
+        "matching": 2910857,
+        "matchingPass": 34040,
+        "matchingUncertain": 2876817,
+        "assessed": 2910857,
+        "completeness": "partial",
+        "hasMore": "unknown",
+        "mode": "replay",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":36,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}",
+        "versions": {
+          "engine": "guitar-engine/1",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v1",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "57760000",
+        "visitedNodes": 7533824,
+        "retainedBufferBytes": 0,
+        "accountedBufferBytes": 0
+      }
+    }
+  ],
+  "memory": [
+    {
+      "scenario": "Initial compact worker/harness baseline",
+      "worker": {
+        "available": true,
+        "usedSize": 441180,
+        "totalSize": 1310720,
+        "embedderHeapUsedSize": 15400,
+        "backingStorageSize": 107931
+      },
+      "main": {
+        "available": true,
+        "usedSize": 580872,
+        "totalSize": 1572864,
+        "embedderHeapUsedSize": 301728,
+        "backingStorageSize": 67694
+      }
+    },
+    {
+      "scenario": "major standalone completed compact pool",
+      "summary": {
+        "structural": 13331,
+        "pass": 992,
+        "uncertain": 12339,
+        "reject": 0,
+        "survivors": 13331,
+        "matching": 13331,
+        "matchingPass": 992,
+        "matchingUncertain": 12339,
+        "assessed": 13331,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "compact",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"major\",\"context\":\"standalone\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\"],\"formulaKey\":\"catalog-v1:major\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":3,\"predicates\":[],\"required\":[\"1\",\"3\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}",
+        "versions": {
+          "engine": "guitar-engine/1",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v1",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "22500",
+        "visitedNodes": 31441,
+        "retainedBufferBytes": 524288,
+        "accountedBufferBytes": 655360
+      },
+      "worker": {
+        "available": true,
+        "usedSize": 723156,
+        "totalSize": 1310720,
+        "embedderHeapUsedSize": 15400,
+        "backingStorageSize": 632219
+      },
+      "main": {
+        "available": true,
+        "usedSize": 806176,
+        "totalSize": 1572864,
+        "embedderHeapUsedSize": 301664,
+        "backingStorageSize": 67694
+      }
+    },
+    {
+      "scenario": "dominant-11 accompaniment completed compact pool",
+      "summary": {
+        "structural": 267524,
+        "pass": 8243,
+        "uncertain": 259281,
+        "reject": 0,
+        "survivors": 267524,
+        "matching": 267524,
+        "matchingPass": 8243,
+        "matchingUncertain": 259281,
+        "assessed": 267524,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "compact",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}",
+        "versions": {
+          "engine": "guitar-engine/1",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v1",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "729000",
+        "visitedNodes": 769341,
+        "retainedBufferBytes": 8650752,
+        "accountedBufferBytes": 10813440
+      },
+      "worker": {
+        "available": true,
+        "usedSize": 777216,
+        "totalSize": 1310720,
+        "embedderHeapUsedSize": 15400,
+        "backingStorageSize": 8758683
+      },
+      "main": {
+        "available": true,
+        "usedSize": 833324,
+        "totalSize": 1572864,
+        "embedderHeapUsedSize": 301648,
+        "backingStorageSize": 67694
+      }
+    },
+    {
+      "scenario": "Same C dominant-11 accompaniment after 100 query/context/view changes",
+      "summary": {
+        "structural": 267524,
+        "pass": 8243,
+        "uncertain": 259281,
+        "reject": 0,
+        "survivors": 267524,
+        "matching": 267524,
+        "matchingPass": 8243,
+        "matchingUncertain": 259281,
+        "assessed": 267524,
+        "completeness": "exact",
+        "hasMore": true,
+        "mode": "compact",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":15,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}",
+        "versions": {
+          "engine": "guitar-engine/1",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v1",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "729000",
+        "visitedNodes": 769341,
+        "retainedBufferBytes": 8650752,
+        "accountedBufferBytes": 10813440
+      },
+      "worker": {
+        "available": true,
+        "usedSize": 948984,
+        "totalSize": 1835008,
+        "embedderHeapUsedSize": 15400,
+        "backingStorageSize": 8758683
+      },
+      "main": {
+        "available": true,
+        "usedSize": 888528,
+        "totalSize": 1835008,
+        "embedderHeapUsedSize": 301648,
+        "backingStorageSize": 67694
+      }
+    },
+    {
+      "scenario": "Fret-36 C dominant-11 accompaniment forced replay at completion or truthful pause",
+      "summary": {
+        "structural": 2910857,
+        "pass": 34040,
+        "uncertain": 2876817,
+        "reject": 0,
+        "survivors": 2910857,
+        "matching": 2910857,
+        "matchingPass": 34040,
+        "matchingUncertain": 2876817,
+        "assessed": 2910857,
+        "completeness": "partial",
+        "hasMore": "unknown",
+        "mode": "replay",
+        "requestKey": "{\"interpretation\":{\"chordId\":\"dominant-11\",\"context\":\"accompaniment\",\"formula\":[{\"id\":\"1\",\"interval\":0,\"role\":\"root\"},{\"id\":\"3\",\"interval\":4,\"role\":\"third\"},{\"id\":\"5\",\"interval\":7,\"role\":\"fifth\"},{\"id\":\"b7\",\"interval\":10,\"role\":\"seventh\"},{\"id\":\"9\",\"interval\":2,\"role\":\"extension\"},{\"id\":\"11\",\"interval\":5,\"role\":\"extension\"}],\"policyVersion\":\"identity-v1\",\"realization\":\"identity\",\"rootPitchClass\":0},\"physicalProfile\":{\"allowedThumb\":false,\"key\":\"{\\\"allowedThumb\\\":false,\\\"numericVersion\\\":\\\"geometry-um-v1\\\",\\\"omittedStrings\\\":\\\"unplayed\\\",\\\"scaleLengthUm\\\":647700,\\\"scaleSource\\\":\\\"default\\\",\\\"scope\\\":\\\"generic-static-fretting\\\",\\\"screenVersion\\\":\\\"physical-screen-v1\\\",\\\"severeSpanUm\\\":180000,\\\"warningSpanUm\\\":95000}\",\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000},\"structural\":{\"allowed\":[\"1\",\"3\",\"5\",\"b7\",\"9\",\"11\"],\"formulaKey\":\"catalog-v1:dominant-11\",\"fretDomains\":[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36]],\"instrument\":{\"kind\":\"six-single-strings-12edo\",\"maxModeledFret\":36,\"tuningMidi\":[64,59,55,50,45,40]},\"minDistinctPitchClasses\":2,\"predicates\":[],\"required\":[\"b7\",\"11\"],\"rootPitchClass\":0,\"version\":\"structural-v1\"}}",
+        "profileKey": "{\"allowedThumb\":false,\"numericVersion\":\"geometry-um-v1\",\"omittedStrings\":\"unplayed\",\"scaleLengthUm\":647700,\"scaleSource\":\"default\",\"scope\":\"generic-static-fretting\",\"screenVersion\":\"physical-screen-v1\",\"severeSpanUm\":180000,\"warningSpanUm\":95000}",
+        "viewKey": "{\"bass\":null,\"coverage\":\"any\",\"open\":\"any\",\"order\":{\"kind\":\"classic\"},\"position\":null,\"root\":\"any\",\"schema\":\"view-v1\",\"soundingCount\":null,\"statuses\":[\"PASS\",\"UNCERTAIN\"],\"stringSet\":null,\"top\":null}",
+        "versions": {
+          "engine": "guitar-engine/1",
+          "structural": "structural-v1",
+          "realization": "identity-v1",
+          "physical": "physical-screen-v1",
+          "geometry": "geometry-um-v1",
+          "ranking": "classic-v1",
+          "features": "legacy-rank-features-v1",
+          "numeric": "rank-int-v1",
+          "protocol": "engine-worker-v1",
+          "empirical": {
+            "enabled": false
+          }
+        },
+        "rankMode": "classic-v1",
+        "rawBound": "57760000",
+        "visitedNodes": 7533824,
+        "retainedBufferBytes": 0,
+        "accountedBufferBytes": 0
+      },
+      "worker": {
+        "available": true,
+        "usedSize": 700880,
+        "totalSize": 1048576,
+        "embedderHeapUsedSize": 15656,
+        "backingStorageSize": 107951
+      },
+      "main": {
+        "available": true,
+        "usedSize": 878824,
+        "totalSize": 1572864,
+        "embedderHeapUsedSize": 301568,
+        "backingStorageSize": 67694
+      }
+    }
+  ],
+  "limits": [
+    "Lookup coverage is C major standalone and C dominant-11 accompaniment, 30 requests each; not all 480 requests.",
+    "Lookup elapsed time includes the main-thread production parseOutput validator and measurement JSON-byte accounting; arrival and parse durations are also recorded separately.",
+    "Memory stress is 100 completed small-domain query/context/view changes followed by a same-wide-request comparison. Two post-GC endpoints cannot prove absence of every leak.",
+    "Large fret-36 replay is measured at the truthful ten-second pause and then cancelled if it has not completed; no partial state is claimed exact.",
+    "No product rendering, synthesis, or representative physical-mobile measurements."
+  ],
+  "passed": true,
+  "widestDefaultFixture": {
+    "chordId": "dominant-11",
+    "rootPitchClass": 0,
+    "context": "accompaniment",
+    "structuralCount": 267524,
+    "censusSha256": "41f6a6bf7778565869c26cfe0e96f24218e965818a48936730a7d8617f37d52b"
+  },
+  "workerHeapDeltaAfter100Changes": {
+    "usedSize": 171768,
+    "backingStorageSize": 0
+  },
+  "maximumMessageBytes": 232015,
+  "protocolErrors": []
+}

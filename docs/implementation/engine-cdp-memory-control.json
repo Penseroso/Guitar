@@ -1,0 +1,48 @@
+{
+  "schema": "engine-cdp-memory-control-v1",
+  "startedAt": "2026-09-13T03:35:51.517Z",
+  "measuredAt": "2026-09-13T03:35:55.406Z",
+  "elapsedMs": 3887.1715,
+  "complete": true,
+  "completedCalls": 14000,
+  "browser": "Chrome/152.0.7977.84",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+  "url": "about:blank",
+  "uniqueFixtureExpressions": 480,
+  "expressionFunction": "(async fixture => { await Promise.resolve(); return { fixture, firstPageMs: 120, workerPostAfterActionMs: 1, acceptedAfterPostMs: 2, exactMessageAfterPostMs: 100, exactMessageToRenderedMs: 20, structural: 1000, pass: 400, uncertain: 600, reject: 0, mode: 'cache', retainedBufferBytes: 32768, accountedBufferBytes: 65536, maxMessageBytes: 96000, maxRenderedCards: 12, longTasks: { count: 0, maxMs: 0 } }; })",
+  "protocol": {
+    "method": "Runtime.evaluate",
+    "returnByValue": true,
+    "awaitPromise": true,
+    "userGesture": true
+  },
+  "conditions": "Fresh isolated about:blank target; no Guitar page, Worker, DOM mutation, event observer, application code or audio. 480 repeating fixture expressions, representative asynchronous resolved result object. Explicit GC at 0, 100 and 14000 calls. Only the owned target was closed.",
+  "heap": [
+    {
+      "afterEvaluateCalls": 0,
+      "usedSize": 420428,
+      "totalSize": 786432,
+      "embedderHeapUsedSize": 290632,
+      "backingStorageSize": 6
+    },
+    {
+      "afterEvaluateCalls": 100,
+      "usedSize": 420948,
+      "totalSize": 786432,
+      "embedderHeapUsedSize": 290632,
+      "backingStorageSize": 6
+    },
+    {
+      "afterEvaluateCalls": 14000,
+      "usedSize": 423228,
+      "totalSize": 786432,
+      "embedderHeapUsedSize": 290616,
+      "backingStorageSize": 6
+    }
+  ],
+  "failures": [],
+  "limitations": [
+    "This control isolates repeated CDP evaluation of resolved objects; it does not reproduce app DOM, asynchronous worker traffic, rendering, browser event instrumentation, or the duration of the product benchmark.",
+    "Similar growth would implicate a possible measurement contribution, not quantify or prove attribution. Absent growth cannot exclude CDP interaction with the real application or establish product-specific causality."
+  ]
+}

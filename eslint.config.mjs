@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Downloaded browser binaries are local validation tools, not project source.
+    ".tmp-engine-browsers/**",
   ]),
 ]);
 

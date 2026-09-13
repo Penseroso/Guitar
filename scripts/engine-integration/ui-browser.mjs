@@ -11,7 +11,7 @@ let sequence = 0, targetId, sessionId;
 const pending = new Map(), errors = [], checks = [], measurements = [];
 ws.addEventListener('message', event => {
     const message = JSON.parse(event.data), call = pending.get(message.id);
-    if (call) { pending.delete(message.id); message.error ? call.reject(Error(JSON.stringify(message.error))) : call.resolve(message.result); }
+    if (call) { pending.delete(message.id); if (message.error) call.reject(Error(JSON.stringify(message.error))); else call.resolve(message.result); }
     if (message.sessionId === sessionId && message.method === 'Runtime.exceptionThrown') errors.push(message.params.exceptionDetails.text);
 });
 const send = (method, params = {}, session = sessionId) => new Promise((resolve, reject) => { const id = ++sequence; pending.set(id, { resolve, reject }); ws.send(JSON.stringify({ id, method, params, ...(session ? { sessionId: session } : {}) })); });

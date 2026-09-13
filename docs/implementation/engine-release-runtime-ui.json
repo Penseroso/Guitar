@@ -1,0 +1,82 @@
+{
+  "schema": "engine-release-runtime-ui-v1",
+  "measuredAt": "2026-09-13T02:35:12.794Z",
+  "url": "http://localhost:3004",
+  "buildId": "lZYW_5GY1CWpsx2bLz8hJ",
+  "scope": "Actual release application in desktop Firefox/WebKit, with keyboard interaction and 390 CSS-pixel reflow. No physical-mobile, hearing, or human-preference claim.",
+  "sourceHashes": {
+    "src/components/guitar/ClientApp.tsx": "5eea34c66c26fda8cf889e9595eeb8e42ad1f4a389ec088e39674297e68ac2c0",
+    "src/components/guitar/chord/ChordExplorationPanel.tsx": "5bcfec64642eea1ac10f9ef1bbfa7407d2993cbddded5f1b505772b0305add78",
+    "src/components/guitar/chord/ChordDialog.tsx": "465443f606c5eba3ac557866b703b5a839de8fc80175691caff6dfd0cd9dede9",
+    "src/components/guitar/chord/explorationController.ts": "9cac41e46b22aff7aa1458e9faad3d0b6800baac5fb076d14aac3668aa2644e2",
+    "src/components/guitar/chord/useChordExploration.ts": "28a379df967f5620561433a511a4ab67d08b1a2137c133e8cb7803515b08931c"
+  },
+  "browsers": [
+    {
+      "name": "Firefox",
+      "version": "153.0",
+      "status": "PASS",
+      "checks": [
+        "Chord entry renders six exact cards",
+        "Next page renders twelve cards and retains selection",
+        "Details shows fourteen terms, heuristic limits, absent human validation and scale provenance",
+        "Root-omit exact no-match view retains and explains outside-filter selection",
+        "Accompaniment context produces matches and revalidates selected identity",
+        "Full-fretboard dialog closes with Escape and restores trigger focus",
+        "390-pixel viewport has no page-level horizontal overflow"
+      ],
+      "reflow": {
+        "viewport": 390,
+        "document": 390,
+        "body": 390
+      },
+      "screenshot": "docs/implementation/screenshots/engine-firefox-390px.png",
+      "pageErrors": []
+    },
+    {
+      "name": "WebKit",
+      "version": "26.5",
+      "status": "PASS",
+      "checks": [
+        "Chord entry renders six exact cards",
+        "Next page renders twelve cards and retains selection",
+        "Details shows fourteen terms, heuristic limits, absent human validation and scale provenance",
+        "Root-omit exact no-match view retains and explains outside-filter selection",
+        "Accompaniment context produces matches and revalidates selected identity",
+        "Full-fretboard dialog closes with Escape and restores trigger focus",
+        "390-pixel viewport has no page-level horizontal overflow"
+      ],
+      "reflow": {
+        "viewport": 390,
+        "document": 390,
+        "body": 390
+      },
+      "screenshot": "docs/implementation/screenshots/engine-webkit-390px.png",
+      "pageErrors": []
+    }
+  ],
+  "allPassed": true,
+  "resolvedHistory": [
+    {
+      "buildId": "UCKlMMmM58BLgpnoa-vEX",
+      "measuredAt": "2026-09-13T02:29:36.248Z",
+      "failures": [
+        {
+          "name": "WebKit",
+          "version": "26.5",
+          "failures": [
+            {
+              "check": "Dialog Escape restores trigger focus",
+              "actual": {
+                "tag": "BODY",
+                "text": null
+              }
+            }
+          ],
+          "error": "AssertionError [ERR_ASSERTION]: Accessibility failures\n+ actual - expected\n\n+ [\n+   {\n+     actual: {\n+       tag: 'BODY',\n+       text: null\n+     },\n+     check: 'Dialog Escape restores trigger focus'\n+   }\n+ ]\n- []\n\n    at file:///C:/Projects/Guitar/scripts/engine-integration/runtime-ui.mjs:64:16"
+        }
+      ],
+      "resolution": "Dialog now receives an explicit returnFocusRef instead of inferring the mouse trigger from document.activeElement. Resolution is confirmed only if the current runtime checks pass."
+    }
+  ]
+}

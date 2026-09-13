@@ -31,7 +31,7 @@ let sequence = 0;
 const pending = new Map();
 ws.addEventListener('message', event => {
     const message = JSON.parse(event.data), call = pending.get(message.id);
-    if (call) { pending.delete(message.id); message.error ? call.reject(new Error(JSON.stringify(message.error))) : call.resolve(message.result); }
+    if (call) { pending.delete(message.id); if (message.error) call.reject(new Error(JSON.stringify(message.error))); else call.resolve(message.result); }
 });
 const send = (method, params = {}, sessionId) => new Promise((resolve, reject) => {
     const id = ++sequence; pending.set(id, { resolve, reject }); ws.send(JSON.stringify({ id, method, params, ...(sessionId ? { sessionId } : {}) }));

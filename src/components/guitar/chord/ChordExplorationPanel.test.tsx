@@ -85,4 +85,12 @@ describe('integrated engine presentation', () => {
         expect(markup).toContain('All open'); expect(markup).not.toContain('outside these filters');
         expect(markup).not.toContain('Fret 0</p>');
     });
+    it('disables Next at an exact final page even when its boundary cursor is retained', () => {
+        const complete = new EngineSession({ ...intent, instrument: { tuningMidi: [60, 64, 67, 60, 64, 67], maxModeledFret: 0 } });
+        const finalScan = complete.begin({}, 128); while (!finalScan.step()) { /* complete tiny fixture */ }
+        const finalPage = finalScan.finish();
+        expect(finalPage.summary.hasMore).toBe(false); expect(finalPage.nextCursor).not.toBeNull();
+        const markup = render(state({ request: complete.request, page: finalPage, selected: finalPage.rows[0], summary: finalPage.summary }));
+        expect(markup).toMatch(/<button[^>]*disabled=""[^>]*>Next page<\/button>/);
+    });
 });

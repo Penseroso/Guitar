@@ -1,0 +1,465 @@
+{
+  "schema": "engine-cross-runtime-v1",
+  "measuredAt": "2026-09-13T02:46:56.353Z",
+  "os": "win32 10.0.26200",
+  "node": "v22.16.0",
+  "scope": "Deterministic domain conformance in real desktop browser DedicatedWorkers; no product render/audio or physical mobile performance claim.",
+  "timingConditions": "Concurrent release build on the same host. Component timings are diagnostic only; zero means below browser clock resolution, not zero execution cost.",
+  "bundleSha256": "e962ebb83e7c53cb9e0038c6e17afb5b2c6224cdd1d56a554661e0f04fbd6837",
+  "resultSha256": "456e239f2c29218f4f19f8aead57bc821678a7d46e35d0f9d9c0972da1cd356d",
+  "resultBytes": 18112875,
+  "caseCount": 25,
+  "totalRows": 2597,
+  "sourceHashes": {
+    "catalog.ts": "d761d8e938bc792a7acd3f3f61aaaeeb993fcff55cd97cbe16be8812bc8e338d",
+    "classicFeatures.ts": "e14bc57e03687df60880e206103d245b4eba8314d5ed3c8b34164801eab635a4",
+    "contactHypotheses.ts": "08ef612e1096a73326c0680fc400889122e3555027425b9a314ff39aeb5423d7",
+    "deterministicRanking.ts": "38245e8a3a77b397569d5275697118219e2c3d6abf5adf9e2cd8ef66413f941d",
+    "errors.ts": "42c941f1e7deaa7b05dbe983276076ac3ae07e8978ba722c62865034f6f63fbe",
+    "facts.ts": "80ab55737942d53208ebb44cf2659e954045d5fb1b3770a01c08e0f7a59ce1d1",
+    "geometry.ts": "1228d782b38ea29d56e75cbf6d15753a0c75a42972576d727b81d7f94755b038",
+    "geometryTable.ts": "fdcac13d445c0b0d80c041e05154de9baf4e324698c79a5494b817a4da845af1",
+    "identity.ts": "6b59dbe7451bb503dacfed82bb2e93dd57e3a96485a7c77cff05d0d8c1d10ff5",
+    "legacyAdapters.ts": "5801ce614adb8f443a083c494b777c3b8f30c81960036a73d2a8c2c5e86503ad",
+    "packedStore.ts": "ccee506d0af3e6beec9440c8c8051706471d1b0b21476352d81ec9f76617c2a1",
+    "pageHeap.ts": "5b0af7c93578202abf19d9b206f570a3e84868592b38d51685f4d6618cfd66d0",
+    "physical.ts": "057612ea89fcf8f72a720b2f227359da4b3c724537838396ed3a574013604e33",
+    "presentation.ts": "7b706e36cf73b16e32a31305fdd3c09bb9316986171aa73f46979757d4ace482",
+    "requestPolicy.ts": "a8dc7698279f821499dc24a91090e9b4bac6b773501dc6e3b05399017967f28a",
+    "requestSchema.ts": "e6aa29c9523b3ca57be93ba4d73240ed44906ad7bc1ec707b76812192639fd5c",
+    "session.ts": "1b31a2141b97599679f9f0a8b77cbf64712a51dd00fd94deaae520d68b78fbed",
+    "structuralGenerator.ts": "c753608453c058a14a4866fc910a51afcd5631697edcad3f652f2d9b6768e9bd",
+    "subsets.ts": "9eabbd84a9a5b8d95122f40bd0ce6851d65ca91552ea9b46b7e8f47209f470ed",
+    "types.ts": "7e14fcc9caa3c49f05dbcb4ba226f772ad5ae9c107257e152e8a052d9affe128",
+    "validation.ts": "18139f56c6a927647fdfbe0768f46d54c637903748f9f27b3d394e12f5a7b8b2",
+    "versions.ts": "1e976ab150c0119d01668c1bf9a2b0d8a9908e1e76b633ac995b4fb10bd6edd0",
+    "view.ts": "7c2d2cadd2500b75f45e7060655e2c18506156f8efd4b2943ba9e058034ed9eb",
+    "workerProtocol.ts": "87820c546304728eed2d7a67f51bfae63c43c897d1320e62ec3e0e613175775d",
+    "workerService.ts": "614b6dfea30f0fe8aff464b77e87ee34f9273cffcc61e7081a3f8c8c0c1a91c1"
+  },
+  "browsers": [
+    {
+      "name": "Chrome",
+      "version": "152.0.7977.84",
+      "status": "PASS",
+      "resultSha256": "456e239f2c29218f4f19f8aead57bc821678a7d46e35d0f9d9c0972da1cd356d",
+      "componentDiagnostics": [
+        {
+          "label": "cold",
+          "intent": {
+            "schema": "intent-v1",
+            "chordId": "major",
+            "rootPitchClass": 0
+          },
+          "structuralCount": 13331,
+          "visitedNodes": 31441,
+          "batches": 123,
+          "cost": {
+            "setupMs": 1.7999999970197678,
+            "enumerationMs": 3.699999988079071,
+            "assessmentMs": 27.499999955296516,
+            "featuresAndScoreMs": 27.800000071525574,
+            "packingMs": 4.5,
+            "heapMs": 0.09999999403953552
+          },
+          "manualScanWallMs": 66,
+          "richMaterializeMs": 1.2000000029802322,
+          "jsonEncodeMs": 0.29999999701976776,
+          "jsonDecodeMs": 0.10000000894069672,
+          "structuredCloneMs": 0.19999998807907104,
+          "richPageBytes": 43729,
+          "retainedBytes": 524288,
+          "validationMs": 56.3999999910593,
+          "note": "One C-major standard-domain fixture, per-batch timers and intermediate arrays add instrumentation overhead. Local structuredClone/JSON decode are not cross-thread transport or UI render. Cold means first engine fixture in this new worker; warm means immediate repeated fixture. Not a percentile or rollout-performance gate."
+        },
+        {
+          "label": "warm",
+          "intent": {
+            "schema": "intent-v1",
+            "chordId": "major",
+            "rootPitchClass": 0
+          },
+          "structuralCount": 13331,
+          "visitedNodes": 31441,
+          "batches": 123,
+          "cost": {
+            "setupMs": 0.20000000298023224,
+            "enumerationMs": 2.1000000685453415,
+            "assessmentMs": 14.400000020861626,
+            "featuresAndScoreMs": 10.499999955296516,
+            "packingMs": 2.099999949336052,
+            "heapMs": 0.19999998807907104
+          },
+          "manualScanWallMs": 29.700000002980232,
+          "richMaterializeMs": 0.29999999701976776,
+          "jsonEncodeMs": 0.4000000059604645,
+          "jsonDecodeMs": 0.09999999403953552,
+          "structuredCloneMs": 0.20000000298023224,
+          "richPageBytes": 43729,
+          "retainedBytes": 524288,
+          "validationMs": 40.599999994039536,
+          "note": "One C-major standard-domain fixture, per-batch timers and intermediate arrays add instrumentation overhead. Local structuredClone/JSON decode are not cross-thread transport or UI render. Cold means first engine fixture in this new worker; warm means immediate repeated fixture. Not a percentile or rollout-performance gate."
+        }
+      ]
+    },
+    {
+      "name": "Firefox",
+      "version": "153.0",
+      "status": "PASS",
+      "resultSha256": "456e239f2c29218f4f19f8aead57bc821678a7d46e35d0f9d9c0972da1cd356d",
+      "componentDiagnostics": [
+        {
+          "label": "cold",
+          "intent": {
+            "schema": "intent-v1",
+            "chordId": "major",
+            "rootPitchClass": 0
+          },
+          "structuralCount": 13331,
+          "visitedNodes": 31441,
+          "batches": 123,
+          "cost": {
+            "setupMs": 2,
+            "enumerationMs": 5,
+            "assessmentMs": 15,
+            "featuresAndScoreMs": 28,
+            "packingMs": 1,
+            "heapMs": 1
+          },
+          "manualScanWallMs": 52,
+          "richMaterializeMs": 1,
+          "jsonEncodeMs": 0,
+          "jsonDecodeMs": 1,
+          "structuredCloneMs": 0,
+          "richPageBytes": 43729,
+          "retainedBytes": 524288,
+          "validationMs": 68,
+          "note": "One C-major standard-domain fixture, per-batch timers and intermediate arrays add instrumentation overhead. Local structuredClone/JSON decode are not cross-thread transport or UI render. Cold means first engine fixture in this new worker; warm means immediate repeated fixture. Not a percentile or rollout-performance gate."
+        },
+        {
+          "label": "warm",
+          "intent": {
+            "schema": "intent-v1",
+            "chordId": "major",
+            "rootPitchClass": 0
+          },
+          "structuralCount": 13331,
+          "visitedNodes": 31441,
+          "batches": 123,
+          "cost": {
+            "setupMs": 0,
+            "enumerationMs": 3,
+            "assessmentMs": 18,
+            "featuresAndScoreMs": 18,
+            "packingMs": 1,
+            "heapMs": 0
+          },
+          "manualScanWallMs": 40,
+          "richMaterializeMs": 1,
+          "jsonEncodeMs": 0,
+          "jsonDecodeMs": 0,
+          "structuredCloneMs": 0,
+          "richPageBytes": 43729,
+          "retainedBytes": 524288,
+          "validationMs": 68,
+          "note": "One C-major standard-domain fixture, per-batch timers and intermediate arrays add instrumentation overhead. Local structuredClone/JSON decode are not cross-thread transport or UI render. Cold means first engine fixture in this new worker; warm means immediate repeated fixture. Not a percentile or rollout-performance gate."
+        }
+      ]
+    },
+    {
+      "name": "WebKit",
+      "version": "26.5",
+      "status": "PASS",
+      "resultSha256": "456e239f2c29218f4f19f8aead57bc821678a7d46e35d0f9d9c0972da1cd356d",
+      "componentDiagnostics": [
+        {
+          "label": "cold",
+          "intent": {
+            "schema": "intent-v1",
+            "chordId": "major",
+            "rootPitchClass": 0
+          },
+          "structuralCount": 13331,
+          "visitedNodes": 31441,
+          "batches": 123,
+          "cost": {
+            "setupMs": 3,
+            "enumerationMs": 21,
+            "assessmentMs": 30,
+            "featuresAndScoreMs": 28,
+            "packingMs": 2,
+            "heapMs": 0
+          },
+          "manualScanWallMs": 84,
+          "richMaterializeMs": 2,
+          "jsonEncodeMs": 0,
+          "jsonDecodeMs": 0,
+          "structuredCloneMs": 0,
+          "richPageBytes": 43729,
+          "retainedBytes": 524288,
+          "validationMs": 77,
+          "note": "One C-major standard-domain fixture, per-batch timers and intermediate arrays add instrumentation overhead. Local structuredClone/JSON decode are not cross-thread transport or UI render. Cold means first engine fixture in this new worker; warm means immediate repeated fixture. Not a percentile or rollout-performance gate."
+        },
+        {
+          "label": "warm",
+          "intent": {
+            "schema": "intent-v1",
+            "chordId": "major",
+            "rootPitchClass": 0
+          },
+          "structuralCount": 13331,
+          "visitedNodes": 31441,
+          "batches": 123,
+          "cost": {
+            "setupMs": 1,
+            "enumerationMs": 11,
+            "assessmentMs": 24,
+            "featuresAndScoreMs": 20,
+            "packingMs": 4,
+            "heapMs": 0
+          },
+          "manualScanWallMs": 61,
+          "richMaterializeMs": 1,
+          "jsonEncodeMs": 0,
+          "jsonDecodeMs": 0,
+          "structuredCloneMs": 1,
+          "richPageBytes": 43729,
+          "retainedBytes": 524288,
+          "validationMs": 76,
+          "note": "One C-major standard-domain fixture, per-batch timers and intermediate arrays add instrumentation overhead. Local structuredClone/JSON decode are not cross-thread transport or UI render. Cold means first engine fixture in this new worker; warm means immediate repeated fixture. Not a percentile or rollout-performance gate."
+        }
+      ]
+    }
+  ],
+  "allPassed": true,
+  "priorRuns": [
+    {
+      "measuredAt": "2026-09-13T02:26:13.510Z",
+      "bundleSha256": "8a03ab2d9891b1bf38199e1143fe950526ce35d8f16121f336930d9456d4e989",
+      "resultSha256": "456e239f2c29218f4f19f8aead57bc821678a7d46e35d0f9d9c0972da1cd356d",
+      "sourceHashes": {
+        "catalog.ts": "d761d8e938bc792a7acd3f3f61aaaeeb993fcff55cd97cbe16be8812bc8e338d",
+        "classicFeatures.ts": "e14bc57e03687df60880e206103d245b4eba8314d5ed3c8b34164801eab635a4",
+        "contactHypotheses.ts": "08ef612e1096a73326c0680fc400889122e3555027425b9a314ff39aeb5423d7",
+        "deterministicRanking.ts": "38245e8a3a77b397569d5275697118219e2c3d6abf5adf9e2cd8ef66413f941d",
+        "errors.ts": "42c941f1e7deaa7b05dbe983276076ac3ae07e8978ba722c62865034f6f63fbe",
+        "facts.ts": "80ab55737942d53208ebb44cf2659e954045d5fb1b3770a01c08e0f7a59ce1d1",
+        "geometry.ts": "1228d782b38ea29d56e75cbf6d15753a0c75a42972576d727b81d7f94755b038",
+        "geometryTable.ts": "fdcac13d445c0b0d80c041e05154de9baf4e324698c79a5494b817a4da845af1",
+        "identity.ts": "6b59dbe7451bb503dacfed82bb2e93dd57e3a96485a7c77cff05d0d8c1d10ff5",
+        "legacyAdapters.ts": "5801ce614adb8f443a083c494b777c3b8f30c81960036a73d2a8c2c5e86503ad",
+        "packedStore.ts": "f9b18fbd96f5864508d304318ad7a2821b185ded47ef0111c19b28ddd239ec34",
+        "pageHeap.ts": "5b0af7c93578202abf19d9b206f570a3e84868592b38d51685f4d6618cfd66d0",
+        "physical.ts": "057612ea89fcf8f72a720b2f227359da4b3c724537838396ed3a574013604e33",
+        "presentation.ts": "7b706e36cf73b16e32a31305fdd3c09bb9316986171aa73f46979757d4ace482",
+        "requestPolicy.ts": "a8dc7698279f821499dc24a91090e9b4bac6b773501dc6e3b05399017967f28a",
+        "requestSchema.ts": "e6aa29c9523b3ca57be93ba4d73240ed44906ad7bc1ec707b76812192639fd5c",
+        "session.ts": "1b31a2141b97599679f9f0a8b77cbf64712a51dd00fd94deaae520d68b78fbed",
+        "structuralGenerator.ts": "c753608453c058a14a4866fc910a51afcd5631697edcad3f652f2d9b6768e9bd",
+        "subsets.ts": "9eabbd84a9a5b8d95122f40bd0ce6851d65ca91552ea9b46b7e8f47209f470ed",
+        "types.ts": "7e14fcc9caa3c49f05dbcb4ba226f772ad5ae9c107257e152e8a052d9affe128",
+        "validation.ts": "18139f56c6a927647fdfbe0768f46d54c637903748f9f27b3d394e12f5a7b8b2",
+        "versions.ts": "1e976ab150c0119d01668c1bf9a2b0d8a9908e1e76b633ac995b4fb10bd6edd0",
+        "view.ts": "7c2d2cadd2500b75f45e7060655e2c18506156f8efd4b2943ba9e058034ed9eb",
+        "workerProtocol.ts": "87820c546304728eed2d7a67f51bfae63c43c897d1320e62ec3e0e613175775d",
+        "workerService.ts": "614b6dfea30f0fe8aff464b77e87ee34f9273cffcc61e7081a3f8c8c0c1a91c1"
+      },
+      "timingConditions": "Concurrent release build and integrated census on the same host. Component timings are diagnostic only. Zero means below the exposed browser clock resolution, not zero execution cost.",
+      "browsers": [
+        {
+          "name": "Chrome",
+          "version": "152.0.7977.84",
+          "status": "PASS",
+          "resultSha256": "456e239f2c29218f4f19f8aead57bc821678a7d46e35d0f9d9c0972da1cd356d",
+          "componentDiagnostics": [
+            {
+              "label": "cold",
+              "intent": {
+                "schema": "intent-v1",
+                "chordId": "major",
+                "rootPitchClass": 0
+              },
+              "structuralCount": 13331,
+              "visitedNodes": 31441,
+              "batches": 123,
+              "cost": {
+                "setupMs": 1.800000011920929,
+                "enumerationMs": 5.299999952316284,
+                "assessmentMs": 29.40000008046627,
+                "featuresAndScoreMs": 29.299999937415123,
+                "packingMs": 5.400000035762787,
+                "heapMs": 0.19999998807907104
+              },
+              "manualScanWallMs": 71.70000000298023,
+              "richMaterializeMs": 0.8999999910593033,
+              "jsonEncodeMs": 0.29999999701976776,
+              "jsonDecodeMs": 0.10000000894069672,
+              "structuredCloneMs": 0.29999999701976776,
+              "richPageBytes": 43729,
+              "retainedBytes": 524288,
+              "validationMs": 63,
+              "note": "One C-major standard-domain fixture, per-batch timers and intermediate arrays add instrumentation overhead. Local structuredClone/JSON decode are not cross-thread transport or UI render. Cold means first engine fixture in this new worker; warm means immediate repeated fixture. Not a percentile or rollout-performance gate."
+            },
+            {
+              "label": "warm",
+              "intent": {
+                "schema": "intent-v1",
+                "chordId": "major",
+                "rootPitchClass": 0
+              },
+              "structuralCount": 13331,
+              "visitedNodes": 31441,
+              "batches": 123,
+              "cost": {
+                "setupMs": 0.29999999701976776,
+                "enumerationMs": 2.2000000029802322,
+                "assessmentMs": 16.399999886751175,
+                "featuresAndScoreMs": 13.000000074505806,
+                "packingMs": 1.4000000208616257,
+                "heapMs": 0.20000001788139343
+              },
+              "manualScanWallMs": 33.900000005960464,
+              "richMaterializeMs": 0.29999999701976776,
+              "jsonEncodeMs": 0.09999999403953552,
+              "jsonDecodeMs": 0.10000000894069672,
+              "structuredCloneMs": 0.20000000298023224,
+              "richPageBytes": 43729,
+              "retainedBytes": 524288,
+              "validationMs": 58,
+              "note": "One C-major standard-domain fixture, per-batch timers and intermediate arrays add instrumentation overhead. Local structuredClone/JSON decode are not cross-thread transport or UI render. Cold means first engine fixture in this new worker; warm means immediate repeated fixture. Not a percentile or rollout-performance gate."
+            }
+          ]
+        },
+        {
+          "name": "Firefox",
+          "version": "153.0",
+          "status": "PASS",
+          "resultSha256": "456e239f2c29218f4f19f8aead57bc821678a7d46e35d0f9d9c0972da1cd356d",
+          "componentDiagnostics": [
+            {
+              "label": "cold",
+              "intent": {
+                "schema": "intent-v1",
+                "chordId": "major",
+                "rootPitchClass": 0
+              },
+              "structuralCount": 13331,
+              "visitedNodes": 31441,
+              "batches": 123,
+              "cost": {
+                "setupMs": 2,
+                "enumerationMs": 1,
+                "assessmentMs": 26,
+                "featuresAndScoreMs": 34,
+                "packingMs": 2,
+                "heapMs": 1
+              },
+              "manualScanWallMs": 66,
+              "richMaterializeMs": 1,
+              "jsonEncodeMs": 1,
+              "jsonDecodeMs": 0,
+              "structuredCloneMs": 0,
+              "richPageBytes": 43729,
+              "retainedBytes": 524288,
+              "validationMs": 82,
+              "note": "One C-major standard-domain fixture, per-batch timers and intermediate arrays add instrumentation overhead. Local structuredClone/JSON decode are not cross-thread transport or UI render. Cold means first engine fixture in this new worker; warm means immediate repeated fixture. Not a percentile or rollout-performance gate."
+            },
+            {
+              "label": "warm",
+              "intent": {
+                "schema": "intent-v1",
+                "chordId": "major",
+                "rootPitchClass": 0
+              },
+              "structuralCount": 13331,
+              "visitedNodes": 31441,
+              "batches": 123,
+              "cost": {
+                "setupMs": 0,
+                "enumerationMs": 7,
+                "assessmentMs": 19,
+                "featuresAndScoreMs": 33,
+                "packingMs": 3,
+                "heapMs": 1
+              },
+              "manualScanWallMs": 63,
+              "richMaterializeMs": 1,
+              "jsonEncodeMs": 1,
+              "jsonDecodeMs": 0,
+              "structuredCloneMs": 0,
+              "richPageBytes": 43729,
+              "retainedBytes": 524288,
+              "validationMs": 88,
+              "note": "One C-major standard-domain fixture, per-batch timers and intermediate arrays add instrumentation overhead. Local structuredClone/JSON decode are not cross-thread transport or UI render. Cold means first engine fixture in this new worker; warm means immediate repeated fixture. Not a percentile or rollout-performance gate."
+            }
+          ]
+        },
+        {
+          "name": "WebKit",
+          "version": "26.5",
+          "status": "PASS",
+          "resultSha256": "456e239f2c29218f4f19f8aead57bc821678a7d46e35d0f9d9c0972da1cd356d",
+          "componentDiagnostics": [
+            {
+              "label": "cold",
+              "intent": {
+                "schema": "intent-v1",
+                "chordId": "major",
+                "rootPitchClass": 0
+              },
+              "structuralCount": 13331,
+              "visitedNodes": 31441,
+              "batches": 123,
+              "cost": {
+                "setupMs": 5,
+                "enumerationMs": 28,
+                "assessmentMs": 46,
+                "featuresAndScoreMs": 54,
+                "packingMs": 2,
+                "heapMs": 1
+              },
+              "manualScanWallMs": 136,
+              "richMaterializeMs": 2,
+              "jsonEncodeMs": 0,
+              "jsonDecodeMs": 1,
+              "structuredCloneMs": 0,
+              "richPageBytes": 43729,
+              "retainedBytes": 524288,
+              "validationMs": 125,
+              "note": "One C-major standard-domain fixture, per-batch timers and intermediate arrays add instrumentation overhead. Local structuredClone/JSON decode are not cross-thread transport or UI render. Cold means first engine fixture in this new worker; warm means immediate repeated fixture. Not a percentile or rollout-performance gate."
+            },
+            {
+              "label": "warm",
+              "intent": {
+                "schema": "intent-v1",
+                "chordId": "major",
+                "rootPitchClass": 0
+              },
+              "structuralCount": 13331,
+              "visitedNodes": 31441,
+              "batches": 123,
+              "cost": {
+                "setupMs": 1,
+                "enumerationMs": 18,
+                "assessmentMs": 32,
+                "featuresAndScoreMs": 33,
+                "packingMs": 2,
+                "heapMs": 0
+              },
+              "manualScanWallMs": 86,
+              "richMaterializeMs": 1,
+              "jsonEncodeMs": 0,
+              "jsonDecodeMs": 0,
+              "structuredCloneMs": 1,
+              "richPageBytes": 43729,
+              "retainedBytes": 524288,
+              "validationMs": 143,
+              "note": "One C-major standard-domain fixture, per-batch timers and intermediate arrays add instrumentation overhead. Local structuredClone/JSON decode are not cross-thread transport or UI render. Cold means first engine fixture in this new worker; warm means immediate repeated fixture. Not a percentile or rollout-performance gate."
+            }
+          ]
+        }
+      ],
+      "allPassed": true
+    }
+  ]
+}

@@ -65,11 +65,12 @@ const toneValue = (extreme: ViewRequest['bass']) => extreme && 'tone' in extreme
 
 export function ChordExplorationPanel({ engine, context, onContextChange, onSelect, showIntervals, onToggleIntervals, toneChoices, title }: Props) {
     const [filtersOpen, setFiltersOpen] = useState(false), [detailsOpen, setDetailsOpen] = useState(false), [neckOpen, setNeckOpen] = useState(false);
-    const resultHeading = useRef<HTMLHeadingElement>(null), id = useId();
+    const resultHeading = useRef<HTMLHeadingElement>(null), neckTrigger = useRef<HTMLButtonElement>(null), id = useId();
     const audio = useVoicingAudio();
-    useEffect(() => { audio.cancel(); return () => audio.cancel(); }, [audio.cancel, engine.requestEpoch]);
-    useEffect(() => { if (engine.phase === 'error' || engine.phase === 'cancelled') audio.cancel(); }, [audio.cancel, engine.phase]);
-    const cancelSearch = () => { audio.cancel(); engine.cancel(); };
+    const cancelAudio = audio.cancel;
+    useEffect(() => { cancelAudio(); return () => cancelAudio(); }, [cancelAudio, engine.requestEpoch]);
+    useEffect(() => { if (engine.phase === 'error' || engine.phase === 'cancelled') cancelAudio(); }, [cancelAudio, engine.phase]);
+    const cancelSearch = () => { cancelAudio(); engine.cancel(); };
     const { selected, view, summary } = engine, page = engine.phase === 'ready' ? engine.page : null;
     const busy = ['idle', 'loading', 'running'].includes(engine.phase);
     const degreeOptions = [{ value: '', label: 'Any' }, ...toneChoices];
@@ -100,7 +101,7 @@ export function ChordExplorationPanel({ engine, context, onContextChange, onSele
             {outsideView && <p role="status" className={styles.warning}>Selected voicing is outside these filters. Choose another to change it.</p>}
             {engine.selectionNotice && <p role="status" className={styles.warning}>{engine.selectionNotice}</p>}
             <div className={styles.selectedTools}><button className={styles.action} aria-expanded={detailsOpen} aria-controls={id + '-details'} onClick={() => setDetailsOpen(open => !open)}>Details</button>
-                <button className={styles.action} aria-haspopup="dialog" onClick={() => setNeckOpen(true)}>Full fretboard</button>
+                <button ref={neckTrigger} className={styles.action} aria-haspopup="dialog" onClick={() => setNeckOpen(true)}>Full fretboard</button>
                 <ChoiceGroup label="Diagram labels" compact value={showIntervals ? 'degree' : 'note'} onChange={value => { if ((value === 'degree') !== showIntervals) onToggleIntervals(); }} options={[{ value: 'note', label: 'Notes' }, { value: 'degree', label: 'Intervals' }]} />
             </div>{detailsOpen && <div id={id + '-details'} className={styles.details}><VoicingFactsView candidate={selected} request={engine.request} /></div>}
         </aside> : <div className={styles.selected}>{busy && <p role="status">Finding voicings…</p>}{engine.selectionNotice && <p role="status" className={styles.warning}>{engine.selectionNotice}</p>}{page?.outcome === 'structurally-empty' && <p role="status">No allocations satisfy this structural request.</p>}</div>}
@@ -133,10 +134,10 @@ export function ChordExplorationPanel({ engine, context, onContextChange, onSele
                     return <article key={candidateId} className={styles.card + (isSelected ? ' ' + styles.cardSelected : '')}><button className={styles.cardSelect} data-voicing-id={candidateId} aria-pressed={isSelected} aria-label={'Select voicing: ' + describeVoicingShape(diagramVoicing(candidate))} onClick={() => select(candidate)}>
                         <CompactVoicingDiagram voicing={diagramVoicing(candidate)} labelMode={showIntervals ? 'degree' : 'note'} /><div className={styles.cardInfo}>{isSelected && <span className={styles.selectionMark}>✓ Selected</span>}<p>{positionLabel(candidate)}</p><p className={styles.small}>{candidate.facts.soundingCount} strings · Result {candidate.displayRank}</p><div className={styles.endNotes}><p>Bass {labels.bass}</p><p>Top {labels.top}</p></div><Assessment candidate={candidate} /></div>
                     </button>{playButton(candidate)}</article>;
-                })}</div><nav aria-label="Voicing result pages" className={styles.row}><button className={styles.action} onClick={engine.firstPage}>First page</button><button className={styles.action} disabled={!engine.canPrevious} onClick={engine.previousPage}>Previous page</button><button className={styles.action} disabled={!page.nextCursor} onClick={engine.nextPage}>Next page</button></nav>
+                })}</div><nav aria-label="Voicing result pages" className={styles.row}><button className={styles.action} onClick={engine.firstPage}>First page</button><button className={styles.action} disabled={!engine.canPrevious} onClick={engine.previousPage}>Previous page</button><button className={styles.action} disabled={!page.summary.hasMore || !page.nextCursor} onClick={engine.nextPage}>Next page</button></nav>
             </>}
         </div>
         {audio.error && <p role="alert" className={styles.warning}>{audio.error}</p>}
-        {neckOpen && selected && <ChordDialog title="Full fretboard" onClose={() => setNeckOpen(false)}><div className={styles.row}><p>{title} · {positionLabel(selected)}</p>{playButton(selected, true)}</div>{engine.request ? <ChordNeckView candidate={selected} rootPitchClass={engine.request.interpretation.rootPitchClass} showIntervals={showIntervals} /> : <p role="status">Waiting for the current request to validate this snapshot.</p>}{audio.error && <p role="alert" className={styles.warning}>{audio.error}</p>}</ChordDialog>}
+        {neckOpen && selected && <ChordDialog title="Full fretboard" returnFocusRef={neckTrigger} onClose={() => setNeckOpen(false)}><div className={styles.row}><p>{title} · {positionLabel(selected)}</p>{playButton(selected, true)}</div>{engine.request ? <ChordNeckView candidate={selected} rootPitchClass={engine.request.interpretation.rootPitchClass} showIntervals={showIntervals} /> : <p role="status">Waiting for the current request to validate this snapshot.</p>}{audio.error && <p role="alert" className={styles.warning}>{audio.error}</p>}</ChordDialog>}
     </section>;
 }

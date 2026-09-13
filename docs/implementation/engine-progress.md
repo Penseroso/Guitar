@@ -14,8 +14,8 @@ The specification's archived documentation-only authorization note is superseded
 | 6 Session/pages | Complete | 57 engine tests; cached/replay exact rows, ledgers, cursors and counts; every-node checkpoint recovery; widest-default and larger custom-scope diagnostics |
 | 7 Worker | Complete | 74 engine/client tests; 18 real Chrome worker assertions; typed revisions, bounded chunks, task yields, cancellation and pause/Continue |
 | 8 Atomic live cutover | Complete | Full suite 630 passed/34 existing skips; final focused 41 passed; 30 real Chrome UI checks; scoped production lint and release build pass in current workspace |
-| 9 Integrated verification | Pending | |
-| 10 Retirement/readiness | Pending | |
+| 9 Integrated verification | Complete with recorded gaps | Full census; 14,400 release Chrome first-page samples and 1,200 page/filter/selection samples each; cross-runtime equality; 632 tests passed/34 skips; scoped lint/build pass; see readiness report for unexecuted checks and external artifact gaps |
+| 10 Retirement/readiness | Conditional gate not met | NO-GO: physical mobile unavailable and other explicitly recorded validation/memory-attribution gaps; no retirement or deployment |
 
 ## Implementation clarifications
 
@@ -50,3 +50,15 @@ The initial page has six cards and subsequent pages twelve. Cursor history is bo
 Slider drags now keep a local accessible preview and send one committed view on release; keyboard changes commit directly. Chrome checks verify zero worker SET_VIEW messages during the drag and one on release. This also resolved a first-touch reset failure exposed by the smoke test. Thirty real-browser assertions pass, including replacement pages, off-page/filter selection, context invalidation, uncertainty playback, details, touch reset, modal focus/Escape and 390-pixel reflow. Maximum observed cards: 12; maximum message: 93,147 bytes. Screenshots and `engine-ui-browser.json` are durable evidence; viewport emulation is not a real-mobile performance measurement.
 
 During stage 8, previously present untracked `docs/research` and some offline comparison files became absent from the shared workspace through an external change. This implementation did not remove them or change TypeScript exclusions. Current full typecheck/build passes therefore do **not** mean the archived baseline errors were fixed. Earlier hash-verified census/shadow/ranking evidence remains recorded; fresh verification of missing frozen inputs is unavailable and will be disclosed in readiness evidence.
+
+## Stage 9 findings
+
+The integrated 480-request census passes with S=15,943,679, PASS=583,916, UNCERTAIN=15,359,763 and REJECT=0. Every one of the 1,647,041 old production allocations remains reachable. The offline diagnostic reports protected-slice composition and demotion separately from the identical-pool score control. Nine pinned legacy-source hashes still match; unavailable original frozen files are explicitly recorded.
+
+Node, Chrome, Firefox and WebKit agree byte-for-byte on 25 cross-runtime cases/2,597 rows plus numeric and Physical boundary vectors. Release UI checks exposed and fixed WebKit dialog focus restoration by supplying an explicit opener ref. The test evidence preserves the original failure and passing rerun.
+
+Thirty samples exposed a widest-request cached page/filter performance failure at p95 246.4/228.6 ms. Fixed-size packed decoding now uses six direct byte reads instead of Array.from callbacks, retaining fresh snapshots and every validation. The exact cross-runtime output hash is unchanged; a new 8,200-row signed-coordinate/chunk/snapshot test passes. No scope, set, physical or ranking policy changed. Latest full tests: 632 passed, 34 existing skips; production and integration-script lint have zero warnings; release build passes.
+
+Final release Chrome measurements cover every standard request thirty times (14,400 first pages), with 1,200 measurements each for page/filter/card selection across the widest root of each quality/context. Worst-request p95: first page 1,012.7 ms, next page 122.1 ms, filter 119.5 ms, card selection 13.9 ms. No observed long tasks or per-request desktop p95 violations. Source/build identity and disjoint complete segments verify. Actual mobile remains unavailable; Firefox/WebKit have conformance/UI and diagnostic evidence, not repeated release percentiles.
+
+Post-GC page JS heap grows only 102,820 bytes from request 100 to 14,000, but browser embedder heap grows from 2,934,648 to 6,860,240 bytes and its attribution is unresolved. The V07 synthetic certificate-verifier and V22 future mocked-extension subchecks are also explicitly unexecuted. [Release readiness](engine-readiness.md) records these gaps, unavailable frozen originals and unscoped research lint failures. Rollout and stage-10 retirement are NO-GO; the five-player study remains future formative validation, not a gate.
