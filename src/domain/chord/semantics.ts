@@ -22,7 +22,9 @@ function isSuspensionDegree(entry: ChordRegistryEntry, degree: string): boolean 
 export function deriveChordToneRole(entry: ChordRegistryEntry, degree: string): ChordTone['role'] {
     if (degree === '1') return 'root';
 
-    if (entry.id === 'major-6' && degree === '6') {
+    // '6' is ambiguous: an added sixth (extension) alongside a natural 5th, or a
+    // diminished seventh's bb7 spelling (seventh function) when there is no natural 5th.
+    if (degree === '6' && entry.formula.degrees.includes('5')) {
         return 'extension';
     }
 

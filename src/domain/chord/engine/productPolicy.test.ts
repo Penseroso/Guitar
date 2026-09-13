@@ -45,7 +45,7 @@ describe('locked independent product policies',()=>{
   }
  });
  it('adopts exactly the abstract template inventory and rejects outside scope',()=>{
-  expect(data.closed.filter(t=>t.kind==='B')).toHaveLength(109);expect(data.closed.filter(t=>t.kind==='A')).toHaveLength(2);expect(data.closed.filter(t=>t.kind==='C')).toHaveLength(1);expect(data.open).toHaveLength(99);
+  expect(data.closed.filter(t=>t.kind==='B')).toHaveLength(161);expect(data.closed.filter(t=>t.kind==='A')).toHaveLength(2);expect(data.closed.filter(t=>t.kind==='C')).toHaveLength(1);expect(data.open).toHaveLength(142);
   const request=compileRequest({schema:'intent-v1',chordId:'major',rootPitchClass:0});
   expect(createVocabularyMatcher(request)([0,1,0,2,3,-1]).V).toBe(true);
   for(const extra of [{context:'accompaniment'},{slashBassPitchClass:0},{instrument:{kind:'six-single-strings-12edo',tuningMidi:[64,59,55,50,45,38],maxModeledFret:15}},{fretDomains:Array.from({length:6},()=>[0,1,2,3])}])

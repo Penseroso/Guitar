@@ -2,7 +2,7 @@ import manifest from './practicalVocabularyData.json';
 import type { ResolvedRequest, Six } from './types';
 import type { VocabularyMatch } from './vocabularyContract';
 
-const versions={version:'practical-vocabulary-v1',translationVersion:'practical-exact-translation-v1'} as const;
+const versions={version:'practical-vocabulary-v2',translationVersion:'practical-exact-translation-v1'} as const;
 const none:VocabularyMatch=Object.freeze({...versions,V:false,match:null});
 const key=(states:readonly number[])=>states.reduce((a,f)=>a*17+f+1,0);
 /** Pure L3: no Physical profile/status, demand, ranking or presentation input. */

@@ -11,6 +11,9 @@ const required: Record<string,string[]> = {
     'half-diminished-7':['b3','b5','b7'],'diminished-7':['b3','b5','bb7'],
     'major-9':['3','7','9'],'minor-9':['b3','b7','9'],'dominant-9':['3','b7','9'],
     'dominant-11':['b7','11'],'dominant-13':['3','b7','13'],'hendrix-7-sharp-9':['3','b7','#9'],'dominant-7-flat-9':['3','b7','b9'],
+    'minor-6':['b3','6'],'minor-major-7':['b3','7'],'add9':['3','9'],'minor-add9':['b3','9'],'six-nine':['3','6','9'],
+    'minor-11':['b3','b7','11'],'minor-13':['b3','b7','13'],'dominant-7-sus4':['4','b7'],
+    'dominant-7-sharp-5':['3','#5','b7'],'dominant-7-flat-5':['3','b5','b7'],'major-7-sharp-5':['3','#5','7'],
 };
 describe('identity-v1 compiler', () => {
     it('implements the complete table across every root and context without changing recognition', () => {
