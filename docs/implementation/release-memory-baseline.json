@@ -1,0 +1,1728 @@
+{
+  "schema": "release-retention-v1",
+  "mode": "baseline",
+  "runs": 1200,
+  "head": "9e793f1b407fef6da336ae2ca6a948b8143fe528",
+  "build": "FMjDGjRhqWxf4MVLwfgcT",
+  "browser": "Chrome/152.0.7977.84",
+  "startedAt": "2026-09-13T08:58:43.266Z",
+  "samples": [
+    {
+      "n": 0,
+      "label": "warm",
+      "heap": {
+        "usedSize": 4964040,
+        "totalSize": 5767168,
+        "embedderHeapUsedSize": 2750840,
+        "backingStorageSize": 1264461
+      },
+      "dom": {
+        "documents": 2,
+        "nodes": 652,
+        "jsEventListeners": 335
+      },
+      "app": {
+        "nodes": 445,
+        "cards": 6,
+        "resources": 12
+      }
+    },
+    {
+      "n": 100,
+      "label": "after changes",
+      "heap": {
+        "usedSize": 5674224,
+        "totalSize": 6291456,
+        "embedderHeapUsedSize": 2845096,
+        "backingStorageSize": 1264467
+      },
+      "dom": {
+        "documents": 2,
+        "nodes": 652,
+        "jsEventListeners": 335
+      },
+      "app": {
+        "nodes": 445,
+        "cards": 6,
+        "resources": 12
+      }
+    },
+    {
+      "n": 200,
+      "label": "after changes",
+      "heap": {
+        "usedSize": 5843848,
+        "totalSize": 6553600,
+        "embedderHeapUsedSize": 2858376,
+        "backingStorageSize": 1264468
+      },
+      "dom": {
+        "documents": 2,
+        "nodes": 644,
+        "jsEventListeners": 335
+      },
+      "app": {
+        "nodes": 437,
+        "cards": 6,
+        "resources": 12
+      }
+    },
+    {
+      "n": 300,
+      "label": "after changes",
+      "heap": {
+        "usedSize": 5887320,
+        "totalSize": 6553600,
+        "embedderHeapUsedSize": 2966720,
+        "backingStorageSize": 1264467
+      },
+      "dom": {
+        "documents": 2,
+        "nodes": 652,
+        "jsEventListeners": 335
+      },
+      "app": {
+        "nodes": 445,
+        "cards": 6,
+        "resources": 12
+      }
+    },
+    {
+      "n": 400,
+      "label": "after changes",
+      "heap": {
+        "usedSize": 5919552,
+        "totalSize": 6553600,
+        "embedderHeapUsedSize": 2845280,
+        "backingStorageSize": 1264467
+      },
+      "dom": {
+        "documents": 2,
+        "nodes": 652,
+        "jsEventListeners": 335
+      },
+      "app": {
+        "nodes": 445,
+        "cards": 6,
+        "resources": 12
+      }
+    },
+    {
+      "n": 500,
+      "label": "after changes",
+      "heap": {
+        "usedSize": 5928852,
+        "totalSize": 6815744,
+        "embedderHeapUsedSize": 2944536,
+        "backingStorageSize": 1264468
+      },
+      "dom": {
+        "documents": 2,
+        "nodes": 644,
+        "jsEventListeners": 335
+      },
+      "app": {
+        "nodes": 437,
+        "cards": 6,
+        "resources": 12
+      }
+    },
+    {
+      "n": 600,
+      "label": "after changes",
+      "heap": {
+        "usedSize": 6023536,
+        "totalSize": 7077888,
+        "embedderHeapUsedSize": 3086712,
+        "backingStorageSize": 1264467
+      },
+      "dom": {
+        "documents": 2,
+        "nodes": 652,
+        "jsEventListeners": 335
+      },
+      "app": {
+        "nodes": 445,
+        "cards": 6,
+        "resources": 12
+      }
+    },
+    {
+      "n": 700,
+      "label": "after changes",
+      "heap": {
+        "usedSize": 6032304,
+        "totalSize": 7077888,
+        "embedderHeapUsedSize": 3069264,
+        "backingStorageSize": 1264467
+      },
+      "dom": {
+        "documents": 2,
+        "nodes": 652,
+        "jsEventListeners": 335
+      },
+      "app": {
+        "nodes": 445,
+        "cards": 6,
+        "resources": 12
+      }
+    },
+    {
+      "n": 800,
+      "label": "after changes",
+      "heap": {
+        "usedSize": 6034044,
+        "totalSize": 6815744,
+        "embedderHeapUsedSize": 2989472,
+        "backingStorageSize": 1264468
+      },
+      "dom": {
+        "documents": 2,
+        "nodes": 644,
+        "jsEventListeners": 335
+      },
+      "app": {
+        "nodes": 437,
+        "cards": 6,
+        "resources": 12
+      }
+    },
+    {
+      "n": 900,
+      "label": "after changes",
+      "heap": {
+        "usedSize": 6040008,
+        "totalSize": 6815744,
+        "embedderHeapUsedSize": 3009472,
+        "backingStorageSize": 1264467
+      },
+      "dom": {
+        "documents": 2,
+        "nodes": 652,
+        "jsEventListeners": 335
+      },
+      "app": {
+        "nodes": 445,
+        "cards": 6,
+        "resources": 12
+      }
+    },
+    {
+      "n": 1000,
+      "label": "after changes",
+      "heap": {
+        "usedSize": 6041900,
+        "totalSize": 6815744,
+        "embedderHeapUsedSize": 3199320,
+        "backingStorageSize": 1264467
+      },
+      "dom": {
+        "documents": 2,
+        "nodes": 652,
+        "jsEventListeners": 335
+      },
+      "app": {
+        "nodes": 445,
+        "cards": 6,
+        "resources": 12
+      }
+    },
+    {
+      "n": 1100,
+      "label": "after changes",
+      "heap": {
+        "usedSize": 6043596,
+        "totalSize": 6815744,
+        "embedderHeapUsedSize": 3080696,
+        "backingStorageSize": 1264468
+      },
+      "dom": {
+        "documents": 2,
+        "nodes": 644,
+        "jsEventListeners": 335
+      },
+      "app": {
+        "nodes": 437,
+        "cards": 6,
+        "resources": 12
+      }
+    },
+    {
+      "n": 1200,
+      "label": "after changes",
+      "heap": {
+        "usedSize": 6044008,
+        "totalSize": 6815744,
+        "embedderHeapUsedSize": 3125648,
+        "backingStorageSize": 1264467
+      },
+      "dom": {
+        "documents": 2,
+        "nodes": 652,
+        "jsEventListeners": 335
+      },
+      "app": {
+        "nodes": 445,
+        "cards": 6,
+        "resources": 12
+      }
+    },
+    {
+      "n": 1200,
+      "label": "after full snapshot",
+      "heap": {
+        "usedSize": 6044008,
+        "totalSize": 6815744,
+        "embedderHeapUsedSize": 2963984,
+        "backingStorageSize": 1264467
+      },
+      "dom": {
+        "documents": 2,
+        "nodes": 652,
+        "jsEventListeners": 335
+      },
+      "app": {
+        "nodes": 445,
+        "cards": 6,
+        "resources": 12
+      }
+    },
+    {
+      "n": 1200,
+      "label": "idle and repeat GC",
+      "heap": {
+        "usedSize": 6044008,
+        "totalSize": 6815744,
+        "embedderHeapUsedSize": 2962072,
+        "backingStorageSize": 1264467
+      },
+      "dom": {
+        "documents": 2,
+        "nodes": 652,
+        "jsEventListeners": 335
+      },
+      "app": {
+        "nodes": 445,
+        "cards": 6,
+        "resources": 12
+      }
+    }
+  ],
+  "snapshots": [
+    {
+      "label": "warm",
+      "path": ".tmp-release-memory/baseline-warm.heapsnapshot",
+      "sha256": "871ae4790dd4f33e50e8258bc669b9c7b712e09f4fa992e62910a5c78ebae1a3",
+      "classes": [
+        [
+          "native:system / ExternalStringData",
+          {
+            "count": 481,
+            "bytes": 1424127
+          }
+        ],
+        [
+          "native:system / FunctionTemplateInfo",
+          {
+            "count": 3548,
+            "bytes": 226944
+          }
+        ],
+        [
+          "native:system / JSArrayBufferData",
+          {
+            "count": 3,
+            "bytes": 202612
+          }
+        ],
+        [
+          "native:blink::ImmutableCSSPropertyValueSet",
+          {
+            "count": 1333,
+            "bytes": 120512
+          }
+        ],
+        [
+          "native:blink::ComputedStyle",
+          {
+            "count": 1490,
+            "bytes": 107280
+          }
+        ],
+        [
+          "native:blink::ComputedStyleBase::StyleInheritedData",
+          {
+            "count": 678,
+            "bytes": 92208
+          }
+        ],
+        [
+          "native:blink::GridSizingTrackCollection",
+          {
+            "count": 50,
+            "bytes": 87200
+          }
+        ],
+        [
+          "native:blink::StyleRule",
+          {
+            "count": 1109,
+            "bytes": 78704
+          }
+        ],
+        [
+          "native:blink::ComputedStyleBase::StyleMiscData",
+          {
+            "count": 696,
+            "bytes": 61248
+          }
+        ],
+        [
+          "native:blink::FontResource",
+          {
+            "count": 18,
+            "bytes": 53712
+          }
+        ],
+        [
+          "native:system / ArrayList",
+          {
+            "count": 139,
+            "bytes": 52340
+          }
+        ],
+        [
+          "native:system / DoubleStringCache",
+          {
+            "count": 1,
+            "bytes": 49160
+          }
+        ],
+        [
+          "native:blink::ComputedStyleBase::StyleBoxData",
+          {
+            "count": 258,
+            "bytes": 45408
+          }
+        ],
+        [
+          "native:blink::ShareableElementData",
+          {
+            "count": 514,
+            "bytes": 38592
+          }
+        ],
+        [
+          "native:blink::UniqueElementData",
+          {
+            "count": 334,
+            "bytes": 37408
+          }
+        ],
+        [
+          "native:blink::CSSValueList",
+          {
+            "count": 777,
+            "bytes": 37296
+          }
+        ],
+        [
+          "native:SVGAnimatedLength",
+          {
+            "count": 579,
+            "bytes": 37056
+          }
+        ],
+        [
+          "native:blink::ComputedStyleBase::StyleSurroundData",
+          {
+            "count": 113,
+            "bytes": 35256
+          }
+        ],
+        [
+          "native:system / PropertyArray",
+          {
+            "count": 1308,
+            "bytes": 35140
+          }
+        ],
+        [
+          "native:system / AccessorPair",
+          {
+            "count": 2740,
+            "bytes": 32880
+          }
+        ],
+        [
+          "native:blink::PhysicalBoxFragment",
+          {
+            "count": 320,
+            "bytes": 31080
+          }
+        ],
+        [
+          "native:blink::CSSVariableData",
+          {
+            "count": 607,
+            "bytes": 30416
+          }
+        ],
+        [
+          "native:blink::AXObjectCacheImpl::TreeUpdateParams",
+          {
+            "count": 541,
+            "bytes": 30296
+          }
+        ],
+        [
+          "native:blink::ComputedStyleBase::StyleHighlightDataData",
+          {
+            "count": 532,
+            "bytes": 29792
+          }
+        ],
+        [
+          "native:blink::CachedMatchedProperties",
+          {
+            "count": 216,
+            "bytes": 29376
+          }
+        ],
+        [
+          "native:blink::CSSNumericLiteralValue",
+          {
+            "count": 1207,
+            "bytes": 28968
+          }
+        ],
+        [
+          "native:blink::HeapVectorBacking<blink::RuleData>",
+          {
+            "count": 27,
+            "bytes": 27872
+          }
+        ],
+        [
+          "native:system / PropertyCell",
+          {
+            "count": 1342,
+            "bytes": 26840
+          }
+        ],
+        [
+          "native:blink::ScriptResource",
+          {
+            "count": 9,
+            "bytes": 26784
+          }
+        ],
+        [
+          "native:blink::CSSSelector::RareData",
+          {
+            "count": 333,
+            "bytes": 26640
+          }
+        ],
+        [
+          "native:blink::LayoutResult",
+          {
+            "count": 318,
+            "bytes": 25440
+          }
+        ],
+        [
+          "native:blink::HeapHashTableBacking<blink::HashTable<unsigned int, blink::KeyValuePair<unsigned int, std::pair<const blink::StringImpl *, cppgc::internal::BasicMember<blink::ShareableElementData, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>>, blink::KeyValuePairExtractor, blink::HashMapValueTraits<blink::AlreadyHashedTraits, blink::HashTraits<std::pair<const blink::StringImpl *, cppgc::internal::BasicMember<blink::ShareableElementData, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>>>, blink::AlreadyHashedTraits, blink::HeapAllocator>>",
+          {
+            "count": 2,
+            "bytes": 24976
+          }
+        ],
+        [
+          "native:blink::LayoutBlockFlow",
+          {
+            "count": 136,
+            "bytes": 22848
+          }
+        ],
+        [
+          "native:blink::HeapHashTableBacking<blink::HashTable<blink::FontDescription, blink::KeyValuePair<blink::FontDescription, cppgc::internal::BasicMember<blink::FontFallbackList, cppgc::internal::WeakMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::KeyValuePairExtractor, blink::HashMapValueTraits<blink::HashTraits<FontDescription>, blink::HashTraits<cppgc::internal::BasicMember<blink::FontFallbackList, cppgc::internal::WeakMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>>, blink::HashTraits<FontDescription>, blink::HeapAllocator>>",
+          {
+            "count": 2,
+            "bytes": 21776
+          }
+        ],
+        [
+          "native:blink::SVGLength",
+          {
+            "count": 677,
+            "bytes": 21664
+          }
+        ],
+        [
+          "native:blink::NodeRareData",
+          {
+            "count": 635,
+            "bytes": 20368
+          }
+        ],
+        [
+          "native:blink::Font",
+          {
+            "count": 121,
+            "bytes": 20328
+          }
+        ],
+        [
+          "native:blink::HeapVectorBacking<blink::FragmentItem>",
+          {
+            "count": 137,
+            "bytes": 19128
+          }
+        ],
+        [
+          "native:Text",
+          {
+            "count": 189,
+            "bytes": 17816
+          }
+        ],
+        [
+          "native:blink::LayoutSVGPath",
+          {
+            "count": 85,
+            "bytes": 17000
+          }
+        ],
+        [
+          "native:blink::HeapHashTableBacking<blink::HashTable<unsigned int, blink::KeyValuePair<unsigned int, cppgc::internal::BasicMember<blink::CachedMatchedProperties, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::KeyValuePairExtractor, blink::HashMapValueTraits<blink::AlreadyHashedTraits, blink::HashTraits<cppgc::internal::BasicMember<blink::CachedMatchedProperties, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>>, blink::AlreadyHashedTraits, blink::HeapAllocator>>",
+          {
+            "count": 2,
+            "bytes": 16464
+          }
+        ],
+        [
+          "native:blink::BoxOverflowModel",
+          {
+            "count": 136,
+            "bytes": 16320
+          }
+        ],
+        [
+          "native:blink::HashTrieNode<blink::CSSVariableData>",
+          {
+            "count": 59,
+            "bytes": 16048
+          }
+        ],
+        [
+          "native:blink::GeometryMapperTransformCache",
+          {
+            "count": 47,
+            "bytes": 15792
+          }
+        ],
+        [
+          "native:blink::FragmentDataList",
+          {
+            "count": 644,
+            "bytes": 15456
+          }
+        ],
+        [
+          "native:blink::NodeRareData::DataFieldWrapper<int>",
+          {
+            "count": 634,
+            "bytes": 15216
+          }
+        ],
+        [
+          "native:blink::LayoutText",
+          {
+            "count": 134,
+            "bytes": 15008
+          }
+        ],
+        [
+          "native:SVGAnimatedTransformList",
+          {
+            "count": 226,
+            "bytes": 14464
+          }
+        ],
+        [
+          "native:blink::HeapHashTableBacking<blink::HashTable<blink::FontCacheKey, blink::KeyValuePair<blink::FontCacheKey, cppgc::internal::BasicMember<const blink::FontPlatformData, cppgc::internal::WeakMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::KeyValuePairExtractor, blink::HashMapValueTraits<blink::HashTraits<FontCacheKey>, blink::HashTraits<cppgc::internal::BasicMember<const blink::FontPlatformData, cppgc::internal::WeakMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>>, blink::HashTraits<FontCacheKey>, blink::HeapAllocator>>",
+          {
+            "count": 1,
+            "bytes": 14344
+          }
+        ],
+        [
+          "native:blink::AXNodeObject",
+          {
+            "count": 130,
+            "bytes": 13520
+          }
+        ],
+        [
+          "native:blink::ShapeResultView",
+          {
+            "count": 183,
+            "bytes": 13176
+          }
+        ],
+        [
+          "native:system / WeakArrayList",
+          {
+            "count": 170,
+            "bytes": 13160
+          }
+        ],
+        [
+          "native:blink::CSSUnparsedDeclarationValue",
+          {
+            "count": 540,
+            "bytes": 12960
+          }
+        ],
+        [
+          "native:blink::HeapVectorBacking<blink::PaintChunk>",
+          {
+            "count": 2,
+            "bytes": 12944
+          }
+        ],
+        [
+          "native:SVGLineElement",
+          {
+            "count": 77,
+            "bytes": 12936
+          }
+        ],
+        [
+          "native:blink::RuleSet",
+          {
+            "count": 8,
+            "bytes": 12928
+          }
+        ],
+        [
+          "native:SVGAnimatedLengthList",
+          {
+            "count": 196,
+            "bytes": 12544
+          }
+        ],
+        [
+          "native:blink::ShapeResultRun",
+          {
+            "count": 194,
+            "bytes": 12416
+          }
+        ],
+        [
+          "native:blink::HeapVectorBacking<std::pair<blink::Color, cppgc::internal::BasicMember<blink::cssvalue::CSSColor, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>>",
+          {
+            "count": 1,
+            "bytes": 12296
+          }
+        ],
+        [
+          "native:V8EventListener",
+          {
+            "count": 304,
+            "bytes": 12160
+          }
+        ],
+        [
+          "native:blink::LayoutSVGText",
+          {
+            "count": 49,
+            "bytes": 12152
+          }
+        ],
+        [
+          "native:blink::TransformPaintPropertyNode",
+          {
+            "count": 47,
+            "bytes": 12032
+          }
+        ],
+        [
+          "native:blink::ShapeResult",
+          {
+            "count": 183,
+            "bytes": 11712
+          }
+        ],
+        [
+          "native:blink::HeapVectorBacking<blink::HarfBuzzRunGlyphData>",
+          {
+            "count": 194,
+            "bytes": 11688
+          }
+        ],
+        [
+          "native:system / AccessorInfo",
+          {
+            "count": 1717,
+            "bytes": 11184
+          }
+        ],
+        [
+          "native:EventListener",
+          {
+            "count": 345,
+            "bytes": 11120
+          }
+        ],
+        [
+          "native:blink::SimpleFontData",
+          {
+            "count": 41,
+            "bytes": 10496
+          }
+        ],
+        [
+          "native:blink::LayoutFlexibleBox",
+          {
+            "count": 64,
+            "bytes": 10240
+          }
+        ],
+        [
+          "native:blink::PhysicalFragmentRareData",
+          {
+            "count": 140,
+            "bytes": 10080
+          }
+        ],
+        [
+          "native:blink::DocumentLoader",
+          {
+            "count": 2,
+            "bytes": 9280
+          }
+        ],
+        [
+          "native:blink::ComputedStyleBase::StyleMisc1Data",
+          {
+            "count": 58,
+            "bytes": 9280
+          }
+        ],
+        [
+          "native:blink::InlineNodeData",
+          {
+            "count": 142,
+            "bytes": 9088
+          }
+        ],
+        [
+          "native:SVGTextElement",
+          {
+            "count": 49,
+            "bytes": 9016
+          }
+        ],
+        [
+          "native:blink::SpaceSplitString::Data",
+          {
+            "count": 139,
+            "bytes": 8896
+          }
+        ],
+        [
+          "native:blink::CSSStyleSheetResource",
+          {
+            "count": 3,
+            "bytes": 8760
+          }
+        ],
+        [
+          "string:function installMeasurement() {\n    const measure = window.engineBench = { serial: 0, start: null, accepted: null, exact: null, maxBytes: 0, maxCards: 0, periodStart: 0, longTasks: { count: 0, maxMs: 0 }, incomingCount: 0 };\n    new PerformanceObserver(list => { for (const entry of list.getEntries()) { if (entry.startTime < measure.periodStart) continue; measure.longTasks.count++; measure.longTasks.maxMs = Math.max(measure.longTasks.maxMs, entry.duration); } }).observe({ type: 'longtask', buffered: false });\n    new MutationObserver(() => { measure.maxCards = Math.max(measure.maxCards, document.querySelectorAll('[data-voicing-id]').length); }).observe(document, { childList: true, subtree: true });\n    window.Worker = new Proxy(window.Worker, { construct(Target, args) {\n        const worker = new Target(...args), post = worker.postMessage.bind(worker);\n        worker.postMessage = (message, ...rest) => {\n            if (message.protocol === 'engine-worker-v2' && ['START', 'PAGE', 'SET_VIEW'].includes(message.k",
+          {
+            "count": 1,
+            "bytes": 8744
+          }
+        ],
+        [
+          "native:blink::HeapVectorBacking<gfx::Vector2dF>",
+          {
+            "count": 88,
+            "bytes": 8584
+          }
+        ],
+        [
+          "native:blink::HeapVectorBacking<cppgc::internal::BasicMember<blink::StyleRuleBase, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>",
+          {
+            "count": 202,
+            "bytes": 8464
+          }
+        ],
+        [
+          "native:blink::CSSValuePool",
+          {
+            "count": 1,
+            "bytes": 8416
+          }
+        ],
+        [
+          "native:blink::ComputedStyleBase::StyleMisc2Data",
+          {
+            "count": 24,
+            "bytes": 8256
+          }
+        ],
+        [
+          "native:blink::HeapHashTableBacking<blink::HashTable<blink::AtomicString, blink::KeyValuePair<blink::AtomicString, cppgc::internal::BasicMember<blink::SpaceSplitString::Data, cppgc::internal::WeakMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::KeyValuePairExtractor, blink::HashMapValueTraits<blink::HashTraits<blink::AtomicString>, blink::HashTraits<cppgc::internal::BasicMember<blink::SpaceSplitString::Data, cppgc::internal::WeakMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>>, blink::HashTraits<blink::AtomicString>, blink::HeapAllocator>>",
+          {
+            "count": 1,
+            "bytes": 8200
+          }
+        ],
+        [
+          "native:blink::HeapHashTableBacking<blink::HashTable<cppgc::internal::BasicMember<const blink::LayoutObject, cppgc::internal::WeakMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>, blink::KeyValuePair<cppgc::internal::BasicMember<const blink::LayoutObject, cppgc::internal::WeakMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>, blink::TextPaintTimingDetector::TextPaintStatus>, blink::KeyValuePairExtractor, blink::HashMapValueTraits<blink::HashTraits<cppgc::internal::BasicMember<const blink::LayoutObject, cppgc::internal::WeakMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::HashTraits<blink::TextPaintTimingDetector::TextPaintStatus>>, blink::HashTraits<cppgc::internal::BasicMember<const blink::LayoutObject, cppgc::internal::WeakMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::HeapAllocator>>",
+          {
+            "count": 1,
+            "bytes": 8200
+          }
+        ],
+        [
+          "native:blink::HeapVectorBacking<blink::PhysicalFragmentLink>",
+          {
+            "count": 286,
+            "bytes": 8192
+          }
+        ],
+        [
+          "native:blink::ComputedStyleBase::StyleMisc4Data",
+          {
+            "count": 43,
+            "bytes": 7912
+          }
+        ],
+        [
+          "native:blink::SVGLengthList",
+          {
+            "count": 196,
+            "bytes": 7840
+          }
+        ],
+        [
+          "native:blink::InlineItem",
+          {
+            "count": 194,
+            "bytes": 7760
+          }
+        ],
+        [
+          "native:blink::LayoutGrid",
+          {
+            "count": 19,
+            "bytes": 7752
+          }
+        ],
+        [
+          "native:blink::SVGTransformList",
+          {
+            "count": 226,
+            "bytes": 7232
+          }
+        ],
+        [
+          "native:blink::BasicHeapVector<blink::internal::HeapCollectionType::kGCed, cppgc::internal::BasicMember<blink::RegisteredEventListener, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>, 1>",
+          {
+            "count": 226,
+            "bytes": 7232
+          }
+        ],
+        [
+          "native:blink::HeapHashTableBacking<blink::HashTable<cppgc::internal::BasicMember<blink::LayoutSVGText, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>, cppgc::internal::BasicMember<blink::LayoutSVGText, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>, blink::IdentityExtractor, blink::HashTraits<cppgc::internal::BasicMember<blink::LayoutSVGText, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::HashTraits<cppgc::internal::BasicMember<blink::LayoutSVGText, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::HeapAllocator>>",
+          {
+            "count": 38,
+            "bytes": 7216
+          }
+        ],
+        [
+          "native:blink::SelectorQuery",
+          {
+            "count": 29,
+            "bytes": 7192
+          }
+        ],
+        [
+          "native:blink::StyleRuleSupports",
+          {
+            "count": 147,
+            "bytes": 7056
+          }
+        ],
+        [
+          "native:system / ObjectTemplateInfo",
+          {
+            "count": 247,
+            "bytes": 6916
+          }
+        ],
+        [
+          "native:blink::LayoutSVGEllipse",
+          {
+            "count": 34,
+            "bytes": 6800
+          }
+        ],
+        [
+          "native:blink::PhysicalLineBoxFragment",
+          {
+            "count": 137,
+            "bytes": 6576
+          }
+        ],
+        [
+          "native:blink::FragmentData::RareData",
+          {
+            "count": 68,
+            "bytes": 6528
+          }
+        ],
+        [
+          "native:blink::ClipPaintPropertyNode",
+          {
+            "count": 32,
+            "bytes": 6400
+          }
+        ],
+        [
+          "native:blink::CSSSelectorList",
+          {
+            "count": 141,
+            "bytes": 6216
+          }
+        ],
+        [
+          "native:blink::LayoutSVGTransformableContainer",
+          {
+            "count": 34,
+            "bytes": 5984
+          }
+        ],
+        [
+          "native:blink::LayoutSVGInlineText",
+          {
+            "count": 49,
+            "bytes": 5880
+          }
+        ]
+      ]
+    },
+    {
+      "label": "end",
+      "path": ".tmp-release-memory/baseline-end.heapsnapshot",
+      "sha256": "d495effa666a2beb744b4378a4dac5a367d72699d34b0790c9e1f33d23decfad",
+      "classes": [
+        [
+          "native:system / ExternalStringData",
+          {
+            "count": 484,
+            "bytes": 1424169
+          }
+        ],
+        [
+          "native:system / FunctionTemplateInfo",
+          {
+            "count": 3548,
+            "bytes": 226944
+          }
+        ],
+        [
+          "native:system / JSArrayBufferData",
+          {
+            "count": 3,
+            "bytes": 202612
+          }
+        ],
+        [
+          "native:blink::HeapHashTableBacking<blink::HashTable<cppgc::internal::BasicMember<blink::HTMLInputElement, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>, blink::KeyValuePair<cppgc::internal::BasicMember<blink::HTMLInputElement, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>, bool>, blink::KeyValuePairExtractor, blink::HashMapValueTraits<blink::HashTraits<cppgc::internal::BasicMember<blink::HTMLInputElement, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::HashTraits<bool>>, blink::HashTraits<cppgc::internal::BasicMember<blink::HTMLInputElement, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::HeapAllocator>>",
+          {
+            "count": 2412,
+            "bytes": 173728
+          }
+        ],
+        [
+          "native:blink::RadioButtonGroup",
+          {
+            "count": 2412,
+            "bytes": 115776
+          }
+        ],
+        [
+          "native:blink::ComputedStyle",
+          {
+            "count": 1501,
+            "bytes": 108072
+          }
+        ],
+        [
+          "native:blink::ImmutableCSSPropertyValueSet",
+          {
+            "count": 1059,
+            "bytes": 99584
+          }
+        ],
+        [
+          "native:blink::ComputedStyleBase::StyleInheritedData",
+          {
+            "count": 697,
+            "bytes": 94792
+          }
+        ],
+        [
+          "native:blink::GridSizingTrackCollection",
+          {
+            "count": 50,
+            "bytes": 87200
+          }
+        ],
+        [
+          "native:blink::StyleRule",
+          {
+            "count": 1109,
+            "bytes": 78704
+          }
+        ],
+        [
+          "native:system / WeakArrayList",
+          {
+            "count": 958,
+            "bytes": 78044
+          }
+        ],
+        [
+          "native:blink::ComputedStyleBase::StyleMiscData",
+          {
+            "count": 700,
+            "bytes": 61600
+          }
+        ],
+        [
+          "native:blink::FontResource",
+          {
+            "count": 18,
+            "bytes": 53712
+          }
+        ],
+        [
+          "native:system / ArrayList",
+          {
+            "count": 139,
+            "bytes": 52340
+          }
+        ],
+        [
+          "native:system / DoubleStringCache",
+          {
+            "count": 1,
+            "bytes": 49160
+          }
+        ],
+        [
+          "native:blink::ComputedStyleBase::StyleBoxData",
+          {
+            "count": 264,
+            "bytes": 46464
+          }
+        ],
+        [
+          "native:DOMRectReadOnly",
+          {
+            "count": 796,
+            "bytes": 44576
+          }
+        ],
+        [
+          "native:blink::UniqueElementData",
+          {
+            "count": 334,
+            "bytes": 37408
+          }
+        ],
+        [
+          "native:SVGAnimatedLength",
+          {
+            "count": 579,
+            "bytes": 37056
+          }
+        ],
+        [
+          "native:system / PropertyArray",
+          {
+            "count": 1308,
+            "bytes": 35140
+          }
+        ],
+        [
+          "native:blink::ComputedStyleBase::StyleSurroundData",
+          {
+            "count": 112,
+            "bytes": 34944
+          }
+        ],
+        [
+          "native:system / AccessorPair",
+          {
+            "count": 2740,
+            "bytes": 32880
+          }
+        ],
+        [
+          "native:blink::PhysicalBoxFragment",
+          {
+            "count": 320,
+            "bytes": 31080
+          }
+        ],
+        [
+          "native:blink::ComputedStyleBase::StyleHighlightDataData",
+          {
+            "count": 545,
+            "bytes": 30520
+          }
+        ],
+        [
+          "native:blink::CSSVariableData",
+          {
+            "count": 607,
+            "bytes": 30416
+          }
+        ],
+        [
+          "native:blink::AXObjectCacheImpl::TreeUpdateParams",
+          {
+            "count": 541,
+            "bytes": 30296
+          }
+        ],
+        [
+          "native:blink::CachedMatchedProperties",
+          {
+            "count": 209,
+            "bytes": 28424
+          }
+        ],
+        [
+          "native:blink::CSSSelector::RareData",
+          {
+            "count": 355,
+            "bytes": 28400
+          }
+        ],
+        [
+          "native:blink::CSSNumericLiteralValue",
+          {
+            "count": 1178,
+            "bytes": 28272
+          }
+        ],
+        [
+          "native:blink::HeapVectorBacking<blink::RuleData>",
+          {
+            "count": 27,
+            "bytes": 27872
+          }
+        ],
+        [
+          "native:system / PropertyCell",
+          {
+            "count": 1342,
+            "bytes": 26840
+          }
+        ],
+        [
+          "native:blink::ScriptResource",
+          {
+            "count": 9,
+            "bytes": 26784
+          }
+        ],
+        [
+          "native:blink::LayoutResult",
+          {
+            "count": 318,
+            "bytes": 25440
+          }
+        ],
+        [
+          "native:blink::LayoutBlockFlow",
+          {
+            "count": 136,
+            "bytes": 22848
+          }
+        ],
+        [
+          "native:LayoutShift",
+          {
+            "count": 150,
+            "bytes": 22800
+          }
+        ],
+        [
+          "native:blink::HeapHashTableBacking<blink::HashTable<blink::FontDescription, blink::KeyValuePair<blink::FontDescription, cppgc::internal::BasicMember<blink::FontFallbackList, cppgc::internal::WeakMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::KeyValuePairExtractor, blink::HashMapValueTraits<blink::HashTraits<FontDescription>, blink::HashTraits<cppgc::internal::BasicMember<blink::FontFallbackList, cppgc::internal::WeakMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>>, blink::HashTraits<FontDescription>, blink::HeapAllocator>>",
+          {
+            "count": 2,
+            "bytes": 21776
+          }
+        ],
+        [
+          "native:blink::SVGLength",
+          {
+            "count": 677,
+            "bytes": 21664
+          }
+        ],
+        [
+          "native:blink::Font",
+          {
+            "count": 127,
+            "bytes": 21336
+          }
+        ],
+        [
+          "native:blink::NodeRareData",
+          {
+            "count": 635,
+            "bytes": 20368
+          }
+        ],
+        [
+          "native:blink::HeapVectorBacking<blink::FragmentItem>",
+          {
+            "count": 137,
+            "bytes": 19128
+          }
+        ],
+        [
+          "native:Text",
+          {
+            "count": 189,
+            "bytes": 17816
+          }
+        ],
+        [
+          "native:blink::LayoutSVGPath",
+          {
+            "count": 85,
+            "bytes": 17000
+          }
+        ],
+        [
+          "native:blink::HeapHashTableBacking<blink::HashTable<cppgc::internal::BasicMember<const blink::LayoutObject, cppgc::internal::WeakMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>, blink::KeyValuePair<cppgc::internal::BasicMember<const blink::LayoutObject, cppgc::internal::WeakMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>, blink::TextPaintTimingDetector::TextPaintStatus>, blink::KeyValuePairExtractor, blink::HashMapValueTraits<blink::HashTraits<cppgc::internal::BasicMember<const blink::LayoutObject, cppgc::internal::WeakMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::HashTraits<blink::TextPaintTimingDetector::TextPaintStatus>>, blink::HashTraits<cppgc::internal::BasicMember<const blink::LayoutObject, cppgc::internal::WeakMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::HeapAllocator>>",
+          {
+            "count": 1,
+            "bytes": 16392
+          }
+        ],
+        [
+          "native:blink::BoxOverflowModel",
+          {
+            "count": 136,
+            "bytes": 16320
+          }
+        ],
+        [
+          "native:blink::HashTrieNode<blink::CSSVariableData>",
+          {
+            "count": 59,
+            "bytes": 16048
+          }
+        ],
+        [
+          "native:LayoutShiftAttribution",
+          {
+            "count": 398,
+            "bytes": 15920
+          }
+        ],
+        [
+          "native:blink::GeometryMapperTransformCache",
+          {
+            "count": 47,
+            "bytes": 15792
+          }
+        ],
+        [
+          "native:blink::FragmentDataList",
+          {
+            "count": 644,
+            "bytes": 15456
+          }
+        ],
+        [
+          "native:blink::NodeRareData::DataFieldWrapper<int>",
+          {
+            "count": 634,
+            "bytes": 15216
+          }
+        ],
+        [
+          "native:blink::LayoutText",
+          {
+            "count": 134,
+            "bytes": 15008
+          }
+        ],
+        [
+          "native:SVGAnimatedTransformList",
+          {
+            "count": 226,
+            "bytes": 14464
+          }
+        ],
+        [
+          "native:blink::HeapHashTableBacking<blink::HashTable<blink::FontCacheKey, blink::KeyValuePair<blink::FontCacheKey, cppgc::internal::BasicMember<const blink::FontPlatformData, cppgc::internal::WeakMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::KeyValuePairExtractor, blink::HashMapValueTraits<blink::HashTraits<FontCacheKey>, blink::HashTraits<cppgc::internal::BasicMember<const blink::FontPlatformData, cppgc::internal::WeakMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>>, blink::HashTraits<FontCacheKey>, blink::HeapAllocator>>",
+          {
+            "count": 1,
+            "bytes": 14344
+          }
+        ],
+        [
+          "native:blink::AXNodeObject",
+          {
+            "count": 130,
+            "bytes": 13520
+          }
+        ],
+        [
+          "native:blink::ShapeResultView",
+          {
+            "count": 183,
+            "bytes": 13176
+          }
+        ],
+        [
+          "native:blink::CSSUnparsedDeclarationValue",
+          {
+            "count": 540,
+            "bytes": 12960
+          }
+        ],
+        [
+          "native:blink::HeapVectorBacking<blink::PaintChunk>",
+          {
+            "count": 2,
+            "bytes": 12944
+          }
+        ],
+        [
+          "native:SVGLineElement",
+          {
+            "count": 77,
+            "bytes": 12936
+          }
+        ],
+        [
+          "native:blink::RuleSet",
+          {
+            "count": 8,
+            "bytes": 12928
+          }
+        ],
+        [
+          "native:SVGAnimatedLengthList",
+          {
+            "count": 196,
+            "bytes": 12544
+          }
+        ],
+        [
+          "native:blink::ShapeResultRun",
+          {
+            "count": 194,
+            "bytes": 12416
+          }
+        ],
+        [
+          "native:blink::HeapVectorBacking<std::pair<blink::Color, cppgc::internal::BasicMember<blink::cssvalue::CSSColor, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>>",
+          {
+            "count": 1,
+            "bytes": 12296
+          }
+        ],
+        [
+          "native:blink::CSSValueList",
+          {
+            "count": 254,
+            "bytes": 12192
+          }
+        ],
+        [
+          "native:V8EventListener",
+          {
+            "count": 304,
+            "bytes": 12160
+          }
+        ],
+        [
+          "native:blink::LayoutSVGText",
+          {
+            "count": 49,
+            "bytes": 12152
+          }
+        ],
+        [
+          "native:blink::TransformPaintPropertyNode",
+          {
+            "count": 47,
+            "bytes": 12032
+          }
+        ],
+        [
+          "native:blink::ShapeResult",
+          {
+            "count": 183,
+            "bytes": 11712
+          }
+        ],
+        [
+          "native:blink::HeapVectorBacking<blink::HarfBuzzRunGlyphData>",
+          {
+            "count": 194,
+            "bytes": 11688
+          }
+        ],
+        [
+          "native:system / AccessorInfo",
+          {
+            "count": 1717,
+            "bytes": 11184
+          }
+        ],
+        [
+          "native:EventListener",
+          {
+            "count": 345,
+            "bytes": 11120
+          }
+        ],
+        [
+          "native:blink::SimpleFontData",
+          {
+            "count": 42,
+            "bytes": 10752
+          }
+        ],
+        [
+          "native:blink::LayoutFlexibleBox",
+          {
+            "count": 64,
+            "bytes": 10240
+          }
+        ],
+        [
+          "native:blink::PhysicalFragmentRareData",
+          {
+            "count": 140,
+            "bytes": 10080
+          }
+        ],
+        [
+          "native:blink::SelectorQuery",
+          {
+            "count": 40,
+            "bytes": 9920
+          }
+        ],
+        [
+          "native:blink::DocumentLoader",
+          {
+            "count": 2,
+            "bytes": 9280
+          }
+        ],
+        [
+          "native:blink::ComputedStyleBase::StyleMisc1Data",
+          {
+            "count": 58,
+            "bytes": 9280
+          }
+        ],
+        [
+          "native:blink::InlineNodeData",
+          {
+            "count": 142,
+            "bytes": 9088
+          }
+        ],
+        [
+          "native:SVGTextElement",
+          {
+            "count": 49,
+            "bytes": 9016
+          }
+        ],
+        [
+          "native:blink::ComputedStyleBase::StyleMisc2Data",
+          {
+            "count": 26,
+            "bytes": 8944
+          }
+        ],
+        [
+          "native:blink::CSSStyleSheetResource",
+          {
+            "count": 3,
+            "bytes": 8760
+          }
+        ],
+        [
+          "string:function installMeasurement() {\n    const measure = window.engineBench = { serial: 0, start: null, accepted: null, exact: null, maxBytes: 0, maxCards: 0, periodStart: 0, longTasks: { count: 0, maxMs: 0 }, incomingCount: 0 };\n    new PerformanceObserver(list => { for (const entry of list.getEntries()) { if (entry.startTime < measure.periodStart) continue; measure.longTasks.count++; measure.longTasks.maxMs = Math.max(measure.longTasks.maxMs, entry.duration); } }).observe({ type: 'longtask', buffered: false });\n    new MutationObserver(() => { measure.maxCards = Math.max(measure.maxCards, document.querySelectorAll('[data-voicing-id]').length); }).observe(document, { childList: true, subtree: true });\n    window.Worker = new Proxy(window.Worker, { construct(Target, args) {\n        const worker = new Target(...args), post = worker.postMessage.bind(worker);\n        worker.postMessage = (message, ...rest) => {\n            if (message.protocol === 'engine-worker-v2' && ['START', 'PAGE', 'SET_VIEW'].includes(message.k",
+          {
+            "count": 1,
+            "bytes": 8744
+          }
+        ],
+        [
+          "native:blink::HeapVectorBacking<gfx::Vector2dF>",
+          {
+            "count": 88,
+            "bytes": 8584
+          }
+        ],
+        [
+          "native:blink::HeapVectorBacking<cppgc::internal::BasicMember<blink::StyleRuleBase, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>",
+          {
+            "count": 202,
+            "bytes": 8464
+          }
+        ],
+        [
+          "native:blink::CSSValuePool",
+          {
+            "count": 1,
+            "bytes": 8416
+          }
+        ],
+        [
+          "native:blink::HeapHashTableBacking<blink::HashTable<unsigned int, blink::KeyValuePair<unsigned int, cppgc::internal::BasicMember<blink::CachedMatchedProperties, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::KeyValuePairExtractor, blink::HashMapValueTraits<blink::AlreadyHashedTraits, blink::HashTraits<cppgc::internal::BasicMember<blink::CachedMatchedProperties, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>>, blink::AlreadyHashedTraits, blink::HeapAllocator>>",
+          {
+            "count": 2,
+            "bytes": 8272
+          }
+        ],
+        [
+          "native:blink::HeapVectorBacking<blink::PhysicalFragmentLink>",
+          {
+            "count": 286,
+            "bytes": 8192
+          }
+        ],
+        [
+          "native:blink::ComputedStyleBase::StyleMisc4Data",
+          {
+            "count": 43,
+            "bytes": 7912
+          }
+        ],
+        [
+          "native:blink::SVGLengthList",
+          {
+            "count": 196,
+            "bytes": 7840
+          }
+        ],
+        [
+          "native:blink::InlineItem",
+          {
+            "count": 194,
+            "bytes": 7760
+          }
+        ],
+        [
+          "native:blink::LayoutGrid",
+          {
+            "count": 19,
+            "bytes": 7752
+          }
+        ],
+        [
+          "native:blink::BasicHeapVector<blink::internal::HeapCollectionType::kGCed, cppgc::internal::BasicMember<blink::RegisteredEventListener, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>, 1>",
+          {
+            "count": 226,
+            "bytes": 7232
+          }
+        ],
+        [
+          "native:blink::SVGTransformList",
+          {
+            "count": 226,
+            "bytes": 7232
+          }
+        ],
+        [
+          "native:blink::HeapHashTableBacking<blink::HashTable<cppgc::internal::BasicMember<blink::LayoutSVGText, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>, cppgc::internal::BasicMember<blink::LayoutSVGText, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>, blink::IdentityExtractor, blink::HashTraits<cppgc::internal::BasicMember<blink::LayoutSVGText, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::HashTraits<cppgc::internal::BasicMember<blink::LayoutSVGText, cppgc::internal::StrongMemberTag, cppgc::internal::DijkstraWriteBarrierPolicy>>, blink::HeapAllocator>>",
+          {
+            "count": 38,
+            "bytes": 7216
+          }
+        ],
+        [
+          "native:blink::StyleRuleSupports",
+          {
+            "count": 147,
+            "bytes": 7056
+          }
+        ],
+        [
+          "native:system / ObjectTemplateInfo",
+          {
+            "count": 247,
+            "bytes": 6916
+          }
+        ],
+        [
+          "native:blink::LayoutSVGEllipse",
+          {
+            "count": 34,
+            "bytes": 6800
+          }
+        ],
+        [
+          "native:blink::CSSSelectorList",
+          {
+            "count": 152,
+            "bytes": 6656
+          }
+        ],
+        [
+          "native:blink::PhysicalLineBoxFragment",
+          {
+            "count": 137,
+            "bytes": 6576
+          }
+        ],
+        [
+          "native:blink::FragmentData::RareData",
+          {
+            "count": 68,
+            "bytes": 6528
+          }
+        ],
+        [
+          "native:blink::ComputedStyleBase::StyleSVGData",
+          {
+            "count": 81,
+            "bytes": 6480
+          }
+        ],
+        [
+          "native:blink::ClipPaintPropertyNode",
+          {
+            "count": 32,
+            "bytes": 6400
+          }
+        ]
+      ]
+    }
+  ],
+  "complete": true
+}

@@ -1,0 +1,94 @@
+{
+  "accessDate": "2026-09-13",
+  "defaults": {
+    "rawDataStored": false,
+    "redistribution": "not established; source metadata only",
+    "retention": "provenance and analytical summaries only",
+    "capoAssumption": "not resolved at item level; no allocations ingested",
+    "notationOrientation": "not resolved at item level",
+    "chordLabelSystem": "source-native; not normalized without allocations",
+    "updateHistory": "live source accessed 2026-09-13; no immutable data acquisition",
+    "lineageConfidence": "separate owner is not proof of independent underlying shapes"
+  },
+  "sources": [
+    {
+      "sourceId": "jguitar-primary", "lineageId": "jguitar-calculator",
+      "url": "https://jguitar.com/", "owner": "JGuitar; individual maintainer not established",
+      "sourceType": "F algorithmic calculator", "originClassification": "GENERATED",
+      "originEvidence": "Primary home page explicitly describes dynamic chord/scale calculation for arbitrary stringed instruments and tuning.",
+      "editorialCriteria": "Calculator variants; no demonstrated individual human selection", "approximateSize": "dynamic, not a fixed curated corpus",
+      "tuning": "configurable", "stringCount": "configurable", "licenseOrTerms": "No dataset reuse grant established",
+      "copyingLineage": "T-vK/chord-collection credits JGuitar; do not count those shapes as an independent curated dictionary.",
+      "biases": ["calculator constraints", "computed variants mistaken for votes"], "decision": "generated comparison/provenance only", "eligibleCuratedVote": false
+    },
+    {
+      "sourceId": "oolimo", "lineageId": "oolimo",
+      "url": "https://www.oolimo.com/en/guitar-chords/find", "owner": "Oolimo; individual legal owner not established in retrieved pages",
+      "sourceType": "D product and B teaching", "originClassification": "UNKNOWN",
+      "originEvidence": "Finder, analyzer and structured voicing lessons are visible; the origin and manual review of every listed shape are not established.",
+      "editorialCriteria": "Lessons distinguish voicings/inversions/omissions; calculator output and teaching examples must be separated",
+      "approximateSize": "not established", "tuning": "configurable; standard tuning lessons available", "stringCount": "six-string interface",
+      "licenseOrTerms": "No bulk data reuse grant established", "copyingLineage": "No common upstream proven; independence unresolved",
+      "biases": ["calculator versus authored lesson ambiguity", "unresolved source selection"], "decision": "metadata-only candidate for future source agreement", "eligibleCuratedVote": false
+    },
+    {
+      "sourceId": "fender-lessons", "lineageId": "fender",
+      "url": "https://www.fender.com//articles/chords/learn-how-to-play-c-guitar-chord", "owner": "Fender Musical Instruments Corporation; lesson by Dan Macy",
+      "sourceType": "B authored educational and D product", "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "originEvidence": "Named lesson author deliberately explains a primary open C and variations; this does not certify origins of the entire product dictionary.",
+      "editorialCriteria": "Beginner chord learning", "approximateSize": "selected lesson not counted; separate product advertises >5000 shapes",
+      "sizeSource": "https://support.fender.com/hc/en-us/articles/42913518419867-What-is-the-Chords-tool", "tuning": "standard for inspected C lesson", "stringCount": 6,
+      "licenseOrTerms": "https://www.fender.com/policies/terms-of-service: personal informational noncommercial use with restrictions on modified content and separated graphics; no bulk corpus permission adopted",
+      "copyingLineage": "Lessons and Fender Play tools grouped as one owner family; library origin unknown",
+      "biases": ["beginner/open position", "commercial teaching catalog"], "decision": "authored evidence candidate but no dataset extracted", "eligibleCuratedVote": false
+    },
+    {
+      "sourceId": "justinguitar", "lineageId": "justinguitar",
+      "url": "https://www.justinguitar.com/guitar-lessons/the-c-chord-b1-501", "owner": "Justin Sandercoe / JustinGuitar",
+      "sourceType": "B educational", "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "originEvidence": "Author-led ordered guitar course; page text/terms did not render sufficiently for complete reuse audit in this study",
+      "editorialCriteria": "Structured beginner course", "approximateSize": "not enumerated", "tuning": "not item-verified", "stringCount": "not item-verified",
+      "licenseOrTerms": "https://www.justinguitar.com/terms accessible as shell only; permission unresolved",
+      "copyingLineage": "All course pages one source family; no upstream inference from common open shapes",
+      "biases": ["course progression", "incomplete access"], "decision": "metadata-only; no copyrighted lessons copied", "eligibleCuratedVote": false
+    },
+    {
+      "sourceId": "flavia-voicings", "lineageId": "flavia-voicings",
+      "url": "https://github.com/flaviagaglio/voicings", "owner": "Flavia Gaglio",
+      "sourceType": "D application with F generator and declared seed templates", "originClassification": "MIXED_SEEDS_AND_GENERATED",
+      "originEvidence": "README distinguishes CAGED seeds for five qualities from constraint-searched alternatives. Transposed seed instances and ranked search output are not separate human votes.",
+      "editorialCriteria": "CAGED priority plus quality/neck-spread algorithm", "approximateSize": "25 qualities ×12 roots ×3 displayed alternatives; not 900 independently curated choices",
+      "tuning": "standard guitar as described", "stringCount": 6, "licenseOrTerms": "MIT indicated in primary README/license link; preserve notice for future extraction",
+      "redistribution": "repository MIT terms; no extraction performed", "copyingLineage": "Own repository, common CAGED shapes; no independent manual-source attribution established",
+      "biases": ["explicit root requirement", "four-fret search envelope", "algorithmically ranked diversity"], "decision": "mixed/generated control metadata; do not inflate curated family count", "eligibleCuratedVote": false
+    },
+    {
+      "sourceId": "idmt-smt-chords", "lineageId": "fraunhofer-idmt-smt",
+      "url": "https://www.idmt.fraunhofer.de/en/publications/datasets/chords.html", "owner": "Fraunhofer IDMT",
+      "sourceType": "F generated audio evaluation dataset", "originClassification": "GENERATED",
+      "originEvidence": "Primary dataset description identifies generated guitar files based on barre forms with root on low E/A/D strings",
+      "editorialCriteria": "Chord recognition/evaluation coverage", "approximateSize": "not acquired or enumerated in this study", "tuning": "not item-verified", "stringCount": "guitar; item-level unavailable",
+      "licenseOrTerms": "CC BY-NC-ND 4.0 evaluation use per primary source", "copyingLineage": "One institutional generated dataset; not independent teaching evidence",
+      "biases": ["barre/root-position design", "audio task rather than curated choice"], "decision": "construct contrast only", "eligibleCuratedVote": false
+    },
+    {
+      "sourceId": "open-music-theory-jazz", "lineageId": "open-music-theory",
+      "url": "https://viva.pressbooks.pub/openmusictheory/chapter/jazz-voicings/", "owner": "Open Music Theory authors / VIVA Pressbooks",
+      "sourceType": "B educational harmony reference", "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "originEvidence": "Authored jazz voicing pedagogy; reviewed material does not supply the required guitar string/fret allocation corpus",
+      "editorialCriteria": "Voice-leading and jazz texture exercises", "approximateSize": "not a guitar-allocation collection", "tuning": "not applicable", "stringCount": "not applicable",
+      "licenseOrTerms": "CC BY-SA 4.0 except where noted", "copyingLineage": "Open Music Theory mirrors are one editorial work",
+      "biases": ["abstract/keyboard texture cannot determine guitar allocation"], "decision": "harmonic-context reference only", "eligibleCuratedVote": false
+    },
+    {
+      "sourceId": "dadagp-separate", "lineageId": "dadagp-song-score",
+      "url": "https://arxiv.org/abs/2107.14653", "owner": "DadaGP authors / dada-bots",
+      "sourceType": "E song/tab score corpus", "originClassification": "OBSERVED_NOTATED_USAGE",
+      "originEvidence": "Song-score/token dataset and prior local certified review",
+      "editorialCriteria": "Song-score collection, not deliberate chord-dictionary recommendation", "approximateSize": "26181 original scores; local certified view documented separately",
+      "tuning": "mixed original; local certified standard decoded subset", "stringCount": "mixed original; local certified six-string subset",
+      "licenseOrTerms": "Existing local authorized research scope only; no new raw redistribution", "copyingLineage": "All DadaGP views one separate evidence construct",
+      "biases": ["song/artist/style composition", "notation and attack uncertainty", "familiar-shape retrieval"], "decision": "separate descriptive comparison, never combined with source-family votes", "eligibleCuratedVote": false
+    }
+  ]
+}

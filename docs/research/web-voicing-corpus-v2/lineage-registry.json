@@ -1,0 +1,479 @@
+{
+  "schema": "web-voicing-lineage-registry-v2",
+  "accessDate": "2026-09-13",
+  "counts": {
+    "rawComponentEntries": 34,
+    "deduplicatedSources": 33,
+    "duplicateEntriesCollapsed": 1,
+    "provisionalLineageBuckets": 26,
+    "acquiredCuratedSources": 3,
+    "acquiredCuratedIndependentFamilies": 2,
+    "acquiredCuratedInventoryRows": 51
+  },
+  "sourceIdAliases": {
+    "berklee-rick-peckham": "berklee-rick-peckham",
+    "bjesus-chords": "bjesus-chords",
+    "chordbook-fork": "chordbook-fork",
+    "chordictionaryjs": "chordictionaryjs",
+    "chordminiapp": "chordminiapp",
+    "chordpro": "chordpro",
+    "chords-db": "chords-db",
+    "commons-ashaio-dictionary": "commons-ashaio-dictionary",
+    "conchordance": "conchordance",
+    "dadagp-separate": "dadagp-separate",
+    "dick-gordon-blank-charts": "dick-gordon-blank-charts",
+    "fender-lessons": "fender-lessons",
+    "flavia-voicings": "flavia-voicings",
+    "gtdb": "gtdb",
+    "hyvyys-chord-fingering": "hyvyys-chord-fingering",
+    "idmt-smt-chords": "idmt-smt-chords",
+    "jazzguitar-dirk-dictionary": "jazzguitar-dirk-dictionary",
+    "jguitar": "jguitar",
+    "jguitar-primary": "jguitar",
+    "justinguitar": "justinguitar",
+    "ku-matney-niemuth-2019": "ku-matney-niemuth-2019",
+    "melbay-william-bay-encyclopedia": "melbay-william-bay-encyclopedia",
+    "oolimo": "oolimo",
+    "open-music-theory-jazz": "open-music-theory-jazz",
+    "optilude-guitar-practice": "optilude-guitar-practice",
+    "siege-musescore": "siege-musescore",
+    "spanish411-chord-chart": "spanish411-chord-chart",
+    "standard-guitar": "standard-guitar",
+    "string-warrior": "string-warrior",
+    "szaza-json": "szaza-json",
+    "t-vk-chord-collection": "t-vk-chord-collection",
+    "uci-575": "uci-575",
+    "wikibooks-open-chords-text": "wikibooks-open-chords-text",
+    "wikibooks-sluffs-jazz": "wikibooks-sluffs-jazz"
+  },
+  "knownSourceEdges": [
+    {
+      "from": "t-vk-chord-collection",
+      "to": "jguitar",
+      "relation": "imports-generated-upstream",
+      "evidence": "T-vK README credits JGuitar; JGuitar homepage states dynamic generation"
+    },
+    {
+      "from": "szaza-json",
+      "to": "t-vk-chord-collection",
+      "relation": "filtered-derivative",
+      "evidence": "szaza README explicitly describes filtered T-vK dataset"
+    },
+    {
+      "from": "szaza-json",
+      "to": "chords-db",
+      "relation": "additional-credit-not-row-resolved",
+      "evidence": "szaza also credits Tombatossals; individual row origin unresolved"
+    },
+    {
+      "from": "chordbook-fork",
+      "to": "chords-db",
+      "relation": "repository-fork",
+      "evidence": "GitHub fork relationship"
+    },
+    {
+      "from": "optilude-guitar-practice",
+      "to": "chords-db",
+      "relation": "vendored-subset",
+      "evidence": "README vendored-data table; separate generated triads excluded"
+    },
+    {
+      "from": "chordminiapp",
+      "to": "chords-db",
+      "relation": "package-consumer",
+      "evidence": "README credits @tombatossals/chords-db"
+    },
+    {
+      "from": "siege-musescore",
+      "to": "chords-db",
+      "relation": "mixed-partial-import",
+      "evidence": "42 rows tagged chords-db and explicit importer; no additional independent votes"
+    },
+    {
+      "from": "siege-musescore",
+      "to": "jazzguitar-dirk-dictionary",
+      "relation": "claimed-method-reference-and-derived-coverage",
+      "evidence": "README references Dirk Laukens; rows carry laukens/calculated tags; not licensed independent replication"
+    },
+    {
+      "from": "wikibooks-sluffs-jazz",
+      "to": "wikibooks-open-chords-text",
+      "relation": "same-editorial-book-family",
+      "evidence": "Both belong to Wikibooks Guitar; combined conservatively"
+    },
+    {
+      "from": "commons-ashaio-dictionary",
+      "to": "wikibooks-open-chords-text",
+      "relation": "same-wikimedia-reuse-network-conservative-merge",
+      "evidence": "Assets used in Wikibooks; manual shape-selection origin UNKNOWN"
+    }
+  ],
+  "families": [
+    {
+      "lineageId": "berklee-rick-peckham-chords101",
+      "memberSourceIds": [
+        "berklee-rick-peckham"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "chordictionaryjs-generator",
+      "memberSourceIds": [
+        "chordictionaryjs"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "chordpro-reference-unknown",
+      "memberSourceIds": [
+        "chordpro"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "conchordance-generator",
+      "memberSourceIds": [
+        "conchordance"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "dadagp-song-score",
+      "memberSourceIds": [
+        "dadagp-separate"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "dick-gordon-jr",
+      "memberSourceIds": [
+        "dick-gordon-blank-charts"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "fender",
+      "memberSourceIds": [
+        "fender-lessons"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "flavia-voicings",
+      "memberSourceIds": [
+        "flavia-voicings"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "fraunhofer-idmt-smt",
+      "memberSourceIds": [
+        "idmt-smt-chords"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "fretboard-brage-origin-unknown",
+      "memberSourceIds": [
+        "bjesus-chords"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "gtdb-generator",
+      "memberSourceIds": [
+        "gtdb"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "hyvyys-generator",
+      "memberSourceIds": [
+        "hyvyys-chord-fingering"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "jazzguitar-dirk-laukens",
+      "memberSourceIds": [
+        "jazzguitar-dirk-dictionary"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "jguitar-calculator",
+      "memberSourceIds": [
+        "jguitar",
+        "szaza-json",
+        "t-vk-chord-collection"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [
+        {
+          "from": "t-vk-chord-collection",
+          "to": "jguitar",
+          "relation": "imports-generated-upstream",
+          "evidence": "T-vK README credits JGuitar; JGuitar homepage states dynamic generation"
+        },
+        {
+          "from": "szaza-json",
+          "to": "t-vk-chord-collection",
+          "relation": "filtered-derivative",
+          "evidence": "szaza README explicitly describes filtered T-vK dataset"
+        },
+        {
+          "from": "szaza-json",
+          "to": "chords-db",
+          "relation": "additional-credit-not-row-resolved",
+          "evidence": "szaza also credits Tombatossals; individual row origin unresolved"
+        }
+      ],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "justinguitar",
+      "memberSourceIds": [
+        "justinguitar"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "ku-matney-niemuth",
+      "memberSourceIds": [
+        "ku-matney-niemuth-2019"
+      ],
+      "classification": "ACQUIRED_CURATED_EVIDENCE_FAMILY",
+      "acquiredCuratedInventoryRows": 39,
+      "independentVoteLimit": "At most one vote per confidently interpreted exact allocation/context per family",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "melbay-william-bay-93283",
+      "memberSourceIds": [
+        "melbay-william-bay-encyclopedia"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "music-warrior-network",
+      "memberSourceIds": [
+        "string-warrior"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "oolimo",
+      "memberSourceIds": [
+        "oolimo"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "open-music-theory",
+      "memberSourceIds": [
+        "open-music-theory-jazz"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "siege-mixed-not-independent",
+      "memberSourceIds": [
+        "siege-musescore"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [
+        {
+          "from": "siege-musescore",
+          "to": "chords-db",
+          "relation": "mixed-partial-import",
+          "evidence": "42 rows tagged chords-db and explicit importer; no additional independent votes"
+        },
+        {
+          "from": "siege-musescore",
+          "to": "jazzguitar-dirk-dictionary",
+          "relation": "claimed-method-reference-and-derived-coverage",
+          "evidence": "README references Dirk Laukens; rows carry laukens/calculated tags; not licensed independent replication"
+        }
+      ],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "spanish411-guitar-chart",
+      "memberSourceIds": [
+        "spanish411-chord-chart"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "standard-guitar-awesome-guitar-solo",
+      "memberSourceIds": [
+        "standard-guitar"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "tombatossals-chords-db",
+      "memberSourceIds": [
+        "chordbook-fork",
+        "chordminiapp",
+        "chords-db",
+        "optilude-guitar-practice"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [
+        {
+          "from": "chordbook-fork",
+          "to": "chords-db",
+          "relation": "repository-fork",
+          "evidence": "GitHub fork relationship"
+        },
+        {
+          "from": "optilude-guitar-practice",
+          "to": "chords-db",
+          "relation": "vendored-subset",
+          "evidence": "README vendored-data table; separate generated triads excluded"
+        },
+        {
+          "from": "chordminiapp",
+          "to": "chords-db",
+          "relation": "package-consumer",
+          "evidence": "README credits @tombatossals/chords-db"
+        }
+      ],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "uci-575-origin-unknown",
+      "memberSourceIds": [
+        "uci-575"
+      ],
+      "classification": "PROVISIONAL_NONVOTING_BUCKET",
+      "acquiredCuratedInventoryRows": 0,
+      "independentVoteLimit": "Zero in curated analysis",
+      "upstreamRelations": [],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    },
+    {
+      "lineageId": "wikimedia-guitar",
+      "memberSourceIds": [
+        "commons-ashaio-dictionary",
+        "wikibooks-open-chords-text",
+        "wikibooks-sluffs-jazz"
+      ],
+      "classification": "ACQUIRED_CURATED_EVIDENCE_FAMILY",
+      "acquiredCuratedInventoryRows": 12,
+      "independentVoteLimit": "At most one vote per confidently interpreted exact allocation/context per family",
+      "upstreamRelations": [
+        {
+          "from": "wikibooks-sluffs-jazz",
+          "to": "wikibooks-open-chords-text",
+          "relation": "same-editorial-book-family",
+          "evidence": "Both belong to Wikibooks Guitar; combined conservatively"
+        },
+        {
+          "from": "commons-ashaio-dictionary",
+          "to": "wikibooks-open-chords-text",
+          "relation": "same-wikimedia-reuse-network-conservative-merge",
+          "evidence": "Assets used in Wikibooks; manual shape-selection origin UNKNOWN"
+        }
+      ],
+      "independenceCaveat": "Source-family separation is evidence-scoped, not proof of population/statistical independence; unverified and mixed sources are nonvoting."
+    }
+  ],
+  "unresolvedLineageIssues": [
+    "Original selection provenance for chords-db, ChordPro and UCI remains UNKNOWN; their separate buckets do not establish independent human curation.",
+    "258 physical overlaps between chords-db and ChordPro establish neither copying nor independent author selection.",
+    "Siege is a mixed multi-upstream collection; its separate quarantine bucket is not an independent source family. Partial imports cannot collapse unrelated original authors into one original lineage, nor create a new vote.",
+    "szaza names both T-vK/JGuitar and Tombatossals; assigned primarily to its explicitly stated filtered T-vK lineage, with unresolved additional-credit edge and no curated votes.",
+    "bjesus imports Brage Fuglseth Fretboard; the original Fretboard creation process is not established in this audit.",
+    "All Wikimedia teaching pages/authors/assets count as one conservative acquired family. Shared general guitar pedagogy between KU and Wikimedia is a possible residual dependence, not evidence of a proven common copied database.",
+    "Unacquired manual teaching sources (Dirk Laukens, Berklee, Fender and others) are source leads; they add zero empirical votes until lawful, row-level acquisition and lineage verification."
+  ]
+}

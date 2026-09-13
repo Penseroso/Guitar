@@ -1,0 +1,213 @@
+{
+  "schema": "sitewide-practical-delivery-v1",
+  "createdAt": "2026-09-13T06:51:59.457Z",
+  "verification": {
+    "schema": "sitewide-practical-verification-v1",
+    "verifiedAt": "2026-09-13T06:50:56.470Z",
+    "baseline": "32f9d3f8a71dc0d2a5f18520bfad738e67ba26c0",
+    "trackedDiffEmpty": true,
+    "priorFrozenArtifacts": 40,
+    "pilotArtifactsAndScripts": 11,
+    "policyHashUnchanged": "f5cbb8293a9d98c9b1625f8eadffb8ccd9f7758922092eb6774eb9a4c7b0c026",
+    "sourceRowsDoubleVerified": 1510,
+    "observedMappedMatched": 1454,
+    "fullQueriesMatchingCensusAndTop18": 240,
+    "pairwiseDedupChecks": 987715,
+    "productTranslationsVerified": 77,
+    "productTranslationsCompact": 73,
+    "scopeRejectionControls": true,
+    "sourceFamilyCount": 1,
+    "uniqueVocabularyAllocations": 1530,
+    "eligibleVocabularyAllocations": 1364,
+    "queriesWithRepresentatives": 240,
+    "minimumRepresentativesPerQuery": 1,
+    "maximumRepresentativesPerQuery": 13
+  },
+  "localLinksChecked": 32,
+  "monotoneMinimumSoundingFretPages": 240,
+  "pilotSharedRowsAndSvgHashesMatched": 44,
+  "rawSourceAssetsStored": false,
+  "sourceFamilyCount": 1,
+  "artifactHashes": [
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/acquisition.json",
+      "sha256": "941296a6271bc9b8026aea8c03f4e2ce624cd4766207571b4dd7f3c2f718bc38"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/analysis.json",
+      "sha256": "fe9d5669f8b59ffb4f9519cdc3fbfbf44308f29b6260a9fa7bb75ca673a6852f"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/audit.md",
+      "sha256": "f17e541ec0241feefed58d085c7e53679a362876fe89b415e2e1d23409501f99"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/closed-template-inventory.md",
+      "sha256": "4191871e31e29398a9608ea57f459334e396406c659c2e328ff0cbc267cfd3fb"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/closed-templates.json",
+      "sha256": "1ca53220121ee9d51c0ac3d079b3a35137fcb14d7112894f2ed6cb147347f747"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/demand-verification.json",
+      "sha256": "14ff42f75d39c0d990e10a192e57eb430f1cd4f95149f565e7222541f531b0de"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/exact-open-forms.json",
+      "sha256": "6eaed48fb593885565d602808ae96690083b3e0156b217b67f7b359714c1ca4e"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/l2-l3-conflicts.md",
+      "sha256": "33f9ff2bb7d0237ec5c91db79910ad852e202dd3890e44ce9f1fa0ff05c6487d"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/mapping-exclusions.json",
+      "sha256": "8414dd924be48241c31e3e18f9783a93248b65c9aacad61909856d3682d6cbb6"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/mapping-table.md",
+      "sha256": "5a846ae233691ee314dc5b720dedb0f08bb3fbb2afb1fadf949baac2979ece02"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/open-form-inventory.md",
+      "sha256": "2c9cf06085473c0dc665a1e64e2fc4fd72db924e3c979046e91cceb084dbdc29"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/page-inventory.md",
+      "sha256": "84b57981aad4332043dbda6883b3d25b4fd9663d8c42f7ddae6a8da8a1ac98fa"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/position-coverage.md",
+      "sha256": "c71aa3c9655aa1e21f5f325438e4b98dd8c5ae5381e3bb7b472e0353fd500cec"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/product-extrapolated-placements.json",
+      "sha256": "1259c90bbb19017239216386ef865895598121d4f49679478e1b3d5c6ff1066c"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/proposed-priority-access.json",
+      "sha256": "e49201fa85160c6f8d708adb1dd0f2c3771958e2ec7ae8e9c8f137d4cd71c2e3"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/proposed-vocabulary.json",
+      "sha256": "f274602f41a4f292a5a47d073cb88dd317522548830434023670aaf67b475298"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/quality-root-coverage.md",
+      "sha256": "0cdfd6f6c416caf1e86428a80786468c8aeff56d994d01b57413ca2668c53d93"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/reduced-template-inventory.md",
+      "sha256": "9225e1cb1c6af24ed7398ed63a28d04736977b762785d88bead3c448946e384e"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/reproduction.md",
+      "sha256": "e3e6eb00dafdccfd75994517995ef2ea197c1efd66ccd26e4ca82abac6fdd225"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/source-observed-placements.json",
+      "sha256": "4e990b7c5bef92426fb9fcf652e367a45f4ae75e769487a19ed5e991cc1273df"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/taxonomy.json",
+      "sha256": "c51fd7a58c62b41ddfad384473a2436a51196b13e38396fb0a9f0669dbb82ae3"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/template-relationships.json",
+      "sha256": "293a6c92ca6551c347ccdaa4ec7492b93ede3f36e08a801d3e9c89fb98def8d1"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/verification.json",
+      "sha256": "7aad9e3c28a0bff3da80647d29be61baf134359f66b7c0fb09b0e2def982fa3a"
+    }
+  ],
+  "scriptHashes": [
+    {
+      "file": "scripts/web-voicing-corpus-v2/acquire-sitewide.mjs",
+      "sha256": "c9ce3c7a06563029a1210c8d5c84da71f79e2e0fa3656515d2d46f999f618235"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/map-sitewide.ts",
+      "sha256": "d8f29b90fd09d5c3994919563a64992d837ab9b17392e32f6997ff9127d03347"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/sitewide-demand.ts",
+      "sha256": "84244b8650868daf739dc86cfc1451879f5bb2b5b25049625ecbe0c3374e5c18"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/verify-sitewide-demand.ts",
+      "sha256": "c7c8840bdd217ed77144d1132c004a37ee15e2dee8b535f508bc77e829005ce9"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/analyze-sitewide.ts",
+      "sha256": "e0317a9db9e4d8c7fdc6b522ac6ede3e700f9c71997a6df87b2030b4576e1c32"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/sitewide-match.mjs",
+      "sha256": "8e2505c643711ab4b87812299f8c5edec4f7bff8c8ab4eb8956c21875b36ea10"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/verify-sitewide.ts",
+      "sha256": "f3707cf0312a940180ab651f036210b61d38c18ae4eae135f0f75f5f3d646741"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/report-sitewide.mjs",
+      "sha256": "2c0fdb1836cce697a37c127d361c557521024c033f1ba647e4f6eaac7a7a5496"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/finish-sitewide.mjs",
+      "sha256": "e82f044d88dd0304fdfb032ac7683deeddee596554e6212c718f0be45e580fb8"
+    }
+  ],
+  "engineHashes": [
+    {
+      "file": "src/domain/chord/registry.ts",
+      "sha256": "9f959a77713459d3e1f2bba3f4cc3ae8b7fdeab9675bfa465afc08425f597b78"
+    },
+    {
+      "file": "src/domain/chord/engine/geometryTable.ts",
+      "sha256": "fdcac13d445c0b0d80c041e05154de9baf4e324698c79a5494b817a4da845af1"
+    },
+    {
+      "file": "src/domain/chord/engine/contactHypotheses.ts",
+      "sha256": "08ef612e1096a73326c0680fc400889122e3555027425b9a314ff39aeb5423d7"
+    },
+    {
+      "file": "src/domain/chord/engine/requestPolicy.ts",
+      "sha256": "a8dc7698279f821499dc24a91090e9b4bac6b773501dc6e3b05399017967f28a"
+    },
+    {
+      "file": "src/domain/chord/engine/physical.ts",
+      "sha256": "057612ea89fcf8f72a720b2f227359da4b3c724537838396ed3a574013604e33"
+    },
+    {
+      "file": "src/domain/chord/engine/session.ts",
+      "sha256": "1b31a2141b97599679f9f0a8b77cbf64712a51dd00fd94deaae520d68b78fbed"
+    },
+    {
+      "file": "src/domain/chord/engine/structuralGenerator.ts",
+      "sha256": "c753608453c058a14a4866fc910a51afcd5631697edcad3f652f2d9b6768e9bd"
+    },
+    {
+      "file": "src/domain/chord/engine/facts.ts",
+      "sha256": "80ab55737942d53208ebb44cf2659e954045d5fb1b3770a01c08e0f7a59ce1d1"
+    },
+    {
+      "file": "src/domain/chord/engine/classicFeatures.ts",
+      "sha256": "e14bc57e03687df60880e206103d245b4eba8314d5ed3c8b34164801eab635a4"
+    },
+    {
+      "file": "src/domain/chord/engine/deterministicRanking.ts",
+      "sha256": "38245e8a3a77b397569d5275697118219e2c3d6abf5adf9e2cd8ef66413f941d"
+    },
+    {
+      "file": "src/domain/chord/engine/catalog.ts",
+      "sha256": "d761d8e938bc792a7acd3f3f61aaaeeb993fcff55cd97cbe16be8812bc8e338d"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/engine-map.ts",
+      "sha256": "a326e84bbcf72645f4f682dc85e427c54c6030f6f690a67be1c1dbfaad5afb98"
+    }
+  ]
+}

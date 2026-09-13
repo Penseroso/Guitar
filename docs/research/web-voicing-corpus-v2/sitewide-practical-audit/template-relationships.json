@@ -1,0 +1,102 @@
+{
+  "schema": "exact-template-relationships-v1",
+  "equivalence": "same quality, mute mask, integer fret translation, translated root and inversion/omission/bass/top semantics",
+  "deduplicationPairChecks": 987715,
+  "nonEquivalentSharedPatterns": [
+    {
+      "a": "PT-0c09bc5fd486",
+      "b": "PT-8c5420c70ecd",
+      "relationship": "same relative string pattern; distinct quality/root-anchor/harmonic semantics; DO NOT merge"
+    },
+    {
+      "a": "PT-0c09bc5fd486",
+      "b": "PT-c27211e20885",
+      "relationship": "same relative string pattern; distinct quality/root-anchor/harmonic semantics; DO NOT merge"
+    },
+    {
+      "a": "PT-8c5420c70ecd",
+      "b": "PT-c27211e20885",
+      "relationship": "same relative string pattern; distinct quality/root-anchor/harmonic semantics; DO NOT merge"
+    },
+    {
+      "a": "PT-3f306d0b8cd5",
+      "b": "PT-745570d81153",
+      "relationship": "same relative string pattern; distinct quality/root-anchor/harmonic semantics; DO NOT merge"
+    },
+    {
+      "a": "PT-3f306d0b8cd5",
+      "b": "PT-edcda26679cf",
+      "relationship": "same relative string pattern; distinct quality/root-anchor/harmonic semantics; DO NOT merge"
+    },
+    {
+      "a": "PT-3f306d0b8cd5",
+      "b": "PT-fd4afae847f3",
+      "relationship": "same relative string pattern; distinct quality/root-anchor/harmonic semantics; DO NOT merge"
+    },
+    {
+      "a": "PT-5a8a633fe44e",
+      "b": "PT-623d46905d2a",
+      "relationship": "same relative string pattern; distinct quality/root-anchor/harmonic semantics; DO NOT merge"
+    },
+    {
+      "a": "PT-5a8a633fe44e",
+      "b": "PT-899d2db774cc",
+      "relationship": "same relative string pattern; distinct quality/root-anchor/harmonic semantics; DO NOT merge"
+    },
+    {
+      "a": "PT-5a8a633fe44e",
+      "b": "PT-b7c2e583507b",
+      "relationship": "same relative string pattern; distinct quality/root-anchor/harmonic semantics; DO NOT merge"
+    },
+    {
+      "a": "PT-623d46905d2a",
+      "b": "PT-899d2db774cc",
+      "relationship": "same relative string pattern; distinct quality/root-anchor/harmonic semantics; DO NOT merge"
+    },
+    {
+      "a": "PT-623d46905d2a",
+      "b": "PT-b7c2e583507b",
+      "relationship": "same relative string pattern; distinct quality/root-anchor/harmonic semantics; DO NOT merge"
+    },
+    {
+      "a": "PT-745570d81153",
+      "b": "PT-edcda26679cf",
+      "relationship": "same relative string pattern; distinct quality/root-anchor/harmonic semantics; DO NOT merge"
+    },
+    {
+      "a": "PT-745570d81153",
+      "b": "PT-fd4afae847f3",
+      "relationship": "same relative string pattern; distinct quality/root-anchor/harmonic semantics; DO NOT merge"
+    },
+    {
+      "a": "PT-899d2db774cc",
+      "b": "PT-b7c2e583507b",
+      "relationship": "same relative string pattern; distinct quality/root-anchor/harmonic semantics; DO NOT merge"
+    },
+    {
+      "a": "PT-edcda26679cf",
+      "b": "PT-fd4afae847f3",
+      "relationship": "same relative string pattern; distinct quality/root-anchor/harmonic semantics; DO NOT merge"
+    },
+    {
+      "a": "PT-0e8453332aef",
+      "b": "PT-05988a4a26e4",
+      "relationship": "same relative string pattern; distinct quality/root-anchor/harmonic semantics; DO NOT merge"
+    },
+    {
+      "a": "PT-5a9065db2054",
+      "b": "PT-8424ead41152",
+      "relationship": "same relative string pattern; distinct quality/root-anchor/harmonic semantics; DO NOT merge"
+    },
+    {
+      "a": "PT-9def40eea741",
+      "b": "PT-ca03bd34c675",
+      "relationship": "same relative string pattern; distinct quality/root-anchor/harmonic semantics; DO NOT merge"
+    },
+    {
+      "a": "PT-a8cd7ea3163a",
+      "b": "PT-93db5a6dbee4",
+      "relationship": "same relative string pattern; distinct quality/root-anchor/harmonic semantics; DO NOT merge"
+    }
+  ]
+}

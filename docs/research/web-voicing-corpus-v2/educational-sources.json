@@ -1,0 +1,415 @@
+{
+  "schemaVersion": "2.0",
+  "accessDate": "2026-09-13",
+  "inventoryScope": "Bounded educational/dictionary/product source discovery; source existence is not a vote. Other source classes audited separately by study orchestrator.",
+  "rawSourceCount": 11,
+  "sourceFamilyCount": 9,
+  "sourceFamilyCountInterpretation": "Distinct candidate lineage buckets, including unknown/unusable sources; not proven independent curated evidence count.",
+  "acquiredCuratedFamilyCount": 2,
+  "acquiredRowCount": 51,
+  "unmappedAmbiguousRowCount": 4,
+  "sources": [
+    {
+      "accessDate": "2026-09-13",
+      "repository": null,
+      "redistributionPermitted": "Noncommercial adaptation/sharing with attribution; commercial permission absent",
+      "rawDataStorage": "39 normalized structural facts retained under NC license; original PDF only OS temp",
+      "retainOnlyDerivedStatistics": false,
+      "tuningAssumptions": "standard EADGBE verified from string labels and note consistency",
+      "capoAssumptions": "no capo shown; chapter diagrams referenced to nut",
+      "stringCount": 6,
+      "notationOrientation": "left-to-right low E to high E, explicitly explained PDF p6",
+      "chordLabelSystem": "letter-name chord symbols",
+      "editorialCriteria": "Sequence considers play, commonality, chord type and barre groups; pedagogical criteria are source claims, not calibrated difficulty.",
+      "approximateCorpusSize": "47 PDF pages; selected extraction 39 distinct diagram examples (4 ambiguous); photos, fingering variants and summary repeats collapsed.",
+      "updateHistory": "Published 2019; public repository metadata last modified 2024-09-07.",
+      "copyingLineageEvidence": [
+        "FlipHTML5 and ebook-directory hits point to same Matney/Niemuth work; do not count mirrors or companion handbooks separately."
+      ],
+      "biases": [
+        "music-therapy/music-education accompaniment",
+        "beginner/open-position focus",
+        "church/pop treble-voice examples",
+        "little high-position/rootless coverage"
+      ],
+      "decision": "include restricted noncommercial reference sample",
+      "sourceId": "ku-matney-niemuth-2019",
+      "source": "Guitar Chord Handbook",
+      "url": "https://hdl.handle.net/1808/29433",
+      "sourceType": "B: institutional pedagogical handbook",
+      "ownerMaintainer": "Bill Matney and Brenna Niemuth; University of Kansas Libraries",
+      "lineageId": "ku-matney-niemuth",
+      "origin": "MANUAL_AUTHORED_SELECTED",
+      "originEvidence": "Named authors, photographed fingerings and introduction explicitly explaining pedagogical chord sequencing.",
+      "license": "CC-BY-NC-4.0 except identified third-party material",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "primaryEvidenceUrls": [
+        "https://kuscholarworks.ku.edu/server/api/pid/find?id=1808/29433",
+        "https://kuscholarworks.ku.edu/server/api/core/bitstreams/3de2afa0-42b6-47c8-a251-a4dbd13c53fc/content"
+      ],
+      "contentSha256": "61b3d86cec4158075ba6141cbf1fa1b86b75ca2de471bc230a1757c4573acbac"
+    },
+    {
+      "accessDate": "2026-09-13",
+      "repository": null,
+      "redistributionPermitted": "Yes for verified PD-self diagrams/facts; lesson text has separate attribution/sharealike obligations",
+      "rawDataStorage": "6 normalized image facts with asset hashes; 24 metadata records; originals only OS temp",
+      "retainOnlyDerivedStatistics": false,
+      "tuningAssumptions": "standard EADGBE verified against lesson context and chord pitches",
+      "capoAssumptions": "no capo in inspected diagrams; heavy nut defines first fret",
+      "stringCount": 6,
+      "notationOrientation": "vertical diagram low E left, high E right; verified by six-string diagram, mutes and pitches",
+      "chordLabelSystem": "letter-name chord symbols",
+      "editorialCriteria": "movable jazz exercises changing one note; inversion and three/four-note vocabulary",
+      "approximateCorpusSize": "24 displayed chord-diagram occurrences in lesson; 6 acquired and visually checked, 18 unavailable in this run",
+      "updateHistory": "Diagram creation July 2009, grid alignment October 2009; lesson revision July 2021",
+      "copyingLineageEvidence": [
+        "Commons usage lists English and Italian Wikibooks/Wikiversity; all are same assets.",
+        "Conservatively shares family with Wikibooks open-chord content and Ashaio; no extra votes for authors/pages."
+      ],
+      "biases": [
+        "jazz exercise selection",
+        "fixed G/E sample keys",
+        "acquisition missingness",
+        "not an exhaustive chord recommendation"
+      ],
+      "decision": "include limited verified sample; preserve 18 unacquired occurrences",
+      "sourceId": "wikibooks-sluffs-jazz",
+      "source": "Wikibooks Guitar/Jazz and Sluffs chord files",
+      "url": "https://en.wikibooks.org/w/index.php?title=Guitar/Jazz&oldid=3931946",
+      "sourceType": "B: collaboratively edited teaching exercises",
+      "ownerMaintainer": "Wikibooks contributors; individual diagram author Sluffs",
+      "lineageId": "wikimedia-guitar",
+      "origin": "MANUAL_AUTHORED_SELECTED",
+      "originEvidence": "Individual file pages say own work using Sibelius; the lesson deliberately assigns root/first/second inversion exercises.",
+      "license": "PD-self for individually checked Sluffs diagrams; lesson text CC-BY-SA-4.0",
+      "primaryEvidenceUrls": [
+        "https://commons.wikimedia.org/wiki/File:G_major_jazz_chord_for_guitar_(root).png",
+        "https://commons.wikimedia.org/wiki/File:E_major_jazz_chord_for_guitar_(first_inversion).png"
+      ]
+    },
+    {
+      "accessDate": "2026-09-13",
+      "repository": null,
+      "redistributionPermitted": "Yes, attribution and ShareAlike for adaptations",
+      "rawDataStorage": "6 normalized structural facts with section/permanent-revision URLs",
+      "retainOnlyDerivedStatistics": false,
+      "tuningAssumptions": "standard EADGBE from numbered-string prose",
+      "capoAssumptions": "first-position nut-relative instructions, no capo",
+      "stringCount": 6,
+      "notationOrientation": "six-digit vectors low-to-high established by corresponding string-number prose",
+      "chordLabelSystem": "letter-name chord symbols",
+      "editorialCriteria": "beginner first-position major/minor/seventh examples and alternatives",
+      "approximateCorpusSize": "6 major, 3 minor and 5 seventh sections plus alternatives; only 6 fully specified facts sampled",
+      "updateHistory": "Permanent revision 4212611 dated 2022-11-26",
+      "copyingLineageEvidence": [
+        "Same Guitar book as Jazz lesson; aggregate as one conservative Wikimedia source family."
+      ],
+      "biases": [
+        "open/low-position beginner teaching",
+        "finger numbers resemble fret numbers",
+        "incomplete prose coordinates in some sections"
+      ],
+      "decision": "include explicit fret facts only; do not parse all digit tuples as frets",
+      "sourceId": "wikibooks-open-chords-text",
+      "source": "Wikibooks Guitar/Open Chords",
+      "url": "https://en.wikibooks.org/w/index.php?title=Guitar/Open_Chords&oldid=4212611",
+      "sourceType": "B: collaboratively edited teaching page",
+      "ownerMaintainer": "Wikibooks contributors, revision history available",
+      "lineageId": "wikimedia-guitar",
+      "origin": "MANUAL_AUTHORED_SELECTED",
+      "originEvidence": "Instructional prose explicitly selects named grips and distinguishes alternate fingerings from alternate fret vectors.",
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "primaryEvidenceUrls": [
+        "https://en.wikibooks.org/wiki/Guitar/Open_Chords"
+      ]
+    },
+    {
+      "accessDate": "2026-09-13",
+      "repository": null,
+      "redistributionPermitted": "Yes for individually CC0-verified files",
+      "rawDataStorage": "metadata only in this study",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "standard likely; no sampled row",
+      "capoAssumptions": "not verified",
+      "stringCount": 6,
+      "notationOrientation": "vertical fret diagram; not normalized in this sample",
+      "chordLabelSystem": "letter-name chord symbols",
+      "editorialCriteria": null,
+      "approximateCorpusSize": "88 files in LilyPond-style category, including explanations/edits; not 88 independent voicings",
+      "updateHistory": "Inspected A file dated 2018-07-09; category includes later edits",
+      "copyingLineageEvidence": [
+        "A file used in English/Polish Wikibooks and Polish Wikipedia.",
+        "Commons derivative C-major edit is not independent selection."
+      ],
+      "biases": [
+        "common-root dictionary layout",
+        "potential transposition/template dependence"
+      ],
+      "decision": "licensed asset lead only; do not infer manual selection from own-work image",
+      "sourceId": "commons-ashaio-dictionary",
+      "source": "Ashaio LilyPond-style chord diagrams",
+      "url": "https://commons.wikimedia.org/wiki/File:A_major_chord_for_guitar_(open).svg",
+      "sourceType": "A/B: public chord-diagram collection used in reference pages",
+      "ownerMaintainer": "Ashaio; Wikimedia Commons",
+      "lineageId": "wikimedia-guitar",
+      "origin": "UNKNOWN_SHAPE_SELECTION",
+      "originEvidence": "Own-work image created with LilyPond/Inkscape is explicit, but diagram creation alone does not establish manual voicing selection or upstream shape source.",
+      "license": "CC0-1.0 for inspected A-major SVG; check every file separately",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "primaryEvidenceUrls": [
+        "https://commons.wikimedia.org/wiki/Category:SVG_guitar_fretboard_diagrams_(LilyPond_style)"
+      ]
+    },
+    {
+      "accessDate": "2026-09-13",
+      "repository": null,
+      "redistributionPermitted": "Diagram images with attribution, license link and modifications identified",
+      "rawDataStorage": "metadata only pending creation/lineage audit",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "guitar standard view; also other instruments/tunings requiring distinct views",
+      "capoAssumptions": "not verified",
+      "stringCount": 6,
+      "notationOrientation": "right/left-handed surfaces; orientation must be checked per row",
+      "chordLabelSystem": "letter-name chord symbols",
+      "editorialCriteria": null,
+      "approximateCorpusSize": "not independently enumerated",
+      "updateHistory": "Prototype 2010; resumed about three years later; current public site",
+      "copyingLineageEvidence": [
+        "Awesome Guitar Solo is former name of same project, not independent source."
+      ],
+      "biases": [
+        "interface-selected defaults",
+        "unknown generated/curated mixture"
+      ],
+      "decision": "exclude human-curation votes until origin established",
+      "sourceId": "standard-guitar",
+      "source": "Standard Guitar (formerly Awesome Guitar Solo)",
+      "url": "https://www.standardguitar.com/",
+      "sourceType": "A/D: web chord dictionary/product",
+      "ownerMaintainer": "Ben Steinbuhler",
+      "lineageId": "standard-guitar-awesome-guitar-solo",
+      "origin": "UNKNOWN",
+      "originEvidence": "About page describes a UI/scales project originating in 2010; it does not explain chord-shape generation/selection.",
+      "license": "Diagram images CC-BY-4.0; do not extend image license to entire database/site",
+      "licenseUrl": "https://www.standardguitar.com/download-chord-and-scale-images",
+      "primaryEvidenceUrls": [
+        "https://www.standardguitar.com/about",
+        "https://www.standardguitar.com/download-chord-and-scale-images"
+      ]
+    },
+    {
+      "accessDate": "2026-09-13",
+      "repository": null,
+      "redistributionPermitted": "Charts reusable with attribution",
+      "rawDataStorage": "metadata only; no voicing rows",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "not verified",
+      "capoAssumptions": "not verified",
+      "stringCount": 6,
+      "notationOrientation": "not verified",
+      "chordLabelSystem": "letter-name chord symbols",
+      "editorialCriteria": null,
+      "approximateCorpusSize": "four blank chart types; zero chord-shape observations",
+      "updateHistory": "not established",
+      "copyingLineageEvidence": [],
+      "biases": [
+        "false positive from license search"
+      ],
+      "decision": "exclude: blank templates are not empirical voicings",
+      "sourceId": "dick-gordon-blank-charts",
+      "source": "Dick Gordon Jr. Guitar Studio Downloads",
+      "url": "https://www.dickgordonjrmusicstudio.com/resources/guitar-downloads.html",
+      "sourceType": "B: teaching resources, blank charts",
+      "ownerMaintainer": "Dick Gordon Jr. Guitar Studio",
+      "lineageId": "dick-gordon-jr",
+      "origin": "MANUAL_BLANK_TEMPLATE",
+      "originEvidence": "Download list describes blank chord, neck, tablature and song charts; it supplies no occupied voicing observations.",
+      "license": "CC-BY-3.0 as stated on source page",
+      "primaryEvidenceUrls": [
+        "https://www.dickgordonjrmusicstudio.com/resources/guitar-downloads.html"
+      ],
+      "accessCaveat": "Primary search index returned page text; direct web fetch timed out twice."
+    },
+    {
+      "accessDate": "2026-09-13",
+      "repository": null,
+      "redistributionPermitted": "Only the three licensed output surfaces; not compiled database",
+      "rawDataStorage": "metadata only; do not scrape/redistribute the library as a collection",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "multiple instruments; per-resource tuning needed",
+      "capoAssumptions": "unknown",
+      "stringCount": 6,
+      "notationOrientation": "not verified",
+      "chordLabelSystem": "letter-name chord symbols",
+      "editorialCriteria": null,
+      "approximateCorpusSize": "2,327 diagram SVGs stated across four instruments, not a guitar-only size",
+      "updateHistory": "Current live license page; no versioned voicing history established",
+      "copyingLineageEvidence": [
+        "Explicit Music Warrior Network links include Guitar Warrior, Ukulele Warrior, Bass Warrior and others; diagrams/cards share voicing data."
+      ],
+      "biases": [
+        "network replication",
+        "cross-instrument counts",
+        "unknown shape selection"
+      ],
+      "decision": "exclude independent human-selection counts; narrow image license insufficient for corpus acquisition",
+      "sourceId": "string-warrior",
+      "source": "String Warrior chord library",
+      "url": "https://stringwarrior.com/license",
+      "sourceType": "D: application/content network",
+      "ownerMaintainer": "Cyberpunk Industries LLC",
+      "lineageId": "music-warrior-network",
+      "origin": "UNKNOWN",
+      "originEvidence": "License page calls the library curated/checked but does not demonstrate how shapes were authored versus generated or imported.",
+      "license": "CC-BY-4.0 limited to diagram SVGs, widget output and OG cards; compiled libraries/code/writing reserved",
+      "primaryEvidenceUrls": [
+        "https://stringwarrior.com/license"
+      ]
+    },
+    {
+      "accessDate": "2026-09-13",
+      "repository": null,
+      "redistributionPermitted": "not established for lesson/database",
+      "rawDataStorage": "source metadata and acquisition instructions only",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "standard six-string guitar context",
+      "capoAssumptions": "not verified per diagram",
+      "stringCount": 6,
+      "notationOrientation": "horizontal diagrams; root colors, degree numbers and finger numbers explained",
+      "chordLabelSystem": "letter-name chord symbols",
+      "editorialCriteria": "jazz reference with basic shapes, shells, extensions and inversions; author discusses choosing melody note on top",
+      "approximateCorpusSize": "244 shapes advertised",
+      "updateHistory": "Current public lesson; complete version history unavailable",
+      "copyingLineageEvidence": [
+        "Blog, downloadable dictionary and chord index are one owner/reference, not multiple votes."
+      ],
+      "biases": [
+        "jazz standards",
+        "C-root teaching template predominance",
+        "omissions used for accompaniment"
+      ],
+      "decision": "metadata-only; promising independent high/rootless reference if permission obtained",
+      "sourceId": "jazzguitar-dirk-dictionary",
+      "source": "Jazz Guitar Chord Dictionary",
+      "url": "https://www.jazzguitar.be/blog/jazz-guitar-chord-dictionary/",
+      "sourceType": "A/B: author-maintained curated jazz reference",
+      "ownerMaintainer": "Dirk Laukens / Jazz Guitar Online",
+      "lineageId": "jazzguitar-dirk-laukens",
+      "origin": "MANUAL_AUTHORED_SELECTED",
+      "originEvidence": "Named lesson author and explicit essential/basic/shell/extended/inversion categories plus context-specific instructional recommendations.",
+      "license": "All rights reserved; no dataset reuse permission found",
+      "primaryEvidenceUrls": [
+        "https://www.jazzguitar.be/blog/jazz-guitar-chord-dictionary/",
+        "https://www.jazzguitar.be/blog/jazz-guitar-chords/"
+      ]
+    },
+    {
+      "accessDate": "2026-09-13",
+      "repository": null,
+      "redistributionPermitted": "not established for lesson material",
+      "rawDataStorage": "metadata only",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "standard guitar assumed in excerpt, not row-normalized",
+      "capoAssumptions": "not established",
+      "stringCount": 6,
+      "notationOrientation": "varies by notation/example; not normalized",
+      "chordLabelSystem": "letter-name chord symbols",
+      "editorialCriteria": "construction, inversions and movement across neck; triad top-string positions extend to twelfth position",
+      "approximateCorpusSize": "12 course lessons; shape count not publicly enumerated",
+      "updateHistory": "Public inversion article indexed 2016; current course syllabus",
+      "copyingLineageEvidence": [
+        "Take Note excerpt and Guitar Chords 101 course form one teaching lineage."
+      ],
+      "biases": [
+        "formal curriculum",
+        "triadic/drop-family exercises",
+        "course access restrictions"
+      ],
+      "decision": "metadata-only; potential protected high-position acquisition via permission",
+      "sourceId": "berklee-rick-peckham",
+      "source": "Berklee Guitar Chords 101 and triad inversion lesson",
+      "url": "https://online.berklee.edu/takenote/guitar-chords-101-triad-inversions-up-the-fretboard/",
+      "sourceType": "B/D: institutional course and public excerpt",
+      "ownerMaintainer": "Berklee Online; course authored by Rick Peckham",
+      "lineageId": "berklee-rick-peckham-chords101",
+      "origin": "MANUAL_AUTHORED_SELECTED",
+      "originEvidence": "Named course author; syllabus and excerpt intentionally select string sets, inversion sequences, drop2/drop3 and guide tones.",
+      "license": "No open corpus redistribution license established",
+      "primaryEvidenceUrls": [
+        "https://online.berklee.edu/courses/guitar-chords-101",
+        "https://online.berklee.edu/takenote/guitar-chords-101-triad-inversions-up-the-fretboard/"
+      ]
+    },
+    {
+      "accessDate": "2026-09-13",
+      "repository": null,
+      "redistributionPermitted": "Noncommercial sharing/adaptation with attribution/ShareAlike if source rights confirmed",
+      "rawDataStorage": "metadata only; PDF direct fetch timed out, no shapes verified",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "not verified",
+      "capoAssumptions": "not verified",
+      "stringCount": 6,
+      "notationOrientation": "diagram grid with note labels, not normalized",
+      "chordLabelSystem": "letter-name chord symbols",
+      "editorialCriteria": null,
+      "approximateCorpusSize": "12 roots x 11 chord categories =132 chart cells; not independently verified shape count",
+      "updateHistory": "not established",
+      "copyingLineageEvidence": [],
+      "biases": [
+        "one shape per root/category",
+        "transposition replication risk"
+      ],
+      "decision": "exclude curatorial votes pending origin and visual verification",
+      "sourceId": "spanish411-chord-chart",
+      "source": "Spanish411 Guitar Chords chart",
+      "url": "https://spanish411.net/resources/GuitarChords.pdf",
+      "sourceType": "A: downloadable chord chart",
+      "ownerMaintainer": "Spanish411; individual chart author not established",
+      "lineageId": "spanish411-guitar-chart",
+      "origin": "UNKNOWN",
+      "originEvidence": "Chart gives chord table and site credit; manual shape origin/import/generation not stated in inspected primary search text.",
+      "license": "CC-BY-NC-SA-3.0 stated on PDF",
+      "primaryEvidenceUrls": [
+        "https://spanish411.net/resources/GuitarChords.pdf"
+      ]
+    },
+    {
+      "accessDate": "2026-09-13",
+      "repository": null,
+      "redistributionPermitted": "No open redistribution permission established",
+      "rawDataStorage": "bibliographic metadata only; no copied samples/book/database",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "standard guitar implied; row-level tuning not inspected",
+      "capoAssumptions": "not verified",
+      "stringCount": 6,
+      "notationOrientation": "diagrams and notation with note/degree names, not normalized",
+      "chordLabelSystem": "letter-name chord symbols",
+      "editorialCriteria": "classified by musical role/string set; many alternatives per key/quality",
+      "approximateCorpusSize": "Thousands of forms advertised; 145 pages in eBook listing",
+      "updateHistory": "eBook listing publication 2014-11-06; editions not independent",
+      "copyingLineageEvidence": [
+        "Print, spiral and eBook formats of same title count as one lineage."
+      ],
+      "biases": [
+        "extensive alternative reference rather than primary recommendation",
+        "commercial acquisition boundary"
+      ],
+      "decision": "metadata-only",
+      "sourceId": "melbay-william-bay-encyclopedia",
+      "source": "Deluxe Guitar Chord Encyclopedia",
+      "url": "https://www.melbay.com/Products/93283EB/deluxe-guitar-chord-encyclopedia.aspx",
+      "sourceType": "A/D: commercial authored dictionary",
+      "ownerMaintainer": "William Bay; Mel Bay Publications Inc.",
+      "lineageId": "melbay-william-bay-93283",
+      "origin": "MANUAL_AUTHORED_REFERENCE",
+      "originEvidence": "Publisher credits William Bay and describes classified melody/inside/rhythm/bottom-four-string forms; selection-level methodology beyond this not established.",
+      "license": "Copyright; commercial book, no open-data reuse license",
+      "licenseUrl": "https://www.melbay.com/Pages/About-Full/Terms_And_Conditions.aspx",
+      "primaryEvidenceUrls": [
+        "https://www.melbay.com/Products/93283EB/deluxe-guitar-chord-encyclopedia.aspx"
+      ]
+    }
+  ]
+}

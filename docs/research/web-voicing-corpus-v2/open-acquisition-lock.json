@@ -1,0 +1,66 @@
+[
+  {
+    "sourceId": "chords-db",
+    "revision": "df06fa7b425cf5fd29485ff6591236b3557e3fac",
+    "file": "LICENSE",
+    "url": "https://raw.githubusercontent.com/tombatossals/chords-db/df06fa7b425cf5fd29485ff6591236b3557e3fac/LICENSE",
+    "sha256": "ca1f5a79ed75347924bba07c979bc7a6d0f7438e82d655f7e8dcdfa32939a3d9",
+    "bytes": 1069
+  },
+  {
+    "sourceId": "chords-db",
+    "revision": "df06fa7b425cf5fd29485ff6591236b3557e3fac",
+    "file": "README.md",
+    "url": "https://raw.githubusercontent.com/tombatossals/chords-db/df06fa7b425cf5fd29485ff6591236b3557e3fac/README.md",
+    "sha256": "212397815f09405cfeb480087fe56f170f0cc49fd8eed4148f97a412d222a8a9",
+    "bytes": 1875
+  },
+  {
+    "sourceId": "chords-db",
+    "revision": "df06fa7b425cf5fd29485ff6591236b3557e3fac",
+    "file": "lib/guitar.json",
+    "url": "https://raw.githubusercontent.com/tombatossals/chords-db/df06fa7b425cf5fd29485ff6591236b3557e3fac/lib/guitar.json",
+    "sha256": "cfe439962b2f444d2c341b1f0261403b4c3a3416e321147286fc608922699974",
+    "bytes": 377917
+  },
+  {
+    "sourceId": "chordpro",
+    "revision": "4b25408d830bd3f4c53fc6fb544b2babe4da09e1",
+    "file": "LICENSE",
+    "url": "https://raw.githubusercontent.com/ChordPro/chordpro/4b25408d830bd3f4c53fc6fb544b2babe4da09e1/LICENSE",
+    "sha256": "bde882ee048a6e39a5d189d5234f4f9b66ac1fab846900624542998b86e5d26b",
+    "bytes": 9622
+  },
+  {
+    "sourceId": "chordpro",
+    "revision": "4b25408d830bd3f4c53fc6fb544b2babe4da09e1",
+    "file": "README.md",
+    "url": "https://raw.githubusercontent.com/ChordPro/chordpro/4b25408d830bd3f4c53fc6fb544b2babe4da09e1/README.md",
+    "sha256": "ba7c14423571a78a3564dc9138c2a2544d6aee02b3a3bd98619ce9906d687b14",
+    "bytes": 1936
+  },
+  {
+    "sourceId": "chordpro",
+    "revision": "4b25408d830bd3f4c53fc6fb544b2babe4da09e1",
+    "file": "lib/ChordPro/res/config/guitar.json",
+    "url": "https://raw.githubusercontent.com/ChordPro/chordpro/4b25408d830bd3f4c53fc6fb544b2babe4da09e1/lib/ChordPro/res/config/guitar.json",
+    "sha256": "e60a5acb0c4ecbc5d8c3f7bd65a93ab74ef74254b87addd2938a8d095f388b43",
+    "bytes": 67456
+  },
+  {
+    "sourceId": "chordpro",
+    "revision": "4b25408d830bd3f4c53fc6fb544b2babe4da09e1",
+    "file": "lib/ChordPro/res/config/guitar.rjson",
+    "url": "https://raw.githubusercontent.com/ChordPro/chordpro/4b25408d830bd3f4c53fc6fb544b2babe4da09e1/lib/ChordPro/res/config/guitar.rjson",
+    "sha256": "9cfb2b8d2e7ef4501dfbc3ada393b2a5d32b051550eb51add5cffb99886eb42f",
+    "bytes": 98604
+  },
+  {
+    "sourceId": "uci-575",
+    "revision": "doi:10.24432/C5RG8K;access-2026-09-13",
+    "file": "guitar-chords-finger-positions.zip",
+    "url": "https://archive.ics.uci.edu/static/public/575/guitar%2Bchords%2Bfinger%2Bpositions.zip",
+    "sha256": "20e2d405318ca032344fcc8442dcff0d5519fbf141e6696a8a7c3b3bbe221ee2",
+    "bytes": 109769
+  }
+]

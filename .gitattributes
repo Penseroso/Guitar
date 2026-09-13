@@ -1,0 +1,7 @@
+# Recovered frozen inputs are hashed as raw bytes. Preserve their exact newlines.
+/docs/research/generator-scope/review.md -text
+/docs/research/physical-layer-review/review.md -text
+/docs/research/empirical-ranking-current-audit.md -text
+/docs/research/physical-feasibility/results/round4-comparison.json -text
+/docs/research/physical-feasibility/results/supplement-comparison.json -text
+/docs/research/physical-feasibility/results/challenge-comparison.json -text

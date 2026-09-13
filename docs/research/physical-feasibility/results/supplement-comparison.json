@@ -1,0 +1,5959 @@
+{
+  "provenance": {
+    "created_utc": "2026-09-12T17:39:10.708Z",
+    "fixture_sha256": "56bef840fc973879cd2db92a8a920923d861f4ba2b75e3bb5f9ed6902d441e3a",
+    "reference_sha256": "f5007540e082089db2e592e5337adba18010f20d650147072cc57102c9e27075",
+    "sensitivity_sha256": "f4d1fa398d70b32a9dee7aba35a6cf279305653915635a94017fb21b8d646108",
+    "comparator_sources": {
+      ".research/p5-integration-checkout/src/domain/chord/fretGeometry.ts": "4b61f72e5d403786fb32450fb5bf4334049d982ff31d5f16b1b9fc6602e8fef0",
+      ".research/p5-integration-checkout/src/domain/chord/voicingSearch.ts": "0ce3554d476d8774acf96b43609e784a301e2e5aa20209567505abe15c7caada",
+      "src/domain/chord/voicingSearch.ts": "c8b0ee053194f517316e67ecff34e88e0d4d876fca31327a4af2a325d98b32a5",
+      ".research/generator-constraint-study-v1/variants.json": "be335c146458684fa6d7dc5bee38d4670f14af0f500cd491f7b2f37a4f44cd8b"
+    }
+  },
+  "scope": "Gate comparison only; no chord/style/query enumeration, harmonic requirements, bass constraints, root requirements, deduplication or ranking membership claimed. Strict mute has no matching comparator semantics.",
+  "conventions": {
+    "shape_order": "low E to high E",
+    "evaluator_string_index": "high E = 0, low E = 5",
+    "tuning_midi_low_to_high": [
+      40,
+      45,
+      50,
+      55,
+      59,
+      64
+    ],
+    "allowThumbOnLowE": false,
+    "thumb_source": "evaluateHandPlayability destructuring default is false; both generator implementations pass optional flag unchanged",
+    "default_scale_mm": 647.7,
+    "reference_scale_mm": 596.9,
+    "S": "All stopped fret crowns, including an allocated thumb if enabled; opens and omitted strings excluded",
+    "p5": "monotonic OR (G <= 4 AND S <= 95); common hand gate applied separately",
+    "evaluator_role": "Exact engineering comparator output, never physical ground truth"
+  },
+  "cases": [
+    {
+      "id": "A01_upper_gb_inversion",
+      "shape": [
+        -1,
+        -1,
+        -1,
+        17,
+        12,
+        -1
+      ],
+      "category": "supplemental_pitch_inversion",
+      "source_url": null,
+      "source_title": "Independent post-freeze comparator-coverage amendment",
+      "expectation": "Adjacent G-to-B pitch inversion with two stopped contacts in an upper position; hypothesized within the coarse group/span envelope.",
+      "strict_mute": false,
+      "physical": [
+        {
+          "profile": "reference",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              72,
+              71
+            ],
+            "G": 2,
+            "S_mm": 74.8651264530772,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_163_over_196",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              72,
+              71
+            ],
+            "G": 2,
+            "S_mm": 74.8651264530772,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_180_over_196",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              72,
+              71
+            ],
+            "G": 2,
+            "S_mm": 74.8651264530772,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_190_over_196",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              72,
+              71
+            ],
+            "G": 2,
+            "S_mm": 74.8651264530772,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_214_over_196",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              72,
+              71
+            ],
+            "G": 2,
+            "S_mm": 74.8651264530772,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "bases_0_8",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              72,
+              71
+            ],
+            "G": 2,
+            "S_mm": 74.8651264530772,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "bases_1_2",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              72,
+              71
+            ],
+            "G": 2,
+            "S_mm": 74.8651264530772,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "pad_3mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              72,
+              71
+            ],
+            "G": 2,
+            "S_mm": 74.8651264530772,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "pad_5mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              72,
+              71
+            ],
+            "G": 2,
+            "S_mm": 74.8651264530772,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "scale_647_7mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 647.7,
+            "played_midi_low_to_high": [
+              72,
+              71
+            ],
+            "G": 2,
+            "S_mm": 81.23662657674335,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "scale_650mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 650,
+            "played_midi_low_to_high": [
+              72,
+              71
+            ],
+            "G": 2,
+            "S_mm": 81.52510000753925,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "radius_184_15mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              72,
+              71
+            ],
+            "G": 2,
+            "S_mm": 74.8651264530772,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "radius_430mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              72,
+              71
+            ],
+            "G": 2,
+            "S_mm": 74.8651264530772,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "nut_spread_43mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              72,
+              71
+            ],
+            "G": 2,
+            "S_mm": 74.8651264530772,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "abduction_20deg",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              72,
+              71
+            ],
+            "G": 2,
+            "S_mm": 74.8651264530772,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "abduction_40deg",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              72,
+              71
+            ],
+            "G": 2,
+            "S_mm": 74.8651264530772,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        }
+      ],
+      "default_scale": {
+        "scale_mm": 647.7,
+        "played_midi_low_to_high": [
+          72,
+          71
+        ],
+        "G": 2,
+        "S_mm": 81.23662657674335,
+        "common_hand_gate": true,
+        "common_hand_reason": null,
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": true,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": true,
+        "within_default_generator_max_fret_15": false
+      },
+      "reference_scale": {
+        "scale_mm": 596.9,
+        "played_midi_low_to_high": [
+          72,
+          71
+        ],
+        "G": 2,
+        "S_mm": 74.8651264530772,
+        "common_hand_gate": true,
+        "common_hand_reason": null,
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": true,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": true,
+        "within_default_generator_max_fret_15": false
+      }
+    },
+    {
+      "id": "A02_lower_gb_inversion",
+      "shape": [
+        -1,
+        -1,
+        -1,
+        10,
+        5,
+        -1
+      ],
+      "category": "supplemental_long_span",
+      "source_url": null,
+      "source_title": "Independent post-freeze comparator-coverage amendment",
+      "expectation": "Downward translation of A01 preserves pitch ordering but enlarges millimeter span; hypothesized beyond the coarse span envelope.",
+      "strict_mute": false,
+      "physical": [
+        {
+          "profile": "reference",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64
+            ],
+            "G": 2,
+            "S_mm": 112.17094877591322,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "length_anchor_163_over_196",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64
+            ],
+            "G": 2,
+            "S_mm": 112.17094877591322,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "length_anchor_180_over_196",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64
+            ],
+            "G": 2,
+            "S_mm": 112.17094877591322,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "length_anchor_190_over_196",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64
+            ],
+            "G": 2,
+            "S_mm": 112.17094877591322,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "length_anchor_214_over_196",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64
+            ],
+            "G": 2,
+            "S_mm": 112.17094877591322,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "bases_0_8",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64
+            ],
+            "G": 2,
+            "S_mm": 112.17094877591322,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "bases_1_2",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64
+            ],
+            "G": 2,
+            "S_mm": 112.17094877591322,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "pad_3mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64
+            ],
+            "G": 2,
+            "S_mm": 112.17094877591322,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "pad_5mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64
+            ],
+            "G": 2,
+            "S_mm": 112.17094877591322,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "scale_647_7mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 647.7,
+            "played_midi_low_to_high": [
+              65,
+              64
+            ],
+            "G": 2,
+            "S_mm": 121.71741250152287,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "scale_650mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 650,
+            "played_midi_low_to_high": [
+              65,
+              64
+            ],
+            "G": 2,
+            "S_mm": 122.14963428437527,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "radius_184_15mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64
+            ],
+            "G": 2,
+            "S_mm": 112.17094877591322,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "radius_430mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64
+            ],
+            "G": 2,
+            "S_mm": 112.17094877591322,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "nut_spread_43mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64
+            ],
+            "G": 2,
+            "S_mm": 112.17094877591322,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "abduction_20deg",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64
+            ],
+            "G": 2,
+            "S_mm": 112.17094877591322,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "abduction_40deg",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64
+            ],
+            "G": 2,
+            "S_mm": 112.17094877591322,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        }
+      ],
+      "default_scale": {
+        "scale_mm": 647.7,
+        "played_midi_low_to_high": [
+          65,
+          64
+        ],
+        "G": 2,
+        "S_mm": 121.71741250152287,
+        "common_hand_gate": true,
+        "common_hand_reason": null,
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": false,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": false,
+        "within_default_generator_max_fret_15": true
+      },
+      "reference_scale": {
+        "scale_mm": 596.9,
+        "played_midi_low_to_high": [
+          65,
+          64
+        ],
+        "G": 2,
+        "S_mm": 112.17094877591322,
+        "common_hand_gate": true,
+        "common_hand_reason": null,
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": false,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": false,
+        "within_default_generator_max_fret_15": true
+      }
+    },
+    {
+      "id": "A03_upper_bass_inversion",
+      "shape": [
+        22,
+        15,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "category": "supplemental_pitch_inversion",
+      "source_url": null,
+      "source_title": "Independent post-freeze comparator-coverage amendment",
+      "expectation": "Adjacent bass-string pitch inversion with two stopped contacts high on the neck; hypothesized within the coarse group/span envelope.",
+      "strict_mute": false,
+      "physical": [
+        {
+          "profile": "reference",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              62,
+              60
+            ],
+            "G": 2,
+            "S_mm": 83.46613597350493,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_163_over_196",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              62,
+              60
+            ],
+            "G": 2,
+            "S_mm": 83.46613597350493,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_180_over_196",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              62,
+              60
+            ],
+            "G": 2,
+            "S_mm": 83.46613597350493,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_190_over_196",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              62,
+              60
+            ],
+            "G": 2,
+            "S_mm": 83.46613597350493,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_214_over_196",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              62,
+              60
+            ],
+            "G": 2,
+            "S_mm": 83.46613597350493,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "bases_0_8",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              62,
+              60
+            ],
+            "G": 2,
+            "S_mm": 83.46613597350493,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "bases_1_2",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              62,
+              60
+            ],
+            "G": 2,
+            "S_mm": 83.46613597350493,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "pad_3mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              62,
+              60
+            ],
+            "G": 2,
+            "S_mm": 83.46613597350493,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "pad_5mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              62,
+              60
+            ],
+            "G": 2,
+            "S_mm": 83.46613597350493,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "scale_647_7mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 647.7,
+            "played_midi_low_to_high": [
+              62,
+              60
+            ],
+            "G": 2,
+            "S_mm": 90.56963690742026,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "scale_650mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 650,
+            "played_midi_low_to_high": [
+              62,
+              60
+            ],
+            "G": 2,
+            "S_mm": 90.89125210718413,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "radius_184_15mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              62,
+              60
+            ],
+            "G": 2,
+            "S_mm": 83.46613597350493,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "radius_430mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              62,
+              60
+            ],
+            "G": 2,
+            "S_mm": 83.46613597350493,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "nut_spread_43mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              62,
+              60
+            ],
+            "G": 2,
+            "S_mm": 83.46613597350493,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "abduction_20deg",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              62,
+              60
+            ],
+            "G": 2,
+            "S_mm": 83.46613597350493,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "abduction_40deg",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              62,
+              60
+            ],
+            "G": 2,
+            "S_mm": 83.46613597350493,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        }
+      ],
+      "default_scale": {
+        "scale_mm": 647.7,
+        "played_midi_low_to_high": [
+          62,
+          60
+        ],
+        "G": 2,
+        "S_mm": 90.56963690742026,
+        "common_hand_gate": true,
+        "common_hand_reason": null,
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": true,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": true,
+        "within_default_generator_max_fret_15": false
+      },
+      "reference_scale": {
+        "scale_mm": 596.9,
+        "played_midi_low_to_high": [
+          62,
+          60
+        ],
+        "G": 2,
+        "S_mm": 83.46613597350493,
+        "common_hand_gate": true,
+        "common_hand_reason": null,
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": true,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": true,
+        "within_default_generator_max_fret_15": false
+      }
+    },
+    {
+      "id": "A04_lower_bass_inversion",
+      "shape": [
+        8,
+        1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "category": "supplemental_long_span",
+      "source_url": null,
+      "source_title": "Independent post-freeze comparator-coverage amendment",
+      "expectation": "Downward translation of A03 preserves pitch ordering but enlarges millimeter span; hypothesized beyond the coarse span envelope.",
+      "strict_mute": false,
+      "physical": [
+        {
+          "profile": "reference",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              48,
+              46
+            ],
+            "G": 2,
+            "S_mm": 187.37513989857797,
+            "common_hand_gate": false,
+            "common_hand_reason": "exceeds-hand-span",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "length_anchor_163_over_196",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              48,
+              46
+            ],
+            "G": 2,
+            "S_mm": 187.37513989857797,
+            "common_hand_gate": false,
+            "common_hand_reason": "exceeds-hand-span",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "length_anchor_180_over_196",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              48,
+              46
+            ],
+            "G": 2,
+            "S_mm": 187.37513989857797,
+            "common_hand_gate": false,
+            "common_hand_reason": "exceeds-hand-span",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "length_anchor_190_over_196",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              48,
+              46
+            ],
+            "G": 2,
+            "S_mm": 187.37513989857797,
+            "common_hand_gate": false,
+            "common_hand_reason": "exceeds-hand-span",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "length_anchor_214_over_196",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              48,
+              46
+            ],
+            "G": 2,
+            "S_mm": 187.37513989857797,
+            "common_hand_gate": false,
+            "common_hand_reason": "exceeds-hand-span",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "bases_0_8",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              48,
+              46
+            ],
+            "G": 2,
+            "S_mm": 187.37513989857797,
+            "common_hand_gate": false,
+            "common_hand_reason": "exceeds-hand-span",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "bases_1_2",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              48,
+              46
+            ],
+            "G": 2,
+            "S_mm": 187.37513989857797,
+            "common_hand_gate": false,
+            "common_hand_reason": "exceeds-hand-span",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "pad_3mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              48,
+              46
+            ],
+            "G": 2,
+            "S_mm": 187.37513989857797,
+            "common_hand_gate": false,
+            "common_hand_reason": "exceeds-hand-span",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "pad_5mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              48,
+              46
+            ],
+            "G": 2,
+            "S_mm": 187.37513989857797,
+            "common_hand_gate": false,
+            "common_hand_reason": "exceeds-hand-span",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "scale_647_7mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 647.7,
+            "played_midi_low_to_high": [
+              48,
+              46
+            ],
+            "G": 2,
+            "S_mm": 203.32196031547824,
+            "common_hand_gate": false,
+            "common_hand_reason": "exceeds-hand-span",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "scale_650mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 650,
+            "played_midi_low_to_high": [
+              48,
+              46
+            ],
+            "G": 2,
+            "S_mm": 204.043962027267,
+            "common_hand_gate": false,
+            "common_hand_reason": "exceeds-hand-span",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "radius_184_15mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              48,
+              46
+            ],
+            "G": 2,
+            "S_mm": 187.37513989857797,
+            "common_hand_gate": false,
+            "common_hand_reason": "exceeds-hand-span",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "radius_430mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              48,
+              46
+            ],
+            "G": 2,
+            "S_mm": 187.37513989857797,
+            "common_hand_gate": false,
+            "common_hand_reason": "exceeds-hand-span",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "nut_spread_43mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              48,
+              46
+            ],
+            "G": 2,
+            "S_mm": 187.37513989857797,
+            "common_hand_gate": false,
+            "common_hand_reason": "exceeds-hand-span",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "abduction_20deg",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              48,
+              46
+            ],
+            "G": 2,
+            "S_mm": 187.37513989857797,
+            "common_hand_gate": false,
+            "common_hand_reason": "exceeds-hand-span",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "abduction_40deg",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              48,
+              46
+            ],
+            "G": 2,
+            "S_mm": 187.37513989857797,
+            "common_hand_gate": false,
+            "common_hand_reason": "exceeds-hand-span",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        }
+      ],
+      "default_scale": {
+        "scale_mm": 647.7,
+        "played_midi_low_to_high": [
+          48,
+          46
+        ],
+        "G": 2,
+        "S_mm": 203.32196031547824,
+        "common_hand_gate": false,
+        "common_hand_reason": "exceeds-hand-span",
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": false,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": false,
+        "within_default_generator_max_fret_15": true
+      },
+      "reference_scale": {
+        "scale_mm": 596.9,
+        "played_midi_low_to_high": [
+          48,
+          46
+        ],
+        "G": 2,
+        "S_mm": 187.37513989857797,
+        "common_hand_gate": false,
+        "common_hand_reason": "exceeds-hand-span",
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": false,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": false,
+        "within_default_generator_max_fret_15": true
+      }
+    },
+    {
+      "id": "A05_upper_three_contact",
+      "shape": [
+        -1,
+        21,
+        15,
+        -1,
+        -1,
+        19
+      ],
+      "category": "supplemental_pitch_inversion",
+      "source_url": null,
+      "source_title": "Independent post-freeze comparator-coverage amendment",
+      "expectation": "A-to-D pitch inversion plus a remote high-E contact; three stops and upper-position spacing hypothesized within the coarse envelope.",
+      "strict_mute": false,
+      "physical": [
+        {
+          "profile": "reference",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              66,
+              65,
+              83
+            ],
+            "G": 3,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_163_over_196",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              66,
+              65,
+              83
+            ],
+            "G": 3,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_180_over_196",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              66,
+              65,
+              83
+            ],
+            "G": 3,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_190_over_196",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              66,
+              65,
+              83
+            ],
+            "G": 3,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_214_over_196",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              66,
+              65,
+              83
+            ],
+            "G": 3,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "bases_0_8",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              66,
+              65,
+              83
+            ],
+            "G": 3,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "bases_1_2",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              66,
+              65,
+              83
+            ],
+            "G": 3,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "pad_3mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              66,
+              65,
+              83
+            ],
+            "G": 3,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "pad_5mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              66,
+              65,
+              83
+            ],
+            "G": 3,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "scale_647_7mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 647.7,
+            "played_midi_low_to_high": [
+              66,
+              65,
+              83
+            ],
+            "G": 3,
+            "S_mm": 79.76194198309987,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "scale_650mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 650,
+            "played_midi_low_to_high": [
+              66,
+              65,
+              83
+            ],
+            "G": 3,
+            "S_mm": 80.04517876951508,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "radius_184_15mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              66,
+              65,
+              83
+            ],
+            "G": 3,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "radius_430mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              66,
+              65,
+              83
+            ],
+            "G": 3,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "nut_spread_43mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              66,
+              65,
+              83
+            ],
+            "G": 3,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "abduction_20deg",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              66,
+              65,
+              83
+            ],
+            "G": 3,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "abduction_40deg",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              66,
+              65,
+              83
+            ],
+            "G": 3,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        }
+      ],
+      "default_scale": {
+        "scale_mm": 647.7,
+        "played_midi_low_to_high": [
+          66,
+          65,
+          83
+        ],
+        "G": 3,
+        "S_mm": 79.76194198309987,
+        "common_hand_gate": true,
+        "common_hand_reason": null,
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": true,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": true,
+        "within_default_generator_max_fret_15": false
+      },
+      "reference_scale": {
+        "scale_mm": 596.9,
+        "played_midi_low_to_high": [
+          66,
+          65,
+          83
+        ],
+        "G": 3,
+        "S_mm": 73.50610339619008,
+        "common_hand_gate": true,
+        "common_hand_reason": null,
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": true,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": true,
+        "within_default_generator_max_fret_15": false
+      }
+    },
+    {
+      "id": "A06_lower_three_contact",
+      "shape": [
+        -1,
+        11,
+        5,
+        -1,
+        -1,
+        9
+      ],
+      "category": "supplemental_long_span",
+      "source_url": null,
+      "source_title": "Independent post-freeze comparator-coverage amendment",
+      "expectation": "Downward translation of A05 preserves pitch ordering but enlarges millimeter span; hypothesized beyond the coarse span envelope.",
+      "strict_mute": false,
+      "physical": [
+        {
+          "profile": "reference",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              56,
+              55,
+              73
+            ],
+            "G": 3,
+            "S_mm": 130.97298658231392,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "length_anchor_163_over_196",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              56,
+              55,
+              73
+            ],
+            "G": 3,
+            "S_mm": 130.97298658231392,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "length_anchor_180_over_196",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              56,
+              55,
+              73
+            ],
+            "G": 3,
+            "S_mm": 130.97298658231392,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "length_anchor_190_over_196",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              56,
+              55,
+              73
+            ],
+            "G": 3,
+            "S_mm": 130.97298658231392,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "length_anchor_214_over_196",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              56,
+              55,
+              73
+            ],
+            "G": 3,
+            "S_mm": 130.97298658231392,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "bases_0_8",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              56,
+              55,
+              73
+            ],
+            "G": 3,
+            "S_mm": 130.97298658231392,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "bases_1_2",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              56,
+              55,
+              73
+            ],
+            "G": 3,
+            "S_mm": 130.97298658231392,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "pad_3mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              56,
+              55,
+              73
+            ],
+            "G": 3,
+            "S_mm": 130.97298658231392,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "pad_5mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              56,
+              55,
+              73
+            ],
+            "G": 3,
+            "S_mm": 130.97298658231392,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "scale_647_7mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 647.7,
+            "played_midi_low_to_high": [
+              56,
+              55,
+              73
+            ],
+            "G": 3,
+            "S_mm": 142.11962373825554,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "scale_650mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 650,
+            "played_midi_low_to_high": [
+              56,
+              55,
+              73
+            ],
+            "G": 3,
+            "S_mm": 142.62429431815053,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "radius_184_15mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              56,
+              55,
+              73
+            ],
+            "G": 3,
+            "S_mm": 130.97298658231392,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "radius_430mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              56,
+              55,
+              73
+            ],
+            "G": 3,
+            "S_mm": 130.97298658231392,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "nut_spread_43mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              56,
+              55,
+              73
+            ],
+            "G": 3,
+            "S_mm": 130.97298658231392,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "abduction_20deg",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              56,
+              55,
+              73
+            ],
+            "G": 3,
+            "S_mm": 130.97298658231392,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "abduction_40deg",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              56,
+              55,
+              73
+            ],
+            "G": 3,
+            "S_mm": 130.97298658231392,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": true
+          }
+        }
+      ],
+      "default_scale": {
+        "scale_mm": 647.7,
+        "played_midi_low_to_high": [
+          56,
+          55,
+          73
+        ],
+        "G": 3,
+        "S_mm": 142.11962373825554,
+        "common_hand_gate": true,
+        "common_hand_reason": null,
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": false,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": false,
+        "within_default_generator_max_fret_15": true
+      },
+      "reference_scale": {
+        "scale_mm": 596.9,
+        "played_midi_low_to_high": [
+          56,
+          55,
+          73
+        ],
+        "G": 3,
+        "S_mm": 130.97298658231392,
+        "common_hand_gate": true,
+        "common_hand_reason": null,
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": false,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": false,
+        "within_default_generator_max_fret_15": true
+      }
+    },
+    {
+      "id": "A07_bass_open_crossing",
+      "shape": [
+        6,
+        0,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "category": "supplemental_open_crossing",
+      "source_url": null,
+      "source_title": "Independent post-freeze comparator-coverage amendment",
+      "expectation": "Stopped bass string sounds above adjacent open A; one stopped contact suggests coarse acceptance but open-string clearance still requires attention.",
+      "strict_mute": false,
+      "physical": [
+        {
+          "profile": "reference",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              46,
+              45
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "length_anchor_163_over_196",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              46,
+              45
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "length_anchor_180_over_196",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              46,
+              45
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "length_anchor_190_over_196",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              46,
+              45
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "length_anchor_214_over_196",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              46,
+              45
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "bases_0_8",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              46,
+              45
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "bases_1_2",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              46,
+              45
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "pad_3mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              46,
+              45
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "pad_5mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              46,
+              45
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "scale_647_7mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 647.7,
+            "played_midi_low_to_high": [
+              46,
+              45
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "scale_650mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 650,
+            "played_midi_low_to_high": [
+              46,
+              45
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "radius_184_15mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              46,
+              45
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "radius_430mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              46,
+              45
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "nut_spread_43mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              46,
+              45
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "abduction_20deg",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              46,
+              45
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "abduction_40deg",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              46,
+              45
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        }
+      ],
+      "default_scale": {
+        "scale_mm": 647.7,
+        "played_midi_low_to_high": [
+          46,
+          45
+        ],
+        "G": 1,
+        "S_mm": 0,
+        "common_hand_gate": true,
+        "common_hand_reason": null,
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": true,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": true,
+        "within_default_generator_max_fret_15": true
+      },
+      "reference_scale": {
+        "scale_mm": 596.9,
+        "played_midi_low_to_high": [
+          46,
+          45
+        ],
+        "G": 1,
+        "S_mm": 0,
+        "common_hand_gate": true,
+        "common_hand_reason": null,
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": true,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": true,
+        "within_default_generator_max_fret_15": true
+      }
+    },
+    {
+      "id": "A08_treble_open_crossing",
+      "shape": [
+        -1,
+        -1,
+        -1,
+        5,
+        0,
+        0
+      ],
+      "category": "supplemental_open_crossing",
+      "source_url": null,
+      "source_title": "Independent post-freeze comparator-coverage amendment",
+      "expectation": "Stopped G sounds above adjacent open B while high E rings; one stopped contact suggests coarse acceptance with clearance requirements.",
+      "strict_mute": false,
+      "physical": [
+        {
+          "profile": "reference",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              64
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "length_anchor_163_over_196",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              64
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "length_anchor_180_over_196",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              64
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "length_anchor_190_over_196",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              64
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "length_anchor_214_over_196",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              64
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "bases_0_8",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              64
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "bases_1_2",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              64
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "pad_3mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              64
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "pad_5mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              64
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "scale_647_7mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 647.7,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              64
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "scale_650mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 650,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              64
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "radius_184_15mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              64
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "radius_430mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              64
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "nut_spread_43mm",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              64
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "abduction_20deg",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              64
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        },
+        {
+          "profile": "abduction_40deg",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              64
+            ],
+            "G": 1,
+            "S_mm": 0,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": true
+          }
+        }
+      ],
+      "default_scale": {
+        "scale_mm": 647.7,
+        "played_midi_low_to_high": [
+          60,
+          59,
+          64
+        ],
+        "G": 1,
+        "S_mm": 0,
+        "common_hand_gate": true,
+        "common_hand_reason": null,
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": true,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": true,
+        "within_default_generator_max_fret_15": true
+      },
+      "reference_scale": {
+        "scale_mm": 596.9,
+        "played_midi_low_to_high": [
+          60,
+          59,
+          64
+        ],
+        "G": 1,
+        "S_mm": 0,
+        "common_hand_gate": true,
+        "common_hand_reason": null,
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": true,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": true,
+        "within_default_generator_max_fret_15": true
+      }
+    },
+    {
+      "id": "A09_six_unique_upper",
+      "shape": [
+        19,
+        13,
+        18,
+        14,
+        17,
+        15
+      ],
+      "category": "supplemental_excess_groups",
+      "source_url": null,
+      "source_title": "Independent post-freeze comparator-coverage amendment",
+      "expectation": "Bass pitch inversion and six distinct stopped frets within an upper-position cluster; hypothesized group-count exclusion despite comparatively narrow span.",
+      "strict_mute": false,
+      "physical": [
+        {
+          "profile": "reference",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              59,
+              58,
+              68,
+              69,
+              76,
+              79
+            ],
+            "G": 6,
+            "S_mm": 82.50781138132805,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_163_over_196",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              59,
+              58,
+              68,
+              69,
+              76,
+              79
+            ],
+            "G": 6,
+            "S_mm": 82.50781138132805,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_180_over_196",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              59,
+              58,
+              68,
+              69,
+              76,
+              79
+            ],
+            "G": 6,
+            "S_mm": 82.50781138132805,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_190_over_196",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              59,
+              58,
+              68,
+              69,
+              76,
+              79
+            ],
+            "G": 6,
+            "S_mm": 82.50781138132805,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_214_over_196",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              59,
+              58,
+              68,
+              69,
+              76,
+              79
+            ],
+            "G": 6,
+            "S_mm": 82.50781138132805,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "bases_0_8",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              59,
+              58,
+              68,
+              69,
+              76,
+              79
+            ],
+            "G": 6,
+            "S_mm": 82.50781138132805,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "bases_1_2",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              59,
+              58,
+              68,
+              69,
+              76,
+              79
+            ],
+            "G": 6,
+            "S_mm": 82.50781138132805,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "pad_3mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              59,
+              58,
+              68,
+              69,
+              76,
+              79
+            ],
+            "G": 6,
+            "S_mm": 82.50781138132805,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "pad_5mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              59,
+              58,
+              68,
+              69,
+              76,
+              79
+            ],
+            "G": 6,
+            "S_mm": 82.50781138132805,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "scale_647_7mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 647.7,
+            "played_midi_low_to_high": [
+              59,
+              58,
+              68,
+              69,
+              76,
+              79
+            ],
+            "G": 6,
+            "S_mm": 89.52975277548364,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "scale_650mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 650,
+            "played_midi_low_to_high": [
+              59,
+              58,
+              68,
+              69,
+              76,
+              79
+            ],
+            "G": 6,
+            "S_mm": 89.84767531891981,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "radius_184_15mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              59,
+              58,
+              68,
+              69,
+              76,
+              79
+            ],
+            "G": 6,
+            "S_mm": 82.50781138132805,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "radius_430mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              59,
+              58,
+              68,
+              69,
+              76,
+              79
+            ],
+            "G": 6,
+            "S_mm": 82.50781138132805,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "nut_spread_43mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              59,
+              58,
+              68,
+              69,
+              76,
+              79
+            ],
+            "G": 6,
+            "S_mm": 82.50781138132805,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "abduction_20deg",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              59,
+              58,
+              68,
+              69,
+              76,
+              79
+            ],
+            "G": 6,
+            "S_mm": 82.50781138132805,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "abduction_40deg",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              59,
+              58,
+              68,
+              69,
+              76,
+              79
+            ],
+            "G": 6,
+            "S_mm": 82.50781138132805,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        }
+      ],
+      "default_scale": {
+        "scale_mm": 647.7,
+        "played_midi_low_to_high": [
+          59,
+          58,
+          68,
+          69,
+          76,
+          79
+        ],
+        "G": 6,
+        "S_mm": 89.52975277548364,
+        "common_hand_gate": false,
+        "common_hand_reason": "too-many-fingers",
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": false,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": false,
+        "within_default_generator_max_fret_15": false
+      },
+      "reference_scale": {
+        "scale_mm": 596.9,
+        "played_midi_low_to_high": [
+          59,
+          58,
+          68,
+          69,
+          76,
+          79
+        ],
+        "G": 6,
+        "S_mm": 82.50781138132805,
+        "common_hand_gate": false,
+        "common_hand_reason": "too-many-fingers",
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": false,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": false,
+        "within_default_generator_max_fret_15": false
+      }
+    },
+    {
+      "id": "A10_six_unique_higher",
+      "shape": [
+        21,
+        15,
+        20,
+        16,
+        19,
+        17
+      ],
+      "category": "supplemental_excess_groups",
+      "source_url": null,
+      "source_title": "Independent post-freeze comparator-coverage amendment",
+      "expectation": "Upward translation of A09 further reduces physical span while retaining six distinct frets; hypothesized group-count exclusion.",
+      "strict_mute": false,
+      "physical": [
+        {
+          "profile": "reference",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              61,
+              60,
+              70,
+              71,
+              78,
+              81
+            ],
+            "G": 6,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_163_over_196",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              61,
+              60,
+              70,
+              71,
+              78,
+              81
+            ],
+            "G": 6,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_180_over_196",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              61,
+              60,
+              70,
+              71,
+              78,
+              81
+            ],
+            "G": 6,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_190_over_196",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              61,
+              60,
+              70,
+              71,
+              78,
+              81
+            ],
+            "G": 6,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_214_over_196",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              61,
+              60,
+              70,
+              71,
+              78,
+              81
+            ],
+            "G": 6,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "bases_0_8",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              61,
+              60,
+              70,
+              71,
+              78,
+              81
+            ],
+            "G": 6,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "bases_1_2",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              61,
+              60,
+              70,
+              71,
+              78,
+              81
+            ],
+            "G": 6,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "pad_3mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              61,
+              60,
+              70,
+              71,
+              78,
+              81
+            ],
+            "G": 6,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "pad_5mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              61,
+              60,
+              70,
+              71,
+              78,
+              81
+            ],
+            "G": 6,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "scale_647_7mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 647.7,
+            "played_midi_low_to_high": [
+              61,
+              60,
+              70,
+              71,
+              78,
+              81
+            ],
+            "G": 6,
+            "S_mm": 79.76194198309987,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "scale_650mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 650,
+            "played_midi_low_to_high": [
+              61,
+              60,
+              70,
+              71,
+              78,
+              81
+            ],
+            "G": 6,
+            "S_mm": 80.04517876951508,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "radius_184_15mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              61,
+              60,
+              70,
+              71,
+              78,
+              81
+            ],
+            "G": 6,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "radius_430mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              61,
+              60,
+              70,
+              71,
+              78,
+              81
+            ],
+            "G": 6,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "nut_spread_43mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              61,
+              60,
+              70,
+              71,
+              78,
+              81
+            ],
+            "G": 6,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "abduction_20deg",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              61,
+              60,
+              70,
+              71,
+              78,
+              81
+            ],
+            "G": 6,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "abduction_40deg",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              61,
+              60,
+              70,
+              71,
+              78,
+              81
+            ],
+            "G": 6,
+            "S_mm": 73.50610339619008,
+            "common_hand_gate": false,
+            "common_hand_reason": "too-many-fingers",
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": false,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": false,
+            "within_default_generator_max_fret_15": false
+          }
+        }
+      ],
+      "default_scale": {
+        "scale_mm": 647.7,
+        "played_midi_low_to_high": [
+          61,
+          60,
+          70,
+          71,
+          78,
+          81
+        ],
+        "G": 6,
+        "S_mm": 79.76194198309987,
+        "common_hand_gate": false,
+        "common_hand_reason": "too-many-fingers",
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": false,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": false,
+        "within_default_generator_max_fret_15": false
+      },
+      "reference_scale": {
+        "scale_mm": 596.9,
+        "played_midi_low_to_high": [
+          61,
+          60,
+          70,
+          71,
+          78,
+          81
+        ],
+        "G": 6,
+        "S_mm": 73.50610339619008,
+        "common_hand_gate": false,
+        "common_hand_reason": "too-many-fingers",
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": false,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": false,
+        "within_default_generator_max_fret_15": false
+      }
+    },
+    {
+      "id": "A11_alternating_fret_masks",
+      "shape": [
+        20,
+        14,
+        20,
+        14,
+        20,
+        14
+      ],
+      "category": "supplemental_same_fret_mask",
+      "source_url": null,
+      "source_title": "Independent post-freeze comparator-coverage amendment",
+      "expectation": "Repeated pitch inversions with alternating fret masks; lower full barre and three higher contacts suggest a four-group representation within coarse span.",
+      "strict_mute": false,
+      "physical": [
+        {
+          "profile": "reference",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              70,
+              69,
+              79,
+              78
+            ],
+            "G": 4,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_163_over_196",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              70,
+              69,
+              79,
+              78
+            ],
+            "G": 4,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_180_over_196",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              70,
+              69,
+              79,
+              78
+            ],
+            "G": 4,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_190_over_196",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              70,
+              69,
+              79,
+              78
+            ],
+            "G": 4,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_214_over_196",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              70,
+              69,
+              79,
+              78
+            ],
+            "G": 4,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "bases_0_8",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              70,
+              69,
+              79,
+              78
+            ],
+            "G": 4,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "bases_1_2",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              70,
+              69,
+              79,
+              78
+            ],
+            "G": 4,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "pad_3mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              70,
+              69,
+              79,
+              78
+            ],
+            "G": 4,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "pad_5mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              70,
+              69,
+              79,
+              78
+            ],
+            "G": 4,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "scale_647_7mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 647.7,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              70,
+              69,
+              79,
+              78
+            ],
+            "G": 4,
+            "S_mm": 84.50483386552153,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "scale_650mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 650,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              70,
+              69,
+              79,
+              78
+            ],
+            "G": 4,
+            "S_mm": 84.80491278769337,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "radius_184_15mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              70,
+              69,
+              79,
+              78
+            ],
+            "G": 4,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "radius_430mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              70,
+              69,
+              79,
+              78
+            ],
+            "G": 4,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "nut_spread_43mm",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              70,
+              69,
+              79,
+              78
+            ],
+            "G": 4,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "abduction_20deg",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              70,
+              69,
+              79,
+              78
+            ],
+            "G": 4,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "abduction_40deg",
+          "status": "UNRESOLVED",
+          "reason": "multi_contact_barre_required_not_modeled",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              60,
+              59,
+              70,
+              69,
+              79,
+              78
+            ],
+            "G": 4,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        }
+      ],
+      "default_scale": {
+        "scale_mm": 647.7,
+        "played_midi_low_to_high": [
+          60,
+          59,
+          70,
+          69,
+          79,
+          78
+        ],
+        "G": 4,
+        "S_mm": 84.50483386552153,
+        "common_hand_gate": true,
+        "common_hand_reason": null,
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": true,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": true,
+        "within_default_generator_max_fret_15": false
+      },
+      "reference_scale": {
+        "scale_mm": 596.9,
+        "played_midi_low_to_high": [
+          60,
+          59,
+          70,
+          69,
+          79,
+          78
+        ],
+        "G": 4,
+        "S_mm": 77.87700375842181,
+        "common_hand_gate": true,
+        "common_hand_reason": null,
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": true,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": true,
+        "within_default_generator_max_fret_15": false
+      }
+    },
+    {
+      "id": "A12_interrupted_fret_masks",
+      "shape": [
+        -1,
+        20,
+        14,
+        -1,
+        20,
+        14
+      ],
+      "category": "supplemental_same_fret_mask",
+      "source_url": null,
+      "source_title": "Independent post-freeze comparator-coverage amendment",
+      "expectation": "Two separated adjacent-string pitch inversions with four stops and an internal omitted string; hypothesized low group count within coarse span, with omission distinct from compulsory damping.",
+      "strict_mute": false,
+      "physical": [
+        {
+          "profile": "reference",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64,
+              79,
+              78
+            ],
+            "G": 3,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_163_over_196",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64,
+              79,
+              78
+            ],
+            "G": 3,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_180_over_196",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64,
+              79,
+              78
+            ],
+            "G": 3,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_190_over_196",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64,
+              79,
+              78
+            ],
+            "G": 3,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "length_anchor_214_over_196",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64,
+              79,
+              78
+            ],
+            "G": 3,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "bases_0_8",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64,
+              79,
+              78
+            ],
+            "G": 3,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "bases_1_2",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64,
+              79,
+              78
+            ],
+            "G": 3,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "pad_3mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64,
+              79,
+              78
+            ],
+            "G": 3,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "pad_5mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64,
+              79,
+              78
+            ],
+            "G": 3,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "scale_647_7mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 647.7,
+            "played_midi_low_to_high": [
+              65,
+              64,
+              79,
+              78
+            ],
+            "G": 3,
+            "S_mm": 84.50483386552153,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "scale_650mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 650,
+            "played_midi_low_to_high": [
+              65,
+              64,
+              79,
+              78
+            ],
+            "G": 3,
+            "S_mm": 84.80491278769337,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "radius_184_15mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64,
+              79,
+              78
+            ],
+            "G": 3,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "radius_430mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64,
+              79,
+              78
+            ],
+            "G": 3,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "nut_spread_43mm",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64,
+              79,
+              78
+            ],
+            "G": 3,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "abduction_20deg",
+          "status": "UNRESOLVED",
+          "reason": "constructive_search_exhausted",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64,
+              79,
+              78
+            ],
+            "G": 3,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        },
+        {
+          "profile": "abduction_40deg",
+          "status": "FEASIBLE_FOUND",
+          "reason": "audited_conditional_kinematic_witness",
+          "same_scale_gates": {
+            "scale_mm": 596.9,
+            "played_midi_low_to_high": [
+              65,
+              64,
+              79,
+              78
+            ],
+            "G": 3,
+            "S_mm": 77.87700375842181,
+            "common_hand_gate": true,
+            "common_hand_reason": null,
+            "uses_thumb": false,
+            "pitch_gate": false,
+            "p5_gate": true,
+            "baseline_hand_and_pitch": false,
+            "p5_hand_and_gate": true,
+            "within_default_generator_max_fret_15": false
+          }
+        }
+      ],
+      "default_scale": {
+        "scale_mm": 647.7,
+        "played_midi_low_to_high": [
+          65,
+          64,
+          79,
+          78
+        ],
+        "G": 3,
+        "S_mm": 84.50483386552153,
+        "common_hand_gate": true,
+        "common_hand_reason": null,
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": true,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": true,
+        "within_default_generator_max_fret_15": false
+      },
+      "reference_scale": {
+        "scale_mm": 596.9,
+        "played_midi_low_to_high": [
+          65,
+          64,
+          79,
+          78
+        ],
+        "G": 3,
+        "S_mm": 77.87700375842181,
+        "common_hand_gate": true,
+        "common_hand_reason": null,
+        "uses_thumb": false,
+        "pitch_gate": false,
+        "p5_gate": true,
+        "baseline_hand_and_pitch": false,
+        "p5_hand_and_gate": true,
+        "within_default_generator_max_fret_15": false
+      }
+    }
+  ],
+  "cross_tabs": {
+    "reference/default_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "reference/default_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "reference/default_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "reference/default_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "reference/default_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "reference/same_profile_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "reference/same_profile_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "reference/same_profile_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "reference/same_profile_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "reference/same_profile_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "length_anchor_163_over_196/default_scale/pitch_gate": {
+      "reject/UNRESOLVED": 10,
+      "reject/FEASIBLE_FOUND": 2
+    },
+    "length_anchor_163_over_196/default_scale/p5_gate": {
+      "accept/UNRESOLVED": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/FEASIBLE_FOUND": 2
+    },
+    "length_anchor_163_over_196/default_scale/common_hand_gate": {
+      "accept/UNRESOLVED": 7,
+      "reject/UNRESOLVED": 3,
+      "accept/FEASIBLE_FOUND": 2
+    },
+    "length_anchor_163_over_196/default_scale/baseline_hand_and_pitch": {
+      "reject/UNRESOLVED": 10,
+      "reject/FEASIBLE_FOUND": 2
+    },
+    "length_anchor_163_over_196/default_scale/p5_hand_and_gate": {
+      "accept/UNRESOLVED": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/FEASIBLE_FOUND": 2
+    },
+    "length_anchor_163_over_196/same_profile_scale/pitch_gate": {
+      "reject/UNRESOLVED": 10,
+      "reject/FEASIBLE_FOUND": 2
+    },
+    "length_anchor_163_over_196/same_profile_scale/p5_gate": {
+      "accept/UNRESOLVED": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/FEASIBLE_FOUND": 2
+    },
+    "length_anchor_163_over_196/same_profile_scale/common_hand_gate": {
+      "accept/UNRESOLVED": 7,
+      "reject/UNRESOLVED": 3,
+      "accept/FEASIBLE_FOUND": 2
+    },
+    "length_anchor_163_over_196/same_profile_scale/baseline_hand_and_pitch": {
+      "reject/UNRESOLVED": 10,
+      "reject/FEASIBLE_FOUND": 2
+    },
+    "length_anchor_163_over_196/same_profile_scale/p5_hand_and_gate": {
+      "accept/UNRESOLVED": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/FEASIBLE_FOUND": 2
+    },
+    "length_anchor_180_over_196/default_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "length_anchor_180_over_196/default_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "length_anchor_180_over_196/default_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "length_anchor_180_over_196/default_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "length_anchor_180_over_196/default_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "length_anchor_180_over_196/same_profile_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "length_anchor_180_over_196/same_profile_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "length_anchor_180_over_196/same_profile_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "length_anchor_180_over_196/same_profile_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "length_anchor_180_over_196/same_profile_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "length_anchor_190_over_196/default_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "length_anchor_190_over_196/default_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "length_anchor_190_over_196/default_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "length_anchor_190_over_196/default_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "length_anchor_190_over_196/default_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "length_anchor_190_over_196/same_profile_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "length_anchor_190_over_196/same_profile_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "length_anchor_190_over_196/same_profile_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "length_anchor_190_over_196/same_profile_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "length_anchor_190_over_196/same_profile_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "length_anchor_214_over_196/default_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 6,
+      "reject/UNRESOLVED": 6
+    },
+    "length_anchor_214_over_196/default_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 6,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 1
+    },
+    "length_anchor_214_over_196/default_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 6,
+      "accept/UNRESOLVED": 3,
+      "reject/UNRESOLVED": 3
+    },
+    "length_anchor_214_over_196/default_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 6,
+      "reject/UNRESOLVED": 6
+    },
+    "length_anchor_214_over_196/default_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 6,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 1
+    },
+    "length_anchor_214_over_196/same_profile_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 6,
+      "reject/UNRESOLVED": 6
+    },
+    "length_anchor_214_over_196/same_profile_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 6,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 1
+    },
+    "length_anchor_214_over_196/same_profile_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 6,
+      "accept/UNRESOLVED": 3,
+      "reject/UNRESOLVED": 3
+    },
+    "length_anchor_214_over_196/same_profile_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 6,
+      "reject/UNRESOLVED": 6
+    },
+    "length_anchor_214_over_196/same_profile_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 6,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 1
+    },
+    "bases_0_8/default_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "bases_0_8/default_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "bases_0_8/default_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "bases_0_8/default_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "bases_0_8/default_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "bases_0_8/same_profile_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "bases_0_8/same_profile_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "bases_0_8/same_profile_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "bases_0_8/same_profile_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "bases_0_8/same_profile_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "bases_1_2/default_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "bases_1_2/default_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "bases_1_2/default_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "bases_1_2/default_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "bases_1_2/default_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "bases_1_2/same_profile_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "bases_1_2/same_profile_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "bases_1_2/same_profile_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "bases_1_2/same_profile_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "bases_1_2/same_profile_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "pad_3mm/default_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "pad_3mm/default_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "pad_3mm/default_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "pad_3mm/default_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "pad_3mm/default_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "pad_3mm/same_profile_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "pad_3mm/same_profile_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "pad_3mm/same_profile_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "pad_3mm/same_profile_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "pad_3mm/same_profile_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "pad_5mm/default_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "pad_5mm/default_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "pad_5mm/default_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "pad_5mm/default_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "pad_5mm/default_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "pad_5mm/same_profile_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "pad_5mm/same_profile_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "pad_5mm/same_profile_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "pad_5mm/same_profile_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "pad_5mm/same_profile_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "scale_647_7mm/default_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "scale_647_7mm/default_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "scale_647_7mm/default_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "scale_647_7mm/default_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "scale_647_7mm/default_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "scale_647_7mm/same_profile_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "scale_647_7mm/same_profile_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "scale_647_7mm/same_profile_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "scale_647_7mm/same_profile_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "scale_647_7mm/same_profile_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "scale_650mm/default_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "scale_650mm/default_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "scale_650mm/default_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "scale_650mm/default_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "scale_650mm/default_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "scale_650mm/same_profile_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "scale_650mm/same_profile_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "scale_650mm/same_profile_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "scale_650mm/same_profile_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "scale_650mm/same_profile_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "radius_184_15mm/default_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "radius_184_15mm/default_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "radius_184_15mm/default_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "radius_184_15mm/default_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "radius_184_15mm/default_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "radius_184_15mm/same_profile_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "radius_184_15mm/same_profile_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "radius_184_15mm/same_profile_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "radius_184_15mm/same_profile_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "radius_184_15mm/same_profile_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "radius_430mm/default_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "radius_430mm/default_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "radius_430mm/default_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "radius_430mm/default_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "radius_430mm/default_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "radius_430mm/same_profile_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "radius_430mm/same_profile_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "radius_430mm/same_profile_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "radius_430mm/same_profile_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "radius_430mm/same_profile_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "nut_spread_43mm/default_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "nut_spread_43mm/default_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "nut_spread_43mm/default_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "nut_spread_43mm/default_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "nut_spread_43mm/default_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "nut_spread_43mm/same_profile_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "nut_spread_43mm/same_profile_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "nut_spread_43mm/same_profile_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "accept/UNRESOLVED": 4,
+      "reject/UNRESOLVED": 3
+    },
+    "nut_spread_43mm/same_profile_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 7
+    },
+    "nut_spread_43mm/same_profile_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 5,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 2
+    },
+    "abduction_20deg/default_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 3,
+      "reject/UNRESOLVED": 9
+    },
+    "abduction_20deg/default_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 3,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 4
+    },
+    "abduction_20deg/default_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 3,
+      "accept/UNRESOLVED": 6,
+      "reject/UNRESOLVED": 3
+    },
+    "abduction_20deg/default_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 3,
+      "reject/UNRESOLVED": 9
+    },
+    "abduction_20deg/default_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 3,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 4
+    },
+    "abduction_20deg/same_profile_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 3,
+      "reject/UNRESOLVED": 9
+    },
+    "abduction_20deg/same_profile_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 3,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 4
+    },
+    "abduction_20deg/same_profile_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 3,
+      "accept/UNRESOLVED": 6,
+      "reject/UNRESOLVED": 3
+    },
+    "abduction_20deg/same_profile_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 3,
+      "reject/UNRESOLVED": 9
+    },
+    "abduction_20deg/same_profile_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 3,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 4
+    },
+    "abduction_40deg/default_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 6,
+      "reject/UNRESOLVED": 6
+    },
+    "abduction_40deg/default_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 6,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 1
+    },
+    "abduction_40deg/default_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 6,
+      "accept/UNRESOLVED": 3,
+      "reject/UNRESOLVED": 3
+    },
+    "abduction_40deg/default_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 6,
+      "reject/UNRESOLVED": 6
+    },
+    "abduction_40deg/default_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 6,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 1
+    },
+    "abduction_40deg/same_profile_scale/pitch_gate": {
+      "reject/FEASIBLE_FOUND": 6,
+      "reject/UNRESOLVED": 6
+    },
+    "abduction_40deg/same_profile_scale/p5_gate": {
+      "accept/FEASIBLE_FOUND": 6,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 1
+    },
+    "abduction_40deg/same_profile_scale/common_hand_gate": {
+      "accept/FEASIBLE_FOUND": 6,
+      "accept/UNRESOLVED": 3,
+      "reject/UNRESOLVED": 3
+    },
+    "abduction_40deg/same_profile_scale/baseline_hand_and_pitch": {
+      "reject/FEASIBLE_FOUND": 6,
+      "reject/UNRESOLVED": 6
+    },
+    "abduction_40deg/same_profile_scale/p5_hand_and_gate": {
+      "accept/FEASIBLE_FOUND": 6,
+      "reject/UNRESOLVED": 5,
+      "accept/UNRESOLVED": 1
+    }
+  },
+  "microbenchmark": {
+    "node": "v22.16.0",
+    "platform": "win32",
+    "arch": "x64",
+    "cpu": "AMD Ryzen 5 7500F 6-Core Processor             ",
+    "case_count": 12,
+    "default_scale_mm": 647.7,
+    "limitation": "Sequential warmed microbenchmark cycles fixed fixtures. Includes per-call timer overhead. Does not measure full generator search or physical accuracy.",
+    "pitch_gate": {
+      "warmup": 1000,
+      "samples": 10000,
+      "units": "microseconds_per_gate_call",
+      "median": 0.10000000000331966,
+      "p95": 0.30000000000995897,
+      "max": 39.699999999996294,
+      "mean": 0.11647000000009916,
+      "loop_elapsed_ms": 2.9398999999999944,
+      "checksum": 0
+    },
+    "common_hand_and_p5": {
+      "warmup": 1000,
+      "samples": 10000,
+      "units": "microseconds_per_gate_call",
+      "median": 2.200000000001978,
+      "p95": 7.699999999999818,
+      "max": 333.29999999999416,
+      "mean": 3.217320000000108,
+      "loop_elapsed_ms": 32.811800000000005,
+      "checksum": 6416
+    }
+  }
+}

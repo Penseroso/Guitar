@@ -1,0 +1,2527 @@
+{
+  "schema": "representative-addendum-analysis-v1",
+  "sampleSize": 44,
+  "mapped": 44,
+  "excluded": [],
+  "sourceFamilies": 1,
+  "queries": 7,
+  "survivors": 110199,
+  "counts": {
+    "open": 7,
+    "closed": 37,
+    "highMin11": 5,
+    "lowMax5": 16,
+    "inversion": 10,
+    "PASS": 44,
+    "UNCERTAIN": 0,
+    "expanded": 0,
+    "top6": 8,
+    "top18": 16
+  },
+  "families": [
+    {
+      "key": "major|open:0,1,0,2,3,-1",
+      "name": "Exact open C",
+      "observations": [
+        "agc-c-major-1"
+      ],
+      "distinctRoots": [
+        "C"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 1,
+      "maxObservedPosition": 1
+    },
+    {
+      "key": "major|closed:0,2,2,2,0,x",
+      "name": "Major A form",
+      "observations": [
+        "agc-c-major-2",
+        "agc-d-major-3",
+        "agc-e-major-4"
+      ],
+      "distinctRoots": [
+        "C",
+        "D",
+        "E"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 3,
+      "maxObservedPosition": 7
+    },
+    {
+      "key": "major|closed:3,0,0,0,x,x",
+      "name": "Major partial G form (second inversion)",
+      "observations": [
+        "agc-c-major-3",
+        "agc-d-major-4",
+        "agc-e-major-5"
+      ],
+      "distinctRoots": [
+        "C",
+        "D",
+        "E"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 5,
+      "maxObservedPosition": 9
+    },
+    {
+      "key": "major|closed:0,0,1,2,2,0",
+      "name": "Major E form",
+      "observations": [
+        "agc-c-major-4",
+        "agc-d-major-5",
+        "agc-e-major-6"
+      ],
+      "distinctRoots": [
+        "C",
+        "D",
+        "E"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 8,
+      "maxObservedPosition": 12
+    },
+    {
+      "key": "major|closed:2,3,2,0,x,x",
+      "name": "Major D form",
+      "observations": [
+        "agc-c-major-5",
+        "agc-d-major-6",
+        "agc-e-major-2"
+      ],
+      "distinctRoots": [
+        "C",
+        "D",
+        "E"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 2,
+      "maxObservedPosition": 12
+    },
+    {
+      "key": "major|open:2,3,2,0,-1,-1",
+      "name": "Exact open D",
+      "observations": [
+        "agc-d-major-1"
+      ],
+      "distinctRoots": [
+        "D"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 2,
+      "maxObservedPosition": 2
+    },
+    {
+      "key": "major|closed:0,1,0,2,3,x",
+      "name": "Major C form",
+      "observations": [
+        "agc-d-major-2",
+        "agc-e-major-3"
+      ],
+      "distinctRoots": [
+        "D",
+        "E"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 2,
+      "maxObservedPosition": 4
+    },
+    {
+      "key": "major|open:0,0,1,2,2,0",
+      "name": "Exact open E",
+      "observations": [
+        "agc-e-major-1"
+      ],
+      "distinctRoots": [
+        "E"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 1,
+      "maxObservedPosition": 1
+    },
+    {
+      "key": "minor|open:3,1,0,1,3,-1",
+      "name": "Exact open Cm",
+      "observations": [
+        "agc-c-minor-1"
+      ],
+      "distinctRoots": [
+        "C"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 1,
+      "maxObservedPosition": 1
+    },
+    {
+      "key": "minor|closed:0,1,2,2,0,x",
+      "name": "Minor A form",
+      "observations": [
+        "agc-c-minor-2",
+        "agc-d-minor-2"
+      ],
+      "distinctRoots": [
+        "C",
+        "D"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 3,
+      "maxObservedPosition": 5
+    },
+    {
+      "key": "minor|closed:0,0,0,2,2,0",
+      "name": "Minor E form",
+      "observations": [
+        "agc-c-minor-3",
+        "agc-d-minor-3"
+      ],
+      "distinctRoots": [
+        "C",
+        "D"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 8,
+      "maxObservedPosition": 10
+    },
+    {
+      "key": "minor|closed:1,3,2,0,x,x",
+      "name": "Minor D form",
+      "observations": [
+        "agc-c-minor-4",
+        "agc-d-minor-4"
+      ],
+      "distinctRoots": [
+        "C",
+        "D"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 10,
+      "maxObservedPosition": 12
+    },
+    {
+      "key": "minor|open:1,3,2,0,-1,-1",
+      "name": "Exact open Dm",
+      "observations": [
+        "agc-d-minor-1"
+      ],
+      "distinctRoots": [
+        "D"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 1,
+      "maxObservedPosition": 1
+    },
+    {
+      "key": "dominant-7|open:0,1,3,2,3,-1",
+      "name": "Exact open C7",
+      "observations": [
+        "agc-c-7-1"
+      ],
+      "distinctRoots": [
+        "C"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 1,
+      "maxObservedPosition": 1
+    },
+    {
+      "key": "dominant-7|closed:2,0,2,1,x,x",
+      "name": "C7-derived upper four (first inversion)",
+      "observations": [
+        "agc-c-7-2",
+        "agc-c-7-10",
+        "agc-d-7-3"
+      ],
+      "distinctRoots": [
+        "C",
+        "D"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 1,
+      "maxObservedPosition": 13
+    },
+    {
+      "key": "dominant-7|closed:x,0,2,1,2,x",
+      "name": "C7-derived inner four (fifth omitted)",
+      "observations": [
+        "agc-c-7-3",
+        "agc-d-7-2"
+      ],
+      "distinctRoots": [
+        "C",
+        "D"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 1,
+      "maxObservedPosition": 3
+    },
+    {
+      "key": "dominant-7|closed:0,2,0,2,0,x",
+      "name": "A7 form",
+      "observations": [
+        "agc-c-7-4",
+        "agc-d-7-4"
+      ],
+      "distinctRoots": [
+        "C",
+        "D"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 3,
+      "maxObservedPosition": 5
+    },
+    {
+      "key": "dominant-7|closed:1,0,0,0,x,x",
+      "name": "Partial G7 form (second inversion)",
+      "observations": [
+        "agc-c-7-5",
+        "agc-d-7-5"
+      ],
+      "distinctRoots": [
+        "C",
+        "D"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 5,
+      "maxObservedPosition": 7
+    },
+    {
+      "key": "dominant-7|closed:0,0,1,0,x,x",
+      "name": "Upper E7 form (third inversion)",
+      "observations": [
+        "agc-c-7-6",
+        "agc-d-7-8"
+      ],
+      "distinctRoots": [
+        "C",
+        "D"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 8,
+      "maxObservedPosition": 10
+    },
+    {
+      "key": "dominant-7|closed:x,0,1,0,x,0",
+      "name": "E7 four-string form with internal mute",
+      "observations": [
+        "agc-c-7-7",
+        "agc-d-7-7"
+      ],
+      "distinctRoots": [
+        "C",
+        "D"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 8,
+      "maxObservedPosition": 10
+    },
+    {
+      "key": "dominant-7|closed:0,0,1,0,2,0",
+      "name": "E7 form",
+      "observations": [
+        "agc-c-7-8",
+        "agc-d-7-6"
+      ],
+      "distinctRoots": [
+        "C",
+        "D"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 8,
+      "maxObservedPosition": 10
+    },
+    {
+      "key": "dominant-7|closed:2,1,2,0,x,x",
+      "name": "D7 form",
+      "observations": [
+        "agc-c-7-9",
+        "agc-d-7-9"
+      ],
+      "distinctRoots": [
+        "C",
+        "D"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 10,
+      "maxObservedPosition": 12
+    },
+    {
+      "key": "dominant-7|open:2,1,2,0,-1,-1",
+      "name": "Exact open D7",
+      "observations": [
+        "agc-d-7-1"
+      ],
+      "distinctRoots": [
+        "D"
+      ],
+      "sourceFamilyCount": 1,
+      "minObservedPosition": 1,
+      "maxObservedPosition": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": "agc-c-major-1",
+      "label": "C",
+      "variation": 1,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/c/major",
+      "statesHighToLow": [
+        0,
+        1,
+        0,
+        2,
+        3,
+        -1
+      ],
+      "lowToHigh": "x 3 2 0 1 0",
+      "position": {
+        "min": 1,
+        "max": 3
+      },
+      "texture": "open",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 8,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 61.46750697476061,
+        "cellGapMm": 31.621132381734355,
+        "planarLowerBoundMm": 39.014093639762415,
+        "transverseLowerBoundMm": 22.531013825827966,
+        "midpointDiameterMm": 67.28792894233939
+      },
+      "contacts": {
+        "groups": 3,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 3,
+        "opens": 2,
+        "omitted": 1,
+        "distinctStoppedFrets": 3
+      },
+      "familyKey": "major|open:0,1,0,2,3,-1",
+      "familyName": "Exact open C",
+      "legacyPoolMember": true,
+      "actualBassMidi": 48,
+      "actualTopMidi": 64,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-c-major-2",
+      "label": "C",
+      "variation": 2,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/c/major",
+      "statesHighToLow": [
+        3,
+        5,
+        5,
+        5,
+        3,
+        -1
+      ],
+      "lowToHigh": "x 3 5 5 5 3",
+      "position": {
+        "min": 3,
+        "max": 5
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 7,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 54.76132317109665,
+        "cellGapMm": 28.171226305033088,
+        "planarLowerBoundMm": 37.00561276928481,
+        "transverseLowerBoundMm": 30.872703535541234,
+        "midpointDiameterMm": 61.27659607048067
+      },
+      "contacts": {
+        "groups": 2,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 4,
+        "stopped": 5,
+        "opens": 0,
+        "omitted": 1,
+        "distinctStoppedFrets": 2
+      },
+      "familyKey": "major|closed:0,2,2,2,0,x",
+      "familyName": "Major A form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 48,
+      "actualTopMidi": 67,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-c-major-3",
+      "label": "C",
+      "variation": 3,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/c/major",
+      "statesHighToLow": [
+        8,
+        5,
+        5,
+        5,
+        -1,
+        -1
+      ],
+      "lowToHigh": "x x 5 5 5 8",
+      "position": {
+        "min": 5,
+        "max": 8
+      },
+      "texture": "closed",
+      "bassTone": "5",
+      "inversion": "second",
+      "classicRank": 5911,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 71.1463097527207,
+        "cellGapMm": 48.786792616798834,
+        "planarLowerBoundMm": 55.07373725887567,
+        "transverseLowerBoundMm": 25.4683256925155,
+        "midpointDiameterMm": 77.63725942371885
+      },
+      "contacts": {
+        "groups": 2,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 2,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 2
+      },
+      "familyKey": "major|closed:3,0,0,0,x,x",
+      "familyName": "Major partial G form (second inversion)",
+      "legacyPoolMember": true,
+      "actualBassMidi": 55,
+      "actualTopMidi": 72,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-c-major-4",
+      "label": "C",
+      "variation": 4,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/c/major",
+      "statesHighToLow": [
+        8,
+        8,
+        9,
+        10,
+        10,
+        8
+      ],
+      "lowToHigh": "8 10 10 9 8 8",
+      "position": {
+        "min": 8,
+        "max": 10
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 13,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 41.02463902319252,
+        "cellGapMm": 21.104573868562824,
+        "planarLowerBoundMm": 42.84815038903042,
+        "transverseLowerBoundMm": 42.84815038903042,
+        "midpointDiameterMm": 54.84086557034982
+      },
+      "contacts": {
+        "groups": 3,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 5,
+        "stopped": 6,
+        "opens": 0,
+        "omitted": 0,
+        "distinctStoppedFrets": 3
+      },
+      "familyKey": "major|closed:0,0,1,2,2,0",
+      "familyName": "Major E form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 48,
+      "actualTopMidi": 72,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-c-major-5",
+      "label": "C",
+      "variation": 5,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/c/major",
+      "statesHighToLow": [
+        12,
+        13,
+        12,
+        10,
+        -1,
+        -1
+      ],
+      "lowToHigh": "x x 10 12 13 12",
+      "position": {
+        "min": 10,
+        "max": 13
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 591,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 53.29950969808095,
+        "cellGapMm": 36.54879831793238,
+        "planarLowerBoundMm": 40.87351771617066,
+        "transverseLowerBoundMm": 27.159087236073763,
+        "midpointDiameterMm": 57.86993251936511
+      },
+      "contacts": {
+        "groups": 3,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 2,
+        "maxCompatibleStringGap": 2,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 3
+      },
+      "familyKey": "major|closed:2,3,2,0,x,x",
+      "familyName": "Major D form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 60,
+      "actualTopMidi": 76,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-d-major-1",
+      "label": "D",
+      "variation": 1,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/d/major",
+      "statesHighToLow": [
+        2,
+        3,
+        2,
+        0,
+        -1,
+        -1
+      ],
+      "lowToHigh": "x x 0 2 3 2",
+      "position": {
+        "min": 2,
+        "max": 3
+      },
+      "texture": "open",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 2,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 29.846374593026255,
+        "cellGapMm": 0,
+        "planarLowerBoundMm": 15.032601179496494,
+        "transverseLowerBoundMm": 14.931759229764218,
+        "midpointDiameterMm": 31.736126235835936
+      },
+      "contacts": {
+        "groups": 2,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 2,
+        "maxCompatibleStringGap": 2,
+        "stopped": 3,
+        "opens": 1,
+        "omitted": 2,
+        "distinctStoppedFrets": 2
+      },
+      "familyKey": "major|open:2,3,2,0,-1,-1",
+      "familyName": "Exact open D",
+      "legacyPoolMember": true,
+      "actualBassMidi": 50,
+      "actualTopMidi": 66,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-d-major-2",
+      "label": "D",
+      "variation": 2,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/d/major",
+      "statesHighToLow": [
+        2,
+        3,
+        2,
+        4,
+        5,
+        -1
+      ],
+      "lowToHigh": "x 5 4 2 3 2",
+      "position": {
+        "min": 2,
+        "max": 5
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 499,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 84.6076977641229,
+        "cellGapMm": 58.01760089805934,
+        "planarLowerBoundMm": 65.98312827006394,
+        "transverseLowerBoundMm": 30.923598665707743,
+        "midpointDiameterMm": 92.57657394314545
+      },
+      "contacts": {
+        "groups": 4,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 2,
+        "maxCompatibleStringGap": 2,
+        "stopped": 5,
+        "opens": 0,
+        "omitted": 1,
+        "distinctStoppedFrets": 4
+      },
+      "familyKey": "major|closed:0,1,0,2,3,x",
+      "familyName": "Major C form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 50,
+      "actualTopMidi": 66,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-d-major-3",
+      "label": "D",
+      "variation": 3,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/d/major",
+      "statesHighToLow": [
+        5,
+        7,
+        7,
+        7,
+        5,
+        -1
+      ],
+      "lowToHigh": "x 5 7 7 7 5",
+      "position": {
+        "min": 5,
+        "max": 7
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 5,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 48.786792616798834,
+        "cellGapMm": 25.097709403595417,
+        "planarLowerBoundMm": 35.435065332851856,
+        "transverseLowerBoundMm": 32.354003984002325,
+        "midpointDiameterMm": 56.11453223494128
+      },
+      "contacts": {
+        "groups": 2,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 4,
+        "stopped": 5,
+        "opens": 0,
+        "omitted": 1,
+        "distinctStoppedFrets": 2
+      },
+      "familyKey": "major|closed:0,2,2,2,0,x",
+      "familyName": "Major A form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 50,
+      "actualTopMidi": 69,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-d-major-4",
+      "label": "D",
+      "variation": 4,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/d/major",
+      "statesHighToLow": [
+        10,
+        7,
+        7,
+        7,
+        -1,
+        -1
+      ],
+      "lowToHigh": "x x 7 7 7 10",
+      "position": {
+        "min": 7,
+        "max": 10
+      },
+      "texture": "closed",
+      "bassTone": "5",
+      "inversion": "second",
+      "classicRank": 3384,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 63.38415615911438,
+        "cellGapMm": 43.464091004484686,
+        "planarLowerBoundMm": 50.854866294618624,
+        "transverseLowerBoundMm": 26.326862696639168,
+        "midpointDiameterMm": 70.45491193920364
+      },
+      "contacts": {
+        "groups": 2,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 2,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 2
+      },
+      "familyKey": "major|closed:3,0,0,0,x,x",
+      "familyName": "Major partial G form (second inversion)",
+      "legacyPoolMember": true,
+      "actualBassMidi": 57,
+      "actualTopMidi": 74,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-d-major-5",
+      "label": "D",
+      "variation": 5,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/d/major",
+      "statesHighToLow": [
+        10,
+        10,
+        11,
+        12,
+        12,
+        10
+      ],
+      "lowToHigh": "10 12 12 11 10 10",
+      "position": {
+        "min": 10,
+        "max": 12
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 9,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 36.54879831793238,
+        "cellGapMm": 18.802037806400676,
+        "planarLowerBoundMm": 44.235302229599085,
+        "transverseLowerBoundMm": 44.235302229599085,
+        "midpointDiameterMm": 52.08452836396436
+      },
+      "contacts": {
+        "groups": 3,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 5,
+        "stopped": 6,
+        "opens": 0,
+        "omitted": 0,
+        "distinctStoppedFrets": 3
+      },
+      "familyKey": "major|closed:0,0,1,2,2,0",
+      "familyName": "Major E form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 50,
+      "actualTopMidi": 74,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-d-major-6",
+      "label": "D",
+      "variation": 6,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/d/major",
+      "statesHighToLow": [
+        14,
+        15,
+        14,
+        12,
+        -1,
+        -1
+      ],
+      "lowToHigh": "x x 12 14 15 14",
+      "position": {
+        "min": 12,
+        "max": 15
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 255,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 47.48446486752886,
+        "cellGapMm": 32.56127757101575,
+        "planarLowerBoundMm": 37.56232449585762,
+        "transverseLowerBoundMm": 27.833159988476204,
+        "midpointDiameterMm": 52.37564249657448
+      },
+      "contacts": {
+        "groups": 3,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 2,
+        "maxCompatibleStringGap": 2,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 3
+      },
+      "familyKey": "major|closed:2,3,2,0,x,x",
+      "familyName": "Major D form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 62,
+      "actualTopMidi": 78,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-e-major-1",
+      "label": "E",
+      "variation": 1,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/e/major",
+      "statesHighToLow": [
+        0,
+        0,
+        1,
+        2,
+        2,
+        0
+      ],
+      "lowToHigh": "0 2 2 1 0 0",
+      "position": {
+        "min": 1,
+        "max": 2
+      },
+      "texture": "open",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 5,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 31.621132381734355,
+        "cellGapMm": 0,
+        "planarLowerBoundMm": 15.032601179496494,
+        "transverseLowerBoundMm": 14.925758303024125,
+        "midpointDiameterMm": 35.905365099481834
+      },
+      "contacts": {
+        "groups": 2,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 2,
+        "maxCompatibleStringGap": 1,
+        "stopped": 3,
+        "opens": 3,
+        "omitted": 0,
+        "distinctStoppedFrets": 2
+      },
+      "familyKey": "major|open:0,0,1,2,2,0",
+      "familyName": "Exact open E",
+      "legacyPoolMember": true,
+      "actualBassMidi": 40,
+      "actualTopMidi": 64,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-e-major-2",
+      "label": "E",
+      "variation": 2,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/e/major",
+      "statesHighToLow": [
+        4,
+        5,
+        4,
+        2,
+        -1,
+        -1
+      ],
+      "lowToHigh": "x x 2 4 5 4",
+      "position": {
+        "min": 2,
+        "max": 5
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 944,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 84.6076977641229,
+        "cellGapMm": 58.01760089805934,
+        "planarLowerBoundMm": 60.1812341391525,
+        "transverseLowerBoundMm": 23.52988107904974,
+        "midpointDiameterMm": 88.59282545101503
+      },
+      "contacts": {
+        "groups": 3,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 2,
+        "maxCompatibleStringGap": 2,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 3
+      },
+      "familyKey": "major|closed:2,3,2,0,x,x",
+      "familyName": "Major D form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 52,
+      "actualTopMidi": 68,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-e-major-3",
+      "label": "E",
+      "variation": 3,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/e/major",
+      "statesHighToLow": [
+        4,
+        5,
+        4,
+        6,
+        7,
+        -1
+      ],
+      "lowToHigh": "x 7 6 4 5 4",
+      "position": {
+        "min": 4,
+        "max": 7
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 1342,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 75.3768894828624,
+        "cellGapMm": 51.68780626965898,
+        "planarLowerBoundMm": 61.24278495938709,
+        "transverseLowerBoundMm": 32.39934639022725,
+        "midpointDiameterMm": 84.24007700795396
+      },
+      "contacts": {
+        "groups": 4,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 2,
+        "maxCompatibleStringGap": 2,
+        "stopped": 5,
+        "opens": 0,
+        "omitted": 1,
+        "distinctStoppedFrets": 4
+      },
+      "familyKey": "major|closed:0,1,0,2,3,x",
+      "familyName": "Major C form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 52,
+      "actualTopMidi": 68,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-e-major-4",
+      "label": "E",
+      "variation": 4,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/e/major",
+      "statesHighToLow": [
+        7,
+        9,
+        9,
+        9,
+        7,
+        -1
+      ],
+      "lowToHigh": "x 7 9 9 9 7",
+      "position": {
+        "min": 7,
+        "max": 9
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 43,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 43.464091004484686,
+        "cellGapMm": 22.359517135921863,
+        "planarLowerBoundMm": 34.23373215597556,
+        "transverseLowerBoundMm": 33.67369265471702,
+        "midpointDiameterMm": 51.715469474970654
+      },
+      "contacts": {
+        "groups": 2,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 4,
+        "stopped": 5,
+        "opens": 0,
+        "omitted": 1,
+        "distinctStoppedFrets": 2
+      },
+      "familyKey": "major|closed:0,2,2,2,0,x",
+      "familyName": "Major A form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 52,
+      "actualTopMidi": 71,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-e-major-5",
+      "label": "E",
+      "variation": 5,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/e/major",
+      "statesHighToLow": [
+        12,
+        9,
+        9,
+        9,
+        -1,
+        -1
+      ],
+      "lowToHigh": "x x 9 9 9 12",
+      "position": {
+        "min": 9,
+        "max": 12
+      },
+      "texture": "closed",
+      "bassTone": "5",
+      "inversion": "second",
+      "classicRank": 4057,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 56.46886347256208,
+        "cellGapMm": 38.72210296103037,
+        "planarLowerBoundMm": 47.29711700750165,
+        "transverseLowerBoundMm": 27.09173221308899,
+        "midpointDiameterMm": 64.2268733196068
+      },
+      "contacts": {
+        "groups": 2,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 2,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 2
+      },
+      "familyKey": "major|closed:3,0,0,0,x,x",
+      "familyName": "Major partial G form (second inversion)",
+      "legacyPoolMember": true,
+      "actualBassMidi": 59,
+      "actualTopMidi": 76,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-e-major-6",
+      "label": "E",
+      "variation": 6,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/e/major",
+      "statesHighToLow": [
+        12,
+        12,
+        13,
+        14,
+        14,
+        12
+      ],
+      "lowToHigh": "12 14 14 13 12 12",
+      "position": {
+        "min": 12,
+        "max": 14
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 92,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 32.56127757101575,
+        "cellGapMm": 16.750711380148573,
+        "planarLowerBoundMm": 45.47111402622771,
+        "transverseLowerBoundMm": 45.47111402622771,
+        "midpointDiameterMm": 49.87804223055586
+      },
+      "contacts": {
+        "groups": 3,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 5,
+        "stopped": 6,
+        "opens": 0,
+        "omitted": 0,
+        "distinctStoppedFrets": 3
+      },
+      "familyKey": "major|closed:0,0,1,2,2,0",
+      "familyName": "Major E form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 52,
+      "actualTopMidi": 76,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-c-minor-1",
+      "label": "Cm",
+      "variation": 1,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/c/minor",
+      "statesHighToLow": [
+        3,
+        1,
+        0,
+        1,
+        3,
+        -1
+      ],
+      "lowToHigh": "x 3 1 0 1 3",
+      "position": {
+        "min": 1,
+        "max": 3
+      },
+      "texture": "open",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 11,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 61.46750697476061,
+        "cellGapMm": 31.621132381734355,
+        "planarLowerBoundMm": 39.132657815052745,
+        "transverseLowerBoundMm": 30.872703535541234,
+        "midpointDiameterMm": 67.42782960344755
+      },
+      "contacts": {
+        "groups": 4,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 4,
+        "opens": 1,
+        "omitted": 1,
+        "distinctStoppedFrets": 2
+      },
+      "familyKey": "minor|open:3,1,0,1,3,-1",
+      "familyName": "Exact open Cm",
+      "legacyPoolMember": true,
+      "actualBassMidi": 48,
+      "actualTopMidi": 67,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-c-minor-2",
+      "label": "Cm",
+      "variation": 2,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/c/minor",
+      "statesHighToLow": [
+        3,
+        4,
+        5,
+        5,
+        3,
+        -1
+      ],
+      "lowToHigh": "x 3 5 5 4 3",
+      "position": {
+        "min": 3,
+        "max": 5
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 31,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 54.76132317109665,
+        "cellGapMm": 28.171226305033088,
+        "planarLowerBoundMm": 36.88926733227864,
+        "transverseLowerBoundMm": 30.872703535541234,
+        "midpointDiameterMm": 61.13851126678418
+      },
+      "contacts": {
+        "groups": 3,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 2,
+        "maxCompatibleStringGap": 4,
+        "stopped": 5,
+        "opens": 0,
+        "omitted": 1,
+        "distinctStoppedFrets": 3
+      },
+      "familyKey": "minor|closed:0,1,2,2,0,x",
+      "familyName": "Minor A form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 48,
+      "actualTopMidi": 67,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-c-minor-3",
+      "label": "Cm",
+      "variation": 3,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/c/minor",
+      "statesHighToLow": [
+        8,
+        8,
+        8,
+        10,
+        10,
+        8
+      ],
+      "lowToHigh": "8 10 10 8 8 8",
+      "position": {
+        "min": 8,
+        "max": 10
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 1,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 41.02463902319252,
+        "cellGapMm": 21.104573868562824,
+        "planarLowerBoundMm": 42.84815038903042,
+        "transverseLowerBoundMm": 42.84815038903042,
+        "midpointDiameterMm": 54.84086557034982
+      },
+      "contacts": {
+        "groups": 2,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 4,
+        "maxCompatibleStringGap": 5,
+        "stopped": 6,
+        "opens": 0,
+        "omitted": 0,
+        "distinctStoppedFrets": 2
+      },
+      "familyKey": "minor|closed:0,0,0,2,2,0",
+      "familyName": "Minor E form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 48,
+      "actualTopMidi": 72,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-c-minor-4",
+      "label": "Cm",
+      "variation": 4,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/c/minor",
+      "statesHighToLow": [
+        11,
+        13,
+        12,
+        10,
+        -1,
+        -1
+      ],
+      "lowToHigh": "x x 10 12 13 11",
+      "position": {
+        "min": 10,
+        "max": 13
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 461,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 53.29950969808095,
+        "cellGapMm": 36.54879831793238,
+        "planarLowerBoundMm": 40.87351771617066,
+        "transverseLowerBoundMm": 26.85905471788652,
+        "midpointDiameterMm": 57.86993251936511
+      },
+      "contacts": {
+        "groups": 4,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 4
+      },
+      "familyKey": "minor|closed:1,3,2,0,x,x",
+      "familyName": "Minor D form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 60,
+      "actualTopMidi": 75,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-d-minor-1",
+      "label": "Dm",
+      "variation": 1,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/d/minor",
+      "statesHighToLow": [
+        1,
+        3,
+        2,
+        0,
+        -1,
+        -1
+      ],
+      "lowToHigh": "x x 0 2 3 1",
+      "position": {
+        "min": 1,
+        "max": 3
+      },
+      "texture": "open",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 17,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 61.46750697476061,
+        "cellGapMm": 31.621132381734355,
+        "planarLowerBoundMm": 32.433498081321886,
+        "transverseLowerBoundMm": 14.397162058057347,
+        "midpointDiameterMm": 63.6601938937824
+      },
+      "contacts": {
+        "groups": 3,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 3,
+        "opens": 1,
+        "omitted": 2,
+        "distinctStoppedFrets": 3
+      },
+      "familyKey": "minor|open:1,3,2,0,-1,-1",
+      "familyName": "Exact open Dm",
+      "legacyPoolMember": true,
+      "actualBassMidi": 50,
+      "actualTopMidi": 65,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-d-minor-2",
+      "label": "Dm",
+      "variation": 2,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/d/minor",
+      "statesHighToLow": [
+        5,
+        6,
+        7,
+        7,
+        5,
+        -1
+      ],
+      "lowToHigh": "x 5 7 7 6 5",
+      "position": {
+        "min": 5,
+        "max": 7
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 58,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 48.786792616798834,
+        "cellGapMm": 25.097709403595417,
+        "planarLowerBoundMm": 35.32215755403227,
+        "transverseLowerBoundMm": 32.354003984002325,
+        "midpointDiameterMm": 55.97485766403968
+      },
+      "contacts": {
+        "groups": 3,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 2,
+        "maxCompatibleStringGap": 4,
+        "stopped": 5,
+        "opens": 0,
+        "omitted": 1,
+        "distinctStoppedFrets": 3
+      },
+      "familyKey": "minor|closed:0,1,2,2,0,x",
+      "familyName": "Minor A form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 50,
+      "actualTopMidi": 69,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-d-minor-3",
+      "label": "Dm",
+      "variation": 3,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/d/minor",
+      "statesHighToLow": [
+        10,
+        10,
+        10,
+        12,
+        12,
+        10
+      ],
+      "lowToHigh": "10 12 12 10 10 10",
+      "position": {
+        "min": 10,
+        "max": 12
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 5,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 36.54879831793238,
+        "cellGapMm": 18.802037806400676,
+        "planarLowerBoundMm": 44.235302229599085,
+        "transverseLowerBoundMm": 44.235302229599085,
+        "midpointDiameterMm": 52.08452836396436
+      },
+      "contacts": {
+        "groups": 2,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 4,
+        "maxCompatibleStringGap": 5,
+        "stopped": 6,
+        "opens": 0,
+        "omitted": 0,
+        "distinctStoppedFrets": 2
+      },
+      "familyKey": "minor|closed:0,0,0,2,2,0",
+      "familyName": "Minor E form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 50,
+      "actualTopMidi": 74,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-d-minor-4",
+      "label": "Dm",
+      "variation": 4,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/d/minor",
+      "statesHighToLow": [
+        13,
+        15,
+        14,
+        12,
+        -1,
+        -1
+      ],
+      "lowToHigh": "x x 12 14 15 13",
+      "position": {
+        "min": 12,
+        "max": 15
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 461,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 47.48446486752886,
+        "cellGapMm": 32.56127757101575,
+        "planarLowerBoundMm": 37.56232449585762,
+        "transverseLowerBoundMm": 27.565861402622772,
+        "midpointDiameterMm": 52.37564249657448
+      },
+      "contacts": {
+        "groups": 4,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 4
+      },
+      "familyKey": "minor|closed:1,3,2,0,x,x",
+      "familyName": "Minor D form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 62,
+      "actualTopMidi": 77,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-c-7-1",
+      "label": "C7",
+      "variation": 1,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/c/7",
+      "statesHighToLow": [
+        0,
+        1,
+        3,
+        2,
+        3,
+        -1
+      ],
+      "lowToHigh": "x 3 2 3 1 0",
+      "position": {
+        "min": 1,
+        "max": 3
+      },
+      "texture": "open",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 25,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 61.46750697476061,
+        "cellGapMm": 31.621132381734355,
+        "planarLowerBoundMm": 39.014093639762415,
+        "transverseLowerBoundMm": 22.531013825827966,
+        "midpointDiameterMm": 67.28792894233939
+      },
+      "contacts": {
+        "groups": 4,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 4,
+        "opens": 1,
+        "omitted": 1,
+        "distinctStoppedFrets": 3
+      },
+      "familyKey": "dominant-7|open:0,1,3,2,3,-1",
+      "familyName": "Exact open C7",
+      "legacyPoolMember": true,
+      "actualBassMidi": 48,
+      "actualTopMidi": 64,
+      "formulaOmissions": [
+        "5"
+      ]
+    },
+    {
+      "id": "agc-c-7-2",
+      "label": "C7",
+      "variation": 2,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/c/7",
+      "statesHighToLow": [
+        3,
+        1,
+        3,
+        2,
+        -1,
+        -1
+      ],
+      "lowToHigh": "x x 2 3 1 3",
+      "position": {
+        "min": 1,
+        "max": 3
+      },
+      "texture": "closed",
+      "bassTone": "3",
+      "inversion": "first",
+      "classicRank": 9807,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 61.46750697476061,
+        "cellGapMm": 31.621132381734355,
+        "planarLowerBoundMm": 32.622558969737206,
+        "transverseLowerBoundMm": 23.053609144054644,
+        "midpointDiameterMm": 63.85344867120758
+      },
+      "contacts": {
+        "groups": 4,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 3
+      },
+      "familyKey": "dominant-7|closed:2,0,2,1,x,x",
+      "familyName": "C7-derived upper four (first inversion)",
+      "legacyPoolMember": true,
+      "actualBassMidi": 52,
+      "actualTopMidi": 67,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-c-7-3",
+      "label": "C7",
+      "variation": 3,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/c/7",
+      "statesHighToLow": [
+        -1,
+        1,
+        3,
+        2,
+        3,
+        -1
+      ],
+      "lowToHigh": "x 3 2 3 1 x",
+      "position": {
+        "min": 1,
+        "max": 3
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 382,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 61.46750697476061,
+        "cellGapMm": 31.621132381734355,
+        "planarLowerBoundMm": 39.014093639762415,
+        "transverseLowerBoundMm": 22.531013825827966,
+        "midpointDiameterMm": 67.28792894233939
+      },
+      "contacts": {
+        "groups": 4,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 3
+      },
+      "familyKey": "dominant-7|closed:x,0,2,1,2,x",
+      "familyName": "C7-derived inner four (fifth omitted)",
+      "legacyPoolMember": true,
+      "actualBassMidi": 48,
+      "actualTopMidi": 60,
+      "formulaOmissions": [
+        "5"
+      ]
+    },
+    {
+      "id": "agc-c-7-4",
+      "label": "C7",
+      "variation": 4,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/c/7",
+      "statesHighToLow": [
+        3,
+        5,
+        3,
+        5,
+        3,
+        -1
+      ],
+      "lowToHigh": "x 3 5 3 5 3",
+      "position": {
+        "min": 3,
+        "max": 5
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 10,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 54.76132317109665,
+        "cellGapMm": 28.171226305033088,
+        "planarLowerBoundMm": 37.00561276928481,
+        "transverseLowerBoundMm": 30.872703535541234,
+        "midpointDiameterMm": 61.27659607048067
+      },
+      "contacts": {
+        "groups": 3,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 4,
+        "stopped": 5,
+        "opens": 0,
+        "omitted": 1,
+        "distinctStoppedFrets": 2
+      },
+      "familyKey": "dominant-7|closed:0,2,0,2,0,x",
+      "familyName": "A7 form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 48,
+      "actualTopMidi": 67,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-c-7-5",
+      "label": "C7",
+      "variation": 5,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/c/7",
+      "statesHighToLow": [
+        6,
+        5,
+        5,
+        5,
+        -1,
+        -1
+      ],
+      "lowToHigh": "x x 5 5 5 6",
+      "position": {
+        "min": 5,
+        "max": 6
+      },
+      "texture": "closed",
+      "bassTone": "5",
+      "inversion": "second",
+      "classicRank": 2044,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 25.097709403595417,
+        "cellGapMm": 0,
+        "planarLowerBoundMm": 24.774548884094656,
+        "transverseLowerBoundMm": 24.689813044375093,
+        "midpointDiameterMm": 35.914309614861004
+      },
+      "contacts": {
+        "groups": 2,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 2,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 2
+      },
+      "familyKey": "dominant-7|closed:1,0,0,0,x,x",
+      "familyName": "Partial G7 form (second inversion)",
+      "legacyPoolMember": true,
+      "actualBassMidi": 55,
+      "actualTopMidi": 70,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-c-7-6",
+      "label": "C7",
+      "variation": 6,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/c/7",
+      "statesHighToLow": [
+        8,
+        8,
+        9,
+        8,
+        -1,
+        -1
+      ],
+      "lowToHigh": "x x 8 9 8 8",
+      "position": {
+        "min": 8,
+        "max": 9
+      },
+      "texture": "closed",
+      "bassTone": "b7",
+      "inversion": "third",
+      "classicRank": 3051,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 21.104573868562824,
+        "cellGapMm": 0,
+        "planarLowerBoundMm": 25.708890233418252,
+        "transverseLowerBoundMm": 25.708890233418252,
+        "midpointDiameterMm": 27.72907306206356
+      },
+      "contacts": {
+        "groups": 2,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 3,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 2
+      },
+      "familyKey": "dominant-7|closed:0,0,1,0,x,x",
+      "familyName": "Upper E7 form (third inversion)",
+      "legacyPoolMember": true,
+      "actualBassMidi": 58,
+      "actualTopMidi": 72,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-c-7-7",
+      "label": "C7",
+      "variation": 7,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/c/7",
+      "statesHighToLow": [
+        -1,
+        8,
+        9,
+        8,
+        -1,
+        8
+      ],
+      "lowToHigh": "8 x 8 9 8 x",
+      "position": {
+        "min": 8,
+        "max": 9
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 46,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 21.104573868562824,
+        "cellGapMm": 0,
+        "planarLowerBoundMm": 34.27852031122434,
+        "transverseLowerBoundMm": 34.27852031122434,
+        "midpointDiameterMm": 34.56618809368664
+      },
+      "contacts": {
+        "groups": 2,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 4,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 2
+      },
+      "familyKey": "dominant-7|closed:x,0,1,0,x,0",
+      "familyName": "E7 four-string form with internal mute",
+      "legacyPoolMember": true,
+      "actualBassMidi": 48,
+      "actualTopMidi": 67,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-c-7-8",
+      "label": "C7",
+      "variation": 8,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/c/7",
+      "statesHighToLow": [
+        8,
+        8,
+        9,
+        8,
+        10,
+        8
+      ],
+      "lowToHigh": "8 10 8 9 8 8",
+      "position": {
+        "min": 8,
+        "max": 10
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 6,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 41.02463902319252,
+        "cellGapMm": 21.104573868562824,
+        "planarLowerBoundMm": 42.84815038903042,
+        "transverseLowerBoundMm": 42.84815038903042,
+        "midpointDiameterMm": 54.84086557034982
+      },
+      "contacts": {
+        "groups": 3,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 4,
+        "maxCompatibleStringGap": 5,
+        "stopped": 6,
+        "opens": 0,
+        "omitted": 0,
+        "distinctStoppedFrets": 3
+      },
+      "familyKey": "dominant-7|closed:0,0,1,0,2,0",
+      "familyName": "E7 form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 48,
+      "actualTopMidi": 72,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-c-7-9",
+      "label": "C7",
+      "variation": 9,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/c/7",
+      "statesHighToLow": [
+        12,
+        11,
+        12,
+        10,
+        -1,
+        -1
+      ],
+      "lowToHigh": "x x 10 12 11 12",
+      "position": {
+        "min": 10,
+        "max": 12
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 136,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 36.54879831793238,
+        "cellGapMm": 18.802037806400676,
+        "planarLowerBoundMm": 33.08458776007003,
+        "transverseLowerBoundMm": 27.159087236073763,
+        "midpointDiameterMm": 46.51804562128568
+      },
+      "contacts": {
+        "groups": 4,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 3
+      },
+      "familyKey": "dominant-7|closed:2,1,2,0,x,x",
+      "familyName": "D7 form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 60,
+      "actualTopMidi": 76,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-c-7-10",
+      "label": "C7",
+      "variation": 10,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/c/7",
+      "statesHighToLow": [
+        15,
+        13,
+        15,
+        14,
+        -1,
+        -1
+      ],
+      "lowToHigh": "x x 14 15 13 15",
+      "position": {
+        "min": 13,
+        "max": 15
+      },
+      "texture": "closed",
+      "bassTone": "3",
+      "inversion": "first",
+      "classicRank": 13958,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 30.733753487380284,
+        "cellGapMm": 15.810566190867178,
+        "planarLowerBoundMm": 28.245869975566272,
+        "transverseLowerBoundMm": 28.195554572027323,
+        "midpointDiameterMm": 33.12358166204397
+      },
+      "contacts": {
+        "groups": 4,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 3
+      },
+      "familyKey": "dominant-7|closed:2,0,2,1,x,x",
+      "familyName": "C7-derived upper four (first inversion)",
+      "legacyPoolMember": true,
+      "actualBassMidi": 64,
+      "actualTopMidi": 79,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-d-7-1",
+      "label": "D7",
+      "variation": 1,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/d/7",
+      "statesHighToLow": [
+        2,
+        1,
+        2,
+        0,
+        -1,
+        -1
+      ],
+      "lowToHigh": "x x 0 2 1 2",
+      "position": {
+        "min": 1,
+        "max": 2
+      },
+      "texture": "open",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 2,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 31.621132381734355,
+        "cellGapMm": 0,
+        "planarLowerBoundMm": 15.032601179496494,
+        "transverseLowerBoundMm": 14.931759229764218,
+        "midpointDiameterMm": 33.51424625150741
+      },
+      "contacts": {
+        "groups": 3,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 3,
+        "opens": 1,
+        "omitted": 2,
+        "distinctStoppedFrets": 2
+      },
+      "familyKey": "dominant-7|open:2,1,2,0,-1,-1",
+      "familyName": "Exact open D7",
+      "legacyPoolMember": true,
+      "actualBassMidi": 50,
+      "actualTopMidi": 66,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-d-7-2",
+      "label": "D7",
+      "variation": 2,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/d/7",
+      "statesHighToLow": [
+        -1,
+        3,
+        5,
+        4,
+        5,
+        -1
+      ],
+      "lowToHigh": "x 5 4 5 3 x",
+      "position": {
+        "min": 3,
+        "max": 5
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 149,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 54.76132317109665,
+        "cellGapMm": 28.171226305033088,
+        "planarLowerBoundMm": 37.00561276928482,
+        "transverseLowerBoundMm": 23.710015319828834,
+        "midpointDiameterMm": 61.27659607048067
+      },
+      "contacts": {
+        "groups": 4,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 3
+      },
+      "familyKey": "dominant-7|closed:x,0,2,1,2,x",
+      "familyName": "C7-derived inner four (fifth omitted)",
+      "legacyPoolMember": true,
+      "actualBassMidi": 50,
+      "actualTopMidi": 62,
+      "formulaOmissions": [
+        "5"
+      ]
+    },
+    {
+      "id": "agc-d-7-3",
+      "label": "D7",
+      "variation": 3,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/d/7",
+      "statesHighToLow": [
+        5,
+        3,
+        5,
+        4,
+        -1,
+        -1
+      ],
+      "lowToHigh": "x x 4 5 3 5",
+      "position": {
+        "min": 3,
+        "max": 5
+      },
+      "texture": "closed",
+      "bassTone": "3",
+      "inversion": "first",
+      "classicRank": 6584,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 54.76132317109665,
+        "cellGapMm": 28.171226305033088,
+        "planarLowerBoundMm": 29.384994896908474,
+        "transverseLowerBoundMm": 24.175594818943125,
+        "midpointDiameterMm": 57.05986157686372
+      },
+      "contacts": {
+        "groups": 4,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 3
+      },
+      "familyKey": "dominant-7|closed:2,0,2,1,x,x",
+      "familyName": "C7-derived upper four (first inversion)",
+      "legacyPoolMember": true,
+      "actualBassMidi": 54,
+      "actualTopMidi": 69,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-d-7-4",
+      "label": "D7",
+      "variation": 4,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/d/7",
+      "statesHighToLow": [
+        5,
+        7,
+        5,
+        7,
+        5,
+        -1
+      ],
+      "lowToHigh": "x 5 7 5 7 5",
+      "position": {
+        "min": 5,
+        "max": 7
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 6,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 48.786792616798834,
+        "cellGapMm": 25.097709403595417,
+        "planarLowerBoundMm": 35.435065332851856,
+        "transverseLowerBoundMm": 32.354003984002325,
+        "midpointDiameterMm": 56.11453223494128
+      },
+      "contacts": {
+        "groups": 3,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 4,
+        "stopped": 5,
+        "opens": 0,
+        "omitted": 1,
+        "distinctStoppedFrets": 2
+      },
+      "familyKey": "dominant-7|closed:0,2,0,2,0,x",
+      "familyName": "A7 form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 50,
+      "actualTopMidi": 69,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-d-7-5",
+      "label": "D7",
+      "variation": 5,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/d/7",
+      "statesHighToLow": [
+        8,
+        7,
+        7,
+        7,
+        -1,
+        -1
+      ],
+      "lowToHigh": "x x 7 7 7 8",
+      "position": {
+        "min": 7,
+        "max": 8
+      },
+      "texture": "closed",
+      "bassTone": "5",
+      "inversion": "second",
+      "classicRank": 2517,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 22.359517135921863,
+        "cellGapMm": 0,
+        "planarLowerBoundMm": 25.708759304126403,
+        "transverseLowerBoundMm": 25.633286776354836,
+        "midpointDiameterMm": 34.62169385460702
+      },
+      "contacts": {
+        "groups": 2,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 2,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 2
+      },
+      "familyKey": "dominant-7|closed:1,0,0,0,x,x",
+      "familyName": "Partial G7 form (second inversion)",
+      "legacyPoolMember": true,
+      "actualBassMidi": 57,
+      "actualTopMidi": 72,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-d-7-6",
+      "label": "D7",
+      "variation": 6,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/d/7",
+      "statesHighToLow": [
+        10,
+        10,
+        11,
+        10,
+        12,
+        10
+      ],
+      "lowToHigh": "10 12 10 11 10 10",
+      "position": {
+        "min": 10,
+        "max": 12
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 7,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 36.54879831793238,
+        "cellGapMm": 18.802037806400676,
+        "planarLowerBoundMm": 44.235302229599085,
+        "transverseLowerBoundMm": 44.235302229599085,
+        "midpointDiameterMm": 52.08452836396436
+      },
+      "contacts": {
+        "groups": 3,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 4,
+        "maxCompatibleStringGap": 5,
+        "stopped": 6,
+        "opens": 0,
+        "omitted": 0,
+        "distinctStoppedFrets": 3
+      },
+      "familyKey": "dominant-7|closed:0,0,1,0,2,0",
+      "familyName": "E7 form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 50,
+      "actualTopMidi": 74,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-d-7-7",
+      "label": "D7",
+      "variation": 7,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/d/7",
+      "statesHighToLow": [
+        -1,
+        10,
+        11,
+        10,
+        -1,
+        10
+      ],
+      "lowToHigh": "10 x 10 11 10 x",
+      "position": {
+        "min": 10,
+        "max": 11
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 27,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 18.802037806400676,
+        "cellGapMm": 0,
+        "planarLowerBoundMm": 35.38824178367927,
+        "transverseLowerBoundMm": 35.38824178367927,
+        "midpointDiameterMm": 35.64498302977257
+      },
+      "contacts": {
+        "groups": 2,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 4,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 2
+      },
+      "familyKey": "dominant-7|closed:x,0,1,0,x,0",
+      "familyName": "E7 four-string form with internal mute",
+      "legacyPoolMember": true,
+      "actualBassMidi": 50,
+      "actualTopMidi": 69,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-d-7-8",
+      "label": "D7",
+      "variation": 8,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/d/7",
+      "statesHighToLow": [
+        10,
+        10,
+        11,
+        10,
+        -1,
+        -1
+      ],
+      "lowToHigh": "x x 10 11 10 10",
+      "position": {
+        "min": 10,
+        "max": 11
+      },
+      "texture": "closed",
+      "bassTone": "b7",
+      "inversion": "third",
+      "classicRank": 2525,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 18.802037806400676,
+        "cellGapMm": 0,
+        "planarLowerBoundMm": 26.54118133775945,
+        "transverseLowerBoundMm": 26.54118133775945,
+        "midpointDiameterMm": 26.73922822732953
+      },
+      "contacts": {
+        "groups": 2,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 3,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 2
+      },
+      "familyKey": "dominant-7|closed:0,0,1,0,x,x",
+      "familyName": "Upper E7 form (third inversion)",
+      "legacyPoolMember": true,
+      "actualBassMidi": 60,
+      "actualTopMidi": 74,
+      "formulaOmissions": []
+    },
+    {
+      "id": "agc-d-7-9",
+      "label": "D7",
+      "variation": 9,
+      "sourceUrl": "https://www.all-guitar-chords.com/chords/index/d/7",
+      "statesHighToLow": [
+        14,
+        13,
+        14,
+        12,
+        -1,
+        -1
+      ],
+      "lowToHigh": "x x 12 14 13 14",
+      "position": {
+        "min": 12,
+        "max": 14
+      },
+      "texture": "closed",
+      "bassTone": "1",
+      "inversion": "root",
+      "classicRank": 344,
+      "physicalStatus": "PASS",
+      "physicalReasons": [],
+      "geometryProfile": "acoustic_gs_mini_reference_v2",
+      "geometry": {
+        "wireSpanMm": 32.56127757101575,
+        "cellGapMm": 16.750711380148573,
+        "planarLowerBoundMm": 32.53347809411885,
+        "transverseLowerBoundMm": 27.833159988476204,
+        "midpointDiameterMm": 43.68072650065717
+      },
+      "contacts": {
+        "groups": 4,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 3
+      },
+      "familyKey": "dominant-7|closed:2,1,2,0,x,x",
+      "familyName": "D7 form",
+      "legacyPoolMember": true,
+      "actualBassMidi": 62,
+      "actualTopMidi": 78,
+      "formulaOmissions": []
+    }
+  ]
+}

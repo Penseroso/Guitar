@@ -1,0 +1,644 @@
+{
+  "core": {
+    "inventoryRows": 51,
+    "mappedRows": 47,
+    "excludedRows": 4,
+    "uniqueMappedQueryShapes": 47,
+    "primaryPass": 47,
+    "primaryUncertain": 0,
+    "expanded": 0,
+    "rankQuantiles": {
+      "n": 47,
+      "min": 1,
+      "p50": 6,
+      "p90": 155,
+      "max": 6156
+    },
+    "top6": 25,
+    "top18": 36,
+    "open": 30,
+    "high": 0,
+    "rootless": 0,
+    "rootBass": 42,
+    "qualities": [
+      "major",
+      "minor",
+      "dominant-7",
+      "minor-7",
+      "sus4",
+      "major-7",
+      "major-6"
+    ],
+    "geometry": {
+      "cellGapMm": {
+        "n": 47,
+        "min": 0,
+        "p50": 0,
+        "p90": 31.621132381734355,
+        "max": 58.01760089805934
+      },
+      "transverseLowerBoundMm": {
+        "n": 47,
+        "min": 0,
+        "p50": 29.210000000000004,
+        "p90": 37.55168970971327,
+        "max": 38.59087941942654
+      }
+    },
+    "exclusionReasons": {
+      "ambiguous-chord-label": 4,
+      "unsupported-chord-quality": 3,
+      "unresolved-root": 3
+    }
+  },
+  "reference": {
+    "inventoryRows": 7070,
+    "mappedRows": 1691,
+    "excludedRows": 5379,
+    "uniqueMappedQueryShapes": 1339,
+    "primaryPass": 1621,
+    "primaryUncertain": 70,
+    "expanded": 37,
+    "rankQuantiles": {
+      "n": 1339,
+      "min": 1,
+      "p50": 35,
+      "p90": 1087,
+      "max": 23729
+    },
+    "top6": 292,
+    "top18": 523,
+    "open": 292,
+    "high": 65,
+    "rootless": 0,
+    "rootBass": 847,
+    "qualities": [
+      "major",
+      "minor",
+      "diminished",
+      "diminished-7",
+      "sus4",
+      "sus2",
+      "augmented",
+      "power-5",
+      "major-6",
+      "dominant-7",
+      "dominant-9",
+      "dominant-7-flat-9",
+      "hendrix-7-sharp-9",
+      "dominant-11",
+      "dominant-13",
+      "major-7",
+      "major-9",
+      "minor-7",
+      "half-diminished-7",
+      "minor-9"
+    ],
+    "geometry": {
+      "cellGapMm": {
+        "n": 1339,
+        "min": 0,
+        "p50": 25.097709403595417,
+        "p90": 51.68780626965898,
+        "max": 61.46750697476061
+      },
+      "transverseLowerBoundMm": {
+        "n": 1339,
+        "min": 0,
+        "p50": 31.34897547053633,
+        "p90": 42.09211581839627,
+        "max": 46.0375
+      }
+    },
+    "exclusionReasons": {
+      "unsupported-chord-quality": 2374,
+      "missing-required-tones:b7": 1,
+      "outside-compiled-structural-request: Allocation is outside the current structural request.": 102,
+      "missing-required-tones:3": 1,
+      "source-label-note-mismatch": 41,
+      "missing-required-tones:b3": 46,
+      "request-compiler:Non-formula slash bass is unsupported.": 966,
+      "missing-required-tones:3,#5": 2,
+      "missing-required-tones:1": 14,
+      "missing-required-tones:11": 4,
+      "missing-required-tones:9": 1,
+      "missing-required-tones:b5": 1,
+      "missing-required-tones:3,6": 1,
+      "missing-required-tones:1,b3,b7": 1,
+      "unresolved-root": 2,
+      "missing-required-tones:1,3": 1,
+      "missing-required-tones:3,b7": 2,
+      "missing-required-tones:3,13": 1,
+      "slash-bass-mismatch": 3,
+      "missing-required-tones:b3,b7": 2,
+      "malformed-six-string-states": 2632,
+      "unresolved-capo": 2632
+    }
+  },
+  "sources": {
+    "ku-matney-niemuth-2019": {
+      "inventoryRows": 39,
+      "mappedRows": 35,
+      "excludedRows": 4,
+      "uniqueMappedQueryShapes": 35,
+      "primaryPass": 35,
+      "primaryUncertain": 0,
+      "expanded": 0,
+      "rankQuantiles": {
+        "n": 35,
+        "min": 1,
+        "p50": 2,
+        "p90": 25,
+        "max": 2908
+      },
+      "top6": 22,
+      "top18": 30,
+      "open": 24,
+      "high": 0,
+      "rootless": 0,
+      "rootBass": 32,
+      "qualities": [
+        "major",
+        "minor",
+        "dominant-7",
+        "minor-7",
+        "sus4",
+        "major-7"
+      ],
+      "geometry": {
+        "cellGapMm": {
+          "n": 35,
+          "min": 0,
+          "p50": 0,
+          "p90": 31.621132381734355,
+          "max": 31.621132381734355
+        },
+        "transverseLowerBoundMm": {
+          "n": 35,
+          "min": 0,
+          "p50": 22.531013825827966,
+          "p90": 36.5125,
+          "max": 38.59087941942654
+        }
+      },
+      "exclusionReasons": {
+        "ambiguous-chord-label": 4,
+        "unsupported-chord-quality": 3,
+        "unresolved-root": 3
+      }
+    },
+    "wikibooks-sluffs-jazz": {
+      "inventoryRows": 6,
+      "mappedRows": 6,
+      "excludedRows": 0,
+      "uniqueMappedQueryShapes": 6,
+      "primaryPass": 6,
+      "primaryUncertain": 0,
+      "expanded": 0,
+      "rankQuantiles": {
+        "n": 6,
+        "min": 37,
+        "p50": 76,
+        "p90": 5361,
+        "max": 6156
+      },
+      "top6": 0,
+      "top18": 0,
+      "open": 0,
+      "high": 0,
+      "rootless": 0,
+      "rootBass": 4,
+      "qualities": [
+        "major",
+        "major-7",
+        "dominant-7",
+        "major-6"
+      ],
+      "geometry": {
+        "cellGapMm": {
+          "n": 6,
+          "min": 0,
+          "p50": 28.171226305033088,
+          "p90": 29.846374593026255,
+          "max": 58.01760089805934
+        },
+        "transverseLowerBoundMm": {
+          "n": 6,
+          "min": 30.872703535541234,
+          "p50": 30.872703535541234,
+          "p90": 31.634738631533388,
+          "max": 31.90446313870924
+        }
+      },
+      "exclusionReasons": {}
+    },
+    "wikibooks-open-chords-text": {
+      "inventoryRows": 6,
+      "mappedRows": 6,
+      "excludedRows": 0,
+      "uniqueMappedQueryShapes": 6,
+      "primaryPass": 6,
+      "primaryUncertain": 0,
+      "expanded": 0,
+      "rankQuantiles": {
+        "n": 6,
+        "min": 1,
+        "p50": 5,
+        "p90": 11,
+        "max": 17
+      },
+      "top6": 3,
+      "top18": 6,
+      "open": 6,
+      "high": 0,
+      "rootless": 0,
+      "rootBass": 6,
+      "qualities": [
+        "major",
+        "minor"
+      ],
+      "geometry": {
+        "cellGapMm": {
+          "n": 6,
+          "min": 0,
+          "p50": 0,
+          "p90": 0,
+          "max": 31.621132381734355
+        },
+        "transverseLowerBoundMm": {
+          "n": 6,
+          "min": 14.397162058057347,
+          "p50": 15.032677737365496,
+          "p90": 38.59087941942654,
+          "max": 38.59087941942654
+        }
+      },
+      "exclusionReasons": {}
+    },
+    "chords-db": {
+      "inventoryRows": 3283,
+      "mappedRows": 1193,
+      "excludedRows": 2090,
+      "uniqueMappedQueryShapes": 1178,
+      "primaryPass": 1155,
+      "primaryUncertain": 38,
+      "expanded": 20,
+      "rankQuantiles": {
+        "n": 1178,
+        "min": 1,
+        "p50": 36,
+        "p90": 1215,
+        "max": 23729
+      },
+      "top6": 255,
+      "top18": 459,
+      "open": 243,
+      "high": 65,
+      "rootless": 0,
+      "rootBass": 750,
+      "qualities": [
+        "major",
+        "minor",
+        "diminished",
+        "diminished-7",
+        "sus4",
+        "sus2",
+        "augmented",
+        "power-5",
+        "major-6",
+        "dominant-7",
+        "dominant-9",
+        "dominant-7-flat-9",
+        "hendrix-7-sharp-9",
+        "dominant-11",
+        "dominant-13",
+        "major-7",
+        "major-9",
+        "minor-7",
+        "half-diminished-7",
+        "minor-9"
+      ],
+      "geometry": {
+        "cellGapMm": {
+          "n": 1178,
+          "min": 0,
+          "p50": 25.097709403595417,
+          "p90": 51.68780626965898,
+          "max": 61.46750697476061
+        },
+        "transverseLowerBoundMm": {
+          "n": 1178,
+          "min": 0,
+          "p50": 31.90446313870924,
+          "p90": 42.47013310371335,
+          "max": 46.0375
+        }
+      },
+      "exclusionReasons": {
+        "unsupported-chord-quality": 1133,
+        "missing-required-tones:b7": 1,
+        "outside-compiled-structural-request: Allocation is outside the current structural request.": 93,
+        "missing-required-tones:3": 1,
+        "source-label-note-mismatch": 34,
+        "missing-required-tones:b3": 46,
+        "request-compiler:Non-formula slash bass is unsupported.": 864,
+        "missing-required-tones:3,#5": 2,
+        "missing-required-tones:1": 11,
+        "missing-required-tones:11": 4,
+        "missing-required-tones:9": 1,
+        "missing-required-tones:b5": 1,
+        "missing-required-tones:3,6": 1,
+        "missing-required-tones:1,b3,b7": 1
+      }
+    },
+    "chordpro": {
+      "inventoryRows": 1155,
+      "mappedRows": 498,
+      "excludedRows": 657,
+      "uniqueMappedQueryShapes": 307,
+      "primaryPass": 466,
+      "primaryUncertain": 32,
+      "expanded": 17,
+      "rankQuantiles": {
+        "n": 307,
+        "min": 1,
+        "p50": 18,
+        "p90": 360,
+        "max": 3902
+      },
+      "top6": 104,
+      "top18": 157,
+      "open": 110,
+      "high": 0,
+      "rootless": 0,
+      "rootBass": 221,
+      "qualities": [
+        "major",
+        "minor",
+        "augmented",
+        "diminished",
+        "power-5",
+        "major-6",
+        "major-7",
+        "dominant-7",
+        "minor-7",
+        "diminished-7",
+        "half-diminished-7",
+        "sus2",
+        "sus4",
+        "major-9",
+        "dominant-9",
+        "minor-9",
+        "hendrix-7-sharp-9",
+        "dominant-7-flat-9",
+        "dominant-11",
+        "dominant-13"
+      ],
+      "geometry": {
+        "cellGapMm": {
+          "n": 307,
+          "min": 0,
+          "p50": 28.171226305033088,
+          "p90": 46.04860034912528,
+          "max": 61.46750697476061
+        },
+        "transverseLowerBoundMm": {
+          "n": 307,
+          "min": 0,
+          "p50": 23.99577848082589,
+          "p90": 37.55168970971327,
+          "max": 42.84815038903042
+        }
+      },
+      "exclusionReasons": {
+        "unsupported-chord-quality": 546,
+        "unresolved-root": 2,
+        "source-label-note-mismatch": 7,
+        "missing-required-tones:1,3": 1,
+        "outside-compiled-structural-request: Allocation is outside the current structural request.": 9,
+        "missing-required-tones:3,b7": 2,
+        "missing-required-tones:3,13": 1,
+        "request-compiler:Non-formula slash bass is unsupported.": 102,
+        "missing-required-tones:1": 3,
+        "slash-bass-mismatch": 3,
+        "missing-required-tones:b3,b7": 2
+      }
+    },
+    "uci-575": {
+      "inventoryRows": 2632,
+      "mappedRows": 0,
+      "excludedRows": 2632,
+      "uniqueMappedQueryShapes": 0,
+      "primaryPass": 0,
+      "primaryUncertain": 0,
+      "expanded": 0,
+      "rankQuantiles": {
+        "n": 0,
+        "min": null,
+        "p50": null,
+        "p90": null,
+        "max": null
+      },
+      "top6": 0,
+      "top18": 0,
+      "open": 0,
+      "high": 0,
+      "rootless": 0,
+      "rootBass": 0,
+      "qualities": [],
+      "geometry": {
+        "cellGapMm": {
+          "n": 0,
+          "min": null,
+          "p50": null,
+          "p90": null,
+          "max": null
+        },
+        "transverseLowerBoundMm": {
+          "n": 0,
+          "min": null,
+          "p50": null,
+          "p90": null,
+          "max": null
+        }
+      },
+      "exclusionReasons": {
+        "malformed-six-string-states": 2632,
+        "unresolved-capo": 2632,
+        "unsupported-chord-quality": 695
+      }
+    }
+  },
+  "coreUniverse": {
+    "queries": 39,
+    "survivors": 999184,
+    "pass": 58674,
+    "uncertain": 940510
+  },
+  "referenceUniverse": {
+    "queries": 349,
+    "survivors": 6417643
+  },
+  "contextIndependentPhysicalOverlap": {
+    "tombatossals-chords-db": {
+      "mappedPhysicalShapes": 1140,
+      "overlapWithCore": 32
+    },
+    "chordpro-reference-unknown": {
+      "mappedPhysicalShapes": 297,
+      "overlapWithCore": 26
+    },
+    "uci-575-origin-unknown": {
+      "mappedPhysicalShapes": 0,
+      "overlapWithCore": 0
+    }
+  },
+  "classicLedger": {
+    "span-envelope": {
+      "observations": 47,
+      "meanContributionSum": 744.7869090909089,
+      "positive": 47,
+      "negative": 0,
+      "neutral": 0,
+      "meanContribution": 15.846529980657637
+    },
+    "group-economy": {
+      "observations": 47,
+      "meanContributionSum": -438,
+      "positive": 0,
+      "negative": 42,
+      "neutral": 5,
+      "meanContribution": -9.319148936170214
+    },
+    "diagonal-pattern": {
+      "observations": 47,
+      "meanContributionSum": 48,
+      "positive": 4,
+      "negative": 0,
+      "neutral": 43,
+      "meanContribution": 1.0212765957446808
+    },
+    "grouped-contact-size": {
+      "observations": 47,
+      "meanContributionSum": -32,
+      "positive": 0,
+      "negative": 12,
+      "neutral": 35,
+      "meanContribution": -0.6808510638297872
+    },
+    "adjacent-internal-gap": {
+      "observations": 47,
+      "meanContributionSum": -9,
+      "positive": 0,
+      "negative": 6,
+      "neutral": 41,
+      "meanContribution": -0.19148936170212766
+    },
+    "isolated-internal-gap": {
+      "observations": 47,
+      "meanContributionSum": 0,
+      "positive": 0,
+      "negative": 0,
+      "neutral": 47,
+      "meanContribution": 0
+    },
+    "stopped-position": {
+      "observations": 47,
+      "meanContributionSum": 470,
+      "positive": 47,
+      "negative": 0,
+      "neutral": 0,
+      "meanContribution": 10
+    },
+    "open-texture": {
+      "observations": 47,
+      "meanContributionSum": 156,
+      "positive": 30,
+      "negative": 0,
+      "neutral": 17,
+      "meanContribution": 3.3191489361702127
+    },
+    "root-presence": {
+      "observations": 47,
+      "meanContributionSum": 282,
+      "positive": 47,
+      "negative": 0,
+      "neutral": 0,
+      "meanContribution": 6
+    },
+    "root-location-hint": {
+      "observations": 47,
+      "meanContributionSum": 354,
+      "positive": 45,
+      "negative": 2,
+      "neutral": 0,
+      "meanContribution": 7.531914893617022
+    },
+    "root-bass": {
+      "observations": 47,
+      "meanContributionSum": 632,
+      "positive": 42,
+      "negative": 5,
+      "neutral": 0,
+      "meanContribution": 13.446808510638299
+    },
+    "optional-formula-coverage": {
+      "observations": 47,
+      "meanContributionSum": 92,
+      "positive": 46,
+      "negative": 0,
+      "neutral": 1,
+      "meanContribution": 1.9574468085106382
+    },
+    "ringing-density": {
+      "observations": 47,
+      "meanContributionSum": 588,
+      "positive": 37,
+      "negative": 0,
+      "neutral": 10,
+      "meanContribution": 12.51063829787234
+    },
+    "core-string-gap": {
+      "observations": 47,
+      "meanContributionSum": 0,
+      "positive": 0,
+      "negative": 0,
+      "neutral": 47,
+      "meanContribution": 0
+    }
+  },
+  "dadaComparison": {
+    "certifiedObservationHash": "565aee291bdab6ce1b5e3001f1fa2ddf06168d7d3674571eae9f4c57fa3b6e9c",
+    "dada": {
+      "observations": 187887,
+      "openFraction": 0.2816746235769372,
+      "highFraction": 0.03961423621644925,
+      "rootBassFraction": 0.6845284665783157,
+      "meanSoundingStrings": 3.0576357065683095
+    },
+    "curated": {
+      "observations": 47,
+      "openFraction": 0.6382978723404256,
+      "highFraction": 0,
+      "rootBassFraction": 0.8936170212765957,
+      "meanSoundingStrings": 5.042553191489362
+    },
+    "curatedSourceDistributions": {
+      "ku-matney-niemuth": {
+        "observations": 35,
+        "openFraction": 0.6857142857142857,
+        "highFraction": 0,
+        "rootBassFraction": 0.9142857142857143,
+        "meanSoundingStrings": 5.142857142857143
+      },
+      "wikimedia-guitar": {
+        "observations": 12,
+        "openFraction": 0.5,
+        "highFraction": 0,
+        "rootBassFraction": 0.8333333333333334,
+        "meanSoundingStrings": 4.75
+      }
+    },
+    "interpretation": "Dada unit unique song/query/shape; curated unit sampled source rows. These unbalanced descriptive populations differ in query/context coverage. Not a causal convergence test or combined prior; old ranking metrics do not apply to integrated universe."
+  }
+}

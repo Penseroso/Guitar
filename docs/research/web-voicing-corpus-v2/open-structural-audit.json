@@ -1,0 +1,24 @@
+{
+  "normalizedSha256": "7b38084b5948aa8fe5e5614d4961ebc1cc9d3a697a718574ea5ed4c59ce0ab97",
+  "rowCount": 7070,
+  "uniqueRowIds": 7070,
+  "orientationBaseExamplesChecked": 2,
+  "chordsDbSourceMidiAgreement": 3283,
+  "chordsDbUniquePhysicalShapes": 3070,
+  "chordProUniquePhysicalShapesIncludingNoChord": 474,
+  "sharedExactPhysicalShapes": 258,
+  "chordProAliases": 488,
+  "chordProNoChord": 2,
+  "uciMissingFrets": 2632,
+  "independenceInterpretation": "Exact shape overlaps alone neither establish copying nor independence.",
+  "siegeAggregateInspection": {
+    "url": "https://raw.githubusercontent.com/siege-analytics/musescore4-chord-library-plugin/ca423faec075495505393e078bf17687fc3be1d8/plugin/data/voicings.json",
+    "sha256": "adbfdea98d9358f5b5fbd65c0e449bfeca3eeac66a8647692eb3c288c33ab9c4",
+    "rows": 820,
+    "calculatedTagged": 48,
+    "chordsDbTagged": 42,
+    "sixString": 408,
+    "sevenString": 412,
+    "rawDataRetained": false
+  }
+}

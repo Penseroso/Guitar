@@ -1,0 +1,199 @@
+{
+  "schema": "web-voicing-delivery-verification-v2",
+  "verifiedAt": "2026-09-13T05:03:11.492Z",
+  "head": "32f9d3f8a71dc0d2a5f18520bfad738e67ba26c0",
+  "trackedChanges": false,
+  "jsonFilesParsed": 17,
+  "localLinksVerified": 62,
+  "componentHashesVerified": true,
+  "completedEvaluationHashesVerified": true,
+  "rankedListsConserved": 880,
+  "mappingReports": [
+    {
+      "name": "curated-mapping-v2",
+      "schema": "web-voicing-mapping-artifact-verification-v2",
+      "rowCount": 51,
+      "mappedTargets": 47,
+      "queryCount": 39,
+      "survivors": 999184,
+      "defaultQueriesMatchingIntegratedCensus": 39,
+      "allSourceRowsPreserved": true,
+      "allHashesVerified": true,
+      "allExactOrderAndStatusControlsPassed": true
+    },
+    {
+      "name": "reference-mapping",
+      "schema": "web-voicing-mapping-artifact-verification-v2",
+      "rowCount": 7070,
+      "mappedTargets": 1691,
+      "queryCount": 349,
+      "survivors": 6417643,
+      "defaultQueriesMatchingIntegratedCensus": 240,
+      "allSourceRowsPreserved": true,
+      "allHashesVerified": true,
+      "allExactOrderAndStatusControlsPassed": true
+    }
+  ],
+  "artifactHashes": [
+    {
+      "file": "docs/research/web-voicing-corpus-v2/adversarial-audit.md",
+      "sha256": "4a78d7afc5184d088dca2483a1b0f92dd807bf9d7ab3dfa1728b3948e5a421ac"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/analysis.json",
+      "sha256": "3d43b9609f54ce20b16c0b01ffd07d9a7f8b7a8b5c74f079e4f5eb33545fc3b8"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/curated-voicings.json",
+      "sha256": "928e7ff09de6c32a82724915c301da795f28b29aa956163dd547df1f546bb781"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/educational-acquire.py",
+      "sha256": "b6fd41f6e1dc83611cee7fbb840edb32fb50e3a4d5616bf8c8deff1d42b2765e"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/educational-discovery.md",
+      "sha256": "e63e8924e4bbf3030aad2542f37886fa560997705beb9553499627ea9656a491"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/educational-sources.json",
+      "sha256": "56a15d72f871a283997a9ff9c7da4b1762b2cf37dd6841ad5ad939b86587fbd5"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/educational-voicings.json",
+      "sha256": "46bd71427056e3dc850b8e4a7fec239132c361d3b5e0a0a7642fdab48259230b"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/educational-wikimedia-image-inventory.json",
+      "sha256": "4a33eff8acdda2c4ff3d9603908a08b32b00bf2abc88d88288b7cb04a132cc59"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/educational-wikimedia-voicings.json",
+      "sha256": "a534164cf3e002a9d2c17b21e6771454f7ea64aaa704d547ab6695ca240c0684"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/engine-method.md",
+      "sha256": "d92f42f67fce4dc14fbebdcced5b9ff0bcd5f8a4a767d2d69469b4ccc2e75ab9"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/evaluation-protocol.md",
+      "sha256": "865d8e0ace8e88c7c78e7a0b6ab9a3fbf6b3e3751c7494c7fccd649fd9048d93"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/evaluation-summary.json",
+      "sha256": "0271824b5d7f93fea866864d0ffae0354253b4af33c49aeb4a37965c030ec5f7"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/lineage-registry.json",
+      "sha256": "6cc28a7ae2df4067f461c97e3d9939d55a9175c0eaa781993c341dcf1264b122"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/normalization-schema.md",
+      "sha256": "08166b7cf26dd8066af4fa127091038a862a6d411e942046a967a096e5fea896"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/notation-corrections.json",
+      "sha256": "553470996005cc6af8d0d23abf516b38cf71c9668da7afe91567e0a33298f794"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/open-acquisition-lock.json",
+      "sha256": "884571fa8b24482c7dbfa75d0ef15e9cc9b1328e6cde46259d47c1c77c074a9d"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/open-provenance.md",
+      "sha256": "e314ca8279c4f598daa4fbd6d776c38163cc12143cd7feda57f541346993220c"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/open-sources.json",
+      "sha256": "f1a7a723824d86811b4a5516adb7aaae2b655ac45ffc8e357b8e62a2118c66da"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/open-structural-audit.json",
+      "sha256": "073cab91b7189aa839cfb3eae6b8d9bff20beffb85db547cd2e2fb9c928d9697"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/open-voicings.json",
+      "sha256": "7b38084b5948aa8fe5e5614d4961ebc1cc9d3a697a718574ea5ed4c59ce0ab97"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/protected-slices.md",
+      "sha256": "f8df1f6d23ad1834c6999cf794af04695e797b7ed0893fccdc94c6724a608a14"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/register-slices.json",
+      "sha256": "8ba60a332603ea81cc41047e8430fefbbd9b302796f84e033f3e4be16122f5cc"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/reproduction.md",
+      "sha256": "dbebff4f7130d9abdd5dd3b92940cbd14a3274d3d067da96d1f277a64c228303"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/scope-check.md",
+      "sha256": "997de9b41330f330484bf45fde9b6dc1fc453c57c4364eb43fc9d442282fd4f0"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/source-manifest.json",
+      "sha256": "0bf5ac23a20b658a32e48c97004b876df629c4fa42a598943a9a82f32b85b357"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/study.md",
+      "sha256": "aaeaf9ee6e5491e2389bd90fb1aed12e8dc65dcd4962ea22ad5d7b7467f28498"
+    },
+    {
+      "file": "docs/research/web-voicing-corpus-v2/supplemental-sources.json",
+      "sha256": "bd3bed052362b57528da8651999d220a186b292713c5e8c186fc035e72cb4aa4"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/acquire-open.mjs",
+      "sha256": "c18810bfe2c8c198c5c32e954509d3ee782ce3ac0841b063c3fb205e587df058"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/analyze.mjs",
+      "sha256": "51a0582daf5501861fadefffa3530b259b9be31ac01f589e00230a05e603f5e8"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/assemble-manifest.mjs",
+      "sha256": "062ae750f0ab0ba1059a70bb6bdcc66aa18bca3548d2e1fdcfc802c2a53cb9c5"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/audit-open.mjs",
+      "sha256": "887d278ed82a567737fb39a9c07032faa8a32b53f6e5b51813d966992585e975"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/engine-map.ts",
+      "sha256": "a326e84bbcf72645f4f682dc85e427c54c6030f6f690a67be1c1dbfaad5afb98"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/evaluate.ts",
+      "sha256": "c93d70272e9bf0e288ab21fed7859ede1ae473929a5cf3ba1dacad1c6357c4b7"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/prepare-curated.mjs",
+      "sha256": "c6511aeafc88c5cb88d5e1a1671e3b292894f47f2580b86272ad648e1978fe2c"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/register-slices.mjs",
+      "sha256": "33cfb323e36cac05f6f5b17bffc3632eeaee5e07097eea1f7a61459d26e00553"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/summarize.mjs",
+      "sha256": "f748be1b9f97b3218da973f4c8caa26ee998b2e1c97d56e27995da6836c80cba"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/tsconfig.json",
+      "sha256": "4e52ffcdfebb4bf750d0bfbbe1dc856b1cb18f76f076d6a6bfeebce81d3d5e9a"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/verify-delivery.mjs",
+      "sha256": "a21ed543ea203b3836fcf8d3e00ff01742dd398717e8f11eb65281b3c3f565d8"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/verify-mapping-artifacts.mjs",
+      "sha256": "9eb145b1189ae5d0b573bb006b8f401e5277b5c8e38fc329beae823063b0b162"
+    },
+    {
+      "file": "scripts/web-voicing-corpus-v2/verify-mapping.ts",
+      "sha256": "7632cb1084a7fb9f4de03ff466664ae4a56fd75046746c412dfb0d9de591cb1f"
+    }
+  ]
+}

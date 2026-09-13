@@ -1,0 +1,1945 @@
+{
+  "status": "Post-run descriptive register aggregation; same pre-existing feature bins and immutable ranking outcomes. No model selection or confirmatory claim.",
+  "arms": {
+    "leave-source:classic": {
+      "top-midi-36-47": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-48-59": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-60-71": {
+        "candidate": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 43,
+          "r6": 0.44176136363636365,
+          "r18": 0.6491477272727273,
+          "ndcg6": 0.32348078817583437
+        },
+        "classic": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 43,
+          "r6": 0.44176136363636365,
+          "r18": 0.6491477272727273,
+          "ndcg6": 0.32348078817583437
+        },
+        "status": "descriptive-small-source-count"
+      },
+      "top-midi-72-83": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-84-95": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      }
+    },
+    "leave-source:exact-diagnostic": {
+      "top-midi-36-47": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-48-59": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-60-71": {
+        "candidate": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 43,
+          "r6": 0.44176136363636365,
+          "r18": 0.6491477272727273,
+          "ndcg6": 0.32348078817583437
+        },
+        "classic": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 43,
+          "r6": 0.44176136363636365,
+          "r18": 0.6491477272727273,
+          "ndcg6": 0.32348078817583437
+        },
+        "status": "descriptive-small-source-count"
+      },
+      "top-midi-72-83": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-84-95": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      }
+    },
+    "leave-source:family-diagnostic": {
+      "top-midi-36-47": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-48-59": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-60-71": {
+        "candidate": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 43,
+          "r6": 0.44105113636363635,
+          "r18": 0.6491477272727273,
+          "ndcg6": 0.3716766796954365
+        },
+        "classic": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 43,
+          "r6": 0.44176136363636365,
+          "r18": 0.6491477272727273,
+          "ndcg6": 0.32348078817583437
+        },
+        "status": "descriptive-small-source-count"
+      },
+      "top-midi-72-83": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-84-95": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      }
+    },
+    "leave-source:features-exploratory": {
+      "top-midi-36-47": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-48-59": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-60-71": {
+        "candidate": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 43,
+          "r6": 0.46519886363636365,
+          "r18": 0.6491477272727273,
+          "ndcg6": 0.34283861885402456
+        },
+        "classic": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 43,
+          "r6": 0.44176136363636365,
+          "r18": 0.6491477272727273,
+          "ndcg6": 0.32348078817583437
+        },
+        "status": "descriptive-small-source-count"
+      },
+      "top-midi-72-83": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-84-95": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      }
+    },
+    "leave-source:features-support-gated": {
+      "top-midi-36-47": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-48-59": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-60-71": {
+        "candidate": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 43,
+          "r6": 0.44176136363636365,
+          "r18": 0.6491477272727273,
+          "ndcg6": 0.32348078817583437
+        },
+        "classic": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 43,
+          "r6": 0.44176136363636365,
+          "r18": 0.6491477272727273,
+          "ndcg6": 0.32348078817583437
+        },
+        "status": "descriptive-small-source-count"
+      },
+      "top-midi-72-83": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-84-95": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      }
+    },
+    "leave-shape-family:classic": {
+      "top-midi-36-47": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-48-59": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-60-71": {
+        "candidate": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 47,
+          "r6": 0.4392857142857143,
+          "r18": 0.6785714285714286,
+          "ndcg6": 0.30966029199045375
+        },
+        "classic": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 47,
+          "r6": 0.4392857142857143,
+          "r18": 0.6785714285714286,
+          "ndcg6": 0.30966029199045375
+        },
+        "status": "descriptive-small-source-count"
+      },
+      "top-midi-72-83": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-84-95": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      }
+    },
+    "leave-shape-family:exact-diagnostic": {
+      "top-midi-36-47": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-48-59": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-60-71": {
+        "candidate": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 47,
+          "r6": 0.4392857142857143,
+          "r18": 0.6785714285714286,
+          "ndcg6": 0.30966029199045375
+        },
+        "classic": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 47,
+          "r6": 0.4392857142857143,
+          "r18": 0.6785714285714286,
+          "ndcg6": 0.30966029199045375
+        },
+        "status": "descriptive-small-source-count"
+      },
+      "top-midi-72-83": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-84-95": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      }
+    },
+    "leave-shape-family:family-diagnostic": {
+      "top-midi-36-47": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-48-59": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-60-71": {
+        "candidate": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 47,
+          "r6": 0.3964285714285714,
+          "r18": 0.6785714285714286,
+          "ndcg6": 0.2912469437961984
+        },
+        "classic": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 47,
+          "r6": 0.4392857142857143,
+          "r18": 0.6785714285714286,
+          "ndcg6": 0.30966029199045375
+        },
+        "status": "descriptive-small-source-count"
+      },
+      "top-midi-72-83": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-84-95": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      }
+    },
+    "leave-shape-family:features-exploratory": {
+      "top-midi-36-47": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-48-59": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-60-71": {
+        "candidate": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 47,
+          "r6": 0.46785714285714286,
+          "r18": 0.6785714285714286,
+          "ndcg6": 0.3341479312986183
+        },
+        "classic": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 47,
+          "r6": 0.4392857142857143,
+          "r18": 0.6785714285714286,
+          "ndcg6": 0.30966029199045375
+        },
+        "status": "descriptive-small-source-count"
+      },
+      "top-midi-72-83": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-84-95": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      }
+    },
+    "leave-shape-family:features-support-gated": {
+      "top-midi-36-47": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-48-59": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-60-71": {
+        "candidate": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 47,
+          "r6": 0.46785714285714286,
+          "r18": 0.6785714285714286,
+          "ndcg6": 0.3323219416803328
+        },
+        "classic": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 47,
+          "r6": 0.4392857142857143,
+          "r18": 0.6785714285714286,
+          "ndcg6": 0.30966029199045375
+        },
+        "status": "descriptive-small-source-count"
+      },
+      "top-midi-72-83": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-84-95": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      }
+    },
+    "joint-source-shape:classic": {
+      "top-midi-36-47": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-48-59": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-60-71": {
+        "candidate": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 47,
+          "r6": 0.4392857142857143,
+          "r18": 0.6785714285714286,
+          "ndcg6": 0.30966029199045375
+        },
+        "classic": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 47,
+          "r6": 0.4392857142857143,
+          "r18": 0.6785714285714286,
+          "ndcg6": 0.30966029199045375
+        },
+        "status": "descriptive-small-source-count"
+      },
+      "top-midi-72-83": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-84-95": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      }
+    },
+    "joint-source-shape:exact-diagnostic": {
+      "top-midi-36-47": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-48-59": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-60-71": {
+        "candidate": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 47,
+          "r6": 0.4392857142857143,
+          "r18": 0.6785714285714286,
+          "ndcg6": 0.30966029199045375
+        },
+        "classic": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 47,
+          "r6": 0.4392857142857143,
+          "r18": 0.6785714285714286,
+          "ndcg6": 0.30966029199045375
+        },
+        "status": "descriptive-small-source-count"
+      },
+      "top-midi-72-83": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-84-95": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      }
+    },
+    "joint-source-shape:family-diagnostic": {
+      "top-midi-36-47": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-48-59": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-60-71": {
+        "candidate": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 47,
+          "r6": 0.3964285714285714,
+          "r18": 0.6785714285714286,
+          "ndcg6": 0.2912469437961984
+        },
+        "classic": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 47,
+          "r6": 0.4392857142857143,
+          "r18": 0.6785714285714286,
+          "ndcg6": 0.30966029199045375
+        },
+        "status": "descriptive-small-source-count"
+      },
+      "top-midi-72-83": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-84-95": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      }
+    },
+    "joint-source-shape:features-exploratory": {
+      "top-midi-36-47": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-48-59": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-60-71": {
+        "candidate": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 47,
+          "r6": 0.46785714285714286,
+          "r18": 0.6785714285714286,
+          "ndcg6": 0.3295015527901942
+        },
+        "classic": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 47,
+          "r6": 0.4392857142857143,
+          "r18": 0.6785714285714286,
+          "ndcg6": 0.30966029199045375
+        },
+        "status": "descriptive-small-source-count"
+      },
+      "top-midi-72-83": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-84-95": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      }
+    },
+    "joint-source-shape:features-support-gated": {
+      "top-midi-36-47": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-48-59": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-60-71": {
+        "candidate": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 47,
+          "r6": 0.4392857142857143,
+          "r18": 0.6785714285714286,
+          "ndcg6": 0.30966029199045375
+        },
+        "classic": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 47,
+          "r6": 0.4392857142857143,
+          "r18": 0.6785714285714286,
+          "ndcg6": 0.30966029199045375
+        },
+        "status": "descriptive-small-source-count"
+      },
+      "top-midi-72-83": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-84-95": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      }
+    },
+    "leave-quality:classic": {
+      "top-midi-36-47": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-48-59": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-60-71": {
+        "candidate": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 43,
+          "r6": 0.44176136363636365,
+          "r18": 0.6491477272727273,
+          "ndcg6": 0.32348078817583437
+        },
+        "classic": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 43,
+          "r6": 0.44176136363636365,
+          "r18": 0.6491477272727273,
+          "ndcg6": 0.32348078817583437
+        },
+        "status": "descriptive-small-source-count"
+      },
+      "top-midi-72-83": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-84-95": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      }
+    },
+    "leave-quality:exact-diagnostic": {
+      "top-midi-36-47": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-48-59": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-60-71": {
+        "candidate": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 43,
+          "r6": 0.44176136363636365,
+          "r18": 0.6491477272727273,
+          "ndcg6": 0.32348078817583437
+        },
+        "classic": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 43,
+          "r6": 0.44176136363636365,
+          "r18": 0.6491477272727273,
+          "ndcg6": 0.32348078817583437
+        },
+        "status": "descriptive-small-source-count"
+      },
+      "top-midi-72-83": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-84-95": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      }
+    },
+    "leave-quality:family-diagnostic": {
+      "top-midi-36-47": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-48-59": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-60-71": {
+        "candidate": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 43,
+          "r6": 0.44176136363636365,
+          "r18": 0.6491477272727273,
+          "ndcg6": 0.32348078817583437
+        },
+        "classic": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 43,
+          "r6": 0.44176136363636365,
+          "r18": 0.6491477272727273,
+          "ndcg6": 0.32348078817583437
+        },
+        "status": "descriptive-small-source-count"
+      },
+      "top-midi-72-83": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-84-95": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      }
+    },
+    "leave-quality:features-exploratory": {
+      "top-midi-36-47": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-48-59": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-60-71": {
+        "candidate": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 43,
+          "r6": 0.45738636363636365,
+          "r18": 0.6491477272727273,
+          "ndcg6": 0.34567156306866353
+        },
+        "classic": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 43,
+          "r6": 0.44176136363636365,
+          "r18": 0.6491477272727273,
+          "ndcg6": 0.32348078817583437
+        },
+        "status": "descriptive-small-source-count"
+      },
+      "top-midi-72-83": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-84-95": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      }
+    },
+    "leave-quality:features-support-gated": {
+      "top-midi-36-47": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-48-59": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-60-71": {
+        "candidate": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 43,
+          "r6": 0.44176136363636365,
+          "r18": 0.6491477272727273,
+          "ndcg6": 0.32348078817583437
+        },
+        "classic": {
+          "observations": 47,
+          "sources": 2,
+          "contexts": 43,
+          "r6": 0.44176136363636365,
+          "r18": 0.6491477272727273,
+          "ndcg6": 0.32348078817583437
+        },
+        "status": "descriptive-small-source-count"
+      },
+      "top-midi-72-83": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      },
+      "top-midi-84-95": {
+        "candidate": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "classic": {
+          "observations": 0,
+          "sources": 0,
+          "contexts": 0,
+          "r6": null,
+          "r18": null,
+          "ndcg6": null
+        },
+        "status": "ABSENT"
+      }
+    }
+  }
+}

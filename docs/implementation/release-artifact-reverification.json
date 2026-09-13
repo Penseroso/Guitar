@@ -1,0 +1,880 @@
+{
+  "schema": "frozen-artifact-reverification-v1",
+  "at": "2026-09-13T09:34:24.879Z",
+  "head": "9e793f1b407fef6da336ae2ca6a948b8143fe528",
+  "gitBlobs": 1350,
+  "projectFiles": 1535,
+  "otherWorktrees": [
+    "C:/Projects/Guitar/.research/p5-integration-checkout",
+    "C:/Users/pense/.codex/worktrees/e33b/Guitar"
+  ],
+  "scope": "Every local Git blob including unreachable; text/data files <=20MB recursively in docs, .research, scripts and .tmp-policy-baseline, plus registered project worktrees and the existing frozen Physical ZIP. No network or acquisition.",
+  "historicalPhysicalShadow": {
+    "verifiedFiles": 54,
+    "rows": 88,
+    "note": "Historical 54-file freeze and 88-case shadow are preserved claims, not fresh replay; see provenance/input availability below."
+  },
+  "archive": {
+    "path": ".research/physical-feasibility/physical-feasibility-frozen.zip",
+    "sha256": "19d71b98f82412ad319bda1c30b5f74e285761ced39aa50054bcafcbbd38d4b7",
+    "manifestMember": "docs/research/physical-feasibility/final-freeze.json",
+    "manifestSha256": "b69ee2e00027ead1c62b399843026afebe44ae7f13905e0298dbf34f7e0cb4ec",
+    "checks": [
+      {
+        "member": "docs/research/physical-feasibility/all-results.csv",
+        "expected": "26ddc4bc16949ad3a697be6232b272242d3700b3eceb124ce70f55f3e93aae42",
+        "actual": "26ddc4bc16949ad3a697be6232b272242d3700b3eceb124ce70f55f3e93aae42",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/biomechanics-parameters.json",
+        "expected": "c772ac988b5bddc7f42579254b05d294cda967ac94207c8a7e9f7338c4d895c2",
+        "actual": "c772ac988b5bddc7f42579254b05d294cda967ac94207c8a7e9f7338c4d895c2",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/biomechanics.md",
+        "expected": "b470fc8e9965e8a28b9e81512407bd91fbbe3d8adec6ac1a5dcc34b0053f9920",
+        "actual": "b470fc8e9965e8a28b9e81512407bd91fbbe3d8adec6ac1a5dcc34b0053f9920",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/challenge-fixtures.json",
+        "expected": "1641ed43bf7efff284962dcea5c80bb54ef4a95ab5208770c0adfdff93abcd4c",
+        "actual": "1641ed43bf7efff284962dcea5c80bb54ef4a95ab5208770c0adfdff93abcd4c",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/challenge-provenance.json",
+        "expected": "1f090be723e38407d4cb4fc45d96da90259856c92f903fc315af5f9e79464815",
+        "actual": "1f090be723e38407d4cb4fc45d96da90259856c92f903fc315af5f9e79464815",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/comparator-source/baseline-fretGeometry.ts",
+        "expected": "4b61f72e5d403786fb32450fb5bf4334049d982ff31d5f16b1b9fc6602e8fef0",
+        "actual": "4b61f72e5d403786fb32450fb5bf4334049d982ff31d5f16b1b9fc6602e8fef0",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/comparator-source/baseline-voicingSearch.ts",
+        "expected": "c8b0ee053194f517316e67ecff34e88e0d4d876fca31327a4af2a325d98b32a5",
+        "actual": "c8b0ee053194f517316e67ecff34e88e0d4d876fca31327a4af2a325d98b32a5",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/comparator-source/experimental-p5-voicingSearch.ts",
+        "expected": "0ce3554d476d8774acf96b43609e784a301e2e5aa20209567505abe15c7caada",
+        "actual": "0ce3554d476d8774acf96b43609e784a301e2e5aa20209567505abe15c7caada",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/comparator-source/variants.json",
+        "expected": "be335c146458684fa6d7dc5bee38d4670f14af0f500cd491f7b2f37a4f44cd8b",
+        "actual": "be335c146458684fa6d7dc5bee38d4670f14af0f500cd491f7b2f37a4f44cd8b",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/decision.json",
+        "expected": "73a048addf817ef780dccec815ea50373b2b0fdaa68d534da2d5da1ce581a079",
+        "actual": "73a048addf817ef780dccec815ea50373b2b0fdaa68d534da2d5da1ce581a079",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/decision.md",
+        "expected": "f95d1b3c64acf982c75e1f6de3c6670bb61bd178ec755f5a911621c3c9863e23",
+        "actual": "f95d1b3c64acf982c75e1f6de3c6670bb61bd178ec755f5a911621c3c9863e23",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/engineering-results.md",
+        "expected": "f1b14d2df6f7a4bdca85ca9934500d89a69f609e1897b08c715b6abc68c5a932",
+        "actual": "f1b14d2df6f7a4bdca85ca9934500d89a69f609e1897b08c715b6abc68c5a932",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/engineering.md",
+        "expected": "6e22153954a21639f7318f72c7735d0346e3ee14318ef95de627219a0e8188f9",
+        "actual": "6e22153954a21639f7318f72c7735d0346e3ee14318ef95de627219a0e8188f9",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/final-audit.md",
+        "expected": "49ad6d95539f17683fb22ccf535c0732aa6884a462506bf75d53dcc175c1abcd",
+        "actual": "49ad6d95539f17683fb22ccf535c0732aa6884a462506bf75d53dcc175c1abcd",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/fixture-results.csv",
+        "expected": "20c1d687fcc9ec201c462308054c63ac7bddb2f5f761eaf9f87a088e6c8c1859",
+        "actual": "20c1d687fcc9ec201c462308054c63ac7bddb2f5f761eaf9f87a088e6c8c1859",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/fixtures-seal.json",
+        "expected": "a44984bd768db9277d90b063baa69550a79e5409c5cd810a0a2d162110dda8b0",
+        "actual": "a44984bd768db9277d90b063baa69550a79e5409c5cd810a0a2d162110dda8b0",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/fixtures.json",
+        "expected": "9f680ddd4a9b1ed08d235dda05fc6074d78083a93c7312183b5a50caded79fea",
+        "actual": "9f680ddd4a9b1ed08d235dda05fc6074d78083a93c7312183b5a50caded79fea",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/fixtures.md",
+        "expected": "4603eeb1004c3ce90372564f8438ff2784f94e3c80d1000165270c71225db405",
+        "actual": "4603eeb1004c3ce90372564f8438ff2784f94e3c80d1000165270c71225db405",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/frozen-model.json",
+        "expected": "cf989d02ed170a9bb9a9c86bba4485b602fdf384f8314aa1ba888c6e15cef1eb",
+        "actual": "cf989d02ed170a9bb9a9c86bba4485b602fdf384f8314aa1ba888c6e15cef1eb",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/geometry.md",
+        "expected": "50dd022e1da239e0beca7bbac57822868491e18e794cebfe3c0d6d1b42c10ca7",
+        "actual": "50dd022e1da239e0beca7bbac57822868491e18e794cebfe3c0d6d1b42c10ca7",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/kinematics.md",
+        "expected": "f3a8882809cec6c59cb907d9660d0eb4c21e1d2ab267c56277d5cd7c9f9d23b0",
+        "actual": "f3a8882809cec6c59cb907d9660d0eb4c21e1d2ab267c56277d5cd7c9f9d23b0",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/model-draft.md",
+        "expected": "7155b20d005264e3372c2d49793bcd13119e7e860c43f360d857164119e5a608",
+        "actual": "7155b20d005264e3372c2d49793bcd13119e7e860c43f360d857164119e5a608",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/model-freeze.json",
+        "expected": "0fe182b22ec130d406b2b68a708b4ea7c95e08c7b8775d89b4dd6e7aef3c3e8c",
+        "actual": "0fe182b22ec130d406b2b68a708b4ea7c95e08c7b8775d89b4dd6e7aef3c3e8c",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/model-specification.md",
+        "expected": "fc058009c82a43db9d2e0084f58a5baecd01ecf340166a6da870cee6816a782e",
+        "actual": "fc058009c82a43db9d2e0084f58a5baecd01ecf340166a6da870cee6816a782e",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/post-freeze-notes.md",
+        "expected": "cb73dff888688bbb2f1cae71ff95de05b52aec6080ee2c704c571351f26cdc46",
+        "actual": "cb73dff888688bbb2f1cae71ff95de05b52aec6080ee2c704c571351f26cdc46",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/pre-challenge-decision.md",
+        "expected": "a0226675c22694aa273e016db9f31ec619ae21674dfb709c76cb69c53876ef6b",
+        "actual": "a0226675c22694aa273e016db9f31ec619ae21674dfb709c76cb69c53876ef6b",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/pre-challenge-freeze.json",
+        "expected": "c06744aedbaae6e71403fff03c48d8c48ea3811b7c5842b94964832fbc1023b5",
+        "actual": "c06744aedbaae6e71403fff03c48d8c48ea3811b7c5842b94964832fbc1023b5",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/protocol.md",
+        "expected": "894d00b95c68f5fbe562006461921d27091e9b7d647b6cc36a81a437659864e2",
+        "actual": "894d00b95c68f5fbe562006461921d27091e9b7d647b6cc36a81a437659864e2",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/README.md",
+        "expected": "ab945a5c7be2d54f320de501fd67c728d914fd70c89f58c87e2746b9ce01008b",
+        "actual": "ab945a5c7be2d54f320de501fd67c728d914fd70c89f58c87e2746b9ce01008b",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/results/challenge-comparison.json",
+        "expected": "bade7892c3284b9d9c27bda980e2dc78eeba2c11b265450acea4fc680cf7d32b",
+        "actual": "bade7892c3284b9d9c27bda980e2dc78eeba2c11b265450acea4fc680cf7d32b",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/results/challenge-reference.json",
+        "expected": "b048d10cacb71b369e8dcc9139882f0ee203bb69faf539c30223ff0abb4feb59",
+        "actual": "b048d10cacb71b369e8dcc9139882f0ee203bb69faf539c30223ff0abb4feb59",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/results/challenge-sensitivity.json",
+        "expected": "f117875a7db3122c943152a4ad7189ceacae5e505f6bda25b404efa3ee7c0356",
+        "actual": "f117875a7db3122c943152a4ad7189ceacae5e505f6bda25b404efa3ee7c0356",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/results/engineering-benchmark.json",
+        "expected": "6ca630a44cf0f66ff73566aea8a15b25ff40032af866f0692811080ab79ea1ba",
+        "actual": "6ca630a44cf0f66ff73566aea8a15b25ff40032af866f0692811080ab79ea1ba",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/results/round2-reference.json",
+        "expected": "38ccdbae30056691fc939b616e9b3d5da4d5435bdc192ce1f7ba1f325580e16d",
+        "actual": "38ccdbae30056691fc939b616e9b3d5da4d5435bdc192ce1f7ba1f325580e16d",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/results/round3-sensitivity.json",
+        "expected": "5b9ba59866ba41e02b48e40837bfad274694bf1aff58e6605d1b336fbcb51934",
+        "actual": "5b9ba59866ba41e02b48e40837bfad274694bf1aff58e6605d1b336fbcb51934",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/results/round4-comparison.json",
+        "expected": "b4da5e0a7ea25347f98ab11b1e7d98e3de92e57cae1e25693d91066282bfb708",
+        "actual": "b4da5e0a7ea25347f98ab11b1e7d98e3de92e57cae1e25693d91066282bfb708",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/results/rounds23-summary.json",
+        "expected": "bd34d9c5a034fd6a0d346398fae42330b341f55bf4438f441e6266b246690c25",
+        "actual": "bd34d9c5a034fd6a0d346398fae42330b341f55bf4438f441e6266b246690c25",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/results/supplement-comparison.json",
+        "expected": "66ba18d2c46c2303e990efc7811f15150ca915796b1474c0fcad94f1a92ce396",
+        "actual": "66ba18d2c46c2303e990efc7811f15150ca915796b1474c0fcad94f1a92ce396",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/results/supplement-reference.json",
+        "expected": "f5007540e082089db2e592e5337adba18010f20d650147072cc57102c9e27075",
+        "actual": "f5007540e082089db2e592e5337adba18010f20d650147072cc57102c9e27075",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/results/supplement-sensitivity.json",
+        "expected": "f4d1fa398d70b32a9dee7aba35a6cf279305653915635a94017fb21b8d646108",
+        "actual": "f4d1fa398d70b32a9dee7aba35a6cf279305653915635a94017fb21b8d646108",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/rounds23-freeze.json",
+        "expected": "6d88907ff8dd7d6741c54664ec5508a77490b95885ab1e5f19fdc9e56e072414",
+        "actual": "6d88907ff8dd7d6741c54664ec5508a77490b95885ab1e5f19fdc9e56e072414",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/solver-diagnostics.md",
+        "expected": "9f567a26ac1c3aef99221335e761c5655e8e6d83508b0c5e4d4cf1b5b44b1072",
+        "actual": "9f567a26ac1c3aef99221335e761c5655e8e6d83508b0c5e4d4cf1b5b44b1072",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/solver.md",
+        "expected": "68b9de821bced1cdc91735f7842256547459f6738ee371dfd5d8df2272b95489",
+        "actual": "68b9de821bced1cdc91735f7842256547459f6738ee371dfd5d8df2272b95489",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/supplemental-fixtures-seal.json",
+        "expected": "d73039b0ef1fb3ec19211219f3fc42ef0a474664e2c087d5e987f3b1f3a1b4ab",
+        "actual": "d73039b0ef1fb3ec19211219f3fc42ef0a474664e2c087d5e987f3b1f3a1b4ab",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/supplemental-fixtures.json",
+        "expected": "56bef840fc973879cd2db92a8a920923d861f4ba2b75e3bb5f9ed6902d441e3a",
+        "actual": "56bef840fc973879cd2db92a8a920923d861f4ba2b75e3bb5f9ed6902d441e3a",
+        "status": "PASS"
+      },
+      {
+        "member": "docs/research/physical-feasibility/supplemental-fixtures.md",
+        "expected": "c1410840f7dc87675aad27d0edfe5e4213c348449464ed81ab89193f72773369",
+        "actual": "c1410840f7dc87675aad27d0edfe5e4213c348449464ed81ab89193f72773369",
+        "status": "PASS"
+      },
+      {
+        "member": "scripts/physical-feasibility/compare.ts",
+        "expected": "689d80425a47fb479f3b0840c0532c9b8b01d2e1f51239f736b71af275bfff91",
+        "actual": "689d80425a47fb479f3b0840c0532c9b8b01d2e1f51239f736b71af275bfff91",
+        "status": "PASS"
+      },
+      {
+        "member": "scripts/physical-feasibility/engineering_benchmark.py",
+        "expected": "5a19467d1c2af30d3598e80fa395b60cf7e7aa7bdc94715241f87dda5a8959e5",
+        "actual": "5a19467d1c2af30d3598e80fa395b60cf7e7aa7bdc94715241f87dda5a8959e5",
+        "status": "PASS"
+      },
+      {
+        "member": "scripts/physical-feasibility/finalize.py",
+        "expected": "f5166d3d5d9896f635f8f050ae8090ec0a736dbc3f346eaa726c71519df55f7c",
+        "actual": "f5166d3d5d9896f635f8f050ae8090ec0a736dbc3f346eaa726c71519df55f7c",
+        "status": "PASS"
+      },
+      {
+        "member": "scripts/physical-feasibility/model.py",
+        "expected": "1f29d1b5547f5dcd81acf4f051519aee1fec2aefbc4fe25425778d9d5c628a5c",
+        "actual": "1f29d1b5547f5dcd81acf4f051519aee1fec2aefbc4fe25425778d9d5c628a5c",
+        "status": "PASS"
+      },
+      {
+        "member": "scripts/physical-feasibility/prepare_challenge.py",
+        "expected": "2f564a748398347b0fd301b9ef36ea8976c4c9e735b09c04d8277f775cbf09f8",
+        "actual": "2f564a748398347b0fd301b9ef36ea8976c4c9e735b09c04d8277f775cbf09f8",
+        "status": "PASS"
+      },
+      {
+        "member": "scripts/physical-feasibility/run.py",
+        "expected": "d9e379782417690f21a757a8912a8a8a5fc7b26ed93976b22ec424e94842f5b3",
+        "actual": "d9e379782417690f21a757a8912a8a8a5fc7b26ed93976b22ec424e94842f5b3",
+        "status": "PASS"
+      },
+      {
+        "member": "scripts/physical-feasibility/summarize.py",
+        "expected": "f3f0e1aa58953964e21430fc5744283e3bf345fd7ebb157a665dc8dc1acb61cb",
+        "actual": "f3f0e1aa58953964e21430fc5744283e3bf345fd7ebb157a665dc8dc1acb61cb",
+        "status": "PASS"
+      },
+      {
+        "member": "scripts/physical-feasibility/test_model.py",
+        "expected": "a6f6fc593b254a65730efe7ba6a28a1b0ce95baa14d77f804b1005d3f1e8785c",
+        "actual": "a6f6fc593b254a65730efe7ba6a28a1b0ce95baa14d77f804b1005d3f1e8785c",
+        "status": "PASS"
+      }
+    ],
+    "provenanceChain": "Internal ZIP manifest verification only. The independently pinned reanalysis provenance remains necessary to verify its frozen_final_manifest_sha256 link."
+  },
+  "targets": [
+    {
+      "path": "docs/research/generator-scope/review.md",
+      "sha256": "706b34e683d1a3415c61fae332d379e975ff99a3407893e7d362343f75e7774e",
+      "matches": [
+        {
+          "gitBlob": "91558c76a532553abcac0987b04f49ffde922a13"
+        },
+        {
+          "path": "docs/research/generator-scope/review.md"
+        }
+      ],
+      "currentSha256": "706b34e683d1a3415c61fae332d379e975ff99a3407893e7d362343f75e7774e",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/research/physical-layer-review/review.md",
+      "sha256": "c7ae4d4151e2f2ea38562a0fe53c6c34c976aed466cbea280fe27ca26f2fb12e",
+      "matches": [
+        {
+          "gitBlob": "0cb22390a69159a51d4b56a14bc9a19405049638"
+        },
+        {
+          "path": "docs/research/physical-layer-review/review.md"
+        }
+      ],
+      "currentSha256": "c7ae4d4151e2f2ea38562a0fe53c6c34c976aed466cbea280fe27ca26f2fb12e",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/research/empirical-ranking-current-audit.md",
+      "sha256": "f2eaf8477565dd2ed408966f518fd860f92fd9f2b5264cc744674a1b93444724",
+      "matches": [
+        {
+          "gitBlob": "0c996d7429a2ec594fa8bd8d5612054f328d0b23"
+        },
+        {
+          "path": "docs/research/empirical-ranking-current-audit.md"
+        }
+      ],
+      "currentSha256": "f2eaf8477565dd2ed408966f518fd860f92fd9f2b5264cc744674a1b93444724",
+      "status": "PASS"
+    },
+    {
+      "path": ".research/empirical-ranking-review/decision.md",
+      "sha256": "72f38baba30c99ee0ed9b9e580a55b9d03ed77196bac5b8cf0a40baf58cd5ba4",
+      "matches": [
+        {
+          "path": ".research/empirical-ranking-review/decision.md"
+        }
+      ],
+      "currentSha256": "72f38baba30c99ee0ed9b9e580a55b9d03ed77196bac5b8cf0a40baf58cd5ba4",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/research/physical-model-reassessment/reanalysis-provenance.json",
+      "sha256": "5060309901c6f6a12c0d11c3d4ce95bc6ead3efbc8686791d786eef2667b7bc5",
+      "matches": [],
+      "currentSha256": null,
+      "status": "EXTERNALLY BLOCKED"
+    },
+    {
+      "path": "docs/research/physical-feasibility/results/round4-comparison.json",
+      "sha256": "b4da5e0a7ea25347f98ab11b1e7d98e3de92e57cae1e25693d91066282bfb708",
+      "matches": [
+        {
+          "gitBlob": "e2089ddd139b70f201938cf2e249083d163bb3e5"
+        },
+        {
+          "path": "docs/research/physical-feasibility/results/round4-comparison.json"
+        },
+        {
+          "path": ".research/physical-feasibility/round4-comparison.json"
+        },
+        {
+          "archive": ".research/physical-feasibility/physical-feasibility-frozen.zip",
+          "member": "docs/research/physical-feasibility/results/round4-comparison.json"
+        }
+      ],
+      "currentSha256": "b4da5e0a7ea25347f98ab11b1e7d98e3de92e57cae1e25693d91066282bfb708",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/research/physical-feasibility/results/supplement-comparison.json",
+      "sha256": "66ba18d2c46c2303e990efc7811f15150ca915796b1474c0fcad94f1a92ce396",
+      "matches": [
+        {
+          "gitBlob": "ef1bf24c7df0db0715b30dc21a607b582a00d359"
+        },
+        {
+          "path": "docs/research/physical-feasibility/results/supplement-comparison.json"
+        },
+        {
+          "path": ".research/physical-feasibility/supplement-comparison.json"
+        },
+        {
+          "archive": ".research/physical-feasibility/physical-feasibility-frozen.zip",
+          "member": "docs/research/physical-feasibility/results/supplement-comparison.json"
+        }
+      ],
+      "currentSha256": "66ba18d2c46c2303e990efc7811f15150ca915796b1474c0fcad94f1a92ce396",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/research/physical-feasibility/results/challenge-comparison.json",
+      "sha256": "bade7892c3284b9d9c27bda980e2dc78eeba2c11b265450acea4fc680cf7d32b",
+      "matches": [
+        {
+          "gitBlob": "702d1ef1d9f29018215516861d29cf2f8167efbf"
+        },
+        {
+          "path": "docs/research/physical-feasibility/results/challenge-comparison.json"
+        },
+        {
+          "path": ".research/physical-feasibility/challenge-comparison.json"
+        },
+        {
+          "archive": ".research/physical-feasibility/physical-feasibility-frozen.zip",
+          "member": "docs/research/physical-feasibility/results/challenge-comparison.json"
+        }
+      ],
+      "currentSha256": "bade7892c3284b9d9c27bda980e2dc78eeba2c11b265450acea4fc680cf7d32b",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/proposed-vocabulary.json",
+      "sha256": "f274602f41a4f292a5a47d073cb88dd317522548830434023670aaf67b475298",
+      "matches": [
+        {
+          "gitBlob": "f90987a6e171735f9a70d663f8afd30fee6e3783"
+        },
+        {
+          "path": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/proposed-vocabulary.json"
+        }
+      ],
+      "currentSha256": "f274602f41a4f292a5a47d073cb88dd317522548830434023670aaf67b475298",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/source-observed-placements.json",
+      "sha256": "4e990b7c5bef92426fb9fcf652e367a45f4ae75e769487a19ed5e991cc1273df",
+      "matches": [
+        {
+          "gitBlob": "4b9785d0e18e08a7f921478a2da71e48363a148c"
+        },
+        {
+          "path": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/source-observed-placements.json"
+        }
+      ],
+      "currentSha256": "4e990b7c5bef92426fb9fcf652e367a45f4ae75e769487a19ed5e991cc1273df",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/product-extrapolated-placements.json",
+      "sha256": "1259c90bbb19017239216386ef865895598121d4f49679478e1b3d5c6ff1066c",
+      "matches": [
+        {
+          "gitBlob": "0e8450090ff3314922dc16042187bf297534f1ef"
+        },
+        {
+          "path": "docs/research/web-voicing-corpus-v2/sitewide-practical-audit/product-extrapolated-placements.json"
+        }
+      ],
+      "currentSha256": "1259c90bbb19017239216386ef865895598121d4f49679478e1b3d5c6ff1066c",
+      "status": "PASS"
+    },
+    {
+      "path": ".research/web-voicing-corpus-v2/sitewide-practical-mapping/rows.jsonl",
+      "sha256": "25e5d1a9a95747c197a959958e1d55e841c4d2962ab78b9319cfec8a588216fd",
+      "matches": [
+        {
+          "path": ".research/web-voicing-corpus-v2/sitewide-practical-mapping/rows.jsonl"
+        }
+      ],
+      "currentSha256": "25e5d1a9a95747c197a959958e1d55e841c4d2962ab78b9319cfec8a588216fd",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/practicalVocabularyData.json",
+      "sha256": "28ca079b2ef8f2bb48aff95c882fa91b406226c8340165efec9be69dc433b22f",
+      "matches": [
+        {
+          "gitBlob": "e191ee8cca3746a0773647fb205a6620cd17d600"
+        }
+      ],
+      "currentSha256": "28ca079b2ef8f2bb48aff95c882fa91b406226c8340165efec9be69dc433b22f",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/catalog.ts",
+      "sha256": "d761d8e938bc792a7acd3f3f61aaaeeb993fcff55cd97cbe16be8812bc8e338d",
+      "matches": [
+        {
+          "gitBlob": "cc667e28f9892bcd54ab6eea734d7fe8bbc1d806"
+        }
+      ],
+      "currentSha256": "d761d8e938bc792a7acd3f3f61aaaeeb993fcff55cd97cbe16be8812bc8e338d",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/classicFeatures.ts",
+      "sha256": "e14bc57e03687df60880e206103d245b4eba8314d5ed3c8b34164801eab635a4",
+      "matches": [
+        {
+          "gitBlob": "6d35120b8fc1ed624bc5978bbbbdf6e11ad597be"
+        }
+      ],
+      "currentSha256": "e14bc57e03687df60880e206103d245b4eba8314d5ed3c8b34164801eab635a4",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/contactHypotheses.ts",
+      "sha256": "08ef612e1096a73326c0680fc400889122e3555027425b9a314ff39aeb5423d7",
+      "matches": [
+        {
+          "gitBlob": "717977848670f0c1e30e0400813c5dde45bb0c96"
+        }
+      ],
+      "currentSha256": "08ef612e1096a73326c0680fc400889122e3555027425b9a314ff39aeb5423d7",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/demandContract.ts",
+      "sha256": "4bb4d88042be090ebd018f3e6aef3d6ed9a9e91546fe32461cd9b9b59eeb5657",
+      "matches": [
+        {
+          "gitBlob": "ccb072600b25157dc7498408668ef4f6f5d89dcf"
+        }
+      ],
+      "currentSha256": "4bb4d88042be090ebd018f3e6aef3d6ed9a9e91546fe32461cd9b9b59eeb5657",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/deterministicRanking.ts",
+      "sha256": "38245e8a3a77b397569d5275697118219e2c3d6abf5adf9e2cd8ef66413f941d",
+      "matches": [
+        {
+          "gitBlob": "239a0d089e015946805540303a2573a33eb2cf65"
+        }
+      ],
+      "currentSha256": "38245e8a3a77b397569d5275697118219e2c3d6abf5adf9e2cd8ef66413f941d",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/errors.ts",
+      "sha256": "42c941f1e7deaa7b05dbe983276076ac3ae07e8978ba722c62865034f6f63fbe",
+      "matches": [
+        {
+          "gitBlob": "c337980d095d03a3fbecbe4698eb1953b0cd6ae4"
+        }
+      ],
+      "currentSha256": "42c941f1e7deaa7b05dbe983276076ac3ae07e8978ba722c62865034f6f63fbe",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/facts.ts",
+      "sha256": "80ab55737942d53208ebb44cf2659e954045d5fb1b3770a01c08e0f7a59ce1d1",
+      "matches": [
+        {
+          "gitBlob": "f15644ed11d569b7df7dee5ea56a95c3de2ed5e7"
+        }
+      ],
+      "currentSha256": "80ab55737942d53208ebb44cf2659e954045d5fb1b3770a01c08e0f7a59ce1d1",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/geometry.ts",
+      "sha256": "1228d782b38ea29d56e75cbf6d15753a0c75a42972576d727b81d7f94755b038",
+      "matches": [
+        {
+          "gitBlob": "e8d3b3415d8153474e1871daf5134eaea225320f"
+        }
+      ],
+      "currentSha256": "1228d782b38ea29d56e75cbf6d15753a0c75a42972576d727b81d7f94755b038",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/geometryTable.ts",
+      "sha256": "fdcac13d445c0b0d80c041e05154de9baf4e324698c79a5494b817a4da845af1",
+      "matches": [
+        {
+          "gitBlob": "f4f17a49498c00d534e9bd18562b65d481fb6674"
+        }
+      ],
+      "currentSha256": "fdcac13d445c0b0d80c041e05154de9baf4e324698c79a5494b817a4da845af1",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/identity.ts",
+      "sha256": "6b59dbe7451bb503dacfed82bb2e93dd57e3a96485a7c77cff05d0d8c1d10ff5",
+      "matches": [
+        {
+          "gitBlob": "e7934c9a9377b505b5ea832ef5f03f9aab14fc11"
+        }
+      ],
+      "currentSha256": "6b59dbe7451bb503dacfed82bb2e93dd57e3a96485a7c77cff05d0d8c1d10ff5",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/legacyAdapters.ts",
+      "sha256": "7a27c114c1c818c57baaa0d41f6d8bb4451210ddf035336350b472a635d17b8a",
+      "matches": [
+        {
+          "gitBlob": "045b44cf5338cecbdbb74e95e616fe801951f9cf"
+        }
+      ],
+      "currentSha256": "7a27c114c1c818c57baaa0d41f6d8bb4451210ddf035336350b472a635d17b8a",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/packedStore.ts",
+      "sha256": "55b8f979c6c1f920b62a763a0471f0d30c1ffc54639a77d625c67dcc85e6fc2a",
+      "matches": [
+        {
+          "gitBlob": "8d8dd86f910a9d36ae0f006eae0c0361c52619d5"
+        }
+      ],
+      "currentSha256": "55b8f979c6c1f920b62a763a0471f0d30c1ffc54639a77d625c67dcc85e6fc2a",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/pageHeap.ts",
+      "sha256": "5b0af7c93578202abf19d9b206f570a3e84868592b38d51685f4d6618cfd66d0",
+      "matches": [
+        {
+          "gitBlob": "554a724bf71e43a480be5e68242cef652b864c44"
+        }
+      ],
+      "currentSha256": "5b0af7c93578202abf19d9b206f570a3e84868592b38d51685f4d6618cfd66d0",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/physical.ts",
+      "sha256": "057612ea89fcf8f72a720b2f227359da4b3c724537838396ed3a574013604e33",
+      "matches": [
+        {
+          "gitBlob": "8f4a1f83de5849e9e288f104c88ba34988baac1a"
+        }
+      ],
+      "currentSha256": "057612ea89fcf8f72a720b2f227359da4b3c724537838396ed3a574013604e33",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/physicalDemand.ts",
+      "sha256": "b54a6d2b4ec9b29370d8680c4ec488d2f94a92e6ce6d6a1d40b6b7a566839df0",
+      "matches": [
+        {
+          "gitBlob": "69d691a9cfbbf31702bd808f9b42912249d60371"
+        }
+      ],
+      "currentSha256": "b54a6d2b4ec9b29370d8680c4ec488d2f94a92e6ce6d6a1d40b6b7a566839df0",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/practicalVocabulary.ts",
+      "sha256": "0702d81b93f8524fb74457e031dc64ce5d4e42aec6bee693eb46ae3db3b1a1ff",
+      "matches": [
+        {
+          "gitBlob": "9253b2d36c31c3ad0d7a0205ed485990db750a0c"
+        }
+      ],
+      "currentSha256": "0702d81b93f8524fb74457e031dc64ce5d4e42aec6bee693eb46ae3db3b1a1ff",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/presentation.ts",
+      "sha256": "7b706e36cf73b16e32a31305fdd3c09bb9316986171aa73f46979757d4ace482",
+      "matches": [
+        {
+          "gitBlob": "b8034d2a50820d976238875325c58d7a1f1962d6"
+        }
+      ],
+      "currentSha256": "7b706e36cf73b16e32a31305fdd3c09bb9316986171aa73f46979757d4ace482",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/recommendedSurface.ts",
+      "sha256": "3e87260eca8c9cdd89a0e5086123d2d8795b4b99080fb85833626558dd8d9096",
+      "matches": [
+        {
+          "gitBlob": "95ddf646a8c327750797916a89f57418889e91ea"
+        }
+      ],
+      "currentSha256": "3e87260eca8c9cdd89a0e5086123d2d8795b4b99080fb85833626558dd8d9096",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/requestPolicy.ts",
+      "sha256": "a8dc7698279f821499dc24a91090e9b4bac6b773501dc6e3b05399017967f28a",
+      "matches": [
+        {
+          "gitBlob": "4de379ca2675e83b92909b1bdb51d80076980d39"
+        }
+      ],
+      "currentSha256": "a8dc7698279f821499dc24a91090e9b4bac6b773501dc6e3b05399017967f28a",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/requestSchema.ts",
+      "sha256": "e6aa29c9523b3ca57be93ba4d73240ed44906ad7bc1ec707b76812192639fd5c",
+      "matches": [
+        {
+          "gitBlob": "025df599d398c023e003a0ffe441aec49f85d4e5"
+        }
+      ],
+      "currentSha256": "e6aa29c9523b3ca57be93ba4d73240ed44906ad7bc1ec707b76812192639fd5c",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/session.ts",
+      "sha256": "534ea5641eb5f09baa251598185c6b59e60f2219365016221c9bfdbbfc0fdc75",
+      "matches": [
+        {
+          "gitBlob": "6be262d6f367d8ae5f0282644584e088d39b7ac2"
+        }
+      ],
+      "currentSha256": "534ea5641eb5f09baa251598185c6b59e60f2219365016221c9bfdbbfc0fdc75",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/structuralGenerator.ts",
+      "sha256": "c753608453c058a14a4866fc910a51afcd5631697edcad3f652f2d9b6768e9bd",
+      "matches": [
+        {
+          "gitBlob": "201a25c0808ca88b7e29c8f88e2a1524d7dbc944"
+        }
+      ],
+      "currentSha256": "c753608453c058a14a4866fc910a51afcd5631697edcad3f652f2d9b6768e9bd",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/subsets.ts",
+      "sha256": "9eabbd84a9a5b8d95122f40bd0ce6851d65ca91552ea9b46b7e8f47209f470ed",
+      "matches": [
+        {
+          "gitBlob": "10354b17ba42254ae7c9096a0cba54c5e7ea3536"
+        }
+      ],
+      "currentSha256": "9eabbd84a9a5b8d95122f40bd0ce6851d65ca91552ea9b46b7e8f47209f470ed",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/surfaceRequest.ts",
+      "sha256": "bb65b3d46a0659a56af1ef347d6e04a9fa3220a771258054e10d895dc755d4f7",
+      "matches": [
+        {
+          "gitBlob": "25d7a0293564dc5716ff46df6303e9ba299533da"
+        }
+      ],
+      "currentSha256": "bb65b3d46a0659a56af1ef347d6e04a9fa3220a771258054e10d895dc755d4f7",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/types.ts",
+      "sha256": "1d36c832a9350cdc1b801da7912716ff3a936e5684cfa83639534642c1d34e71",
+      "matches": [
+        {
+          "gitBlob": "0636acc894758e58181813f66cd231cba38db53a"
+        }
+      ],
+      "currentSha256": "1d36c832a9350cdc1b801da7912716ff3a936e5684cfa83639534642c1d34e71",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/validation.ts",
+      "sha256": "18139f56c6a927647fdfbe0768f46d54c637903748f9f27b3d394e12f5a7b8b2",
+      "matches": [
+        {
+          "gitBlob": "08d85725250ec9aec56c30b6b30a9560dcf400fd"
+        }
+      ],
+      "currentSha256": "18139f56c6a927647fdfbe0768f46d54c637903748f9f27b3d394e12f5a7b8b2",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/versions.ts",
+      "sha256": "8cf662234de69887d973a346e034af18226699749b32ac004f0346e9a4e59479",
+      "matches": [
+        {
+          "gitBlob": "9816f63915aebc6fffea68d3656b82d8cf210795"
+        }
+      ],
+      "currentSha256": "8cf662234de69887d973a346e034af18226699749b32ac004f0346e9a4e59479",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/view.ts",
+      "sha256": "7c2d2cadd2500b75f45e7060655e2c18506156f8efd4b2943ba9e058034ed9eb",
+      "matches": [
+        {
+          "gitBlob": "d00f8f4c68b2e79c9c19cda0f841489aa1401b92"
+        }
+      ],
+      "currentSha256": "7c2d2cadd2500b75f45e7060655e2c18506156f8efd4b2943ba9e058034ed9eb",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/vocabularyContract.ts",
+      "sha256": "caa5532552ce3515837a75bbda1a5b10ec2b8b4dc96d6fe13bd4e8cdf84800ac",
+      "matches": [
+        {
+          "gitBlob": "107ba3f392a9ab46ae7036dff156864902281b51"
+        }
+      ],
+      "currentSha256": "caa5532552ce3515837a75bbda1a5b10ec2b8b4dc96d6fe13bd4e8cdf84800ac",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/workerProtocol.ts",
+      "sha256": "c5a30c6756b29c07e67336df362e14c782840584bd6a25b77043d53ebe23c264",
+      "matches": [
+        {
+          "gitBlob": "90bab16b69e8626e7f3b8b99ceb5347c48261636"
+        }
+      ],
+      "currentSha256": "c5a30c6756b29c07e67336df362e14c782840584bd6a25b77043d53ebe23c264",
+      "status": "PASS"
+    },
+    {
+      "path": "src/domain/chord/engine/workerService.ts",
+      "sha256": "32027c0936d917b04366d79391ce7dcc9d4a709a40991ee25fec924e57fb8cf0",
+      "matches": [
+        {
+          "gitBlob": "3b9784784074c5eabe4099fc48c8de42385cd989"
+        }
+      ],
+      "currentSha256": "32027c0936d917b04366d79391ce7dcc9d4a709a40991ee25fec924e57fb8cf0",
+      "status": "PASS"
+    }
+  ]
+}

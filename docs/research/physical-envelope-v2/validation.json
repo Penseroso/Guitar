@@ -1,0 +1,8 @@
+{
+  "schema": "envelope-internal-validation-v2",
+  "exhaustiveContactPatterns": 15625,
+  "pairChecks": 3375,
+  "maxQuantizationErrorMm": 0.0004963349110198578,
+  "unitAndTransformChecks": "passed",
+  "humanPredictiveValidity": "ABSENT"
+}

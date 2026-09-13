@@ -1,0 +1,42 @@
+{
+  "measuredAt": "2026-09-13T09:32:40.3914934Z",
+  "commands": [
+    "Get-Command adb,idevice_id -ErrorAction SilentlyContinue",
+    "Get-PnpDevice -PresentOnly, filtered to portable/Android/mobile-name entries"
+  ],
+  "deviceTools": [],
+  "defaultAndroidAdbExists": false,
+  "matchingDevices": [
+    {
+      "Class": "Bluetooth",
+      "FriendlyName": "Galaxy Buds2 (2633) Avrcp 전송",
+      "Status": "OK"
+    },
+    {
+      "Class": "System",
+      "FriendlyName": "Galaxy Buds2 (2633) Hands-Free AG",
+      "Status": "OK"
+    },
+    {
+      "Class": "MEDIA",
+      "FriendlyName": "Galaxy Buds2 (2633)",
+      "Status": "OK"
+    },
+    {
+      "Class": "MEDIA",
+      "FriendlyName": "Galaxy Buds2 (2633) Hands-Free",
+      "Status": "OK"
+    },
+    {
+      "Class": "Bluetooth",
+      "FriendlyName": "Galaxy Buds2 (2633)",
+      "Status": "OK"
+    },
+    {
+      "Class": "Bluetooth",
+      "FriendlyName": "Galaxy Buds2 (2633) Avrcp 전송",
+      "Status": "OK"
+    }
+  ],
+  "conclusion": "No accessible physical mobile browser target or device bridge; EXTERNALLY BLOCKED / NOT MEASURED."
+}

@@ -1,0 +1,2818 @@
+{
+  "schema": "envelope-sensitivity-v2",
+  "baseline": "32f9d3f8a71dc0d2a5f18520bfad738e67ba26c0",
+  "profileHash": "5775c864944f54c90c46c1cb3ba1c87886b651f23fcea52b6dab66446aeb508d",
+  "featureSourceHash": "5817cd87e54281e394ef9b7da47d11d9f7110c802f59cd64c3965abf3a7bb49b",
+  "currentVerdictsUnchanged": true,
+  "humanModelRuns": 0,
+  "articulatedSolverRuns": 0,
+  "calibratedBands": [],
+  "scalarIndex": null,
+  "rows": [
+    {
+      "id": "open_em",
+      "tab": [
+        0,
+        2,
+        2,
+        0,
+        0,
+        0
+      ],
+      "role": "compact open sanity",
+      "statesHighEFirst": [
+        0,
+        0,
+        0,
+        2,
+        2,
+        0
+      ],
+      "currentDefaultScreen": {
+        "status": "PASS",
+        "basis": "heuristic-screen",
+        "reasonCodes": [],
+        "humanValidation": "absent",
+        "metrics": {
+          "stoppedWireSpanUm": 0,
+          "partialCoverGroups": 1
+        }
+      },
+      "contact": {
+        "groups": 1,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 2,
+        "maxCompatibleStringGap": 1,
+        "stopped": 2,
+        "opens": 4,
+        "omitted": 0,
+        "distinctStoppedFrets": 1
+      },
+      "instruments": [
+        {
+          "instrumentId": "electric_strat_constructed_v2",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 7.195151151642317,
+          "transverseLowerBoundMm": 7.103065762640633,
+          "midpointDiameterMm": 7.290614602331861
+        },
+        {
+          "instrumentId": "acoustic_gs_mini_reference_v2",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 7.516300589748249,
+          "transverseLowerBoundMm": 7.415420361081472,
+          "midpointDiameterMm": 7.6187803401251815
+        },
+        {
+          "instrumentId": "classical_c5_constructed_v2",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 8.779575600981316,
+          "transverseLowerBoundMm": 8.694841248152418,
+          "midpointDiameterMm": 8.86436315068475
+        }
+      ],
+      "sourceRole": "descriptive allocation only; not a measured execution label; synthetic examples need not match a default chord request"
+    },
+    {
+      "id": "open_c",
+      "tab": [
+        -1,
+        3,
+        2,
+        0,
+        1,
+        0
+      ],
+      "role": "compact open with omission",
+      "statesHighEFirst": [
+        0,
+        1,
+        0,
+        2,
+        3,
+        -1
+      ],
+      "currentDefaultScreen": {
+        "status": "PASS",
+        "basis": "heuristic-screen",
+        "reasonCodes": [],
+        "humanValidation": "absent",
+        "metrics": {
+          "stoppedWireSpanUm": 66699,
+          "partialCoverGroups": 3
+        }
+      },
+      "contact": {
+        "groups": 3,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 3,
+        "opens": 2,
+        "omitted": 1,
+        "distinctStoppedFrets": 3
+      },
+      "instruments": [
+        {
+          "instrumentId": "electric_strat_constructed_v2",
+          "wireSpanMm": 66.69878416410194,
+          "cellGapMm": 34.31229258443515,
+          "planarLowerBoundMm": 40.68506570548732,
+          "transverseLowerBoundMm": 21.569099561500458,
+          "midpointDiameterMm": 72.07245791493648
+        },
+        {
+          "instrumentId": "acoustic_gs_mini_reference_v2",
+          "wireSpanMm": 61.46750697476061,
+          "cellGapMm": 31.621132381734355,
+          "planarLowerBoundMm": 39.014093639762415,
+          "transverseLowerBoundMm": 22.531013825827966,
+          "midpointDiameterMm": 67.28792894233939
+        },
+        {
+          "instrumentId": "classical_c5_constructed_v2",
+          "wireSpanMm": 66.9356333281863,
+          "cellGapMm": 34.43413645188027,
+          "planarLowerBoundMm": 43.507495443793,
+          "transverseLowerBoundMm": 26.323686152926374,
+          "midpointDiameterMm": 73.87264513046294
+        }
+      ],
+      "sourceRole": "descriptive allocation only; not a measured execution label; synthetic examples need not match a default chord request"
+    },
+    {
+      "id": "closed_f",
+      "tab": [
+        1,
+        3,
+        3,
+        2,
+        1,
+        1
+      ],
+      "role": "barre-heavy ordinary closed shape",
+      "statesHighEFirst": [
+        1,
+        1,
+        2,
+        3,
+        3,
+        1
+      ],
+      "currentDefaultScreen": {
+        "status": "PASS",
+        "basis": "heuristic-screen",
+        "reasonCodes": [],
+        "humanValidation": "absent",
+        "metrics": {
+          "stoppedWireSpanUm": 66699,
+          "partialCoverGroups": 3
+        }
+      },
+      "contact": {
+        "groups": 3,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 5,
+        "stopped": 6,
+        "opens": 0,
+        "omitted": 0,
+        "distinctStoppedFrets": 3
+      },
+      "instruments": [
+        {
+          "instrumentId": "electric_strat_constructed_v2",
+          "wireSpanMm": 66.69878416410194,
+          "cellGapMm": 34.31229258443515,
+          "planarLowerBoundMm": 44.96270818183666,
+          "transverseLowerBoundMm": 35,
+          "midpointDiameterMm": 74.53237757307146
+        },
+        {
+          "instrumentId": "acoustic_gs_mini_reference_v2",
+          "wireSpanMm": 61.46750697476061,
+          "cellGapMm": 31.621132381734355,
+          "planarLowerBoundMm": 43.84196823435013,
+          "transverseLowerBoundMm": 36.5125,
+          "midpointDiameterMm": 70.14994667184995
+        },
+        {
+          "instrumentId": "classical_c5_constructed_v2",
+          "wireSpanMm": 66.9356333281863,
+          "cellGapMm": 34.43413645188027,
+          "planarLowerBoundMm": 49.365342780708865,
+          "transverseLowerBoundMm": 43,
+          "midpointDiameterMm": 77.42481672492863
+        }
+      ],
+      "sourceRole": "descriptive allocation only; not a measured execution label; synthetic examples need not match a default chord request"
+    },
+    {
+      "id": "a_shape",
+      "tab": [
+        -1,
+        3,
+        5,
+        5,
+        5,
+        3
+      ],
+      "role": "nested partial/wide flat-contact hypotheses",
+      "statesHighEFirst": [
+        3,
+        5,
+        5,
+        5,
+        3,
+        -1
+      ],
+      "currentDefaultScreen": {
+        "status": "PASS",
+        "basis": "heuristic-screen",
+        "reasonCodes": [],
+        "humanValidation": "absent",
+        "metrics": {
+          "stoppedWireSpanUm": 59422,
+          "partialCoverGroups": 2
+        }
+      },
+      "contact": {
+        "groups": 2,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 4,
+        "stopped": 5,
+        "opens": 0,
+        "omitted": 1,
+        "distinctStoppedFrets": 2
+      },
+      "instruments": [
+        {
+          "instrumentId": "electric_strat_constructed_v2",
+          "wireSpanMm": 59.42186131331765,
+          "cellGapMm": 30.568777479929523,
+          "planarLowerBoundMm": 38.198645744637744,
+          "transverseLowerBoundMm": 29.51759883066788,
+          "midpointDiameterMm": 65.33051215955969
+        },
+        {
+          "instrumentId": "acoustic_gs_mini_reference_v2",
+          "wireSpanMm": 54.76132317109665,
+          "cellGapMm": 28.171226305033088,
+          "planarLowerBoundMm": 37.00561276928481,
+          "transverseLowerBoundMm": 30.872703535541234,
+          "midpointDiameterMm": 61.27659607048067
+        },
+        {
+          "instrumentId": "classical_c5_constructed_v2",
+          "wireSpanMm": 59.63286992999301,
+          "cellGapMm": 30.677328025249636,
+          "planarLowerBoundMm": 41.23490961833083,
+          "transverseLowerBoundMm": 35.79649640780366,
+          "midpointDiameterMm": 67.29915356674583
+        }
+      ],
+      "sourceRole": "descriptive allocation only; not a measured execution label; synthetic examples need not match a default chord request"
+    },
+    {
+      "id": "crossing_c",
+      "tab": [
+        -1,
+        -1,
+        10,
+        9,
+        8,
+        0
+      ],
+      "role": "crossing with open high E",
+      "statesHighEFirst": [
+        0,
+        8,
+        9,
+        10,
+        -1,
+        -1
+      ],
+      "currentDefaultScreen": {
+        "status": "PASS",
+        "basis": "heuristic-screen",
+        "reasonCodes": [],
+        "humanValidation": "absent",
+        "metrics": {
+          "stoppedWireSpanUm": 44516,
+          "partialCoverGroups": 3
+        }
+      },
+      "contact": {
+        "groups": 3,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 3,
+        "opens": 1,
+        "omitted": 2,
+        "distinctStoppedFrets": 3
+      },
+      "instruments": [
+        {
+          "instrumentId": "electric_strat_constructed_v2",
+          "wireSpanMm": 44.51609766346425,
+          "cellGapMm": 22.900707814823505,
+          "planarLowerBoundMm": 28.3049292445911,
+          "transverseLowerBoundMm": 16.439703869737286,
+          "midpointDiameterMm": 48.74212988597207
+        },
+        {
+          "instrumentId": "acoustic_gs_mini_reference_v2",
+          "wireSpanMm": 41.02463902319252,
+          "cellGapMm": 21.104573868562824,
+          "planarLowerBoundMm": 27.4112213351496,
+          "transverseLowerBoundMm": 17.277975339669034,
+          "midpointDiameterMm": 45.694301877713265
+        },
+        {
+          "instrumentId": "classical_c5_constructed_v2",
+          "wireSpanMm": 44.674175515287544,
+          "cellGapMm": 22.982028839949436,
+          "planarLowerBoundMm": 30.220975469367886,
+          "transverseLowerBoundMm": 19.44501865798974,
+          "midpointDiameterMm": 49.98878351917007
+        }
+      ],
+      "sourceRole": "descriptive allocation only; not a measured execution label; synthetic examples need not match a default chord request"
+    },
+    {
+      "id": "high_diagonal",
+      "tab": [
+        -1,
+        -1,
+        10,
+        9,
+        8,
+        7
+      ],
+      "role": "high-position diagonal",
+      "statesHighEFirst": [
+        7,
+        8,
+        9,
+        10,
+        -1,
+        -1
+      ],
+      "currentDefaultScreen": {
+        "status": "PASS",
+        "basis": "heuristic-screen",
+        "reasonCodes": [],
+        "humanValidation": "absent",
+        "metrics": {
+          "stoppedWireSpanUm": 68779,
+          "partialCoverGroups": 4
+        }
+      },
+      "contact": {
+        "groups": 4,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 4
+      },
+      "instruments": [
+        {
+          "instrumentId": "electric_strat_constructed_v2",
+          "wireSpanMm": 68.7785524279752,
+          "cellGapMm": 47.163162579334454,
+          "planarLowerBoundMm": 53.19153571147859,
+          "transverseLowerBoundMm": 24.251223485453963,
+          "midpointDiameterMm": 74.93033973895791
+        },
+        {
+          "instrumentId": "acoustic_gs_mini_reference_v2",
+          "wireSpanMm": 63.38415615911438,
+          "cellGapMm": 43.464091004484686,
+          "planarLowerBoundMm": 50.56902127452751,
+          "transverseLowerBoundMm": 25.469588132158044,
+          "midpointDiameterMm": 70.14495740811478
+        },
+        {
+          "instrumentId": "classical_c5_constructed_v2",
+          "wireSpanMm": 69.02278690471493,
+          "cellGapMm": 47.330640229376826,
+          "planarLowerBoundMm": 55.565631367068995,
+          "transverseLowerBoundMm": 28.79178005850544,
+          "midpointDiameterMm": 76.75497936454704
+        }
+      ],
+      "sourceRole": "descriptive allocation only; not a measured execution label; synthetic examples need not match a default chord request"
+    },
+    {
+      "id": "low_diagonal",
+      "tab": [
+        -1,
+        -1,
+        4,
+        3,
+        2,
+        1
+      ],
+      "role": "same relative stopped pattern lower on neck",
+      "statesHighEFirst": [
+        1,
+        2,
+        3,
+        4,
+        -1,
+        -1
+      ],
+      "currentDefaultScreen": {
+        "status": "UNCERTAIN",
+        "basis": "heuristic-screen",
+        "reasonCodes": [
+          "span-over-warning"
+        ],
+        "humanValidation": "absent",
+        "metrics": {
+          "stoppedWireSpanUm": 97268,
+          "partialCoverGroups": 4
+        }
+      },
+      "contact": {
+        "groups": 4,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 4,
+        "opens": 0,
+        "omitted": 2,
+        "distinctStoppedFrets": 4
+      },
+      "instruments": [
+        {
+          "instrumentId": "electric_strat_constructed_v2",
+          "wireSpanMm": 97.26756164403147,
+          "cellGapMm": 66.69878416410194,
+          "planarLowerBoundMm": 70.15999521045045,
+          "transverseLowerBoundMm": 21.276641357977603,
+          "midpointDiameterMm": 102.45590997852526
+        },
+        {
+          "instrumentId": "acoustic_gs_mini_reference_v2",
+          "wireSpanMm": 89.6387332797937,
+          "cellGapMm": 61.46750697476061,
+          "planarLowerBoundMm": 65.54081216396892,
+          "transverseLowerBoundMm": 22.210592328941672,
+          "midpointDiameterMm": 95.0129485154981
+        },
+        {
+          "instrumentId": "classical_c5_constructed_v2",
+          "wireSpanMm": 97.61296135343594,
+          "cellGapMm": 66.9356333281863,
+          "planarLowerBoundMm": 71.99179326290299,
+          "transverseLowerBoundMm": 26.054565735594053,
+          "midpointDiameterMm": 103.90317515541058
+        }
+      ],
+      "sourceRole": "descriptive allocation only; not a measured execution label; synthetic examples need not match a default chord request"
+    },
+    {
+      "id": "wide_pair",
+      "tab": [
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        8
+      ],
+      "role": "synthetic wide stopped pair",
+      "statesHighEFirst": [
+        8,
+        -1,
+        -1,
+        -1,
+        -1,
+        1
+      ],
+      "currentDefaultScreen": {
+        "status": "UNCERTAIN",
+        "basis": "heuristic-screen",
+        "reasonCodes": [
+          "span-over-warning",
+          "span-over-severe"
+        ],
+        "humanValidation": "absent",
+        "metrics": {
+          "stoppedWireSpanUm": 203322,
+          "partialCoverGroups": 2
+        }
+      },
+      "contact": {
+        "groups": 2,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 2,
+        "opens": 0,
+        "omitted": 4,
+        "distinctStoppedFrets": 2
+      },
+      "instruments": [
+        {
+          "instrumentId": "electric_strat_constructed_v2",
+          "wireSpanMm": 203.32196031547824,
+          "cellGapMm": 179.0595055509673,
+          "planarLowerBoundMm": 183.12639902044833,
+          "transverseLowerBoundMm": 37.891368008904635,
+          "midpointDiameterMm": 212.84115207621363
+        },
+        {
+          "instrumentId": "acoustic_gs_mini_reference_v2",
+          "wireSpanMm": 187.37513989857797,
+          "cellGapMm": 165.0156227626561,
+          "planarLowerBoundMm": 169.84521110902273,
+          "transverseLowerBoundMm": 39.68032519451521,
+          "midpointDiameterMm": 197.074399325795
+        },
+        {
+          "instrumentId": "classical_c5_constructed_v2",
+          "wireSpanMm": 204.043962027267,
+          "cellGapMm": 179.69535063783962,
+          "planarLowerBoundMm": 185.51689546413584,
+          "transverseLowerBoundMm": 45.66064058331986,
+          "midpointDiameterMm": 215.09449937216854
+        }
+      ],
+      "sourceRole": "descriptive allocation only; not a measured execution label; synthetic examples need not match a default chord request"
+    },
+    {
+      "id": "six_fret_targets",
+      "tab": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "role": "synthetic six-group target",
+      "statesHighEFirst": [
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "currentDefaultScreen": {
+        "status": "UNCERTAIN",
+        "basis": "heuristic-screen",
+        "reasonCodes": [
+          "groups-over-four",
+          "groups-over-five",
+          "span-over-warning"
+        ],
+        "humanValidation": "absent",
+        "metrics": {
+          "stoppedWireSpanUm": 153354,
+          "partialCoverGroups": 6
+        }
+      },
+      "contact": {
+        "groups": 6,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 6,
+        "opens": 0,
+        "omitted": 0,
+        "distinctStoppedFrets": 6
+      },
+      "instruments": [
+        {
+          "instrumentId": "electric_strat_constructed_v2",
+          "wireSpanMm": 153.35433014940614,
+          "cellGapMm": 126.1206454774196,
+          "planarLowerBoundMm": 131.62579960813434,
+          "transverseLowerBoundMm": 37.18079642520168,
+          "midpointDiameterMm": 162.3302808809249
+        },
+        {
+          "instrumentId": "acoustic_gs_mini_reference_v2",
+          "wireSpanMm": 141.32653954945266,
+          "cellGapMm": 116.22883014585726,
+          "planarLowerBoundMm": 122.73700081282313,
+          "transverseLowerBoundMm": 38.901812546374806,
+          "midpointDiameterMm": 150.7596595786618
+        },
+        {
+          "instrumentId": "classical_c5_constructed_v2",
+          "wireSpanMm": 153.89889547184495,
+          "cellGapMm": 126.5685032581793,
+          "planarLowerBoundMm": 134.4835071562948,
+          "transverseLowerBoundMm": 45.006771692493274,
+          "midpointDiameterMm": 164.84930507688225
+        }
+      ],
+      "sourceRole": "descriptive allocation only; not a measured execution label; synthetic examples need not match a default chord request"
+    },
+    {
+      "id": "separated_same_fret",
+      "tab": [
+        5,
+        0,
+        5,
+        0,
+        5,
+        0
+      ],
+      "role": "same fret separated by protected opens",
+      "statesHighEFirst": [
+        0,
+        5,
+        0,
+        5,
+        0,
+        5
+      ],
+      "currentDefaultScreen": {
+        "status": "PASS",
+        "basis": "heuristic-screen",
+        "reasonCodes": [],
+        "humanValidation": "absent",
+        "metrics": {
+          "stoppedWireSpanUm": 0,
+          "partialCoverGroups": 3
+        }
+      },
+      "contact": {
+        "groups": 3,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 3,
+        "opens": 3,
+        "omitted": 0,
+        "distinctStoppedFrets": 1
+      },
+      "instruments": [
+        {
+          "instrumentId": "electric_strat_constructed_v2",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 30.869625683561175,
+          "transverseLowerBoundMm": 30.869625683561175,
+          "midpointDiameterMm": 31.183534897975036
+        },
+        {
+          "instrumentId": "acoustic_gs_mini_reference_v2",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.35400398400232,
+          "transverseLowerBoundMm": 32.35400398400232,
+          "midpointDiameterMm": 32.69533637336445
+        },
+        {
+          "instrumentId": "classical_c5_constructed_v2",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 37.04063326740352,
+          "transverseLowerBoundMm": 37.04063326740352,
+          "midpointDiameterMm": 37.32573398769638
+        }
+      ],
+      "sourceRole": "descriptive allocation only; not a measured execution label; synthetic examples need not match a default chord request"
+    },
+    {
+      "id": "partial_cover",
+      "tab": [
+        -1,
+        5,
+        4,
+        5,
+        5,
+        5
+      ],
+      "role": "partial cover differs from whole-fret classifier",
+      "statesHighEFirst": [
+        5,
+        5,
+        5,
+        4,
+        5,
+        -1
+      ],
+      "currentDefaultScreen": {
+        "status": "PASS",
+        "basis": "heuristic-screen",
+        "reasonCodes": [],
+        "humanValidation": "absent",
+        "metrics": {
+          "stoppedWireSpanUm": 28853,
+          "partialCoverGroups": 3
+        }
+      },
+      "contact": {
+        "groups": 3,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 2,
+        "stopped": 5,
+        "opens": 0,
+        "omitted": 1,
+        "distinctStoppedFrets": 2
+      },
+      "instruments": [
+        {
+          "instrumentId": "electric_strat_constructed_v2",
+          "wireSpanMm": 28.853083833388126,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 30.869625683561175,
+          "transverseLowerBoundMm": 30.869625683561175,
+          "midpointDiameterMm": 37.768094301041
+        },
+        {
+          "instrumentId": "acoustic_gs_mini_reference_v2",
+          "wireSpanMm": 26.59009686606356,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.354003984002325,
+          "transverseLowerBoundMm": 32.354003984002325,
+          "midpointDiameterMm": 36.700623066597515
+        },
+        {
+          "instrumentId": "classical_c5_constructed_v2",
+          "wireSpanMm": 28.95554190474337,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 37.04063326740353,
+          "transverseLowerBoundMm": 37.04063326740353,
+          "midpointDiameterMm": 40.84846137193754
+        }
+      ],
+      "sourceRole": "descriptive allocation only; not a measured execution label; synthetic examples need not match a default chord request"
+    },
+    {
+      "id": "thumb_hypothesis",
+      "tab": [
+        3,
+        1,
+        2,
+        4,
+        5,
+        -1
+      ],
+      "role": "synthetic low-E thumb fallback hypothesis",
+      "statesHighEFirst": [
+        -1,
+        5,
+        4,
+        2,
+        1,
+        3
+      ],
+      "currentDefaultScreen": {
+        "status": "UNCERTAIN",
+        "basis": "heuristic-screen",
+        "reasonCodes": [
+          "groups-over-four",
+          "span-over-warning"
+        ],
+        "humanValidation": "absent",
+        "metrics": {
+          "stoppedWireSpanUm": 126121,
+          "partialCoverGroups": 5
+        }
+      },
+      "contact": {
+        "groups": 5,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 1,
+        "maxCompatibleStringGap": 0,
+        "stopped": 5,
+        "opens": 0,
+        "omitted": 1,
+        "distinctStoppedFrets": 5
+      },
+      "existingOptionalThumbScreen": {
+        "status": "UNCERTAIN",
+        "basis": "heuristic-screen",
+        "reasonCodes": [
+          "groups-over-four",
+          "span-over-warning",
+          "thumb-fallback-relied-on"
+        ],
+        "humanValidation": "absent",
+        "metrics": {
+          "stoppedWireSpanUm": 126121,
+          "partialCoverGroups": 5,
+          "thumbFallback": {
+            "reliedOn": true,
+            "nonThumbGroups": 4,
+            "nonThumbSpanUm": 126121
+          }
+        }
+      },
+      "instruments": [
+        {
+          "instrumentId": "electric_strat_constructed_v2",
+          "wireSpanMm": 126.1206454774196,
+          "cellGapMm": 97.26756164403147,
+          "planarLowerBoundMm": 99.80653850338429,
+          "transverseLowerBoundMm": 30.024608900502862,
+          "midpointDiameterMm": 131.7776215329581
+        },
+        {
+          "instrumentId": "acoustic_gs_mini_reference_v2",
+          "wireSpanMm": 116.22883014585726,
+          "cellGapMm": 89.6387332797937,
+          "planarLowerBoundMm": 92.6444942520138,
+          "transverseLowerBoundMm": 31.428191203714142,
+          "midpointDiameterMm": 121.94560721100514
+        },
+        {
+          "instrumentId": "classical_c5_constructed_v2",
+          "wireSpanMm": 126.5685032581793,
+          "cellGapMm": 97.61296135343594,
+          "planarLowerBoundMm": 101.29419718338842,
+          "transverseLowerBoundMm": 36.26304773015361,
+          "midpointDiameterMm": 133.10537908186717
+        }
+      ],
+      "sourceRole": "descriptive allocation only; not a measured execution label; synthetic examples need not match a default chord request"
+    },
+    {
+      "id": "omission_semantics",
+      "tab": [
+        -1,
+        5,
+        -1,
+        5,
+        5,
+        -1
+      ],
+      "role": "same allocation; unplayed and strict damping are different requests",
+      "statesHighEFirst": [
+        -1,
+        5,
+        5,
+        -1,
+        5,
+        -1
+      ],
+      "currentDefaultScreen": {
+        "status": "PASS",
+        "basis": "heuristic-screen",
+        "reasonCodes": [],
+        "humanValidation": "absent",
+        "metrics": {
+          "stoppedWireSpanUm": 0,
+          "partialCoverGroups": 1
+        }
+      },
+      "contact": {
+        "groups": 1,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 3,
+        "maxCompatibleStringGap": 3,
+        "stopped": 3,
+        "opens": 0,
+        "omitted": 3,
+        "distinctStoppedFrets": 1
+      },
+      "strictDamping": {
+        "required": true,
+        "geometryUnchanged": true,
+        "analysisSupport": "unsupported"
+      },
+      "instruments": [
+        {
+          "instrumentId": "electric_strat_constructed_v2",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 23.152219262670883,
+          "transverseLowerBoundMm": 23.152219262670883,
+          "midpointDiameterMm": 23.384587486456446
+        },
+        {
+          "instrumentId": "acoustic_gs_mini_reference_v2",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 24.265502988001742,
+          "transverseLowerBoundMm": 24.265502988001742,
+          "midpointDiameterMm": 24.520089021825754
+        },
+        {
+          "instrumentId": "classical_c5_constructed_v2",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 27.780474950552644,
+          "transverseLowerBoundMm": 27.780474950552644,
+          "midpointDiameterMm": 27.994300490772286
+        }
+      ],
+      "sourceRole": "descriptive allocation only; not a measured execution label; synthetic examples need not match a default chord request"
+    },
+    {
+      "id": "open_only",
+      "tab": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "role": "no stopped contacts; not a four-finger pose witness",
+      "statesHighEFirst": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "currentDefaultScreen": {
+        "status": "PASS",
+        "basis": "heuristic-screen",
+        "reasonCodes": [],
+        "humanValidation": "absent",
+        "metrics": {
+          "stoppedWireSpanUm": 0,
+          "partialCoverGroups": 0
+        }
+      },
+      "contact": {
+        "groups": 0,
+        "optimalPartitionCount": 1,
+        "maxCompatibleContacts": 0,
+        "maxCompatibleStringGap": 0,
+        "stopped": 0,
+        "opens": 6,
+        "omitted": 0,
+        "distinctStoppedFrets": 0
+      },
+      "instruments": [
+        {
+          "instrumentId": "electric_strat_constructed_v2",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 0,
+          "transverseLowerBoundMm": 0,
+          "midpointDiameterMm": 0
+        },
+        {
+          "instrumentId": "acoustic_gs_mini_reference_v2",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 0,
+          "transverseLowerBoundMm": 0,
+          "midpointDiameterMm": 0
+        },
+        {
+          "instrumentId": "classical_c5_constructed_v2",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 0,
+          "transverseLowerBoundMm": 0,
+          "midpointDiameterMm": 0
+        }
+      ],
+      "sourceRole": "descriptive allocation only; not a measured execution label; synthetic examples need not match a default chord request"
+    }
+  ],
+  "sensitivity": [
+    {
+      "scenario": "electric_nut_endpoint_sensitivity",
+      "variedParameter": "nutOuterStringSpreadMm",
+      "value": 33,
+      "profileId": "electric_strat_constructed_v2",
+      "outcomes": [
+        {
+          "id": "open_em",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 6.817596810668161,
+          "transverseLowerBoundMm": 6.714920918659684,
+          "midpointDiameterMm": 6.92318214031443
+        },
+        {
+          "id": "open_c",
+          "wireSpanMm": 66.69878416410194,
+          "cellGapMm": 34.31229258443515,
+          "planarLowerBoundMm": 40.104271591044636,
+          "transverseLowerBoundMm": 20.434560330616254,
+          "midpointDiameterMm": 71.74591446502046
+        },
+        {
+          "id": "closed_f",
+          "wireSpanMm": 66.69878416410194,
+          "cellGapMm": 34.31229258443515,
+          "planarLowerBoundMm": 44.02174671724689,
+          "transverseLowerBoundMm": 33,
+          "midpointDiameterMm": 73.96572626264722
+        },
+        {
+          "id": "a_shape",
+          "wireSpanMm": 59.42186131331765,
+          "cellGapMm": 30.568777479929523,
+          "planarLowerBoundMm": 37.618716939117085,
+          "transverseLowerBoundMm": 28.092160881643338,
+          "midpointDiameterMm": 64.99279509905351
+        },
+        {
+          "id": "crossing_c",
+          "wireSpanMm": 44.51609766346425,
+          "cellGapMm": 22.900707814823505,
+          "planarLowerBoundMm": 28.015782360648526,
+          "transverseLowerBoundMm": 15.920331201986006,
+          "midpointDiameterMm": 48.572782380589096
+        },
+        {
+          "id": "high_diagonal",
+          "wireSpanMm": 68.7785524279752,
+          "cellGapMm": 47.163162579334454,
+          "planarLowerBoundMm": 52.83252539292277,
+          "transverseLowerBoundMm": 23.42519599276714,
+          "midpointDiameterMm": 74.67161991515994
+        },
+        {
+          "id": "low_diagonal",
+          "wireSpanMm": 97.26756164403147,
+          "cellGapMm": 66.69878416410194,
+          "planarLowerBoundMm": 69.82302502198463,
+          "transverseLowerBoundMm": 20.10846207492686,
+          "midpointDiameterMm": 102.22260702713143
+        },
+        {
+          "id": "wide_pair",
+          "wireSpanMm": 203.32196031547824,
+          "cellGapMm": 179.0595055509673,
+          "planarLowerBoundMm": 182.7954965604994,
+          "transverseLowerBoundMm": 36.223948081819614,
+          "midpointDiameterMm": 212.5555346589238
+        },
+        {
+          "id": "six_fret_targets",
+          "wireSpanMm": 153.35433014940614,
+          "cellGapMm": 126.1206454774196,
+          "planarLowerBoundMm": 131.15132106423567,
+          "transverseLowerBoundMm": 35.431642886763335,
+          "midpointDiameterMm": 161.9448772481231
+        },
+        {
+          "id": "separated_same_fret",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 29.599704841986615,
+          "transverseLowerBoundMm": 29.599704841986615,
+          "midpointDiameterMm": 29.94878424274129
+        },
+        {
+          "id": "partial_cover",
+          "wireSpanMm": 28.853083833388126,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 29.599704841986615,
+          "transverseLowerBoundMm": 29.599704841986615,
+          "midpointDiameterMm": 37.19734711047368
+        },
+        {
+          "id": "thumb_hypothesis",
+          "wireSpanMm": 126.1206454774196,
+          "cellGapMm": 97.26756164403147,
+          "planarLowerBoundMm": 99.57806442255693,
+          "transverseLowerBoundMm": 28.657489866772067,
+          "midpointDiameterMm": 131.60434133030967
+        },
+        {
+          "id": "omission_semantics",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 22.199778631489963,
+          "transverseLowerBoundMm": 22.199778631489963,
+          "midpointDiameterMm": 22.458875047802984
+        },
+        {
+          "id": "open_only",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 0,
+          "transverseLowerBoundMm": 0,
+          "midpointDiameterMm": 0
+        }
+      ]
+    },
+    {
+      "scenario": "electric_nut_endpoint_sensitivity",
+      "variedParameter": "nutOuterStringSpreadMm",
+      "value": 35,
+      "profileId": "electric_strat_constructed_v2",
+      "outcomes": [
+        {
+          "id": "open_em",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 7.195151151642317,
+          "transverseLowerBoundMm": 7.103065762640633,
+          "midpointDiameterMm": 7.290614602331861
+        },
+        {
+          "id": "open_c",
+          "wireSpanMm": 66.69878416410194,
+          "cellGapMm": 34.31229258443515,
+          "planarLowerBoundMm": 40.68506570548732,
+          "transverseLowerBoundMm": 21.569099561500458,
+          "midpointDiameterMm": 72.07245791493648
+        },
+        {
+          "id": "closed_f",
+          "wireSpanMm": 66.69878416410194,
+          "cellGapMm": 34.31229258443515,
+          "planarLowerBoundMm": 44.96270818183666,
+          "transverseLowerBoundMm": 35,
+          "midpointDiameterMm": 74.53237757307146
+        },
+        {
+          "id": "a_shape",
+          "wireSpanMm": 59.42186131331765,
+          "cellGapMm": 30.568777479929523,
+          "planarLowerBoundMm": 38.198645744637744,
+          "transverseLowerBoundMm": 29.51759883066788,
+          "midpointDiameterMm": 65.33051215955969
+        },
+        {
+          "id": "crossing_c",
+          "wireSpanMm": 44.51609766346425,
+          "cellGapMm": 22.900707814823505,
+          "planarLowerBoundMm": 28.3049292445911,
+          "transverseLowerBoundMm": 16.439703869737286,
+          "midpointDiameterMm": 48.74212988597207
+        },
+        {
+          "id": "high_diagonal",
+          "wireSpanMm": 68.7785524279752,
+          "cellGapMm": 47.163162579334454,
+          "planarLowerBoundMm": 53.19153571147859,
+          "transverseLowerBoundMm": 24.251223485453963,
+          "midpointDiameterMm": 74.93033973895791
+        },
+        {
+          "id": "low_diagonal",
+          "wireSpanMm": 97.26756164403147,
+          "cellGapMm": 66.69878416410194,
+          "planarLowerBoundMm": 70.15999521045045,
+          "transverseLowerBoundMm": 21.276641357977603,
+          "midpointDiameterMm": 102.45590997852526
+        },
+        {
+          "id": "wide_pair",
+          "wireSpanMm": 203.32196031547824,
+          "cellGapMm": 179.0595055509673,
+          "planarLowerBoundMm": 183.12639902044833,
+          "transverseLowerBoundMm": 37.891368008904635,
+          "midpointDiameterMm": 212.84115207621363
+        },
+        {
+          "id": "six_fret_targets",
+          "wireSpanMm": 153.35433014940614,
+          "cellGapMm": 126.1206454774196,
+          "planarLowerBoundMm": 131.62579960813434,
+          "transverseLowerBoundMm": 37.18079642520168,
+          "midpointDiameterMm": 162.3302808809249
+        },
+        {
+          "id": "separated_same_fret",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 30.869625683561175,
+          "transverseLowerBoundMm": 30.869625683561175,
+          "midpointDiameterMm": 31.183534897975036
+        },
+        {
+          "id": "partial_cover",
+          "wireSpanMm": 28.853083833388126,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 30.869625683561175,
+          "transverseLowerBoundMm": 30.869625683561175,
+          "midpointDiameterMm": 37.768094301041
+        },
+        {
+          "id": "thumb_hypothesis",
+          "wireSpanMm": 126.1206454774196,
+          "cellGapMm": 97.26756164403147,
+          "planarLowerBoundMm": 99.80653850338429,
+          "transverseLowerBoundMm": 30.024608900502862,
+          "midpointDiameterMm": 131.7776215329581
+        },
+        {
+          "id": "omission_semantics",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 23.152219262670883,
+          "transverseLowerBoundMm": 23.152219262670883,
+          "midpointDiameterMm": 23.384587486456446
+        },
+        {
+          "id": "open_only",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 0,
+          "transverseLowerBoundMm": 0,
+          "midpointDiameterMm": 0
+        }
+      ]
+    },
+    {
+      "scenario": "electric_nut_endpoint_sensitivity",
+      "variedParameter": "nutOuterStringSpreadMm",
+      "value": 37,
+      "profileId": "electric_strat_constructed_v2",
+      "outcomes": [
+        {
+          "id": "open_em",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 7.5727054325119365,
+          "transverseLowerBoundMm": 7.491210606621582,
+          "midpointDiameterMm": 7.658097777497884
+        },
+        {
+          "id": "open_c",
+          "wireSpanMm": 66.69878416410194,
+          "cellGapMm": 34.31229258443515,
+          "planarLowerBoundMm": 41.28704815514311,
+          "transverseLowerBoundMm": 22.70363879238466,
+          "midpointDiameterMm": 72.41432196946347
+        },
+        {
+          "id": "closed_f",
+          "wireSpanMm": 66.69878416410194,
+          "cellGapMm": 34.31229258443515,
+          "planarLowerBoundMm": 45.9319875823392,
+          "transverseLowerBoundMm": 37,
+          "midpointDiameterMm": 75.1244147689029
+        },
+        {
+          "id": "a_shape",
+          "wireSpanMm": 59.42186131331765,
+          "cellGapMm": 30.568777479929523,
+          "planarLowerBoundMm": 38.794703020627274,
+          "transverseLowerBoundMm": 30.943036779692427,
+          "midpointDiameterMm": 65.68118769543442
+        },
+        {
+          "id": "crossing_c",
+          "wireSpanMm": 44.51609766346425,
+          "cellGapMm": 22.900707814823505,
+          "planarLowerBoundMm": 28.599786557126937,
+          "transverseLowerBoundMm": 16.95907653748857,
+          "midpointDiameterMm": 48.9161104831967
+        },
+        {
+          "id": "high_diagonal",
+          "wireSpanMm": 68.7785524279752,
+          "cellGapMm": 47.163162579334454,
+          "planarLowerBoundMm": 53.55968508586433,
+          "transverseLowerBoundMm": 25.077250978140782,
+          "midpointDiameterMm": 75.19680361006277
+        },
+        {
+          "id": "low_diagonal",
+          "wireSpanMm": 97.26756164403147,
+          "cellGapMm": 66.69878416410194,
+          "planarLowerBoundMm": 70.5128949841072,
+          "transverseLowerBoundMm": 22.444820641028347,
+          "midpointDiameterMm": 102.70130561664234
+        },
+        {
+          "id": "wide_pair",
+          "wireSpanMm": 203.32196031547824,
+          "cellGapMm": 179.0595055509673,
+          "planarLowerBoundMm": 183.47085602854634,
+          "transverseLowerBoundMm": 39.55878793598965,
+          "midpointDiameterMm": 213.1387086781235
+        },
+        {
+          "id": "six_fret_targets",
+          "wireSpanMm": 153.35433014940614,
+          "cellGapMm": 126.1206454774196,
+          "planarLowerBoundMm": 132.1202706426103,
+          "transverseLowerBoundMm": 38.92994996364001,
+          "midpointDiameterMm": 162.73253229555175
+        },
+        {
+          "id": "separated_same_fret",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.139546525135735,
+          "transverseLowerBoundMm": 32.139546525135735,
+          "midpointDiameterMm": 32.4183243567211
+        },
+        {
+          "id": "partial_cover",
+          "wireSpanMm": 28.853083833388126,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.139546525135735,
+          "transverseLowerBoundMm": 32.139546525135735,
+          "midpointDiameterMm": 38.35327990257017
+        },
+        {
+          "id": "thumb_hypothesis",
+          "wireSpanMm": 126.1206454774196,
+          "cellGapMm": 97.26756164403147,
+          "planarLowerBoundMm": 100.04535542274081,
+          "transverseLowerBoundMm": 31.391727934233664,
+          "midpointDiameterMm": 131.95896596108258
+        },
+        {
+          "id": "omission_semantics",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 24.104659893851803,
+          "transverseLowerBoundMm": 24.104659893851803,
+          "midpointDiameterMm": 24.31029992510991
+        },
+        {
+          "id": "open_only",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 0,
+          "transverseLowerBoundMm": 0,
+          "midpointDiameterMm": 0
+        }
+      ]
+    },
+    {
+      "scenario": "classical_bridge_endpoint_sensitivity",
+      "variedParameter": "bridgeOuterStringSpreadMm",
+      "value": 57,
+      "profileId": "classical_c5_constructed_v2",
+      "outcomes": [
+        {
+          "id": "open_em",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 8.757131612114867,
+          "transverseLowerBoundMm": 8.682986092133365,
+          "midpointDiameterMm": 8.831317756849156
+        },
+        {
+          "id": "open_c",
+          "wireSpanMm": 66.9356333281863,
+          "cellGapMm": 34.43413645188027,
+          "planarLowerBoundMm": 43.44697127635783,
+          "transverseLowerBoundMm": 26.258225383810576,
+          "midpointDiameterMm": 73.83769399622717
+        },
+        {
+          "id": "closed_f",
+          "wireSpanMm": 66.9356333281863,
+          "cellGapMm": 34.43413645188027,
+          "planarLowerBoundMm": 49.278293098060885,
+          "transverseLowerBoundMm": 43,
+          "midpointDiameterMm": 77.37544255079308
+        },
+        {
+          "id": "a_shape",
+          "wireSpanMm": 59.63286992999301,
+          "cellGapMm": 30.677328025249636,
+          "planarLowerBoundMm": 41.08873188354358,
+          "transverseLowerBoundMm": 35.621934356828206,
+          "midpointDiameterMm": 67.21039621793068
+        },
+        {
+          "id": "crossing_c",
+          "wireSpanMm": 44.674175515287544,
+          "cellGapMm": 22.982028839949436,
+          "planarLowerBoundMm": 30.025031970710835,
+          "transverseLowerBoundMm": 19.164391325741022,
+          "midpointDiameterMm": 49.8740047323524
+        },
+        {
+          "id": "high_diagonal",
+          "wireSpanMm": 69.02278690471493,
+          "cellGapMm": 47.330640229376826,
+          "planarLowerBoundMm": 55.35004837543245,
+          "transverseLowerBoundMm": 28.41780755119226,
+          "midpointDiameterMm": 76.60592531227142
+        },
+        {
+          "id": "low_diagonal",
+          "wireSpanMm": 97.61296135343594,
+          "cellGapMm": 66.9356333281863,
+          "planarLowerBoundMm": 71.95946250631674,
+          "transverseLowerBoundMm": 26.022745018644798,
+          "midpointDiameterMm": 103.8868311257782
+        },
+        {
+          "id": "wide_pair",
+          "wireSpanMm": 204.043962027267,
+          "cellGapMm": 179.69535063783962,
+          "planarLowerBoundMm": 185.4206661209868,
+          "transverseLowerBoundMm": 45.32806051040488,
+          "midpointDiameterMm": 215.01362459458534
+        },
+        {
+          "id": "six_fret_targets",
+          "wireSpanMm": 153.89889547184495,
+          "cellGapMm": 126.5685032581793,
+          "planarLowerBoundMm": 134.38006032797685,
+          "transverseLowerBoundMm": 44.75592523093162,
+          "midpointDiameterMm": 164.76695596902184
+        },
+        {
+          "id": "separated_same_fret",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 36.71055410897809,
+          "transverseLowerBoundMm": 36.71055410897809,
+          "midpointDiameterMm": 36.96001723923433
+        },
+        {
+          "id": "partial_cover",
+          "wireSpanMm": 28.95554190474337,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 36.71055410897809,
+          "transverseLowerBoundMm": 36.71055410897809,
+          "midpointDiameterMm": 40.667710481602704
+        },
+        {
+          "id": "thumb_hypothesis",
+          "wireSpanMm": 126.5685032581793,
+          "cellGapMm": 97.61296135343594,
+          "planarLowerBoundMm": 101.2522484610571,
+          "transverseLowerBoundMm": 36.03016676388441,
+          "midpointDiameterMm": 133.074192995226
+        },
+        {
+          "id": "omission_semantics",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 27.532915581733565,
+          "transverseLowerBoundMm": 27.532915581733565,
+          "midpointDiameterMm": 27.72001292942575
+        },
+        {
+          "id": "open_only",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 0,
+          "transverseLowerBoundMm": 0,
+          "midpointDiameterMm": 0
+        }
+      ]
+    },
+    {
+      "scenario": "classical_bridge_endpoint_sensitivity",
+      "variedParameter": "bridgeOuterStringSpreadMm",
+      "value": 59,
+      "profileId": "classical_c5_constructed_v2",
+      "outcomes": [
+        {
+          "id": "open_em",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 8.779575600981316,
+          "transverseLowerBoundMm": 8.694841248152418,
+          "midpointDiameterMm": 8.86436315068475
+        },
+        {
+          "id": "open_c",
+          "wireSpanMm": 66.9356333281863,
+          "cellGapMm": 34.43413645188027,
+          "planarLowerBoundMm": 43.507495443793,
+          "transverseLowerBoundMm": 26.323686152926374,
+          "midpointDiameterMm": 73.87264513046294
+        },
+        {
+          "id": "closed_f",
+          "wireSpanMm": 66.9356333281863,
+          "cellGapMm": 34.43413645188027,
+          "planarLowerBoundMm": 49.365342780708865,
+          "transverseLowerBoundMm": 43,
+          "midpointDiameterMm": 77.42481672492863
+        },
+        {
+          "id": "a_shape",
+          "wireSpanMm": 59.63286992999301,
+          "cellGapMm": 30.677328025249636,
+          "planarLowerBoundMm": 41.23490961833083,
+          "transverseLowerBoundMm": 35.79649640780366,
+          "midpointDiameterMm": 67.29915356674583
+        },
+        {
+          "id": "crossing_c",
+          "wireSpanMm": 44.674175515287544,
+          "cellGapMm": 22.982028839949436,
+          "planarLowerBoundMm": 30.220975469367886,
+          "transverseLowerBoundMm": 19.44501865798974,
+          "midpointDiameterMm": 49.98878351917007
+        },
+        {
+          "id": "high_diagonal",
+          "wireSpanMm": 69.02278690471493,
+          "cellGapMm": 47.330640229376826,
+          "planarLowerBoundMm": 55.565631367068995,
+          "transverseLowerBoundMm": 28.79178005850544,
+          "midpointDiameterMm": 76.75497936454704
+        },
+        {
+          "id": "low_diagonal",
+          "wireSpanMm": 97.61296135343594,
+          "cellGapMm": 66.9356333281863,
+          "planarLowerBoundMm": 71.99179326290299,
+          "transverseLowerBoundMm": 26.054565735594053,
+          "midpointDiameterMm": 103.90317515541058
+        },
+        {
+          "id": "wide_pair",
+          "wireSpanMm": 204.043962027267,
+          "cellGapMm": 179.69535063783962,
+          "planarLowerBoundMm": 185.51689546413584,
+          "transverseLowerBoundMm": 45.66064058331986,
+          "midpointDiameterMm": 215.09449937216854
+        },
+        {
+          "id": "six_fret_targets",
+          "wireSpanMm": 153.89889547184495,
+          "cellGapMm": 126.5685032581793,
+          "planarLowerBoundMm": 134.4835071562948,
+          "transverseLowerBoundMm": 45.006771692493274,
+          "midpointDiameterMm": 164.84930507688225
+        },
+        {
+          "id": "separated_same_fret",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 37.04063326740352,
+          "transverseLowerBoundMm": 37.04063326740352,
+          "midpointDiameterMm": 37.32573398769638
+        },
+        {
+          "id": "partial_cover",
+          "wireSpanMm": 28.95554190474337,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 37.04063326740353,
+          "transverseLowerBoundMm": 37.04063326740353,
+          "midpointDiameterMm": 40.84846137193754
+        },
+        {
+          "id": "thumb_hypothesis",
+          "wireSpanMm": 126.5685032581793,
+          "cellGapMm": 97.61296135343594,
+          "planarLowerBoundMm": 101.29419718338842,
+          "transverseLowerBoundMm": 36.26304773015361,
+          "midpointDiameterMm": 133.10537908186717
+        },
+        {
+          "id": "omission_semantics",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 27.780474950552644,
+          "transverseLowerBoundMm": 27.780474950552644,
+          "midpointDiameterMm": 27.994300490772286
+        },
+        {
+          "id": "open_only",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 0,
+          "transverseLowerBoundMm": 0,
+          "midpointDiameterMm": 0
+        }
+      ]
+    },
+    {
+      "scenario": "classical_bridge_endpoint_sensitivity",
+      "variedParameter": "bridgeOuterStringSpreadMm",
+      "value": 61,
+      "profileId": "classical_c5_constructed_v2",
+      "outcomes": [
+        {
+          "id": "open_em",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 8.80201872465834,
+          "transverseLowerBoundMm": 8.70669640417147,
+          "midpointDiameterMm": 8.897408544520346
+        },
+        {
+          "id": "open_c",
+          "wireSpanMm": 66.9356333281863,
+          "cellGapMm": 34.43413645188027,
+          "planarLowerBoundMm": 43.56816110945746,
+          "transverseLowerBoundMm": 26.38914692204217,
+          "midpointDiameterMm": 73.90770783022309
+        },
+        {
+          "id": "closed_f",
+          "wireSpanMm": 66.9356333281863,
+          "cellGapMm": 34.43413645188027,
+          "planarLowerBoundMm": 49.45253817134314,
+          "transverseLowerBoundMm": 43,
+          "midpointDiameterMm": 77.47431145157378
+        },
+        {
+          "id": "a_shape",
+          "wireSpanMm": 59.63286992999301,
+          "cellGapMm": 30.677328025249636,
+          "planarLowerBoundMm": 41.38173254747496,
+          "transverseLowerBoundMm": 35.97105845877911,
+          "midpointDiameterMm": 67.38849668831595
+        },
+        {
+          "id": "crossing_c",
+          "wireSpanMm": 44.674175515287544,
+          "cellGapMm": 22.982028839949436,
+          "planarLowerBoundMm": 30.418677068919198,
+          "transverseLowerBoundMm": 19.72564599023846,
+          "midpointDiameterMm": 50.105038632172224
+        },
+        {
+          "id": "high_diagonal",
+          "wireSpanMm": 69.02278690471493,
+          "cellGapMm": 47.330640229376826,
+          "planarLowerBoundMm": 55.78344872284129,
+          "transverseLowerBoundMm": 29.165752565818625,
+          "midpointDiameterMm": 76.90579550894573
+        },
+        {
+          "id": "low_diagonal",
+          "wireSpanMm": 97.61296135343594,
+          "cellGapMm": 66.9356333281863,
+          "planarLowerBoundMm": 72.02421689514695,
+          "transverseLowerBoundMm": 26.086386452543312,
+          "midpointDiameterMm": 103.91955677604558
+        },
+        {
+          "id": "wide_pair",
+          "wireSpanMm": 204.043962027267,
+          "cellGapMm": 179.69535063783962,
+          "planarLowerBoundMm": 185.6138889331502,
+          "transverseLowerBoundMm": 45.99322065623485,
+          "midpointDiameterMm": 215.17601261802483
+        },
+        {
+          "id": "six_fret_targets",
+          "wireSpanMm": 153.89889547184495,
+          "cellGapMm": 126.5685032581793,
+          "planarLowerBoundMm": 134.58757462769015,
+          "transverseLowerBoundMm": 45.25761815405493,
+          "midpointDiameterMm": 164.93215850341036
+        },
+        {
+          "id": "separated_same_fret",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 37.37071242582896,
+          "transverseLowerBoundMm": 37.37071242582896,
+          "midpointDiameterMm": 37.69145073615843
+        },
+        {
+          "id": "partial_cover",
+          "wireSpanMm": 28.95554190474337,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 37.37071242582897,
+          "transverseLowerBoundMm": 37.37071242582897,
+          "midpointDiameterMm": 41.03012901746269
+        },
+        {
+          "id": "thumb_hypothesis",
+          "wireSpanMm": 126.5685032581793,
+          "cellGapMm": 97.61296135343594,
+          "planarLowerBoundMm": 101.33637319269783,
+          "transverseLowerBoundMm": 36.49592869642281,
+          "midpointDiameterMm": 133.1367359533839
+        },
+        {
+          "id": "omission_semantics",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 28.028034319371727,
+          "transverseLowerBoundMm": 28.028034319371727,
+          "midpointDiameterMm": 28.268588052118822
+        },
+        {
+          "id": "open_only",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 0,
+          "transverseLowerBoundMm": 0,
+          "midpointDiameterMm": 0
+        }
+      ]
+    },
+    {
+      "scenario": "gsmini_scale_only_control",
+      "variedParameter": "scaleLengthMm",
+      "value": 596.9,
+      "profileId": "acoustic_gs_mini_reference_v2",
+      "outcomes": [
+        {
+          "id": "open_em",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 7.516300589748249,
+          "transverseLowerBoundMm": 7.415420361081472,
+          "midpointDiameterMm": 7.6187803401251815
+        },
+        {
+          "id": "open_c",
+          "wireSpanMm": 61.46750697476061,
+          "cellGapMm": 31.621132381734355,
+          "planarLowerBoundMm": 39.014093639762415,
+          "transverseLowerBoundMm": 22.531013825827966,
+          "midpointDiameterMm": 67.28792894233939
+        },
+        {
+          "id": "closed_f",
+          "wireSpanMm": 61.46750697476061,
+          "cellGapMm": 31.621132381734355,
+          "planarLowerBoundMm": 43.84196823435013,
+          "transverseLowerBoundMm": 36.5125,
+          "midpointDiameterMm": 70.14994667184995
+        },
+        {
+          "id": "a_shape",
+          "wireSpanMm": 54.76132317109665,
+          "cellGapMm": 28.171226305033088,
+          "planarLowerBoundMm": 37.00561276928481,
+          "transverseLowerBoundMm": 30.872703535541234,
+          "midpointDiameterMm": 61.27659607048067
+        },
+        {
+          "id": "crossing_c",
+          "wireSpanMm": 41.02463902319252,
+          "cellGapMm": 21.104573868562824,
+          "planarLowerBoundMm": 27.4112213351496,
+          "transverseLowerBoundMm": 17.277975339669034,
+          "midpointDiameterMm": 45.694301877713265
+        },
+        {
+          "id": "high_diagonal",
+          "wireSpanMm": 63.38415615911438,
+          "cellGapMm": 43.464091004484686,
+          "planarLowerBoundMm": 50.56902127452751,
+          "transverseLowerBoundMm": 25.469588132158044,
+          "midpointDiameterMm": 70.14495740811478
+        },
+        {
+          "id": "low_diagonal",
+          "wireSpanMm": 89.6387332797937,
+          "cellGapMm": 61.46750697476061,
+          "planarLowerBoundMm": 65.54081216396892,
+          "transverseLowerBoundMm": 22.210592328941672,
+          "midpointDiameterMm": 95.0129485154981
+        },
+        {
+          "id": "wide_pair",
+          "wireSpanMm": 187.37513989857797,
+          "cellGapMm": 165.0156227626561,
+          "planarLowerBoundMm": 169.84521110902273,
+          "transverseLowerBoundMm": 39.68032519451521,
+          "midpointDiameterMm": 197.074399325795
+        },
+        {
+          "id": "six_fret_targets",
+          "wireSpanMm": 141.32653954945266,
+          "cellGapMm": 116.22883014585726,
+          "planarLowerBoundMm": 122.73700081282313,
+          "transverseLowerBoundMm": 38.901812546374806,
+          "midpointDiameterMm": 150.7596595786618
+        },
+        {
+          "id": "separated_same_fret",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.35400398400232,
+          "transverseLowerBoundMm": 32.35400398400232,
+          "midpointDiameterMm": 32.69533637336445
+        },
+        {
+          "id": "partial_cover",
+          "wireSpanMm": 26.59009686606356,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.354003984002325,
+          "transverseLowerBoundMm": 32.354003984002325,
+          "midpointDiameterMm": 36.700623066597515
+        },
+        {
+          "id": "thumb_hypothesis",
+          "wireSpanMm": 116.22883014585726,
+          "cellGapMm": 89.6387332797937,
+          "planarLowerBoundMm": 92.6444942520138,
+          "transverseLowerBoundMm": 31.428191203714142,
+          "midpointDiameterMm": 121.94560721100514
+        },
+        {
+          "id": "omission_semantics",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 24.265502988001742,
+          "transverseLowerBoundMm": 24.265502988001742,
+          "midpointDiameterMm": 24.520089021825754
+        },
+        {
+          "id": "open_only",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 0,
+          "transverseLowerBoundMm": 0,
+          "midpointDiameterMm": 0
+        }
+      ]
+    },
+    {
+      "scenario": "gsmini_scale_only_control",
+      "variedParameter": "scaleLengthMm",
+      "value": 647.7,
+      "profileId": "acoustic_gs_mini_reference_v2",
+      "outcomes": [
+        {
+          "id": "open_em",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 7.516306358777459,
+          "transverseLowerBoundMm": 7.415420361081472,
+          "midpointDiameterMm": 7.6187803401251815
+        },
+        {
+          "id": "open_c",
+          "wireSpanMm": 66.69878416410194,
+          "cellGapMm": 34.31229258443515,
+          "planarLowerBoundMm": 41.22544010473223,
+          "transverseLowerBoundMm": 22.531013825827966,
+          "midpointDiameterMm": 72.37817263748482
+        },
+        {
+          "id": "closed_f",
+          "wireSpanMm": 66.69878416410194,
+          "cellGapMm": 34.31229258443515,
+          "planarLowerBoundMm": 45.820907760087856,
+          "transverseLowerBoundMm": 36.5125,
+          "midpointDiameterMm": 75.0463157726989
+        },
+        {
+          "id": "a_shape",
+          "wireSpanMm": 59.42186131331765,
+          "cellGapMm": 30.568777479929523,
+          "planarLowerBoundMm": 38.86190347265961,
+          "transverseLowerBoundMm": 30.872703535541234,
+          "midpointDiameterMm": 65.71978626725006
+        },
+        {
+          "id": "crossing_c",
+          "wireSpanMm": 44.51609766346425,
+          "cellGapMm": 22.900707814823505,
+          "planarLowerBoundMm": 28.816912314313868,
+          "transverseLowerBoundMm": 17.277975339669034,
+          "midpointDiameterMm": 49.03727702815338
+        },
+        {
+          "id": "high_diagonal",
+          "wireSpanMm": 68.7785524279752,
+          "cellGapMm": 47.163162579334454,
+          "planarLowerBoundMm": 53.78161963256799,
+          "transverseLowerBoundMm": 25.469588132158044,
+          "midpointDiameterMm": 75.34106970926463
+        },
+        {
+          "id": "low_diagonal",
+          "wireSpanMm": 97.26756164403147,
+          "cellGapMm": 66.69878416410194,
+          "planarLowerBoundMm": 70.47035869349516,
+          "transverseLowerBoundMm": 22.210592328941672,
+          "midpointDiameterMm": 102.66150133282086
+        },
+        {
+          "id": "wide_pair",
+          "wireSpanMm": 203.32196031547824,
+          "cellGapMm": 179.0595055509673,
+          "planarLowerBoundMm": 183.51988041920185,
+          "transverseLowerBoundMm": 39.68032519451521,
+          "midpointDiameterMm": 213.1775791767233
+        },
+        {
+          "id": "six_fret_targets",
+          "wireSpanMm": 153.35433014940614,
+          "cellGapMm": 126.1206454774196,
+          "planarLowerBoundMm": 132.14252770056038,
+          "transverseLowerBoundMm": 38.901812546374806,
+          "midpointDiameterMm": 162.74743144324532
+        },
+        {
+          "id": "separated_same_fret",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.35400398400232,
+          "transverseLowerBoundMm": 32.35400398400232,
+          "midpointDiameterMm": 32.695336373364455
+        },
+        {
+          "id": "partial_cover",
+          "wireSpanMm": 28.853083833388126,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.354003984002325,
+          "transverseLowerBoundMm": 32.354003984002325,
+          "midpointDiameterMm": 38.47043676771734
+        },
+        {
+          "id": "thumb_hypothesis",
+          "wireSpanMm": 126.1206454774196,
+          "cellGapMm": 97.26756164403147,
+          "planarLowerBoundMm": 100.04438194811783,
+          "transverseLowerBoundMm": 31.428191203714142,
+          "midpointDiameterMm": 131.95709889603611
+        },
+        {
+          "id": "omission_semantics",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 24.265502988001742,
+          "transverseLowerBoundMm": 24.265502988001742,
+          "midpointDiameterMm": 24.520089021825754
+        },
+        {
+          "id": "open_only",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 0,
+          "transverseLowerBoundMm": 0,
+          "midpointDiameterMm": 0
+        }
+      ]
+    },
+    {
+      "scenario": "gsmini_scale_only_control",
+      "variedParameter": "scaleLengthMm",
+      "value": 650,
+      "profileId": "acoustic_gs_mini_reference_v2",
+      "outcomes": [
+        {
+          "id": "open_em",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 7.51630658843903,
+          "transverseLowerBoundMm": 7.415420361081472,
+          "midpointDiameterMm": 7.6187803401251815
+        },
+        {
+          "id": "open_c",
+          "wireSpanMm": 66.9356333281863,
+          "cellGapMm": 34.43413645188027,
+          "planarLowerBoundMm": 41.326907005190826,
+          "transverseLowerBoundMm": 22.531013825827966,
+          "midpointDiameterMm": 72.60964902314322
+        },
+        {
+          "id": "closed_f",
+          "wireSpanMm": 66.9356333281863,
+          "cellGapMm": 34.43413645188027,
+          "planarLowerBoundMm": 45.912219710500885,
+          "transverseLowerBoundMm": 36.5125,
+          "midpointDiameterMm": 75.26958727120883
+        },
+        {
+          "id": "a_shape",
+          "wireSpanMm": 59.63286992999301,
+          "cellGapMm": 30.677328025249636,
+          "planarLowerBoundMm": 38.94734701709005,
+          "transverseLowerBoundMm": 30.872703535541234,
+          "midpointDiameterMm": 65.92213508591095
+        },
+        {
+          "id": "crossing_c",
+          "wireSpanMm": 44.674175515287544,
+          "cellGapMm": 22.982028839949436,
+          "planarLowerBoundMm": 28.881580055654908,
+          "transverseLowerBoundMm": 17.277975339669034,
+          "midpointDiameterMm": 49.18947426758665
+        },
+        {
+          "id": "high_diagonal",
+          "wireSpanMm": 69.02278690471493,
+          "cellGapMm": 47.330640229376826,
+          "planarLowerBoundMm": 53.92854726710328,
+          "transverseLowerBoundMm": 25.469588132158044,
+          "midpointDiameterMm": 75.57753405472238
+        },
+        {
+          "id": "low_diagonal",
+          "wireSpanMm": 97.61296135343594,
+          "cellGapMm": 66.9356333281863,
+          "planarLowerBoundMm": 70.6945730198989,
+          "transverseLowerBoundMm": 22.210592328941672,
+          "midpointDiameterMm": 103.0085316545269
+        },
+        {
+          "id": "wide_pair",
+          "wireSpanMm": 204.043962027267,
+          "cellGapMm": 179.69535063783962,
+          "planarLowerBoundMm": 184.14032426868755,
+          "transverseLowerBoundMm": 39.68032519451521,
+          "midpointDiameterMm": 213.90780342751393
+        },
+        {
+          "id": "six_fret_targets",
+          "wireSpanMm": 153.89889547184495,
+          "cellGapMm": 126.5685032581793,
+          "planarLowerBoundMm": 132.57004348067534,
+          "transverseLowerBoundMm": 38.901812546374806,
+          "midpointDiameterMm": 163.29158928166555
+        },
+        {
+          "id": "separated_same_fret",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.35400398400232,
+          "transverseLowerBoundMm": 32.35400398400232,
+          "midpointDiameterMm": 32.695336373364455
+        },
+        {
+          "id": "partial_cover",
+          "wireSpanMm": 28.95554190474337,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.354003984002325,
+          "transverseLowerBoundMm": 32.354003984002325,
+          "midpointDiameterMm": 38.55197658533236
+        },
+        {
+          "id": "thumb_hypothesis",
+          "wireSpanMm": 126.5685032581793,
+          "cellGapMm": 97.61296135343594,
+          "planarLowerBoundMm": 100.38022731291657,
+          "transverseLowerBoundMm": 31.428191203714142,
+          "midpointDiameterMm": 132.41100465896196
+        },
+        {
+          "id": "omission_semantics",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 24.265502988001742,
+          "transverseLowerBoundMm": 24.265502988001742,
+          "midpointDiameterMm": 24.520089021825754
+        },
+        {
+          "id": "open_only",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 0,
+          "transverseLowerBoundMm": 0,
+          "midpointDiameterMm": 0
+        }
+      ]
+    },
+    {
+      "scenario": "gsmini_radius_only_control",
+      "variedParameter": "radiusMm",
+      "value": 241.3,
+      "profileId": "acoustic_gs_mini_reference_v2",
+      "outcomes": [
+        {
+          "id": "open_em",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 7.516300589748249,
+          "transverseLowerBoundMm": 7.415420361081472,
+          "midpointDiameterMm": 7.621056508265859
+        },
+        {
+          "id": "open_c",
+          "wireSpanMm": 61.46750697476061,
+          "cellGapMm": 31.621132381734355,
+          "planarLowerBoundMm": 39.014093639762415,
+          "transverseLowerBoundMm": 22.531013825827966,
+          "midpointDiameterMm": 67.28793261272688
+        },
+        {
+          "id": "closed_f",
+          "wireSpanMm": 61.46750697476061,
+          "cellGapMm": 31.621132381734355,
+          "planarLowerBoundMm": 43.84196823435013,
+          "transverseLowerBoundMm": 36.5125,
+          "midpointDiameterMm": 70.15072712971997
+        },
+        {
+          "id": "a_shape",
+          "wireSpanMm": 54.76132317109665,
+          "cellGapMm": 28.171226305033088,
+          "planarLowerBoundMm": 37.00561276928481,
+          "transverseLowerBoundMm": 30.872703535541234,
+          "midpointDiameterMm": 61.27659959972838
+        },
+        {
+          "id": "crossing_c",
+          "wireSpanMm": 41.02463902319252,
+          "cellGapMm": 21.104573868562824,
+          "planarLowerBoundMm": 27.4112213351496,
+          "transverseLowerBoundMm": 17.277975339669034,
+          "midpointDiameterMm": 45.6949208396032
+        },
+        {
+          "id": "high_diagonal",
+          "wireSpanMm": 63.38415615911438,
+          "cellGapMm": 43.464091004484686,
+          "planarLowerBoundMm": 50.56902127452751,
+          "transverseLowerBoundMm": 25.469588132158044,
+          "midpointDiameterMm": 70.14838282246166
+        },
+        {
+          "id": "low_diagonal",
+          "wireSpanMm": 89.6387332797937,
+          "cellGapMm": 61.46750697476061,
+          "planarLowerBoundMm": 65.54081216396892,
+          "transverseLowerBoundMm": 22.210592328941672,
+          "midpointDiameterMm": 95.01440286840878
+        },
+        {
+          "id": "wide_pair",
+          "wireSpanMm": 187.37513989857797,
+          "cellGapMm": 165.0156227626561,
+          "planarLowerBoundMm": 169.84521110902273,
+          "transverseLowerBoundMm": 39.68032519451521,
+          "midpointDiameterMm": 197.07449988137742
+        },
+        {
+          "id": "six_fret_targets",
+          "wireSpanMm": 141.32653954945266,
+          "cellGapMm": 116.22883014585726,
+          "planarLowerBoundMm": 122.73700081282313,
+          "transverseLowerBoundMm": 38.901812546374806,
+          "midpointDiameterMm": 150.75973153520886
+        },
+        {
+          "id": "separated_same_fret",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.35400398400232,
+          "transverseLowerBoundMm": 32.35400398400232,
+          "midpointDiameterMm": 32.69816342792199
+        },
+        {
+          "id": "partial_cover",
+          "wireSpanMm": 26.59009686606356,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.354003984002325,
+          "transverseLowerBoundMm": 32.354003984002325,
+          "midpointDiameterMm": 36.70630035426829
+        },
+        {
+          "id": "thumb_hypothesis",
+          "wireSpanMm": 116.22883014585726,
+          "cellGapMm": 89.6387332797937,
+          "planarLowerBoundMm": 92.6444942520138,
+          "transverseLowerBoundMm": 31.428191203714142,
+          "midpointDiameterMm": 121.94561480001873
+        },
+        {
+          "id": "omission_semantics",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 24.265502988001742,
+          "transverseLowerBoundMm": 24.265502988001742,
+          "midpointDiameterMm": 24.520089021825754
+        },
+        {
+          "id": "open_only",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 0,
+          "transverseLowerBoundMm": 0,
+          "midpointDiameterMm": 0
+        }
+      ]
+    },
+    {
+      "scenario": "gsmini_radius_only_control",
+      "variedParameter": "radiusMm",
+      "value": 381,
+      "profileId": "acoustic_gs_mini_reference_v2",
+      "outcomes": [
+        {
+          "id": "open_em",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 7.516300589748249,
+          "transverseLowerBoundMm": 7.415420361081472,
+          "midpointDiameterMm": 7.6187803401251815
+        },
+        {
+          "id": "open_c",
+          "wireSpanMm": 61.46750697476061,
+          "cellGapMm": 31.621132381734355,
+          "planarLowerBoundMm": 39.014093639762415,
+          "transverseLowerBoundMm": 22.531013825827966,
+          "midpointDiameterMm": 67.28792894233939
+        },
+        {
+          "id": "closed_f",
+          "wireSpanMm": 61.46750697476061,
+          "cellGapMm": 31.621132381734355,
+          "planarLowerBoundMm": 43.84196823435013,
+          "transverseLowerBoundMm": 36.5125,
+          "midpointDiameterMm": 70.14994667184995
+        },
+        {
+          "id": "a_shape",
+          "wireSpanMm": 54.76132317109665,
+          "cellGapMm": 28.171226305033088,
+          "planarLowerBoundMm": 37.00561276928481,
+          "transverseLowerBoundMm": 30.872703535541234,
+          "midpointDiameterMm": 61.27659607048067
+        },
+        {
+          "id": "crossing_c",
+          "wireSpanMm": 41.02463902319252,
+          "cellGapMm": 21.104573868562824,
+          "planarLowerBoundMm": 27.4112213351496,
+          "transverseLowerBoundMm": 17.277975339669034,
+          "midpointDiameterMm": 45.694301877713265
+        },
+        {
+          "id": "high_diagonal",
+          "wireSpanMm": 63.38415615911438,
+          "cellGapMm": 43.464091004484686,
+          "planarLowerBoundMm": 50.56902127452751,
+          "transverseLowerBoundMm": 25.469588132158044,
+          "midpointDiameterMm": 70.14495740811478
+        },
+        {
+          "id": "low_diagonal",
+          "wireSpanMm": 89.6387332797937,
+          "cellGapMm": 61.46750697476061,
+          "planarLowerBoundMm": 65.54081216396892,
+          "transverseLowerBoundMm": 22.210592328941672,
+          "midpointDiameterMm": 95.0129485154981
+        },
+        {
+          "id": "wide_pair",
+          "wireSpanMm": 187.37513989857797,
+          "cellGapMm": 165.0156227626561,
+          "planarLowerBoundMm": 169.84521110902273,
+          "transverseLowerBoundMm": 39.68032519451521,
+          "midpointDiameterMm": 197.074399325795
+        },
+        {
+          "id": "six_fret_targets",
+          "wireSpanMm": 141.32653954945266,
+          "cellGapMm": 116.22883014585726,
+          "planarLowerBoundMm": 122.73700081282313,
+          "transverseLowerBoundMm": 38.901812546374806,
+          "midpointDiameterMm": 150.7596595786618
+        },
+        {
+          "id": "separated_same_fret",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.35400398400232,
+          "transverseLowerBoundMm": 32.35400398400232,
+          "midpointDiameterMm": 32.69533637336445
+        },
+        {
+          "id": "partial_cover",
+          "wireSpanMm": 26.59009686606356,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.354003984002325,
+          "transverseLowerBoundMm": 32.354003984002325,
+          "midpointDiameterMm": 36.700623066597515
+        },
+        {
+          "id": "thumb_hypothesis",
+          "wireSpanMm": 116.22883014585726,
+          "cellGapMm": 89.6387332797937,
+          "planarLowerBoundMm": 92.6444942520138,
+          "transverseLowerBoundMm": 31.428191203714142,
+          "midpointDiameterMm": 121.94560721100514
+        },
+        {
+          "id": "omission_semantics",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 24.265502988001742,
+          "transverseLowerBoundMm": 24.265502988001742,
+          "midpointDiameterMm": 24.520089021825754
+        },
+        {
+          "id": "open_only",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 0,
+          "transverseLowerBoundMm": 0,
+          "midpointDiameterMm": 0
+        }
+      ]
+    },
+    {
+      "scenario": "gsmini_radius_only_control",
+      "variedParameter": "radiusMm",
+      "value": null,
+      "profileId": "acoustic_gs_mini_reference_v2",
+      "outcomes": [
+        {
+          "id": "open_em",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 7.516300589748249,
+          "transverseLowerBoundMm": 7.415420361081472,
+          "midpointDiameterMm": 7.617257376284032
+        },
+        {
+          "id": "open_c",
+          "wireSpanMm": 61.46750697476061,
+          "cellGapMm": 31.621132381734355,
+          "planarLowerBoundMm": 39.014093639762415,
+          "transverseLowerBoundMm": 22.531013825827966,
+          "midpointDiameterMm": 67.2879264895722
+        },
+        {
+          "id": "closed_f",
+          "wireSpanMm": 61.46750697476061,
+          "cellGapMm": 31.621132381734355,
+          "planarLowerBoundMm": 43.84196823435013,
+          "transverseLowerBoundMm": 36.5125,
+          "midpointDiameterMm": 70.14942610582028
+        },
+        {
+          "id": "a_shape",
+          "wireSpanMm": 54.76132317109665,
+          "cellGapMm": 28.171226305033088,
+          "planarLowerBoundMm": 37.00561276928481,
+          "transverseLowerBoundMm": 30.872703535541234,
+          "midpointDiameterMm": 61.276593712574964
+        },
+        {
+          "id": "crossing_c",
+          "wireSpanMm": 41.02463902319252,
+          "cellGapMm": 21.104573868562824,
+          "planarLowerBoundMm": 27.4112213351496,
+          "transverseLowerBoundMm": 17.277975339669034,
+          "midpointDiameterMm": 45.6938879868174
+        },
+        {
+          "id": "high_diagonal",
+          "wireSpanMm": 63.38415615911438,
+          "cellGapMm": 43.464091004484686,
+          "planarLowerBoundMm": 50.56902127452751,
+          "transverseLowerBoundMm": 25.469588132158044,
+          "midpointDiameterMm": 70.14267239947687
+        },
+        {
+          "id": "low_diagonal",
+          "wireSpanMm": 89.6387332797937,
+          "cellGapMm": 61.46750697476061,
+          "planarLowerBoundMm": 65.54081216396892,
+          "transverseLowerBoundMm": 22.210592328941672,
+          "midpointDiameterMm": 95.01197744397717
+        },
+        {
+          "id": "wide_pair",
+          "wireSpanMm": 187.37513989857797,
+          "cellGapMm": 165.0156227626561,
+          "planarLowerBoundMm": 169.84521110902273,
+          "transverseLowerBoundMm": 39.68032519451521,
+          "midpointDiameterMm": 197.0743324461356
+        },
+        {
+          "id": "six_fret_targets",
+          "wireSpanMm": 141.32653954945266,
+          "cellGapMm": 116.22883014585726,
+          "planarLowerBoundMm": 122.73700081282313,
+          "transverseLowerBoundMm": 38.901812546374806,
+          "midpointDiameterMm": 150.75961170696115
+        },
+        {
+          "id": "separated_same_fret",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.35400398400232,
+          "transverseLowerBoundMm": 32.35400398400232,
+          "midpointDiameterMm": 32.693452029101
+        },
+        {
+          "id": "partial_cover",
+          "wireSpanMm": 26.59009686606356,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.354003984002325,
+          "transverseLowerBoundMm": 32.354003984002325,
+          "midpointDiameterMm": 36.69683433587197
+        },
+        {
+          "id": "thumb_hypothesis",
+          "wireSpanMm": 116.22883014585726,
+          "cellGapMm": 89.6387332797937,
+          "planarLowerBoundMm": 92.6444942520138,
+          "transverseLowerBoundMm": 31.428191203714142,
+          "midpointDiameterMm": 121.94560214014832
+        },
+        {
+          "id": "omission_semantics",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 24.265502988001742,
+          "transverseLowerBoundMm": 24.265502988001742,
+          "midpointDiameterMm": 24.520089021825754
+        },
+        {
+          "id": "open_only",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 0,
+          "transverseLowerBoundMm": 0,
+          "midpointDiameterMm": 0
+        }
+      ]
+    }
+  ],
+  "contactWindowSensitivity": [
+    {
+      "fractionWindow": [
+        0,
+        1
+      ],
+      "interpretation": "hypothetical allowed contact subcell; not human calibration",
+      "outcomes": [
+        {
+          "id": "open_em",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 7.516300589748249,
+          "transverseLowerBoundMm": 7.415420361081472,
+          "midpointDiameterMm": 7.6187803401251815
+        },
+        {
+          "id": "open_c",
+          "wireSpanMm": 61.46750697476061,
+          "cellGapMm": 31.621132381734355,
+          "planarLowerBoundMm": 39.014093639762415,
+          "transverseLowerBoundMm": 22.531013825827966,
+          "midpointDiameterMm": 67.28792894233939
+        },
+        {
+          "id": "closed_f",
+          "wireSpanMm": 61.46750697476061,
+          "cellGapMm": 31.621132381734355,
+          "planarLowerBoundMm": 43.84196823435013,
+          "transverseLowerBoundMm": 36.5125,
+          "midpointDiameterMm": 70.14994667184995
+        },
+        {
+          "id": "a_shape",
+          "wireSpanMm": 54.76132317109665,
+          "cellGapMm": 28.171226305033088,
+          "planarLowerBoundMm": 37.00561276928481,
+          "transverseLowerBoundMm": 30.872703535541234,
+          "midpointDiameterMm": 61.27659607048067
+        },
+        {
+          "id": "crossing_c",
+          "wireSpanMm": 41.02463902319252,
+          "cellGapMm": 21.104573868562824,
+          "planarLowerBoundMm": 27.4112213351496,
+          "transverseLowerBoundMm": 17.277975339669034,
+          "midpointDiameterMm": 45.694301877713265
+        },
+        {
+          "id": "high_diagonal",
+          "wireSpanMm": 63.38415615911438,
+          "cellGapMm": 43.464091004484686,
+          "planarLowerBoundMm": 50.56902127452751,
+          "transverseLowerBoundMm": 25.469588132158044,
+          "midpointDiameterMm": 70.14495740811478
+        },
+        {
+          "id": "low_diagonal",
+          "wireSpanMm": 89.6387332797937,
+          "cellGapMm": 61.46750697476061,
+          "planarLowerBoundMm": 65.54081216396892,
+          "transverseLowerBoundMm": 22.210592328941672,
+          "midpointDiameterMm": 95.0129485154981
+        },
+        {
+          "id": "wide_pair",
+          "wireSpanMm": 187.37513989857797,
+          "cellGapMm": 165.0156227626561,
+          "planarLowerBoundMm": 169.84521110902273,
+          "transverseLowerBoundMm": 39.68032519451521,
+          "midpointDiameterMm": 197.074399325795
+        },
+        {
+          "id": "six_fret_targets",
+          "wireSpanMm": 141.32653954945266,
+          "cellGapMm": 116.22883014585726,
+          "planarLowerBoundMm": 122.73700081282313,
+          "transverseLowerBoundMm": 38.901812546374806,
+          "midpointDiameterMm": 150.7596595786618
+        },
+        {
+          "id": "separated_same_fret",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.35400398400232,
+          "transverseLowerBoundMm": 32.35400398400232,
+          "midpointDiameterMm": 32.69533637336445
+        },
+        {
+          "id": "partial_cover",
+          "wireSpanMm": 26.59009686606356,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.354003984002325,
+          "transverseLowerBoundMm": 32.354003984002325,
+          "midpointDiameterMm": 36.700623066597515
+        },
+        {
+          "id": "thumb_hypothesis",
+          "wireSpanMm": 116.22883014585726,
+          "cellGapMm": 89.6387332797937,
+          "planarLowerBoundMm": 92.6444942520138,
+          "transverseLowerBoundMm": 31.428191203714142,
+          "midpointDiameterMm": 121.94560721100514
+        },
+        {
+          "id": "omission_semantics",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 24.265502988001742,
+          "transverseLowerBoundMm": 24.265502988001742,
+          "midpointDiameterMm": 24.520089021825754
+        },
+        {
+          "id": "open_only",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 0,
+          "transverseLowerBoundMm": 0,
+          "midpointDiameterMm": 0
+        }
+      ],
+      "note": "cellGapMm remains full-cell reference; midpointDiameterMm remains full-cell midpoint construction (.5), potentially outside restricted window. Only planar/transverse lower bounds use this window."
+    },
+    {
+      "fractionWindow": [
+        0.55,
+        1
+      ],
+      "interpretation": "hypothetical allowed contact subcell; not human calibration",
+      "outcomes": [
+        {
+          "id": "open_em",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 7.627310382760181,
+          "transverseLowerBoundMm": 7.581935898623583,
+          "midpointDiameterMm": 7.6187803401251815
+        },
+        {
+          "id": "open_c",
+          "wireSpanMm": 61.46750697476061,
+          "cellGapMm": 31.621132381734355,
+          "planarLowerBoundMm": 53.2628391600432,
+          "transverseLowerBoundMm": 22.864600631039615,
+          "midpointDiameterMm": 67.28792894233939
+        },
+        {
+          "id": "closed_f",
+          "wireSpanMm": 61.46750697476061,
+          "cellGapMm": 31.621132381734355,
+          "planarLowerBoundMm": 56.914948770493595,
+          "transverseLowerBoundMm": 37.100556888877556,
+          "midpointDiameterMm": 70.14994667184995
+        },
+        {
+          "id": "a_shape",
+          "wireSpanMm": 54.76132317109665,
+          "cellGapMm": 28.171226305033088,
+          "planarLowerBoundMm": 49.13263304776938,
+          "transverseLowerBoundMm": 31.29182283833692,
+          "midpointDiameterMm": 61.27659607048067
+        },
+        {
+          "id": "crossing_c",
+          "wireSpanMm": 41.02463902319252,
+          "cellGapMm": 21.104573868562824,
+          "planarLowerBoundMm": 36.53873548803276,
+          "transverseLowerBoundMm": 17.43068567725196,
+          "midpointDiameterMm": 45.694301877713265
+        },
+        {
+          "id": "high_diagonal",
+          "wireSpanMm": 63.38415615911438,
+          "cellGapMm": 43.464091004484686,
+          "planarLowerBoundMm": 60.26157741155473,
+          "transverseLowerBoundMm": 25.71246371089641,
+          "midpointDiameterMm": 70.14495740811478
+        },
+        {
+          "id": "low_diagonal",
+          "wireSpanMm": 89.6387332797937,
+          "cellGapMm": 61.46750697476061,
+          "planarLowerBoundMm": 80.26640628127832,
+          "transverseLowerBoundMm": 22.55407026636269,
+          "midpointDiameterMm": 95.0129485154981
+        },
+        {
+          "id": "wide_pair",
+          "wireSpanMm": 187.37513989857797,
+          "cellGapMm": 165.0156227626561,
+          "planarLowerBoundMm": 181.8600800523865,
+          "transverseLowerBoundMm": 40.17059408190224,
+          "midpointDiameterMm": 197.074399325795
+        },
+        {
+          "id": "six_fret_targets",
+          "wireSpanMm": 141.32653954945266,
+          "cellGapMm": 116.22883014585726,
+          "planarLowerBoundMm": 135.94528967201256,
+          "transverseLowerBoundMm": 39.416113440366416,
+          "midpointDiameterMm": 150.7596595786618
+        },
+        {
+          "id": "separated_same_fret",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.727396833610875,
+          "transverseLowerBoundMm": 32.727396833610875,
+          "midpointDiameterMm": 32.69533637336445
+        },
+        {
+          "id": "partial_cover",
+          "wireSpanMm": 26.59009686606356,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.727396833610875,
+          "transverseLowerBoundMm": 32.727396833610875,
+          "midpointDiameterMm": 36.700623066597515
+        },
+        {
+          "id": "thumb_hypothesis",
+          "wireSpanMm": 116.22883014585726,
+          "cellGapMm": 89.6387332797937,
+          "planarLowerBoundMm": 106.8892296656608,
+          "transverseLowerBoundMm": 31.830163086564653,
+          "midpointDiameterMm": 121.94560721100514
+        },
+        {
+          "id": "omission_semantics",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 24.545547625208158,
+          "transverseLowerBoundMm": 24.545547625208158,
+          "midpointDiameterMm": 24.520089021825754
+        },
+        {
+          "id": "open_only",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 0,
+          "transverseLowerBoundMm": 0,
+          "midpointDiameterMm": 0
+        }
+      ],
+      "note": "cellGapMm remains full-cell reference; midpointDiameterMm remains full-cell midpoint construction (.5), potentially outside restricted window. Only planar/transverse lower bounds use this window."
+    },
+    {
+      "fractionWindow": [
+        0.72,
+        1
+      ],
+      "interpretation": "hypothetical allowed contact subcell; not human calibration",
+      "outcomes": [
+        {
+          "id": "open_em",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 7.661622500600231,
+          "transverseLowerBoundMm": 7.633404337500234,
+          "midpointDiameterMm": 7.6187803401251815
+        },
+        {
+          "id": "open_c",
+          "wireSpanMm": 61.46750697476061,
+          "cellGapMm": 31.621132381734355,
+          "planarLowerBoundMm": 57.8997138083612,
+          "transverseLowerBoundMm": 22.967709279923216,
+          "midpointDiameterMm": 67.28792894233939
+        },
+        {
+          "id": "closed_f",
+          "wireSpanMm": 61.46750697476061,
+          "cellGapMm": 31.621132381734355,
+          "planarLowerBoundMm": 61.282040605595476,
+          "transverseLowerBoundMm": 37.282319927257895,
+          "midpointDiameterMm": 70.14994667184995
+        },
+        {
+          "id": "a_shape",
+          "wireSpanMm": 54.76132317109665,
+          "cellGapMm": 28.171226305033088,
+          "planarLowerBoundMm": 53.13606002977181,
+          "transverseLowerBoundMm": 31.421368804655593,
+          "midpointDiameterMm": 61.27659607048067
+        },
+        {
+          "id": "crossing_c",
+          "wireSpanMm": 41.02463902319252,
+          "cellGapMm": 21.104573868562824,
+          "planarLowerBoundMm": 39.54828376661962,
+          "transverseLowerBoundMm": 17.47788705432305,
+          "midpointDiameterMm": 45.694301877713265
+        },
+        {
+          "id": "high_diagonal",
+          "wireSpanMm": 63.38415615911438,
+          "cellGapMm": 43.464091004484686,
+          "planarLowerBoundMm": 63.340847100353535,
+          "transverseLowerBoundMm": 25.787534344324634,
+          "midpointDiameterMm": 70.14495740811478
+        },
+        {
+          "id": "low_diagonal",
+          "wireSpanMm": 89.6387332797937,
+          "cellGapMm": 61.46750697476061,
+          "planarLowerBoundMm": 84.87334243645319,
+          "transverseLowerBoundMm": 22.660236174292823,
+          "midpointDiameterMm": 95.0129485154981
+        },
+        {
+          "id": "wide_pair",
+          "wireSpanMm": 187.37513989857797,
+          "cellGapMm": 165.0156227626561,
+          "planarLowerBoundMm": 185.58130622382532,
+          "transverseLowerBoundMm": 40.32213173800369,
+          "midpointDiameterMm": 197.074399325795
+        },
+        {
+          "id": "six_fret_targets",
+          "wireSpanMm": 141.32653954945266,
+          "cellGapMm": 116.22883014585726,
+          "planarLowerBoundMm": 140.05115871965998,
+          "transverseLowerBoundMm": 39.57507917123655,
+          "midpointDiameterMm": 150.7596595786618
+        },
+        {
+          "id": "separated_same_fret",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.84280916894443,
+          "transverseLowerBoundMm": 32.84280916894443,
+          "midpointDiameterMm": 32.69533637336445
+        },
+        {
+          "id": "partial_cover",
+          "wireSpanMm": 26.59009686606356,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 32.84280916894443,
+          "transverseLowerBoundMm": 32.84280916894443,
+          "midpointDiameterMm": 36.700623066597515
+        },
+        {
+          "id": "thumb_hypothesis",
+          "wireSpanMm": 116.22883014585726,
+          "cellGapMm": 89.6387332797937,
+          "planarLowerBoundMm": 111.31211474955293,
+          "transverseLowerBoundMm": 31.954408941263903,
+          "midpointDiameterMm": 121.94560721100514
+        },
+        {
+          "id": "omission_semantics",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 24.63210687670832,
+          "transverseLowerBoundMm": 24.63210687670832,
+          "midpointDiameterMm": 24.520089021825754
+        },
+        {
+          "id": "open_only",
+          "wireSpanMm": 0,
+          "cellGapMm": 0,
+          "planarLowerBoundMm": 0,
+          "transverseLowerBoundMm": 0,
+          "midpointDiameterMm": 0
+        }
+      ],
+      "note": "cellGapMm remains full-cell reference; midpointDiameterMm remains full-cell midpoint construction (.5), potentially outside restricted window. Only planar/transverse lower bounds use this window."
+    }
+  ],
+  "scaleAtFixedFrets": [
+    {
+      "scaleMm": 596.9,
+      "wire1to5Mm": 116.22883014585726,
+      "normalizedWire1to5": 0.19472077424335277,
+      "spreadAtFret5Mm": 41.29112509274961
+    },
+    {
+      "scaleMm": 647.7,
+      "wire1to5Mm": 126.1206454774196,
+      "normalizedWire1to5": 0.19472077424335277,
+      "spreadAtFret5Mm": 41.29112509274961
+    },
+    {
+      "scaleMm": 650,
+      "wire1to5Mm": 126.5685032581793,
+      "normalizedWire1to5": 0.19472077424335277,
+      "spreadAtFret5Mm": 41.29112509274961
+    }
+  ],
+  "humanGeometrySensitivity": "Measured-source strata and quantiles remain separate reference panels. No synthetic hands, isometric skeletal scaling or success/comfort estimates were generated."
+}

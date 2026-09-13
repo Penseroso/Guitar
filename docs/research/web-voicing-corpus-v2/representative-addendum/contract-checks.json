@@ -1,0 +1,41 @@
+{
+  "closedTemplates": 16,
+  "exactOpenForms": 7,
+  "closedTranslationsWithConsistentFormula": 207,
+  "closedWithinAuditedQueryScope": 39,
+  "unobservedWithinScope": [
+    {
+      "templateId": "T05",
+      "quality": "major",
+      "rootPitchClass": 0,
+      "translation": 12,
+      "statesHighToLow": [
+        12,
+        13,
+        12,
+        14,
+        15,
+        -1
+      ]
+    },
+    {
+      "templateId": "T10",
+      "quality": "dominant-7",
+      "rootPitchClass": 0,
+      "translation": 13,
+      "statesHighToLow": [
+        -1,
+        13,
+        15,
+        14,
+        15,
+        -1
+      ]
+    }
+  ],
+  "sourceRowsMatched": 44,
+  "allClosedTemplatesObservedAtMultipleRoots": true,
+  "modelFit": false,
+  "rerankingBenchmark": false,
+  "productionChange": false
+}

@@ -1,0 +1,2203 @@
+{
+  "schema": "release-latency-diagnostic-v1",
+  "at": "2026-09-13T10:49:51.484Z",
+  "browser": "153.0",
+  "build": "FMjDGjRhqWxf4MVLwfgcT",
+  "fixture": {
+    "root": 6,
+    "chordId": "dominant-7-flat-9",
+    "context": "accompaniment"
+  },
+  "method": "30 fresh-worker target trials per fresh page, alternating F# and G to change requests. Same full UI actions/paint endpoints; added timing reads only. Conditions differ by explicit pre-request GC. GC time is excluded; that control is diagnostic only. These pages do not reproduce the original 12,000+ request history and cannot alone supersede its failed gate.",
+  "stages": "responseDelivery includes worker/transport and any main-thread delay before receiving the event; it is not isolated worker CPU. validationRenderPaint starts at the probe listener before production validation and ends after the ready frame.",
+  "conditions": [
+    {
+      "gc": false,
+      "samples": [
+        {
+          "run": 0,
+          "firstPageMs": 525,
+          "workerPostAfterActionMs": 5,
+          "acceptedAfterPostMs": 21,
+          "exactMessageAfterPostMs": 511,
+          "exactMessageToRenderedMs": 9,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 40,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 28,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 13,
+          "filterMs": 39,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 13
+          },
+          "maxMessageBytes": 103717,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 1,
+          "firstPageMs": 513,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 22,
+          "exactMessageAfterPostMs": 499,
+          "exactMessageToRenderedMs": 10,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 40,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 27,
+            "validationRenderPaint": 13
+          },
+          "cardSelectionMs": 13,
+          "filterMs": 35,
+          "filterMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 22,
+            "validationRenderPaint": 12
+          },
+          "maxMessageBytes": 103717,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 2,
+          "firstPageMs": 568,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 22,
+          "exactMessageAfterPostMs": 555,
+          "exactMessageToRenderedMs": 9,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 40,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 14
+          },
+          "cardSelectionMs": 14,
+          "filterMs": 36,
+          "filterMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 25,
+            "validationRenderPaint": 10
+          },
+          "maxMessageBytes": 103717,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 3,
+          "firstPageMs": 519,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 21,
+          "exactMessageAfterPostMs": 506,
+          "exactMessageToRenderedMs": 9,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 40,
+          "nextPageMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 26,
+            "validationRenderPaint": 13
+          },
+          "cardSelectionMs": 21,
+          "filterMs": 40,
+          "filterMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 28,
+            "validationRenderPaint": 11
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 4,
+          "firstPageMs": 534,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 21,
+          "exactMessageAfterPostMs": 520,
+          "exactMessageToRenderedMs": 10,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 39,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 27,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 13,
+          "filterMs": 35,
+          "filterMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 24,
+            "validationRenderPaint": 10
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 5,
+          "firstPageMs": 553,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 23,
+          "exactMessageAfterPostMs": 538,
+          "exactMessageToRenderedMs": 11,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 38,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 10,
+          "filterMs": 34,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 24,
+            "validationRenderPaint": 10
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 6,
+          "firstPageMs": 540,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 22,
+          "exactMessageAfterPostMs": 525,
+          "exactMessageToRenderedMs": 11,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 40,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 14
+          },
+          "cardSelectionMs": 13,
+          "filterMs": 36,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 25,
+            "validationRenderPaint": 11
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 7,
+          "firstPageMs": 543,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 21,
+          "exactMessageAfterPostMs": 524,
+          "exactMessageToRenderedMs": 15,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 41,
+          "nextPageMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 27,
+            "validationRenderPaint": 13
+          },
+          "cardSelectionMs": 13,
+          "filterMs": 37,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 24,
+            "validationRenderPaint": 13
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 8,
+          "firstPageMs": 533,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 22,
+          "exactMessageAfterPostMs": 518,
+          "exactMessageToRenderedMs": 11,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 38,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 25,
+            "validationRenderPaint": 13
+          },
+          "cardSelectionMs": 14,
+          "filterMs": 34,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 24,
+            "validationRenderPaint": 10
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 9,
+          "firstPageMs": 533,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 22,
+          "exactMessageAfterPostMs": 520,
+          "exactMessageToRenderedMs": 9,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 40,
+          "nextPageMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 27,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 12,
+          "filterMs": 34,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 25,
+            "validationRenderPaint": 9
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 10,
+          "firstPageMs": 534,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 22,
+          "exactMessageAfterPostMs": 521,
+          "exactMessageToRenderedMs": 10,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 41,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 30,
+            "validationRenderPaint": 11
+          },
+          "cardSelectionMs": 13,
+          "filterMs": 39,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 25,
+            "validationRenderPaint": 14
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 11,
+          "firstPageMs": 561,
+          "workerPostAfterActionMs": 5,
+          "acceptedAfterPostMs": 22,
+          "exactMessageAfterPostMs": 546,
+          "exactMessageToRenderedMs": 10,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 38,
+          "nextPageMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 26,
+            "validationRenderPaint": 11
+          },
+          "cardSelectionMs": 13,
+          "filterMs": 36,
+          "filterMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 25,
+            "validationRenderPaint": 10
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 12,
+          "firstPageMs": 546,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 22,
+          "exactMessageAfterPostMs": 532,
+          "exactMessageToRenderedMs": 10,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 40,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 28,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 14,
+          "filterMs": 36,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 10
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 13,
+          "firstPageMs": 529,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 22,
+          "exactMessageAfterPostMs": 517,
+          "exactMessageToRenderedMs": 9,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 39,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 27,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 13,
+          "filterMs": 36,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 22,
+            "validationRenderPaint": 14
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 14,
+          "firstPageMs": 531,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 21,
+          "exactMessageAfterPostMs": 517,
+          "exactMessageToRenderedMs": 11,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 37,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 11
+          },
+          "cardSelectionMs": 12,
+          "filterMs": 34,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 22,
+            "validationRenderPaint": 12
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 15,
+          "firstPageMs": 554,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 22,
+          "exactMessageAfterPostMs": 540,
+          "exactMessageToRenderedMs": 10,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 39,
+          "nextPageMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 26,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 12,
+          "filterMs": 34,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 25,
+            "validationRenderPaint": 9
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 16,
+          "firstPageMs": 550,
+          "workerPostAfterActionMs": 2,
+          "acceptedAfterPostMs": 23,
+          "exactMessageAfterPostMs": 539,
+          "exactMessageToRenderedMs": 9,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 36,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 10
+          },
+          "cardSelectionMs": 11,
+          "filterMs": 34,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 23,
+            "validationRenderPaint": 11
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 17,
+          "firstPageMs": 554,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 21,
+          "exactMessageAfterPostMs": 536,
+          "exactMessageToRenderedMs": 14,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 37,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 25,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 15,
+          "filterMs": 38,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 27,
+            "validationRenderPaint": 11
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 18,
+          "firstPageMs": 539,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 21,
+          "exactMessageAfterPostMs": 523,
+          "exactMessageToRenderedMs": 12,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 39,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 13
+          },
+          "cardSelectionMs": 15,
+          "filterMs": 35,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 25,
+            "validationRenderPaint": 10
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 19,
+          "firstPageMs": 521,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 22,
+          "exactMessageAfterPostMs": 506,
+          "exactMessageToRenderedMs": 12,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 37,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 11
+          },
+          "cardSelectionMs": 12,
+          "filterMs": 34,
+          "filterMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 22,
+            "validationRenderPaint": 11
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 20,
+          "firstPageMs": 524,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 22,
+          "exactMessageAfterPostMs": 507,
+          "exactMessageToRenderedMs": 13,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 39,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 28,
+            "validationRenderPaint": 11
+          },
+          "cardSelectionMs": 11,
+          "filterMs": 34,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 23,
+            "validationRenderPaint": 11
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 21,
+          "firstPageMs": 545,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 22,
+          "exactMessageAfterPostMs": 532,
+          "exactMessageToRenderedMs": 10,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 42,
+          "nextPageMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 30,
+            "validationRenderPaint": 11
+          },
+          "cardSelectionMs": 14,
+          "filterMs": 34,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 23,
+            "validationRenderPaint": 11
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 22,
+          "firstPageMs": 546,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 23,
+          "exactMessageAfterPostMs": 533,
+          "exactMessageToRenderedMs": 9,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 37,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 27,
+            "validationRenderPaint": 10
+          },
+          "cardSelectionMs": 11,
+          "filterMs": 35,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 24,
+            "validationRenderPaint": 11
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 23,
+          "firstPageMs": 539,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 20,
+          "exactMessageAfterPostMs": 527,
+          "exactMessageToRenderedMs": 8,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 40,
+          "nextPageMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 27,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 15,
+          "filterMs": 34,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 24,
+            "validationRenderPaint": 10
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 24,
+          "firstPageMs": 515,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 23,
+          "exactMessageAfterPostMs": 503,
+          "exactMessageToRenderedMs": 9,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 39,
+          "nextPageMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 26,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 12,
+          "filterMs": 33,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 23,
+            "validationRenderPaint": 10
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 25,
+          "firstPageMs": 533,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 23,
+          "exactMessageAfterPostMs": 520,
+          "exactMessageToRenderedMs": 10,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 40,
+          "nextPageMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 28,
+            "validationRenderPaint": 11
+          },
+          "cardSelectionMs": 13,
+          "filterMs": 37,
+          "filterMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 24,
+            "validationRenderPaint": 12
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 26,
+          "firstPageMs": 537,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 22,
+          "exactMessageAfterPostMs": 522,
+          "exactMessageToRenderedMs": 11,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 41,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 28,
+            "validationRenderPaint": 13
+          },
+          "cardSelectionMs": 13,
+          "filterMs": 36,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 25,
+            "validationRenderPaint": 11
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 27,
+          "firstPageMs": 525,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 21,
+          "exactMessageAfterPostMs": 512,
+          "exactMessageToRenderedMs": 9,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 39,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 27,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 15,
+          "filterMs": 34,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 22,
+            "validationRenderPaint": 12
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 28,
+          "firstPageMs": 561,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 30,
+          "exactMessageAfterPostMs": 546,
+          "exactMessageToRenderedMs": 11,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 42,
+          "nextPageMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 29,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 13,
+          "filterMs": 34,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 23,
+            "validationRenderPaint": 11
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 29,
+          "firstPageMs": 515,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 22,
+          "exactMessageAfterPostMs": 502,
+          "exactMessageToRenderedMs": 9,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 38,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 27,
+            "validationRenderPaint": 11
+          },
+          "cardSelectionMs": 12,
+          "filterMs": 35,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 25,
+            "validationRenderPaint": 10
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        }
+      ],
+      "aggregate": {
+        "firstPageMs": {
+          "n": 30,
+          "p50": 534,
+          "p95": 561,
+          "max": 568
+        },
+        "nextPageMs": {
+          "n": 30,
+          "p50": 39,
+          "p95": 42,
+          "max": 42
+        },
+        "filterMs": {
+          "n": 30,
+          "p50": 35,
+          "p95": 39,
+          "max": 40
+        },
+        "cardSelectionMs": {
+          "n": 30,
+          "p50": 13,
+          "p95": 15,
+          "max": 21
+        }
+      },
+      "stages": {
+        "nextPageMsStages": {
+          "dispatch": {
+            "n": 30,
+            "p50": 0,
+            "p95": 1,
+            "max": 1
+          },
+          "responseDelivery": {
+            "n": 30,
+            "p50": 27,
+            "p95": 30,
+            "max": 30
+          },
+          "validationRenderPaint": {
+            "n": 30,
+            "p50": 12,
+            "p95": 14,
+            "max": 14
+          }
+        },
+        "filterMsStages": {
+          "dispatch": {
+            "n": 30,
+            "p50": 0,
+            "p95": 1,
+            "max": 1
+          },
+          "responseDelivery": {
+            "n": 30,
+            "p50": 24,
+            "p95": 27,
+            "max": 28
+          },
+          "validationRenderPaint": {
+            "n": 30,
+            "p50": 11,
+            "p95": 14,
+            "max": 14
+          }
+        }
+      }
+    },
+    {
+      "gc": true,
+      "samples": [
+        {
+          "run": 0,
+          "firstPageMs": 545,
+          "workerPostAfterActionMs": 6,
+          "acceptedAfterPostMs": 24,
+          "exactMessageAfterPostMs": 526,
+          "exactMessageToRenderedMs": 13,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 42,
+          "nextPageMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 27,
+            "validationRenderPaint": 14
+          },
+          "cardSelectionMs": 15,
+          "filterMs": 36,
+          "filterMsStages": {
+            "dispatch": 2,
+            "responseDelivery": 23,
+            "validationRenderPaint": 11
+          },
+          "maxMessageBytes": 103717,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 1,
+          "firstPageMs": 531,
+          "workerPostAfterActionMs": 2,
+          "acceptedAfterPostMs": 23,
+          "exactMessageAfterPostMs": 519,
+          "exactMessageToRenderedMs": 10,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 38,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 12,
+          "filterMs": 36,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 25,
+            "validationRenderPaint": 11
+          },
+          "maxMessageBytes": 103717,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 2,
+          "firstPageMs": 546,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 25,
+          "exactMessageAfterPostMs": 533,
+          "exactMessageToRenderedMs": 10,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 41,
+          "nextPageMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 29,
+            "validationRenderPaint": 11
+          },
+          "cardSelectionMs": 12,
+          "filterMs": 35,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 24,
+            "validationRenderPaint": 11
+          },
+          "maxMessageBytes": 103717,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 3,
+          "firstPageMs": 516,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 23,
+          "exactMessageAfterPostMs": 500,
+          "exactMessageToRenderedMs": 12,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 41,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 28,
+            "validationRenderPaint": 13
+          },
+          "cardSelectionMs": 13,
+          "filterMs": 36,
+          "filterMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 26,
+            "validationRenderPaint": 9
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 4,
+          "firstPageMs": 530,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 23,
+          "exactMessageAfterPostMs": 515,
+          "exactMessageToRenderedMs": 12,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 39,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 27,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 12,
+          "filterMs": 39,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 25,
+            "validationRenderPaint": 14
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 5,
+          "firstPageMs": 514,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 24,
+          "exactMessageAfterPostMs": 502,
+          "exactMessageToRenderedMs": 9,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 40,
+          "nextPageMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 26,
+            "validationRenderPaint": 13
+          },
+          "cardSelectionMs": 13,
+          "filterMs": 34,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 24,
+            "validationRenderPaint": 10
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 6,
+          "firstPageMs": 522,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 22,
+          "exactMessageAfterPostMs": 510,
+          "exactMessageToRenderedMs": 9,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 37,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 11
+          },
+          "cardSelectionMs": 11,
+          "filterMs": 34,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 25,
+            "validationRenderPaint": 9
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 7,
+          "firstPageMs": 519,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 23,
+          "exactMessageAfterPostMs": 505,
+          "exactMessageToRenderedMs": 11,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 40,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 28,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 14,
+          "filterMs": 35,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 9
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 8,
+          "firstPageMs": 533,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 23,
+          "exactMessageAfterPostMs": 521,
+          "exactMessageToRenderedMs": 9,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 39,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 27,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 13,
+          "filterMs": 35,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 24,
+            "validationRenderPaint": 11
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 9,
+          "firstPageMs": 535,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 23,
+          "exactMessageAfterPostMs": 521,
+          "exactMessageToRenderedMs": 10,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 40,
+          "nextPageMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 27,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 12,
+          "filterMs": 36,
+          "filterMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 24,
+            "validationRenderPaint": 11
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 10,
+          "firstPageMs": 563,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 24,
+          "exactMessageAfterPostMs": 551,
+          "exactMessageToRenderedMs": 8,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 39,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 13
+          },
+          "cardSelectionMs": 15,
+          "filterMs": 40,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 27,
+            "validationRenderPaint": 13
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 11,
+          "firstPageMs": 531,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 25,
+          "exactMessageAfterPostMs": 519,
+          "exactMessageToRenderedMs": 9,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 37,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 11
+          },
+          "cardSelectionMs": 11,
+          "filterMs": 35,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 25,
+            "validationRenderPaint": 10
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 12,
+          "firstPageMs": 525,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 24,
+          "exactMessageAfterPostMs": 513,
+          "exactMessageToRenderedMs": 9,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 39,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 27,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 14,
+          "filterMs": 35,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 9
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 13,
+          "firstPageMs": 528,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 24,
+          "exactMessageAfterPostMs": 515,
+          "exactMessageToRenderedMs": 10,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 37,
+          "nextPageMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 25,
+            "validationRenderPaint": 11
+          },
+          "cardSelectionMs": 11,
+          "filterMs": 34,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 8
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 14,
+          "firstPageMs": 535,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 25,
+          "exactMessageAfterPostMs": 521,
+          "exactMessageToRenderedMs": 10,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 40,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 27,
+            "validationRenderPaint": 13
+          },
+          "cardSelectionMs": 12,
+          "filterMs": 35,
+          "filterMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 23,
+            "validationRenderPaint": 11
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 15,
+          "firstPageMs": 534,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 24,
+          "exactMessageAfterPostMs": 520,
+          "exactMessageToRenderedMs": 10,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 40,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 28,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 13,
+          "filterMs": 35,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 22,
+            "validationRenderPaint": 13
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 16,
+          "firstPageMs": 546,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 23,
+          "exactMessageAfterPostMs": 533,
+          "exactMessageToRenderedMs": 9,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 40,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 28,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 15,
+          "filterMs": 35,
+          "filterMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 24,
+            "validationRenderPaint": 10
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 17,
+          "firstPageMs": 539,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 23,
+          "exactMessageAfterPostMs": 526,
+          "exactMessageToRenderedMs": 10,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 38,
+          "nextPageMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 26,
+            "validationRenderPaint": 11
+          },
+          "cardSelectionMs": 13,
+          "filterMs": 37,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 25,
+            "validationRenderPaint": 12
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 18,
+          "firstPageMs": 545,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 22,
+          "exactMessageAfterPostMs": 532,
+          "exactMessageToRenderedMs": 9,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 37,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 25,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 13,
+          "filterMs": 39,
+          "filterMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 28,
+            "validationRenderPaint": 10
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 19,
+          "firstPageMs": 523,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 23,
+          "exactMessageAfterPostMs": 509,
+          "exactMessageToRenderedMs": 10,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 38,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 15,
+          "filterMs": 36,
+          "filterMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 26,
+            "validationRenderPaint": 9
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 20,
+          "firstPageMs": 535,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 25,
+          "exactMessageAfterPostMs": 520,
+          "exactMessageToRenderedMs": 11,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 38,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 27,
+            "validationRenderPaint": 11
+          },
+          "cardSelectionMs": 12,
+          "filterMs": 34,
+          "filterMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 22,
+            "validationRenderPaint": 11
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 21,
+          "firstPageMs": 534,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 25,
+          "exactMessageAfterPostMs": 523,
+          "exactMessageToRenderedMs": 8,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 38,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 12,
+          "filterMs": 34,
+          "filterMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 23,
+            "validationRenderPaint": 10
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 22,
+          "firstPageMs": 535,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 25,
+          "exactMessageAfterPostMs": 521,
+          "exactMessageToRenderedMs": 11,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 37,
+          "nextPageMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 25,
+            "validationRenderPaint": 11
+          },
+          "cardSelectionMs": 12,
+          "filterMs": 35,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 9
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 23,
+          "firstPageMs": 529,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 24,
+          "exactMessageAfterPostMs": 516,
+          "exactMessageToRenderedMs": 9,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 40,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 27,
+            "validationRenderPaint": 13
+          },
+          "cardSelectionMs": 13,
+          "filterMs": 35,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 24,
+            "validationRenderPaint": 11
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 24,
+          "firstPageMs": 512,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 23,
+          "exactMessageAfterPostMs": 499,
+          "exactMessageToRenderedMs": 9,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 36,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 25,
+            "validationRenderPaint": 11
+          },
+          "cardSelectionMs": 13,
+          "filterMs": 34,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 24,
+            "validationRenderPaint": 10
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 25,
+          "firstPageMs": 538,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 23,
+          "exactMessageAfterPostMs": 525,
+          "exactMessageToRenderedMs": 10,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 38,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 27,
+            "validationRenderPaint": 11
+          },
+          "cardSelectionMs": 11,
+          "filterMs": 34,
+          "filterMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 22,
+            "validationRenderPaint": 11
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 26,
+          "firstPageMs": 529,
+          "workerPostAfterActionMs": 8,
+          "acceptedAfterPostMs": 26,
+          "exactMessageAfterPostMs": 509,
+          "exactMessageToRenderedMs": 12,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 40,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 28,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 12,
+          "filterMs": 33,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 24,
+            "validationRenderPaint": 9
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 27,
+          "firstPageMs": 534,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 23,
+          "exactMessageAfterPostMs": 520,
+          "exactMessageToRenderedMs": 11,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 40,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 14
+          },
+          "cardSelectionMs": 14,
+          "filterMs": 35,
+          "filterMsStages": {
+            "dispatch": 1,
+            "responseDelivery": 24,
+            "validationRenderPaint": 10
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 28,
+          "firstPageMs": 533,
+          "workerPostAfterActionMs": 3,
+          "acceptedAfterPostMs": 22,
+          "exactMessageAfterPostMs": 520,
+          "exactMessageToRenderedMs": 10,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 39,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 27,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 11,
+          "filterMs": 35,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 9
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        },
+        {
+          "run": 29,
+          "firstPageMs": 512,
+          "workerPostAfterActionMs": 4,
+          "acceptedAfterPostMs": 23,
+          "exactMessageAfterPostMs": 499,
+          "exactMessageToRenderedMs": 9,
+          "structural": 67472,
+          "pass": 2068,
+          "uncertain": 65404,
+          "reject": 0,
+          "mode": "compact",
+          "retainedBufferBytes": 2228224,
+          "accountedBufferBytes": 2785280,
+          "nextPageMs": 38,
+          "nextPageMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 26,
+            "validationRenderPaint": 12
+          },
+          "cardSelectionMs": 13,
+          "filterMs": 39,
+          "filterMsStages": {
+            "dispatch": 0,
+            "responseDelivery": 29,
+            "validationRenderPaint": 10
+          },
+          "maxMessageBytes": 103718,
+          "maxRenderedCards": 12,
+          "longTasks": {
+            "count": 0,
+            "maxMs": 0
+          }
+        }
+      ],
+      "aggregate": {
+        "firstPageMs": {
+          "n": 30,
+          "p50": 533,
+          "p95": 546,
+          "max": 563
+        },
+        "nextPageMs": {
+          "n": 30,
+          "p50": 39,
+          "p95": 41,
+          "max": 42
+        },
+        "filterMs": {
+          "n": 30,
+          "p50": 35,
+          "p95": 39,
+          "max": 40
+        },
+        "cardSelectionMs": {
+          "n": 30,
+          "p50": 13,
+          "p95": 15,
+          "max": 15
+        }
+      },
+      "stages": {
+        "nextPageMsStages": {
+          "dispatch": {
+            "n": 30,
+            "p50": 0,
+            "p95": 1,
+            "max": 1
+          },
+          "responseDelivery": {
+            "n": 30,
+            "p50": 27,
+            "p95": 28,
+            "max": 29
+          },
+          "validationRenderPaint": {
+            "n": 30,
+            "p50": 12,
+            "p95": 14,
+            "max": 14
+          }
+        },
+        "filterMsStages": {
+          "dispatch": {
+            "n": 30,
+            "p50": 0,
+            "p95": 1,
+            "max": 2
+          },
+          "responseDelivery": {
+            "n": 30,
+            "p50": 24,
+            "p95": 28,
+            "max": 29
+          },
+          "validationRenderPaint": {
+            "n": 30,
+            "p50": 10,
+            "p95": 13,
+            "max": 14
+          }
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "complete": true
+}

@@ -15,6 +15,7 @@
 /.research/
 /.tmp-engine-browsers/
 /.tmp-policy-baseline/
+/.tmp-release-memory/
 
 # next.js
 /.next/

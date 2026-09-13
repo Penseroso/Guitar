@@ -1,0 +1,3335 @@
+[
+  {
+    "id": "PO-18cf563ed1db",
+    "quality": "augmented",
+    "rootPitchClass": 0,
+    "statesHighToLow": [
+      0,
+      1,
+      1,
+      2,
+      -1,
+      -1
+    ],
+    "inversion": "first",
+    "omissions": [],
+    "bassTone": "3",
+    "topTone": "3",
+    "bassRole": "third",
+    "topRole": "third",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-c-aug-2"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-9147dec925b7",
+    "quality": "augmented",
+    "rootPitchClass": 0,
+    "statesHighToLow": [
+      0,
+      1,
+      1,
+      2,
+      3,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "3",
+    "bassRole": "root",
+    "topRole": "third",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-c-aug-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-9698c1156175",
+    "quality": "augmented",
+    "rootPitchClass": 2,
+    "statesHighToLow": [
+      2,
+      3,
+      3,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "3",
+    "bassRole": "root",
+    "topRole": "third",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-d-aug-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-2a52a5839322",
+    "quality": "augmented",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      0,
+      1,
+      1,
+      2,
+      3,
+      0
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "1",
+    "bassRole": "root",
+    "topRole": "root",
+    "soundingCount": 6,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-e-aug-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-9483480b99da",
+    "quality": "augmented",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      0,
+      1,
+      1,
+      2,
+      -1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "1",
+    "bassRole": "root",
+    "topRole": "root",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-e-aug-2"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-623c9debf809",
+    "quality": "augmented",
+    "rootPitchClass": 7,
+    "statesHighToLow": [
+      3,
+      0,
+      0,
+      1,
+      2,
+      3
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "1",
+    "bassRole": "root",
+    "topRole": "root",
+    "soundingCount": 6,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-g-aug-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-65aaa8888636",
+    "quality": "augmented",
+    "rootPitchClass": 8,
+    "statesHighToLow": [
+      0,
+      1,
+      1,
+      2,
+      -1,
+      -1
+    ],
+    "inversion": "second",
+    "omissions": [],
+    "bassTone": "#5",
+    "topTone": "#5",
+    "bassRole": "fifth",
+    "topRole": "fifth",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-g_sharp-aug-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-ac9d204b0a9e",
+    "quality": "augmented",
+    "rootPitchClass": 9,
+    "statesHighToLow": [
+      1,
+      2,
+      2,
+      3,
+      0,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "#5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a-aug-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-e538eac94fba",
+    "quality": "augmented",
+    "rootPitchClass": 11,
+    "statesHighToLow": [
+      -1,
+      0,
+      0,
+      5,
+      6,
+      7
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "1",
+    "bassRole": "root",
+    "topRole": "root",
+    "soundingCount": 5,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-b-aug-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-6a9933e01554",
+    "quality": "diminished",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      -1,
+      -1,
+      0,
+      2,
+      1,
+      0
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "b3",
+    "bassRole": "root",
+    "topRole": "third",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      0,
+      1,
+      1,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-e-dim-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-968cf5abdeb0",
+    "quality": "diminished",
+    "rootPitchClass": 9,
+    "statesHighToLow": [
+      -1,
+      1,
+      2,
+      1,
+      0,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "b3",
+    "bassRole": "root",
+    "topRole": "third",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a-dim-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-436396e02bd3",
+    "quality": "diminished-7",
+    "rootPitchClass": 1,
+    "statesHighToLow": [
+      -1,
+      2,
+      0,
+      2,
+      1,
+      -1
+    ],
+    "inversion": "third",
+    "omissions": [],
+    "bassTone": "bb7",
+    "topTone": "1",
+    "bassRole": "seventh",
+    "topRole": "root",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-c_sharp-dim7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-12fb98cb4c20",
+    "quality": "diminished-7",
+    "rootPitchClass": 2,
+    "statesHighToLow": [
+      -1,
+      0,
+      1,
+      0,
+      -1,
+      1
+    ],
+    "inversion": "first",
+    "omissions": [],
+    "bassTone": "b3",
+    "topTone": "bb7",
+    "bassRole": "third",
+    "topRole": "seventh",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      0,
+      1
+    ],
+    "observations": [
+      "agc-wide-d-dim7-2"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-1c93e6147adf",
+    "quality": "diminished-7",
+    "rootPitchClass": 2,
+    "statesHighToLow": [
+      1,
+      0,
+      1,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "b3",
+    "bassRole": "root",
+    "topRole": "third",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-d-dim7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-ba874bb6df1e",
+    "quality": "diminished-7",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      -1,
+      2,
+      0,
+      2,
+      1,
+      -1
+    ],
+    "inversion": "second",
+    "omissions": [],
+    "bassTone": "b5",
+    "topTone": "bb7",
+    "bassRole": "fifth",
+    "topRole": "seventh",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-e-dim7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-97a746df5004",
+    "quality": "diminished-7",
+    "rootPitchClass": 7,
+    "statesHighToLow": [
+      -1,
+      2,
+      0,
+      2,
+      1,
+      -1
+    ],
+    "inversion": "first",
+    "omissions": [],
+    "bassTone": "b3",
+    "topTone": "b5",
+    "bassRole": "third",
+    "topRole": "fifth",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-g-dim7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-739714c28cb4",
+    "quality": "diminished-7",
+    "rootPitchClass": 10,
+    "statesHighToLow": [
+      -1,
+      2,
+      0,
+      2,
+      1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "b3",
+    "bassRole": "root",
+    "topRole": "third",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a_sharp-dim7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-e4177599e685",
+    "quality": "diminished-7",
+    "rootPitchClass": 11,
+    "statesHighToLow": [
+      -1,
+      0,
+      1,
+      0,
+      -1,
+      1
+    ],
+    "inversion": "second",
+    "omissions": [],
+    "bassTone": "b5",
+    "topTone": "1",
+    "bassRole": "fifth",
+    "topRole": "root",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      0,
+      1
+    ],
+    "observations": [
+      "agc-wide-b-dim7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-93c0be460786",
+    "quality": "dominant-11",
+    "rootPitchClass": 6,
+    "statesHighToLow": [
+      -1,
+      0,
+      1,
+      2,
+      -1,
+      2
+    ],
+    "inversion": "root",
+    "omissions": [
+      "3",
+      "5"
+    ],
+    "bassTone": "1",
+    "topTone": "11",
+    "bassRole": "root",
+    "topRole": "suspension-or-extension",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      0,
+      1
+    ],
+    "observations": [
+      "agc-wide-f_sharp-11-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-b322cdf4e939",
+    "quality": "dominant-11",
+    "rootPitchClass": 9,
+    "statesHighToLow": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [
+      "3"
+    ],
+    "bassTone": "1",
+    "topTone": "5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a-11-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-8064962a7529",
+    "quality": "dominant-11",
+    "rootPitchClass": 11,
+    "statesHighToLow": [
+      0,
+      2,
+      2,
+      -1,
+      2,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [
+      "3",
+      "5"
+    ],
+    "bassTone": "1",
+    "topTone": "11",
+    "bassRole": "root",
+    "topRole": "suspension-or-extension",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      0,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-b-11-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-5ee346eca030",
+    "quality": "dominant-13",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      0,
+      2,
+      1,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "third",
+    "omissions": [
+      "5",
+      "9"
+    ],
+    "bassTone": "b7",
+    "topTone": "1",
+    "bassRole": "seventh",
+    "topRole": "root",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-e-13-2"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-e4d391936b15",
+    "quality": "dominant-13",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      -1,
+      2,
+      1,
+      0,
+      -1,
+      0
+    ],
+    "inversion": "root",
+    "omissions": [
+      "5",
+      "9"
+    ],
+    "bassTone": "1",
+    "topTone": "13",
+    "bassRole": "root",
+    "topRole": "suspension-or-extension",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      0,
+      1
+    ],
+    "observations": [
+      "agc-wide-e-13-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-74f761cf7921",
+    "quality": "dominant-13",
+    "rootPitchClass": 10,
+    "statesHighToLow": [
+      3,
+      1,
+      1,
+      0,
+      1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [
+      "5"
+    ],
+    "bassTone": "1",
+    "topTone": "13",
+    "bassRole": "root",
+    "topRole": "suspension-or-extension",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a_sharp-13-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-7cecefbff1b6",
+    "quality": "dominant-7",
+    "rootPitchClass": 0,
+    "statesHighToLow": [
+      0,
+      1,
+      3,
+      2,
+      3,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [
+      "5"
+    ],
+    "bassTone": "1",
+    "topTone": "3",
+    "bassRole": "root",
+    "topRole": "third",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-c-7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-dda61c3de08c",
+    "quality": "dominant-7",
+    "rootPitchClass": 2,
+    "statesHighToLow": [
+      2,
+      1,
+      2,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "3",
+    "bassRole": "root",
+    "topRole": "third",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-d-7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-a57def0caa14",
+    "quality": "dominant-7",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      0,
+      0,
+      1,
+      0,
+      2,
+      0
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "1",
+    "bassRole": "root",
+    "topRole": "root",
+    "soundingCount": 6,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-e-7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-aa148bd7961e",
+    "quality": "dominant-7",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      0,
+      0,
+      1,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "third",
+    "omissions": [],
+    "bassTone": "b7",
+    "topTone": "1",
+    "bassRole": "seventh",
+    "topRole": "root",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-e-7-2"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-f599cf221b50",
+    "quality": "dominant-7",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      -1,
+      0,
+      1,
+      0,
+      -1,
+      0
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      0,
+      1
+    ],
+    "observations": [
+      "agc-wide-e-7-3"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-76cdb6fc755c",
+    "quality": "dominant-7",
+    "rootPitchClass": 7,
+    "statesHighToLow": [
+      1,
+      0,
+      0,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "second",
+    "omissions": [],
+    "bassTone": "5",
+    "topTone": "b7",
+    "bassRole": "fifth",
+    "topRole": "seventh",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-g-7-2"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-7d7daa5139ac",
+    "quality": "dominant-7",
+    "rootPitchClass": 7,
+    "statesHighToLow": [
+      1,
+      0,
+      0,
+      0,
+      2,
+      3
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "b7",
+    "bassRole": "root",
+    "topRole": "seventh",
+    "soundingCount": 6,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-g-7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-3089dfcc7266",
+    "quality": "dominant-7",
+    "rootPitchClass": 9,
+    "statesHighToLow": [
+      0,
+      2,
+      0,
+      2,
+      0,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a-7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-89ee15d4e879",
+    "quality": "dominant-7",
+    "rootPitchClass": 11,
+    "statesHighToLow": [
+      2,
+      0,
+      2,
+      1,
+      2,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-b-7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-d1e8f712c734",
+    "quality": "dominant-7",
+    "rootPitchClass": 11,
+    "statesHighToLow": [
+      2,
+      0,
+      2,
+      1,
+      -1,
+      -1
+    ],
+    "inversion": "first",
+    "omissions": [],
+    "bassTone": "3",
+    "topTone": "5",
+    "bassRole": "third",
+    "topRole": "fifth",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-b-7-2"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-da67bcbb778c",
+    "quality": "dominant-7",
+    "rootPitchClass": 11,
+    "statesHighToLow": [
+      -1,
+      0,
+      2,
+      1,
+      2,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [
+      "5"
+    ],
+    "bassTone": "1",
+    "topTone": "1",
+    "bassRole": "root",
+    "topRole": "root",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-b-7-3"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-0a4465e684e8",
+    "quality": "dominant-7-flat-9",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      1,
+      0,
+      1,
+      0,
+      2,
+      0
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "b9",
+    "bassRole": "root",
+    "topRole": "suspension-or-extension",
+    "soundingCount": 6,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-e-7b9-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-25c967bd6ad8",
+    "quality": "dominant-7-flat-9",
+    "rootPitchClass": 7,
+    "statesHighToLow": [
+      3,
+      0,
+      1,
+      3,
+      -1,
+      -1
+    ],
+    "inversion": "third",
+    "omissions": [
+      "5"
+    ],
+    "bassTone": "b7",
+    "topTone": "1",
+    "bassRole": "seventh",
+    "topRole": "root",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-g-7b9-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-6bf032ddbfe6",
+    "quality": "dominant-9",
+    "rootPitchClass": 2,
+    "statesHighToLow": [
+      2,
+      1,
+      2,
+      0,
+      0,
+      0
+    ],
+    "inversion": "bass-9",
+    "omissions": [],
+    "bassTone": "9",
+    "topTone": "3",
+    "bassRole": "suspension-or-extension",
+    "topRole": "third",
+    "soundingCount": 6,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-d-9-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-85ee0a1cfae1",
+    "quality": "dominant-9",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      2,
+      0,
+      1,
+      0,
+      2,
+      0
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "9",
+    "bassRole": "root",
+    "topRole": "suspension-or-extension",
+    "soundingCount": 6,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-e-9-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-5115ba879637",
+    "quality": "dominant-9",
+    "rootPitchClass": 5,
+    "statesHighToLow": [
+      1,
+      1,
+      0,
+      1,
+      -1,
+      1
+    ],
+    "inversion": "root",
+    "omissions": [
+      "3"
+    ],
+    "bassTone": "1",
+    "topTone": "1",
+    "bassRole": "root",
+    "topRole": "root",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      1
+    ],
+    "observations": [
+      "agc-wide-f-9-1"
+    ],
+    "adopted": false
+  },
+  {
+    "id": "PO-59ae5d6a3083",
+    "quality": "dominant-9",
+    "rootPitchClass": 7,
+    "statesHighToLow": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      -1
+    ],
+    "inversion": "bass-9",
+    "omissions": [],
+    "bassTone": "9",
+    "topTone": "b7",
+    "bassRole": "suspension-or-extension",
+    "topRole": "seventh",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-g-9-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-474e0f67a944",
+    "quality": "dominant-9",
+    "rootPitchClass": 10,
+    "statesHighToLow": [
+      1,
+      1,
+      1,
+      0,
+      1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a_sharp-9-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-9cf70e401bb9",
+    "quality": "half-diminished-7",
+    "rootPitchClass": 2,
+    "statesHighToLow": [
+      1,
+      1,
+      1,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "b3",
+    "bassRole": "root",
+    "topRole": "third",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-d-m7b5-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-a9a493f6a2d6",
+    "quality": "half-diminished-7",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      0,
+      3,
+      0,
+      0,
+      1,
+      0
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "1",
+    "bassRole": "root",
+    "topRole": "root",
+    "soundingCount": 6,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-e-m7b5-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-255a4399774a",
+    "quality": "half-diminished-7",
+    "rootPitchClass": 5,
+    "statesHighToLow": [
+      1,
+      0,
+      1,
+      1,
+      -1,
+      -1
+    ],
+    "inversion": "third",
+    "omissions": [],
+    "bassTone": "b7",
+    "topTone": "1",
+    "bassRole": "seventh",
+    "topRole": "root",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-f-m7b5-2"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-7d43a806047b",
+    "quality": "half-diminished-7",
+    "rootPitchClass": 5,
+    "statesHighToLow": [
+      -1,
+      0,
+      1,
+      1,
+      -1,
+      1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "b5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      0,
+      1
+    ],
+    "observations": [
+      "agc-wide-f-m7b5-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-611df95ce665",
+    "quality": "half-diminished-7",
+    "rootPitchClass": 9,
+    "statesHighToLow": [
+      -1,
+      1,
+      0,
+      1,
+      0,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "b3",
+    "bassRole": "root",
+    "topRole": "third",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a-m7b5-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-5c897fc7d3ee",
+    "quality": "half-diminished-7",
+    "rootPitchClass": 10,
+    "statesHighToLow": [
+      0,
+      2,
+      1,
+      -1,
+      1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "b5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      0,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a_sharp-m7b5-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-6fda35bb9d32",
+    "quality": "half-diminished-7",
+    "rootPitchClass": 11,
+    "statesHighToLow": [
+      1,
+      0,
+      2,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "first",
+    "omissions": [],
+    "bassTone": "b3",
+    "topTone": "b5",
+    "bassRole": "third",
+    "topRole": "fifth",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-b-m7b5-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-b51cb16cfaf4",
+    "quality": "hendrix-7-sharp-9",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      3,
+      3,
+      1,
+      0,
+      2,
+      0
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "#9",
+    "bassRole": "root",
+    "topRole": "suspension-or-extension",
+    "soundingCount": 6,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-e-7*9-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-124523f094a1",
+    "quality": "hendrix-7-sharp-9",
+    "rootPitchClass": 10,
+    "statesHighToLow": [
+      -1,
+      2,
+      1,
+      0,
+      1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [
+      "5"
+    ],
+    "bassTone": "1",
+    "topTone": "#9",
+    "bassRole": "root",
+    "topRole": "suspension-or-extension",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a_sharp-7*9-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-ca126e73261d",
+    "quality": "major",
+    "rootPitchClass": 0,
+    "statesHighToLow": [
+      0,
+      1,
+      0,
+      2,
+      3,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "3",
+    "bassRole": "root",
+    "topRole": "third",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-c-major-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-1bcff1356666",
+    "quality": "major",
+    "rootPitchClass": 2,
+    "statesHighToLow": [
+      2,
+      3,
+      2,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "3",
+    "bassRole": "root",
+    "topRole": "third",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-d-major-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-295b0bee892d",
+    "quality": "major",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      0,
+      0,
+      1,
+      2,
+      2,
+      0
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "1",
+    "bassRole": "root",
+    "topRole": "root",
+    "soundingCount": 6,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-e-major-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-b6d86dea82ad",
+    "quality": "major",
+    "rootPitchClass": 7,
+    "statesHighToLow": [
+      3,
+      0,
+      0,
+      0,
+      2,
+      3
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "1",
+    "bassRole": "root",
+    "topRole": "root",
+    "soundingCount": 6,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-g-major-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-6dcac881c7a8",
+    "quality": "major",
+    "rootPitchClass": 9,
+    "statesHighToLow": [
+      0,
+      2,
+      2,
+      2,
+      0,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a-major-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-ffff4bad0cdf",
+    "quality": "major-6",
+    "rootPitchClass": 2,
+    "statesHighToLow": [
+      2,
+      0,
+      2,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "3",
+    "bassRole": "root",
+    "topRole": "third",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-d-6-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-02ffba0f3f9a",
+    "quality": "major-6",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      0,
+      2,
+      1,
+      2,
+      2,
+      -1
+    ],
+    "inversion": "second",
+    "omissions": [],
+    "bassTone": "5",
+    "topTone": "1",
+    "bassRole": "fifth",
+    "topRole": "root",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-e-6-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-4a6fce843229",
+    "quality": "major-6",
+    "rootPitchClass": 5,
+    "statesHighToLow": [
+      1,
+      1,
+      2,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "bass-6",
+    "omissions": [],
+    "bassTone": "6",
+    "topTone": "1",
+    "bassRole": "suspension-or-extension",
+    "topRole": "root",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-f-6-2"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-eed973c03097",
+    "quality": "major-6",
+    "rootPitchClass": 5,
+    "statesHighToLow": [
+      -1,
+      1,
+      2,
+      0,
+      -1,
+      1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      0,
+      1
+    ],
+    "observations": [
+      "agc-wide-f-6-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-5394dbcaa657",
+    "quality": "major-6",
+    "rootPitchClass": 7,
+    "statesHighToLow": [
+      0,
+      0,
+      0,
+      0,
+      2,
+      0
+    ],
+    "inversion": "bass-6",
+    "omissions": [],
+    "bassTone": "6",
+    "topTone": "6",
+    "bassRole": "suspension-or-extension",
+    "topRole": "suspension-or-extension",
+    "soundingCount": 6,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-g-6-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-b6c9eece3b62",
+    "quality": "major-6",
+    "rootPitchClass": 7,
+    "statesHighToLow": [
+      0,
+      0,
+      0,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "second",
+    "omissions": [],
+    "bassTone": "5",
+    "topTone": "6",
+    "bassRole": "fifth",
+    "topRole": "suspension-or-extension",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-g-6-2"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-63a87b8e0059",
+    "quality": "major-6",
+    "rootPitchClass": 9,
+    "statesHighToLow": [
+      2,
+      2,
+      2,
+      2,
+      0,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "6",
+    "bassRole": "root",
+    "topRole": "suspension-or-extension",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a-6-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-c58db95faf00",
+    "quality": "major-6",
+    "rootPitchClass": 11,
+    "statesHighToLow": [
+      2,
+      0,
+      1,
+      1,
+      -1,
+      -1
+    ],
+    "inversion": "first",
+    "omissions": [],
+    "bassTone": "3",
+    "topTone": "5",
+    "bassRole": "third",
+    "topRole": "fifth",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-b-6-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-89ab0dd8e958",
+    "quality": "major-7",
+    "rootPitchClass": 2,
+    "statesHighToLow": [
+      2,
+      2,
+      2,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "3",
+    "bassRole": "root",
+    "topRole": "third",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-d-maj7-1",
+      "agc-wide-d-maj7-2"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-c3b03a788452",
+    "quality": "major-7",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      0,
+      0,
+      1,
+      1,
+      2,
+      0
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "1",
+    "bassRole": "root",
+    "topRole": "root",
+    "soundingCount": 6,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-e-maj7-2"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-deff13c6f426",
+    "quality": "major-7",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      -1,
+      0,
+      1,
+      1,
+      -1,
+      0
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      0,
+      1
+    ],
+    "observations": [
+      "agc-wide-e-maj7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-b407456e5fbe",
+    "quality": "major-7",
+    "rootPitchClass": 5,
+    "statesHighToLow": [
+      0,
+      1,
+      2,
+      3,
+      -1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "7",
+    "bassRole": "root",
+    "topRole": "seventh",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-f-maj7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-c790941bafc0",
+    "quality": "major-7",
+    "rootPitchClass": 7,
+    "statesHighToLow": [
+      2,
+      0,
+      0,
+      0,
+      2,
+      -1
+    ],
+    "inversion": "first",
+    "omissions": [],
+    "bassTone": "3",
+    "topTone": "7",
+    "bassRole": "third",
+    "topRole": "seventh",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-g-maj7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-41b82888536a",
+    "quality": "major-7",
+    "rootPitchClass": 9,
+    "statesHighToLow": [
+      0,
+      2,
+      1,
+      2,
+      0,
+      0
+    ],
+    "inversion": "second",
+    "omissions": [],
+    "bassTone": "5",
+    "topTone": "5",
+    "bassRole": "fifth",
+    "topRole": "fifth",
+    "soundingCount": 6,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-a-maj7-2"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-502f74f8db78",
+    "quality": "major-7",
+    "rootPitchClass": 9,
+    "statesHighToLow": [
+      0,
+      2,
+      1,
+      2,
+      0,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a-maj7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-c50203eab1e4",
+    "quality": "major-7",
+    "rootPitchClass": 11,
+    "statesHighToLow": [
+      2,
+      0,
+      3,
+      1,
+      -1,
+      -1
+    ],
+    "inversion": "first",
+    "omissions": [],
+    "bassTone": "3",
+    "topTone": "5",
+    "bassRole": "third",
+    "topRole": "fifth",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-b-maj7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-677f59455c5e",
+    "quality": "major-9",
+    "rootPitchClass": 2,
+    "statesHighToLow": [
+      0,
+      2,
+      2,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [
+      "3"
+    ],
+    "bassTone": "1",
+    "topTone": "9",
+    "bassRole": "root",
+    "topRole": "suspension-or-extension",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-d-maj9-1"
+    ],
+    "adopted": false
+  },
+  {
+    "id": "PO-23edb5fcf0a5",
+    "quality": "major-9",
+    "rootPitchClass": 5,
+    "statesHighToLow": [
+      -1,
+      1,
+      0,
+      2,
+      -1,
+      1
+    ],
+    "inversion": "root",
+    "omissions": [
+      "3"
+    ],
+    "bassTone": "1",
+    "topTone": "5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      0,
+      1
+    ],
+    "observations": [
+      "agc-wide-f-maj9-1"
+    ],
+    "adopted": false
+  },
+  {
+    "id": "PO-e6954149c126",
+    "quality": "major-9",
+    "rootPitchClass": 9,
+    "statesHighToLow": [
+      0,
+      0,
+      1,
+      2,
+      0,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [
+      "3"
+    ],
+    "bassTone": "1",
+    "topTone": "5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a-maj9-1"
+    ],
+    "adopted": false
+  },
+  {
+    "id": "PO-b5be9322ac76",
+    "quality": "major-9",
+    "rootPitchClass": 10,
+    "statesHighToLow": [
+      -1,
+      1,
+      2,
+      0,
+      1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [
+      "5"
+    ],
+    "bassTone": "1",
+    "topTone": "9",
+    "bassRole": "root",
+    "topRole": "suspension-or-extension",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a_sharp-maj9-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-eb2273282412",
+    "quality": "minor",
+    "rootPitchClass": 0,
+    "statesHighToLow": [
+      3,
+      1,
+      0,
+      1,
+      3,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-c-minor-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-a58522ff790b",
+    "quality": "minor",
+    "rootPitchClass": 2,
+    "statesHighToLow": [
+      1,
+      3,
+      2,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "b3",
+    "bassRole": "root",
+    "topRole": "third",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-d-minor-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-682bc3544aa1",
+    "quality": "minor",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      0,
+      0,
+      0,
+      2,
+      2,
+      0
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "1",
+    "bassRole": "root",
+    "topRole": "root",
+    "soundingCount": 6,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-e-minor-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-0dcf702e8f89",
+    "quality": "minor",
+    "rootPitchClass": 9,
+    "statesHighToLow": [
+      0,
+      1,
+      2,
+      2,
+      0,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a-minor-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-99ad24ada507",
+    "quality": "minor-7",
+    "rootPitchClass": 2,
+    "statesHighToLow": [
+      1,
+      1,
+      2,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "b3",
+    "bassRole": "root",
+    "topRole": "third",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-d-m7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-ae9d47f2b7cd",
+    "quality": "minor-7",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      -1,
+      0,
+      0,
+      0,
+      -1,
+      0
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      0,
+      1
+    ],
+    "observations": [
+      "agc-wide-e-m7-2"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-ca134785561f",
+    "quality": "minor-7",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      0,
+      0,
+      0,
+      0,
+      2,
+      0
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "1",
+    "bassRole": "root",
+    "topRole": "root",
+    "soundingCount": 6,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-e-m7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-e0d0b436c6da",
+    "quality": "minor-7",
+    "rootPitchClass": 8,
+    "statesHighToLow": [
+      2,
+      0,
+      1,
+      1,
+      -1,
+      -1
+    ],
+    "inversion": "second",
+    "omissions": [],
+    "bassTone": "5",
+    "topTone": "b7",
+    "bassRole": "fifth",
+    "topRole": "seventh",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-g_sharp-m7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-07641c0e1431",
+    "quality": "minor-7",
+    "rootPitchClass": 9,
+    "statesHighToLow": [
+      0,
+      1,
+      0,
+      2,
+      0,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a-m7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-7acb0ee04e7e",
+    "quality": "minor-7",
+    "rootPitchClass": 11,
+    "statesHighToLow": [
+      2,
+      0,
+      2,
+      0,
+      0,
+      -1
+    ],
+    "inversion": "third",
+    "omissions": [],
+    "bassTone": "b7",
+    "topTone": "5",
+    "bassRole": "seventh",
+    "topRole": "fifth",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-b-m7-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-0901dbd266be",
+    "quality": "minor-9",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      2,
+      0,
+      0,
+      0,
+      -1,
+      0
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "9",
+    "bassRole": "root",
+    "topRole": "suspension-or-extension",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      1
+    ],
+    "observations": [
+      "agc-wide-e-m9-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-bbb5cd4b3f4b",
+    "quality": "minor-9",
+    "rootPitchClass": 11,
+    "statesHighToLow": [
+      -1,
+      2,
+      2,
+      0,
+      2,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [
+      "5"
+    ],
+    "bassTone": "1",
+    "topTone": "9",
+    "bassRole": "root",
+    "topRole": "suspension-or-extension",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-b-m9-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-4f63d9a0ccff",
+    "quality": "power-5",
+    "rootPitchClass": 0,
+    "statesHighToLow": [
+      -1,
+      1,
+      0,
+      -1,
+      -1,
+      -1
+    ],
+    "inversion": "second",
+    "omissions": [],
+    "bassTone": "5",
+    "topTone": "1",
+    "bassRole": "fifth",
+    "topRole": "root",
+    "soundingCount": 2,
+    "stringMask": [
+      0,
+      1,
+      1,
+      0,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-c-5-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-da41b351ccc0",
+    "quality": "power-5",
+    "rootPitchClass": 2,
+    "statesHighToLow": [
+      -1,
+      -1,
+      2,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 2,
+    "stringMask": [
+      0,
+      0,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-d-5-2"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-f57e40149151",
+    "quality": "power-5",
+    "rootPitchClass": 2,
+    "statesHighToLow": [
+      -1,
+      -1,
+      -1,
+      0,
+      0,
+      -1
+    ],
+    "inversion": "second",
+    "omissions": [],
+    "bassTone": "5",
+    "topTone": "1",
+    "bassRole": "fifth",
+    "topRole": "root",
+    "soundingCount": 2,
+    "stringMask": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-d-5-3"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-feea2286a1c6",
+    "quality": "power-5",
+    "rootPitchClass": 2,
+    "statesHighToLow": [
+      -1,
+      3,
+      2,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "1",
+    "bassRole": "root",
+    "topRole": "root",
+    "soundingCount": 3,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-d-5-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-1164d0ad6a16",
+    "quality": "power-5",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      -1,
+      -1,
+      -1,
+      2,
+      2,
+      0
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "1",
+    "bassRole": "root",
+    "topRole": "root",
+    "soundingCount": 3,
+    "stringMask": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-e-5-2"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-f8a9e847db81",
+    "quality": "power-5",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      -1,
+      -1,
+      -1,
+      -1,
+      2,
+      0
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 2,
+    "stringMask": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-e-5-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-6d377ed80373",
+    "quality": "power-5",
+    "rootPitchClass": 7,
+    "statesHighToLow": [
+      -1,
+      -1,
+      0,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "second",
+    "omissions": [],
+    "bassTone": "5",
+    "topTone": "1",
+    "bassRole": "fifth",
+    "topRole": "root",
+    "soundingCount": 2,
+    "stringMask": [
+      0,
+      0,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-g-5-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-51a997b04290",
+    "quality": "power-5",
+    "rootPitchClass": 9,
+    "statesHighToLow": [
+      -1,
+      -1,
+      2,
+      2,
+      0,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "1",
+    "bassRole": "root",
+    "topRole": "root",
+    "soundingCount": 3,
+    "stringMask": [
+      0,
+      0,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a-5-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-814441ad7a8f",
+    "quality": "power-5",
+    "rootPitchClass": 9,
+    "statesHighToLow": [
+      -1,
+      -1,
+      -1,
+      2,
+      0,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 2,
+    "stringMask": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a-5-2"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-637cf716fe29",
+    "quality": "sus2",
+    "rootPitchClass": 2,
+    "statesHighToLow": [
+      0,
+      3,
+      2,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "2",
+    "bassRole": "root",
+    "topRole": "suspension-or-extension",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-d-sus2-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-7ed0d90c98a0",
+    "quality": "sus2",
+    "rootPitchClass": 9,
+    "statesHighToLow": [
+      0,
+      0,
+      2,
+      2,
+      0,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a-sus2-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-c297c0a99a43",
+    "quality": "sus4",
+    "rootPitchClass": 0,
+    "statesHighToLow": [
+      -1,
+      1,
+      0,
+      3,
+      3,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "1",
+    "bassRole": "root",
+    "topRole": "root",
+    "soundingCount": 4,
+    "stringMask": [
+      0,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-c-sus4-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-a0c6708c7386",
+    "quality": "sus4",
+    "rootPitchClass": 2,
+    "statesHighToLow": [
+      3,
+      3,
+      2,
+      0,
+      -1,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "4",
+    "bassRole": "root",
+    "topRole": "suspension-or-extension",
+    "soundingCount": 4,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "observations": [
+      "agc-wide-d-sus4-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-95881dc0d8c7",
+    "quality": "sus4",
+    "rootPitchClass": 4,
+    "statesHighToLow": [
+      0,
+      0,
+      2,
+      2,
+      2,
+      0
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "1",
+    "bassRole": "root",
+    "topRole": "root",
+    "soundingCount": 6,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "observations": [
+      "agc-wide-e-sus4-1"
+    ],
+    "adopted": true
+  },
+  {
+    "id": "PO-8e749fd94bc0",
+    "quality": "sus4",
+    "rootPitchClass": 9,
+    "statesHighToLow": [
+      0,
+      3,
+      2,
+      2,
+      0,
+      -1
+    ],
+    "inversion": "root",
+    "omissions": [],
+    "bassTone": "1",
+    "topTone": "5",
+    "bassRole": "root",
+    "topRole": "fifth",
+    "soundingCount": 5,
+    "stringMask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "observations": [
+      "agc-wide-a-sus4-1"
+    ],
+    "adopted": true
+  }
+]

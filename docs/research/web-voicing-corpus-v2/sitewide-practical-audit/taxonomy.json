@@ -1,0 +1,374 @@
+{
+  "schema": "agc-taxonomy-v1",
+  "sourceFamily": "all-guitar-chords",
+  "indexUrl": "https://www.all-guitar-chords.com/chords/index",
+  "indexSha256": "b0d8adcc91deda40edf226c05a20353541c1a86e6f2a7500d0323df9f6ee9935",
+  "accessedAt": "2026-09-13T06:36:31.846Z",
+  "roots": [
+    {
+      "slug": "c",
+      "pitchClass": 0,
+      "toolLabel": "C"
+    },
+    {
+      "slug": "c_sharp",
+      "pitchClass": 1,
+      "toolLabel": "C#"
+    },
+    {
+      "slug": "d",
+      "pitchClass": 2,
+      "toolLabel": "D"
+    },
+    {
+      "slug": "d_sharp",
+      "pitchClass": 3,
+      "toolLabel": "D#"
+    },
+    {
+      "slug": "e",
+      "pitchClass": 4,
+      "toolLabel": "E"
+    },
+    {
+      "slug": "f",
+      "pitchClass": 5,
+      "toolLabel": "F"
+    },
+    {
+      "slug": "f_sharp",
+      "pitchClass": 6,
+      "toolLabel": "F#"
+    },
+    {
+      "slug": "g",
+      "pitchClass": 7,
+      "toolLabel": "G"
+    },
+    {
+      "slug": "g_sharp",
+      "pitchClass": 8,
+      "toolLabel": "G#"
+    },
+    {
+      "slug": "a",
+      "pitchClass": 9,
+      "toolLabel": "A"
+    },
+    {
+      "slug": "a_sharp",
+      "pitchClass": 10,
+      "toolLabel": "A#"
+    },
+    {
+      "slug": "b",
+      "pitchClass": 11,
+      "toolLabel": "B"
+    }
+  ],
+  "qualities": [
+    {
+      "slug": "major",
+      "interface": "ordinary",
+      "engineQuality": "major",
+      "indexLabel": "C"
+    },
+    {
+      "slug": "minor",
+      "interface": "ordinary",
+      "engineQuality": "minor",
+      "indexLabel": "Cm"
+    },
+    {
+      "slug": "7",
+      "interface": "ordinary",
+      "engineQuality": "dominant-7",
+      "indexLabel": "C7"
+    },
+    {
+      "slug": "5",
+      "interface": "ordinary",
+      "engineQuality": "power-5",
+      "indexLabel": "C5"
+    },
+    {
+      "slug": "dim",
+      "interface": "ordinary",
+      "engineQuality": "diminished",
+      "indexLabel": "Cdim"
+    },
+    {
+      "slug": "dim7",
+      "interface": "ordinary",
+      "engineQuality": "diminished-7",
+      "indexLabel": "Cdim7"
+    },
+    {
+      "slug": "aug",
+      "interface": "ordinary",
+      "engineQuality": "augmented",
+      "indexLabel": "Caug"
+    },
+    {
+      "slug": "sus2",
+      "interface": "ordinary",
+      "engineQuality": "sus2",
+      "indexLabel": "Csus2"
+    },
+    {
+      "slug": "sus4",
+      "interface": "ordinary",
+      "engineQuality": "sus4",
+      "indexLabel": "Csus"
+    },
+    {
+      "slug": "maj7",
+      "interface": "ordinary",
+      "engineQuality": "major-7",
+      "indexLabel": "Cmaj7"
+    },
+    {
+      "slug": "m7",
+      "interface": "ordinary",
+      "engineQuality": "minor-7",
+      "indexLabel": "Cm7"
+    },
+    {
+      "slug": "7sus4",
+      "interface": "ordinary",
+      "engineQuality": null,
+      "indexLabel": "C7sus4"
+    },
+    {
+      "slug": "maj9",
+      "interface": "advanced-additional",
+      "engineQuality": "major-9",
+      "indexLabel": "Cmaj9"
+    },
+    {
+      "slug": "maj11",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "Cmaj11"
+    },
+    {
+      "slug": "maj13",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "Cmaj13"
+    },
+    {
+      "slug": "maj9*11",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "Cmaj9(#11)"
+    },
+    {
+      "slug": "maj13*11",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "Cmaj13(#11)"
+    },
+    {
+      "slug": "add9",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "Cadd9"
+    },
+    {
+      "slug": "6add9",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "C6add9"
+    },
+    {
+      "slug": "maj7b5",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "Cmaj7(b5)"
+    },
+    {
+      "slug": "maj7*5",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "Cmaj7(#5)"
+    },
+    {
+      "slug": "m6",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "Cm6"
+    },
+    {
+      "slug": "m9",
+      "interface": "advanced-additional",
+      "engineQuality": "minor-9",
+      "indexLabel": "Cm9"
+    },
+    {
+      "slug": "m11",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "Cm11"
+    },
+    {
+      "slug": "m13",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "Cm13"
+    },
+    {
+      "slug": "madd9",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "Cm(add9)"
+    },
+    {
+      "slug": "m6add9",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "Cm6add9"
+    },
+    {
+      "slug": "mmaj7",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "Cmmaj7"
+    },
+    {
+      "slug": "mmaj9",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "Cmmaj9"
+    },
+    {
+      "slug": "m7b5",
+      "interface": "advanced-additional",
+      "engineQuality": "half-diminished-7",
+      "indexLabel": "Cm7b5"
+    },
+    {
+      "slug": "m7*5",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "Cm7#5"
+    },
+    {
+      "slug": "6",
+      "interface": "advanced-additional",
+      "engineQuality": "major-6",
+      "indexLabel": "C6"
+    },
+    {
+      "slug": "9",
+      "interface": "advanced-additional",
+      "engineQuality": "dominant-9",
+      "indexLabel": "C9"
+    },
+    {
+      "slug": "11",
+      "interface": "advanced-additional",
+      "engineQuality": "dominant-11",
+      "indexLabel": "C11"
+    },
+    {
+      "slug": "13",
+      "interface": "advanced-additional",
+      "engineQuality": "dominant-13",
+      "indexLabel": "C13"
+    },
+    {
+      "slug": "7b5",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "C7b5"
+    },
+    {
+      "slug": "7*5",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "C7#5"
+    },
+    {
+      "slug": "7b9",
+      "interface": "advanced-additional",
+      "engineQuality": "dominant-7-flat-9",
+      "indexLabel": "C7b9"
+    },
+    {
+      "slug": "7*9",
+      "interface": "advanced-additional",
+      "engineQuality": "hendrix-7-sharp-9",
+      "indexLabel": "C7#9"
+    },
+    {
+      "slug": "7(b5,b9)",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "C7(b5,b9)"
+    },
+    {
+      "slug": "7(b5,*9)",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "C7(b5,#9)"
+    },
+    {
+      "slug": "7(*5,b9)",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "C7(#5,b9)"
+    },
+    {
+      "slug": "7(*5,*9)",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "C7(#5,#9)"
+    },
+    {
+      "slug": "9b5",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "C9b5"
+    },
+    {
+      "slug": "9*5",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "C9#5"
+    },
+    {
+      "slug": "13*11",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "C13#11"
+    },
+    {
+      "slug": "13b9",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "C13b9"
+    },
+    {
+      "slug": "11b9",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "C11b9"
+    },
+    {
+      "slug": "sus2sus4",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "Csus2sus4"
+    },
+    {
+      "slug": "-5",
+      "interface": "advanced-additional",
+      "engineQuality": null,
+      "indexLabel": "C-5"
+    }
+  ],
+  "pagesExpected": 600,
+  "mappedPagesExpected": 240,
+  "uiVerification": "Live ordinary 12 types and Advanced 38 additional types; 12 chromatic sharp root buttons. Advanced toggles to Common. Verified 2026-09-13."
+}

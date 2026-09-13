@@ -1,0 +1,1823 @@
+{
+  "schema": "physical-envelope-v2-warning-boundary",
+  "createdAt": "2026-09-13T04:12:31.400Z",
+  "head": "32f9d3f8a71dc0d2a5f18520bfad738e67ba26c0",
+  "node": "v22.16.0",
+  "sourceHashes": {
+    "scripts/physical-envelope-v2/warning-boundary.ts": "722b77539a03c37667c9d5c38dd15974f3635d0cce7678cad996c15d0f32f3df",
+    "docs/research/physical-envelope-v2/census-results.json": "84c390358156f06e7d4e485d209aa37a2e35f929195140f3675ae7ff6db98113",
+    "docs/research/physical-envelope-v2/instrument-profiles.json": "5775c864944f54c90c46c1cb3ba1c87886b651f23fcea52b6dab66446aeb508d",
+    "src/domain/chord/engine/geometry.ts": "1228d782b38ea29d56e75cbf6d15753a0c75a42972576d727b81d7f94755b038",
+    "src/domain/chord/engine/geometryTable.ts": "fdcac13d445c0b0d80c041e05154de9baf4e324698c79a5494b817a4da845af1",
+    "src/domain/chord/engine/physical.ts": "057612ea89fcf8f72a720b2f227359da4b3c724537838396ed3a574013604e33"
+  },
+  "method": {
+    "purpose": "Describe existing flag boundaries over continuous scale-conditioned wire geometry; no live verdict changes, candidate rescan, new profile verdicts or threshold tuning.",
+    "dimensions": "min/max stopped frets1..15; thresholds95mm and180mm are existing warning/severe engineering references.",
+    "analyticalCriticalScale": "L*=T/(2^(-minFret/12)-2^(-maxFret/12)); strict > means equality does not trigger.",
+    "continuousProbe": "L* - 0.1mm, L*, L* + 0.1mm; x separation is a continuous linear function of scale.",
+    "quantizedProbe": "Actual production createGeometry integer-um round-half-up lookup; first integer scale with span>T computed analytically from pinned Q12 table then verified.",
+    "equalityCaveat": "Continuous algebraic equality can have binary float residual; idealStrictFlag at offset0 is defined from algebra. Production comparison uses integer span and integer threshold.",
+    "quantizationCaveat": "A true continuous span slightly overT may still round to integerT; implementation flag changes at its quantized boundary. This is representation arithmetic, not a physiological deadband.",
+    "qualityTable": "Counts sum12roots×2contexts. Groups are ALL-pair mean; geometry means are UNCERTAIN only. Existing status preserved.",
+    "thresholdsCalibrated": false,
+    "humanLabels": false,
+    "rankingImportedOrCalled": false
+  },
+  "criticalScales": [
+    {
+      "thresholdMm": 95,
+      "minFret": 1,
+      "maxFret": 2,
+      "spanPerScaleMm": 0.052975594541354254,
+      "criticalScaleLengthMm": 1793.278599749179
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 1,
+      "maxFret": 3,
+      "spanPerScaleMm": 0.10297789742797891,
+      "criticalScaleLengthMm": 922.5280606106904
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 1,
+      "maxFret": 4,
+      "spanPerScaleMm": 0.15017378669759374,
+      "criticalScaleLengthMm": 632.6004164182284
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 1,
+      "maxFret": 5,
+      "spanPerScaleMm": 0.19472077424335277,
+      "criticalScaleLengthMm": 487.8780929726251
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 1,
+      "maxFret": 6,
+      "spanPerScaleMm": 0.23676753149514607,
+      "criticalScaleLengthMm": 401.23744755073216
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 1,
+      "maxFret": 7,
+      "spanPerScaleMm": 0.27645438559667634,
+      "criticalScaleLengthMm": 343.6371602315508
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 1,
+      "maxFret": 8,
+      "spanPerScaleMm": 0.31391378773425693,
+      "criticalScaleLengthMm": 302.630861440282
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 1,
+      "maxFret": 9,
+      "spanPerScaleMm": 0.349270755180333,
+      "criticalScaleLengthMm": 271.99528901568146
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 1,
+      "maxFret": 10,
+      "spanPerScaleMm": 0.382643288527007,
+      "criticalScaleLengthMm": 248.27300738947858
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 1,
+      "maxFret": 11,
+      "spanPerScaleMm": 0.4141427655020459,
+      "criticalScaleLengthMm": 229.38949539499006
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 1,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.44387431268169353,
+      "criticalScaleLengthMm": 214.02454993633614
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 1,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.47193715634084676,
+      "criticalScaleLengthMm": 201.29798792826608
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 1,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.4984249536115239,
+      "criticalScaleLengthMm": 190.60040897158552
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 1,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.5234261050548362,
+      "criticalScaleLengthMm": 181.49648839170416
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 2,
+      "maxFret": 3,
+      "spanPerScaleMm": 0.05000230288662466,
+      "criticalScaleLengthMm": 1899.9124943385752
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 2,
+      "maxFret": 4,
+      "spanPerScaleMm": 0.09719819215623948,
+      "criticalScaleLengthMm": 977.3844337278821
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 2,
+      "maxFret": 5,
+      "spanPerScaleMm": 0.1417451797019985,
+      "criticalScaleLengthMm": 670.2167946714351
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 2,
+      "maxFret": 6,
+      "spanPerScaleMm": 0.1837919369537918,
+      "criticalScaleLengthMm": 516.8888340508893
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 2,
+      "maxFret": 7,
+      "spanPerScaleMm": 0.2234787910553221,
+      "criticalScaleLengthMm": 425.0962677549244
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 2,
+      "maxFret": 8,
+      "spanPerScaleMm": 0.2609381931929027,
+      "criticalScaleLengthMm": 364.0708891157599
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 2,
+      "maxFret": 9,
+      "spanPerScaleMm": 0.29629516063897876,
+      "criticalScaleLengthMm": 320.6262289101403
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 2,
+      "maxFret": 10,
+      "spanPerScaleMm": 0.32966769398565277,
+      "criticalScaleLengthMm": 288.1689705517048
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 2,
+      "maxFret": 11,
+      "spanPerScaleMm": 0.3611671709606916,
+      "criticalScaleLengthMm": 263.0360886547452
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 2,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.3908987181403393,
+      "criticalScaleLengthMm": 243.0297046046935
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 2,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.4189615617994925,
+      "criticalScaleLengthMm": 226.75111194440623
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 2,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.44544935907016964,
+      "criticalScaleLengthMm": 213.26778917878087
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 2,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.47045051051348197,
+      "criticalScaleLengthMm": 201.93409907518324
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 3,
+      "maxFret": 4,
+      "spanPerScaleMm": 0.04719588926961482,
+      "criticalScaleLengthMm": 2012.8871702638291
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 3,
+      "maxFret": 5,
+      "spanPerScaleMm": 0.09174287681537385,
+      "criticalScaleLengthMm": 1035.5027365359479
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 3,
+      "maxFret": 6,
+      "spanPerScaleMm": 0.13378963406716715,
+      "criticalScaleLengthMm": 710.0699591741661
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 3,
+      "maxFret": 7,
+      "spanPerScaleMm": 0.17347648816869743,
+      "criticalScaleLengthMm": 547.6246435633233
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 3,
+      "maxFret": 8,
+      "spanPerScaleMm": 0.21093589030627802,
+      "criticalScaleLengthMm": 450.37380723621953
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 3,
+      "maxFret": 9,
+      "spanPerScaleMm": 0.2462928577523541,
+      "criticalScaleLengthMm": 385.71967074872265
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 3,
+      "maxFret": 10,
+      "spanPerScaleMm": 0.2796653910990281,
+      "criticalScaleLengthMm": 339.69165661388894
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 3,
+      "maxFret": 11,
+      "spanPerScaleMm": 0.31116486807406696,
+      "criticalScaleLengthMm": 305.3043892390417
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 3,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.3408964152537146,
+      "criticalScaleLengthMm": 278.6770284143222
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 3,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.36895925891286785,
+      "criticalScaleLengthMm": 257.481002861714
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 3,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.395447056183545,
+      "criticalScaleLengthMm": 240.2344347100315
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 3,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.4204482076268573,
+      "criticalScaleLengthMm": 225.949351850517
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 4,
+      "maxFret": 5,
+      "spanPerScaleMm": 0.04454698754575903,
+      "criticalScaleLengthMm": 2132.579670003841
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 4,
+      "maxFret": 6,
+      "spanPerScaleMm": 0.08659374479755233,
+      "criticalScaleLengthMm": 1097.0769334678928
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 4,
+      "maxFret": 7,
+      "spanPerScaleMm": 0.1262805988990826,
+      "criticalScaleLengthMm": 752.2929161582409
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 4,
+      "maxFret": 8,
+      "spanPerScaleMm": 0.1637400010366632,
+      "criticalScaleLengthMm": 580.1880994170047
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 4,
+      "maxFret": 9,
+      "spanPerScaleMm": 0.19909696848273928,
+      "criticalScaleLengthMm": 477.15442743286184
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 4,
+      "maxFret": 10,
+      "spanPerScaleMm": 0.23246950182941328,
+      "criticalScaleLengthMm": 408.6557559266903
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 4,
+      "maxFret": 11,
+      "spanPerScaleMm": 0.26396897880445214,
+      "criticalScaleLengthMm": 359.8907736441859
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 4,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.2937005259840998,
+      "criticalScaleLengthMm": 323.45873294466986
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 4,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.321763369643253,
+      "criticalScaleLengthMm": 295.2480268506911
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 4,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.34825116691393015,
+      "criticalScaleLengthMm": 272.79162003060605
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 4,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.3732523183572425,
+      "criticalScaleLengthMm": 254.5195175695461
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 5,
+      "maxFret": 6,
+      "spanPerScaleMm": 0.0420467572517933,
+      "criticalScaleLengthMm": 2259.3894561499924
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 5,
+      "maxFret": 7,
+      "spanPerScaleMm": 0.08173361135332358,
+      "criticalScaleLengthMm": 1162.3125226821019
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 5,
+      "maxFret": 8,
+      "spanPerScaleMm": 0.11919301349090416,
+      "criticalScaleLengthMm": 797.0265808175881
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 5,
+      "maxFret": 9,
+      "spanPerScaleMm": 0.15454998093698025,
+      "criticalScaleLengthMm": 614.6878791187783
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 5,
+      "maxFret": 10,
+      "spanPerScaleMm": 0.18792251428365425,
+      "criticalScaleLengthMm": 505.5275061752578
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 5,
+      "maxFret": 11,
+      "spanPerScaleMm": 0.2194219912586931,
+      "criticalScaleLengthMm": 432.9556917018283
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 5,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.24915353843834076,
+      "criticalScaleLengthMm": 381.29099267643
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 5,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.277216382097494,
+      "criticalScaleLengthMm": 342.6925901030969
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 5,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.3037041793681711,
+      "criticalScaleLengthMm": 312.80438813070947
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 5,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.32870533081148345,
+      "criticalScaleLengthMm": 289.0126538729111
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 6,
+      "maxFret": 7,
+      "spanPerScaleMm": 0.03968685410153028,
+      "criticalScaleLengthMm": 2393.739744575444
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 6,
+      "maxFret": 8,
+      "spanPerScaleMm": 0.07714625623911087,
+      "criticalScaleLengthMm": 1231.4272218933395
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 6,
+      "maxFret": 9,
+      "spanPerScaleMm": 0.11250322368518695,
+      "criticalScaleLengthMm": 844.4202475996111
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 6,
+      "maxFret": 10,
+      "spanPerScaleMm": 0.14587575703186095,
+      "criticalScaleLengthMm": 651.2391224763337
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 6,
+      "maxFret": 11,
+      "spanPerScaleMm": 0.1773752340068998,
+      "criticalScaleLengthMm": 535.5877359761766
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 6,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.20710678118654746,
+      "criticalScaleLengthMm": 458.7005768508882
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 6,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.2351696248457007,
+      "criticalScaleLengthMm": 403.963734952298
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 6,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.2616574221163778,
+      "criticalScaleLengthMm": 363.0701519246287
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 6,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.28665857355969016,
+      "criticalScaleLengthMm": 331.4047049781276
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 7,
+      "maxFret": 8,
+      "spanPerScaleMm": 0.03745940213758059,
+      "criticalScaleLengthMm": 2536.0789168787255
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 7,
+      "maxFret": 9,
+      "spanPerScaleMm": 0.07281636958365667,
+      "criticalScaleLengthMm": 1304.6516949853863
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 7,
+      "maxFret": 10,
+      "spanPerScaleMm": 0.10618890293033068,
+      "criticalScaleLengthMm": 894.6320884615261
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 7,
+      "maxFret": 11,
+      "spanPerScaleMm": 0.13768837990536953,
+      "criticalScaleLengthMm": 689.9638158666083
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 7,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.16741992708501718,
+      "criticalScaleLengthMm": 567.4354400582091
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 7,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.19548277074417042,
+      "criticalScaleLengthMm": 485.9763325348356
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 7,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.22197056801484755,
+      "criticalScaleLengthMm": 427.9846686414997
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 7,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.24697171945815988,
+      "criticalScaleLengthMm": 384.6594266275666
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 8,
+      "maxFret": 9,
+      "spanPerScaleMm": 0.03535696744607608,
+      "criticalScaleLengthMm": 2686.8820168157013
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 8,
+      "maxFret": 10,
+      "spanPerScaleMm": 0.06872950079275009,
+      "criticalScaleLengthMm": 1382.2303218303173
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 8,
+      "maxFret": 11,
+      "spanPerScaleMm": 0.10022897776778894,
+      "criticalScaleLengthMm": 947.8296807545671
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 8,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.1299605249474366,
+      "criticalScaleLengthMm": 730.9911993539837
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 8,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.15802336860658983,
+      "criticalScaleLengthMm": 601.1769071731986
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 8,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.18451116587726696,
+      "criticalScaleLengthMm": 514.8739890527387
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 8,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.2095123173205793,
+      "criticalScaleLengthMm": 453.433961377261
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 9,
+      "maxFret": 10,
+      "spanPerScaleMm": 0.033372533346674005,
+      "criticalScaleLengthMm": 2846.6523357139126
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 9,
+      "maxFret": 11,
+      "spanPerScaleMm": 0.06487201032171286,
+      "criticalScaleLengthMm": 1464.4220138835933
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 9,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.09460355750136051,
+      "criticalScaleLengthMm": 1004.1905664978168
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 9,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.12266640116051375,
+      "criticalScaleLengthMm": 774.4581980169844
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 9,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.14915419843119088,
+      "criticalScaleLengthMm": 636.9247463310678
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 9,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.1741553498745032,
+      "criticalScaleLengthMm": 545.4899896469287
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 10,
+      "maxFret": 11,
+      "spanPerScaleMm": 0.031499476975038854,
+      "criticalScaleLengthMm": 3015.9230921605745
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 10,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.06123102415468651,
+      "criticalScaleLengthMm": 1551.5010782769812
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 10,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.08929386781383974,
+      "criticalScaleLengthMm": 1063.9028449081904
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 10,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.11578166508451687,
+      "criticalScaleLengthMm": 820.5098789229976
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 10,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.1407828165278292,
+      "criticalScaleLengthMm": 674.7982626219224
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 11,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.029731547179647655,
+      "criticalScaleLengthMm": 3195.2592115700936
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 11,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.05779439083880089,
+      "criticalScaleLengthMm": 1643.758133293114
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 11,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.08428218810947802,
+      "criticalScaleLengthMm": 1127.1658001640883
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 11,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.10928333955279035,
+      "criticalScaleLengthMm": 869.2999352761301
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 12,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.028062843659153236,
+      "criticalScaleLengthMm": 3385.2592115700977
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 12,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.05455064092983036,
+      "criticalScaleLengthMm": 1741.5010782769812
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 12,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.0795517923731427,
+      "criticalScaleLengthMm": 1194.1905664978171
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 13,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.026487797270677127,
+      "criticalScaleLengthMm": 3586.557199498358
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 13,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.05148894871398946,
+      "criticalScaleLengthMm": 1845.0561212213809
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 14,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.02500115144331233,
+      "criticalScaleLengthMm": 3799.8249886771505
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 1,
+      "maxFret": 2,
+      "spanPerScaleMm": 0.052975594541354254,
+      "criticalScaleLengthMm": 3397.791031103707
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 1,
+      "maxFret": 3,
+      "spanPerScaleMm": 0.10297789742797891,
+      "criticalScaleLengthMm": 1747.9479043149925
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 1,
+      "maxFret": 4,
+      "spanPerScaleMm": 0.15017378669759374,
+      "criticalScaleLengthMm": 1198.6113153187484
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 1,
+      "maxFret": 5,
+      "spanPerScaleMm": 0.19472077424335277,
+      "criticalScaleLengthMm": 924.4005972112897
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 1,
+      "maxFret": 6,
+      "spanPerScaleMm": 0.23676753149514607,
+      "criticalScaleLengthMm": 760.2393743066505
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 1,
+      "maxFret": 7,
+      "spanPerScaleMm": 0.27645438559667634,
+      "criticalScaleLengthMm": 651.1019878071489
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 1,
+      "maxFret": 8,
+      "spanPerScaleMm": 0.31391378773425693,
+      "criticalScaleLengthMm": 573.4058427289553
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 1,
+      "maxFret": 9,
+      "spanPerScaleMm": 0.349270755180333,
+      "criticalScaleLengthMm": 515.3594949770807
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 1,
+      "maxFret": 10,
+      "spanPerScaleMm": 0.382643288527007,
+      "criticalScaleLengthMm": 470.4120140011173
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 1,
+      "maxFret": 11,
+      "spanPerScaleMm": 0.4141427655020459,
+      "criticalScaleLengthMm": 434.6327281168233
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 1,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.44387431268169353,
+      "criticalScaleLengthMm": 405.52019987937376
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 1,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.47193715634084676,
+      "criticalScaleLengthMm": 381.4067139693463
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 1,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.4984249536115239,
+      "criticalScaleLengthMm": 361.13761699879365
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 1,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.5234261050548362,
+      "criticalScaleLengthMm": 343.8880832684921
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 2,
+      "maxFret": 3,
+      "spanPerScaleMm": 0.05000230288662466,
+      "criticalScaleLengthMm": 3599.8341997994057
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 2,
+      "maxFret": 4,
+      "spanPerScaleMm": 0.09719819215623948,
+      "criticalScaleLengthMm": 1851.8862954844083
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 2,
+      "maxFret": 5,
+      "spanPerScaleMm": 0.1417451797019985,
+      "criticalScaleLengthMm": 1269.8844530616664
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 2,
+      "maxFret": 6,
+      "spanPerScaleMm": 0.1837919369537918,
+      "criticalScaleLengthMm": 979.3683171490534
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 2,
+      "maxFret": 7,
+      "spanPerScaleMm": 0.2234787910553221,
+      "criticalScaleLengthMm": 805.4455599566988
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 2,
+      "maxFret": 8,
+      "spanPerScaleMm": 0.2609381931929027,
+      "criticalScaleLengthMm": 689.8185267456503
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 2,
+      "maxFret": 9,
+      "spanPerScaleMm": 0.29629516063897876,
+      "criticalScaleLengthMm": 607.5023284613185
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 2,
+      "maxFret": 10,
+      "spanPerScaleMm": 0.32966769398565277,
+      "criticalScaleLengthMm": 546.0043652558617
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 2,
+      "maxFret": 11,
+      "spanPerScaleMm": 0.3611671709606916,
+      "criticalScaleLengthMm": 498.38416797741195
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 2,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.3908987181403393,
+      "criticalScaleLengthMm": 460.4773350404719
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 2,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.4189615617994925,
+      "criticalScaleLengthMm": 429.6336857894013
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 2,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.44544935907016964,
+      "criticalScaleLengthMm": 404.0863373913743
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 2,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.47045051051348197,
+      "criticalScaleLengthMm": 382.611977195084
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 3,
+      "maxFret": 4,
+      "spanPerScaleMm": 0.04719588926961482,
+      "criticalScaleLengthMm": 3813.891480499887
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 3,
+      "maxFret": 5,
+      "spanPerScaleMm": 0.09174287681537385,
+      "criticalScaleLengthMm": 1962.0051850154803
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 3,
+      "maxFret": 6,
+      "spanPerScaleMm": 0.13378963406716715,
+      "criticalScaleLengthMm": 1345.3957121194726
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 3,
+      "maxFret": 7,
+      "spanPerScaleMm": 0.17347648816869743,
+      "criticalScaleLengthMm": 1037.6045878041914
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 3,
+      "maxFret": 8,
+      "spanPerScaleMm": 0.21093589030627802,
+      "criticalScaleLengthMm": 853.339845289679
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 3,
+      "maxFret": 9,
+      "spanPerScaleMm": 0.2462928577523541,
+      "criticalScaleLengthMm": 730.8372708923165
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 3,
+      "maxFret": 10,
+      "spanPerScaleMm": 0.2796653910990281,
+      "criticalScaleLengthMm": 643.6262967421053
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 3,
+      "maxFret": 11,
+      "spanPerScaleMm": 0.31116486807406696,
+      "criticalScaleLengthMm": 578.4714743476579
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 3,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.3408964152537146,
+      "criticalScaleLengthMm": 528.0196327850315
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 3,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.36895925891286785,
+      "criticalScaleLengthMm": 487.8587422643002
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 3,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.395447056183545,
+      "criticalScaleLengthMm": 455.1810341874281
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 3,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.4204482076268573,
+      "criticalScaleLengthMm": 428.11456140097954
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 4,
+      "maxFret": 5,
+      "spanPerScaleMm": 0.04454698754575903,
+      "criticalScaleLengthMm": 4040.6772694809615
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 4,
+      "maxFret": 6,
+      "spanPerScaleMm": 0.08659374479755233,
+      "criticalScaleLengthMm": 2078.672084465481
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 4,
+      "maxFret": 7,
+      "spanPerScaleMm": 0.1262805988990826,
+      "criticalScaleLengthMm": 1425.3971042998248
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 4,
+      "maxFret": 8,
+      "spanPerScaleMm": 0.1637400010366632,
+      "criticalScaleLengthMm": 1099.30376731643
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 4,
+      "maxFret": 9,
+      "spanPerScaleMm": 0.19909696848273928,
+      "criticalScaleLengthMm": 904.0820730306856
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 4,
+      "maxFret": 10,
+      "spanPerScaleMm": 0.23246950182941328,
+      "criticalScaleLengthMm": 774.2951164926764
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 4,
+      "maxFret": 11,
+      "spanPerScaleMm": 0.26396897880445214,
+      "criticalScaleLengthMm": 681.8983079574049
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 4,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.2937005259840998,
+      "criticalScaleLengthMm": 612.8691782109534
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 4,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.321763369643253,
+      "criticalScaleLengthMm": 559.4173140328883
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 4,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.34825116691393015,
+      "criticalScaleLengthMm": 516.8683326895693
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 4,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.3732523183572425,
+      "criticalScaleLengthMm": 482.24750697387685
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 5,
+      "maxFret": 6,
+      "spanPerScaleMm": 0.0420467572517933,
+      "criticalScaleLengthMm": 4280.948443231564
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 5,
+      "maxFret": 7,
+      "spanPerScaleMm": 0.08173361135332358,
+      "criticalScaleLengthMm": 2202.2763587660875
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 5,
+      "maxFret": 8,
+      "spanPerScaleMm": 0.11919301349090416,
+      "criticalScaleLengthMm": 1510.1556268122722
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 5,
+      "maxFret": 9,
+      "spanPerScaleMm": 0.15454998093698025,
+      "criticalScaleLengthMm": 1164.6717709618956
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 5,
+      "maxFret": 10,
+      "spanPerScaleMm": 0.18792251428365425,
+      "criticalScaleLengthMm": 957.841590647857
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 5,
+      "maxFret": 11,
+      "spanPerScaleMm": 0.2194219912586931,
+      "criticalScaleLengthMm": 820.337100066622
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 5,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.24915353843834076,
+      "criticalScaleLengthMm": 722.44609138692
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 5,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.277216382097494,
+      "criticalScaleLengthMm": 649.3122759848152
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 5,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.3037041793681711,
+      "criticalScaleLengthMm": 592.6819985634495
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 5,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.32870533081148345,
+      "criticalScaleLengthMm": 547.602923127621
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 6,
+      "maxFret": 7,
+      "spanPerScaleMm": 0.03968685410153028,
+      "criticalScaleLengthMm": 4535.506884458736
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 6,
+      "maxFret": 8,
+      "spanPerScaleMm": 0.07714625623911087,
+      "criticalScaleLengthMm": 2333.2305256926434
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 6,
+      "maxFret": 9,
+      "spanPerScaleMm": 0.11250322368518695,
+      "criticalScaleLengthMm": 1599.9541533466318
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 6,
+      "maxFret": 10,
+      "spanPerScaleMm": 0.14587575703186095,
+      "criticalScaleLengthMm": 1233.9267583762114
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 6,
+      "maxFret": 11,
+      "spanPerScaleMm": 0.1773752340068998,
+      "criticalScaleLengthMm": 1014.7978155338084
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 6,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.20710678118654746,
+      "criticalScaleLengthMm": 869.1168824543145
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 6,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.2351696248457007,
+      "criticalScaleLengthMm": 765.4049714885647
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 6,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.2616574221163778,
+      "criticalScaleLengthMm": 687.9223931203492
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 6,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.28665857355969016,
+      "criticalScaleLengthMm": 627.9247041690838
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 7,
+      "maxFret": 8,
+      "spanPerScaleMm": 0.03745940213758059,
+      "criticalScaleLengthMm": 4805.202158296533
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 7,
+      "maxFret": 9,
+      "spanPerScaleMm": 0.07281636958365667,
+      "criticalScaleLengthMm": 2471.9716326038897
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 7,
+      "maxFret": 10,
+      "spanPerScaleMm": 0.10618890293033068,
+      "criticalScaleLengthMm": 1695.0923781376284
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 7,
+      "maxFret": 11,
+      "spanPerScaleMm": 0.13768837990536953,
+      "criticalScaleLengthMm": 1307.2998616419948
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 7,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.16741992708501718,
+      "criticalScaleLengthMm": 1075.1408337945013
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 7,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.19548277074417042,
+      "criticalScaleLengthMm": 920.7972616449517
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 7,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.22197056801484755,
+      "criticalScaleLengthMm": 810.9183195312626
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 7,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.24697171945815988,
+      "criticalScaleLengthMm": 728.8283872943366
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 8,
+      "maxFret": 9,
+      "spanPerScaleMm": 0.03535696744607608,
+      "criticalScaleLengthMm": 5090.934347650803
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 8,
+      "maxFret": 10,
+      "spanPerScaleMm": 0.06872950079275009,
+      "criticalScaleLengthMm": 2618.962715046917
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 8,
+      "maxFret": 11,
+      "spanPerScaleMm": 0.10022897776778894,
+      "criticalScaleLengthMm": 1795.8878161665482
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 8,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.1299605249474366,
+      "criticalScaleLengthMm": 1385.035956670706
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 8,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.15802336860658983,
+      "criticalScaleLengthMm": 1139.0720346439552
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 8,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.18451116587726696,
+      "criticalScaleLengthMm": 975.5507160999259
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 8,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.2095123173205793,
+      "criticalScaleLengthMm": 859.1380320832313
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 9,
+      "maxFret": 10,
+      "spanPerScaleMm": 0.033372533346674005,
+      "criticalScaleLengthMm": 5393.657057142151
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 9,
+      "maxFret": 11,
+      "spanPerScaleMm": 0.06487201032171286,
+      "criticalScaleLengthMm": 2774.6943420952293
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 9,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.09460355750136051,
+      "criticalScaleLengthMm": 1902.6768628379687
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 9,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.12266640116051375,
+      "criticalScaleLengthMm": 1467.3944804532337
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 9,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.14915419843119088,
+      "criticalScaleLengthMm": 1206.8047825220233
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 9,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.1741553498745032,
+      "criticalScaleLengthMm": 1033.5599803836544
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 10,
+      "maxFret": 11,
+      "spanPerScaleMm": 0.031499476975038854,
+      "criticalScaleLengthMm": 5714.380595672667
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 10,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.06123102415468651,
+      "criticalScaleLengthMm": 2939.686253577438
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 10,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.08929386781383974,
+      "criticalScaleLengthMm": 2015.8159166681503
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 10,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.11578166508451687,
+      "criticalScaleLengthMm": 1554.6502969067324
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 10,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.1407828165278292,
+      "criticalScaleLengthMm": 1278.5651291783793
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 11,
+      "maxFret": 12,
+      "spanPerScaleMm": 0.029731547179647655,
+      "criticalScaleLengthMm": 6054.175348238072
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 11,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.05779439083880089,
+      "criticalScaleLengthMm": 3114.489094660637
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 11,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.08428218810947802,
+      "criticalScaleLengthMm": 2135.682568731957
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 11,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.10928333955279035,
+      "criticalScaleLengthMm": 1647.0946142074044
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 12,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.028062843659153236,
+      "criticalScaleLengthMm": 6414.17534823808
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 12,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.05455064092983036,
+      "criticalScaleLengthMm": 3299.686253577438
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 12,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.0795517923731427,
+      "criticalScaleLengthMm": 2262.676862837969
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 13,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.026487797270677127,
+      "criticalScaleLengthMm": 6795.582062207414
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 13,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.05148894871398946,
+      "criticalScaleLengthMm": 3495.895808629985
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 14,
+      "maxFret": 15,
+      "spanPerScaleMm": 0.02500115144331233,
+      "criticalScaleLengthMm": 7199.668399598811
+    }
+  ],
+  "selectedCases": [
+    {
+      "thresholdMm": 95,
+      "minFret": 8,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.15802336860658983,
+      "criticalScaleLengthMm": 601.1769071731986,
+      "nearestReferenceScaleMm": 596.9,
+      "featureFlag": "span-over-warning",
+      "continuous": [
+        {
+          "offsetFromAnalyticalCriticalScaleMm": -0.1,
+          "scaleLengthMm": 601.0769071731986,
+          "wireSpanMm": 94.98419766313934,
+          "idealStrictFlag": false,
+          "interpretation": null
+        },
+        {
+          "offsetFromAnalyticalCriticalScaleMm": 0,
+          "scaleLengthMm": 601.1769071731986,
+          "wireSpanMm": 95,
+          "idealStrictFlag": false,
+          "interpretation": "Exactly equal by algebra; any final-bit floating residual is not a physical difference"
+        },
+        {
+          "offsetFromAnalyticalCriticalScaleMm": 0.1,
+          "scaleLengthMm": 601.2769071731987,
+          "wireSpanMm": 95.01580233686067,
+          "idealStrictFlag": true,
+          "interpretation": null
+        }
+      ],
+      "firstIntegerScaleWithFlagUm": 601181,
+      "integerComparator": [
+        {
+          "scaleLengthUm": 601180,
+          "scaleLengthMm": 601.18,
+          "continuousWireSpanMm": 95.00048873890967,
+          "productionWireSpanUm": 95000,
+          "strictFlag": false,
+          "comparison": "95000 > 95000"
+        },
+        {
+          "scaleLengthUm": 601181,
+          "scaleLengthMm": 601.181,
+          "continuousWireSpanMm": 95.0006467622783,
+          "productionWireSpanUm": 95001,
+          "strictFlag": true,
+          "comparison": "95001 > 95000"
+        },
+        {
+          "scaleLengthUm": 601182,
+          "scaleLengthMm": 601.182,
+          "continuousWireSpanMm": 95.00080478564689,
+          "productionWireSpanUm": 95001,
+          "strictFlag": true,
+          "comparison": "95001 > 95000"
+        }
+      ]
+    },
+    {
+      "thresholdMm": 95,
+      "minFret": 6,
+      "maxFret": 10,
+      "spanPerScaleMm": 0.14587575703186095,
+      "criticalScaleLengthMm": 651.2391224763337,
+      "nearestReferenceScaleMm": 650,
+      "featureFlag": "span-over-warning",
+      "continuous": [
+        {
+          "offsetFromAnalyticalCriticalScaleMm": -0.1,
+          "scaleLengthMm": 651.1391224763337,
+          "wireSpanMm": 94.9854124242968,
+          "idealStrictFlag": false,
+          "interpretation": null
+        },
+        {
+          "offsetFromAnalyticalCriticalScaleMm": 0,
+          "scaleLengthMm": 651.2391224763337,
+          "wireSpanMm": 95,
+          "idealStrictFlag": false,
+          "interpretation": "Exactly equal by algebra; any final-bit floating residual is not a physical difference"
+        },
+        {
+          "offsetFromAnalyticalCriticalScaleMm": 0.1,
+          "scaleLengthMm": 651.3391224763337,
+          "wireSpanMm": 95.01458757570319,
+          "idealStrictFlag": true,
+          "interpretation": null
+        }
+      ],
+      "firstIntegerScaleWithFlagUm": 651243,
+      "integerComparator": [
+        {
+          "scaleLengthUm": 651242,
+          "scaleLengthMm": 651.242,
+          "continuousWireSpanMm": 95.00041976094319,
+          "productionWireSpanUm": 95000,
+          "strictFlag": false,
+          "comparison": "95000 > 95000"
+        },
+        {
+          "scaleLengthUm": 651243,
+          "scaleLengthMm": 651.243,
+          "continuousWireSpanMm": 95.00056563670023,
+          "productionWireSpanUm": 95001,
+          "strictFlag": true,
+          "comparison": "95001 > 95000"
+        },
+        {
+          "scaleLengthUm": 651244,
+          "scaleLengthMm": 651.244,
+          "continuousWireSpanMm": 95.00071151245726,
+          "productionWireSpanUm": 95001,
+          "strictFlag": true,
+          "comparison": "95001 > 95000"
+        }
+      ]
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 5,
+      "maxFret": 14,
+      "spanPerScaleMm": 0.3037041793681711,
+      "criticalScaleLengthMm": 592.6819985634495,
+      "nearestReferenceScaleMm": 596.9,
+      "featureFlag": "span-over-severe",
+      "continuous": [
+        {
+          "offsetFromAnalyticalCriticalScaleMm": -0.1,
+          "scaleLengthMm": 592.5819985634495,
+          "wireSpanMm": 179.9696295820632,
+          "idealStrictFlag": false,
+          "interpretation": null
+        },
+        {
+          "offsetFromAnalyticalCriticalScaleMm": 0,
+          "scaleLengthMm": 592.6819985634495,
+          "wireSpanMm": 180,
+          "idealStrictFlag": false,
+          "interpretation": "Exactly equal by algebra; any final-bit floating residual is not a physical difference"
+        },
+        {
+          "offsetFromAnalyticalCriticalScaleMm": 0.1,
+          "scaleLengthMm": 592.7819985634495,
+          "wireSpanMm": 180.03037041793684,
+          "idealStrictFlag": true,
+          "interpretation": null
+        }
+      ],
+      "firstIntegerScaleWithFlagUm": 592684,
+      "integerComparator": [
+        {
+          "scaleLengthUm": 592683,
+          "scaleLengthMm": 592.683,
+          "continuousWireSpanMm": 180.00030414046577,
+          "productionWireSpanUm": 180000,
+          "strictFlag": false,
+          "comparison": "180000 > 180000"
+        },
+        {
+          "scaleLengthUm": 592684,
+          "scaleLengthMm": 592.684,
+          "continuousWireSpanMm": 180.00060784464512,
+          "productionWireSpanUm": 180001,
+          "strictFlag": true,
+          "comparison": "180001 > 180000"
+        },
+        {
+          "scaleLengthUm": 592685,
+          "scaleLengthMm": 592.685,
+          "continuousWireSpanMm": 180.0009115488245,
+          "productionWireSpanUm": 180001,
+          "strictFlag": true,
+          "comparison": "180001 > 180000"
+        }
+      ]
+    },
+    {
+      "thresholdMm": 180,
+      "minFret": 5,
+      "maxFret": 13,
+      "spanPerScaleMm": 0.277216382097494,
+      "criticalScaleLengthMm": 649.3122759848152,
+      "nearestReferenceScaleMm": 650,
+      "featureFlag": "span-over-severe",
+      "continuous": [
+        {
+          "offsetFromAnalyticalCriticalScaleMm": -0.1,
+          "scaleLengthMm": 649.2122759848152,
+          "wireSpanMm": 179.97227836179025,
+          "idealStrictFlag": false,
+          "interpretation": null
+        },
+        {
+          "offsetFromAnalyticalCriticalScaleMm": 0,
+          "scaleLengthMm": 649.3122759848152,
+          "wireSpanMm": 180,
+          "idealStrictFlag": false,
+          "interpretation": "Exactly equal by algebra; any final-bit floating residual is not a physical difference"
+        },
+        {
+          "offsetFromAnalyticalCriticalScaleMm": 0.1,
+          "scaleLengthMm": 649.4122759848152,
+          "wireSpanMm": 180.02772163820975,
+          "idealStrictFlag": true,
+          "interpretation": null
+        }
+      ],
+      "firstIntegerScaleWithFlagUm": 649315,
+      "integerComparator": [
+        {
+          "scaleLengthUm": 649314,
+          "scaleLengthMm": 649.314,
+          "continuousWireSpanMm": 180.0004779252522,
+          "productionWireSpanUm": 180000,
+          "strictFlag": false,
+          "comparison": "180000 > 180000"
+        },
+        {
+          "scaleLengthUm": 649315,
+          "scaleLengthMm": 649.315,
+          "continuousWireSpanMm": 180.00075514163433,
+          "productionWireSpanUm": 180001,
+          "strictFlag": true,
+          "comparison": "180001 > 180000"
+        },
+        {
+          "scaleLengthUm": 649316,
+          "scaleLengthMm": 649.316,
+          "continuousWireSpanMm": 180.00103235801643,
+          "productionWireSpanUm": 180001,
+          "strictFlag": true,
+          "comparison": "180001 > 180000"
+        }
+      ]
+    }
+  ],
+  "qualityTable": [
+    {
+      "chordId": "power-5",
+      "requests": 24,
+      "pass": 5492,
+      "uncertain": 45508,
+      "total": 51000,
+      "meanGroupsAllPairs": 3.669764705882353,
+      "meanGroupsUncertain": null,
+      "meanGroupsUncertainMissingReason": "Status-specific group sums were not stored per quality; not inferred or rescanned.",
+      "meanWireSpanMmUncertainGSmini": 210.73975331416207,
+      "meanTransverseLowerBoundMmUncertainGSmini": 36.21725896855252
+    },
+    {
+      "chordId": "major",
+      "requests": 24,
+      "pass": 16269,
+      "uncertain": 249677,
+      "total": 265946,
+      "meanGroupsAllPairs": 4.251254013972761,
+      "meanGroupsUncertain": null,
+      "meanGroupsUncertainMissingReason": "Status-specific group sums were not stored per quality; not inferred or rescanned.",
+      "meanWireSpanMmUncertainGSmini": 219.3684138369425,
+      "meanTransverseLowerBoundMmUncertainGSmini": 38.007059632059715
+    },
+    {
+      "chordId": "sus4",
+      "requests": 24,
+      "pass": 18573,
+      "uncertain": 248499,
+      "total": 267072,
+      "meanGroupsAllPairs": 4.014014947280134,
+      "meanGroupsUncertain": null,
+      "meanGroupsUncertainMissingReason": "Status-specific group sums were not stored per quality; not inferred or rescanned.",
+      "meanWireSpanMmUncertainGSmini": 216.43332633425698,
+      "meanTransverseLowerBoundMmUncertainGSmini": 37.96580261188917
+    },
+    {
+      "chordId": "diminished-7",
+      "requests": 24,
+      "pass": 15096,
+      "uncertain": 482430,
+      "total": 497526,
+      "meanGroupsAllPairs": 4.835964351611775,
+      "meanGroupsUncertain": null,
+      "meanGroupsUncertainMissingReason": "Status-specific group sums were not stored per quality; not inferred or rescanned.",
+      "meanWireSpanMmUncertainGSmini": 226.8215074447065,
+      "meanTransverseLowerBoundMmUncertainGSmini": 39.491698996393396
+    },
+    {
+      "chordId": "dominant-11",
+      "requests": 24,
+      "pass": 130316,
+      "uncertain": 3452216,
+      "total": 3582532,
+      "meanGroupsAllPairs": 4.5931411080208076,
+      "meanGroupsUncertain": null,
+      "meanGroupsUncertainMissingReason": "Status-specific group sums were not stored per quality; not inferred or rescanned.",
+      "meanWireSpanMmUncertainGSmini": 225.61675145593694,
+      "meanTransverseLowerBoundMmUncertainGSmini": 39.851967782380456
+    },
+    {
+      "chordId": "dominant-13",
+      "requests": 24,
+      "pass": 49545,
+      "uncertain": 1733127,
+      "total": 1782672,
+      "meanGroupsAllPairs": 4.79895011533249,
+      "meanGroupsUncertain": null,
+      "meanGroupsUncertainMissingReason": "Status-specific group sums were not stored per quality; not inferred or rescanned.",
+      "meanWireSpanMmUncertainGSmini": 227.28403148592346,
+      "meanTransverseLowerBoundMmUncertainGSmini": 40.155484751799925
+    },
+    {
+      "chordId": "dominant-7-flat-9",
+      "requests": 24,
+      "pass": 23014,
+      "uncertain": 974002,
+      "total": 997016,
+      "meanGroupsAllPairs": 4.919208919415536,
+      "meanGroupsUncertain": null,
+      "meanGroupsUncertainMissingReason": "Status-specific group sums were not stored per quality; not inferred or rescanned.",
+      "meanWireSpanMmUncertainGSmini": 227.08404776242017,
+      "meanTransverseLowerBoundMmUncertainGSmini": 39.93263948217436
+    }
+  ]
+}

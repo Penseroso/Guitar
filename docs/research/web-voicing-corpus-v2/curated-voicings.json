@@ -1,0 +1,2587 @@
+{
+  "schema": "web-voicing-curated-view-v2",
+  "inputHashes": {
+    "educational-voicings.json": "46bd71427056e3dc850b8e4a7fec239132c361d3b5e0a0a7642fdab48259230b",
+    "educational-wikimedia-voicings.json": "a534164cf3e002a9d2c17b21e6771454f7ea64aaa704d547ab6695ca240c0684"
+  },
+  "construct": "Selected authored educational allocations; two conservative source families, not an exhaustive web corpus. Ambiguous rows remain inventory but cannot vote until mapped confidently.",
+  "rows": [
+    {
+      "rowId": "ku-matney-2019-001",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "E",
+      "rootPitchClass": 4,
+      "statesHighToLow": [
+        0,
+        0,
+        1,
+        2,
+        2,
+        0
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 9,
+      "printedPage": 2,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          0,
+          0,
+          1,
+          3,
+          2,
+          0
+        ],
+        [
+          0,
+          0,
+          2,
+          4,
+          3,
+          0
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-002",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "A",
+      "rootPitchClass": 9,
+      "statesHighToLow": [
+        0,
+        2,
+        2,
+        2,
+        0,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 10,
+      "printedPage": 3,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          0,
+          3,
+          2,
+          1,
+          0,
+          null
+        ],
+        [
+          0,
+          4,
+          3,
+          2,
+          0,
+          null
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-003",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "G",
+      "rootPitchClass": 7,
+      "statesHighToLow": [
+        3,
+        0,
+        0,
+        0,
+        2,
+        3
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 11,
+      "printedPage": 4,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          3,
+          0,
+          0,
+          0,
+          1,
+          2
+        ],
+        [
+          4,
+          0,
+          0,
+          0,
+          2,
+          3
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-004",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "D",
+      "rootPitchClass": 2,
+      "statesHighToLow": [
+        2,
+        3,
+        2,
+        0,
+        -1,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 12,
+      "printedPage": 5,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          2,
+          3,
+          1,
+          0,
+          null,
+          null
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-005",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "C",
+      "rootPitchClass": 0,
+      "statesHighToLow": [
+        0,
+        1,
+        0,
+        2,
+        3,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 13,
+      "printedPage": 6,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          0,
+          1,
+          0,
+          2,
+          3,
+          null
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-006",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "F",
+      "rootPitchClass": 5,
+      "statesHighToLow": [
+        1,
+        1,
+        2,
+        3,
+        -1,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 14,
+      "printedPage": 7,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          1,
+          1,
+          2,
+          3,
+          null,
+          null
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-007",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "Bb",
+      "rootPitchClass": 10,
+      "statesHighToLow": [
+        1,
+        3,
+        3,
+        3,
+        -1,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 15,
+      "printedPage": 8,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          1,
+          4,
+          3,
+          2,
+          null,
+          null
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-008",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "Em",
+      "rootPitchClass": 4,
+      "statesHighToLow": [
+        0,
+        0,
+        0,
+        2,
+        2,
+        0
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 17,
+      "printedPage": 10,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          0,
+          0,
+          0,
+          3,
+          2,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          2,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          4,
+          3,
+          0
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-009",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "Am",
+      "rootPitchClass": 9,
+      "statesHighToLow": [
+        0,
+        1,
+        2,
+        2,
+        0,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 18,
+      "printedPage": 11,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          0,
+          1,
+          3,
+          2,
+          0,
+          null
+        ],
+        [
+          0,
+          2,
+          4,
+          3,
+          0,
+          null
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-010",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "Dm",
+      "rootPitchClass": 2,
+      "statesHighToLow": [
+        1,
+        3,
+        2,
+        0,
+        0,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 19,
+      "printedPage": 12,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          1,
+          3,
+          2,
+          0,
+          0,
+          null
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "normalizationNote": "Source explicitly marks A string open: x00231; bass A is preserved, not changed to textbook xx0231.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-011",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "Bm",
+      "rootPitchClass": 11,
+      "statesHighToLow": [
+        2,
+        3,
+        4,
+        4,
+        -1,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 20,
+      "printedPage": 13,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          1,
+          2,
+          4,
+          3,
+          null,
+          null
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-012",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "E7",
+      "rootPitchClass": 4,
+      "statesHighToLow": [
+        0,
+        0,
+        1,
+        0,
+        2,
+        0
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 22,
+      "printedPage": 15,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          0,
+          0,
+          1,
+          0,
+          2,
+          0
+        ],
+        [
+          0,
+          0,
+          2,
+          0,
+          3,
+          0
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-013",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "A7",
+      "rootPitchClass": 9,
+      "statesHighToLow": [
+        0,
+        2,
+        0,
+        2,
+        0,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 23,
+      "printedPage": 16,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          0,
+          3,
+          0,
+          2,
+          0,
+          null
+        ],
+        [
+          0,
+          2,
+          0,
+          1,
+          0,
+          null
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-014",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "D7",
+      "rootPitchClass": 2,
+      "statesHighToLow": [
+        2,
+        1,
+        2,
+        0,
+        -1,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 24,
+      "printedPage": 17,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          3,
+          1,
+          2,
+          0,
+          null,
+          null
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-015",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "G7",
+      "rootPitchClass": 7,
+      "statesHighToLow": [
+        1,
+        0,
+        0,
+        0,
+        2,
+        3
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 25,
+      "printedPage": 18,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          1,
+          0,
+          0,
+          0,
+          2,
+          3
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-016",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "C7",
+      "rootPitchClass": 0,
+      "statesHighToLow": [
+        0,
+        1,
+        3,
+        2,
+        3,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 26,
+      "printedPage": 19,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          0,
+          1,
+          4,
+          2,
+          3,
+          null
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-017",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "B7",
+      "rootPitchClass": 11,
+      "statesHighToLow": [
+        2,
+        0,
+        2,
+        1,
+        2,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 27,
+      "printedPage": 20,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          4,
+          0,
+          3,
+          1,
+          2,
+          null
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-018",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "Em7",
+      "rootPitchClass": 4,
+      "statesHighToLow": [
+        0,
+        0,
+        0,
+        0,
+        2,
+        0
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 29,
+      "printedPage": 22,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          0,
+          0,
+          0,
+          0,
+          2,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          3,
+          0
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-019",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "Am7",
+      "rootPitchClass": 9,
+      "statesHighToLow": [
+        0,
+        1,
+        0,
+        2,
+        0,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 30,
+      "printedPage": 23,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          0,
+          1,
+          0,
+          2,
+          0,
+          null
+        ],
+        [
+          0,
+          2,
+          0,
+          3,
+          0,
+          null
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-020",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "Bm7",
+      "rootPitchClass": 11,
+      "statesHighToLow": [
+        2,
+        0,
+        2,
+        0,
+        2,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 31,
+      "printedPage": 24,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          4,
+          0,
+          3,
+          0,
+          2,
+          null
+        ],
+        [
+          3,
+          0,
+          2,
+          0,
+          1,
+          null
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-021",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "Dm7",
+      "rootPitchClass": 2,
+      "statesHighToLow": [
+        1,
+        1,
+        2,
+        0,
+        -1,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 32,
+      "printedPage": 25,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          1,
+          1,
+          2,
+          0,
+          null,
+          null
+        ]
+      ],
+      "sourcePresentation": "chapter-primary-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-022",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "Bdim, Ddim, Fdim, Abdim",
+      "statesHighToLow": [
+        1,
+        0,
+        1,
+        0,
+        -1,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "ambiguous",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 33,
+      "printedPage": 26,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          2,
+          0,
+          1,
+          0,
+          null,
+          null
+        ]
+      ],
+      "sourcePresentation": "contextual-substitution-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "normalizationIssue": "One shape is explicitly offered for four diminished labels as harmonic support; no unique requested root/formula. Preserve grouped source label and exclude from direct request mapping.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-023",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "Cdim, Ebdim, F#dim, Adim",
+      "statesHighToLow": [
+        2,
+        1,
+        2,
+        1,
+        -1,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "ambiguous",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 33,
+      "printedPage": 26,
+      "sourceDiagramPosition": 2,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          4,
+          2,
+          3,
+          1,
+          null,
+          null
+        ]
+      ],
+      "sourcePresentation": "contextual-substitution-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "normalizationIssue": "One shape is explicitly offered for four diminished labels as harmonic support; no unique requested root/formula. Preserve grouped source label and exclude from direct request mapping.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-024",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "Dbdim, Edim, Gdim, Bbdim",
+      "statesHighToLow": [
+        3,
+        2,
+        3,
+        2,
+        -1,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "ambiguous",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 33,
+      "printedPage": 26,
+      "sourceDiagramPosition": 3,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          4,
+          2,
+          3,
+          1,
+          null,
+          null
+        ]
+      ],
+      "sourcePresentation": "contextual-substitution-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "normalizationIssue": "One shape is explicitly offered for four diminished labels as harmonic support; no unique requested root/formula. Preserve grouped source label and exclude from direct request mapping.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-025",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "F",
+      "rootPitchClass": 5,
+      "statesHighToLow": [
+        1,
+        1,
+        2,
+        3,
+        3,
+        1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 35,
+      "printedPage": 28,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          1,
+          1,
+          2,
+          4,
+          3,
+          1
+        ]
+      ],
+      "sourcePresentation": "barre-template",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-026",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "B",
+      "rootPitchClass": 11,
+      "statesHighToLow": [
+        2,
+        4,
+        4,
+        4,
+        2,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 36,
+      "printedPage": 29,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          1,
+          4,
+          3,
+          2,
+          1,
+          null
+        ]
+      ],
+      "sourcePresentation": "barre-template",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-027",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "Fm",
+      "rootPitchClass": 5,
+      "statesHighToLow": [
+        1,
+        1,
+        1,
+        3,
+        3,
+        1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 37,
+      "printedPage": 30,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          1,
+          1,
+          1,
+          4,
+          3,
+          1
+        ]
+      ],
+      "sourcePresentation": "barre-template",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-028",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "Bbmin",
+      "rootPitchClass": 10,
+      "statesHighToLow": [
+        1,
+        2,
+        3,
+        3,
+        1,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 38,
+      "printedPage": 31,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          1,
+          2,
+          3,
+          4,
+          1,
+          null
+        ]
+      ],
+      "sourcePresentation": "barre-template",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-029",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "F7",
+      "rootPitchClass": 5,
+      "statesHighToLow": [
+        1,
+        1,
+        2,
+        1,
+        3,
+        1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 39,
+      "printedPage": 32,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          1,
+          1,
+          2,
+          1,
+          3,
+          1
+        ]
+      ],
+      "sourcePresentation": "barre-template",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-030",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "Bb7",
+      "rootPitchClass": 10,
+      "statesHighToLow": [
+        1,
+        3,
+        1,
+        3,
+        1,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 40,
+      "printedPage": 33,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          1,
+          4,
+          1,
+          3,
+          1,
+          null
+        ]
+      ],
+      "sourcePresentation": "barre-template",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "normalizationNote": "Heading includes stray word minor, but diagram label Bb7, dominant-seventh heading and notes agree. Raw diagram label retained.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-031",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "Fm7",
+      "rootPitchClass": 5,
+      "statesHighToLow": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 41,
+      "printedPage": 34,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          1,
+          1,
+          1,
+          1,
+          3,
+          1
+        ]
+      ],
+      "sourcePresentation": "barre-template",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-032",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "Bbm7",
+      "rootPitchClass": 10,
+      "statesHighToLow": [
+        1,
+        2,
+        1,
+        3,
+        1,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 42,
+      "printedPage": 35,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          1,
+          2,
+          1,
+          3,
+          1,
+          null
+        ]
+      ],
+      "sourcePresentation": "barre-template",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-033",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "G",
+      "rootPitchClass": 7,
+      "statesHighToLow": [
+        3,
+        3,
+        0,
+        0,
+        2,
+        3
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 44,
+      "printedPage": 37,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          4,
+          3,
+          0,
+          0,
+          1,
+          2
+        ]
+      ],
+      "sourcePresentation": "selected-color-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-034",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "Dsus4",
+      "rootPitchClass": 2,
+      "statesHighToLow": [
+        3,
+        3,
+        2,
+        0,
+        -1,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 44,
+      "printedPage": 37,
+      "sourceDiagramPosition": 2,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          4,
+          3,
+          1,
+          0,
+          null,
+          null
+        ]
+      ],
+      "sourcePresentation": "selected-color-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-035",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "Em7",
+      "rootPitchClass": 4,
+      "statesHighToLow": [
+        3,
+        3,
+        0,
+        2,
+        2,
+        0
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 44,
+      "printedPage": 37,
+      "sourceDiagramPosition": 3,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          4,
+          3,
+          0,
+          2,
+          1,
+          0
+        ]
+      ],
+      "sourcePresentation": "selected-color-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-036",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "C9",
+      "rootPitchClass": 0,
+      "statesHighToLow": [
+        3,
+        3,
+        0,
+        2,
+        3,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "ambiguous",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 44,
+      "printedPage": 37,
+      "sourceDiagramPosition": 4,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          4,
+          3,
+          0,
+          1,
+          2,
+          null
+        ]
+      ],
+      "sourcePresentation": "selected-color-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "normalizationIssue": "Source x32033 sounds C-E-G-D, lacks the Bb required by dominant ninth. Possible intended Cadd9; excluded instead of silently relabeling.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-037",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "DMaj7",
+      "rootPitchClass": 2,
+      "statesHighToLow": [
+        2,
+        2,
+        2,
+        0,
+        -1,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 45,
+      "printedPage": 38,
+      "sourceDiagramPosition": 1,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          1,
+          1,
+          1,
+          0,
+          null,
+          null
+        ]
+      ],
+      "sourcePresentation": "selected-color-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-038",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "GMaj7",
+      "rootPitchClass": 7,
+      "statesHighToLow": [
+        2,
+        0,
+        0,
+        0,
+        2,
+        3
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 45,
+      "printedPage": 38,
+      "sourceDiagramPosition": 2,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          3,
+          0,
+          0,
+          0,
+          1,
+          2
+        ]
+      ],
+      "sourcePresentation": "selected-color-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "ku-matney-2019-039",
+      "sourceId": "ku-matney-niemuth-2019",
+      "lineageId": "ku-matney-niemuth",
+      "rawLabel": "CMaj7",
+      "rootPitchClass": 0,
+      "statesHighToLow": [
+        0,
+        0,
+        0,
+        2,
+        3,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://hdl.handle.net/1808/29433",
+      "pdfPage": 45,
+      "printedPage": 38,
+      "sourceDiagramPosition": 3,
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          0,
+          0,
+          0,
+          1,
+          2,
+          null
+        ]
+      ],
+      "sourcePresentation": "selected-color-example",
+      "license": "CC-BY-NC-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "attribution": "Bill Matney and Brenna Niemuth (2019), Guitar Chord Handbook, University of Kansas Libraries. Copyright 2019 Bill Matney. Normalized structural facts adapted for noncommercial research.",
+      "extractionMethod": "Manual visual transcription of the source diagram and fingering(s); duplicate photographic/diagram presentations collapsed.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-voicings.json"
+    },
+    {
+      "rowId": "wikimedia-sluffs-jazz-1",
+      "sourceId": "wikibooks-sluffs-jazz",
+      "lineageId": "wikimedia-guitar",
+      "rawLabel": "G major",
+      "rootPitchClass": 7,
+      "statesHighToLow": [
+        -1,
+        3,
+        4,
+        5,
+        -1,
+        3
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "verified",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:G_major_jazz_chord_for_guitar_(root).png",
+      "sourceAssetUrl": "https://upload.wikimedia.org/wikipedia/commons/0/0f/G_major_jazz_chord_for_guitar_%28root%29.png",
+      "sourceAssetSha256": "cced6e9a1772a82f5de1dbeb3273449bd4eb6e68a19b57d48cc60aa1f3fb60e6",
+      "teachingContextUrl": "https://en.wikibooks.org/w/index.php?title=Guitar/Jazz&oldid=3931946",
+      "originalSourceId": "File:G_major_jazz_chord_for_guitar_(root).png",
+      "sourcePresentation": "selected-root-position-exercise",
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          null,
+          2,
+          3,
+          4,
+          null,
+          1
+        ]
+      ],
+      "license": "PD-self",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/File:G_major_jazz_chord_for_guitar_(root).png",
+      "attribution": "Sluffs (2009), own work using Sibelius; author releases the individual chord diagram to the public domain. Selected as a movable jazz exercise by Wikibooks Guitar/Jazz.",
+      "extractionMethod": "Manual visual transcription of downloaded 150x150 original diagram; six physical strings, thick nut and all occupied fret cells verified; pitches cross-checked against title.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-wikimedia-voicings.json"
+    },
+    {
+      "rowId": "wikimedia-sluffs-jazz-2",
+      "sourceId": "wikibooks-sluffs-jazz",
+      "lineageId": "wikimedia-guitar",
+      "rawLabel": "G maj7",
+      "rootPitchClass": 7,
+      "statesHighToLow": [
+        -1,
+        3,
+        4,
+        4,
+        -1,
+        3
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "verified",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:G_major7_jazz_chord_for_guitar_(root).png",
+      "sourceAssetUrl": "https://upload.wikimedia.org/wikipedia/commons/4/48/G_major7_jazz_chord_for_guitar_%28root%29.png",
+      "sourceAssetSha256": "a0c23b7dc3230e43a36ddea3b635cc088a54ff7645eeb3345a4493f88fb42af8",
+      "teachingContextUrl": "https://en.wikibooks.org/w/index.php?title=Guitar/Jazz&oldid=3931946",
+      "originalSourceId": "File:G_major7_jazz_chord_for_guitar_(root).png",
+      "sourcePresentation": "selected-root-position-exercise",
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          null,
+          2,
+          3,
+          4,
+          null,
+          1
+        ]
+      ],
+      "license": "PD-self",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/File:G_major7_jazz_chord_for_guitar_(root).png",
+      "attribution": "Sluffs (2009), own work using Sibelius; author releases the individual chord diagram to the public domain. Selected as a movable jazz exercise by Wikibooks Guitar/Jazz.",
+      "extractionMethod": "Manual visual transcription of downloaded 150x150 original diagram; six physical strings, thick nut and all occupied fret cells verified; pitches cross-checked against title.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-wikimedia-voicings.json"
+    },
+    {
+      "rowId": "wikimedia-sluffs-jazz-3",
+      "sourceId": "wikibooks-sluffs-jazz",
+      "lineageId": "wikimedia-guitar",
+      "rawLabel": "G7",
+      "rootPitchClass": 7,
+      "statesHighToLow": [
+        -1,
+        3,
+        4,
+        3,
+        -1,
+        3
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "verified",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:G7_jazz_chord_for_guitar_(root).png",
+      "sourceAssetUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ed/G7_jazz_chord_for_guitar_%28root%29.png",
+      "sourceAssetSha256": "48ddc4c7771fb13c965359877dda907dd86b392e212bd77cc4b336112aa13f2e",
+      "teachingContextUrl": "https://en.wikibooks.org/w/index.php?title=Guitar/Jazz&oldid=3931946",
+      "originalSourceId": "File:G7_jazz_chord_for_guitar_(root).png",
+      "sourcePresentation": "selected-root-position-exercise",
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          null,
+          3,
+          4,
+          2,
+          null,
+          1
+        ]
+      ],
+      "license": "PD-self",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/File:G7_jazz_chord_for_guitar_(root).png",
+      "attribution": "Sluffs (2009), own work using Sibelius; author releases the individual chord diagram to the public domain. Selected as a movable jazz exercise by Wikibooks Guitar/Jazz.",
+      "extractionMethod": "Manual visual transcription of downloaded 150x150 original diagram; six physical strings, thick nut and all occupied fret cells verified; pitches cross-checked against title.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-wikimedia-voicings.json"
+    },
+    {
+      "rowId": "wikimedia-sluffs-jazz-4",
+      "sourceId": "wikibooks-sluffs-jazz",
+      "lineageId": "wikimedia-guitar",
+      "rawLabel": "G6",
+      "rootPitchClass": 7,
+      "statesHighToLow": [
+        -1,
+        3,
+        4,
+        2,
+        -1,
+        3
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "verified",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:G6_jazz_chord_for_guitar_(root).png",
+      "sourceAssetUrl": "https://upload.wikimedia.org/wikipedia/commons/9/96/G6_jazz_chord_for_guitar_%28root%29.png",
+      "sourceAssetSha256": "8b55cbd79d282dd5ab63968a087e02fc3d6302791a2c1540dd066cbd9791e45e",
+      "teachingContextUrl": "https://en.wikibooks.org/w/index.php?title=Guitar/Jazz&oldid=3931946",
+      "originalSourceId": "File:G6_jazz_chord_for_guitar_(root).png",
+      "sourcePresentation": "selected-root-position-exercise",
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          null,
+          3,
+          4,
+          1,
+          null,
+          2
+        ]
+      ],
+      "license": "PD-self",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/File:G6_jazz_chord_for_guitar_(root).png",
+      "attribution": "Sluffs (2009), own work using Sibelius; author releases the individual chord diagram to the public domain. Selected as a movable jazz exercise by Wikibooks Guitar/Jazz.",
+      "extractionMethod": "Manual visual transcription of downloaded 150x150 original diagram; six physical strings, thick nut and all occupied fret cells verified; pitches cross-checked against title.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-wikimedia-voicings.json"
+    },
+    {
+      "rowId": "wikimedia-sluffs-jazz-5",
+      "sourceId": "wikibooks-sluffs-jazz",
+      "lineageId": "wikimedia-guitar",
+      "rawLabel": "E major",
+      "rootPitchClass": 4,
+      "statesHighToLow": [
+        -1,
+        5,
+        4,
+        2,
+        -1,
+        4
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "verified",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:E_major_jazz_chord_for_guitar_(first_inversion).png",
+      "sourceAssetUrl": "https://upload.wikimedia.org/wikipedia/commons/4/48/E_major_jazz_chord_for_guitar_%28first_inversion%29.png",
+      "sourceAssetSha256": "ea79930778a98f19e836b20ea7c6a639ee05906087da9bcb6cf3a27546be2816",
+      "teachingContextUrl": "https://en.wikibooks.org/w/index.php?title=Guitar/Jazz&oldid=3931946",
+      "originalSourceId": "File:E_major_jazz_chord_for_guitar_(first_inversion).png",
+      "sourcePresentation": "selected-first-inversion-exercise",
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          null,
+          4,
+          3,
+          1,
+          null,
+          2
+        ]
+      ],
+      "license": "PD-self",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/File:E_major_jazz_chord_for_guitar_(first_inversion).png",
+      "attribution": "Sluffs (2009), own work using Sibelius; author releases the individual chord diagram to the public domain. Selected as a movable jazz exercise by Wikibooks Guitar/Jazz.",
+      "extractionMethod": "Manual visual transcription of downloaded 150x150 original diagram; six physical strings, thick nut and all occupied fret cells verified; pitches cross-checked against title.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-wikimedia-voicings.json"
+    },
+    {
+      "rowId": "wikimedia-sluffs-jazz-6",
+      "sourceId": "wikibooks-sluffs-jazz",
+      "lineageId": "wikimedia-guitar",
+      "rawLabel": "E maj7",
+      "rootPitchClass": 4,
+      "statesHighToLow": [
+        -1,
+        4,
+        4,
+        2,
+        -1,
+        4
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "verified",
+      "labelConfidence": "explicit",
+      "context": "accompaniment",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:E_major7_jazz_chord_for_guitar_(first_inversion).png",
+      "sourceAssetUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b1/E_major7_jazz_chord_for_guitar_%28first_inversion%29.png",
+      "sourceAssetSha256": "13635a2036bf3bfa82166fc632816f65b99221e19b3d738b942c62e6035c21e8",
+      "teachingContextUrl": "https://en.wikibooks.org/w/index.php?title=Guitar/Jazz&oldid=3931946",
+      "originalSourceId": "File:E_major7_jazz_chord_for_guitar_(first_inversion).png",
+      "sourcePresentation": "selected-first-inversion-exercise",
+      "sourceProvidedFingeringsHighToLow": [
+        [
+          null,
+          4,
+          3,
+          1,
+          null,
+          2
+        ]
+      ],
+      "license": "PD-self",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/File:E_major7_jazz_chord_for_guitar_(first_inversion).png",
+      "attribution": "Sluffs (2009), own work using Sibelius; author releases the individual chord diagram to the public domain. Selected as a movable jazz exercise by Wikibooks Guitar/Jazz.",
+      "extractionMethod": "Manual visual transcription of downloaded 150x150 original diagram; six physical strings, thick nut and all occupied fret cells verified; pitches cross-checked against title.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-wikimedia-voicings.json"
+    },
+    {
+      "rowId": "wikibooks-open-text-1",
+      "sourceId": "wikibooks-open-chords-text",
+      "lineageId": "wikimedia-guitar",
+      "rawLabel": "E",
+      "rootPitchClass": 4,
+      "statesHighToLow": [
+        0,
+        0,
+        1,
+        2,
+        2,
+        0
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "standalone",
+      "sourceUrl": "https://en.wikibooks.org/w/index.php?title=Guitar/Open_Chords&oldid=4212611#E_Major",
+      "sourcePresentation": "selected-open-chord-example",
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "Wikibooks contributors, Guitar/Open Chords, revision 4212611 (26 November 2022). Structural facts normalized with attribution; adaptation distributed under CC BY-SA 4.0.",
+      "extractionMethod": "All six strings explicitly sounded; prose gives fifth/fourth strings fret 2 and third string fret 1.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-wikimedia-voicings.json"
+    },
+    {
+      "rowId": "wikibooks-open-text-2",
+      "sourceId": "wikibooks-open-chords-text",
+      "lineageId": "wikimedia-guitar",
+      "rawLabel": "A",
+      "rootPitchClass": 9,
+      "statesHighToLow": [
+        0,
+        2,
+        2,
+        2,
+        0,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "standalone",
+      "sourceUrl": "https://en.wikibooks.org/w/index.php?title=Guitar/Open_Chords&oldid=4212611#A_Major",
+      "sourcePresentation": "selected-open-chord-example",
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "Wikibooks contributors, Guitar/Open Chords, revision 4212611 (26 November 2022). Structural facts normalized with attribution; adaptation distributed under CC BY-SA 4.0.",
+      "extractionMethod": "Prose gives three middle strings fret 2, sixth muted and all remaining strings sounded.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-wikimedia-voicings.json"
+    },
+    {
+      "rowId": "wikibooks-open-text-3",
+      "sourceId": "wikibooks-open-chords-text",
+      "lineageId": "wikimedia-guitar",
+      "rawLabel": "G",
+      "rootPitchClass": 7,
+      "statesHighToLow": [
+        3,
+        0,
+        0,
+        0,
+        2,
+        3
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "standalone",
+      "sourceUrl": "https://en.wikibooks.org/w/index.php?title=Guitar/Open_Chords&oldid=4212611#G_Major",
+      "sourcePresentation": "equal-presented-alternative",
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "Wikibooks contributors, Guitar/Open Chords, revision 4212611 (26 November 2022). Structural facts normalized with attribution; adaptation distributed under CC BY-SA 4.0.",
+      "extractionMethod": "Source explicitly identifies this six-digit vector as frets (three-finger method).",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-wikimedia-voicings.json"
+    },
+    {
+      "rowId": "wikibooks-open-text-4",
+      "sourceId": "wikibooks-open-chords-text",
+      "lineageId": "wikimedia-guitar",
+      "rawLabel": "G",
+      "rootPitchClass": 7,
+      "statesHighToLow": [
+        3,
+        3,
+        0,
+        0,
+        2,
+        3
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "standalone",
+      "sourceUrl": "https://en.wikibooks.org/w/index.php?title=Guitar/Open_Chords&oldid=4212611#G_Major",
+      "sourcePresentation": "equal-presented-alternative",
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "Wikibooks contributors, Guitar/Open Chords, revision 4212611 (26 November 2022). Structural facts normalized with attribution; adaptation distributed under CC BY-SA 4.0.",
+      "extractionMethod": "Source explicitly identifies this six-digit vector as frets (four-finger method).",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-wikimedia-voicings.json"
+    },
+    {
+      "rowId": "wikibooks-open-text-5",
+      "sourceId": "wikibooks-open-chords-text",
+      "lineageId": "wikimedia-guitar",
+      "rawLabel": "Em",
+      "rootPitchClass": 4,
+      "statesHighToLow": [
+        3,
+        0,
+        0,
+        2,
+        2,
+        0
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "standalone",
+      "sourceUrl": "https://en.wikibooks.org/w/index.php?title=Guitar/Open_Chords&oldid=4212611#E_Minor",
+      "sourcePresentation": "explicit-alternative",
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "Wikibooks contributors, Guitar/Open Chords, revision 4212611 (26 November 2022). Structural facts normalized with attribution; adaptation distributed under CC BY-SA 4.0.",
+      "extractionMethod": "Source explicitly identifies o22oo3 as frets for its high-G variation; o is open.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-wikimedia-voicings.json"
+    },
+    {
+      "rowId": "wikibooks-open-text-6",
+      "sourceId": "wikibooks-open-chords-text",
+      "lineageId": "wikimedia-guitar",
+      "rawLabel": "Dm",
+      "rootPitchClass": 2,
+      "statesHighToLow": [
+        1,
+        3,
+        2,
+        0,
+        -1,
+        -1
+      ],
+      "tuningMidiHighToLow": [
+        64,
+        59,
+        55,
+        50,
+        45,
+        40
+      ],
+      "capoFret": 0,
+      "orientationConfidence": "explicit",
+      "labelConfidence": "explicit",
+      "context": "standalone",
+      "sourceUrl": "https://en.wikibooks.org/w/index.php?title=Guitar/Open_Chords&oldid=4212611#D_Major",
+      "sourcePresentation": "selected-open-chord-example",
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "Wikibooks contributors, Guitar/Open Chords, revision 4212611 (26 November 2022). Structural facts normalized with attribution; adaptation distributed under CC BY-SA 4.0.",
+      "extractionMethod": "Prose explicitly specifies all three stopped frets for D minor; xxo231 fingering supplies two muted strings and open D.",
+      "originClassification": "MANUAL_SELECTION_EVIDENCED",
+      "eligibleCuratedVote": true,
+      "eligibilityBasis": "Audited authored handbook or actual selected Wikibooks lesson; graphic authorship alone is not the basis.",
+      "inputSourceFile": "educational-wikimedia-voicings.json"
+    }
+  ]
+}

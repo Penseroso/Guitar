@@ -1,0 +1,2941 @@
+{
+  "schema": "web-voicing-source-manifest-v2",
+  "accessDate": "2026-09-13",
+  "counts": {
+    "rawComponentEntries": 34,
+    "deduplicatedSources": 33,
+    "duplicateEntriesCollapsed": 1,
+    "provisionalLineageBuckets": 26,
+    "acquiredCuratedSources": 3,
+    "acquiredCuratedIndependentFamilies": 2,
+    "acquiredCuratedInventoryRows": 51
+  },
+  "componentInventories": [
+    {
+      "file": "open-sources.json",
+      "sha256": "f1a7a723824d86811b4a5516adb7aaae2b655ac45ffc8e357b8e62a2118c66da",
+      "entryCount": 15
+    },
+    {
+      "file": "educational-sources.json",
+      "sha256": "56a15d72f871a283997a9ff9c7da4b1762b2cf37dd6841ad5ad939b86587fbd5",
+      "entryCount": 11
+    },
+    {
+      "file": "supplemental-sources.json",
+      "sha256": "bd3bed052362b57528da8651999d220a186b292713c5e8c186fc035e72cb4aa4",
+      "entryCount": 8
+    }
+  ],
+  "deduplication": "Normalize scheme/hostname/www/trailing and repeated path slashes/query order; merge identical canonical URL only. Distinct pages remain distinct sources even within one lineage. Preserve every component record and inherited defaults.",
+  "countInterpretation": "Raw entries count component inventory records. Deduplicated sources count audited resources. Provisional buckets include generated, mixed and unresolved families and are NOT independent curated evidence. Only two acquired curated source families supply source-presence evidence after row admissibility.",
+  "sources": [
+    {
+      "sourceId": "berklee-rick-peckham",
+      "componentSourceIds": [
+        "berklee-rick-peckham"
+      ],
+      "source": "Berklee Guitar Chords 101 and triad inversion lesson",
+      "url": "https://online.berklee.edu/takenote/guitar-chords-101-triad-inversions-up-the-fretboard/",
+      "canonicalUrl": "https://online.berklee.edu/takenote/guitar-chords-101-triad-inversions-up-the-fretboard",
+      "repository": "NOT_APPLICABLE_OR_NOT_IDENTIFIED",
+      "sourceType": "B/D: institutional course and public excerpt",
+      "ownerMaintainer": "Berklee Online; course authored by Rick Peckham",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "No open corpus redistribution license established",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "not established for lesson material",
+      "rawDataMayBeStored": "UNKNOWN; see restricted rawDataStoragePolicy",
+      "rawDataStoragePolicy": "metadata only",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "standard guitar assumed in excerpt, not row-normalized",
+      "capoAssumptions": "not established",
+      "stringCount": 6,
+      "notationOrientation": "varies by notation/example; not normalized",
+      "chordLabelSystem": "letter-name chord symbols",
+      "creationProvenance": "MANUAL_AUTHORED_SELECTED",
+      "originClass": "MANUAL_SELECTION_EVIDENCED",
+      "originEvidence": "Named course author; syllabus and excerpt intentionally select string sets, inversion sequences, drop2/drop3 and guide tones.",
+      "editorialCriteria": "construction, inversions and movement across neck; triad top-string positions extend to twelfth position",
+      "approximateCorpusSize": "12 course lessons; shape count not publicly enumerated",
+      "updateHistory": "Public inversion article indexed 2016; current course syllabus",
+      "copyingLineageEvidence": [
+        "Take Note excerpt and Guitar Chords 101 course form one teaching lineage."
+      ],
+      "lineageId": "berklee-rick-peckham-chords101",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "formal curriculum",
+        "triadic/drop-family exercises",
+        "course access restrictions"
+      ],
+      "decision": "metadata-only; potential protected high-position acquisition via permission",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://online.berklee.edu/takenote/guitar-chords-101-triad-inversions-up-the-fretboard",
+        "https://online.berklee.edu/courses/guitar-chords-101",
+        "https://online.berklee.edu/takenote/guitar-chords-101-triad-inversions-up-the-fretboard/"
+      ],
+      "componentProvenance": [
+        {
+          "component": "educational-sources.json",
+          "jsonPointer": "/sources/8",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "repository": null,
+            "redistributionPermitted": "not established for lesson material",
+            "rawDataStorage": "metadata only",
+            "retainOnlyDerivedStatistics": true,
+            "tuningAssumptions": "standard guitar assumed in excerpt, not row-normalized",
+            "capoAssumptions": "not established",
+            "stringCount": 6,
+            "notationOrientation": "varies by notation/example; not normalized",
+            "chordLabelSystem": "letter-name chord symbols",
+            "editorialCriteria": "construction, inversions and movement across neck; triad top-string positions extend to twelfth position",
+            "approximateCorpusSize": "12 course lessons; shape count not publicly enumerated",
+            "updateHistory": "Public inversion article indexed 2016; current course syllabus",
+            "copyingLineageEvidence": [
+              "Take Note excerpt and Guitar Chords 101 course form one teaching lineage."
+            ],
+            "biases": [
+              "formal curriculum",
+              "triadic/drop-family exercises",
+              "course access restrictions"
+            ],
+            "decision": "metadata-only; potential protected high-position acquisition via permission",
+            "sourceId": "berklee-rick-peckham",
+            "source": "Berklee Guitar Chords 101 and triad inversion lesson",
+            "url": "https://online.berklee.edu/takenote/guitar-chords-101-triad-inversions-up-the-fretboard/",
+            "sourceType": "B/D: institutional course and public excerpt",
+            "ownerMaintainer": "Berklee Online; course authored by Rick Peckham",
+            "lineageId": "berklee-rick-peckham-chords101",
+            "origin": "MANUAL_AUTHORED_SELECTED",
+            "originEvidence": "Named course author; syllabus and excerpt intentionally select string sets, inversion sequences, drop2/drop3 and guide tones.",
+            "license": "No open corpus redistribution license established",
+            "primaryEvidenceUrls": [
+              "https://online.berklee.edu/courses/guitar-chords-101",
+              "https://online.berklee.edu/takenote/guitar-chords-101-triad-inversions-up-the-fretboard/"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "bjesus-chords",
+      "componentSourceIds": [
+        "bjesus-chords"
+      ],
+      "source": "bjesus-chords",
+      "url": "https://github.com/bjesus/chords",
+      "canonicalUrl": "https://github.com/bjesus/chords",
+      "repository": "https://github.com/bjesus/chords",
+      "sourceType": "PRODUCT_APPLICATION",
+      "ownerMaintainer": "bjesus",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "GPL-3.0 claimed with Fretboard upstream credit",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "UNKNOWN",
+      "rawDataMayBeStored": false,
+      "rawDataStoragePolicy": "Metadata only; no raw corpus stored",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "UNKNOWN until source row specifies",
+      "capoAssumptions": "UNKNOWN",
+      "stringCount": "UNKNOWN",
+      "notationOrientation": "UNKNOWN",
+      "chordLabelSystem": "Source-specific conventional chord symbols",
+      "creationProvenance": "IMPORTED; original unknown",
+      "originClass": "UNKNOWN",
+      "originEvidence": "Original authoring method not established beyond component provenance; do not infer manual creation",
+      "editorialCriteria": "Not established",
+      "approximateCorpusSize": "12000+ advertised",
+      "updateHistory": "Not audited beyond accessed revision",
+      "copyingLineageEvidence": [
+        "README credits Fretboard by Brage Fuglseth"
+      ],
+      "lineageId": "fretboard-brage-origin-unknown",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "Not a representative sample of guitarists or repertoire"
+      ],
+      "decision": "EXCLUDED_UNKNOWN_ORIGIN_AND_SEPARATE_SONG_CONSTRUCT",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://github.com/bjesus/chords"
+      ],
+      "componentProvenance": [
+        {
+          "component": "open-sources.json",
+          "jsonPointer": "/sources/10",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "owner": "bjesus",
+            "licenseOrTerms": "GPL-3.0 claimed with Fretboard upstream credit",
+            "redistributionPermitted": null,
+            "rawDataMayBeStored": false,
+            "derivedStatisticsOnly": true,
+            "tuningAssumptions": "UNKNOWN until source row specifies",
+            "capoAssumptions": "UNKNOWN",
+            "stringCount": null,
+            "notationOrientation": "UNKNOWN",
+            "chordLabelSystem": "Source-specific conventional chord symbols",
+            "creationProvenance": "IMPORTED; original unknown",
+            "editorialCriteria": "Not established",
+            "approximateCorpusSize": "12000+ advertised",
+            "updateHistory": "Not audited beyond accessed revision",
+            "lineageEvidence": [
+              "README credits Fretboard by Brage Fuglseth"
+            ],
+            "biases": [
+              "Not a representative sample of guitarists or repertoire"
+            ],
+            "decision": "EXCLUDED_UNKNOWN_ORIGIN_AND_SEPARATE_SONG_CONSTRUCT",
+            "eligibleCuratedVote": false,
+            "id": "bjesus-chords",
+            "url": "https://github.com/bjesus/chords",
+            "sourceType": "PRODUCT_APPLICATION",
+            "lineageId": "fretboard-brage-origin-unknown"
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "chordbook-fork",
+      "componentSourceIds": [
+        "chordbook-fork"
+      ],
+      "source": "chordbook-fork",
+      "url": "https://github.com/chordbook/chords-db",
+      "canonicalUrl": "https://github.com/chordbook/chords-db",
+      "repository": "https://github.com/chordbook/chords-db",
+      "sourceType": "MIRROR",
+      "ownerMaintainer": "Chord Book",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "MIT upstream",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": true,
+      "rawDataMayBeStored": false,
+      "rawDataStoragePolicy": "Metadata only; no raw corpus stored",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "UNKNOWN until source row specifies",
+      "capoAssumptions": "UNKNOWN",
+      "stringCount": "UNKNOWN",
+      "notationOrientation": "UNKNOWN",
+      "chordLabelSystem": "Source-specific conventional chord symbols",
+      "creationProvenance": "IMPORTED",
+      "originClass": "IMPORTED_ORIGINAL_ORIGIN_UNRESOLVED",
+      "originEvidence": "Original authoring method not established beyond component provenance; do not infer manual creation",
+      "editorialCriteria": "Not established",
+      "approximateCorpusSize": "UNKNOWN",
+      "updateHistory": "Not audited beyond accessed revision",
+      "copyingLineageEvidence": [
+        "Repository explicitly forked from tombatossals/chords-db"
+      ],
+      "lineageId": "tombatossals-chords-db",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "Not a representative sample of guitarists or repertoire"
+      ],
+      "decision": "EXCLUDED_DUPLICATE_LINEAGE",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://github.com/chordbook/chords-db"
+      ],
+      "componentProvenance": [
+        {
+          "component": "open-sources.json",
+          "jsonPointer": "/sources/3",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "owner": "Chord Book",
+            "licenseOrTerms": "MIT upstream",
+            "redistributionPermitted": true,
+            "rawDataMayBeStored": false,
+            "derivedStatisticsOnly": true,
+            "tuningAssumptions": "UNKNOWN until source row specifies",
+            "capoAssumptions": "UNKNOWN",
+            "stringCount": null,
+            "notationOrientation": "UNKNOWN",
+            "chordLabelSystem": "Source-specific conventional chord symbols",
+            "creationProvenance": "IMPORTED",
+            "editorialCriteria": "Not established",
+            "approximateCorpusSize": null,
+            "updateHistory": "Not audited beyond accessed revision",
+            "lineageEvidence": [
+              "Repository explicitly forked from tombatossals/chords-db"
+            ],
+            "biases": [
+              "Not a representative sample of guitarists or repertoire"
+            ],
+            "decision": "EXCLUDED_DUPLICATE_LINEAGE",
+            "eligibleCuratedVote": false,
+            "id": "chordbook-fork",
+            "url": "https://github.com/chordbook/chords-db",
+            "sourceType": "MIRROR",
+            "lineageId": "tombatossals-chords-db"
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "chordictionaryjs",
+      "componentSourceIds": [
+        "chordictionaryjs"
+      ],
+      "source": "chordictionaryjs",
+      "url": "https://github.com/greird/chordictionaryjs",
+      "canonicalUrl": "https://github.com/greird/chordictionaryjs",
+      "repository": "https://github.com/greird/chordictionaryjs",
+      "sourceType": "ALGORITHMIC_LIBRARY",
+      "ownerMaintainer": "greird",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "UNKNOWN; metadata-only inspection",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "UNKNOWN",
+      "rawDataMayBeStored": false,
+      "rawDataStoragePolicy": "Metadata only; no raw corpus stored",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "Arbitrary fretted instrument",
+      "capoAssumptions": "UNKNOWN",
+      "stringCount": "UNKNOWN",
+      "notationOrientation": "UNKNOWN",
+      "chordLabelSystem": "Source-specific conventional chord symbols",
+      "creationProvenance": "GENERATED",
+      "originClass": "GENERATED",
+      "originEvidence": "Original authoring method not established beyond component provenance; do not infer manual creation",
+      "editorialCriteria": "Not established",
+      "approximateCorpusSize": "UNKNOWN",
+      "updateHistory": "Not audited beyond accessed revision",
+      "copyingLineageEvidence": [],
+      "lineageId": "chordictionaryjs-generator",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "Not a representative sample of guitarists or repertoire"
+      ],
+      "decision": "EXCLUDED_GENERATED",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://github.com/greird/chordictionaryjs"
+      ],
+      "componentProvenance": [
+        {
+          "component": "open-sources.json",
+          "jsonPointer": "/sources/12",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "owner": "greird",
+            "licenseOrTerms": "UNKNOWN; metadata-only inspection",
+            "redistributionPermitted": null,
+            "rawDataMayBeStored": false,
+            "derivedStatisticsOnly": true,
+            "tuningAssumptions": "Arbitrary fretted instrument",
+            "capoAssumptions": "UNKNOWN",
+            "stringCount": null,
+            "notationOrientation": "UNKNOWN",
+            "chordLabelSystem": "Source-specific conventional chord symbols",
+            "creationProvenance": "GENERATED",
+            "editorialCriteria": "Not established",
+            "approximateCorpusSize": null,
+            "updateHistory": "Not audited beyond accessed revision",
+            "lineageEvidence": [],
+            "biases": [
+              "Not a representative sample of guitarists or repertoire"
+            ],
+            "decision": "EXCLUDED_GENERATED",
+            "eligibleCuratedVote": false,
+            "id": "chordictionaryjs",
+            "url": "https://github.com/greird/chordictionaryjs",
+            "sourceType": "ALGORITHMIC_LIBRARY",
+            "lineageId": "chordictionaryjs-generator"
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "chordminiapp",
+      "componentSourceIds": [
+        "chordminiapp"
+      ],
+      "source": "chordminiapp",
+      "url": "https://github.com/ptnghia-j/ChordMiniApp",
+      "canonicalUrl": "https://github.com/ptnghia-j/ChordMiniApp",
+      "repository": "https://github.com/ptnghia-j/ChordMiniApp",
+      "sourceType": "PRODUCT_APPLICATION",
+      "ownerMaintainer": "ptnghia-j",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "UNKNOWN; metadata-only inspection",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "UNKNOWN",
+      "rawDataMayBeStored": false,
+      "rawDataStoragePolicy": "Metadata only; no raw corpus stored",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "UNKNOWN until source row specifies",
+      "capoAssumptions": "UNKNOWN",
+      "stringCount": "UNKNOWN",
+      "notationOrientation": "UNKNOWN",
+      "chordLabelSystem": "Source-specific conventional chord symbols",
+      "creationProvenance": "IMPORTED",
+      "originClass": "IMPORTED_ORIGINAL_ORIGIN_UNRESOLVED",
+      "originEvidence": "Original authoring method not established beyond component provenance; do not infer manual creation",
+      "editorialCriteria": "Not established",
+      "approximateCorpusSize": "UNKNOWN",
+      "updateHistory": "Not audited beyond accessed revision",
+      "copyingLineageEvidence": [
+        "README names official @tombatossals/chords-db diagrams"
+      ],
+      "lineageId": "tombatossals-chords-db",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "Not a representative sample of guitarists or repertoire"
+      ],
+      "decision": "EXCLUDED_DUPLICATE_LINEAGE",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://github.com/ptnghia-j/ChordMiniApp"
+      ],
+      "componentProvenance": [
+        {
+          "component": "open-sources.json",
+          "jsonPointer": "/sources/5",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "owner": "ptnghia-j",
+            "licenseOrTerms": "UNKNOWN; metadata-only inspection",
+            "redistributionPermitted": null,
+            "rawDataMayBeStored": false,
+            "derivedStatisticsOnly": true,
+            "tuningAssumptions": "UNKNOWN until source row specifies",
+            "capoAssumptions": "UNKNOWN",
+            "stringCount": null,
+            "notationOrientation": "UNKNOWN",
+            "chordLabelSystem": "Source-specific conventional chord symbols",
+            "creationProvenance": "IMPORTED",
+            "editorialCriteria": "Not established",
+            "approximateCorpusSize": null,
+            "updateHistory": "Not audited beyond accessed revision",
+            "lineageEvidence": [
+              "README names official @tombatossals/chords-db diagrams"
+            ],
+            "biases": [
+              "Not a representative sample of guitarists or repertoire"
+            ],
+            "decision": "EXCLUDED_DUPLICATE_LINEAGE",
+            "eligibleCuratedVote": false,
+            "id": "chordminiapp",
+            "url": "https://github.com/ptnghia-j/ChordMiniApp",
+            "sourceType": "PRODUCT_APPLICATION",
+            "lineageId": "tombatossals-chords-db"
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "chordpro",
+      "componentSourceIds": [
+        "chordpro"
+      ],
+      "source": "chordpro",
+      "url": "https://github.com/ChordPro/chordpro",
+      "canonicalUrl": "https://github.com/ChordPro/chordpro",
+      "repository": "https://github.com/ChordPro/chordpro",
+      "sourceType": "PRODUCT_DEFAULT_DICTIONARY",
+      "ownerMaintainer": "Johan Vromans / ChordPro team; guitar contribution rkj90266",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "Artistic-2.0; verbatim license retained; derived research representation distinctly identified",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": true,
+      "rawDataMayBeStored": true,
+      "rawDataStoragePolicy": "Pinned permitted files stored with attribution/licenses; see acquisition lock",
+      "rawDataStored": "YES for explicitly acquired files; see acquisition lock",
+      "retainOnlyDerivedStatistics": false,
+      "tuningAssumptions": "Standard E2 A2 D3 G3 B3 E4",
+      "capoAssumptions": "No capo; base is diagram position",
+      "stringCount": 6,
+      "notationOrientation": "low-to-high relative frets with base",
+      "chordLabelSystem": "Source-specific conventional chord symbols",
+      "creationProvenance": "UNKNOWN original; named contribution and explicit maintained default list",
+      "originClass": "UNKNOWN",
+      "originEvidence": "Original authoring method not established beyond component provenance; do not infer manual creation",
+      "editorialCriteria": "Default symbol-to-diagram entries; no representative selection protocol",
+      "approximateCorpusSize": 1155,
+      "updateHistory": "Pinned 4b25408d830bd3f4c53fc6fb544b2babe4da09e1; guitar contribution 2026-03-10 and A/E addition 2026-03-21",
+      "copyingLineageEvidence": [
+        "https://github.com/ChordPro/chordpro/commit/aced0a2043ed3664475804c980f24eb0d55d7612"
+      ],
+      "lineageId": "chordpro-reference-unknown",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "488 aliases among 1155 records",
+        "One product default per symbol",
+        "258 exact overlaps with chords-db do not establish independence or copying"
+      ],
+      "decision": "ACQUIRED_PRODUCT_REFERENCE_ONLY",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://github.com/ChordPro/chordpro"
+      ],
+      "componentProvenance": [
+        {
+          "component": "open-sources.json",
+          "jsonPointer": "/sources/1",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "owner": "Johan Vromans / ChordPro team; guitar contribution rkj90266",
+            "licenseOrTerms": "Artistic-2.0; verbatim license retained; derived research representation distinctly identified",
+            "redistributionPermitted": true,
+            "rawDataMayBeStored": true,
+            "derivedStatisticsOnly": false,
+            "tuningAssumptions": "Standard E2 A2 D3 G3 B3 E4",
+            "capoAssumptions": "No capo; base is diagram position",
+            "stringCount": 6,
+            "notationOrientation": "low-to-high relative frets with base",
+            "chordLabelSystem": "Source-specific conventional chord symbols",
+            "creationProvenance": "UNKNOWN original; named contribution and explicit maintained default list",
+            "editorialCriteria": "Default symbol-to-diagram entries; no representative selection protocol",
+            "approximateCorpusSize": 1155,
+            "updateHistory": "Pinned 4b25408d830bd3f4c53fc6fb544b2babe4da09e1; guitar contribution 2026-03-10 and A/E addition 2026-03-21",
+            "lineageEvidence": [
+              "https://github.com/ChordPro/chordpro/commit/aced0a2043ed3664475804c980f24eb0d55d7612"
+            ],
+            "biases": [
+              "488 aliases among 1155 records",
+              "One product default per symbol",
+              "258 exact overlaps with chords-db do not establish independence or copying"
+            ],
+            "decision": "ACQUIRED_PRODUCT_REFERENCE_ONLY",
+            "eligibleCuratedVote": false,
+            "id": "chordpro",
+            "url": "https://github.com/ChordPro/chordpro",
+            "sourceType": "PRODUCT_DEFAULT_DICTIONARY",
+            "lineageId": "chordpro-reference-unknown"
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "chords-db",
+      "componentSourceIds": [
+        "chords-db"
+      ],
+      "source": "chords-db",
+      "url": "https://github.com/tombatossals/chords-db",
+      "canonicalUrl": "https://github.com/tombatossals/chords-db",
+      "repository": "https://github.com/tombatossals/chords-db",
+      "sourceType": "STRUCTURED_OPEN_DATABASE",
+      "ownerMaintainer": "David Rubert / tombatossals and contributors",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "MIT; Copyright 2016 David Rubert; license preserved",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": true,
+      "rawDataMayBeStored": true,
+      "rawDataStoragePolicy": "Pinned permitted files stored with attribution/licenses; see acquisition lock",
+      "rawDataStored": "YES for explicitly acquired files; see acquisition lock",
+      "retainOnlyDerivedStatistics": false,
+      "tuningAssumptions": "Standard E2 A2 D3 G3 B3 E4",
+      "capoAssumptions": "No actual capo; capo boolean is barre drawing metadata",
+      "stringCount": 6,
+      "notationOrientation": "lib/guitar.json low-to-high, positive frets relative to baseFret",
+      "chordLabelSystem": "Source-specific conventional chord symbols",
+      "creationProvenance": "UNKNOWN original; contributor-maintained corrections demonstrated",
+      "originClass": "UNKNOWN",
+      "originEvidence": "Original authoring method not established beyond component provenance; do not infer manual creation",
+      "editorialCriteria": "Contributions and basic chord validity tests; initial selection not documented",
+      "approximateCorpusSize": 3283,
+      "updateHistory": "Pinned df06fa7b425cf5fd29485ff6591236b3557e3fac; latest commit 2025-10-14",
+      "copyingLineageEvidence": [
+        "https://github.com/chordbook/chords-db",
+        "https://github.com/optilude/guitar-practice",
+        "https://github.com/ptnghia-j/ChordMiniApp"
+      ],
+      "lineageId": "tombatossals-chords-db",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "Unknown editorial origin",
+        "Multiple transpositions and slash-chord variants",
+        "Product collection, not performer usage"
+      ],
+      "decision": "ACQUIRED_PRODUCT_REFERENCE_ONLY",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://github.com/tombatossals/chords-db"
+      ],
+      "componentProvenance": [
+        {
+          "component": "open-sources.json",
+          "jsonPointer": "/sources/0",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "owner": "David Rubert / tombatossals and contributors",
+            "licenseOrTerms": "MIT; Copyright 2016 David Rubert; license preserved",
+            "redistributionPermitted": true,
+            "rawDataMayBeStored": true,
+            "derivedStatisticsOnly": false,
+            "tuningAssumptions": "Standard E2 A2 D3 G3 B3 E4",
+            "capoAssumptions": "No actual capo; capo boolean is barre drawing metadata",
+            "stringCount": 6,
+            "notationOrientation": "lib/guitar.json low-to-high, positive frets relative to baseFret",
+            "chordLabelSystem": "Source-specific conventional chord symbols",
+            "creationProvenance": "UNKNOWN original; contributor-maintained corrections demonstrated",
+            "editorialCriteria": "Contributions and basic chord validity tests; initial selection not documented",
+            "approximateCorpusSize": 3283,
+            "updateHistory": "Pinned df06fa7b425cf5fd29485ff6591236b3557e3fac; latest commit 2025-10-14",
+            "lineageEvidence": [
+              "https://github.com/chordbook/chords-db",
+              "https://github.com/optilude/guitar-practice",
+              "https://github.com/ptnghia-j/ChordMiniApp"
+            ],
+            "biases": [
+              "Unknown editorial origin",
+              "Multiple transpositions and slash-chord variants",
+              "Product collection, not performer usage"
+            ],
+            "decision": "ACQUIRED_PRODUCT_REFERENCE_ONLY",
+            "eligibleCuratedVote": false,
+            "id": "chords-db",
+            "url": "https://github.com/tombatossals/chords-db",
+            "sourceType": "STRUCTURED_OPEN_DATABASE",
+            "lineageId": "tombatossals-chords-db"
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "commons-ashaio-dictionary",
+      "componentSourceIds": [
+        "commons-ashaio-dictionary"
+      ],
+      "source": "Ashaio LilyPond-style chord diagrams",
+      "url": "https://commons.wikimedia.org/wiki/File:A_major_chord_for_guitar_(open).svg",
+      "canonicalUrl": "https://commons.wikimedia.org/wiki/File:A_major_chord_for_guitar_(open).svg",
+      "repository": "NOT_APPLICABLE_OR_NOT_IDENTIFIED",
+      "sourceType": "A/B: public chord-diagram collection used in reference pages",
+      "ownerMaintainer": "Ashaio; Wikimedia Commons",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "CC0-1.0 for inspected A-major SVG; check every file separately",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "redistributionPermitted": "Yes for individually CC0-verified files",
+      "rawDataMayBeStored": "UNKNOWN; see restricted rawDataStoragePolicy",
+      "rawDataStoragePolicy": "metadata only in this study",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "standard likely; no sampled row",
+      "capoAssumptions": "not verified",
+      "stringCount": 6,
+      "notationOrientation": "vertical fret diagram; not normalized in this sample",
+      "chordLabelSystem": "letter-name chord symbols",
+      "creationProvenance": "UNKNOWN_SHAPE_SELECTION",
+      "originClass": "UNKNOWN",
+      "originEvidence": "Own-work image created with LilyPond/Inkscape is explicit, but diagram creation alone does not establish manual voicing selection or upstream shape source.",
+      "editorialCriteria": "UNKNOWN",
+      "approximateCorpusSize": "88 files in LilyPond-style category, including explanations/edits; not 88 independent voicings",
+      "updateHistory": "Inspected A file dated 2018-07-09; category includes later edits",
+      "copyingLineageEvidence": [
+        "A file used in English/Polish Wikibooks and Polish Wikipedia.",
+        "Commons derivative C-major edit is not independent selection."
+      ],
+      "lineageId": "wikimedia-guitar",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "common-root dictionary layout",
+        "potential transposition/template dependence"
+      ],
+      "decision": "licensed asset lead only; do not infer manual selection from own-work image",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://commons.wikimedia.org/wiki/File:A_major_chord_for_guitar_(open).svg",
+        "https://commons.wikimedia.org/wiki/Category:SVG_guitar_fretboard_diagrams_(LilyPond_style)"
+      ],
+      "componentProvenance": [
+        {
+          "component": "educational-sources.json",
+          "jsonPointer": "/sources/3",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "repository": null,
+            "redistributionPermitted": "Yes for individually CC0-verified files",
+            "rawDataStorage": "metadata only in this study",
+            "retainOnlyDerivedStatistics": true,
+            "tuningAssumptions": "standard likely; no sampled row",
+            "capoAssumptions": "not verified",
+            "stringCount": 6,
+            "notationOrientation": "vertical fret diagram; not normalized in this sample",
+            "chordLabelSystem": "letter-name chord symbols",
+            "editorialCriteria": null,
+            "approximateCorpusSize": "88 files in LilyPond-style category, including explanations/edits; not 88 independent voicings",
+            "updateHistory": "Inspected A file dated 2018-07-09; category includes later edits",
+            "copyingLineageEvidence": [
+              "A file used in English/Polish Wikibooks and Polish Wikipedia.",
+              "Commons derivative C-major edit is not independent selection."
+            ],
+            "biases": [
+              "common-root dictionary layout",
+              "potential transposition/template dependence"
+            ],
+            "decision": "licensed asset lead only; do not infer manual selection from own-work image",
+            "sourceId": "commons-ashaio-dictionary",
+            "source": "Ashaio LilyPond-style chord diagrams",
+            "url": "https://commons.wikimedia.org/wiki/File:A_major_chord_for_guitar_(open).svg",
+            "sourceType": "A/B: public chord-diagram collection used in reference pages",
+            "ownerMaintainer": "Ashaio; Wikimedia Commons",
+            "lineageId": "wikimedia-guitar",
+            "origin": "UNKNOWN_SHAPE_SELECTION",
+            "originEvidence": "Own-work image created with LilyPond/Inkscape is explicit, but diagram creation alone does not establish manual voicing selection or upstream shape source.",
+            "license": "CC0-1.0 for inspected A-major SVG; check every file separately",
+            "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+            "primaryEvidenceUrls": [
+              "https://commons.wikimedia.org/wiki/Category:SVG_guitar_fretboard_diagrams_(LilyPond_style)"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "conchordance",
+      "componentSourceIds": [
+        "conchordance"
+      ],
+      "source": "conchordance",
+      "url": "https://github.com/ConchordanceProject/Conchordance",
+      "canonicalUrl": "https://github.com/ConchordanceProject/Conchordance",
+      "repository": "https://github.com/ConchordanceProject/Conchordance",
+      "sourceType": "ALGORITHMIC_LIBRARY",
+      "ownerMaintainer": "ConchordanceProject",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "UNKNOWN; metadata-only inspection",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "UNKNOWN",
+      "rawDataMayBeStored": false,
+      "rawDataStoragePolicy": "Metadata only; no raw corpus stored",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "Arbitrary guitar/similar instrument",
+      "capoAssumptions": "UNKNOWN",
+      "stringCount": "UNKNOWN",
+      "notationOrientation": "UNKNOWN",
+      "chordLabelSystem": "Source-specific conventional chord symbols",
+      "creationProvenance": "GENERATED",
+      "originClass": "GENERATED",
+      "originEvidence": "Original authoring method not established beyond component provenance; do not infer manual creation",
+      "editorialCriteria": "Programmatic rules intended to capture left-hand capability; not population validation",
+      "approximateCorpusSize": "UNKNOWN",
+      "updateHistory": "Not audited beyond accessed revision",
+      "copyingLineageEvidence": [],
+      "lineageId": "conchordance-generator",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "Not a representative sample of guitarists or repertoire"
+      ],
+      "decision": "EXCLUDED_GENERATED",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://github.com/ConchordanceProject/Conchordance"
+      ],
+      "componentProvenance": [
+        {
+          "component": "open-sources.json",
+          "jsonPointer": "/sources/13",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "owner": "ConchordanceProject",
+            "licenseOrTerms": "UNKNOWN; metadata-only inspection",
+            "redistributionPermitted": null,
+            "rawDataMayBeStored": false,
+            "derivedStatisticsOnly": true,
+            "tuningAssumptions": "Arbitrary guitar/similar instrument",
+            "capoAssumptions": "UNKNOWN",
+            "stringCount": null,
+            "notationOrientation": "UNKNOWN",
+            "chordLabelSystem": "Source-specific conventional chord symbols",
+            "creationProvenance": "GENERATED",
+            "editorialCriteria": "Programmatic rules intended to capture left-hand capability; not population validation",
+            "approximateCorpusSize": null,
+            "updateHistory": "Not audited beyond accessed revision",
+            "lineageEvidence": [],
+            "biases": [
+              "Not a representative sample of guitarists or repertoire"
+            ],
+            "decision": "EXCLUDED_GENERATED",
+            "eligibleCuratedVote": false,
+            "id": "conchordance",
+            "url": "https://github.com/ConchordanceProject/Conchordance",
+            "sourceType": "ALGORITHMIC_LIBRARY",
+            "lineageId": "conchordance-generator"
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "dadagp-separate",
+      "componentSourceIds": [
+        "dadagp-separate"
+      ],
+      "source": "dadagp-separate",
+      "url": "https://arxiv.org/abs/2107.14653",
+      "canonicalUrl": "https://arxiv.org/abs/2107.14653",
+      "repository": "NOT_APPLICABLE_OR_NOT_IDENTIFIED",
+      "sourceType": "E song/tab score corpus",
+      "ownerMaintainer": "DadaGP authors / dada-bots",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "Existing local authorized research scope only; no new raw redistribution",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "not established; source metadata only",
+      "rawDataMayBeStored": "UNKNOWN; see restricted rawDataStoragePolicy",
+      "rawDataStoragePolicy": "provenance and analytical summaries only",
+      "rawDataStored": false,
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "mixed original; local certified standard decoded subset",
+      "capoAssumptions": "not resolved at item level; no allocations ingested",
+      "stringCount": "mixed original; local certified six-string subset",
+      "notationOrientation": "not resolved at item level",
+      "chordLabelSystem": "source-native; not normalized without allocations",
+      "creationProvenance": "OBSERVED_NOTATED_USAGE",
+      "originClass": "OBSERVED_NOTATED_USAGE",
+      "originEvidence": "Song-score/token dataset and prior local certified review",
+      "editorialCriteria": "Song-score collection, not deliberate chord-dictionary recommendation",
+      "approximateCorpusSize": "26181 original scores; local certified view documented separately",
+      "updateHistory": "live source accessed 2026-09-13; no immutable data acquisition",
+      "copyingLineageEvidence": "All DadaGP views one separate evidence construct",
+      "lineageId": "dadagp-song-score",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "song/artist/style composition",
+        "notation and attack uncertainty",
+        "familiar-shape retrieval"
+      ],
+      "decision": "separate descriptive comparison, never combined with source-family votes",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://arxiv.org/abs/2107.14653"
+      ],
+      "componentProvenance": [
+        {
+          "component": "supplemental-sources.json",
+          "jsonPointer": "/sources/7",
+          "componentDefaults": {
+            "rawDataStored": false,
+            "redistribution": "not established; source metadata only",
+            "retention": "provenance and analytical summaries only",
+            "capoAssumption": "not resolved at item level; no allocations ingested",
+            "notationOrientation": "not resolved at item level",
+            "chordLabelSystem": "source-native; not normalized without allocations",
+            "updateHistory": "live source accessed 2026-09-13; no immutable data acquisition",
+            "lineageConfidence": "separate owner is not proof of independent underlying shapes"
+          },
+          "raw": {
+            "sourceId": "dadagp-separate",
+            "lineageId": "dadagp-song-score",
+            "url": "https://arxiv.org/abs/2107.14653",
+            "owner": "DadaGP authors / dada-bots",
+            "sourceType": "E song/tab score corpus",
+            "originClassification": "OBSERVED_NOTATED_USAGE",
+            "originEvidence": "Song-score/token dataset and prior local certified review",
+            "editorialCriteria": "Song-score collection, not deliberate chord-dictionary recommendation",
+            "approximateSize": "26181 original scores; local certified view documented separately",
+            "tuning": "mixed original; local certified standard decoded subset",
+            "stringCount": "mixed original; local certified six-string subset",
+            "licenseOrTerms": "Existing local authorized research scope only; no new raw redistribution",
+            "copyingLineage": "All DadaGP views one separate evidence construct",
+            "biases": [
+              "song/artist/style composition",
+              "notation and attack uncertainty",
+              "familiar-shape retrieval"
+            ],
+            "decision": "separate descriptive comparison, never combined with source-family votes",
+            "eligibleCuratedVote": false
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "dick-gordon-blank-charts",
+      "componentSourceIds": [
+        "dick-gordon-blank-charts"
+      ],
+      "source": "Dick Gordon Jr. Guitar Studio Downloads",
+      "url": "https://www.dickgordonjrmusicstudio.com/resources/guitar-downloads.html",
+      "canonicalUrl": "https://dickgordonjrmusicstudio.com/resources/guitar-downloads.html",
+      "repository": "NOT_APPLICABLE_OR_NOT_IDENTIFIED",
+      "sourceType": "B: teaching resources, blank charts",
+      "ownerMaintainer": "Dick Gordon Jr. Guitar Studio",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "CC-BY-3.0 as stated on source page",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "Charts reusable with attribution",
+      "rawDataMayBeStored": "UNKNOWN; see restricted rawDataStoragePolicy",
+      "rawDataStoragePolicy": "metadata only; no voicing rows",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "not verified",
+      "capoAssumptions": "not verified",
+      "stringCount": 6,
+      "notationOrientation": "not verified",
+      "chordLabelSystem": "letter-name chord symbols",
+      "creationProvenance": "MANUAL_BLANK_TEMPLATE",
+      "originClass": "MANUAL_BLANK_TEMPLATE",
+      "originEvidence": "Download list describes blank chord, neck, tablature and song charts; it supplies no occupied voicing observations.",
+      "editorialCriteria": "UNKNOWN",
+      "approximateCorpusSize": "four blank chart types; zero chord-shape observations",
+      "updateHistory": "not established",
+      "copyingLineageEvidence": [],
+      "lineageId": "dick-gordon-jr",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "false positive from license search"
+      ],
+      "decision": "exclude: blank templates are not empirical voicings",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://dickgordonjrmusicstudio.com/resources/guitar-downloads.html",
+        "https://www.dickgordonjrmusicstudio.com/resources/guitar-downloads.html"
+      ],
+      "componentProvenance": [
+        {
+          "component": "educational-sources.json",
+          "jsonPointer": "/sources/5",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "repository": null,
+            "redistributionPermitted": "Charts reusable with attribution",
+            "rawDataStorage": "metadata only; no voicing rows",
+            "retainOnlyDerivedStatistics": true,
+            "tuningAssumptions": "not verified",
+            "capoAssumptions": "not verified",
+            "stringCount": 6,
+            "notationOrientation": "not verified",
+            "chordLabelSystem": "letter-name chord symbols",
+            "editorialCriteria": null,
+            "approximateCorpusSize": "four blank chart types; zero chord-shape observations",
+            "updateHistory": "not established",
+            "copyingLineageEvidence": [],
+            "biases": [
+              "false positive from license search"
+            ],
+            "decision": "exclude: blank templates are not empirical voicings",
+            "sourceId": "dick-gordon-blank-charts",
+            "source": "Dick Gordon Jr. Guitar Studio Downloads",
+            "url": "https://www.dickgordonjrmusicstudio.com/resources/guitar-downloads.html",
+            "sourceType": "B: teaching resources, blank charts",
+            "ownerMaintainer": "Dick Gordon Jr. Guitar Studio",
+            "lineageId": "dick-gordon-jr",
+            "origin": "MANUAL_BLANK_TEMPLATE",
+            "originEvidence": "Download list describes blank chord, neck, tablature and song charts; it supplies no occupied voicing observations.",
+            "license": "CC-BY-3.0 as stated on source page",
+            "primaryEvidenceUrls": [
+              "https://www.dickgordonjrmusicstudio.com/resources/guitar-downloads.html"
+            ],
+            "accessCaveat": "Primary search index returned page text; direct web fetch timed out twice."
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "fender-lessons",
+      "componentSourceIds": [
+        "fender-lessons"
+      ],
+      "source": "fender-lessons",
+      "url": "https://www.fender.com//articles/chords/learn-how-to-play-c-guitar-chord",
+      "canonicalUrl": "https://fender.com/articles/chords/learn-how-to-play-c-guitar-chord",
+      "repository": "NOT_APPLICABLE_OR_NOT_IDENTIFIED",
+      "sourceType": "B authored educational and D product",
+      "ownerMaintainer": "Fender Musical Instruments Corporation; lesson by Dan Macy",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "https://www.fender.com/policies/terms-of-service: personal informational noncommercial use with restrictions on modified content and separated graphics; no bulk corpus permission adopted",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "not established; source metadata only",
+      "rawDataMayBeStored": "UNKNOWN; see restricted rawDataStoragePolicy",
+      "rawDataStoragePolicy": "provenance and analytical summaries only",
+      "rawDataStored": false,
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "standard for inspected C lesson",
+      "capoAssumptions": "not resolved at item level; no allocations ingested",
+      "stringCount": 6,
+      "notationOrientation": "not resolved at item level",
+      "chordLabelSystem": "source-native; not normalized without allocations",
+      "creationProvenance": "MANUAL_SELECTION_EVIDENCED",
+      "originClass": "MANUAL_SELECTION_EVIDENCED",
+      "originEvidence": "Named lesson author deliberately explains a primary open C and variations; this does not certify origins of the entire product dictionary.",
+      "editorialCriteria": "Beginner chord learning",
+      "approximateCorpusSize": "selected lesson not counted; separate product advertises >5000 shapes",
+      "updateHistory": "live source accessed 2026-09-13; no immutable data acquisition",
+      "copyingLineageEvidence": "Lessons and Fender Play tools grouped as one owner family; library origin unknown",
+      "lineageId": "fender",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "beginner/open position",
+        "commercial teaching catalog"
+      ],
+      "decision": "authored evidence candidate but no dataset extracted",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://fender.com/articles/chords/learn-how-to-play-c-guitar-chord"
+      ],
+      "componentProvenance": [
+        {
+          "component": "supplemental-sources.json",
+          "jsonPointer": "/sources/2",
+          "componentDefaults": {
+            "rawDataStored": false,
+            "redistribution": "not established; source metadata only",
+            "retention": "provenance and analytical summaries only",
+            "capoAssumption": "not resolved at item level; no allocations ingested",
+            "notationOrientation": "not resolved at item level",
+            "chordLabelSystem": "source-native; not normalized without allocations",
+            "updateHistory": "live source accessed 2026-09-13; no immutable data acquisition",
+            "lineageConfidence": "separate owner is not proof of independent underlying shapes"
+          },
+          "raw": {
+            "sourceId": "fender-lessons",
+            "lineageId": "fender",
+            "url": "https://www.fender.com//articles/chords/learn-how-to-play-c-guitar-chord",
+            "owner": "Fender Musical Instruments Corporation; lesson by Dan Macy",
+            "sourceType": "B authored educational and D product",
+            "originClassification": "MANUAL_SELECTION_EVIDENCED",
+            "originEvidence": "Named lesson author deliberately explains a primary open C and variations; this does not certify origins of the entire product dictionary.",
+            "editorialCriteria": "Beginner chord learning",
+            "approximateSize": "selected lesson not counted; separate product advertises >5000 shapes",
+            "sizeSource": "https://support.fender.com/hc/en-us/articles/42913518419867-What-is-the-Chords-tool",
+            "tuning": "standard for inspected C lesson",
+            "stringCount": 6,
+            "licenseOrTerms": "https://www.fender.com/policies/terms-of-service: personal informational noncommercial use with restrictions on modified content and separated graphics; no bulk corpus permission adopted",
+            "copyingLineage": "Lessons and Fender Play tools grouped as one owner family; library origin unknown",
+            "biases": [
+              "beginner/open position",
+              "commercial teaching catalog"
+            ],
+            "decision": "authored evidence candidate but no dataset extracted",
+            "eligibleCuratedVote": false
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "flavia-voicings",
+      "componentSourceIds": [
+        "flavia-voicings"
+      ],
+      "source": "flavia-voicings",
+      "url": "https://github.com/flaviagaglio/voicings",
+      "canonicalUrl": "https://github.com/flaviagaglio/voicings",
+      "repository": "https://github.com/flaviagaglio/voicings",
+      "sourceType": "D application with F generator and declared seed templates",
+      "ownerMaintainer": "Flavia Gaglio",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "MIT indicated in primary README/license link; preserve notice for future extraction",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "repository MIT terms; no extraction performed",
+      "rawDataMayBeStored": "UNKNOWN; see restricted rawDataStoragePolicy",
+      "rawDataStoragePolicy": "provenance and analytical summaries only",
+      "rawDataStored": false,
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "standard guitar as described",
+      "capoAssumptions": "not resolved at item level; no allocations ingested",
+      "stringCount": 6,
+      "notationOrientation": "not resolved at item level",
+      "chordLabelSystem": "source-native; not normalized without allocations",
+      "creationProvenance": "MIXED_SEEDS_AND_GENERATED",
+      "originClass": "MIXED",
+      "originEvidence": "README distinguishes CAGED seeds for five qualities from constraint-searched alternatives. Transposed seed instances and ranked search output are not separate human votes.",
+      "editorialCriteria": "CAGED priority plus quality/neck-spread algorithm",
+      "approximateCorpusSize": "25 qualities ×12 roots ×3 displayed alternatives; not 900 independently curated choices",
+      "updateHistory": "live source accessed 2026-09-13; no immutable data acquisition",
+      "copyingLineageEvidence": "Own repository, common CAGED shapes; no independent manual-source attribution established",
+      "lineageId": "flavia-voicings",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "explicit root requirement",
+        "four-fret search envelope",
+        "algorithmically ranked diversity"
+      ],
+      "decision": "mixed/generated control metadata; do not inflate curated family count",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://github.com/flaviagaglio/voicings"
+      ],
+      "componentProvenance": [
+        {
+          "component": "supplemental-sources.json",
+          "jsonPointer": "/sources/4",
+          "componentDefaults": {
+            "rawDataStored": false,
+            "redistribution": "not established; source metadata only",
+            "retention": "provenance and analytical summaries only",
+            "capoAssumption": "not resolved at item level; no allocations ingested",
+            "notationOrientation": "not resolved at item level",
+            "chordLabelSystem": "source-native; not normalized without allocations",
+            "updateHistory": "live source accessed 2026-09-13; no immutable data acquisition",
+            "lineageConfidence": "separate owner is not proof of independent underlying shapes"
+          },
+          "raw": {
+            "sourceId": "flavia-voicings",
+            "lineageId": "flavia-voicings",
+            "url": "https://github.com/flaviagaglio/voicings",
+            "owner": "Flavia Gaglio",
+            "sourceType": "D application with F generator and declared seed templates",
+            "originClassification": "MIXED_SEEDS_AND_GENERATED",
+            "originEvidence": "README distinguishes CAGED seeds for five qualities from constraint-searched alternatives. Transposed seed instances and ranked search output are not separate human votes.",
+            "editorialCriteria": "CAGED priority plus quality/neck-spread algorithm",
+            "approximateSize": "25 qualities ×12 roots ×3 displayed alternatives; not 900 independently curated choices",
+            "tuning": "standard guitar as described",
+            "stringCount": 6,
+            "licenseOrTerms": "MIT indicated in primary README/license link; preserve notice for future extraction",
+            "redistribution": "repository MIT terms; no extraction performed",
+            "copyingLineage": "Own repository, common CAGED shapes; no independent manual-source attribution established",
+            "biases": [
+              "explicit root requirement",
+              "four-fret search envelope",
+              "algorithmically ranked diversity"
+            ],
+            "decision": "mixed/generated control metadata; do not inflate curated family count",
+            "eligibleCuratedVote": false
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "gtdb",
+      "componentSourceIds": [
+        "gtdb"
+      ],
+      "source": "gtdb",
+      "url": "https://gtdb.org/",
+      "canonicalUrl": "https://gtdb.org/",
+      "repository": "NOT_APPLICABLE_OR_NOT_IDENTIFIED",
+      "sourceType": "ALGORITHMIC_TUNING_SITE",
+      "ownerMaintainer": "GTDB",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "UNKNOWN; metadata-only inspection",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "UNKNOWN",
+      "rawDataMayBeStored": false,
+      "rawDataStoragePolicy": "Metadata only; no raw corpus stored",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "4855 alternative tunings advertised",
+      "capoAssumptions": "UNKNOWN",
+      "stringCount": "2–9 advertised",
+      "notationOrientation": "UNKNOWN",
+      "chordLabelSystem": "Source-specific conventional chord symbols",
+      "creationProvenance": "GENERATED voicings; tuning contributions separate",
+      "originClass": "GENERATED",
+      "originEvidence": "Original authoring method not established beyond component provenance; do not infer manual creation",
+      "editorialCriteria": "Fretboard/chord/scale algorithm since 2012",
+      "approximateCorpusSize": "UNKNOWN",
+      "updateHistory": "Not audited beyond accessed revision",
+      "copyingLineageEvidence": [],
+      "lineageId": "gtdb-generator",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "Not a representative sample of guitarists or repertoire"
+      ],
+      "decision": "EXCLUDED_GENERATED",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://gtdb.org/"
+      ],
+      "componentProvenance": [
+        {
+          "component": "open-sources.json",
+          "jsonPointer": "/sources/14",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "owner": "GTDB",
+            "licenseOrTerms": "UNKNOWN; metadata-only inspection",
+            "redistributionPermitted": null,
+            "rawDataMayBeStored": false,
+            "derivedStatisticsOnly": true,
+            "tuningAssumptions": "4855 alternative tunings advertised",
+            "capoAssumptions": "UNKNOWN",
+            "stringCount": "2–9 advertised",
+            "notationOrientation": "UNKNOWN",
+            "chordLabelSystem": "Source-specific conventional chord symbols",
+            "creationProvenance": "GENERATED voicings; tuning contributions separate",
+            "editorialCriteria": "Fretboard/chord/scale algorithm since 2012",
+            "approximateCorpusSize": null,
+            "updateHistory": "Not audited beyond accessed revision",
+            "lineageEvidence": [],
+            "biases": [
+              "Not a representative sample of guitarists or repertoire"
+            ],
+            "decision": "EXCLUDED_GENERATED",
+            "eligibleCuratedVote": false,
+            "id": "gtdb",
+            "url": "https://gtdb.org/",
+            "sourceType": "ALGORITHMIC_TUNING_SITE",
+            "lineageId": "gtdb-generator"
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "hyvyys-chord-fingering",
+      "componentSourceIds": [
+        "hyvyys-chord-fingering"
+      ],
+      "source": "hyvyys-chord-fingering",
+      "url": "https://github.com/hyvyys/chord-fingering",
+      "canonicalUrl": "https://github.com/hyvyys/chord-fingering",
+      "repository": "https://github.com/hyvyys/chord-fingering",
+      "sourceType": "ALGORITHMIC_LIBRARY",
+      "ownerMaintainer": "hyvyys",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "UNKNOWN; metadata-only inspection",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "UNKNOWN",
+      "rawDataMayBeStored": false,
+      "rawDataStoragePolicy": "Metadata only; no raw corpus stored",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "Arbitrary; default standard E2-A2-D3-G3-B3-E4",
+      "capoAssumptions": "UNKNOWN",
+      "stringCount": "UNKNOWN",
+      "notationOrientation": "Lowest string first; muted positions omitted",
+      "chordLabelSystem": "Source-specific conventional chord symbols",
+      "creationProvenance": "GENERATED",
+      "originClass": "GENERATED",
+      "originEvidence": "Original authoring method not established beyond component provenance; do not infer manual creation",
+      "editorialCriteria": "111 chord-type interval definitions, generated fingerings",
+      "approximateCorpusSize": "UNKNOWN",
+      "updateHistory": "Not audited beyond accessed revision",
+      "copyingLineageEvidence": [],
+      "lineageId": "hyvyys-generator",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "Not a representative sample of guitarists or repertoire"
+      ],
+      "decision": "EXCLUDED_GENERATED",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://github.com/hyvyys/chord-fingering"
+      ],
+      "componentProvenance": [
+        {
+          "component": "open-sources.json",
+          "jsonPointer": "/sources/11",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "owner": "hyvyys",
+            "licenseOrTerms": "UNKNOWN; metadata-only inspection",
+            "redistributionPermitted": null,
+            "rawDataMayBeStored": false,
+            "derivedStatisticsOnly": true,
+            "tuningAssumptions": "Arbitrary; default standard E2-A2-D3-G3-B3-E4",
+            "capoAssumptions": "UNKNOWN",
+            "stringCount": null,
+            "notationOrientation": "Lowest string first; muted positions omitted",
+            "chordLabelSystem": "Source-specific conventional chord symbols",
+            "creationProvenance": "GENERATED",
+            "editorialCriteria": "111 chord-type interval definitions, generated fingerings",
+            "approximateCorpusSize": null,
+            "updateHistory": "Not audited beyond accessed revision",
+            "lineageEvidence": [],
+            "biases": [
+              "Not a representative sample of guitarists or repertoire"
+            ],
+            "decision": "EXCLUDED_GENERATED",
+            "eligibleCuratedVote": false,
+            "id": "hyvyys-chord-fingering",
+            "url": "https://github.com/hyvyys/chord-fingering",
+            "sourceType": "ALGORITHMIC_LIBRARY",
+            "lineageId": "hyvyys-generator"
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "idmt-smt-chords",
+      "componentSourceIds": [
+        "idmt-smt-chords"
+      ],
+      "source": "idmt-smt-chords",
+      "url": "https://www.idmt.fraunhofer.de/en/publications/datasets/chords.html",
+      "canonicalUrl": "https://idmt.fraunhofer.de/en/publications/datasets/chords.html",
+      "repository": "NOT_APPLICABLE_OR_NOT_IDENTIFIED",
+      "sourceType": "F generated audio evaluation dataset",
+      "ownerMaintainer": "Fraunhofer IDMT",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "CC BY-NC-ND 4.0 evaluation use per primary source",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "not established; source metadata only",
+      "rawDataMayBeStored": "UNKNOWN; see restricted rawDataStoragePolicy",
+      "rawDataStoragePolicy": "provenance and analytical summaries only",
+      "rawDataStored": false,
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "not item-verified",
+      "capoAssumptions": "not resolved at item level; no allocations ingested",
+      "stringCount": "guitar; item-level unavailable",
+      "notationOrientation": "not resolved at item level",
+      "chordLabelSystem": "source-native; not normalized without allocations",
+      "creationProvenance": "GENERATED",
+      "originClass": "GENERATED",
+      "originEvidence": "Primary dataset description identifies generated guitar files based on barre forms with root on low E/A/D strings",
+      "editorialCriteria": "Chord recognition/evaluation coverage",
+      "approximateCorpusSize": "not acquired or enumerated in this study",
+      "updateHistory": "live source accessed 2026-09-13; no immutable data acquisition",
+      "copyingLineageEvidence": "One institutional generated dataset; not independent teaching evidence",
+      "lineageId": "fraunhofer-idmt-smt",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "barre/root-position design",
+        "audio task rather than curated choice"
+      ],
+      "decision": "construct contrast only",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://idmt.fraunhofer.de/en/publications/datasets/chords.html"
+      ],
+      "componentProvenance": [
+        {
+          "component": "supplemental-sources.json",
+          "jsonPointer": "/sources/5",
+          "componentDefaults": {
+            "rawDataStored": false,
+            "redistribution": "not established; source metadata only",
+            "retention": "provenance and analytical summaries only",
+            "capoAssumption": "not resolved at item level; no allocations ingested",
+            "notationOrientation": "not resolved at item level",
+            "chordLabelSystem": "source-native; not normalized without allocations",
+            "updateHistory": "live source accessed 2026-09-13; no immutable data acquisition",
+            "lineageConfidence": "separate owner is not proof of independent underlying shapes"
+          },
+          "raw": {
+            "sourceId": "idmt-smt-chords",
+            "lineageId": "fraunhofer-idmt-smt",
+            "url": "https://www.idmt.fraunhofer.de/en/publications/datasets/chords.html",
+            "owner": "Fraunhofer IDMT",
+            "sourceType": "F generated audio evaluation dataset",
+            "originClassification": "GENERATED",
+            "originEvidence": "Primary dataset description identifies generated guitar files based on barre forms with root on low E/A/D strings",
+            "editorialCriteria": "Chord recognition/evaluation coverage",
+            "approximateSize": "not acquired or enumerated in this study",
+            "tuning": "not item-verified",
+            "stringCount": "guitar; item-level unavailable",
+            "licenseOrTerms": "CC BY-NC-ND 4.0 evaluation use per primary source",
+            "copyingLineage": "One institutional generated dataset; not independent teaching evidence",
+            "biases": [
+              "barre/root-position design",
+              "audio task rather than curated choice"
+            ],
+            "decision": "construct contrast only",
+            "eligibleCuratedVote": false
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "jazzguitar-dirk-dictionary",
+      "componentSourceIds": [
+        "jazzguitar-dirk-dictionary"
+      ],
+      "source": "Jazz Guitar Chord Dictionary",
+      "url": "https://www.jazzguitar.be/blog/jazz-guitar-chord-dictionary/",
+      "canonicalUrl": "https://jazzguitar.be/blog/jazz-guitar-chord-dictionary",
+      "repository": "NOT_APPLICABLE_OR_NOT_IDENTIFIED",
+      "sourceType": "A/B: author-maintained curated jazz reference",
+      "ownerMaintainer": "Dirk Laukens / Jazz Guitar Online",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "All rights reserved; no dataset reuse permission found",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "not established for lesson/database",
+      "rawDataMayBeStored": "UNKNOWN; see restricted rawDataStoragePolicy",
+      "rawDataStoragePolicy": "source metadata and acquisition instructions only",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "standard six-string guitar context",
+      "capoAssumptions": "not verified per diagram",
+      "stringCount": 6,
+      "notationOrientation": "horizontal diagrams; root colors, degree numbers and finger numbers explained",
+      "chordLabelSystem": "letter-name chord symbols",
+      "creationProvenance": "MANUAL_AUTHORED_SELECTED",
+      "originClass": "MANUAL_SELECTION_EVIDENCED",
+      "originEvidence": "Named lesson author and explicit essential/basic/shell/extended/inversion categories plus context-specific instructional recommendations.",
+      "editorialCriteria": "jazz reference with basic shapes, shells, extensions and inversions; author discusses choosing melody note on top",
+      "approximateCorpusSize": "244 shapes advertised",
+      "updateHistory": "Current public lesson; complete version history unavailable",
+      "copyingLineageEvidence": [
+        "Blog, downloadable dictionary and chord index are one owner/reference, not multiple votes."
+      ],
+      "lineageId": "jazzguitar-dirk-laukens",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "jazz standards",
+        "C-root teaching template predominance",
+        "omissions used for accompaniment"
+      ],
+      "decision": "metadata-only; promising independent high/rootless reference if permission obtained",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://jazzguitar.be/blog/jazz-guitar-chord-dictionary",
+        "https://www.jazzguitar.be/blog/jazz-guitar-chord-dictionary/",
+        "https://www.jazzguitar.be/blog/jazz-guitar-chords/"
+      ],
+      "componentProvenance": [
+        {
+          "component": "educational-sources.json",
+          "jsonPointer": "/sources/7",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "repository": null,
+            "redistributionPermitted": "not established for lesson/database",
+            "rawDataStorage": "source metadata and acquisition instructions only",
+            "retainOnlyDerivedStatistics": true,
+            "tuningAssumptions": "standard six-string guitar context",
+            "capoAssumptions": "not verified per diagram",
+            "stringCount": 6,
+            "notationOrientation": "horizontal diagrams; root colors, degree numbers and finger numbers explained",
+            "chordLabelSystem": "letter-name chord symbols",
+            "editorialCriteria": "jazz reference with basic shapes, shells, extensions and inversions; author discusses choosing melody note on top",
+            "approximateCorpusSize": "244 shapes advertised",
+            "updateHistory": "Current public lesson; complete version history unavailable",
+            "copyingLineageEvidence": [
+              "Blog, downloadable dictionary and chord index are one owner/reference, not multiple votes."
+            ],
+            "biases": [
+              "jazz standards",
+              "C-root teaching template predominance",
+              "omissions used for accompaniment"
+            ],
+            "decision": "metadata-only; promising independent high/rootless reference if permission obtained",
+            "sourceId": "jazzguitar-dirk-dictionary",
+            "source": "Jazz Guitar Chord Dictionary",
+            "url": "https://www.jazzguitar.be/blog/jazz-guitar-chord-dictionary/",
+            "sourceType": "A/B: author-maintained curated jazz reference",
+            "ownerMaintainer": "Dirk Laukens / Jazz Guitar Online",
+            "lineageId": "jazzguitar-dirk-laukens",
+            "origin": "MANUAL_AUTHORED_SELECTED",
+            "originEvidence": "Named lesson author and explicit essential/basic/shell/extended/inversion categories plus context-specific instructional recommendations.",
+            "license": "All rights reserved; no dataset reuse permission found",
+            "primaryEvidenceUrls": [
+              "https://www.jazzguitar.be/blog/jazz-guitar-chord-dictionary/",
+              "https://www.jazzguitar.be/blog/jazz-guitar-chords/"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "jguitar",
+      "componentSourceIds": [
+        "jguitar",
+        "jguitar-primary"
+      ],
+      "source": "jguitar",
+      "url": "https://jguitar.com/",
+      "canonicalUrl": "https://jguitar.com/",
+      "repository": "NOT_APPLICABLE_OR_NOT_IDENTIFIED",
+      "sourceType": [
+        "ALGORITHMIC_WEB_TOOL",
+        "F algorithmic calculator"
+      ],
+      "ownerMaintainer": [
+        "JGuitar",
+        "JGuitar; individual maintainer not established"
+      ],
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": [
+        "Copyright 2026 JGuitar; redistribution permission not established",
+        "No dataset reuse grant established"
+      ],
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "not established; source metadata only",
+      "rawDataMayBeStored": false,
+      "rawDataStoragePolicy": "provenance and analytical summaries only",
+      "rawDataStored": false,
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": [
+        "UNKNOWN until source row specifies",
+        "configurable"
+      ],
+      "capoAssumptions": [
+        "UNKNOWN",
+        "not resolved at item level; no allocations ingested"
+      ],
+      "stringCount": "configurable",
+      "notationOrientation": [
+        "UNKNOWN",
+        "not resolved at item level"
+      ],
+      "chordLabelSystem": [
+        "Source-specific conventional chord symbols",
+        "source-native; not normalized without allocations"
+      ],
+      "creationProvenance": "GENERATED",
+      "originClass": "GENERATED",
+      "originEvidence": "Primary home page explicitly describes dynamic chord/scale calculation for arbitrary stringed instruments and tuning.",
+      "editorialCriteria": [
+        "Dynamic calculation for any tuning/instrument",
+        "Calculator variants; no demonstrated individual human selection"
+      ],
+      "approximateCorpusSize": "dynamic, not a fixed curated corpus",
+      "updateHistory": [
+        "Not audited beyond accessed revision",
+        "live source accessed 2026-09-13; no immutable data acquisition"
+      ],
+      "copyingLineageEvidence": [
+        [],
+        "T-vK/chord-collection credits JGuitar; do not count those shapes as an independent curated dictionary."
+      ],
+      "lineageId": "jguitar-calculator",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        [
+          "Not a representative sample of guitarists or repertoire"
+        ],
+        [
+          "calculator constraints",
+          "computed variants mistaken for votes"
+        ]
+      ],
+      "decision": [
+        "EXCLUDED_GENERATED",
+        "generated comparison/provenance only"
+      ],
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://jguitar.com/"
+      ],
+      "componentProvenance": [
+        {
+          "component": "open-sources.json",
+          "jsonPointer": "/sources/6",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "owner": "JGuitar",
+            "licenseOrTerms": "Copyright 2026 JGuitar; redistribution permission not established",
+            "redistributionPermitted": null,
+            "rawDataMayBeStored": false,
+            "derivedStatisticsOnly": true,
+            "tuningAssumptions": "UNKNOWN until source row specifies",
+            "capoAssumptions": "UNKNOWN",
+            "stringCount": null,
+            "notationOrientation": "UNKNOWN",
+            "chordLabelSystem": "Source-specific conventional chord symbols",
+            "creationProvenance": "GENERATED",
+            "editorialCriteria": "Dynamic calculation for any tuning/instrument",
+            "approximateCorpusSize": null,
+            "updateHistory": "Not audited beyond accessed revision",
+            "lineageEvidence": [],
+            "biases": [
+              "Not a representative sample of guitarists or repertoire"
+            ],
+            "decision": "EXCLUDED_GENERATED",
+            "eligibleCuratedVote": false,
+            "id": "jguitar",
+            "url": "https://jguitar.com/",
+            "sourceType": "ALGORITHMIC_WEB_TOOL",
+            "lineageId": "jguitar-calculator"
+          }
+        },
+        {
+          "component": "supplemental-sources.json",
+          "jsonPointer": "/sources/0",
+          "componentDefaults": {
+            "rawDataStored": false,
+            "redistribution": "not established; source metadata only",
+            "retention": "provenance and analytical summaries only",
+            "capoAssumption": "not resolved at item level; no allocations ingested",
+            "notationOrientation": "not resolved at item level",
+            "chordLabelSystem": "source-native; not normalized without allocations",
+            "updateHistory": "live source accessed 2026-09-13; no immutable data acquisition",
+            "lineageConfidence": "separate owner is not proof of independent underlying shapes"
+          },
+          "raw": {
+            "sourceId": "jguitar-primary",
+            "lineageId": "jguitar-calculator",
+            "url": "https://jguitar.com/",
+            "owner": "JGuitar; individual maintainer not established",
+            "sourceType": "F algorithmic calculator",
+            "originClassification": "GENERATED",
+            "originEvidence": "Primary home page explicitly describes dynamic chord/scale calculation for arbitrary stringed instruments and tuning.",
+            "editorialCriteria": "Calculator variants; no demonstrated individual human selection",
+            "approximateSize": "dynamic, not a fixed curated corpus",
+            "tuning": "configurable",
+            "stringCount": "configurable",
+            "licenseOrTerms": "No dataset reuse grant established",
+            "copyingLineage": "T-vK/chord-collection credits JGuitar; do not count those shapes as an independent curated dictionary.",
+            "biases": [
+              "calculator constraints",
+              "computed variants mistaken for votes"
+            ],
+            "decision": "generated comparison/provenance only",
+            "eligibleCuratedVote": false
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "justinguitar",
+      "componentSourceIds": [
+        "justinguitar"
+      ],
+      "source": "justinguitar",
+      "url": "https://www.justinguitar.com/guitar-lessons/the-c-chord-b1-501",
+      "canonicalUrl": "https://justinguitar.com/guitar-lessons/the-c-chord-b1-501",
+      "repository": "NOT_APPLICABLE_OR_NOT_IDENTIFIED",
+      "sourceType": "B educational",
+      "ownerMaintainer": "Justin Sandercoe / JustinGuitar",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "https://www.justinguitar.com/terms accessible as shell only; permission unresolved",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "not established; source metadata only",
+      "rawDataMayBeStored": "UNKNOWN; see restricted rawDataStoragePolicy",
+      "rawDataStoragePolicy": "provenance and analytical summaries only",
+      "rawDataStored": false,
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "not item-verified",
+      "capoAssumptions": "not resolved at item level; no allocations ingested",
+      "stringCount": "not item-verified",
+      "notationOrientation": "not resolved at item level",
+      "chordLabelSystem": "source-native; not normalized without allocations",
+      "creationProvenance": "MANUAL_SELECTION_EVIDENCED",
+      "originClass": "MANUAL_SELECTION_EVIDENCED",
+      "originEvidence": "Author-led ordered guitar course; page text/terms did not render sufficiently for complete reuse audit in this study",
+      "editorialCriteria": "Structured beginner course",
+      "approximateCorpusSize": "not enumerated",
+      "updateHistory": "live source accessed 2026-09-13; no immutable data acquisition",
+      "copyingLineageEvidence": "All course pages one source family; no upstream inference from common open shapes",
+      "lineageId": "justinguitar",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "course progression",
+        "incomplete access"
+      ],
+      "decision": "metadata-only; no copyrighted lessons copied",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://justinguitar.com/guitar-lessons/the-c-chord-b1-501"
+      ],
+      "componentProvenance": [
+        {
+          "component": "supplemental-sources.json",
+          "jsonPointer": "/sources/3",
+          "componentDefaults": {
+            "rawDataStored": false,
+            "redistribution": "not established; source metadata only",
+            "retention": "provenance and analytical summaries only",
+            "capoAssumption": "not resolved at item level; no allocations ingested",
+            "notationOrientation": "not resolved at item level",
+            "chordLabelSystem": "source-native; not normalized without allocations",
+            "updateHistory": "live source accessed 2026-09-13; no immutable data acquisition",
+            "lineageConfidence": "separate owner is not proof of independent underlying shapes"
+          },
+          "raw": {
+            "sourceId": "justinguitar",
+            "lineageId": "justinguitar",
+            "url": "https://www.justinguitar.com/guitar-lessons/the-c-chord-b1-501",
+            "owner": "Justin Sandercoe / JustinGuitar",
+            "sourceType": "B educational",
+            "originClassification": "MANUAL_SELECTION_EVIDENCED",
+            "originEvidence": "Author-led ordered guitar course; page text/terms did not render sufficiently for complete reuse audit in this study",
+            "editorialCriteria": "Structured beginner course",
+            "approximateSize": "not enumerated",
+            "tuning": "not item-verified",
+            "stringCount": "not item-verified",
+            "licenseOrTerms": "https://www.justinguitar.com/terms accessible as shell only; permission unresolved",
+            "copyingLineage": "All course pages one source family; no upstream inference from common open shapes",
+            "biases": [
+              "course progression",
+              "incomplete access"
+            ],
+            "decision": "metadata-only; no copyrighted lessons copied",
+            "eligibleCuratedVote": false
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "ku-matney-niemuth-2019",
+      "componentSourceIds": [
+        "ku-matney-niemuth-2019"
+      ],
+      "source": "Guitar Chord Handbook",
+      "url": "https://hdl.handle.net/1808/29433",
+      "canonicalUrl": "https://hdl.handle.net/1808/29433",
+      "repository": "NOT_APPLICABLE_OR_NOT_IDENTIFIED",
+      "sourceType": "B: institutional pedagogical handbook",
+      "ownerMaintainer": "Bill Matney and Brenna Niemuth; University of Kansas Libraries",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "CC-BY-NC-4.0 except identified third-party material",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "redistributionPermitted": "Noncommercial adaptation/sharing with attribution; commercial permission absent",
+      "rawDataMayBeStored": "UNKNOWN; see restricted rawDataStoragePolicy",
+      "rawDataStoragePolicy": "39 normalized structural facts retained under NC license; original PDF only OS temp",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": false,
+      "tuningAssumptions": "standard EADGBE verified from string labels and note consistency",
+      "capoAssumptions": "no capo shown; chapter diagrams referenced to nut",
+      "stringCount": 6,
+      "notationOrientation": "left-to-right low E to high E, explicitly explained PDF p6",
+      "chordLabelSystem": "letter-name chord symbols",
+      "creationProvenance": "MANUAL_AUTHORED_SELECTED",
+      "originClass": "MANUAL_SELECTION_EVIDENCED",
+      "originEvidence": "Named authors, photographed fingerings and introduction explicitly explaining pedagogical chord sequencing.",
+      "editorialCriteria": "Sequence considers play, commonality, chord type and barre groups; pedagogical criteria are source claims, not calibrated difficulty.",
+      "approximateCorpusSize": "47 PDF pages; selected extraction 39 distinct diagram examples (4 ambiguous); photos, fingering variants and summary repeats collapsed.",
+      "updateHistory": "Published 2019; public repository metadata last modified 2024-09-07.",
+      "copyingLineageEvidence": [
+        "FlipHTML5 and ebook-directory hits point to same Matney/Niemuth work; do not count mirrors or companion handbooks separately."
+      ],
+      "lineageId": "ku-matney-niemuth",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "music-therapy/music-education accompaniment",
+        "beginner/open-position focus",
+        "church/pop treble-voice examples",
+        "little high-position/rootless coverage"
+      ],
+      "decision": "include restricted noncommercial reference sample",
+      "acquiredCuratedSource": true,
+      "acquiredCuratedInventoryRows": 39,
+      "curatedVoteAdmissibility": "Source selection evidenced; each row still requires confident interpretation and valid research-domain normalization",
+      "primaryEvidenceUrls": [
+        "https://hdl.handle.net/1808/29433",
+        "https://kuscholarworks.ku.edu/server/api/pid/find?id=1808/29433",
+        "https://kuscholarworks.ku.edu/server/api/core/bitstreams/3de2afa0-42b6-47c8-a251-a4dbd13c53fc/content"
+      ],
+      "componentProvenance": [
+        {
+          "component": "educational-sources.json",
+          "jsonPointer": "/sources/0",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "repository": null,
+            "redistributionPermitted": "Noncommercial adaptation/sharing with attribution; commercial permission absent",
+            "rawDataStorage": "39 normalized structural facts retained under NC license; original PDF only OS temp",
+            "retainOnlyDerivedStatistics": false,
+            "tuningAssumptions": "standard EADGBE verified from string labels and note consistency",
+            "capoAssumptions": "no capo shown; chapter diagrams referenced to nut",
+            "stringCount": 6,
+            "notationOrientation": "left-to-right low E to high E, explicitly explained PDF p6",
+            "chordLabelSystem": "letter-name chord symbols",
+            "editorialCriteria": "Sequence considers play, commonality, chord type and barre groups; pedagogical criteria are source claims, not calibrated difficulty.",
+            "approximateCorpusSize": "47 PDF pages; selected extraction 39 distinct diagram examples (4 ambiguous); photos, fingering variants and summary repeats collapsed.",
+            "updateHistory": "Published 2019; public repository metadata last modified 2024-09-07.",
+            "copyingLineageEvidence": [
+              "FlipHTML5 and ebook-directory hits point to same Matney/Niemuth work; do not count mirrors or companion handbooks separately."
+            ],
+            "biases": [
+              "music-therapy/music-education accompaniment",
+              "beginner/open-position focus",
+              "church/pop treble-voice examples",
+              "little high-position/rootless coverage"
+            ],
+            "decision": "include restricted noncommercial reference sample",
+            "sourceId": "ku-matney-niemuth-2019",
+            "source": "Guitar Chord Handbook",
+            "url": "https://hdl.handle.net/1808/29433",
+            "sourceType": "B: institutional pedagogical handbook",
+            "ownerMaintainer": "Bill Matney and Brenna Niemuth; University of Kansas Libraries",
+            "lineageId": "ku-matney-niemuth",
+            "origin": "MANUAL_AUTHORED_SELECTED",
+            "originEvidence": "Named authors, photographed fingerings and introduction explicitly explaining pedagogical chord sequencing.",
+            "license": "CC-BY-NC-4.0 except identified third-party material",
+            "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+            "primaryEvidenceUrls": [
+              "https://kuscholarworks.ku.edu/server/api/pid/find?id=1808/29433",
+              "https://kuscholarworks.ku.edu/server/api/core/bitstreams/3de2afa0-42b6-47c8-a251-a4dbd13c53fc/content"
+            ],
+            "contentSha256": "61b3d86cec4158075ba6141cbf1fa1b86b75ca2de471bc230a1757c4573acbac"
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "melbay-william-bay-encyclopedia",
+      "componentSourceIds": [
+        "melbay-william-bay-encyclopedia"
+      ],
+      "source": "Deluxe Guitar Chord Encyclopedia",
+      "url": "https://www.melbay.com/Products/93283EB/deluxe-guitar-chord-encyclopedia.aspx",
+      "canonicalUrl": "https://melbay.com/Products/93283EB/deluxe-guitar-chord-encyclopedia.aspx",
+      "repository": "NOT_APPLICABLE_OR_NOT_IDENTIFIED",
+      "sourceType": "A/D: commercial authored dictionary",
+      "ownerMaintainer": "William Bay; Mel Bay Publications Inc.",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "Copyright; commercial book, no open-data reuse license",
+      "licenseUrl": "https://www.melbay.com/Pages/About-Full/Terms_And_Conditions.aspx",
+      "redistributionPermitted": "No open redistribution permission established",
+      "rawDataMayBeStored": "UNKNOWN; see restricted rawDataStoragePolicy",
+      "rawDataStoragePolicy": "bibliographic metadata only; no copied samples/book/database",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "standard guitar implied; row-level tuning not inspected",
+      "capoAssumptions": "not verified",
+      "stringCount": 6,
+      "notationOrientation": "diagrams and notation with note/degree names, not normalized",
+      "chordLabelSystem": "letter-name chord symbols",
+      "creationProvenance": "MANUAL_AUTHORED_REFERENCE",
+      "originClass": "MANUAL_SELECTION_EVIDENCED",
+      "originEvidence": "Publisher credits William Bay and describes classified melody/inside/rhythm/bottom-four-string forms; selection-level methodology beyond this not established.",
+      "editorialCriteria": "classified by musical role/string set; many alternatives per key/quality",
+      "approximateCorpusSize": "Thousands of forms advertised; 145 pages in eBook listing",
+      "updateHistory": "eBook listing publication 2014-11-06; editions not independent",
+      "copyingLineageEvidence": [
+        "Print, spiral and eBook formats of same title count as one lineage."
+      ],
+      "lineageId": "melbay-william-bay-93283",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "extensive alternative reference rather than primary recommendation",
+        "commercial acquisition boundary"
+      ],
+      "decision": "metadata-only",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://melbay.com/Products/93283EB/deluxe-guitar-chord-encyclopedia.aspx",
+        "https://www.melbay.com/Products/93283EB/deluxe-guitar-chord-encyclopedia.aspx"
+      ],
+      "componentProvenance": [
+        {
+          "component": "educational-sources.json",
+          "jsonPointer": "/sources/10",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "repository": null,
+            "redistributionPermitted": "No open redistribution permission established",
+            "rawDataStorage": "bibliographic metadata only; no copied samples/book/database",
+            "retainOnlyDerivedStatistics": true,
+            "tuningAssumptions": "standard guitar implied; row-level tuning not inspected",
+            "capoAssumptions": "not verified",
+            "stringCount": 6,
+            "notationOrientation": "diagrams and notation with note/degree names, not normalized",
+            "chordLabelSystem": "letter-name chord symbols",
+            "editorialCriteria": "classified by musical role/string set; many alternatives per key/quality",
+            "approximateCorpusSize": "Thousands of forms advertised; 145 pages in eBook listing",
+            "updateHistory": "eBook listing publication 2014-11-06; editions not independent",
+            "copyingLineageEvidence": [
+              "Print, spiral and eBook formats of same title count as one lineage."
+            ],
+            "biases": [
+              "extensive alternative reference rather than primary recommendation",
+              "commercial acquisition boundary"
+            ],
+            "decision": "metadata-only",
+            "sourceId": "melbay-william-bay-encyclopedia",
+            "source": "Deluxe Guitar Chord Encyclopedia",
+            "url": "https://www.melbay.com/Products/93283EB/deluxe-guitar-chord-encyclopedia.aspx",
+            "sourceType": "A/D: commercial authored dictionary",
+            "ownerMaintainer": "William Bay; Mel Bay Publications Inc.",
+            "lineageId": "melbay-william-bay-93283",
+            "origin": "MANUAL_AUTHORED_REFERENCE",
+            "originEvidence": "Publisher credits William Bay and describes classified melody/inside/rhythm/bottom-four-string forms; selection-level methodology beyond this not established.",
+            "license": "Copyright; commercial book, no open-data reuse license",
+            "licenseUrl": "https://www.melbay.com/Pages/About-Full/Terms_And_Conditions.aspx",
+            "primaryEvidenceUrls": [
+              "https://www.melbay.com/Products/93283EB/deluxe-guitar-chord-encyclopedia.aspx"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "oolimo",
+      "componentSourceIds": [
+        "oolimo"
+      ],
+      "source": "oolimo",
+      "url": "https://www.oolimo.com/en/guitar-chords/find",
+      "canonicalUrl": "https://oolimo.com/en/guitar-chords/find",
+      "repository": "NOT_APPLICABLE_OR_NOT_IDENTIFIED",
+      "sourceType": "D product and B teaching",
+      "ownerMaintainer": "Oolimo; individual legal owner not established in retrieved pages",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "No bulk data reuse grant established",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "not established; source metadata only",
+      "rawDataMayBeStored": "UNKNOWN; see restricted rawDataStoragePolicy",
+      "rawDataStoragePolicy": "provenance and analytical summaries only",
+      "rawDataStored": false,
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "configurable; standard tuning lessons available",
+      "capoAssumptions": "not resolved at item level; no allocations ingested",
+      "stringCount": "six-string interface",
+      "notationOrientation": "not resolved at item level",
+      "chordLabelSystem": "source-native; not normalized without allocations",
+      "creationProvenance": "UNKNOWN",
+      "originClass": "UNKNOWN",
+      "originEvidence": "Finder, analyzer and structured voicing lessons are visible; the origin and manual review of every listed shape are not established.",
+      "editorialCriteria": "Lessons distinguish voicings/inversions/omissions; calculator output and teaching examples must be separated",
+      "approximateCorpusSize": "not established",
+      "updateHistory": "live source accessed 2026-09-13; no immutable data acquisition",
+      "copyingLineageEvidence": "No common upstream proven; independence unresolved",
+      "lineageId": "oolimo",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "calculator versus authored lesson ambiguity",
+        "unresolved source selection"
+      ],
+      "decision": "metadata-only candidate for future source agreement",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://oolimo.com/en/guitar-chords/find"
+      ],
+      "componentProvenance": [
+        {
+          "component": "supplemental-sources.json",
+          "jsonPointer": "/sources/1",
+          "componentDefaults": {
+            "rawDataStored": false,
+            "redistribution": "not established; source metadata only",
+            "retention": "provenance and analytical summaries only",
+            "capoAssumption": "not resolved at item level; no allocations ingested",
+            "notationOrientation": "not resolved at item level",
+            "chordLabelSystem": "source-native; not normalized without allocations",
+            "updateHistory": "live source accessed 2026-09-13; no immutable data acquisition",
+            "lineageConfidence": "separate owner is not proof of independent underlying shapes"
+          },
+          "raw": {
+            "sourceId": "oolimo",
+            "lineageId": "oolimo",
+            "url": "https://www.oolimo.com/en/guitar-chords/find",
+            "owner": "Oolimo; individual legal owner not established in retrieved pages",
+            "sourceType": "D product and B teaching",
+            "originClassification": "UNKNOWN",
+            "originEvidence": "Finder, analyzer and structured voicing lessons are visible; the origin and manual review of every listed shape are not established.",
+            "editorialCriteria": "Lessons distinguish voicings/inversions/omissions; calculator output and teaching examples must be separated",
+            "approximateSize": "not established",
+            "tuning": "configurable; standard tuning lessons available",
+            "stringCount": "six-string interface",
+            "licenseOrTerms": "No bulk data reuse grant established",
+            "copyingLineage": "No common upstream proven; independence unresolved",
+            "biases": [
+              "calculator versus authored lesson ambiguity",
+              "unresolved source selection"
+            ],
+            "decision": "metadata-only candidate for future source agreement",
+            "eligibleCuratedVote": false
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "open-music-theory-jazz",
+      "componentSourceIds": [
+        "open-music-theory-jazz"
+      ],
+      "source": "open-music-theory-jazz",
+      "url": "https://viva.pressbooks.pub/openmusictheory/chapter/jazz-voicings/",
+      "canonicalUrl": "https://viva.pressbooks.pub/openmusictheory/chapter/jazz-voicings",
+      "repository": "NOT_APPLICABLE_OR_NOT_IDENTIFIED",
+      "sourceType": "B educational harmony reference",
+      "ownerMaintainer": "Open Music Theory authors / VIVA Pressbooks",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "CC BY-SA 4.0 except where noted",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "not established; source metadata only",
+      "rawDataMayBeStored": "UNKNOWN; see restricted rawDataStoragePolicy",
+      "rawDataStoragePolicy": "provenance and analytical summaries only",
+      "rawDataStored": false,
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "not applicable",
+      "capoAssumptions": "not resolved at item level; no allocations ingested",
+      "stringCount": "not applicable",
+      "notationOrientation": "not resolved at item level",
+      "chordLabelSystem": "source-native; not normalized without allocations",
+      "creationProvenance": "MANUAL_SELECTION_EVIDENCED",
+      "originClass": "MANUAL_SELECTION_EVIDENCED",
+      "originEvidence": "Authored jazz voicing pedagogy; reviewed material does not supply the required guitar string/fret allocation corpus",
+      "editorialCriteria": "Voice-leading and jazz texture exercises",
+      "approximateCorpusSize": "not a guitar-allocation collection",
+      "updateHistory": "live source accessed 2026-09-13; no immutable data acquisition",
+      "copyingLineageEvidence": "Open Music Theory mirrors are one editorial work",
+      "lineageId": "open-music-theory",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "abstract/keyboard texture cannot determine guitar allocation"
+      ],
+      "decision": "harmonic-context reference only",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://viva.pressbooks.pub/openmusictheory/chapter/jazz-voicings"
+      ],
+      "componentProvenance": [
+        {
+          "component": "supplemental-sources.json",
+          "jsonPointer": "/sources/6",
+          "componentDefaults": {
+            "rawDataStored": false,
+            "redistribution": "not established; source metadata only",
+            "retention": "provenance and analytical summaries only",
+            "capoAssumption": "not resolved at item level; no allocations ingested",
+            "notationOrientation": "not resolved at item level",
+            "chordLabelSystem": "source-native; not normalized without allocations",
+            "updateHistory": "live source accessed 2026-09-13; no immutable data acquisition",
+            "lineageConfidence": "separate owner is not proof of independent underlying shapes"
+          },
+          "raw": {
+            "sourceId": "open-music-theory-jazz",
+            "lineageId": "open-music-theory",
+            "url": "https://viva.pressbooks.pub/openmusictheory/chapter/jazz-voicings/",
+            "owner": "Open Music Theory authors / VIVA Pressbooks",
+            "sourceType": "B educational harmony reference",
+            "originClassification": "MANUAL_SELECTION_EVIDENCED",
+            "originEvidence": "Authored jazz voicing pedagogy; reviewed material does not supply the required guitar string/fret allocation corpus",
+            "editorialCriteria": "Voice-leading and jazz texture exercises",
+            "approximateSize": "not a guitar-allocation collection",
+            "tuning": "not applicable",
+            "stringCount": "not applicable",
+            "licenseOrTerms": "CC BY-SA 4.0 except where noted",
+            "copyingLineage": "Open Music Theory mirrors are one editorial work",
+            "biases": [
+              "abstract/keyboard texture cannot determine guitar allocation"
+            ],
+            "decision": "harmonic-context reference only",
+            "eligibleCuratedVote": false
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "optilude-guitar-practice",
+      "componentSourceIds": [
+        "optilude-guitar-practice"
+      ],
+      "source": "optilude-guitar-practice",
+      "url": "https://github.com/optilude/guitar-practice",
+      "canonicalUrl": "https://github.com/optilude/guitar-practice",
+      "repository": "https://github.com/optilude/guitar-practice",
+      "sourceType": "PRODUCT_APPLICATION",
+      "ownerMaintainer": "optilude",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "UNKNOWN; metadata-only inspection",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "UNKNOWN",
+      "rawDataMayBeStored": false,
+      "rawDataStoragePolicy": "Metadata only; no raw corpus stored",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "UNKNOWN until source row specifies",
+      "capoAssumptions": "UNKNOWN",
+      "stringCount": "UNKNOWN",
+      "notationOrientation": "UNKNOWN",
+      "chordLabelSystem": "Source-specific conventional chord symbols",
+      "creationProvenance": "MIXED imported chords-db and generated triads",
+      "originClass": "MIXED",
+      "originEvidence": "Original authoring method not established beyond component provenance; do not infer manual creation",
+      "editorialCriteria": "Not established",
+      "approximateCorpusSize": "UNKNOWN",
+      "updateHistory": "Not audited beyond accessed revision",
+      "copyingLineageEvidence": [
+        "README vendored data table: chords-db.json from tombatossals; triads.json generated"
+      ],
+      "lineageId": "tombatossals-chords-db",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "Not a representative sample of guitarists or repertoire"
+      ],
+      "decision": "EXCLUDED_DUPLICATE_AND_GENERATED",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://github.com/optilude/guitar-practice"
+      ],
+      "componentProvenance": [
+        {
+          "component": "open-sources.json",
+          "jsonPointer": "/sources/4",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "owner": "optilude",
+            "licenseOrTerms": "UNKNOWN; metadata-only inspection",
+            "redistributionPermitted": null,
+            "rawDataMayBeStored": false,
+            "derivedStatisticsOnly": true,
+            "tuningAssumptions": "UNKNOWN until source row specifies",
+            "capoAssumptions": "UNKNOWN",
+            "stringCount": null,
+            "notationOrientation": "UNKNOWN",
+            "chordLabelSystem": "Source-specific conventional chord symbols",
+            "creationProvenance": "MIXED imported chords-db and generated triads",
+            "editorialCriteria": "Not established",
+            "approximateCorpusSize": null,
+            "updateHistory": "Not audited beyond accessed revision",
+            "lineageEvidence": [
+              "README vendored data table: chords-db.json from tombatossals; triads.json generated"
+            ],
+            "biases": [
+              "Not a representative sample of guitarists or repertoire"
+            ],
+            "decision": "EXCLUDED_DUPLICATE_AND_GENERATED",
+            "eligibleCuratedVote": false,
+            "id": "optilude-guitar-practice",
+            "url": "https://github.com/optilude/guitar-practice",
+            "sourceType": "PRODUCT_APPLICATION",
+            "lineageId": "tombatossals-chords-db"
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "siege-musescore",
+      "componentSourceIds": [
+        "siege-musescore"
+      ],
+      "source": "siege-musescore",
+      "url": "https://github.com/siege-analytics/musescore4-chord-library-plugin",
+      "canonicalUrl": "https://github.com/siege-analytics/musescore4-chord-library-plugin",
+      "repository": "https://github.com/siege-analytics/musescore4-chord-library-plugin",
+      "sourceType": "PRODUCT_VOICING_COLLECTION",
+      "ownerMaintainer": "Dheeraj Chand / Siege Analytics",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "README CC BY 4.0 vs LICENSE Apache-2.0; published-method upstream permissions unresolved",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "UNKNOWN",
+      "rawDataMayBeStored": false,
+      "rawDataStoragePolicy": "Metadata only; no raw corpus stored",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "Standard six and Van Eps seven-string entries observed",
+      "capoAssumptions": "Relative displayed fret_number, not an actual capo",
+      "stringCount": [
+        6,
+        7
+      ],
+      "notationOrientation": "Explicit string numbers; relative dot frets plus fret_number",
+      "chordLabelSystem": "Source-specific conventional chord symbols",
+      "creationProvenance": "MIXED generated/imported/other unknown despite hand-curated README claim",
+      "originClass": "MIXED",
+      "originEvidence": "Original authoring method not established beyond component provenance; do not infer manual creation",
+      "editorialCriteria": "Not established",
+      "approximateCorpusSize": 820,
+      "updateHistory": "Metadata inspection pinned ca423faec075495505393e078bf17687fc3be1d8",
+      "copyingLineageEvidence": [
+        "42 rows tagged chords-db; importer present",
+        "48 rows tagged calculated",
+        "Published method extraction described"
+      ],
+      "lineageId": "siege-mixed-not-independent",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "Not a representative sample of guitarists or repertoire"
+      ],
+      "decision": "EXCLUDED_MIXED_ORIGIN_AND_REUSE_UNRESOLVED",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://github.com/siege-analytics/musescore4-chord-library-plugin"
+      ],
+      "componentProvenance": [
+        {
+          "component": "open-sources.json",
+          "jsonPointer": "/sources/9",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "owner": "Dheeraj Chand / Siege Analytics",
+            "licenseOrTerms": "README CC BY 4.0 vs LICENSE Apache-2.0; published-method upstream permissions unresolved",
+            "redistributionPermitted": null,
+            "rawDataMayBeStored": false,
+            "derivedStatisticsOnly": true,
+            "tuningAssumptions": "Standard six and Van Eps seven-string entries observed",
+            "capoAssumptions": "Relative displayed fret_number, not an actual capo",
+            "stringCount": [
+              6,
+              7
+            ],
+            "notationOrientation": "Explicit string numbers; relative dot frets plus fret_number",
+            "chordLabelSystem": "Source-specific conventional chord symbols",
+            "creationProvenance": "MIXED generated/imported/other unknown despite hand-curated README claim",
+            "editorialCriteria": "Not established",
+            "approximateCorpusSize": 820,
+            "updateHistory": "Metadata inspection pinned ca423faec075495505393e078bf17687fc3be1d8",
+            "lineageEvidence": [
+              "42 rows tagged chords-db; importer present",
+              "48 rows tagged calculated",
+              "Published method extraction described"
+            ],
+            "biases": [
+              "Not a representative sample of guitarists or repertoire"
+            ],
+            "decision": "EXCLUDED_MIXED_ORIGIN_AND_REUSE_UNRESOLVED",
+            "eligibleCuratedVote": false,
+            "id": "siege-musescore",
+            "url": "https://github.com/siege-analytics/musescore4-chord-library-plugin",
+            "sourceType": "PRODUCT_VOICING_COLLECTION",
+            "lineageId": "siege-mixed-not-independent",
+            "aggregateInspection": {
+              "sixString": 408,
+              "sevenString": 412,
+              "calculatedTagged": 48,
+              "chordsDbTagged": 42
+            }
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "spanish411-chord-chart",
+      "componentSourceIds": [
+        "spanish411-chord-chart"
+      ],
+      "source": "Spanish411 Guitar Chords chart",
+      "url": "https://spanish411.net/resources/GuitarChords.pdf",
+      "canonicalUrl": "https://spanish411.net/resources/GuitarChords.pdf",
+      "repository": "NOT_APPLICABLE_OR_NOT_IDENTIFIED",
+      "sourceType": "A: downloadable chord chart",
+      "ownerMaintainer": "Spanish411; individual chart author not established",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "CC-BY-NC-SA-3.0 stated on PDF",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "Noncommercial sharing/adaptation with attribution/ShareAlike if source rights confirmed",
+      "rawDataMayBeStored": "UNKNOWN; see restricted rawDataStoragePolicy",
+      "rawDataStoragePolicy": "metadata only; PDF direct fetch timed out, no shapes verified",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "not verified",
+      "capoAssumptions": "not verified",
+      "stringCount": 6,
+      "notationOrientation": "diagram grid with note labels, not normalized",
+      "chordLabelSystem": "letter-name chord symbols",
+      "creationProvenance": "UNKNOWN",
+      "originClass": "UNKNOWN",
+      "originEvidence": "Chart gives chord table and site credit; manual shape origin/import/generation not stated in inspected primary search text.",
+      "editorialCriteria": "UNKNOWN",
+      "approximateCorpusSize": "12 roots x 11 chord categories =132 chart cells; not independently verified shape count",
+      "updateHistory": "not established",
+      "copyingLineageEvidence": [],
+      "lineageId": "spanish411-guitar-chart",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "one shape per root/category",
+        "transposition replication risk"
+      ],
+      "decision": "exclude curatorial votes pending origin and visual verification",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://spanish411.net/resources/GuitarChords.pdf"
+      ],
+      "componentProvenance": [
+        {
+          "component": "educational-sources.json",
+          "jsonPointer": "/sources/9",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "repository": null,
+            "redistributionPermitted": "Noncommercial sharing/adaptation with attribution/ShareAlike if source rights confirmed",
+            "rawDataStorage": "metadata only; PDF direct fetch timed out, no shapes verified",
+            "retainOnlyDerivedStatistics": true,
+            "tuningAssumptions": "not verified",
+            "capoAssumptions": "not verified",
+            "stringCount": 6,
+            "notationOrientation": "diagram grid with note labels, not normalized",
+            "chordLabelSystem": "letter-name chord symbols",
+            "editorialCriteria": null,
+            "approximateCorpusSize": "12 roots x 11 chord categories =132 chart cells; not independently verified shape count",
+            "updateHistory": "not established",
+            "copyingLineageEvidence": [],
+            "biases": [
+              "one shape per root/category",
+              "transposition replication risk"
+            ],
+            "decision": "exclude curatorial votes pending origin and visual verification",
+            "sourceId": "spanish411-chord-chart",
+            "source": "Spanish411 Guitar Chords chart",
+            "url": "https://spanish411.net/resources/GuitarChords.pdf",
+            "sourceType": "A: downloadable chord chart",
+            "ownerMaintainer": "Spanish411; individual chart author not established",
+            "lineageId": "spanish411-guitar-chart",
+            "origin": "UNKNOWN",
+            "originEvidence": "Chart gives chord table and site credit; manual shape origin/import/generation not stated in inspected primary search text.",
+            "license": "CC-BY-NC-SA-3.0 stated on PDF",
+            "primaryEvidenceUrls": [
+              "https://spanish411.net/resources/GuitarChords.pdf"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "standard-guitar",
+      "componentSourceIds": [
+        "standard-guitar"
+      ],
+      "source": "Standard Guitar (formerly Awesome Guitar Solo)",
+      "url": "https://www.standardguitar.com/",
+      "canonicalUrl": "https://standardguitar.com/",
+      "repository": "NOT_APPLICABLE_OR_NOT_IDENTIFIED",
+      "sourceType": "A/D: web chord dictionary/product",
+      "ownerMaintainer": "Ben Steinbuhler",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "Diagram images CC-BY-4.0; do not extend image license to entire database/site",
+      "licenseUrl": "https://www.standardguitar.com/download-chord-and-scale-images",
+      "redistributionPermitted": "Diagram images with attribution, license link and modifications identified",
+      "rawDataMayBeStored": "UNKNOWN; see restricted rawDataStoragePolicy",
+      "rawDataStoragePolicy": "metadata only pending creation/lineage audit",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "guitar standard view; also other instruments/tunings requiring distinct views",
+      "capoAssumptions": "not verified",
+      "stringCount": 6,
+      "notationOrientation": "right/left-handed surfaces; orientation must be checked per row",
+      "chordLabelSystem": "letter-name chord symbols",
+      "creationProvenance": "UNKNOWN",
+      "originClass": "UNKNOWN",
+      "originEvidence": "About page describes a UI/scales project originating in 2010; it does not explain chord-shape generation/selection.",
+      "editorialCriteria": "UNKNOWN",
+      "approximateCorpusSize": "not independently enumerated",
+      "updateHistory": "Prototype 2010; resumed about three years later; current public site",
+      "copyingLineageEvidence": [
+        "Awesome Guitar Solo is former name of same project, not independent source."
+      ],
+      "lineageId": "standard-guitar-awesome-guitar-solo",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "interface-selected defaults",
+        "unknown generated/curated mixture"
+      ],
+      "decision": "exclude human-curation votes until origin established",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://standardguitar.com/",
+        "https://www.standardguitar.com/about",
+        "https://www.standardguitar.com/download-chord-and-scale-images"
+      ],
+      "componentProvenance": [
+        {
+          "component": "educational-sources.json",
+          "jsonPointer": "/sources/4",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "repository": null,
+            "redistributionPermitted": "Diagram images with attribution, license link and modifications identified",
+            "rawDataStorage": "metadata only pending creation/lineage audit",
+            "retainOnlyDerivedStatistics": true,
+            "tuningAssumptions": "guitar standard view; also other instruments/tunings requiring distinct views",
+            "capoAssumptions": "not verified",
+            "stringCount": 6,
+            "notationOrientation": "right/left-handed surfaces; orientation must be checked per row",
+            "chordLabelSystem": "letter-name chord symbols",
+            "editorialCriteria": null,
+            "approximateCorpusSize": "not independently enumerated",
+            "updateHistory": "Prototype 2010; resumed about three years later; current public site",
+            "copyingLineageEvidence": [
+              "Awesome Guitar Solo is former name of same project, not independent source."
+            ],
+            "biases": [
+              "interface-selected defaults",
+              "unknown generated/curated mixture"
+            ],
+            "decision": "exclude human-curation votes until origin established",
+            "sourceId": "standard-guitar",
+            "source": "Standard Guitar (formerly Awesome Guitar Solo)",
+            "url": "https://www.standardguitar.com/",
+            "sourceType": "A/D: web chord dictionary/product",
+            "ownerMaintainer": "Ben Steinbuhler",
+            "lineageId": "standard-guitar-awesome-guitar-solo",
+            "origin": "UNKNOWN",
+            "originEvidence": "About page describes a UI/scales project originating in 2010; it does not explain chord-shape generation/selection.",
+            "license": "Diagram images CC-BY-4.0; do not extend image license to entire database/site",
+            "licenseUrl": "https://www.standardguitar.com/download-chord-and-scale-images",
+            "primaryEvidenceUrls": [
+              "https://www.standardguitar.com/about",
+              "https://www.standardguitar.com/download-chord-and-scale-images"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "string-warrior",
+      "componentSourceIds": [
+        "string-warrior"
+      ],
+      "source": "String Warrior chord library",
+      "url": "https://stringwarrior.com/license",
+      "canonicalUrl": "https://stringwarrior.com/license",
+      "repository": "NOT_APPLICABLE_OR_NOT_IDENTIFIED",
+      "sourceType": "D: application/content network",
+      "ownerMaintainer": "Cyberpunk Industries LLC",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "CC-BY-4.0 limited to diagram SVGs, widget output and OG cards; compiled libraries/code/writing reserved",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "Only the three licensed output surfaces; not compiled database",
+      "rawDataMayBeStored": "UNKNOWN; see restricted rawDataStoragePolicy",
+      "rawDataStoragePolicy": "metadata only; do not scrape/redistribute the library as a collection",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "multiple instruments; per-resource tuning needed",
+      "capoAssumptions": "unknown",
+      "stringCount": 6,
+      "notationOrientation": "not verified",
+      "chordLabelSystem": "letter-name chord symbols",
+      "creationProvenance": "UNKNOWN",
+      "originClass": "UNKNOWN",
+      "originEvidence": "License page calls the library curated/checked but does not demonstrate how shapes were authored versus generated or imported.",
+      "editorialCriteria": "UNKNOWN",
+      "approximateCorpusSize": "2,327 diagram SVGs stated across four instruments, not a guitar-only size",
+      "updateHistory": "Current live license page; no versioned voicing history established",
+      "copyingLineageEvidence": [
+        "Explicit Music Warrior Network links include Guitar Warrior, Ukulele Warrior, Bass Warrior and others; diagrams/cards share voicing data."
+      ],
+      "lineageId": "music-warrior-network",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "network replication",
+        "cross-instrument counts",
+        "unknown shape selection"
+      ],
+      "decision": "exclude independent human-selection counts; narrow image license insufficient for corpus acquisition",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://stringwarrior.com/license"
+      ],
+      "componentProvenance": [
+        {
+          "component": "educational-sources.json",
+          "jsonPointer": "/sources/6",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "repository": null,
+            "redistributionPermitted": "Only the three licensed output surfaces; not compiled database",
+            "rawDataStorage": "metadata only; do not scrape/redistribute the library as a collection",
+            "retainOnlyDerivedStatistics": true,
+            "tuningAssumptions": "multiple instruments; per-resource tuning needed",
+            "capoAssumptions": "unknown",
+            "stringCount": 6,
+            "notationOrientation": "not verified",
+            "chordLabelSystem": "letter-name chord symbols",
+            "editorialCriteria": null,
+            "approximateCorpusSize": "2,327 diagram SVGs stated across four instruments, not a guitar-only size",
+            "updateHistory": "Current live license page; no versioned voicing history established",
+            "copyingLineageEvidence": [
+              "Explicit Music Warrior Network links include Guitar Warrior, Ukulele Warrior, Bass Warrior and others; diagrams/cards share voicing data."
+            ],
+            "biases": [
+              "network replication",
+              "cross-instrument counts",
+              "unknown shape selection"
+            ],
+            "decision": "exclude independent human-selection counts; narrow image license insufficient for corpus acquisition",
+            "sourceId": "string-warrior",
+            "source": "String Warrior chord library",
+            "url": "https://stringwarrior.com/license",
+            "sourceType": "D: application/content network",
+            "ownerMaintainer": "Cyberpunk Industries LLC",
+            "lineageId": "music-warrior-network",
+            "origin": "UNKNOWN",
+            "originEvidence": "License page calls the library curated/checked but does not demonstrate how shapes were authored versus generated or imported.",
+            "license": "CC-BY-4.0 limited to diagram SVGs, widget output and OG cards; compiled libraries/code/writing reserved",
+            "primaryEvidenceUrls": [
+              "https://stringwarrior.com/license"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "szaza-json",
+      "componentSourceIds": [
+        "szaza-json"
+      ],
+      "source": "szaza-json",
+      "url": "https://github.com/szaza/guitar-chords-db-json",
+      "canonicalUrl": "https://github.com/szaza/guitar-chords-db-json",
+      "repository": "https://github.com/szaza/guitar-chords-db-json",
+      "sourceType": "FILTERED_MIRROR",
+      "ownerMaintainer": "szaza",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "MIT downstream vs GPL asserted by named upstream T-vK; permission chain unresolved",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "UNKNOWN",
+      "rawDataMayBeStored": false,
+      "rawDataStoragePolicy": "Metadata only; no raw corpus stored",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "UNKNOWN until source row specifies",
+      "capoAssumptions": "UNKNOWN",
+      "stringCount": "UNKNOWN",
+      "notationOrientation": "UNKNOWN",
+      "chordLabelSystem": "Source-specific conventional chord symbols",
+      "creationProvenance": "IMPORTED",
+      "originClass": "IMPORTED_ORIGINAL_ORIGIN_UNRESOLVED",
+      "originEvidence": "Original authoring method not established beyond component provenance; do not infer manual creation",
+      "editorialCriteria": "Not established",
+      "approximateCorpusSize": 99230,
+      "updateHistory": "Not audited beyond accessed revision",
+      "copyingLineageEvidence": [
+        "README calls it filtered T-vK version and credits T-vK and Tombatossals"
+      ],
+      "lineageId": "jguitar-calculator",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "Not a representative sample of guitarists or repertoire"
+      ],
+      "decision": "EXCLUDED_DUPLICATE_GENERATED_AND_LICENSE_CONFLICT",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://github.com/szaza/guitar-chords-db-json"
+      ],
+      "componentProvenance": [
+        {
+          "component": "open-sources.json",
+          "jsonPointer": "/sources/8",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "owner": "szaza",
+            "licenseOrTerms": "MIT downstream vs GPL asserted by named upstream T-vK; permission chain unresolved",
+            "redistributionPermitted": null,
+            "rawDataMayBeStored": false,
+            "derivedStatisticsOnly": true,
+            "tuningAssumptions": "UNKNOWN until source row specifies",
+            "capoAssumptions": "UNKNOWN",
+            "stringCount": null,
+            "notationOrientation": "UNKNOWN",
+            "chordLabelSystem": "Source-specific conventional chord symbols",
+            "creationProvenance": "IMPORTED",
+            "editorialCriteria": "Not established",
+            "approximateCorpusSize": 99230,
+            "updateHistory": "Not audited beyond accessed revision",
+            "lineageEvidence": [
+              "README calls it filtered T-vK version and credits T-vK and Tombatossals"
+            ],
+            "biases": [
+              "Not a representative sample of guitarists or repertoire"
+            ],
+            "decision": "EXCLUDED_DUPLICATE_GENERATED_AND_LICENSE_CONFLICT",
+            "eligibleCuratedVote": false,
+            "id": "szaza-json",
+            "url": "https://github.com/szaza/guitar-chords-db-json",
+            "sourceType": "FILTERED_MIRROR",
+            "lineageId": "jguitar-calculator"
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "t-vk-chord-collection",
+      "componentSourceIds": [
+        "t-vk-chord-collection"
+      ],
+      "source": "t-vk-chord-collection",
+      "url": "https://github.com/T-vK/chord-collection",
+      "canonicalUrl": "https://github.com/T-vK/chord-collection",
+      "repository": "https://github.com/T-vK/chord-collection",
+      "sourceType": "STRUCTURED_IMPORTED_DATABASE",
+      "ownerMaintainer": "T-vK",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "README asserts GPL; JGuitar upstream permissions unresolved",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "UNKNOWN",
+      "rawDataMayBeStored": false,
+      "rawDataStoragePolicy": "Metadata only; no raw corpus stored",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": true,
+      "tuningAssumptions": "Standard implied by examples",
+      "capoAssumptions": "UNKNOWN",
+      "stringCount": 6,
+      "notationOrientation": "low-to-high absolute fret strings",
+      "chordLabelSystem": "Source-specific conventional chord symbols",
+      "creationProvenance": "IMPORTED_FROM_GENERATOR",
+      "originClass": "GENERATED_IMPORTED",
+      "originEvidence": "Original authoring method not established beyond component provenance; do not infer manual creation",
+      "editorialCriteria": "Not established",
+      "approximateCorpusSize": "UNKNOWN",
+      "updateHistory": "Pinned metadata revision 041f6f9ca43a7aaf8fee6f95939e22bb5b677c1f dated 2019-11-01",
+      "copyingLineageEvidence": [
+        "README credits jguitar.com"
+      ],
+      "lineageId": "jguitar-calculator",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "Not a representative sample of guitarists or repertoire"
+      ],
+      "decision": "EXCLUDED_GENERATED_AND_UPSTREAM_REUSE_UNRESOLVED",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://github.com/T-vK/chord-collection"
+      ],
+      "componentProvenance": [
+        {
+          "component": "open-sources.json",
+          "jsonPointer": "/sources/7",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "owner": "T-vK",
+            "licenseOrTerms": "README asserts GPL; JGuitar upstream permissions unresolved",
+            "redistributionPermitted": null,
+            "rawDataMayBeStored": false,
+            "derivedStatisticsOnly": true,
+            "tuningAssumptions": "Standard implied by examples",
+            "capoAssumptions": "UNKNOWN",
+            "stringCount": 6,
+            "notationOrientation": "low-to-high absolute fret strings",
+            "chordLabelSystem": "Source-specific conventional chord symbols",
+            "creationProvenance": "IMPORTED_FROM_GENERATOR",
+            "editorialCriteria": "Not established",
+            "approximateCorpusSize": null,
+            "updateHistory": "Pinned metadata revision 041f6f9ca43a7aaf8fee6f95939e22bb5b677c1f dated 2019-11-01",
+            "lineageEvidence": [
+              "README credits jguitar.com"
+            ],
+            "biases": [
+              "Not a representative sample of guitarists or repertoire"
+            ],
+            "decision": "EXCLUDED_GENERATED_AND_UPSTREAM_REUSE_UNRESOLVED",
+            "eligibleCuratedVote": false,
+            "id": "t-vk-chord-collection",
+            "url": "https://github.com/T-vK/chord-collection",
+            "sourceType": "STRUCTURED_IMPORTED_DATABASE",
+            "lineageId": "jguitar-calculator"
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "uci-575",
+      "componentSourceIds": [
+        "uci-575"
+      ],
+      "source": "uci-575",
+      "url": "https://archive.ics.uci.edu/dataset/575/guitar%2Bchords%2Bfinger%2Bpositions",
+      "canonicalUrl": "https://archive.ics.uci.edu/dataset/575/guitar%2Bchords%2Bfinger%2Bpositions",
+      "repository": "NOT_APPLICABLE_OR_NOT_IDENTIFIED",
+      "sourceType": "OPEN_DATA",
+      "ownerMaintainer": "UCI Machine Learning Repository; donor not identified on inspected page",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "CC BY 4.0; DOI attribution retained",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": true,
+      "rawDataMayBeStored": true,
+      "rawDataStoragePolicy": "Pinned permitted files stored with attribution/licenses; see acquisition lock",
+      "rawDataStored": "YES for explicitly acquired files; see acquisition lock",
+      "retainOnlyDerivedStatistics": false,
+      "tuningAssumptions": "Standard guitar tuning stated",
+      "capoAssumptions": "Unspecified",
+      "stringCount": 6,
+      "notationOrientation": "low-to-high finger allocations explicitly stated",
+      "chordLabelSystem": "Source-specific conventional chord symbols",
+      "creationProvenance": "UNKNOWN; software double checking stated, not original generation method",
+      "originClass": "UNKNOWN",
+      "originEvidence": "Original authoring method not established beyond component provenance; do not infer manual creation",
+      "editorialCriteria": "Software checking only; selection unknown",
+      "approximateCorpusSize": 2632,
+      "updateHistory": "Donated 2020-06-04; DOI 10.24432/C5RG8K; bytes pinned on access",
+      "copyingLineageEvidence": [],
+      "lineageId": "uci-575-origin-unknown",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "No frets or pitch octaves; underdetermined exact shapes",
+        "Finger numbers must not be parsed as frets",
+        "Origin unknown"
+      ],
+      "decision": "ACQUIRED_UNMAPPABLE_INVENTORY",
+      "acquiredCuratedSource": false,
+      "acquiredCuratedInventoryRows": 0,
+      "curatedVoteAdmissibility": "NO curated votes from this source in this study",
+      "primaryEvidenceUrls": [
+        "https://archive.ics.uci.edu/dataset/575/guitar%2Bchords%2Bfinger%2Bpositions"
+      ],
+      "componentProvenance": [
+        {
+          "component": "open-sources.json",
+          "jsonPointer": "/sources/2",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "owner": "UCI Machine Learning Repository; donor not identified on inspected page",
+            "licenseOrTerms": "CC BY 4.0; DOI attribution retained",
+            "redistributionPermitted": true,
+            "rawDataMayBeStored": true,
+            "derivedStatisticsOnly": false,
+            "tuningAssumptions": "Standard guitar tuning stated",
+            "capoAssumptions": "Unspecified",
+            "stringCount": 6,
+            "notationOrientation": "low-to-high finger allocations explicitly stated",
+            "chordLabelSystem": "Source-specific conventional chord symbols",
+            "creationProvenance": "UNKNOWN; software double checking stated, not original generation method",
+            "editorialCriteria": "Software checking only; selection unknown",
+            "approximateCorpusSize": 2632,
+            "updateHistory": "Donated 2020-06-04; DOI 10.24432/C5RG8K; bytes pinned on access",
+            "lineageEvidence": [],
+            "biases": [
+              "No frets or pitch octaves; underdetermined exact shapes",
+              "Finger numbers must not be parsed as frets",
+              "Origin unknown"
+            ],
+            "decision": "ACQUIRED_UNMAPPABLE_INVENTORY",
+            "eligibleCuratedVote": false,
+            "id": "uci-575",
+            "url": "https://archive.ics.uci.edu/dataset/575/guitar%2Bchords%2Bfinger%2Bpositions",
+            "sourceType": "OPEN_DATA",
+            "advertisedCorpusSize": 2633,
+            "lineageId": "uci-575-origin-unknown"
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "wikibooks-open-chords-text",
+      "componentSourceIds": [
+        "wikibooks-open-chords-text"
+      ],
+      "source": "Wikibooks Guitar/Open Chords",
+      "url": "https://en.wikibooks.org/w/index.php?title=Guitar/Open_Chords&oldid=4212611",
+      "canonicalUrl": "https://en.wikibooks.org/w/index.php?oldid=4212611&title=Guitar%2FOpen_Chords",
+      "repository": "NOT_APPLICABLE_OR_NOT_IDENTIFIED",
+      "sourceType": "B: collaboratively edited teaching page",
+      "ownerMaintainer": "Wikibooks contributors, revision history available",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "redistributionPermitted": "Yes, attribution and ShareAlike for adaptations",
+      "rawDataMayBeStored": "UNKNOWN; see restricted rawDataStoragePolicy",
+      "rawDataStoragePolicy": "6 normalized structural facts with section/permanent-revision URLs",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": false,
+      "tuningAssumptions": "standard EADGBE from numbered-string prose",
+      "capoAssumptions": "first-position nut-relative instructions, no capo",
+      "stringCount": 6,
+      "notationOrientation": "six-digit vectors low-to-high established by corresponding string-number prose",
+      "chordLabelSystem": "letter-name chord symbols",
+      "creationProvenance": "MANUAL_AUTHORED_SELECTED",
+      "originClass": "MANUAL_SELECTION_EVIDENCED",
+      "originEvidence": "Instructional prose explicitly selects named grips and distinguishes alternate fingerings from alternate fret vectors.",
+      "editorialCriteria": "beginner first-position major/minor/seventh examples and alternatives",
+      "approximateCorpusSize": "6 major, 3 minor and 5 seventh sections plus alternatives; only 6 fully specified facts sampled",
+      "updateHistory": "Permanent revision 4212611 dated 2022-11-26",
+      "copyingLineageEvidence": [
+        "Same Guitar book as Jazz lesson; aggregate as one conservative Wikimedia source family."
+      ],
+      "lineageId": "wikimedia-guitar",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "open/low-position beginner teaching",
+        "finger numbers resemble fret numbers",
+        "incomplete prose coordinates in some sections"
+      ],
+      "decision": "include explicit fret facts only; do not parse all digit tuples as frets",
+      "acquiredCuratedSource": true,
+      "acquiredCuratedInventoryRows": 6,
+      "curatedVoteAdmissibility": "Source selection evidenced; each row still requires confident interpretation and valid research-domain normalization",
+      "primaryEvidenceUrls": [
+        "https://en.wikibooks.org/w/index.php?oldid=4212611&title=Guitar%2FOpen_Chords",
+        "https://en.wikibooks.org/wiki/Guitar/Open_Chords"
+      ],
+      "componentProvenance": [
+        {
+          "component": "educational-sources.json",
+          "jsonPointer": "/sources/2",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "repository": null,
+            "redistributionPermitted": "Yes, attribution and ShareAlike for adaptations",
+            "rawDataStorage": "6 normalized structural facts with section/permanent-revision URLs",
+            "retainOnlyDerivedStatistics": false,
+            "tuningAssumptions": "standard EADGBE from numbered-string prose",
+            "capoAssumptions": "first-position nut-relative instructions, no capo",
+            "stringCount": 6,
+            "notationOrientation": "six-digit vectors low-to-high established by corresponding string-number prose",
+            "chordLabelSystem": "letter-name chord symbols",
+            "editorialCriteria": "beginner first-position major/minor/seventh examples and alternatives",
+            "approximateCorpusSize": "6 major, 3 minor and 5 seventh sections plus alternatives; only 6 fully specified facts sampled",
+            "updateHistory": "Permanent revision 4212611 dated 2022-11-26",
+            "copyingLineageEvidence": [
+              "Same Guitar book as Jazz lesson; aggregate as one conservative Wikimedia source family."
+            ],
+            "biases": [
+              "open/low-position beginner teaching",
+              "finger numbers resemble fret numbers",
+              "incomplete prose coordinates in some sections"
+            ],
+            "decision": "include explicit fret facts only; do not parse all digit tuples as frets",
+            "sourceId": "wikibooks-open-chords-text",
+            "source": "Wikibooks Guitar/Open Chords",
+            "url": "https://en.wikibooks.org/w/index.php?title=Guitar/Open_Chords&oldid=4212611",
+            "sourceType": "B: collaboratively edited teaching page",
+            "ownerMaintainer": "Wikibooks contributors, revision history available",
+            "lineageId": "wikimedia-guitar",
+            "origin": "MANUAL_AUTHORED_SELECTED",
+            "originEvidence": "Instructional prose explicitly selects named grips and distinguishes alternate fingerings from alternate fret vectors.",
+            "license": "CC-BY-SA-4.0",
+            "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+            "primaryEvidenceUrls": [
+              "https://en.wikibooks.org/wiki/Guitar/Open_Chords"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "sourceId": "wikibooks-sluffs-jazz",
+      "componentSourceIds": [
+        "wikibooks-sluffs-jazz"
+      ],
+      "source": "Wikibooks Guitar/Jazz and Sluffs chord files",
+      "url": "https://en.wikibooks.org/w/index.php?title=Guitar/Jazz&oldid=3931946",
+      "canonicalUrl": "https://en.wikibooks.org/w/index.php?oldid=3931946&title=Guitar%2FJazz",
+      "repository": "NOT_APPLICABLE_OR_NOT_IDENTIFIED",
+      "sourceType": "B: collaboratively edited teaching exercises",
+      "ownerMaintainer": "Wikibooks contributors; individual diagram author Sluffs",
+      "accessDate": "2026-09-13",
+      "licenseOrTerms": "PD-self for individually checked Sluffs diagrams; lesson text CC-BY-SA-4.0",
+      "licenseUrl": "UNKNOWN",
+      "redistributionPermitted": "Yes for verified PD-self diagrams/facts; lesson text has separate attribution/sharealike obligations",
+      "rawDataMayBeStored": "UNKNOWN; see restricted rawDataStoragePolicy",
+      "rawDataStoragePolicy": "6 normalized image facts with asset hashes; 24 metadata records; originals only OS temp",
+      "rawDataStored": "NO raw corpus in repository; normalized facts may be separately permitted",
+      "retainOnlyDerivedStatistics": false,
+      "tuningAssumptions": "standard EADGBE verified against lesson context and chord pitches",
+      "capoAssumptions": "no capo in inspected diagrams; heavy nut defines first fret",
+      "stringCount": 6,
+      "notationOrientation": "vertical diagram low E left, high E right; verified by six-string diagram, mutes and pitches",
+      "chordLabelSystem": "letter-name chord symbols",
+      "creationProvenance": "MANUAL_AUTHORED_SELECTED",
+      "originClass": "MANUAL_SELECTION_EVIDENCED",
+      "originEvidence": "Individual file pages say own work using Sibelius; the lesson deliberately assigns root/first/second inversion exercises.",
+      "editorialCriteria": "movable jazz exercises changing one note; inversion and three/four-note vocabulary",
+      "approximateCorpusSize": "24 displayed chord-diagram occurrences in lesson; 6 acquired and visually checked, 18 unavailable in this run",
+      "updateHistory": "Diagram creation July 2009, grid alignment October 2009; lesson revision July 2021",
+      "copyingLineageEvidence": [
+        "Commons usage lists English and Italian Wikibooks/Wikiversity; all are same assets.",
+        "Conservatively shares family with Wikibooks open-chord content and Ashaio; no extra votes for authors/pages."
+      ],
+      "lineageId": "wikimedia-guitar",
+      "lineageIndependence": "Provisional lineage grouping unless explicitly identified as acquired curated evidence family; no independence from different owner/domain alone",
+      "biases": [
+        "jazz exercise selection",
+        "fixed G/E sample keys",
+        "acquisition missingness",
+        "not an exhaustive chord recommendation"
+      ],
+      "decision": "include limited verified sample; preserve 18 unacquired occurrences",
+      "acquiredCuratedSource": true,
+      "acquiredCuratedInventoryRows": 6,
+      "curatedVoteAdmissibility": "Source selection evidenced; each row still requires confident interpretation and valid research-domain normalization",
+      "primaryEvidenceUrls": [
+        "https://en.wikibooks.org/w/index.php?oldid=3931946&title=Guitar%2FJazz",
+        "https://commons.wikimedia.org/wiki/File:G_major_jazz_chord_for_guitar_(root).png",
+        "https://commons.wikimedia.org/wiki/File:E_major_jazz_chord_for_guitar_(first_inversion).png"
+      ],
+      "componentProvenance": [
+        {
+          "component": "educational-sources.json",
+          "jsonPointer": "/sources/1",
+          "componentDefaults": {},
+          "raw": {
+            "accessDate": "2026-09-13",
+            "repository": null,
+            "redistributionPermitted": "Yes for verified PD-self diagrams/facts; lesson text has separate attribution/sharealike obligations",
+            "rawDataStorage": "6 normalized image facts with asset hashes; 24 metadata records; originals only OS temp",
+            "retainOnlyDerivedStatistics": false,
+            "tuningAssumptions": "standard EADGBE verified against lesson context and chord pitches",
+            "capoAssumptions": "no capo in inspected diagrams; heavy nut defines first fret",
+            "stringCount": 6,
+            "notationOrientation": "vertical diagram low E left, high E right; verified by six-string diagram, mutes and pitches",
+            "chordLabelSystem": "letter-name chord symbols",
+            "editorialCriteria": "movable jazz exercises changing one note; inversion and three/four-note vocabulary",
+            "approximateCorpusSize": "24 displayed chord-diagram occurrences in lesson; 6 acquired and visually checked, 18 unavailable in this run",
+            "updateHistory": "Diagram creation July 2009, grid alignment October 2009; lesson revision July 2021",
+            "copyingLineageEvidence": [
+              "Commons usage lists English and Italian Wikibooks/Wikiversity; all are same assets.",
+              "Conservatively shares family with Wikibooks open-chord content and Ashaio; no extra votes for authors/pages."
+            ],
+            "biases": [
+              "jazz exercise selection",
+              "fixed G/E sample keys",
+              "acquisition missingness",
+              "not an exhaustive chord recommendation"
+            ],
+            "decision": "include limited verified sample; preserve 18 unacquired occurrences",
+            "sourceId": "wikibooks-sluffs-jazz",
+            "source": "Wikibooks Guitar/Jazz and Sluffs chord files",
+            "url": "https://en.wikibooks.org/w/index.php?title=Guitar/Jazz&oldid=3931946",
+            "sourceType": "B: collaboratively edited teaching exercises",
+            "ownerMaintainer": "Wikibooks contributors; individual diagram author Sluffs",
+            "lineageId": "wikimedia-guitar",
+            "origin": "MANUAL_AUTHORED_SELECTED",
+            "originEvidence": "Individual file pages say own work using Sibelius; the lesson deliberately assigns root/first/second inversion exercises.",
+            "license": "PD-self for individually checked Sluffs diagrams; lesson text CC-BY-SA-4.0",
+            "primaryEvidenceUrls": [
+              "https://commons.wikimedia.org/wiki/File:G_major_jazz_chord_for_guitar_(root).png",
+              "https://commons.wikimedia.org/wiki/File:E_major_jazz_chord_for_guitar_(first_inversion).png"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

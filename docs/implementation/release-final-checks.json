@@ -1,0 +1,52 @@
+{
+  "at": "2026-09-13T10:59:12.419Z",
+  "head": "9e793f1b407fef6da336ae2ca6a948b8143fe528",
+  "sourceSha256": "56067011aa7d5ddf70303e3bf70f91addaa8ef6fdeb21c9fc542c5dcd65eaecf",
+  "verifiedBuildAssets": 162,
+  "buildSha256": "1c1bdd7b892d10c2d91a4ca3b81cb3bde20d019434b284532240b82de60f30aa",
+  "productionDiff": "",
+  "syntaxChecked": [
+    "scripts/engine-integration/prepare-mobile-worker-cost.mjs",
+    "scripts/engine-integration/release-artifact-reverification.mjs",
+    "scripts/engine-integration/release-browser-performance.mjs",
+    "scripts/engine-integration/release-build-identity.mjs",
+    "scripts/engine-integration/release-harness.mjs",
+    "scripts/engine-integration/release-heap-analysis.mjs",
+    "scripts/engine-integration/release-latency-diagnostic.mjs",
+    "scripts/engine-integration/release-memory.mjs",
+    "scripts/engine-integration/release-mobile-performance.mjs",
+    "scripts/engine-integration/release-radio-retention.mjs",
+    "scripts/engine-integration/release-webkit-targeted.mjs",
+    "scripts/engine-integration/release-worker-stability.mjs"
+  ],
+  "lintCommand": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "node_modules/eslint/bin/eslint.js",
+    "scripts/engine-integration/prepare-mobile-worker-cost.mjs",
+    "scripts/engine-integration/release-artifact-reverification.mjs",
+    "scripts/engine-integration/release-browser-performance.mjs",
+    "scripts/engine-integration/release-build-identity.mjs",
+    "scripts/engine-integration/release-harness.mjs",
+    "scripts/engine-integration/release-heap-analysis.mjs",
+    "scripts/engine-integration/release-latency-diagnostic.mjs",
+    "scripts/engine-integration/release-memory.mjs",
+    "scripts/engine-integration/release-mobile-performance.mjs",
+    "scripts/engine-integration/release-radio-retention.mjs",
+    "scripts/engine-integration/release-webkit-targeted.mjs",
+    "scripts/engine-integration/release-worker-stability.mjs",
+    "scripts/engine-integration/release-contract-fixtures.test.ts",
+    "--max-warnings",
+    "0"
+  ],
+  "lintExit": 0,
+  "contracts": {
+    "passed": 29,
+    "failed": 0
+  },
+  "workerRuns": 26,
+  "workerAssertions": 130,
+  "originalWebkitEvidenceUnchanged": true,
+  "availableFrozenHashesVerified": 43,
+  "requiredCommitAncestors": true,
+  "reportComplete": true
+}

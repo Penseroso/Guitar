@@ -1,0 +1,499 @@
+{
+  "version": "representative-vocabulary-proposal-v1",
+  "status": "ADJUDICATION_INPUT_ONLY; no implementation or deployment authorization",
+  "construct": "Product-owned vocabulary of representative allocations inspired by a bounded public presentation case; not a popularity, preference, ease or independent-curation signal",
+  "scope": {
+    "tuningMidiHighToLow": [
+      64,
+      59,
+      55,
+      50,
+      45,
+      40
+    ],
+    "capoFret": 0,
+    "maxModeledFret": 15,
+    "context": "standalone",
+    "realization": "identity",
+    "explicitSlash": false,
+    "allowedRootsByQuality": {
+      "major": [
+        0,
+        2,
+        4
+      ],
+      "minor": [
+        0,
+        2
+      ],
+      "dominant-7": [
+        0,
+        2
+      ]
+    }
+  },
+  "scopeReason": "Initial priority is limited to the seven audited root/quality queries; other queries keep existing Recommended behavior. This avoids treating a seven-row open-form sample as a complete all-root open vocabulary.",
+  "closedTemplates": [
+    {
+      "id": "T01",
+      "quality": "major",
+      "offsetsHighToLow": [
+        0,
+        2,
+        2,
+        2,
+        0,
+        -1
+      ],
+      "rootPitchClassAtOffsetZero": 9,
+      "minimumTranslation": 1,
+      "maximumTranslation": 13,
+      "sourceObservedRows": [
+        "agc-c-major-2",
+        "agc-d-major-3",
+        "agc-e-major-4"
+      ],
+      "analyticalName": "Major A form",
+      "sourceFamilyCount": 1
+    },
+    {
+      "id": "T02",
+      "quality": "major",
+      "offsetsHighToLow": [
+        3,
+        0,
+        0,
+        0,
+        -1,
+        -1
+      ],
+      "rootPitchClassAtOffsetZero": 7,
+      "minimumTranslation": 1,
+      "maximumTranslation": 12,
+      "sourceObservedRows": [
+        "agc-c-major-3",
+        "agc-d-major-4",
+        "agc-e-major-5"
+      ],
+      "analyticalName": "Major partial G form (second inversion)",
+      "sourceFamilyCount": 1
+    },
+    {
+      "id": "T03",
+      "quality": "major",
+      "offsetsHighToLow": [
+        0,
+        0,
+        1,
+        2,
+        2,
+        0
+      ],
+      "rootPitchClassAtOffsetZero": 4,
+      "minimumTranslation": 1,
+      "maximumTranslation": 13,
+      "sourceObservedRows": [
+        "agc-c-major-4",
+        "agc-d-major-5",
+        "agc-e-major-6"
+      ],
+      "analyticalName": "Major E form",
+      "sourceFamilyCount": 1
+    },
+    {
+      "id": "T04",
+      "quality": "major",
+      "offsetsHighToLow": [
+        2,
+        3,
+        2,
+        0,
+        -1,
+        -1
+      ],
+      "rootPitchClassAtOffsetZero": 2,
+      "minimumTranslation": 1,
+      "maximumTranslation": 12,
+      "sourceObservedRows": [
+        "agc-c-major-5",
+        "agc-d-major-6",
+        "agc-e-major-2"
+      ],
+      "analyticalName": "Major D form",
+      "sourceFamilyCount": 1
+    },
+    {
+      "id": "T05",
+      "quality": "major",
+      "offsetsHighToLow": [
+        0,
+        1,
+        0,
+        2,
+        3,
+        -1
+      ],
+      "rootPitchClassAtOffsetZero": 0,
+      "minimumTranslation": 1,
+      "maximumTranslation": 12,
+      "sourceObservedRows": [
+        "agc-d-major-2",
+        "agc-e-major-3"
+      ],
+      "analyticalName": "Major C form",
+      "sourceFamilyCount": 1
+    },
+    {
+      "id": "T06",
+      "quality": "minor",
+      "offsetsHighToLow": [
+        0,
+        1,
+        2,
+        2,
+        0,
+        -1
+      ],
+      "rootPitchClassAtOffsetZero": 9,
+      "minimumTranslation": 1,
+      "maximumTranslation": 13,
+      "sourceObservedRows": [
+        "agc-c-minor-2",
+        "agc-d-minor-2"
+      ],
+      "analyticalName": "Minor A form",
+      "sourceFamilyCount": 1
+    },
+    {
+      "id": "T07",
+      "quality": "minor",
+      "offsetsHighToLow": [
+        0,
+        0,
+        0,
+        2,
+        2,
+        0
+      ],
+      "rootPitchClassAtOffsetZero": 4,
+      "minimumTranslation": 1,
+      "maximumTranslation": 13,
+      "sourceObservedRows": [
+        "agc-c-minor-3",
+        "agc-d-minor-3"
+      ],
+      "analyticalName": "Minor E form",
+      "sourceFamilyCount": 1
+    },
+    {
+      "id": "T08",
+      "quality": "minor",
+      "offsetsHighToLow": [
+        1,
+        3,
+        2,
+        0,
+        -1,
+        -1
+      ],
+      "rootPitchClassAtOffsetZero": 2,
+      "minimumTranslation": 1,
+      "maximumTranslation": 12,
+      "sourceObservedRows": [
+        "agc-c-minor-4",
+        "agc-d-minor-4"
+      ],
+      "analyticalName": "Minor D form",
+      "sourceFamilyCount": 1
+    },
+    {
+      "id": "T09",
+      "quality": "dominant-7",
+      "offsetsHighToLow": [
+        2,
+        0,
+        2,
+        1,
+        -1,
+        -1
+      ],
+      "rootPitchClassAtOffsetZero": 11,
+      "minimumTranslation": 1,
+      "maximumTranslation": 13,
+      "sourceObservedRows": [
+        "agc-c-7-2",
+        "agc-c-7-10",
+        "agc-d-7-3"
+      ],
+      "analyticalName": "C7-derived upper four (first inversion)",
+      "sourceFamilyCount": 1
+    },
+    {
+      "id": "T10",
+      "quality": "dominant-7",
+      "offsetsHighToLow": [
+        -1,
+        0,
+        2,
+        1,
+        2,
+        -1
+      ],
+      "rootPitchClassAtOffsetZero": 11,
+      "minimumTranslation": 1,
+      "maximumTranslation": 13,
+      "sourceObservedRows": [
+        "agc-c-7-3",
+        "agc-d-7-2"
+      ],
+      "analyticalName": "C7-derived inner four (fifth omitted)",
+      "sourceFamilyCount": 1
+    },
+    {
+      "id": "T11",
+      "quality": "dominant-7",
+      "offsetsHighToLow": [
+        0,
+        2,
+        0,
+        2,
+        0,
+        -1
+      ],
+      "rootPitchClassAtOffsetZero": 9,
+      "minimumTranslation": 1,
+      "maximumTranslation": 13,
+      "sourceObservedRows": [
+        "agc-c-7-4",
+        "agc-d-7-4"
+      ],
+      "analyticalName": "A7 form",
+      "sourceFamilyCount": 1
+    },
+    {
+      "id": "T12",
+      "quality": "dominant-7",
+      "offsetsHighToLow": [
+        1,
+        0,
+        0,
+        0,
+        -1,
+        -1
+      ],
+      "rootPitchClassAtOffsetZero": 7,
+      "minimumTranslation": 1,
+      "maximumTranslation": 14,
+      "sourceObservedRows": [
+        "agc-c-7-5",
+        "agc-d-7-5"
+      ],
+      "analyticalName": "Partial G7 form (second inversion)",
+      "sourceFamilyCount": 1
+    },
+    {
+      "id": "T13",
+      "quality": "dominant-7",
+      "offsetsHighToLow": [
+        0,
+        0,
+        1,
+        0,
+        -1,
+        -1
+      ],
+      "rootPitchClassAtOffsetZero": 4,
+      "minimumTranslation": 1,
+      "maximumTranslation": 14,
+      "sourceObservedRows": [
+        "agc-c-7-6",
+        "agc-d-7-8"
+      ],
+      "analyticalName": "Upper E7 form (third inversion)",
+      "sourceFamilyCount": 1
+    },
+    {
+      "id": "T14",
+      "quality": "dominant-7",
+      "offsetsHighToLow": [
+        -1,
+        0,
+        1,
+        0,
+        -1,
+        0
+      ],
+      "rootPitchClassAtOffsetZero": 4,
+      "minimumTranslation": 1,
+      "maximumTranslation": 14,
+      "sourceObservedRows": [
+        "agc-c-7-7",
+        "agc-d-7-7"
+      ],
+      "analyticalName": "E7 four-string form with internal mute",
+      "sourceFamilyCount": 1
+    },
+    {
+      "id": "T15",
+      "quality": "dominant-7",
+      "offsetsHighToLow": [
+        0,
+        0,
+        1,
+        0,
+        2,
+        0
+      ],
+      "rootPitchClassAtOffsetZero": 4,
+      "minimumTranslation": 1,
+      "maximumTranslation": 13,
+      "sourceObservedRows": [
+        "agc-c-7-8",
+        "agc-d-7-6"
+      ],
+      "analyticalName": "E7 form",
+      "sourceFamilyCount": 1
+    },
+    {
+      "id": "T16",
+      "quality": "dominant-7",
+      "offsetsHighToLow": [
+        2,
+        1,
+        2,
+        0,
+        -1,
+        -1
+      ],
+      "rootPitchClassAtOffsetZero": 2,
+      "minimumTranslation": 1,
+      "maximumTranslation": 13,
+      "sourceObservedRows": [
+        "agc-c-7-9",
+        "agc-d-7-9"
+      ],
+      "analyticalName": "D7 form",
+      "sourceFamilyCount": 1
+    }
+  ],
+  "exactOpenForms": [
+    {
+      "id": "O-agc-c-major-1",
+      "quality": "major",
+      "rootPitchClass": 0,
+      "statesHighToLow": [
+        0,
+        1,
+        0,
+        2,
+        3,
+        -1
+      ],
+      "sourceObservedRow": "agc-c-major-1",
+      "transpositionAllowed": false
+    },
+    {
+      "id": "O-agc-d-major-1",
+      "quality": "major",
+      "rootPitchClass": 2,
+      "statesHighToLow": [
+        2,
+        3,
+        2,
+        0,
+        -1,
+        -1
+      ],
+      "sourceObservedRow": "agc-d-major-1",
+      "transpositionAllowed": false
+    },
+    {
+      "id": "O-agc-e-major-1",
+      "quality": "major",
+      "rootPitchClass": 4,
+      "statesHighToLow": [
+        0,
+        0,
+        1,
+        2,
+        2,
+        0
+      ],
+      "sourceObservedRow": "agc-e-major-1",
+      "transpositionAllowed": false
+    },
+    {
+      "id": "O-agc-c-minor-1",
+      "quality": "minor",
+      "rootPitchClass": 0,
+      "statesHighToLow": [
+        3,
+        1,
+        0,
+        1,
+        3,
+        -1
+      ],
+      "sourceObservedRow": "agc-c-minor-1",
+      "transpositionAllowed": false
+    },
+    {
+      "id": "O-agc-d-minor-1",
+      "quality": "minor",
+      "rootPitchClass": 2,
+      "statesHighToLow": [
+        1,
+        3,
+        2,
+        0,
+        -1,
+        -1
+      ],
+      "sourceObservedRow": "agc-d-minor-1",
+      "transpositionAllowed": false
+    },
+    {
+      "id": "O-agc-c-7-1",
+      "quality": "dominant-7",
+      "rootPitchClass": 0,
+      "statesHighToLow": [
+        0,
+        1,
+        3,
+        2,
+        3,
+        -1
+      ],
+      "sourceObservedRow": "agc-c-7-1",
+      "transpositionAllowed": false
+    },
+    {
+      "id": "O-agc-d-7-1",
+      "quality": "dominant-7",
+      "rootPitchClass": 2,
+      "statesHighToLow": [
+        2,
+        1,
+        2,
+        0,
+        -1,
+        -1
+      ],
+      "sourceObservedRow": "agc-d-7-1",
+      "transpositionAllowed": false
+    }
+  ],
+  "match": "Within scope (including allowedRootsByQuality) and current structural/view constraints: exact open row OR same quality, exact template mute mask, integer translation p in declared range, all sounded states=offset+p, and query root=(anchor+p)%12. No added/dropped strings, alternative tuning, altered quality or open-string translation.",
+  "closedTranslationMeaning": "Product convention preserving the relative fret/mute pattern; physical millimetre geometry changes with position. A translated match is not claimed to have been observed on the source website. Each candidate must independently pass existing usability rules.",
+  "classification": {
+    "REPRESENTATIVE": "current Recommended usability gate passes AND vocabulary match",
+    "FALLBACK": "current Recommended usability gate passes AND no vocabulary match",
+    "OTHER": "current Recommended usability gate fails; retain separate vocabulary-match flag if present"
+  },
+  "recommendedOrder": "REPRESENTATIVE before FALLBACK; unchanged classic-v1 comparator inside each partition; paginate complete concatenation. No new scores, position quotas or empirical coefficients.",
+  "allOrder": "Preserve existing explicit demand and ordinary filters and existing order. All with demand=any and matching explicit filters reaches every member of M, including OTHER. No new implicit vocabulary filter.",
+  "absentOrInvalidVocabulary": "Disable priority overlay entirely and preserve pre-addendum Recommended usability/order behavior; do not drop candidates or relax the gate",
+  "rights": "No license to redistribute the source site, diagrams, prose, audio or dictionary. This is a separately expressed factual/mathematical product proposal. Source attributions remain exact-observation-only.",
+  "sourceCount": 1,
+  "templateCountsAreNotHumanVotes": true
+}

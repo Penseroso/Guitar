@@ -1,0 +1,113 @@
+[
+  {
+    "name": "memory-matrix",
+    "at": "2026-09-13T10:25:12.206Z",
+    "ended": "2026-09-13T10:31:05.447Z",
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "scripts/engine-integration/release-memory.mjs"
+    ],
+    "env": {
+      "MEMORY_RUNS": "1440",
+      "MEMORY_FIXTURES": "matrix",
+      "MEMORY_MODE": "baseline"
+    },
+    "exit": 0
+  },
+  {
+    "name": "memory-name-control",
+    "at": "2026-09-13T10:31:05.450Z",
+    "ended": "2026-09-13T10:36:37.692Z",
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "scripts/engine-integration/release-memory.mjs"
+    ],
+    "env": {
+      "MEMORY_RUNS": "1440",
+      "MEMORY_FIXTURES": "matrix",
+      "MEMORY_MODE": "reuse-radio-names"
+    },
+    "exit": 0
+  },
+  {
+    "name": "heap-analysis",
+    "at": "2026-09-13T10:36:37.695Z",
+    "ended": "2026-09-13T10:36:39.038Z",
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "scripts/engine-integration/release-heap-analysis.mjs",
+      ".tmp-release-memory/baseline-warm.heapsnapshot",
+      ".tmp-release-memory/baseline-end.heapsnapshot",
+      ".tmp-release-memory/baseline-matrix-warm.heapsnapshot",
+      ".tmp-release-memory/baseline-matrix-end.heapsnapshot",
+      ".tmp-release-memory/reuse-radio-names-matrix-warm.heapsnapshot",
+      ".tmp-release-memory/reuse-radio-names-matrix-end.heapsnapshot",
+      ".tmp-release-memory/radio-unique.heapsnapshot",
+      ".tmp-release-memory/radio-reused.heapsnapshot",
+      ".tmp-release-memory/radio-unique-before-instrumentation.heapsnapshot",
+      ".tmp-release-memory/radio-reused-before-instrumentation.heapsnapshot"
+    ],
+    "env": {},
+    "exit": 0
+  },
+  {
+    "name": "worker-stability",
+    "at": "2026-09-13T10:36:39.040Z",
+    "ended": "2026-09-13T10:37:58.581Z",
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "scripts/engine-integration/release-worker-stability.mjs"
+    ],
+    "env": {},
+    "exit": 0
+  },
+  {
+    "name": "typecheck",
+    "at": "2026-09-13T10:37:58.583Z",
+    "ended": "2026-09-13T10:38:04.661Z",
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--incremental",
+      "false",
+      "--pretty",
+      "false"
+    ],
+    "env": {},
+    "exit": 0
+  },
+  {
+    "name": "contract-tests",
+    "at": "2026-09-13T10:38:04.663Z",
+    "ended": "2026-09-13T10:38:05.955Z",
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "scripts/engine-integration/release-contract-fixtures.test.ts",
+      "--maxWorkers",
+      "1",
+      "--reporter=json",
+      "--outputFile=docs/implementation/release-contract-checks.json"
+    ],
+    "env": {},
+    "exit": 0
+  },
+  {
+    "name": "lint",
+    "at": "2026-09-13T10:38:05.957Z",
+    "ended": "2026-09-13T10:38:09.580Z",
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "node_modules/eslint/bin/eslint.js",
+      "scripts/engine-integration/release-*.mjs",
+      "scripts/engine-integration/release-contract-fixtures.test.ts",
+      "scripts/engine-integration/prepare-mobile-worker-cost.mjs",
+      "--max-warnings",
+      "0"
+    ],
+    "env": {},
+    "exit": 0
+  }
+]

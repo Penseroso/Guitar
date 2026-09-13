@@ -1,0 +1,502 @@
+{
+  "schemaVersion": "physical-envelope-instrument-profiles-v2.1",
+  "researchOnly": true,
+  "createdDate": "2026-09-13",
+  "populationDistributionClaim": false,
+  "unit": "mm",
+  "schemaNotes": [
+    "analysisProfiles always contain six required dimensional fields; radiusMm=null means flat",
+    "manufacturerProfiles omit unreported fields and enumerate missingParameters; null is never an unknown radius",
+    "Dimensions are nominal; no fabricated instrument covariance or tolerances",
+    "assumedParameters marks numerical completion; globalModelAssumptions apply to every analysis profile"
+  ],
+  "globalModelAssumptions": {
+    "equalTemperament": true,
+    "straightNutToBridgeCenterlines": true,
+    "equalCenterStringSpacing": true,
+    "nominalScaleIgnoresIndividualSaddleCompensation": true,
+    "constantTransverseRadius": true,
+    "actionReliefFretHeightAndStringGaugeNotModeled": true
+  },
+  "formulas": {
+    "fretWireX": "L * (1 - 2 ** (-n / 12))",
+    "spreadAtX": "nutOuterStringSpreadMm + (bridgeOuterStringSpreadMm - nutOuterStringSpreadMm) * x / scaleLengthMm",
+    "stringY": "(stringIndex / 5 - 0.5) * spreadAtX; index0 high E, index5 low E",
+    "surfaceZ": "radiusMm === null ? 0 : sqrt(radiusMm**2-y**2)-radiusMm",
+    "adjacentCenterGap": "spreadAtX / 5 only under equal-center assumption, never nutWidthMm/5",
+    "fretCellContact": "x in [x(n-1), x(n)]; chosen interior contact point is an additional assumption, not fret wire"
+  },
+  "sources": {
+    "fender_player_ii": {
+      "title": "Fender Player II Stratocaster, official specifications",
+      "url": "https://www.fender.com/products/player-ii-stratocaster?variant=45947062911198",
+      "type": "manufacturer-product",
+      "accessed": "2026-09-13",
+      "locator": "Measurements: scale; Neck: radius and nut width"
+    },
+    "fender_bridge": {
+      "title": "Fender American Series Stratocaster Tremolo Bridge Assemblies",
+      "url": "https://intl.fender.com/products/american-series-stratocaster-tremolo-bridge-assemblies",
+      "type": "manufacturer-component",
+      "accessed": "2026-09-13",
+      "locator": "Features; application stated as American/American Standard 1986–2007"
+    },
+    "taylor_gs_mini": {
+      "title": "Taylor GS Mini, official product specifications and staff answers",
+      "url": "https://www.taylorguitars.com/guitars/acoustic/gs-mini",
+      "type": "manufacturer-product-and-staff-qa",
+      "accessed": "2026-09-13",
+      "locator": "Scale spec; staff Q&A dated 2026-01-22 nut spacing, 2025-05-23 bridge spacing, 2025-03-14 radius, 2025-08-26 nut width/neck thickness"
+    },
+    "cordoba_c5": {
+      "title": "Córdoba C5, official specifications",
+      "url": "https://cordobaguitars.com/iberia/c5",
+      "type": "manufacturer-product",
+      "accessed": "2026-09-13",
+      "locator": "NECK: Nut String Spacing; DIMENSION & WEIGHT: scale, nut width, neck thickness"
+    },
+    "cordoba_stage": {
+      "title": "Córdoba Stage Traditional CD, official specifications",
+      "url": "https://cordobaguitars.com/stage/stage-traditional-cd/",
+      "type": "manufacturer-other-model",
+      "accessed": "2026-09-13",
+      "locator": "STAGE BODY & TRADITIONAL NECK explicitly describes flat radius; not evidence that C5 has same geometry"
+    }
+  },
+  "manufacturerProfiles": [
+    {
+      "id": "fender_player_ii_primary_partial",
+      "label": "Fender Player II Stratocaster",
+      "profileKind": "manufacturer-partial",
+      "stringCount": 6,
+      "scaleLengthMm": 647.7,
+      "nutWidthMm": 41.91,
+      "radiusMm": 241.3,
+      "provenance": {
+        "scaleLengthMm": {
+          "sourceId": "fender_player_ii",
+          "reported": "25.5 inches (also rounded 648 mm)",
+          "conversion": "25.5 * 25.4; use nominal inch specification",
+          "assumed": false,
+          "missing": false
+        },
+        "nutWidthMm": {
+          "sourceId": "fender_player_ii",
+          "reported": "1.650 inches (also rounded 42 mm)",
+          "conversion": "1.650 * 25.4",
+          "assumed": false,
+          "missing": false
+        },
+        "radiusMm": {
+          "sourceId": "fender_player_ii",
+          "reported": "9.5 inches (also rounded 241 mm)",
+          "conversion": "9.5 * 25.4",
+          "assumed": false,
+          "missing": false
+        }
+      },
+      "assumedParameters": [],
+      "missingParameters": [
+        "nutOuterStringSpreadMm",
+        "bridgeOuterStringSpreadMm"
+      ]
+    },
+    {
+      "id": "taylor_gs_mini_primary",
+      "label": "Taylor GS Mini nominal manufacturer reference",
+      "profileKind": "manufacturer-reference",
+      "instrumentClass": "steel-string-acoustic",
+      "stringCount": 6,
+      "scaleLengthMm": 596.9,
+      "nutOuterStringSpreadMm": 36.5125,
+      "bridgeOuterStringSpreadMm": 55.5625,
+      "radiusMm": 381,
+      "nutWidthMm": 42.8625,
+      "provenance": {
+        "scaleLengthMm": {
+          "sourceId": "taylor_gs_mini",
+          "reported": "23 1/2 inches",
+          "conversion": "23.5 * 25.4",
+          "assumed": false,
+          "missing": false
+        },
+        "nutOuterStringSpreadMm": {
+          "sourceId": "taylor_gs_mini",
+          "reported": "1 7/16 inches at nut",
+          "conversion": "1.4375 * 25.4",
+          "assumed": false,
+          "missing": false,
+          "interpretation": "Treat manufacturer overall string spacing as outer-string center span; center-versus-edge convention not expressly stated in Q&A."
+        },
+        "bridgeOuterStringSpreadMm": {
+          "sourceId": "taylor_gs_mini",
+          "reported": "2 3/16 inches at bridge",
+          "conversion": "2.1875 * 25.4",
+          "assumed": false,
+          "missing": false,
+          "interpretation": "Treat manufacturer overall string spacing as outer-string center span; center-versus-edge convention not expressly stated in Q&A."
+        },
+        "radiusMm": {
+          "sourceId": "taylor_gs_mini",
+          "reported": "15 inches",
+          "conversion": "15 * 25.4",
+          "assumed": false,
+          "missing": false
+        },
+        "nutWidthMm": {
+          "sourceId": "taylor_gs_mini",
+          "reported": "1 11/16 inches",
+          "conversion": "1.6875 * 25.4",
+          "assumed": false,
+          "missing": false
+        }
+      },
+      "neckThicknessMm": [
+        {
+          "fret": 1,
+          "value": 21.336,
+          "provenance": {
+            "sourceId": "taylor_gs_mini",
+            "reported": ".840 inches at first fret",
+            "conversion": ".840 * 25.4",
+            "assumed": false,
+            "missing": false
+          }
+        }
+      ],
+      "assumedParameters": [],
+      "missingParameters": [],
+      "scopeLimits": [
+        "Nominal product/staff values, not a measured specimen or manufacturing tolerances",
+        "Outer-center interpretation of manufacturer spacing needs direct measurement for contact precision",
+        "Equal center spacing and linear taper are modeling assumptions"
+      ]
+    },
+    {
+      "id": "cordoba_c5_primary_partial",
+      "label": "Córdoba C5",
+      "profileKind": "manufacturer-partial",
+      "stringCount": 6,
+      "scaleLengthMm": 650,
+      "nutWidthMm": 52,
+      "nutOuterStringSpreadMm": 43,
+      "provenance": {
+        "scaleLengthMm": {
+          "sourceId": "cordoba_c5",
+          "reported": "650 mm",
+          "conversion": "none; use native metric, not rounded 25.6-inch equivalent",
+          "assumed": false,
+          "missing": false
+        },
+        "nutWidthMm": {
+          "sourceId": "cordoba_c5",
+          "reported": "52 mm",
+          "conversion": "none; use native metric, not rounded 2-inch equivalent",
+          "assumed": false,
+          "missing": false
+        },
+        "nutOuterStringSpreadMm": {
+          "sourceId": "cordoba_c5",
+          "reported": "43 mm nut string spacing",
+          "conversion": "none",
+          "assumed": false,
+          "missing": false,
+          "interpretation": "Overall spacing interpreted as outer-string center span; individual slot locations unreported."
+        }
+      },
+      "neckThicknessMm": [
+        {
+          "fret": 1,
+          "value": 21,
+          "provenance": {
+            "sourceId": "cordoba_c5",
+            "reported": "21 mm",
+            "conversion": "none",
+            "assumed": false,
+            "missing": false
+          }
+        },
+        {
+          "fret": 9,
+          "value": 24,
+          "provenance": {
+            "sourceId": "cordoba_c5",
+            "reported": "24 mm",
+            "conversion": "none",
+            "assumed": false,
+            "missing": false
+          }
+        }
+      ],
+      "assumedParameters": [],
+      "missingParameters": [
+        "bridgeOuterStringSpreadMm",
+        "radiusMm"
+      ]
+    }
+  ],
+  "analysisProfiles": [
+    {
+      "id": "electric_strat_constructed_v2",
+      "label": "Constructed Strat-like electric geometry",
+      "profileKind": "constructed-reference",
+      "instrumentClass": "electric",
+      "stringCount": 6,
+      "scaleLengthMm": 647.7,
+      "nutOuterStringSpreadMm": 35,
+      "bridgeOuterStringSpreadMm": 52.3875,
+      "radiusMm": 241.3,
+      "nutWidthMm": 41.91,
+      "provenance": {
+        "scaleLengthMm": {
+          "sourceId": "fender_player_ii",
+          "reported": "25.5 inches (also rounded 648 mm)",
+          "conversion": "25.5 * 25.4; use nominal inch specification",
+          "assumed": false,
+          "missing": false
+        },
+        "nutWidthMm": {
+          "sourceId": "fender_player_ii",
+          "reported": "1.650 inches (also rounded 42 mm)",
+          "conversion": "1.650 * 25.4",
+          "assumed": false,
+          "missing": false
+        },
+        "radiusMm": {
+          "sourceId": "fender_player_ii",
+          "reported": "9.5 inches (also rounded 241 mm)",
+          "conversion": "9.5 * 25.4",
+          "assumed": false,
+          "missing": false
+        },
+        "nutOuterStringSpreadMm": {
+          "sourceId": null,
+          "reported": null,
+          "conversion": null,
+          "assumed": true,
+          "missing": false,
+          "rationale": "Explicit research endpoint 35 mm; not measured or a claimed Fender Player II specification. Nut width is not substituted for spread."
+        },
+        "bridgeOuterStringSpreadMm": {
+          "sourceId": "fender_bridge",
+          "reported": "2 1/16 inches (2.0625 inches)",
+          "conversion": "2.0625 * 25.4",
+          "assumed": true,
+          "missing": false,
+          "rationale": "Component endpoint borrowed for a constructed scenario; applicability to Player II is not established."
+        }
+      },
+      "assumedParameters": [
+        "nutOuterStringSpreadMm",
+        "bridgeOuterStringSpreadMm"
+      ],
+      "missingParameters": [],
+      "scopeLimits": [
+        "Not a coherent factory specification or measured instrument",
+        "Equal center spacing and linear taper are modeling assumptions"
+      ]
+    },
+    {
+      "id": "acoustic_gs_mini_reference_v2",
+      "label": "Taylor GS Mini nominal manufacturer reference",
+      "profileKind": "manufacturer-reference",
+      "instrumentClass": "steel-string-acoustic",
+      "stringCount": 6,
+      "scaleLengthMm": 596.9,
+      "nutOuterStringSpreadMm": 36.5125,
+      "bridgeOuterStringSpreadMm": 55.5625,
+      "radiusMm": 381,
+      "nutWidthMm": 42.8625,
+      "provenance": {
+        "scaleLengthMm": {
+          "sourceId": "taylor_gs_mini",
+          "reported": "23 1/2 inches",
+          "conversion": "23.5 * 25.4",
+          "assumed": false,
+          "missing": false
+        },
+        "nutOuterStringSpreadMm": {
+          "sourceId": "taylor_gs_mini",
+          "reported": "1 7/16 inches at nut",
+          "conversion": "1.4375 * 25.4",
+          "assumed": false,
+          "missing": false,
+          "interpretation": "Treat manufacturer overall string spacing as outer-string center span; center-versus-edge convention not expressly stated in Q&A."
+        },
+        "bridgeOuterStringSpreadMm": {
+          "sourceId": "taylor_gs_mini",
+          "reported": "2 3/16 inches at bridge",
+          "conversion": "2.1875 * 25.4",
+          "assumed": false,
+          "missing": false,
+          "interpretation": "Treat manufacturer overall string spacing as outer-string center span; center-versus-edge convention not expressly stated in Q&A."
+        },
+        "radiusMm": {
+          "sourceId": "taylor_gs_mini",
+          "reported": "15 inches",
+          "conversion": "15 * 25.4",
+          "assumed": false,
+          "missing": false
+        },
+        "nutWidthMm": {
+          "sourceId": "taylor_gs_mini",
+          "reported": "1 11/16 inches",
+          "conversion": "1.6875 * 25.4",
+          "assumed": false,
+          "missing": false
+        }
+      },
+      "neckThicknessMm": [
+        {
+          "fret": 1,
+          "value": 21.336,
+          "provenance": {
+            "sourceId": "taylor_gs_mini",
+            "reported": ".840 inches at first fret",
+            "conversion": ".840 * 25.4",
+            "assumed": false,
+            "missing": false
+          }
+        }
+      ],
+      "assumedParameters": [],
+      "missingParameters": [],
+      "scopeLimits": [
+        "Nominal product/staff values, not a measured specimen or manufacturing tolerances",
+        "Outer-center interpretation of manufacturer spacing needs direct measurement for contact precision",
+        "Equal center spacing and linear taper are modeling assumptions"
+      ]
+    },
+    {
+      "id": "classical_c5_constructed_v2",
+      "label": "Constructed C5-like classical geometry",
+      "profileKind": "constructed-reference",
+      "instrumentClass": "classical-nylon",
+      "stringCount": 6,
+      "scaleLengthMm": 650,
+      "nutOuterStringSpreadMm": 43,
+      "bridgeOuterStringSpreadMm": 59,
+      "radiusMm": null,
+      "nutWidthMm": 52,
+      "provenance": {
+        "scaleLengthMm": {
+          "sourceId": "cordoba_c5",
+          "reported": "650 mm",
+          "conversion": "none; use native metric, not rounded 25.6-inch equivalent",
+          "assumed": false,
+          "missing": false
+        },
+        "nutWidthMm": {
+          "sourceId": "cordoba_c5",
+          "reported": "52 mm",
+          "conversion": "none; use native metric, not rounded 2-inch equivalent",
+          "assumed": false,
+          "missing": false
+        },
+        "nutOuterStringSpreadMm": {
+          "sourceId": "cordoba_c5",
+          "reported": "43 mm nut string spacing",
+          "conversion": "none",
+          "assumed": false,
+          "missing": false,
+          "interpretation": "Overall spacing interpreted as outer-string center span; individual slot locations unreported."
+        },
+        "bridgeOuterStringSpreadMm": {
+          "sourceId": null,
+          "reported": null,
+          "conversion": null,
+          "assumed": true,
+          "missing": false,
+          "rationale": "Explicit constructed 59 mm endpoint, not claimed current C5 factory specification. Current official page lacks bridge spread."
+        },
+        "radiusMm": {
+          "sourceId": "cordoba_stage",
+          "reported": "Other model Stage Traditional CD has flat radius",
+          "conversion": null,
+          "assumed": true,
+          "missing": false,
+          "rationale": "Flat board hypothesis for this constructed classical reference; other-model specification does not establish C5 radius."
+        }
+      },
+      "neckThicknessMm": [
+        {
+          "fret": 1,
+          "value": 21,
+          "provenance": {
+            "sourceId": "cordoba_c5",
+            "reported": "21 mm",
+            "conversion": "none",
+            "assumed": false,
+            "missing": false
+          }
+        },
+        {
+          "fret": 9,
+          "value": 24,
+          "provenance": {
+            "sourceId": "cordoba_c5",
+            "reported": "24 mm",
+            "conversion": "none",
+            "assumed": false,
+            "missing": false
+          }
+        }
+      ],
+      "assumedParameters": [
+        "bridgeOuterStringSpreadMm",
+        "radiusMm"
+      ],
+      "missingParameters": [],
+      "scopeLimits": [
+        "Not a complete coherent current C5 factory specification",
+        "Equal center spacing and linear taper are modeling assumptions"
+      ]
+    }
+  ],
+  "sensitivityScenarios": [
+    {
+      "id": "electric_nut_endpoint_sensitivity",
+      "baseProfileId": "electric_strat_constructed_v2",
+      "varyOnly": "nutOuterStringSpreadMm",
+      "values": [
+        33,
+        35,
+        37
+      ],
+      "status": "constructed-unweighted-sensitivity; not percentiles or confidence interval"
+    },
+    {
+      "id": "classical_bridge_endpoint_sensitivity",
+      "baseProfileId": "classical_c5_constructed_v2",
+      "varyOnly": "bridgeOuterStringSpreadMm",
+      "values": [
+        57,
+        59,
+        61
+      ],
+      "status": "constructed-unweighted-sensitivity; not percentiles or confidence interval"
+    },
+    {
+      "id": "gsmini_scale_only_control",
+      "baseProfileId": "acoustic_gs_mini_reference_v2",
+      "varyOnly": "scaleLengthMm",
+      "values": [
+        596.9,
+        647.7,
+        650
+      ],
+      "status": "constructed dimensional contrast; changed cases are not GS Mini factory models"
+    },
+    {
+      "id": "gsmini_radius_only_control",
+      "baseProfileId": "acoustic_gs_mini_reference_v2",
+      "varyOnly": "radiusMm",
+      "values": [
+        241.3,
+        381,
+        null
+      ],
+      "status": "constructed dimensional contrast; changed cases are not GS Mini factory models"
+    }
+  ]
+}

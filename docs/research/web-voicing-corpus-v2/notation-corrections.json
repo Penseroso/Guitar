@@ -1,0 +1,25 @@
+{
+  "schema": "web-voicing-notation-corrections-v2",
+  "date": "2026-09-13",
+  "stage": "before empirical evaluator execution",
+  "corrections": [
+    {
+      "change": "Explicit suffix Maj7 accepted as registry major-7, preserving case distinction from m7 and all raw labels",
+      "basis": "Recognizable source-explicit major-seventh spelling; parser omission, not note-derived relabeling",
+      "affectedCuratedRows": [
+        "ku-matney-2019-037",
+        "ku-matney-2019-038",
+        "ku-matney-2019-039"
+      ],
+      "referenceRowsAffected": 0,
+      "beforeMapping": ".research/web-voicing-corpus-v2/curated-mapping",
+      "afterMapping": ".research/web-voicing-corpus-v2/curated-mapping-v2",
+      "beforeScriptSnapshot": ".research/web-voicing-corpus-v2/engine-map-before-Maj7.ts",
+      "beforeScriptSha256": "6c778fc2b8a21689c4e3c6d92dda8af9a789af5a6cbe25f4874d5b2ee0021a29",
+      "afterScriptSha256": "a326e84bbcf72645f4f682dc85e427c54c6030f6f690a67be1c1dbfaad5afb98",
+      "referenceRerun": false,
+      "referenceReason": "No reference raw label contains Maj7; original mapper source retained and its hash matches reference mapping manifest",
+      "productionChanged": false
+    }
+  ]
+}

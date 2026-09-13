@@ -1,0 +1,12 @@
+{
+  "at": "2026-09-13T10:50:28.225Z",
+  "reason": "User cancelled exhaustive WebKit matrix and directed targeted closure. Do not resume 480 x30.",
+  "path": "docs/implementation/release-performance-webkit.json",
+  "sha256": "84182ec148820efe3ebb22d340b290257f62efb783d19e6d183841cc7671ed4d",
+  "persistedFirstPageSamples": 300,
+  "persistedAncillarySamples": 25,
+  "lastConsoleCompleted": 312,
+  "unsavedSamples": 12,
+  "interpretation": "The 300 persisted raw samples are retained unchanged. Console progress confirms one further 12-request repetition, whose raw timing samples were not checkpointed before cancellation; these are not included in statistics.",
+  "ownedBenchmarkAndBrowserProcessesStopped": true
+}

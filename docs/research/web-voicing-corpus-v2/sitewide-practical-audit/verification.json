@@ -1,0 +1,22 @@
+{
+  "schema": "sitewide-practical-verification-v1",
+  "verifiedAt": "2026-09-13T06:50:56.470Z",
+  "baseline": "32f9d3f8a71dc0d2a5f18520bfad738e67ba26c0",
+  "trackedDiffEmpty": true,
+  "priorFrozenArtifacts": 40,
+  "pilotArtifactsAndScripts": 11,
+  "policyHashUnchanged": "f5cbb8293a9d98c9b1625f8eadffb8ccd9f7758922092eb6774eb9a4c7b0c026",
+  "sourceRowsDoubleVerified": 1510,
+  "observedMappedMatched": 1454,
+  "fullQueriesMatchingCensusAndTop18": 240,
+  "pairwiseDedupChecks": 987715,
+  "productTranslationsVerified": 77,
+  "productTranslationsCompact": 73,
+  "scopeRejectionControls": true,
+  "sourceFamilyCount": 1,
+  "uniqueVocabularyAllocations": 1530,
+  "eligibleVocabularyAllocations": 1364,
+  "queriesWithRepresentatives": 240,
+  "minimumRepresentativesPerQuery": 1,
+  "maximumRepresentativesPerQuery": 13
+}

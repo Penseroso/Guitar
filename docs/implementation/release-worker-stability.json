@@ -1,0 +1,1124 @@
+{
+  "schema": "release-worker-stability-v1",
+  "samples": [
+    {
+      "mode": "unloaded",
+      "run": 0,
+      "at": "2026-09-13T10:36:39.098Z",
+      "loadThreads": 0,
+      "timeoutMs": 5000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/unloaded-0.json",
+      "exitCode": 0,
+      "elapsedMs": 3457.0092,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 32.73039999999992,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1642.4436,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 7.491399999999885,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.5126999999997679,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 266.0156999999999,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/unloaded-0.json\n"
+    },
+    {
+      "mode": "unloaded",
+      "run": 1,
+      "at": "2026-09-13T10:36:42.557Z",
+      "loadThreads": 0,
+      "timeoutMs": 5000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/unloaded-1.json",
+      "exitCode": 0,
+      "elapsedMs": 2964.0811,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 29.768599999999992,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1766.4790000000003,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 5.643999999999778,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.416700000000219,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 262.4600999999998,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/unloaded-1.json\n"
+    },
+    {
+      "mode": "unloaded",
+      "run": 2,
+      "at": "2026-09-13T10:36:45.522Z",
+      "loadThreads": 0,
+      "timeoutMs": 5000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/unloaded-2.json",
+      "exitCode": 0,
+      "elapsedMs": 2939.5516,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 29.384700000000066,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1742.8975999999998,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 6.366100000000188,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.49979999999959546,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 249.89019999999982,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/unloaded-2.json\n"
+    },
+    {
+      "mode": "unloaded",
+      "run": 3,
+      "at": "2026-09-13T10:36:48.462Z",
+      "loadThreads": 0,
+      "timeoutMs": 5000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/unloaded-3.json",
+      "exitCode": 0,
+      "elapsedMs": 2914.1144000000004,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 31.93349999999998,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1723.5339,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 5.728900000000067,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.37469999999984793,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 249.0706,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/unloaded-3.json\n"
+    },
+    {
+      "mode": "unloaded",
+      "run": 4,
+      "at": "2026-09-13T10:36:51.377Z",
+      "loadThreads": 0,
+      "timeoutMs": 5000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/unloaded-4.json",
+      "exitCode": 0,
+      "elapsedMs": 2944.3770000000004,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 28.834299999999985,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1743.2927999999997,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 7.137399999999616,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.470299999999952,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 254.30719999999974,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/unloaded-4.json\n"
+    },
+    {
+      "mode": "unloaded",
+      "run": 5,
+      "at": "2026-09-13T10:36:54.323Z",
+      "loadThreads": 0,
+      "timeoutMs": 5000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/unloaded-5.json",
+      "exitCode": 0,
+      "elapsedMs": 2914.2616,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 31.287199999999984,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1748.6691,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 7.279899999999998,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.37530000000015207,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 248.53999999999996,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/unloaded-5.json\n"
+    },
+    {
+      "mode": "unloaded",
+      "run": 6,
+      "at": "2026-09-13T10:36:57.238Z",
+      "loadThreads": 0,
+      "timeoutMs": 5000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/unloaded-6.json",
+      "exitCode": 0,
+      "elapsedMs": 3011.070100000001,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 29.80409999999995,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1723.541,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 5.349099999999908,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.3737999999998465,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 244.00009999999975,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/unloaded-6.json\n"
+    },
+    {
+      "mode": "unloaded",
+      "run": 7,
+      "at": "2026-09-13T10:37:00.250Z",
+      "loadThreads": 0,
+      "timeoutMs": 5000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/unloaded-7.json",
+      "exitCode": 0,
+      "elapsedMs": 2902.301599999999,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 29.33050000000003,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1709.3294,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 6.835199999999986,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.3973000000000866,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 253.8047999999999,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/unloaded-7.json\n"
+    },
+    {
+      "mode": "unloaded",
+      "run": 8,
+      "at": "2026-09-13T10:37:03.153Z",
+      "loadThreads": 0,
+      "timeoutMs": 5000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/unloaded-8.json",
+      "exitCode": 0,
+      "elapsedMs": 2927.2765,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 29.29729999999995,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1734.8513,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 6.407799999999952,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.4679999999998472,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 250.32409999999982,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/unloaded-8.json\n"
+    },
+    {
+      "mode": "unloaded",
+      "run": 9,
+      "at": "2026-09-13T10:37:06.081Z",
+      "loadThreads": 0,
+      "timeoutMs": 5000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/unloaded-9.json",
+      "exitCode": 0,
+      "elapsedMs": 3026.996900000002,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 29.07809999999995,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1725.2963000000002,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 5.857899999999972,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.4097999999999047,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 248.2273,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/unloaded-9.json\n"
+    },
+    {
+      "mode": "unloaded",
+      "run": 10,
+      "at": "2026-09-13T10:37:09.109Z",
+      "loadThreads": 0,
+      "timeoutMs": 5000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/unloaded-10.json",
+      "exitCode": 0,
+      "elapsedMs": 2937.5406000000003,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 29.90910000000008,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1734.9894000000002,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 6.128000000000156,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.4080000000003565,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 257.1056000000003,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/unloaded-10.json\n"
+    },
+    {
+      "mode": "unloaded",
+      "run": 11,
+      "at": "2026-09-13T10:37:12.047Z",
+      "loadThreads": 0,
+      "timeoutMs": 5000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/unloaded-11.json",
+      "exitCode": 0,
+      "elapsedMs": 2957.4329,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 30.109500000000025,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1758.6924999999999,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 5.657400000000052,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.37010000000009313,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 260.6214,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/unloaded-11.json\n"
+    },
+    {
+      "mode": "unloaded",
+      "run": 12,
+      "at": "2026-09-13T10:37:15.005Z",
+      "loadThreads": 0,
+      "timeoutMs": 5000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/unloaded-12.json",
+      "exitCode": 0,
+      "elapsedMs": 2902.9649999999965,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 27.114599999999996,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1670.927,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 5.920399999999972,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.4701000000000022,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 242.6201000000001,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/unloaded-12.json\n"
+    },
+    {
+      "mode": "unloaded",
+      "run": 13,
+      "at": "2026-09-13T10:37:17.909Z",
+      "loadThreads": 0,
+      "timeoutMs": 5000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/unloaded-13.json",
+      "exitCode": 0,
+      "elapsedMs": 2845.9074000000037,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 28.239100000000008,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1650.1907999999999,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 5.9913000000001375,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.37330000000019936,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 260.18550000000005,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/unloaded-13.json\n"
+    },
+    {
+      "mode": "unloaded",
+      "run": 14,
+      "at": "2026-09-13T10:37:20.756Z",
+      "loadThreads": 0,
+      "timeoutMs": 5000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/unloaded-14.json",
+      "exitCode": 0,
+      "elapsedMs": 2952.317299999995,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 28.894499999999994,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1665.2307,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 5.346799999999803,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.3688999999999396,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 249.97820000000002,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/unloaded-14.json\n"
+    },
+    {
+      "mode": "unloaded",
+      "run": 15,
+      "at": "2026-09-13T10:37:23.709Z",
+      "loadThreads": 0,
+      "timeoutMs": 5000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/unloaded-15.json",
+      "exitCode": 0,
+      "elapsedMs": 2826.0973999999987,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 29.286599999999908,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1635.0946999999999,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 6.665600000000268,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.4436999999998079,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 250.71799999999985,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/unloaded-15.json\n"
+    },
+    {
+      "mode": "unloaded",
+      "run": 16,
+      "at": "2026-09-13T10:37:26.535Z",
+      "loadThreads": 0,
+      "timeoutMs": 5000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/unloaded-16.json",
+      "exitCode": 0,
+      "elapsedMs": 2926.0495999999985,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 30.087800000000016,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1735.88,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 6.086699999999837,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.3681000000001404,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 250.66629999999986,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/unloaded-16.json\n"
+    },
+    {
+      "mode": "unloaded",
+      "run": 17,
+      "at": "2026-09-13T10:37:29.462Z",
+      "loadThreads": 0,
+      "timeoutMs": 5000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/unloaded-17.json",
+      "exitCode": 0,
+      "elapsedMs": 2950.2391999999963,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 31.16249999999991,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1756.7837,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 6.673000000000229,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.45260000000007494,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 252.01700000000028,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/unloaded-17.json\n"
+    },
+    {
+      "mode": "unloaded",
+      "run": 18,
+      "at": "2026-09-13T10:37:32.413Z",
+      "loadThreads": 0,
+      "timeoutMs": 5000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/unloaded-18.json",
+      "exitCode": 0,
+      "elapsedMs": 2928.5573000000004,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 29.06090000000006,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1737.1074,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 5.38839999999982,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.47220000000015716,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 253.8402000000001,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/unloaded-18.json\n"
+    },
+    {
+      "mode": "unloaded",
+      "run": 19,
+      "at": "2026-09-13T10:37:35.343Z",
+      "loadThreads": 0,
+      "timeoutMs": 5000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/unloaded-19.json",
+      "exitCode": 0,
+      "elapsedMs": 2953.9375999999975,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 29.706000000000017,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1751.6508000000001,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 6.8740999999999985,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.4477999999999156,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 254.05339999999978,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/unloaded-19.json\n"
+    },
+    {
+      "mode": "controlled-load",
+      "run": 0,
+      "at": "2026-09-13T10:37:38.302Z",
+      "loadThreads": 6,
+      "timeoutMs": 30000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/controlled-load-0.json --testTimeout=30000",
+      "exitCode": 0,
+      "elapsedMs": 3441.7450000000026,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 35.207800000000134,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1969.9989999999998,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 8.004399999999805,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.45570000000043365,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 307.84029999999984,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/controlled-load-0.json\n"
+    },
+    {
+      "mode": "controlled-load",
+      "run": 1,
+      "at": "2026-09-13T10:37:41.751Z",
+      "loadThreads": 6,
+      "timeoutMs": 30000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/controlled-load-1.json --testTimeout=30000",
+      "exitCode": 0,
+      "elapsedMs": 3337.187700000002,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 39.13549999999998,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1963.1877,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 6.747699999999895,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.6503999999999905,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 308.45149999999967,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/controlled-load-1.json\n"
+    },
+    {
+      "mode": "controlled-load",
+      "run": 2,
+      "at": "2026-09-13T10:37:45.095Z",
+      "loadThreads": 6,
+      "timeoutMs": 30000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/controlled-load-2.json --testTimeout=30000",
+      "exitCode": 0,
+      "elapsedMs": 3383.279999999999,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 34.429700000000025,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1991.2164,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 7.7388999999998305,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.5273999999999432,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 303.1556999999998,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/controlled-load-2.json\n"
+    },
+    {
+      "mode": "controlled-load",
+      "run": 3,
+      "at": "2026-09-13T10:37:48.486Z",
+      "loadThreads": 6,
+      "timeoutMs": 30000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/controlled-load-3.json --testTimeout=30000",
+      "exitCode": 0,
+      "elapsedMs": 3326.4215000000113,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 40.01279999999997,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1958.4648000000002,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 6.248000000000047,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.5680999999999585,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 320.6522,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/controlled-load-3.json\n"
+    },
+    {
+      "mode": "controlled-load",
+      "run": 4,
+      "at": "2026-09-13T10:37:51.819Z",
+      "loadThreads": 6,
+      "timeoutMs": 30000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/controlled-load-4.json --testTimeout=30000",
+      "exitCode": 0,
+      "elapsedMs": 3346.699000000008,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 34.6653,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 2007.9007,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 6.817199999999957,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.5405000000000655,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 297.9020999999998,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/controlled-load-4.json\n"
+    },
+    {
+      "mode": "controlled-load",
+      "run": 5,
+      "at": "2026-09-13T10:37:55.172Z",
+      "loadThreads": 6,
+      "timeoutMs": 30000,
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/domain/chord/engine/workerService.test.ts --pool threads --maxWorkers 1 --reporter=json --outputFile=.tmp-release-memory/worker-tests/controlled-load-5.json --testTimeout=30000",
+      "exitCode": 0,
+      "elapsedMs": 3393.5817000000097,
+      "tests": [
+        {
+          "name": "acknowledges before running, yields tasks, and returns exact bounded pages with separate lookup",
+          "status": "passed",
+          "duration": 35.55209999999988,
+          "failureMessages": []
+        },
+        {
+          "name": "pauses without exact-empty claims and continues the same accumulator to the identical page",
+          "status": "passed",
+          "duration": 1976.8719,
+          "failureMessages": []
+        },
+        {
+          "name": "ignores superseded requests/views and cancels before queued work can publish late results",
+          "status": "passed",
+          "duration": 8.518800000000283,
+          "failureMessages": []
+        },
+        {
+          "name": "returns structured errors for corrupt schema and unsupported intent with no hidden fallback",
+          "status": "passed",
+          "duration": 0.4818999999997686,
+          "failureMessages": []
+        },
+        {
+          "name": "transports a maximum-size API page in bounded chunks without losing records",
+          "status": "passed",
+          "duration": 312.06320000000005,
+          "failureMessages": []
+        }
+      ],
+      "output": "JSON report written to C:/Projects/Guitar/.tmp-release-memory/worker-tests/controlled-load-5.json\n"
+    }
+  ],
+  "complete": true
+}
