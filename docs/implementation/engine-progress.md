@@ -9,7 +9,7 @@ The specification's archived documentation-only authorization note is superseded
 | 1 Contracts | Complete | 3 focused tests passed; new declarations/codec/schema foundation typechecked; no live imports changed |
 | 2 Compiler/subsets | Complete | 61 tests across 7 files passed, including all-registry compiler table and independent forward/inverse drop-set equality; scoped engine typecheck |
 | 3 Structural iterator | Complete | 502 production tests passed; 480-request frozen census parity, exact 1,647,041 baseline allocations retained, zero duplicates; scoped typecheck/lint |
-| 4 Physical assessment | Pending | |
+| 4 Physical assessment | Complete | 57 focused/legacy tests passed; independent 15,625-pattern cover oracle; 88-case shadow 79 PASS/9 UNCERTAIN/0 REJECT; 54 frozen hashes unchanged |
 | 5 Classic ranking | Pending | |
 | 6 Session/pages | Pending | |
 | 7 Worker | Pending | |
@@ -28,6 +28,8 @@ No semantic changes to the authoritative specification are made implicitly. Any 
 ## Baseline environment findings
 
 Stage 3 census: old-policy structural total 14,152,934; identity-v1 total 15,943,679. The 1,790,745 additions are confined to dominant-11's 24 requests. Largest request: 267,524. Node structural scan plus verification diagnostics: p50 7.785 ms, p95 37.314 ms, max 104.301 ms; these exclude Physical, Ranking and browser costs. Full evidence and exact source hashes are in `engine-census.json`.
+
+Stage 4 shadow: explicit required-damping interpretation yields 77 PASS/11 UNCERTAIN/0 REJECT; only the two archived internal-damping demands change status. All four former boolean exclusions survive as UNCERTAIN. Integer-span drift from archived floating geometry is at most 0.49445 micrometres with no verdict drift. The geometry table is independently reproduced using Decimal power at 80 digits and exp/log at 110 digits. No new solver or human validation was performed. New engine typecheck, scoped lint and diff checks pass; old live geometry/ranking sources remain unchanged.
 
 - Node v22.16.0. Vite requires subprocess access; ordinary sandbox tests fail with `spawn EPERM`, while approved execution passes.
 - Baseline full typecheck has 21 errors in archived physical comparator source and TS5097 in `scripts/physical-feasibility/compare.ts`. These are pre-existing and frozen artifacts will not be edited.
