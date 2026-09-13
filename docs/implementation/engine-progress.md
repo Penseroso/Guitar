@@ -7,7 +7,7 @@ The specification's archived documentation-only authorization note is superseded
 | Stage | Status | Validation |
 |---|---|---|
 | 1 Contracts | Complete | 3 focused tests passed; new declarations/codec/schema foundation typechecked; no live imports changed |
-| 2 Compiler/subsets | Pending | |
+| 2 Compiler/subsets | Complete | 61 tests across 7 files passed, including all-registry compiler table and independent forward/inverse drop-set equality; scoped engine typecheck |
 | 3 Structural iterator | Pending | |
 | 4 Physical assessment | Pending | |
 | 5 Classic ranking | Pending | |
@@ -20,6 +20,10 @@ The specification's archived documentation-only authorization note is superseded
 ## Implementation clarifications
 
 No semantic changes to the authoritative specification are made implicitly. Any necessary resolution will be recorded here with affected contracts and tests.
+
+- The new catalog view canonicalizes diminished-7 `6` to `bb7` while retaining the baseline registry for recognition and the old live pipeline until cutover. New realization obligations are separate from pinned legacy feature obligations.
+- Exact drop matching uses the equivalent inverse construction: raise the candidate's lowest voice by an octave, verify strict close position and the restored voice's specified index. The lowered voice of a strict close source is necessarily lowest; independent forward enumeration tests establish equivalence without a large template table.
+- `tsconfig.engine.json` is an explicitly scoped new-engine typecheck, not a claim that the baseline repository-wide research typecheck passes.
 
 ## Baseline environment findings
 
