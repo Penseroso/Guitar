@@ -1,37 +1,56 @@
 /**
  * audioEngine.ts
  * Singleton audio engine powered by Tone.js.
- * Manages a single shared PolySynth tuned to approximate a strummed guitar.
+ * Manages a single shared Sampler playing FreePats "Clean Electric Guitar" recordings
+ * (CC0 1.0; source and license documented in public/audio/clean-electric-guitar/SOURCE.md).
  */
 
 import * as Tone from 'tone';
 
-// Guitar-inspired synth options — short attack, long decay/release.
-const GUITAR_VOICE_OPTIONS = {
-    oscillator: { type: 'triangle' as const },
-    envelope: {
-        attack: 0.01,
-        decay: 1.2,
-        sustain: 0.2,
-        release: 1.5,
-    },
+const SAMPLE_BASE_URL = '/audio/clean-electric-guitar/';
+
+// Sparse anchor notes spanning the guitar's practical range (C2-C#6, MIDI 36-85) — Tone.Sampler
+// pitch-shifts any requested note to the nearest anchor rather than requiring a recording of
+// every semitone. See public/audio/clean-electric-guitar/SOURCE.md for the full provenance.
+const SAMPLE_URLS: Record<string, string> = {
+    C2: 'C2.mp3', F2: 'F2.mp3', A2: 'A2.mp3', C3: 'C3.mp3', E3: 'E3.mp3',
+    G3: 'G3.mp3', B3: 'B3.mp3', E4: 'E4.mp3', G4: 'G4.mp3', B4: 'B4.mp3',
+    D5: 'D5.mp3', 'G#5': 'Gs5.mp3', 'C#6': 'Cs6.mp3',
 };
 
+// The recordings peak close to 0 dBFS individually; trim before summing up to six strings at
+// once, then a transparent limiter catches the rare case where several attacks coincide.
+const SAMPLER_VOLUME_DB = -14;
+const LIMITER_THRESHOLD_DB = -1;
+
 class AudioEngine {
-    private synth: Tone.PolySynth<Tone.Synth> | null = null;
+    private sampler: Tone.Sampler | null = null;
+    private starting: Promise<void> | null = null;
     private initialized = false;
 
-    /** Must be called after the first user interaction (browser AudioContext policy). */
+    /** Must be called after the first user interaction (browser AudioContext policy).
+     *  Lazily creates the sampler and loads samples on first call only; concurrent callers
+     *  await the same in-flight load rather than triggering duplicate fetches. */
     async start(): Promise<void> {
         if (this.initialized) return;
-
-        await Tone.start();
-
-        // new PolySynth(VoiceClass, voiceOptions)
-        this.synth = new Tone.PolySynth(Tone.Synth, GUITAR_VOICE_OPTIONS).toDestination();
-        this.synth.set({ volume: -6 }); // Gentle default level
-
-        this.initialized = true;
+        if (!this.starting) {
+            this.starting = (async () => {
+                await Tone.start();
+                const limiter = new Tone.Limiter(LIMITER_THRESHOLD_DB).toDestination();
+                this.sampler = new Tone.Sampler({
+                    urls: SAMPLE_URLS,
+                    baseUrl: SAMPLE_BASE_URL,
+                    volume: SAMPLER_VOLUME_DB,
+                }).connect(limiter);
+                await Tone.loaded();
+                this.initialized = true;
+            })();
+        }
+        try {
+            await this.starting;
+        } finally {
+            this.starting = null;
+        }
     }
 
     /**
@@ -39,16 +58,16 @@ class AudioEngine {
      * Notes are triggered sequentially at 30 ms intervals (low → high).
      */
     playChord(notes: string[]): void {
-        if (!this.synth) return;
+        if (!this.sampler) return;
 
         // Cleanly release any currently held notes
-        this.synth.releaseAll(Tone.now());
+        this.sampler.releaseAll(Tone.now());
 
         const STRUM_INTERVAL = 0.03; // seconds between each string pick
         notes.forEach((note, index) => {
             const triggerTime = Tone.now() + index * STRUM_INTERVAL;
             // '2n' = half note duration — lets the natural decay shape the sound
-            this.synth!.triggerAttackRelease(note, '2n', triggerTime);
+            this.sampler!.triggerAttackRelease(note, '2n', triggerTime);
         });
     }
 
