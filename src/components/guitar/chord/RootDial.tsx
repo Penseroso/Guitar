@@ -7,6 +7,25 @@ import styles from './chord-interactions.module.css';
 
 const fifths = getCircleOfFifthsOrder();
 
+/** The trigger button is a single deterministic toggle: exactly one of pointerdown/click ever
+ *  decides a given press, so the two can never fight (pointerdown closing, then click reopening
+ *  on the same gesture). A mouse press is entirely decided by pointerdown — deciding here to
+ *  close also arms `suppressClick`, so the click that inevitably follows is a guaranteed no-op
+ *  rather than a second, independent toggle. */
+export function applyTriggerPointerDown(open: boolean): { open: boolean; suppressClick: boolean } {
+    return open ? { open: false, suppressClick: true } : { open: true, suppressClick: false };
+}
+
+/** Mouse clicks arrive after pointerdown already decided this gesture — by construction `open`
+ *  and `suppressClick` already reflect that decision, so this is always a no-op for the mouse.
+ *  Keyboard activation (Enter/Space on the button) never fires pointerdown, so it decides for
+ *  itself: a plain toggle of the current state. */
+export function applyTriggerClick(open: boolean, suppressClick: boolean, keyboardActivation: boolean): { open: boolean; suppressClick: boolean } {
+    if (keyboardActivation) return { open: !open, suppressClick: false };
+    if (suppressClick || open) return { open, suppressClick };
+    return { open: true, suppressClick };
+}
+
 export function RootDial({ value, onChange }: { value: number; onChange: (root: number) => void }) {
     const [open, setOpen] = useState(false);
     const [draft, setDraft] = useState(value);
@@ -92,14 +111,21 @@ export function RootDial({ value, onChange }: { value: number; onChange: (root: 
             aria-haspopup="dialog" aria-expanded={open} aria-controls={open ? id : undefined}
             onPointerDown={event => {
                 if (event.button !== 0) return;
-                suppressClick.current = false;
-                gesture.current = { id: event.pointerId, x: event.clientX, y: event.clientY, moved: false, inside: false };
-                if (!open) begin();
+                const decision = applyTriggerPointerDown(open);
+                suppressClick.current = decision.suppressClick;
+                if (decision.open) {
+                    gesture.current = { id: event.pointerId, x: event.clientX, y: event.clientY, moved: false, inside: false };
+                    begin();
+                } else {
+                    gesture.current = null;
+                    setOpen(false);
+                }
             }} onClick={event => {
-                if (event.detail === 0) suppressClick.current = false;
-                if (!suppressClick.current && !open) begin();
+                const decision = applyTriggerClick(open, suppressClick.current, event.detail === 0);
+                suppressClick.current = decision.suppressClick;
+                if (decision.open !== open) { if (decision.open) begin(); else setOpen(false); }
             }}>
-            {getKeyName(value)}<span className={styles.chevron} aria-hidden="true">⌄</span>
+            {getKeyName(value)}
         </button>
         {open && <div ref={popup} id={id} popover="manual" role="dialog" aria-label="Choose root" className={styles.rootPopover}
             onBlur={event => {

@@ -5,7 +5,7 @@ import { EngineSession } from '@/domain/chord/engine/session';
 import { allocationId } from '@/domain/chord/engine/identity';
 import { createViewMatcher } from '@/domain/chord/engine/view';
 import { physicalReasonText } from '@/domain/chord/engine/presentation';
-import { ChordExplorationPanel, VoicingFactsView } from './ChordExplorationPanel';
+import { ChordExplorationPanel } from './ChordExplorationPanel';
 import type { EngineExploration } from './useChordExploration';
 import { INITIAL_ENGINE_STATE } from './explorationController';
 
@@ -33,9 +33,7 @@ describe('integrated engine presentation', () => {
         const markup=render(state({request:uncertain.request,selected,surface:'recommended'}));
         expect(markup).not.toContain('UNCERTAIN');
         for(const reason of selected.physical.reasonCodes)expect(markup).not.toContain(physicalReasonText(reason));
-        const detail=renderToStaticMarkup(<VoicingFactsView candidate={selected}/>);
-        expect(detail).toContain('Selected by the recommendation policy.');
-        expect(detail).not.toMatch(/ledger|allocationId|Base preference|Stopped-wire|Profile:|Tuning MIDI/);
+        expect(markup).not.toMatch(/ledger|allocationId|Base preference|Stopped-wire|Profile:|Tuning MIDI/);
         expect(markup).not.toMatch(/Documented reference shape|wide-or-complex|product-extrapolated|CAGED|Demand tier/);
     });
     it('explains a PASS selection outside Recommended without a physical-unsuitability claim',()=>{
@@ -44,9 +42,7 @@ describe('integrated engine presentation', () => {
         expect(selected.physical.status).toBe('PASS');expect(selected.recommendation.eligible).toBe(false);
         const markup=render(state({request:request.request,selected,surface:'recommended'}));
         expect(markup).toContain('outside this surface or these filters');
-        const detail=renderToStaticMarkup(<VoicingFactsView candidate={selected}/>);
-        expect(detail).toContain('Outside the recommendation policy; available in All voicings.');
-        expect(detail).not.toMatch(/unsuitable|unplayable|uncomfortable|anatomically/);
+        expect(markup).not.toMatch(/unsuitable|unplayable|uncomfortable|anatomically/);
     });
     it('shows six exact rows and accessible cursor navigation without exposing engineering internals', () => {
         const markup = render(state());
@@ -86,14 +82,19 @@ describe('integrated engine presentation', () => {
         expect(markup).toMatch(/<button[^>]*disabled=""[^>]*data-play-id=/);
         expect(markup).not.toContain('data-results-count=');
     });
-    it('keeps the Details disclosure limited to musical facts and hides engineering internals', () => {
+    it('has no Details disclosure — omission and Recommended/All membership are already visible elsewhere', () => {
         const unusual = new EngineSession({ ...intent, physical: { warningSpanUm: 1, severeSpanUm: 2, omittedStrings: 'require-left-hand-damping' } });
         const row = unusual.lookup(allocationId(unusual.request.structural.instrument.tuningMidi, [0, 8, 9, 10, -1, -1]));
-        const markup = renderToStaticMarkup(<VoicingFactsView candidate={row} />);
         expect(row.physical.status).toBe('UNCERTAIN');
-        expect(markup).toContain('Degrees:');
-        expect(markup).toMatch(/Selected by the recommendation policy\.|Outside the recommendation policy; available in All voicings\./);
+        const markup = render(state({ request: unusual.request, selected: row }));
+        expect(markup).not.toContain('>Details<');
         expect(markup).not.toMatch(/UNCERTAIN|PASS|Stopped-wire|Partial-cover|Profile:|Tuning MIDI|Request defaults|Base preference|data-ledger-term|scoreNumerator|Human validation|allocationId|featureVersion/);
+    });
+
+    it('renders exactly one Notes/Intervals display-mode control, as a workspace-level toolbar toggle', () => {
+        const markup = render(state());
+        expect(markup.match(/>Notes</g)).toHaveLength(1);
+        expect(markup.match(/>Intervals</g)).toHaveLength(1);
     });
     it('keeps all-open selection under unconstrained position and labels it truthfully', () => {
         const open = new EngineSession({ ...intent, instrument: { tuningMidi: [60, 64, 67, 60, 64, 67], maxModeledFret: 0 } });

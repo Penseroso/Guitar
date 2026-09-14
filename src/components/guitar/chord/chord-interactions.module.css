@@ -1,7 +1,6 @@
 .label { color: var(--workspace-muted); font-size: 12px; }
 .rootControl { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
 .rootTrigger { display: flex; align-items: center; justify-content: center; gap: 8px; min-width: 64px; min-height: 48px; padding: 8px 12px; background: #fff; color: #050505; border: 1px solid #fff; border-radius: 16px; font-size: 16px; font-weight: 650; cursor: pointer; touch-action: none; }
-.chevron { font-size: 14px; opacity: .6; }
 .rootPopover { position: fixed; margin: 0; inset: auto; width: min(360px, calc(100vw - 24px)); padding: 12px; border: 1px solid var(--workspace-border); border-radius: 24px; background: var(--workspace-panel); color: #f4f4f5; box-shadow: 0 20px 60px #000a; max-height: calc(100dvh - 24px); overflow: auto; }
 .popoverHeader { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 14px; font-weight: 600; padding-left: 8px; }
 .close { min-height: 44px; padding: 8px 12px; border: 1px solid var(--workspace-border); border-radius: 12px; color: rgba(255, 255, 255, 0.8); background: transparent; font-size: 12px; cursor: pointer; }
