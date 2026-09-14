@@ -27,6 +27,12 @@ describe('inferChordReadings — registry-generic contract', () => {
             it(`recognizes every full-formula root-position voicing of ${entry.id} at root ${root}`, () => {
                 const pitchClasses = entry.formula.intervals.map((interval) => normalizePitchClass(root + interval));
                 const inference = inferChordReadings(fixture(root, pitchClasses));
+                if (entry.formula.degrees.length === 2) {
+                    // Exactly two formula tones (e.g. power-5) is played as exactly two notes, which
+                    // reverse inference always reports as a dyad rather than forcing a chord name.
+                    expect(inference.status).toBe('dyad');
+                    return;
+                }
                 expect(inference.status).toBe('named');
                 if (inference.status !== 'named') return;
                 const direct = inference.best.find((reading) => reading.chordId === entry.id && reading.rootPitchClass === root);
@@ -38,6 +44,7 @@ describe('inferChordReadings — registry-generic contract', () => {
 
     it('never returns a chordId that engineEntry cannot resolve, for every entry played as its own full formula', () => {
         for (const entry of CHORD_REGISTRY_LIST) {
+            if (entry.formula.degrees.length === 2) continue; // dyad, not a named reading — see above
             const pitchClasses = entry.formula.intervals.map((interval) => normalizePitchClass(interval));
             const inference = inferChordReadings(fixture(0, pitchClasses));
             expect(inference.status).toBe('named');

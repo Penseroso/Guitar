@@ -1,7 +1,6 @@
 "use client";
 
 import React from 'react';
-import { Play } from 'lucide-react';
 import type { ChordReading } from '@/domain/chord/reverse/readings';
 import { badgeFor, bassNoteLetter, explainReading, soundingIntervalLabels, soundingNoteLetters, titleFor } from './reading-labels';
 import styles from '../chord-ui.module.css';
@@ -9,15 +8,13 @@ import styles from '../chord-ui.module.css';
 export interface ChordReadingCardProps {
     reading: ChordReading;
     titleByKey: ReadonlyMap<string, string>;
-    isPlaying: boolean;
-    onPlay: () => void;
     /** Whether the fretboard above is currently showing intervals against this reading's root. */
     focused?: boolean;
     /** Toggles that focus. Omit to render the title as plain (non-interactive) text. */
     onToggleFocus?: () => void;
 }
 
-export function ChordReadingCard({ reading, titleByKey, isPlaying, onPlay, focused = false, onToggleFocus }: ChordReadingCardProps) {
+export function ChordReadingCard({ reading, titleByKey, focused = false, onToggleFocus }: ChordReadingCardProps) {
     const explanation = explainReading(reading, titleByKey);
     const badge = badgeFor(reading);
     const notes = soundingNoteLetters(reading);
@@ -34,10 +31,5 @@ export function ChordReadingCard({ reading, titleByKey, isPlaying, onPlay, focus
         <p className={styles.small}>{explanation.bassLine ?? `Bass: ${bassNoteLetter(reading)}`}</p>
         {badge && <p className={styles.small}>{badge}</p>}
         {explanation.sameNotesLine && <p className={styles.small}>{explanation.sameNotesLine}</p>}
-        <div className={styles.selectedTools}>
-            <button type="button" className={styles.action} aria-busy={isPlaying} onClick={onPlay}>
-                <Play size={14} aria-hidden="true" />{isPlaying ? 'Loading…' : 'Play'}
-            </button>
-        </div>
     </article>;
 }

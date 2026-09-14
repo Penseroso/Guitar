@@ -61,19 +61,46 @@ describe('inferChordReadings', () => {
         for (const reading of allDim7) expect(reading.sameNotesAs).toHaveLength(3);
     });
 
-    it('reads a bare third as an incomplete triad (no 5th) rather than rejecting it', () => {
-        const inference = inferChordReadings(fixture(0, [0, 4])); // C E
+    it('reads a doubled-root bare third as an incomplete triad (no 5th) rather than rejecting it', () => {
+        // Three sounding notes (root doubled), so this exercises chord inference rather than the
+        // two-note dyad path below.
+        const shape: EnteredShape = {
+            states: [-1, -1, -1, -1, -1, -1],
+            notes: [
+                { string: 0, fret: 0, midi: 0, pitchClass: 0 },
+                { string: 1, fret: 0, midi: 1, pitchClass: 4 },
+                { string: 2, fret: 0, midi: 2, pitchClass: 0 },
+            ],
+            bass: { midi: 0, pitchClass: 0 },
+            pitchClasses: [0, 4],
+            doubled: [{ pitchClass: 0, count: 2 }],
+        };
+        const inference = inferChordReadings(shape);
         expect(inference.status).toBe('named');
         if (inference.status !== 'named') return;
         const cMajorNo5 = inference.best.find((reading) => reading.chordId === 'major' && reading.rootPitchClass === 0);
         expect(cMajorNo5).toMatchObject({ tier: 'incomplete', omitted: ['5'] });
     });
 
-    it('prefers a complete triad plus a suspended reading over a bare power chord for C+G', () => {
+    it('reads a bare two-note third as a dyad (M3/m6), not a forced chord name', () => {
+        const inference = inferChordReadings(fixture(0, [0, 4])); // C E
+        expect(inference.status).toBe('dyad');
+        if (inference.status !== 'dyad') return;
+        expect(inference.dyad).toMatchObject({ bassToOther: 'M3', otherToBass: 'm6' });
+    });
+
+    it('reads C+G as a dyad (P5/P4) rather than forcing a power-chord name', () => {
         const inference = inferChordReadings(fixture(0, [0, 7])); // C G
-        expect(inference.status).toBe('named');
-        if (inference.status !== 'named') return;
-        expect(inference.best[0]).toMatchObject({ chordId: 'power-5', rootPitchClass: 0, tier: 'direct' });
+        expect(inference.status).toBe('dyad');
+        if (inference.status !== 'dyad') return;
+        expect(inference.dyad).toMatchObject({ bassToOther: 'P5', otherToBass: 'P4' });
+    });
+
+    it('treats a two-note same-pitch-class shape as an octave dyad, not too-few-notes', () => {
+        const inference = inferChordReadings(fixture(0, [0, 0]));
+        expect(inference.status).toBe('dyad');
+        if (inference.status !== 'dyad') return;
+        expect(inference.dyad).toMatchObject({ bassToOther: 'octave', otherToBass: 'octave' });
     });
 
     it('resolves an add9 registry reading directly, suppressing the synthetic "plus added D"', () => {

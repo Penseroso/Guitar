@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { NOTES } from '@/domain/shared/notes';
 import { TUNING, INLAYS, DOUBLE_INLAYS } from '@/domain/shared/tuning';
 import { FretboardProps } from '@/domain/shared/types';
@@ -13,6 +13,8 @@ const FRET_WIDTHS = [
 
 // Names for intervals
 const INTERVAL_NAMES = ['R', 'b2', '2', 'b3', '3', '4', 'b5', '5', 'b6', '6', 'b7', '7'];
+
+const LAST_STRING = 5, LAST_FRET = 24;
 
 export const Fretboard: React.FC<FretboardProps> = ({
     tuning = TUNING,
@@ -46,7 +48,7 @@ export const Fretboard: React.FC<FretboardProps> = ({
         x += FRET_WIDTHS[fretIdx] / 2;
 
         // Y coordinate is row-based. 6 rows of 60px each, plus some padding from container.
-        // Actually, css grid template rows is repeat(6, 60px). 
+        // Actually, css grid template rows is repeat(6, 60px).
         // We know exactly what top/left is relative to the board grid.
         // strings 0-5. Row height is 60px.
         // Y center = (stringIdx * 60) + 30
@@ -63,6 +65,46 @@ export const Fretboard: React.FC<FretboardProps> = ({
         }
         return INTERVAL_NAMES[intervalIdx];
     };
+
+    // Which (string, fret) positions actually show a note dot — used only to decide, when
+    // onCellClick is set, which one of the two stacked cells at a position (background vs. note)
+    // is the single keyboard-reachable target there.
+    const notePositions = useMemo(() => {
+        if (!onCellClick) return null;
+        const set = new Set<string>();
+        for (const s of strings) for (const f of frets) {
+            const noteIdx = (tuning[s] + f) % 12;
+            const shouldShow = fingering ? fingering.some(fico => fico.string === s && fico.fret === f)
+                : activeNotes.includes(noteIdx) || modifierNotes.includes(noteIdx);
+            if (shouldShow) set.add(`${s}:${f}`);
+        }
+        return set;
+    }, [onCellClick, strings, frets, tuning, fingering, activeNotes, modifierNotes]);
+
+    // Roving tabindex: exactly one cell in the whole board is a Tab stop at a time (the other ~150
+    // stay at tabIndex=-1, still reachable via arrow keys) — a real fretboard has too many cells for
+    // every one of them to sit in the Tab order.
+    const [activeCell, setActiveCell] = useState({ string: 0, fret: 0 });
+    const cellRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+    const setCellRef = (s: number, f: number) => (element: HTMLDivElement | null) => {
+        const key = `${s}:${f}`;
+        if (element) cellRefs.current.set(key, element); else cellRefs.current.delete(key);
+    };
+    const activate = (s: number, f: number) => { setActiveCell({ string: s, fret: f }); onCellClick?.(s, f); };
+    const moveFocus = (s: number, f: number, deltaString: number, deltaFret: number) => {
+        const nextString = Math.max(0, Math.min(LAST_STRING, s + deltaString));
+        const nextFret = Math.max(0, Math.min(LAST_FRET, f + deltaFret));
+        setActiveCell({ string: nextString, fret: nextFret });
+        cellRefs.current.get(`${nextString}:${nextFret}`)?.focus();
+    };
+    const cellKeyDown = (s: number, f: number) => (event: React.KeyboardEvent) => {
+        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); activate(s, f); }
+        else if (event.key === 'ArrowRight') { event.preventDefault(); moveFocus(s, f, 0, 1); }
+        else if (event.key === 'ArrowLeft') { event.preventDefault(); moveFocus(s, f, 0, -1); }
+        else if (event.key === 'ArrowDown') { event.preventDefault(); moveFocus(s, f, 1, 0); }
+        else if (event.key === 'ArrowUp') { event.preventDefault(); moveFocus(s, f, -1, 0); }
+    };
+    const isActive = (s: number, f: number) => activeCell.string === s && activeCell.fret === f;
 
     return (
         <div className={styles.fretboardContainer}>
@@ -113,30 +155,33 @@ export const Fretboard: React.FC<FretboardProps> = ({
                     <div className={styles.woodTexture} />
 
                     {/* Render Cells (Fret x String intersection) */}
-                    {/* We map COLUMN major or ROW major? 
-                        CSS Grid fills Row by Row usually. 
+                    {/* We map COLUMN major or ROW major?
+                        CSS Grid fills Row by Row usually.
                         We want 6 Rows (Strings).
-                        So we iterate Strings then Frets. 
+                        So we iterate Strings then Frets.
                     */}
 
                     {strings.map((s) => (
                         <React.Fragment key={`string-row-${s}`}>
-                            {frets.map((f) => (
-                                <div
-                                    key={`cell-${s}-${f}`}
-                                    className={`${f === 0 ? styles.nutCell : styles.fretCell}`}
-                                    style={{ gridRow: s + 1, gridColumn: f + 1, cursor: onCellClick ? 'pointer' : undefined }}
-                                    role={onCellClick ? 'button' : undefined}
-                                    tabIndex={onCellClick ? 0 : undefined}
-                                    aria-label={onCellClick ? `String ${s + 1}, fret ${f}` : undefined}
-                                    onClick={onCellClick ? () => onCellClick(s, f) : undefined}
-                                    onKeyDown={onCellClick ? (event) => {
-                                        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onCellClick(s, f); }
-                                    } : undefined}
-                                >
-                                    {/* Background Cell Content if any */}
-                                </div>
-                            ))}
+                            {frets.map((f) => {
+                                // A note dot at this position is the single keyboard target here instead.
+                                const interactive = onCellClick && !notePositions?.has(`${s}:${f}`);
+                                return (
+                                    <div
+                                        key={`cell-${s}-${f}`}
+                                        ref={interactive ? setCellRef(s, f) : undefined}
+                                        className={`${f === 0 ? styles.nutCell : styles.fretCell}`}
+                                        style={{ gridRow: s + 1, gridColumn: f + 1, cursor: interactive ? 'pointer' : undefined }}
+                                        role={interactive ? 'button' : undefined}
+                                        tabIndex={interactive ? (isActive(s, f) ? 0 : -1) : undefined}
+                                        aria-label={interactive ? `String ${s + 1}, fret ${f}` : undefined}
+                                        onClick={interactive ? () => activate(s, f) : undefined}
+                                        onKeyDown={interactive ? cellKeyDown(s, f) : undefined}
+                                    >
+                                        {/* Background Cell Content if any */}
+                                    </div>
+                                );
+                            })}
                         </React.Fragment>
                     ))}
 
@@ -194,11 +239,11 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                     const isRoot = noteIdx === rootNote;
                                     const isChordTone = chordTones.includes(noteIdx);
                                     const isModifier = modifierNotes.includes(noteIdx);
-                                    const isActive = activeNotes.includes(noteIdx);
+                                    const isNoteActive = activeNotes.includes(noteIdx);
 
                                     let shouldShow = false;
                                     if (fingering) shouldShow = !!specificFinger;
-                                    else shouldShow = isActive || isModifier;
+                                    else shouldShow = isNoteActive || isModifier;
 
                                     if (!shouldShow) return null;
 
@@ -256,15 +301,14 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                     return (
                                         <div
                                             key={`note-${s}-${f}`}
+                                            ref={onCellClick ? setCellRef(s, f) : undefined}
                                             className={styles.noteCell}
                                             style={{ gridRow: s + 1, gridColumn: f + 1, cursor: onCellClick ? 'pointer' : undefined }}
                                             role={onCellClick ? 'button' : undefined}
-                                            tabIndex={onCellClick ? 0 : undefined}
+                                            tabIndex={onCellClick ? (isActive(s, f) ? 0 : -1) : undefined}
                                             aria-label={onCellClick ? `String ${s + 1}, fret ${f} (currently placed) — click to remove` : undefined}
-                                            onClick={onCellClick ? () => onCellClick(s, f) : undefined}
-                                            onKeyDown={onCellClick ? (event) => {
-                                                if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onCellClick(s, f); }
-                                            } : undefined}
+                                            onClick={onCellClick ? () => activate(s, f) : undefined}
+                                            onKeyDown={onCellClick ? cellKeyDown(s, f) : undefined}
                                         >
                                             <div className={`${styles.noteDot} ${dotClass} ${(!isDoubleStop && doubleStops.length > 0) ? styles.faded : ''}`}>
                                                 {label}

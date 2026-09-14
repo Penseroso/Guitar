@@ -17,7 +17,7 @@ describe('ShapeEntry', () => {
 
     it('makes every string/fret cell clickable and focusable, not windowed to a handful of frets', () => {
         const markup = renderToStaticMarkup(<ShapeEntry states={silent} onChange={() => {}} />);
-        // Fretboard models frets 0-24 across 6 strings = 150 cells, all interactive here.
+        // Fretboard models frets 0-24 across 6 strings = 150 positions, each exactly one target.
         expect(markup.match(/role="button"/g)).toHaveLength(150);
     });
 
@@ -27,11 +27,18 @@ describe('ShapeEntry', () => {
         expect(markup.match(/noteRoot|noteChordTone|note3rd|note5th|note7th/g)?.length).toBeGreaterThanOrEqual(5);
     });
 
-    it('keeps an already-placed note itself clickable, not just the empty cell beneath it (regression: the note-dot overlay must not swallow the click)', () => {
+    it('keeps an already-placed note itself clickable, not the (now inert) empty cell beneath it — one target per position', () => {
         const markup = renderToStaticMarkup(<ShapeEntry states={openC} onChange={() => {}} />);
-        // 150 background cells + 5 sounding notes in openC = 155 clickable targets.
-        expect(markup.match(/role="button"/g)).toHaveLength(155);
+        // Still exactly 150: a note position hands its one interactive target to the note cell,
+        // not both, so the note-dot overlay can never silently swallow a click meant for the cell.
+        expect(markup.match(/role="button"/g)).toHaveLength(150);
         expect(markup).toContain('currently placed');
+    });
+
+    it('exposes exactly one Tab stop across the whole board (roving tabindex), defaulting to string 1 fret 0', () => {
+        const markup = renderToStaticMarkup(<ShapeEntry states={silent} onChange={() => {}} />);
+        expect(markup.match(/tabIndex=0|tabindex="0"/g)).toHaveLength(1);
+        expect(markup).toMatch(/tabindex="0"[^>]*aria-label="String 1, fret 0"/);
     });
 });
 

@@ -1,14 +1,17 @@
-import { CHORD_REGISTRY_LIST, type ChordRegistryEntry } from '../registry';
-import { deriveChordToneRole, deriveRequiredDegrees } from '../semantics';
-import type { ChordTone, PitchClass } from '../types';
-import type { EnteredShape } from './enteredShape';
+import { CHORD_REGISTRY_LIST } from '../registry';
+import { identifyChordsForPitchClasses } from '../chordRecognition';
+import type { ChordInterpretationCandidate, ChordTone, PitchClass } from '../types';
+import type { EnteredShape, EnteredShapeNote } from './enteredShape';
 
-// Reverse chord naming, entirely driven by CHORD_REGISTRY_LIST + shared semantics (deriveRequiredDegrees /
-// deriveChordToneRole) — the same theory the forward voicing search already trusts. A future registry
-// entry becomes reverse-recognizable purely by existing here; nothing below branches on a chord id or
-// maintains a second "recognized quality" list. L3 / Physical / Recommended-surface data must never be
-// imported here: whether a quality can be *named* is independent of whether the forward engine currently
-// has a playable-shape catalog for it.
+// Reverse chord naming builds on the existing forward-agnostic recognizer
+// (identifyChordsForPitchClasses, itself driven purely by CHORD_REGISTRY_LIST + shared semantics)
+// for harmonic admissibility — which (root, registry entry) pairs are valid readings of the played
+// pitch classes at all. This module adds only what's specific to reverse presentation on top: the
+// bass/tier/suppression/ranking policy below. A future registry entry becomes reverse-recognizable
+// purely by existing there; nothing here branches on a chord id or maintains a second "recognized
+// quality" list. L3 / Physical / Recommended-surface data must never be imported here: whether a
+// quality can be *named* is independent of whether the forward engine currently has a playable-shape
+// catalog for it.
 
 function normalizePitchClass(value: number): PitchClass {
     return ((value % 12) + 12) % 12;
@@ -44,8 +47,23 @@ export interface ChordReading {
     sameNotesAs: readonly string[];
 }
 
+/** Standard simple-interval quality, measured as the ascending distance in semitones from the
+ *  first note to the second (mod 12); 'octave' is reserved for the same pitch class at a different
+ *  MIDI pitch (a true unison — same pitch class *and* same MIDI — reports as 'unison' instead). */
+export type IntervalQuality = 'unison' | 'm2' | 'M2' | 'm3' | 'M3' | 'P4' | 'tritone' | 'P5' | 'm6' | 'M6' | 'm7' | 'M7' | 'octave';
+
+export interface DyadInterval {
+    bass: { pitchClass: PitchClass; midi: number };
+    other: { pitchClass: PitchClass; midi: number };
+    /** The quality going up from the bass note to the other note. */
+    bassToOther: IntervalQuality;
+    /** The quality going up from the other note back to the bass note (the standard inversion). */
+    otherToBass: IntervalQuality;
+}
+
 export type ReverseInference =
     | { status: 'empty' | 'too-few-notes' | 'no-clear-name'; shape: EnteredShape }
+    | { status: 'dyad'; shape: EnteredShape; dyad: DyadInterval }
     | { status: 'named'; shape: EnteredShape; best: readonly ChordReading[]; other: readonly ChordReading[]; looser: readonly ChordReading[] };
 
 function bassInversion(role: ChordReadingRole): ChordReadingInversion {
@@ -56,62 +74,43 @@ function bassInversion(role: ChordReadingRole): ChordReadingInversion {
 }
 
 /**
- * A single (registry entry, root) reading against the played pitch classes, or null if it isn't
- * admissible at all. Admission: every required degree sounds (the recognizer's own rule — the root
- * is always required), and at most one played pitch class falls outside the formula.
+ * Adapts one recognizer candidate (already proven harmonically admissible — every required degree
+ * sounds) into a reverse reading, or null if it fails the reverse-specific "at most one extra note"
+ * cap. The base recognizer allows any number of extra notes (useful for its own scale-matching
+ * caller); reverse tightens that because a shape with many unexplained notes isn't usefully named
+ * by any single reading.
  */
-function buildReading(
-    entry: ChordRegistryEntry,
-    rootPitchClass: PitchClass,
-    playedPitchClasses: readonly PitchClass[],
-    bassPitchClass: PitchClass
-): ChordReading | null {
-    const requiredDegrees = new Set(deriveRequiredDegrees(entry));
-    const formulaTones = entry.formula.degrees.map((degree, index) => ({
-        degree,
-        role: deriveChordToneRole(entry, degree) as ChordReadingRole,
-        pitchClass: normalizePitchClass(rootPitchClass + entry.formula.intervals[index]),
-        isRequired: requiredDegrees.has(degree),
-    }));
+function toReading(candidate: ChordInterpretationCandidate, bassPitchClass: PitchClass, playedPitchClasses: readonly PitchClass[]): ChordReading | null {
+    if (candidate.extraPitchClasses.length > 1) return null;
 
-    const missingRequired = formulaTones.some((tone) => tone.isRequired && !playedPitchClasses.includes(tone.pitchClass));
-    if (missingRequired) return null;
-
-    const formulaPitchClasses = formulaTones.map((tone) => tone.pitchClass);
-    const matched = playedPitchClasses.filter((pc) => formulaPitchClasses.includes(pc));
-    if (matched.length === 0) return null;
-
-    const extraPitchClasses = playedPitchClasses.filter((pc) => !formulaPitchClasses.includes(pc));
-    if (extraPitchClasses.length > 1) return null;
-
-    const omitted = formulaTones
-        .filter((tone) => !tone.isRequired && !playedPitchClasses.includes(tone.pitchClass))
-        .map((tone) => tone.degree);
-    const tier: ChordReadingTier = extraPitchClasses.length > 0 ? 'added-tone' : omitted.length > 0 ? 'incomplete' : 'direct';
+    const rootPitchClass = candidate.definition.rootPitchClass;
+    const formulaTones = candidate.tones.tones;
+    const omitted = formulaTones.filter((tone) => !tone.isRequired && !playedPitchClasses.includes(tone.pitchClass)).map((tone) => tone.degree);
+    const tier: ChordReadingTier = candidate.extraPitchClasses.length > 0 ? 'added-tone' : omitted.length > 0 ? 'incomplete' : 'direct';
 
     const bassTone = formulaTones.find((tone) => tone.pitchClass === bassPitchClass) ?? null;
     const relation: ChordReadingBassRelation =
         bassPitchClass === rootPitchClass ? 'root' : bassTone ? 'chord-tone' : 'outside';
 
     return {
-        key: `${entry.id}@${rootPitchClass}`,
-        chordId: entry.id,
+        key: `${candidate.definition.id}@${rootPitchClass}`,
+        chordId: candidate.definition.id,
         rootPitchClass,
         bassPitchClass,
         tier,
         bass: {
             relation,
             degree: bassTone?.degree ?? null,
-            inversion: relation === 'chord-tone' ? bassInversion(bassTone!.role) : null,
+            inversion: relation === 'chord-tone' ? bassInversion(bassTone!.role as ChordReadingRole) : null,
         },
         tones: formulaTones.map((tone) => ({
             degree: tone.degree,
-            role: tone.role,
+            role: tone.role as ChordReadingRole,
             pitchClass: tone.pitchClass,
             sounding: playedPitchClasses.includes(tone.pitchClass),
         })),
         omitted,
-        added: extraPitchClasses[0] ?? null,
+        added: candidate.extraPitchClasses[0] ?? null,
         sameNotesAs: [],
     };
 }
@@ -155,20 +154,38 @@ function tiesWithFirst(reading: ChordReading, first: ChordReading): boolean {
     );
 }
 
+const INTERVAL_QUALITIES: readonly IntervalQuality[] = ['unison', 'm2', 'M2', 'm3', 'M3', 'P4', 'tritone', 'P5', 'm6', 'M6', 'm7', 'M7'];
+
+/** Exactly two sounding notes get a dyad readout instead of chord-name inference — a two-note
+ *  input is genuinely a bare interval, not an underdetermined chord, and naming it as one (e.g. a
+ *  bare "power chord") would assert more than the notes actually support. Keyed on the number of
+ *  sounding notes rather than distinct pitch classes so two different octaves of the same note
+ *  (a true unison shape) still gets a dyad readout instead of falling through as too-few-notes. */
+function buildDyad(notes: readonly EnteredShapeNote[]): DyadInterval {
+    const [bass, other] = notes; // deriveEnteredShape sorts notes ascending by MIDI
+    const sameOctaveOrPitch = bass.pitchClass === other.pitchClass;
+    const isTrueUnison = sameOctaveOrPitch && bass.midi === other.midi;
+    const bassToOther = isTrueUnison ? 'unison' : sameOctaveOrPitch ? 'octave' : INTERVAL_QUALITIES[normalizePitchClass(other.pitchClass - bass.pitchClass)];
+    const otherToBass = isTrueUnison ? 'unison' : sameOctaveOrPitch ? 'octave' : INTERVAL_QUALITIES[normalizePitchClass(bass.pitchClass - other.pitchClass)];
+    return {
+        bass: { pitchClass: bass.pitchClass, midi: bass.midi },
+        other: { pitchClass: other.pitchClass, midi: other.midi },
+        bassToOther,
+        otherToBass,
+    };
+}
+
 export function inferChordReadings(shape: EnteredShape): ReverseInference {
     if (shape.notes.length === 0) return { status: 'empty', shape };
+    if (shape.notes.length === 2) return { status: 'dyad', shape, dyad: buildDyad(shape.notes) };
     if (shape.pitchClasses.length < 2) return { status: 'too-few-notes', shape };
 
     const bassPitchClass = shape.bass!.pitchClass;
     const playedPitchClasses = shape.pitchClasses;
 
-    const raw: ChordReading[] = [];
-    for (let root = 0; root < 12; root++) {
-        for (const entry of CHORD_REGISTRY_LIST) {
-            const reading = buildReading(entry, root, playedPitchClasses, bassPitchClass);
-            if (reading) raw.push(reading);
-        }
-    }
+    const raw = identifyChordsForPitchClasses([...playedPitchClasses])
+        .map((candidate) => toReading(candidate, bassPitchClass, playedPitchClasses))
+        .filter((reading): reading is ChordReading => reading !== null);
     if (raw.length === 0) return { status: 'no-clear-name', shape };
 
     // Same-root suppression: a formal registry reading with fewer added notes always beats a
