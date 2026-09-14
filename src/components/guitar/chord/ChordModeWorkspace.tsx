@@ -73,7 +73,7 @@ export function ChordModeWorkspace({ intent, onIntentChange, chordType, onChordT
 }) {
     return <section className={styles.workspace} aria-label="Chord workspace">
         <div className={styles.intentToggle}>
-            <ChoiceGroup label="Chord workflow" compact name="chord-mode-intent" value={intent}
+            <ChoiceGroup label="Chord workflow" compact segmented name="chord-mode-intent" value={intent}
                 onChange={(value) => onIntentChange(value as ChordWorkspaceIntent)}
                 options={[{ value: 'forward', label: 'Find voicings' }, { value: 'reverse', label: 'Name a shape' }]} />
         </div>

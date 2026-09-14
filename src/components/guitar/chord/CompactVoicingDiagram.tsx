@@ -63,14 +63,14 @@ export function CompactVoicingDiagram({
                         y1={getFretLineY(0)}
                         x2={getStringX(0)}
                         y2={getFretLineY(0)}
-                        stroke="#f8fafc"
+                        stroke="#f4f4f5"
                         strokeWidth="4"
                     />
                 ) : (
                     <text
                         x={getStringX(5) - 12}
                         y={getFretLineY(0) + fretSpacing / 2}
-                        fill="#94a3b8"
+                        fill="rgba(255,255,255,0.4)"
                         fontSize="10"
                         fontWeight="bold"
                         textAnchor="end"
@@ -88,7 +88,7 @@ export function CompactVoicingDiagram({
                             y1={getFretLineY(index)}
                             x2={getStringX(0)}
                             y2={getFretLineY(index)}
-                            stroke="#475569"
+                            stroke="rgba(255,255,255,0.20)"
                             strokeWidth="2"
                         />
                     )
@@ -104,7 +104,7 @@ export function CompactVoicingDiagram({
                             y1={getFretLineY(0)}
                             x2={getStringX(string)}
                             y2={getFretLineY(fretCount)}
-                            stroke="#475569"
+                            stroke="rgba(255,255,255,0.20)"
                             strokeWidth="2"
                         />
                     );
@@ -120,7 +120,7 @@ export function CompactVoicingDiagram({
                                 key={`mute-${string}`}
                                 x={getStringX(string)}
                                 y={topPadding - 14}
-                                fill="#475569"
+                                fill="rgba(255,255,255,0.3)"
                                 fontSize="12"
                                 fontWeight="bold"
                                 textAnchor="middle"
@@ -136,7 +136,7 @@ export function CompactVoicingDiagram({
                                 key={`open-${string}`}
                                 x={getStringX(string)}
                                 y={topPadding - 14}
-                                fill="#e2e8f0"
+                                fill="rgba(255,255,255,0.7)"
                                 fontSize="12"
                                 fontWeight="bold"
                                 textAnchor="middle"
@@ -163,19 +163,19 @@ export function CompactVoicingDiagram({
                                 cx={getStringX(note.string)}
                                 cy={getFretCenterY(note.fret)}
                                 r="9"
-                                fill={isRoot ? '#f8fafc' : '#050505'}
-                                stroke={isRoot ? '#f8fafc' : '#475569'}
+                                fill={isRoot ? '#f4f4f5' : '#050505'}
+                                stroke={isRoot ? '#f4f4f5' : 'rgba(255,255,255,0.3)'}
                                 strokeWidth="2"
                             />
                             {label && (
                                 <text
                                     x={getStringX(note.string)}
                                     y={getFretCenterY(note.fret)}
-                                    fill={isRoot ? '#020617' : '#e2e8f0'}
-                                    fontSize="12"
-                                    fontWeight="bold"
-                                    fontFamily="monospace"
+                                    fill={isRoot ? '#050505' : 'rgba(255,255,255,0.85)'}
+                                    fontSize={label.length > 1 ? '9' : '11'}
+                                    fontWeight="800"
                                     textAnchor="middle"
+                                    dominantBaseline="central"
                                     alignmentBaseline="central"
                                 >
                                     {label}

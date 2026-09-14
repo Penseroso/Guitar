@@ -283,4 +283,8 @@ body {
   --workspace-panel: #0a0a0a;
   --workspace-border: rgba(255, 255, 255, 0.09);
   --workspace-muted: #aaa;
+  /* Same focus-ring color already used by TogglePill/SelectPill/KeyButton/TabsRail
+     (Tailwind's outline-cyan-200) — a single shared focus token for CSS-module code
+     that can't reach that Tailwind class directly. */
+  --workspace-focus: #a5f3fc;
 }

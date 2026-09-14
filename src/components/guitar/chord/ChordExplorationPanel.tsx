@@ -74,7 +74,7 @@ export function ChordExplorationPanel({ engine, context, onContextChange, onSele
     };
     const selectedEnds = selected ? ends(selected, engine.request) : null;
     return <section aria-label="Chord voicings" className={styles.layout}>
-        <div style={{gridColumn:'1 / -1'}}><ChoiceGroup label="Voicing surface" value={engine.surface} options={[{value:'recommended',label:'Recommended'},{value:'all',label:'All voicings'}]} onChange={value=>engine.setSurface(value as 'recommended'|'all')} /></div>
+        <div style={{gridColumn:'1 / -1'}}><ChoiceGroup label="Voicing surface" segmented value={engine.surface} options={[{value:'recommended',label:'Recommended'},{value:'all',label:'All voicings'}]} onChange={value=>engine.setSurface(value as 'recommended'|'all')} /></div>
         {engine.error && <div role="alert" className={styles.warning} style={{ gridColumn: '1 / -1' }}><p>{engine.error.message}</p><button className={styles.action} onClick={engine.retry}>Retry search</button></div>}
         {selected ? <aside className={styles.selected} aria-label="Selected voicing" data-selected-id={selected.candidate.allocationId} data-selection-stale={engine.selectionStale}>
             <div className={styles.hero}><CompactVoicingDiagram voicing={diagramVoicing(selected)} labelMode={showIntervals ? 'degree' : 'note'} /><div className={styles.heroInfo}>
@@ -85,7 +85,7 @@ export function ChordExplorationPanel({ engine, context, onContextChange, onSele
             {engine.selectionNotice && <p role="status" className={styles.warning}>{engine.selectionNotice}</p>}
             <div className={styles.selectedTools}><button className={styles.action} aria-expanded={detailsOpen} aria-controls={id + '-details'} onClick={() => setDetailsOpen(open => !open)}>Details</button>
                 <button ref={neckTrigger} className={styles.action} aria-haspopup="dialog" onClick={() => setNeckOpen(true)}>Full fretboard</button>
-                <ChoiceGroup label="Diagram labels" compact value={showIntervals ? 'degree' : 'note'} onChange={value => { if ((value === 'degree') !== showIntervals) onToggleIntervals(); }} options={[{ value: 'note', label: 'Notes' }, { value: 'degree', label: 'Intervals' }]} />
+                <ChoiceGroup label="Diagram labels" compact segmented value={showIntervals ? 'degree' : 'note'} onChange={value => { if ((value === 'degree') !== showIntervals) onToggleIntervals(); }} options={[{ value: 'note', label: 'Notes' }, { value: 'degree', label: 'Intervals' }]} />
             </div>{detailsOpen && <div id={id + '-details'} className={styles.details}><VoicingFactsView candidate={selected} /></div>}
         </aside> : <div className={styles.selected}>{busy && <p role="status">Finding voicings…</p>}{engine.selectionNotice && <p role="status" className={styles.warning}>{engine.selectionNotice}</p>}{page?.outcome === 'structurally-empty' && <p role="status">No allocations satisfy this structural request.</p>}</div>}
         <div className={styles.browser}>

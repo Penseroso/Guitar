@@ -30,7 +30,7 @@ function readingGroup(
 ) {
     if (readings.length === 0) return null;
     return <section aria-label={title}>
-        <h3 className={styles.small}>{title}</h3>
+        <h3 className={styles.groupHeading}>{title}</h3>
         <div className={styles.cards}>
             {readings.map((reading) => <ChordReadingCard key={reading.key} reading={reading} titleByKey={titleByKey}
                 focused={focusedKey === reading.key} onToggleFocus={() => onToggleFocus(reading)} />)}
@@ -91,7 +91,7 @@ export function ReverseChordPanel({ states, onStatesChange, onStartFromVoicing }
                 {readingGroup('Best match', inference.best, titleByKey, focusedReadingKey, toggleFocus)}
                 {readingGroup('Other names', inference.other, titleByKey, focusedReadingKey, toggleFocus)}
                 {inference.looser.length > 0 && <details>
-                    <summary className={styles.small}>Looser readings ({inference.looser.length})</summary>
+                    <summary className={styles.groupHeading} style={{ cursor: 'pointer' }}>Looser readings ({inference.looser.length})</summary>
                     <div className={styles.cards}>
                         {inference.looser.map((reading) => <ChordReadingCard key={reading.key} reading={reading} titleByKey={titleByKey}
                             focused={focusedReadingKey === reading.key} onToggleFocus={() => toggleFocus(reading)} />)}

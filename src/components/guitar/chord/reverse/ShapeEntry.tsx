@@ -56,7 +56,7 @@ export function ShapeEntry({ states, onChange, onSelectFret, focusedReading = nu
         if (!isReselection) onSelectFret?.(string, fret);
     };
 
-    return <div className={styles.neckScroll} tabIndex={-1} aria-label="Guitar shape entry — click a string/fret cell to place or remove a note">
+    return <div className={`${styles.neckScroll} ${styles.reverseFretboard}`} tabIndex={-1} aria-label="Guitar shape entry — click a string/fret cell to place or remove a note">
         <Fretboard
             activeNotes={[]}
             rootNote={focusedReading?.rootPitchClass ?? bassPitchClass}

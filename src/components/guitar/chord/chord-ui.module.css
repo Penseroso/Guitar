@@ -1,9 +1,11 @@
 .workspace {
-    /* Local aliases onto the shared workspace tokens (globals.css) — same values as before,
-       just no longer redefined here so Scale's rail/surfaces can reference the same source. */
+    /* Local aliases onto the shared workspace tokens (globals.css) — a single shared surface
+       vocabulary, not a second one. Chord-specific rules below should read these instead of
+       reaching for their own hardcoded equivalents. */
     --chord-panel: var(--workspace-panel);
     --chord-muted: var(--workspace-muted);
     --chord-border: var(--workspace-border);
+    --chord-focus: var(--workspace-focus);
     color: #f4f4f5;
     font-size: 14px;
     line-height: 1.5;
@@ -13,60 +15,83 @@
 .workspace p { margin: 0; }
 .workspace button { font: inherit; cursor: pointer; }
 .workspace .action, .familyTabs button, .choice { touch-action: manipulation; }
-.workspace :is(button, input, summary, [tabindex]):focus-visible { outline: 2px solid #bae6fd; outline-offset: 3px; }
+.workspace :is(button, input, summary, [tabindex]):focus-visible { outline: 2px solid var(--chord-focus); outline-offset: 3px; }
 .workspace button:disabled { cursor: wait; opacity: .6; }
+
+/* Secondary action — the one button language for Details/Filters/Close/Clear/Play(icon)/
+   pagination/chips, matching the shared control recipe (subtle resting surface, white/10 hover,
+   white/20 hover border) already used by KeyButton and the rest of the app. */
 .workspace .action {
     display: inline-flex; align-items: center; justify-content: center; gap: 6px;
     min-height: 44px; min-width: 44px; padding: 8px 12px; border-radius: 12px;
-    border: 1px solid var(--chord-border); background: #ffffff04; color: #ddd;
+    border: 1px solid var(--chord-border); background: rgba(255, 255, 255, 0.03); color: rgba(255, 255, 255, 0.8);
+    transition: background 150ms ease, border-color 150ms ease;
 }
-.workspace .action:hover { background: #ffffff10; border-color: #ffffff30; }
-.workspace .action[aria-expanded="true"] { background: #ffffff12; border-color: #ffffff40; }
+.workspace .action:hover { background: rgba(255, 255, 255, 0.10); border-color: rgba(255, 255, 255, 0.20); }
+.workspace .action[aria-expanded="true"] { background: rgba(255, 255, 255, 0.10); border-color: rgba(255, 255, 255, 0.30); }
 .workspace .primary { min-height: 48px; background: #f4f4f5; color: #050505; font-weight: 650; font-size: 12px; }
 .workspace .primary:hover { background: #fff; }
 .row { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
 .small, .controlLabel { font-size: 12px; color: var(--chord-muted); }
+/* Compact uppercase metadata label — same convention Scale uses for section headers
+   (e.g. "Visualization Overrides"). */
+.groupHeading { font-size: 10px; font-weight: 900; letter-spacing: 0.2em; text-transform: uppercase; color: var(--chord-muted); margin-bottom: 4px; }
 .warning { font-size: 12px; color: #fde68a; }
 .srOnly, .compactChoices > legend {
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
     overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
 }
-.intentToggle { margin-bottom: 16px; }
-.inputs { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: start; margin-bottom: 20px; }
+.intentToggle { margin-bottom: 20px; }
+.inputs { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: start; margin-bottom: 24px; }
 .chordType { display: contents; }
 .controlLabel { grid-column: 2; grid-row: 1; min-height: 18px; }
-.currentQuality { color: #ddd; margin-left: 6px; }
-.familyTabs { grid-column: 2; grid-row: 1; margin-top: 24px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; border: 1px solid var(--chord-border); border-radius: 16px; padding: 3px; }
-.familyTabs button { min-height: 44px; min-width: 0; border: 0; border-radius: 12px; background: transparent; color: #aaa; font-size: 12px; font-weight: 650; padding: 4px; }
-.familyTabs button[aria-selected="true"] { background: #ffffff16; color: white; }
+.currentQuality { color: #f4f4f5; margin-left: 6px; }
+
+/* Family tabs (Basic / 6-7 / Extended) — same track+tab recipe as the shared TabsRail
+   (Scale/Chord/Prog switch, ScaleRootNavigator's Orbit/Matrix toggle): a bordered track,
+   equal-weight tabs, white/10 active fill. */
+.familyTabs { grid-column: 2; grid-row: 1; margin-top: 24px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; border: 1px solid var(--chord-border); background: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 4px; }
+.familyTabs button { min-height: 40px; min-width: 0; border: 0; border-radius: 8px; background: transparent; color: var(--chord-muted); font-size: 12px; font-weight: 700; letter-spacing: 0.02em; padding: 4px; transition: background 150ms ease, color 150ms ease; }
+.familyTabs button:hover { color: rgba(255, 255, 255, 0.7); }
+.familyTabs button[aria-selected="true"] { background: rgba(255, 255, 255, 0.10); color: white; }
 .qualityChoices { grid-column: 1 / -1; }
 .qualityChoices .choices { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .accompaniment { grid-column: 1 / -1; padding-bottom: 14px; border-bottom: 1px solid var(--chord-border); }
 .contextSwitch { position: relative; display: flex; align-items: center; gap: 12px; min-height: 44px; cursor: pointer; }
 .contextSwitch input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
-.switchTrack { width: 40px; height: 24px; border-radius: 24px; background: #ffffff25; padding: 3px; flex: none; transition: background 180ms ease; }
-.switchTrack::after { content: ''; display: block; width: 18px; height: 18px; border-radius: 50%; background: #aaa; transition: transform 180ms ease; }
-.contextSwitch input:checked + .switchTrack { background: #eee; }
-.contextSwitch input:checked + .switchTrack::after { transform: translateX(16px); background: #111; }
-.contextSwitch:has(input:focus-visible) { outline: 2px solid #bae6fd; outline-offset: 2px; border-radius: 12px; }
+.switchTrack { width: 40px; height: 24px; border-radius: 24px; background: rgba(255, 255, 255, 0.10); padding: 3px; flex: none; transition: background 180ms ease; }
+.switchTrack::after { content: ''; display: block; width: 18px; height: 18px; border-radius: 50%; background: rgba(255, 255, 255, 0.6); transition: transform 180ms ease; }
+.contextSwitch input:checked + .switchTrack { background: #f4f4f5; }
+.contextSwitch input:checked + .switchTrack::after { transform: translateX(16px); background: #050505; }
+.contextSwitch:has(input:focus-visible) { outline: 2px solid var(--chord-focus); outline-offset: 2px; border-radius: 12px; }
 @media (prefers-reduced-motion: reduce) { .switchTrack, .switchTrack::after { transition: none; } }
 .choiceGroup { border: 0; padding: 0; margin: 0; min-width: 0; }
 .choiceGroup legend { color: var(--chord-muted); font-size: 12px; margin-bottom: 6px; }
 .choices { display: flex; flex-wrap: wrap; gap: 6px; }
 .choice { position: relative; display: flex; min-width: 44px; min-height: 44px; cursor: pointer; }
 .choice input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
-.choice span { display: flex; align-items: center; justify-content: center; width: 100%; padding: 8px 12px; border: 1px solid var(--chord-border); border-radius: 12px; background: #050505; color: #b8b8b8; font-size: 13px; white-space: nowrap; }
+.choice span { display: flex; align-items: center; justify-content: center; width: 100%; padding: 8px 12px; border: 1px solid var(--chord-border); border-radius: 12px; background: #050505; color: var(--chord-muted); font-size: 13px; white-space: nowrap; transition: border-color 150ms ease; }
 .choice input:checked + span { color: #050505; background: #f4f4f5; border-color: #f4f4f5; font-weight: 600; }
-.choice input:focus-visible + span { outline: 2px solid #bae6fd; outline-offset: 3px; }
-.choice:hover span { border-color: #ffffff40; }
+.choice input:focus-visible + span { outline: 2px solid var(--chord-focus); outline-offset: 3px; }
+.choice:hover span { border-color: rgba(255, 255, 255, 0.20); }
+
+/* Segmented variant — a track of equal-weight tabs for true binary/ternary workflow toggles
+   (workflow intent, voicing surface, diagram labels), instead of the chip-grid look above.
+   Same recipe as the shared TabsRail. */
+.segmented { display: flex; gap: 0; padding: 4px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--chord-border); border-radius: 12px; width: fit-content; max-width: 100%; }
+.segmentedChoice { flex: 1 1 0; min-width: 0; }
+.segmentedChoice span { border: 0; background: transparent; border-radius: 8px; padding: 8px 16px; color: var(--chord-muted); font-size: 12px; font-weight: 700; letter-spacing: 0.02em; white-space: nowrap; }
+.segmentedChoice:hover span { border-color: transparent; color: rgba(255, 255, 255, 0.7); }
+.segmentedChoice input:checked + span { background: rgba(255, 255, 255, 0.10); color: #fff; border-color: transparent; font-weight: 700; }
+
 .layout { display: grid; gap: 20px; align-items: start; }
-.selected { background: var(--chord-panel); border: 1px solid var(--chord-border); border-radius: 24px; padding: 12px; min-width: 0; }
+.selected { background: var(--chord-panel); border: 1px solid var(--chord-border); border-radius: 24px; padding: 16px; min-width: 0; }
 .hero { display: grid; grid-template-columns: 136px minmax(0, 1fr); gap: 8px; align-items: center; }
 .hero > div:first-child svg, .cardSelect > div:first-child svg { width: 136px; max-width: 100%; height: auto; }
 .action svg { flex: none; }
 .heroInfo { display: flex; flex-direction: column; align-items: stretch; gap: 4px; min-width: 0; }
 .heroInfo h2 { margin: 0; }
-.endNotes { color: #b8b8b8; font-size: 12px; }
+.endNotes { color: var(--chord-muted); font-size: 12px; }
 .selected > .warning { margin-top: 8px; }
 .selectedTools { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--chord-border); }
 .selectedTools .action { padding: 8px; font-size: 12px; }
@@ -82,23 +107,26 @@
 .empty { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; color: #fde68a; font-size: 12px; }
 .empty p { width: 100%; }
 .cards { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 12px; }
-.reversePanel { display: flex; flex-direction: column; gap: 16px; }
+.reversePanel { display: flex; flex-direction: column; gap: 20px; }
 .reverseControls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-.readingCard { display: flex; flex-direction: column; gap: 4px; padding: 12px; background: #ffffff03; border: 1px solid var(--chord-border); border-radius: 20px; min-width: 0; }
+.readingCard { display: flex; flex-direction: column; gap: 4px; padding: 14px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--chord-border); border-radius: 16px; min-width: 0; }
 .readingCard ul { margin: 4px 0; padding-left: 18px; display: flex; flex-direction: column; gap: 2px; }
 .readingTitle { background: none; border: 0; padding: 0; margin: 0; text-align: left; cursor: pointer; color: #f4f4f5; }
-.readingTitle[aria-pressed="true"] { text-decoration: underline; text-underline-offset: 3px; color: #7dd3fc; }
-.card { display: grid; grid-template-columns: minmax(0, 1fr) 44px; align-items: center; gap: 4px; padding: 8px; background: #ffffff03; border: 1px solid var(--chord-border); border-radius: 20px; min-width: 0; }
-.cardSelected { border-color: #ffffff50; background: #ffffff09; }
+.readingTitle[aria-pressed="true"] { text-decoration: underline; text-underline-offset: 3px; color: #fff; }
+.card { display: grid; grid-template-columns: minmax(0, 1fr) 44px; align-items: center; gap: 4px; padding: 8px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--chord-border); border-radius: 16px; min-width: 0; }
+.cardSelected { border-color: rgba(255, 255, 255, 0.30); background: rgba(255, 255, 255, 0.06); }
 .workspace .cardSelect { display: grid; grid-template-columns: 136px minmax(0, 1fr); align-items: center; gap: 4px; width: 100%; padding: 0; border: 0; background: transparent; text-align: left; border-radius: 12px; min-width: 0; }
 .cardInfo { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.selectionMark { font-size: 11px; color: #eee; }
+.selectionMark { font-size: 11px; color: #f4f4f5; }
 .workspace .cardPlay { padding: 8px; border-radius: 50%; }
 .workspace .showMore { width: 100%; margin-top: 12px; }
-.workspace .dialog { background: var(--chord-panel); color: #f4f4f5; border: 1px solid var(--chord-border); border-radius: 24px; padding: 16px; width: min(1100px, calc(100vw - 24px)); max-width: calc(100vw - 24px); max-height: calc(100dvh - 24px); margin: auto; overflow: auto; }
+.workspace .dialog { background: var(--chord-panel); color: #f4f4f5; border: 1px solid var(--chord-border); border-radius: 24px; padding: 20px; width: min(1100px, calc(100vw - 24px)); max-width: calc(100vw - 24px); max-height: calc(100dvh - 24px); margin: auto; overflow: auto; }
 .dialog::backdrop { background: #000b; }
-.dialog > .row { margin-bottom: 12px; }
+.dialog > .row { margin-bottom: 16px; }
 .neckScroll { overflow-x: auto; margin-top: 12px; }
+/* Same subtle framing Scale gives its primary fretboard (border-y, faint tint, generous
+   vertical breathing room) so Reverse's input surface reads as belonging to the same app. */
+.reverseFretboard { border-top: 1px solid var(--chord-border); border-bottom: 1px solid var(--chord-border); background: rgba(255, 255, 255, 0.01); border-radius: 24px; padding: 20px 4px; margin-top: 0; }
 @media (min-width: 640px) {
     .qualityChoices .choices { grid-template-columns: repeat(7, minmax(0, 1fr)); }
     .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
