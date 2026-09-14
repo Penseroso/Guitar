@@ -1,0 +1,45 @@
+.workspace {
+    width: 100%;
+}
+
+.layout {
+    display: grid;
+    gap: 24px;
+    align-items: start;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 0;
+}
+
+.rail {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+/* Same dark-panel language as Chord's .selected/.readingCard — via the shared workspace tokens
+   (globals.css), not a re-authored surface. */
+.panel {
+    background: var(--workspace-panel);
+    border: 1px solid var(--workspace-border);
+    border-radius: 1.75rem;
+    padding: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+    .layout {
+        /* 360px, not Chord's 320px: ScaleOrbit's fixed node radius needs ~280px of clear
+           width inside its overflow-hidden circle before the side nodes (Aeolian/Phrygian
+           on the 7-mode diatonic orbit) clip against the panel edge. */
+        grid-template-columns: minmax(0, 1fr) 360px;
+    }
+    .rail {
+        position: sticky;
+        top: 16px;
+    }
+}

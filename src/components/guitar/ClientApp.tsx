@@ -19,7 +19,6 @@ import {
     createHarmonicWorkspaceState,
     reduceHarmonicWorkspaceState,
 } from '../../features/harmonic-workspace/state';
-import { getVoicingPresentationMeta } from './chord/voicing-labels';
 import { ScaleModeWorkspace } from './scale/ScaleModeWorkspace';
 import { WorkspaceHeader } from './shared/WorkspaceHeader';
 import { ChordModeWorkspace, type ChordWorkspaceIntent } from './chord/ChordModeWorkspace';
@@ -71,6 +70,16 @@ function buildResolvedVoicingFingering(row?: PresentationCandidate|null): Finger
             noteIdx: note.midi%12,
             label: note.tone==='1' ? 'R' : note.tone,
         }));
+}
+
+function BottomMetrics() {
+    return (
+        <div className="relative z-10 flex justify-end items-center gap-10 mt-12 w-full pr-4">
+            <span className="text-[10px] font-bold tracking-[0.2em] uppercase opacity-15">MODUS ENGINE V2.2</span>
+            <div className="w-16 h-[1px] bg-white/40 opacity-15" />
+            <span className="text-[10px] font-bold tracking-[0.2em] uppercase opacity-15">SYSTEM NOMINAL</span>
+        </div>
+    );
 }
 
 export default function ClientApp() {
@@ -210,16 +219,6 @@ export default function ClientApp() {
         () => exploration.selectionStale?undefined:buildResolvedVoicingFingering(activeFutureCandidate),
         [activeFutureCandidate,exploration.selectionStale]
     );
-    const activeFuturePresentation = useMemo(
-        () => getVoicingPresentationMeta(activeFutureCandidate),
-        [activeFutureCandidate]
-    );
-    const chordPreviewPrimaryLabel = activeFutureCandidate
-        ? activeFuturePresentation.primaryLabel
-        : 'No voicing selected';
-    const chordPreviewSecondaryLabel = activeFutureCandidate
-        ? exploration.selectionStale?'Previous request · revalidating selection':activeFuturePresentation.secondaryLabel
-        : exploration.phase==='ready'?'No matching selection':'Search not complete';
     const chordPreviewTitle = useMemo(() => {
         const root = getKeyName(selectedKey);
         if (!currentChordEntry) {
@@ -228,11 +227,6 @@ export default function ClientApp() {
 
         return `${root}${getChordTypeSuffix(currentChordEntry)}`;
     }, [chordType, currentChordEntry, selectedKey]);
-    const chordTypeLabel = currentChordEntry
-        ? getChordTypeLabel(currentChordEntry)
-        : chordType;
-    const chordPreviewFormula = currentChordEntry?.formula.degrees ?? [];
-    const chordPreviewPosition = activeFuturePresentation.positionLabel;
 
     const handleSelectFutureVoicing = useCallback((candidateId: string) => {
         dispatchHarmonicWorkspace({
@@ -330,59 +324,30 @@ export default function ClientApp() {
     }, [mode, fingering, selectedKey]);
 
     return (
-        <div className={`min-h-screen bg-[#050505] text-[#a0a0a0] selection:bg-white/20 ${mode === 'chord' ? 'p-3 sm:p-8' : 'p-8'} flex flex-col items-center gap-12 overflow-x-hidden font-sans`}>
-            <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                {mode === 'chord' && <div className="col-span-1 lg:col-span-8"><WorkspaceHeader mode={mode} onModeChange={setMode} /></div>}
-                {/* 1. Controls (Left & Right Racks handled internally) */}
-                {mode !== 'chord' && <Controls
+        <div className={`min-h-screen bg-[#050505] text-[#a0a0a0] selection:bg-white/20 ${mode === 'chord' || mode === 'scale' ? 'p-3 sm:p-8' : 'p-8'} flex flex-col items-center gap-12 overflow-x-hidden font-sans`}>
+            <div className={`w-full ${mode === 'scale' ? 'max-w-[1800px]' : 'max-w-6xl'} grid grid-cols-1 lg:grid-cols-12 gap-8 items-start`}>
+                {(mode === 'chord' || mode === 'scale') && <div className="col-span-1 lg:col-span-8"><WorkspaceHeader mode={mode} onModeChange={setMode} /></div>}
+                {/* Progression still drives its root/scale navigation through the frozen Controls rack. */}
+                {mode === 'progression' && <Controls
                     selectedKey={selectedKey}
                     onKeyChange={setSelectedKey}
                     selectedScaleGroup={scaleGroup}
                     selectedScaleName={scaleName}
                     onScaleChange={commitScaleSelection}
-                    showChordTones={showChordTones}
-                    onToggleChordTones={onToggleChordTones}
-                    isPentatonic={isPentatonic}
-                    blueNote={blueNote}
-                    onToggleBlueNote={onToggleBlueNote}
-                    sixthNote={sixthNote}
-                    onToggleSixthNote={onToggleSixthNote}
-                    secondNote={secondNote}
-                    onToggleSecondNote={onToggleSecondNote}
-
-                    isDoubleStopActive={isDoubleStopActive}
-                    onToggleDoubleStop={onToggleDoubleStop}
-                    doubleStopInterval={doubleStopInterval}
-                    onDoubleStopIntervalChange={setDoubleStopInterval}
-                    doubleStopStrings={doubleStopStrings}
-                    onDoubleStopStringsChange={setDoubleStopStrings}
-
                     mode={mode}
                     onModeChange={setMode}
-
-                    chordPreviewTitle={chordPreviewTitle}
-                    chordPreviewFormula={chordPreviewFormula}
-                    chordPreviewPrimaryLabel={chordPreviewPrimaryLabel}
-                    chordPreviewSecondaryLabel={chordPreviewSecondaryLabel}
-                    chordPreviewPosition={chordPreviewPosition}
-                    chordTypeLabel={chordTypeLabel}
-
                     progressionName={progressionName}
                     onProgressionChange={applyPreset}
                 />}
 
-                {/* 2. Visualizations (Footer Rack) */}
-                <div className={mode === 'chord' ? 'col-span-1 lg:col-span-12 min-w-0' : 'col-span-1 lg:col-span-12 bg-[#0a0a0a] border border-white/5 rounded-[3rem] p-12 relative group shadow-2xl overflow-hidden mt-4'}>
-                    {/* Decorative Grid */}
-                    {mode !== 'chord' && <div
-                        className="absolute inset-0 opacity-[0.02] pointer-events-none"
-                        style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '20px 20px' }}
-                    />}
-
-                    {mode === 'scale' && (
+                {mode === 'scale' && (
+                    <div className="col-span-1 lg:col-span-12 min-w-0">
                         <ScaleModeWorkspace
+                            selectedKey={selectedKey}
+                            onKeyChange={setSelectedKey}
                             scaleGroup={scaleGroup}
                             scaleName={scaleName}
+                            onScaleChange={commitScaleSelection}
                             showIntervals={showIntervals}
                             onToggleIntervals={() => setShowIntervals((prev) => !prev)}
                             showChordTones={showChordTones}
@@ -412,9 +377,12 @@ export default function ClientApp() {
                             fingering={fingering}
                             doubleStops={playableDoubleStops}
                         />
-                    )}
+                        <BottomMetrics />
+                    </div>
+                )}
 
-                    {mode === 'chord' && (
+                {mode === 'chord' && (
+                    <div className="col-span-1 lg:col-span-12 min-w-0">
                         <ChordModeWorkspace
                             intent={chordIntent} onIntentChange={setChordIntent}
                             chordType={chordType} onChordTypeChange={setChordType}
@@ -437,9 +405,18 @@ export default function ClientApp() {
                                 onStartFromVoicing={activeFutureCandidate ? () => setReverseShapeStates(activeFutureCandidate.candidate.states as unknown as ShapeStates) : undefined}
                             />}
                         />
-                    )}
+                        <BottomMetrics />
+                    </div>
+                )}
 
-                    {mode === 'progression' && (
+                {mode === 'progression' && (
+                    <div className="col-span-1 lg:col-span-12 bg-[#0a0a0a] border border-white/5 rounded-[3rem] p-12 relative group shadow-2xl overflow-hidden mt-4">
+                        {/* Decorative Grid */}
+                        <div
+                            className="absolute inset-0 opacity-[0.02] pointer-events-none"
+                            style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '20px 20px' }}
+                        />
+
                         <ProgressionModeWorkspace
                             diatonicChords={diatonicChords}
                             selectedKey={selectedKey}
@@ -464,15 +441,10 @@ export default function ClientApp() {
                             removeNode={removeNode}
                             playProgressionChord={playProgressionChord}
                         />
-                    )}
 
-                    {/* Bottom Metrics */}
-                    <div className="relative z-10 flex justify-end items-center gap-10 mt-12 w-full pr-4">
-                        <span className="text-[10px] font-bold tracking-[0.2em] uppercase opacity-15">MODUS ENGINE V2.2</span>
-                        <div className="w-16 h-[1px] bg-white/40 opacity-15" />
-                        <span className="text-[10px] font-bold tracking-[0.2em] uppercase opacity-15">SYSTEM NOMINAL</span>
+                        <BottomMetrics />
                     </div>
-                </div>
+                )}
             </div>
         </div>
     );

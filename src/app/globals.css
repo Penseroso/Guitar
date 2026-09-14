@@ -272,3 +272,15 @@ body {
 
 /* === BROWSER RESET REMOVED PER USER REQUEST === */
 /* Component-level styles should handle appearance. */
+
+/*
+   Shared workspace surface tokens — the actual dark-panel language Scale/Chord/Progression's
+   Tailwind-authored surfaces already use (#0a0a0a panel, white/5 border, #aaa muted text), factored
+   out so mode-specific CSS modules can reference one definition instead of each hardcoding it.
+   Additive only — does not touch the frozen glassmorphism/fretboard rules above.
+*/
+:root {
+  --workspace-panel: #0a0a0a;
+  --workspace-border: rgba(255, 255, 255, 0.09);
+  --workspace-muted: #aaa;
+}

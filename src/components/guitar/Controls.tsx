@@ -6,40 +6,19 @@ import { WorkspaceHeader } from './shared/WorkspaceHeader';
 import { KeyButton } from '../ui/design-system/KeyButton';
 import { CircleOfFifths } from './shared/CircleOfFifths';
 import { ProgressionModePanel } from './progression/ProgressionModePanel';
-import { ScaleSelectorPanel } from './scale/ScaleSelectorPanel';
 import { ProgressionPresetPanel } from './progression/ProgressionPresetPanel';
-import { ChordPreviewPanel } from './chord/ChordPreviewPanel';
-import { HarmonicInterval } from '@/domain/scale/types';
 
+// Progression-only now: Scale and Chord render their own workspace shells directly from
+// ClientApp. Progression's product philosophy is still pending, so this component (and its
+// Root Navigator box) is kept byte-for-byte as it rendered before that split.
 interface ControlsProps {
     selectedKey: number;
     onKeyChange: (key: number) => void;
     selectedScaleGroup: string;
     selectedScaleName: string;
     onScaleChange: (group: string, name: string) => void;
-    showChordTones: boolean;
-    onToggleChordTones: () => void;
-    isPentatonic: boolean;
-    blueNote: boolean;
-    onToggleBlueNote: () => void;
-    sixthNote: boolean;
-    onToggleSixthNote: () => void;
-    secondNote: boolean;
-    onToggleSecondNote: () => void;
-    isDoubleStopActive: boolean;
-    onToggleDoubleStop: () => void;
-    doubleStopInterval: HarmonicInterval;
-    onDoubleStopIntervalChange: (interval: HarmonicInterval) => void;
-    doubleStopStrings: [number, number];
-    onDoubleStopStringsChange: (strings: [number, number]) => void;
     mode: 'scale' | 'chord' | 'progression';
     onModeChange: (mode: 'scale' | 'chord' | 'progression') => void;
-    chordTypeLabel: string;
-    chordPreviewTitle: string;
-    chordPreviewFormula: string[];
-    chordPreviewPrimaryLabel: string;
-    chordPreviewSecondaryLabel?: string | null;
-    chordPreviewPosition?: string | null;
     progressionName: string;
     onProgressionChange: (name: string) => void;
 }
@@ -52,12 +31,6 @@ export const Controls: React.FC<ControlsProps> = ({
     onScaleChange,
     mode,
     onModeChange,
-    chordTypeLabel,
-    chordPreviewTitle,
-    chordPreviewFormula,
-    chordPreviewPrimaryLabel,
-    chordPreviewSecondaryLabel,
-    chordPreviewPosition,
     progressionName,
     onProgressionChange,
 }) => {
@@ -137,50 +110,20 @@ export const Controls: React.FC<ControlsProps> = ({
             </div>
 
             <div className="col-span-1 lg:col-span-4 flex flex-col gap-6 w-full h-full lg:mt-[116px] relative z-50">
-                {mode === 'scale' && (
-                    <motion.div key="scale-selector-surface" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                        <ScaleSelectorPanel
+                <AnimatePresence mode="wait">
+                    <motion.div key="progression-mode-panel" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                        <ProgressionModePanel
+                            selectedKey={selectedKey}
                             selectedScaleGroup={selectedScaleGroup}
                             selectedScaleName={selectedScaleName}
                             onScaleChange={onScaleChange}
                         />
                     </motion.div>
-                )}
-
-                {mode === 'chord' && (
-                    <AnimatePresence mode="wait">
-                        <motion.div key="chord-preview-panel" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                            <ChordPreviewPanel
-                                selectedKey={selectedKey}
-                                chordPreviewTitle={chordPreviewTitle}
-                                chordPreviewFormula={chordPreviewFormula}
-                                chordPreviewPrimaryLabel={chordPreviewPrimaryLabel}
-                                chordPreviewSecondaryLabel={chordPreviewSecondaryLabel}
-                                chordPreviewPosition={chordPreviewPosition}
-                                chordTypeLabel={chordTypeLabel}
-                            />
-                        </motion.div>
-                    </AnimatePresence>
-                )}
-
-                {mode === 'progression' && (
-                    <>
-                        <AnimatePresence mode="wait">
-                            <motion.div key="progression-mode-panel" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                                <ProgressionModePanel
-                                    selectedKey={selectedKey}
-                                    selectedScaleGroup={selectedScaleGroup}
-                                    selectedScaleName={selectedScaleName}
-                                    onScaleChange={onScaleChange}
-                                />
-                            </motion.div>
-                        </AnimatePresence>
-                        <ProgressionPresetPanel
-                            progressionName={progressionName}
-                            onProgressionChange={onProgressionChange}
-                        />
-                    </>
-                )}
+                </AnimatePresence>
+                <ProgressionPresetPanel
+                    progressionName={progressionName}
+                    onProgressionChange={onProgressionChange}
+                />
             </div>
         </>
     );
