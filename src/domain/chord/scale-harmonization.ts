@@ -10,10 +10,10 @@ import type { PitchClass } from './types';
  * notes in thirds (every other scale degree) on each degree, then name the result through the
  * shared chord registry. No per-key or per-scale tables.
  *
- * Scope is deliberately limited to scales with exactly seven distinct pitch classes. "Skip one
- * scale step" only means "stack a third" for a heptatonic collection; on a 5-, 6- or 8-note
- * collection the same index arithmetic yields something, but not what is meant by harmonizing a
- * scale, so those report `defined: false` instead of a fabricated chord list.
+ * Scope is intentionally limited to seven-note (heptatonic) scales in the current implementation.
+ * While other collections can form chords, degree-by-degree tertian harmonization in this panel is
+ * scoped to seven-note scales where each degree corresponds to a distinct diatonic letter step, so
+ * non-heptatonic collections report `defined: false` rather than presenting an arbitrary chord list.
  */
 export const HARMONIZABLE_PITCH_CLASS_COUNT = 7;
 

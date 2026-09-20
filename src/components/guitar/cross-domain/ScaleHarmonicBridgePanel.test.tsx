@@ -92,9 +92,9 @@ describe('ChordsBuiltFromScalePanel states only what the domain computed', () =>
         expect(markup).not.toContain('A♭m');
     });
 
-    it('explains the limit instead of showing invented chords for non-heptatonic scales', () => {
+    it('explains the intentional seven-note scope instead of showing invented chords for non-heptatonic scales', () => {
         const markup = builtFrom('Pentatonic', 'Major Pentatonic', 0);
-        expect(markup).toContain('not shown for it');
+        expect(markup).toContain('intentionally scoped to seven-note scales');
         expect(markup).toContain('5 notes');
         expect(markup).not.toContain('Triads');
     });

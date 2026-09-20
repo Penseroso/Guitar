@@ -12,40 +12,40 @@ import { generateModeData, SCALE_REGISTRY } from '@/domain/scale/scales';
 
 describe('parseRomanDegree', () => {
     it('parses diatonic degrees in uppercase (Major) and lowercase (Minor)', () => {
-        expect(parseRomanDegree('I')).toEqual({ interval: 0, type: 'Major' });
-        expect(parseRomanDegree('i')).toEqual({ interval: 0, type: 'Minor' });
-        expect(parseRomanDegree('IV')).toEqual({ interval: 5, type: 'Major' });
-        expect(parseRomanDegree('iv')).toEqual({ interval: 5, type: 'Minor' });
-        expect(parseRomanDegree('V')).toEqual({ interval: 7, type: 'Major' });
-        expect(parseRomanDegree('v')).toEqual({ interval: 7, type: 'Minor' });
+        expect(parseRomanDegree('I')).toEqual({ degreeNumber: 1, interval: 0, type: 'Major' });
+        expect(parseRomanDegree('i')).toEqual({ degreeNumber: 1, interval: 0, type: 'Minor' });
+        expect(parseRomanDegree('IV')).toEqual({ degreeNumber: 4, interval: 5, type: 'Major' });
+        expect(parseRomanDegree('iv')).toEqual({ degreeNumber: 4, interval: 5, type: 'Minor' });
+        expect(parseRomanDegree('V')).toEqual({ degreeNumber: 5, interval: 7, type: 'Major' });
+        expect(parseRomanDegree('v')).toEqual({ degreeNumber: 5, interval: 7, type: 'Minor' });
     });
 
     it('parses ASCII and Unicode accidentals equivalently', () => {
-        expect(parseRomanDegree('♭III')).toEqual({ interval: 3, type: 'Major' });
-        expect(parseRomanDegree('bIII')).toEqual({ interval: 3, type: 'Major' });
-        expect(parseRomanDegree('♭VI')).toEqual({ interval: 8, type: 'Major' });
-        expect(parseRomanDegree('bVI')).toEqual({ interval: 8, type: 'Major' });
-        expect(parseRomanDegree('♯IV+')).toEqual({ interval: 6, type: 'Augmented' });
-        expect(parseRomanDegree('#IV+')).toEqual({ interval: 6, type: 'Augmented' });
-        expect(parseRomanDegree('♭♭VII')).toEqual({ interval: 9, type: 'Major' });
-        expect(parseRomanDegree('bbVII')).toEqual({ interval: 9, type: 'Major' });
+        expect(parseRomanDegree('♭III')).toEqual({ degreeNumber: 3, interval: 3, type: 'Major' });
+        expect(parseRomanDegree('bIII')).toEqual({ degreeNumber: 3, interval: 3, type: 'Major' });
+        expect(parseRomanDegree('♭VI')).toEqual({ degreeNumber: 6, interval: 8, type: 'Major' });
+        expect(parseRomanDegree('bVI')).toEqual({ degreeNumber: 6, interval: 8, type: 'Major' });
+        expect(parseRomanDegree('♯IV+')).toEqual({ degreeNumber: 4, interval: 6, type: 'Augmented' });
+        expect(parseRomanDegree('#IV+')).toEqual({ degreeNumber: 4, interval: 6, type: 'Augmented' });
+        expect(parseRomanDegree('♭♭VII')).toEqual({ degreeNumber: 7, interval: 9, type: 'Major' });
+        expect(parseRomanDegree('bbVII')).toEqual({ degreeNumber: 7, interval: 9, type: 'Major' });
     });
 
     it('parses diminished and augmented suffixes correctly', () => {
-        expect(parseRomanDegree('vii°')).toEqual({ interval: 11, type: 'Diminished' });
-        expect(parseRomanDegree('♯ii°')).toEqual({ interval: 3, type: 'Diminished' });
-        expect(parseRomanDegree('♭iii°')).toEqual({ interval: 3, type: 'Diminished' });
-        expect(parseRomanDegree('♭v°')).toEqual({ interval: 6, type: 'Diminished' });
-        expect(parseRomanDegree('♯v°')).toEqual({ interval: 8, type: 'Diminished' });
-        expect(parseRomanDegree('I+')).toEqual({ interval: 0, type: 'Augmented' });
-        expect(parseRomanDegree('♭IV+')).toEqual({ interval: 4, type: 'Augmented' });
-        expect(parseRomanDegree('V+')).toEqual({ interval: 7, type: 'Augmented' });
+        expect(parseRomanDegree('vii°')).toEqual({ degreeNumber: 7, interval: 11, type: 'Diminished' });
+        expect(parseRomanDegree('♯ii°')).toEqual({ degreeNumber: 2, interval: 3, type: 'Diminished' });
+        expect(parseRomanDegree('♭iii°')).toEqual({ degreeNumber: 3, interval: 3, type: 'Diminished' });
+        expect(parseRomanDegree('♭v°')).toEqual({ degreeNumber: 5, interval: 6, type: 'Diminished' });
+        expect(parseRomanDegree('♯v°')).toEqual({ degreeNumber: 5, interval: 8, type: 'Diminished' });
+        expect(parseRomanDegree('I+')).toEqual({ degreeNumber: 1, interval: 0, type: 'Augmented' });
+        expect(parseRomanDegree('♭IV+')).toEqual({ degreeNumber: 4, interval: 4, type: 'Augmented' });
+        expect(parseRomanDegree('V+')).toEqual({ degreeNumber: 5, interval: 7, type: 'Augmented' });
     });
 
     it('parses 7th chord suffixes', () => {
-        expect(parseRomanDegree('IVmaj7')).toEqual({ interval: 5, type: 'Major 7' });
-        expect(parseRomanDegree('im7')).toEqual({ interval: 0, type: 'Minor 7' });
-        expect(parseRomanDegree('V7')).toEqual({ interval: 7, type: 'Dominant 7' });
+        expect(parseRomanDegree('IVmaj7')).toEqual({ degreeNumber: 4, interval: 5, type: 'Major 7' });
+        expect(parseRomanDegree('im7')).toEqual({ degreeNumber: 1, interval: 0, type: 'Minor 7' });
+        expect(parseRomanDegree('V7')).toEqual({ degreeNumber: 5, interval: 7, type: 'Dominant 7' });
     });
 
     it('returns null for non-degree strings', () => {
@@ -121,34 +121,38 @@ describe('degreeToChordName', () => {
         expect(degreeToChordName('IV', 'IV', 0)).toBe('F');
     });
 
-    it('names Unicode degrees accurately without returning raw degree strings', () => {
-        expect(degreeToChordName('♭VI', '♭VI', 0)).toBe('Ab');
+    it('names Unicode degrees with scale/Roman-aware spelling, preserving ♯ii° → D♯°, ♭IV+ → F♭+, ♭♭VII → B♭♭', () => {
+        expect(degreeToChordName('♭VI', '♭VI', 0)).toBe('A♭');
         expect(degreeToChordName('bVI', 'bVI', 0)).toBe('Ab');
-        expect(degreeToChordName('♭III', '♭III', 0)).toBe('Eb');
+        expect(degreeToChordName('♭III', '♭III', 0)).toBe('E♭');
         expect(degreeToChordName('bIII', 'bIII', 0)).toBe('Eb');
-        expect(degreeToChordName('♭II', '♭II', 0)).toBe('Db');
-        expect(degreeToChordName('♯ii°', '♯ii°', 0)).toBe('Eb°');
-        expect(degreeToChordName('#ii°', '#ii°', 0)).toBe('Eb°');
-        expect(degreeToChordName('♭IV+', '♭IV+', 0)).toBe('E+');
-        expect(degreeToChordName('♭♭VII', '♭♭VII', 0)).toBe('A');
+        expect(degreeToChordName('♭II', '♭II', 0)).toBe('D♭');
+        expect(degreeToChordName('bII', 'bII', 0)).toBe('Db');
+        expect(degreeToChordName('♯ii°', '♯ii°', 0)).toBe('D♯°');
+        expect(degreeToChordName('#ii°', '#ii°', 0)).toBe('D#°');
+        expect(degreeToChordName('♭IV+', '♭IV+', 0)).toBe('F♭+');
+        expect(degreeToChordName('bIV+', 'bIV+', 0)).toBe('Fb+');
+        expect(degreeToChordName('♭♭VII', '♭♭VII', 0)).toBe('B♭♭');
+        expect(degreeToChordName('bbVII', 'bbVII', 0)).toBe('Bbb');
     });
 
     it('names a secondary dominant (V7/x) a fifth above its target (ASCII and Unicode)', () => {
         // V7/vi in the key of C targets Am (root 9), so V7/vi = E7.
         expect(degreeToChordName('V7/vi', 'vi', 0)).toBe('E7');
-        // V7/♭VI in the key of C targets Ab (root 8), so V7/♭VI = Eb7.
-        expect(degreeToChordName('V7/♭VI', '♭VI', 0)).toBe('Eb7');
+        // V7/♭VI in the key of C targets A♭ (root 8), so V7/♭VI = E♭7.
+        expect(degreeToChordName('V7/♭VI', '♭VI', 0)).toBe('E♭7');
         expect(degreeToChordName('V7/bVI', 'bVI', 0)).toBe('Eb7');
-        // V7/♭III in the key of C targets Eb (root 3), so V7/♭III = Bb7.
-        expect(degreeToChordName('V7/♭III', '♭III', 0)).toBe('Bb7');
+        // V7/♭III in the key of C targets E♭ (root 3), so V7/♭III = B♭7.
+        expect(degreeToChordName('V7/♭III', '♭III', 0)).toBe('B♭7');
+        expect(degreeToChordName('V7/bIII', 'bIII', 0)).toBe('Bb7');
     });
 
     it('names a tritone substitution (subV7/x) a half-step above its target (ASCII and Unicode)', () => {
         // subV7/V in the key of C targets G (root 7); the b2-of-target formula gives root 8 = Ab7.
         expect(degreeToChordName('subV7/V', 'V', 0)).toBe('Ab7');
-        // subV7/♭VI in the key of C targets Ab (root 8); root 9 = A7.
-        expect(degreeToChordName('subV7/♭VI', '♭VI', 0)).toBe('A7');
-        expect(degreeToChordName('subV7/bVI', 'bVI', 0)).toBe('A7');
+        // subV7/♭VI in the key of C targets A♭ (root 8); root 9 = B♭♭7.
+        expect(degreeToChordName('subV7/♭VI', '♭VI', 0)).toBe('B♭♭7');
+        expect(degreeToChordName('subV7/bVI', 'bVI', 0)).toBe('Bbb7');
     });
 
     it('uses conventional key-signature spelling regardless of degree/quality, not a sharp-by-default heuristic', () => {

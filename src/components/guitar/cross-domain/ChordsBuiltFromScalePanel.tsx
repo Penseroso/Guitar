@@ -31,8 +31,7 @@ export function ChordsBuiltFromScalePanel({ scaleGroup, scaleName, tonicPitchCla
     if (!harmonization.defined) {
         return (
             <p className="text-sm text-white/40">
-                Stacking notes in thirds is a seven-note idea. {scaleLabel} has {harmonization.pitchClassCount} notes, so standard
-                chord-by-chord harmonization is not shown for it.
+                Chord-by-chord harmonization in this panel is intentionally scoped to seven-note scales. {scaleLabel} has {harmonization.pitchClassCount} notes, so degree-by-degree chords are not shown here.
             </p>
         );
     }

@@ -2,7 +2,12 @@
 
 import { getKeyName } from '@/domain/shared/keys';
 import { getChordRegistryEntryByLegacyType } from '@/domain/chord/registry';
-import { formatAccidentals, normalizeAccidentalsToAscii } from '@/domain/shared/spelling';
+import {
+    formatAccidentals,
+    normalizeAccidentalsToAscii,
+    parseNoteName,
+    spellDegree,
+} from '@/domain/shared/spelling';
 
 const DEGREE_BASE_SEMITONES: Record<string, number> = {
     'i': 0, 'I': 0,
@@ -14,13 +19,29 @@ const DEGREE_BASE_SEMITONES: Record<string, number> = {
     'vii': 11, 'VII': 11,
 };
 
+const ROMAN_DEGREE_NUMBER: Record<string, number> = {
+    'i': 1, 'I': 1,
+    'ii': 2, 'II': 2,
+    'iii': 3, 'III': 3,
+    'iv': 4, 'IV': 4,
+    'v': 5, 'V': 5,
+    'vi': 6, 'VI': 6,
+    'vii': 7, 'VII': 7,
+};
+
 const ROMAN_REGEX = /^(bb|b|##|#)?(VII|VI|IV|V|III|II|I|vii|vi|iv|v|iii|ii|i)(°|dim|\+|aug|maj7|M7|m7|min7|7)?$/;
 
+export interface ParsedRomanDegree {
+    degreeNumber: number;
+    interval: number;
+    type: string;
+}
+
 /**
- * Parses any Roman numeral chord degree (ASCII or Unicode accidentals) into semitone interval and quality.
- * Returns null if the string is not a recognized degree formula.
+ * Parses any Roman numeral chord degree (ASCII or Unicode accidentals) into degree number,
+ * semitone interval, and chord quality. Returns null if the string is not a recognized degree formula.
  */
-export function parseRomanDegree(degree: string): { interval: number; type: string } | null {
+export function parseRomanDegree(degree: string): ParsedRomanDegree | null {
     const ascii = normalizeAccidentalsToAscii(degree.trim());
     const match = ROMAN_REGEX.exec(ascii);
     if (!match) return null;
@@ -36,6 +57,7 @@ export function parseRomanDegree(degree: string): { interval: number; type: stri
     const baseSemitone = DEGREE_BASE_SEMITONES[numeral];
     if (baseSemitone === undefined) return null;
 
+    const degreeNumber = ROMAN_DEGREE_NUMBER[numeral];
     const interval = ((baseSemitone + alteration) % 12 + 12) % 12;
 
     let type = 'Major';
@@ -55,7 +77,7 @@ export function parseRomanDegree(degree: string): { interval: number; type: stri
         type = 'Major';
     }
 
-    return { interval, type };
+    return { degreeNumber, interval, type };
 }
 
 export const ROMAN_NUMERAL_CHORDS: Record<string, { interval: number; type: string }> = {
@@ -156,36 +178,80 @@ const CHORD_TYPE_SUFFIX: Record<string, string> = {
     'Minor 7': 'm7',
 };
 
-/** Converts a displayDegree + coreDegree to a real chord name, e.g. 'Am', 'G7', 'Ab7' */
+/** Converts a displayDegree + coreDegree to a real chord name, e.g. 'Am', 'G7', 'A♭', 'D♯°' */
 export function degreeToChordName(displayDegree: string, coreDegree: string, rootKey: number): string {
+    const isUnicode = displayDegree.includes('♭') || displayDegree.includes('♯');
+    const tonic = parseNoteName(getKeyName(rootKey));
+
     // Handle V7/x — secondary dominant
     if (displayDegree.startsWith('V7/')) {
+        const targetParsed = parseRomanDegree(coreDegree);
+        if (targetParsed && tonic) {
+            const targetPitch = ((rootKey + targetParsed.interval) % 12 + 12) % 12;
+            const targetSpelled = spellDegree(tonic, targetParsed.degreeNumber, targetPitch);
+            if (targetSpelled) {
+                const domPitch = ((targetPitch + 7) % 12 + 12) % 12;
+                const domSpelled = spellDegree(targetSpelled, 5, domPitch);
+                if (domSpelled) {
+                    const domName = isUnicode ? formatAccidentals(domSpelled.name) : domSpelled.name;
+                    return `${domName}7`;
+                }
+            }
+        }
         const { interval } = getChordFromDegree(coreDegree);
-        const chordRoot = (rootKey + interval + 7) % 12; // V of the target = a 5th above target
-        const noteName = getKeyName(chordRoot);
+        const chordRoot = (rootKey + interval + 7) % 12;
+        const noteName = isUnicode ? formatAccidentals(getKeyName(chordRoot)) : getKeyName(chordRoot);
         return `${noteName}7`;
     }
 
     // Handle subV7/x — tritone substitution (b2 of target)
     if (displayDegree.startsWith('subV7/')) {
+        const targetParsed = parseRomanDegree(coreDegree);
+        if (targetParsed && tonic) {
+            const targetPitch = ((rootKey + targetParsed.interval) % 12 + 12) % 12;
+            const targetSpelled = spellDegree(tonic, targetParsed.degreeNumber, targetPitch);
+            if (targetSpelled) {
+                const subPitch = ((targetPitch + 1) % 12 + 12) % 12;
+                const subSpelled = spellDegree(targetSpelled, 2, subPitch);
+                if (subSpelled) {
+                    const subName = isUnicode ? formatAccidentals(subSpelled.name) : subSpelled.name;
+                    return `${subName}7`;
+                }
+            }
+        }
         const { interval } = getChordFromDegree(coreDegree);
-        const chordRoot = (rootKey + interval + 1) % 12; // b2 of target
-        const noteName = getKeyName(chordRoot);
+        const chordRoot = (rootKey + interval + 1) % 12;
+        const noteName = isUnicode ? formatAccidentals(getKeyName(chordRoot)) : getKeyName(chordRoot);
         return `${noteName}7`;
     }
 
     // Plain diatonic / scale degree
-    const degreeData = getChordFromDegree(displayDegree);
-    const parsed =
-        ROMAN_NUMERAL_CHORDS[displayDegree] ||
-        ROMAN_NUMERAL_CHORDS[normalizeAccidentalsToAscii(displayDegree)] ||
-        parseRomanDegree(displayDegree);
+    const parsed = parseRomanDegree(displayDegree);
+    if (!parsed) {
+        const ascii = normalizeAccidentalsToAscii(displayDegree);
+        const dictEntry = ROMAN_NUMERAL_CHORDS[displayDegree] || ROMAN_NUMERAL_CHORDS[ascii];
+        if (!dictEntry) return displayDegree;
+        const chordRoot = (rootKey + dictEntry.interval) % 12;
+        const noteName = isUnicode ? formatAccidentals(getKeyName(chordRoot)) : getKeyName(chordRoot);
+        const suffix = CHORD_TYPE_SUFFIX[dictEntry.type] ?? '';
+        return `${noteName}${suffix}`;
+    }
 
-    if (!parsed) return displayDegree;
+    const chordRoot = ((rootKey + parsed.interval) % 12 + 12) % 12;
+    let noteName: string;
 
-    const chordRoot = (rootKey + degreeData.interval) % 12;
-    const noteName = getKeyName(chordRoot);
-    const suffix = CHORD_TYPE_SUFFIX[degreeData.type] ?? '';
+    if (tonic) {
+        const spelled = spellDegree(tonic, parsed.degreeNumber, chordRoot);
+        if (spelled) {
+            noteName = isUnicode ? formatAccidentals(spelled.name) : spelled.name;
+        } else {
+            noteName = isUnicode ? formatAccidentals(getKeyName(chordRoot)) : getKeyName(chordRoot);
+        }
+    } else {
+        noteName = isUnicode ? formatAccidentals(getKeyName(chordRoot)) : getKeyName(chordRoot);
+    }
+
+    const suffix = CHORD_TYPE_SUFFIX[parsed.type] ?? '';
     return `${noteName}${suffix}`;
 }
 
