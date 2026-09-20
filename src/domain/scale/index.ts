@@ -11,6 +11,7 @@ export {
     getScaleEngineIntervalLabels,
     isDoubleStopSupported,
     generateModeData,
+    getScaleDegreeNumeral,
     getModalSiblings,
     getScaleTonicTriadQuality,
 } from './scales';

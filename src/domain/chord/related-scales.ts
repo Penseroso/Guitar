@@ -162,7 +162,8 @@ export function getRelatedScaleSuggestionsForChord(
             break;
 
         default:
-            buildSuggestion(suggestions, seen, 'Ionian', 'primary', 'functional', functionLabel, 'Fallback stable reference inside the current supported inventory.');
+            // No curated chord-scale relationship exists for this chord. Deliberately empty:
+            // a generic "Ionian" stand-in would read as a real recommendation to callers.
             break;
     }
 

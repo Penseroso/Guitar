@@ -291,6 +291,16 @@ export function getScaleTonicTriadQuality(groupName: string, modeName: string): 
     return getStackedTriadQuality(fullRotatedIntervals, N, 0);
 }
 
+/**
+ * Uppercase, tonic-relative roman numeral (with accidental) for a scale degree whose root sits
+ * `rootInterval` semitones above the tonic — e.g. 'bVII', or '#IV' for Lydian-family scales.
+ */
+export function getScaleDegreeNumeral(groupName: string, modeName: string, rootInterval: number): string {
+    const usesSharpFourSpelling = rootInterval === TRITONE_INTERVAL
+        && SCALE_DISPLAY_FORMULAS[groupName]?.[modeName]?.[TRITONE_INTERVAL] === SHARP_FOUR_LABEL;
+    return usesSharpFourSpelling ? '#IV' : (INTERVAL_TO_ROMAN[rootInterval] || '?');
+}
+
 export function generateModeData(groupName: string, modeName: string): ScaleDictionary {
     const registryGroup = SCALE_REGISTRY[groupName] || SCALE_REGISTRY['Diatonic Modes'];
     const modeInfo = registryGroup[modeName] || SCALE_REGISTRY['Diatonic Modes']['Aeolian'];
@@ -315,9 +325,7 @@ export function generateModeData(groupName: string, modeName: string): ScaleDict
         const quality = getStackedTriadQuality(fullRotatedIntervals, N, d);
 
         // 로마 숫자 파싱
-        const usesSharpFourSpelling = rootInterval === TRITONE_INTERVAL
-            && SCALE_DISPLAY_FORMULAS[groupName]?.[modeName]?.[TRITONE_INTERVAL] === SHARP_FOUR_LABEL;
-        let roman = usesSharpFourSpelling ? '#IV' : (INTERVAL_TO_ROMAN[rootInterval] || '?');
+        let roman = getScaleDegreeNumeral(groupName, modeName, rootInterval);
         if (quality === 'Minor') roman = roman.toLowerCase();
         else if (quality === 'Diminished') roman = roman.toLowerCase() + '°';
         else if (quality === 'Augmented') roman = roman + '+';

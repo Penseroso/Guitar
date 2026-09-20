@@ -8,7 +8,7 @@ import { SlidersHorizontal } from 'lucide-react';
 import type { HarmonicInterval, PlayableDoubleStop } from '@/domain/scale/types';
 import { DOUBLE_STOP_HARMONIC_INTERVALS, getDoubleStopStringPairOptions } from '@/domain/scale/doubleStops';
 import type { Fingering } from '@/domain/shared/types';
-import { ScaleChordRecommendationsPanel } from '../cross-domain/ScaleChordRecommendationsPanel';
+import { ScaleHarmonicBridgePanel } from '../cross-domain/ScaleHarmonicBridgePanel';
 import { ScaleRootNavigator } from './ScaleRootNavigator';
 import { ScaleSelectorPanel } from './ScaleSelectorPanel';
 import styles from './scale-workspace.module.css';
@@ -181,7 +181,7 @@ export function ScaleModeWorkspace({
                         </div>
                     </div>
 
-                    <ScaleChordRecommendationsPanel
+                    <ScaleHarmonicBridgePanel
                         scaleGroup={scaleGroup}
                         scaleName={scaleName}
                         tonicPitchClass={rootNote}
