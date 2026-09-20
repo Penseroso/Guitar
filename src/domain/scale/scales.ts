@@ -295,7 +295,7 @@ export function getScaleTonicTriadQuality(groupName: string, modeName: string): 
  * Uppercase, tonic-relative roman numeral (with accidental) for a scale degree whose root sits
  * `rootInterval` semitones above the tonic — e.g. 'bVII', or '#IV' for Lydian-family scales.
  */
-export function getScaleDegreeNumeral(groupName: string, modeName: string, rootInterval: number): string {
+function getScaleDegreeNumeral(groupName: string, modeName: string, rootInterval: number): string {
     const usesSharpFourSpelling = rootInterval === TRITONE_INTERVAL
         && SCALE_DISPLAY_FORMULAS[groupName]?.[modeName]?.[TRITONE_INTERVAL] === SHARP_FOUR_LABEL;
     return usesSharpFourSpelling ? '#IV' : (INTERVAL_TO_ROMAN[rootInterval] || '?');

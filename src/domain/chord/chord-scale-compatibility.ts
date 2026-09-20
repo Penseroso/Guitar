@@ -1,59 +1,54 @@
-import { buildScaleId, SCALES } from '@/domain/scale';
+import { getKeyName } from '@/domain/shared/keys';
+import { getCanonicalChordsForScale } from './canonical-chord-scales';
+import { canonicalTone } from './engine/catalog';
+import { spellChordToneName } from './engine/presentation';
 import { getChordTypeSuffix } from './helpers';
-import { CHORD_REGISTRY_LIST } from './registry';
-import { getRelatedScaleSuggestionsForChord } from './related-scales';
+import { CHORD_REGISTRY_LIST, type ChordRegistryEntry } from './registry';
+import { SCALES } from '@/domain/scale';
 import type { PitchClass } from './types';
 
 /**
- * "Play this scale over": which chords, rooted on the scale's own tonic, can sit under this
- * scale. Two layers, deliberately kept apart:
+ * "Play this scale over": which chords, rooted on the scale's own tonic, this scale can be played
+ * over. Two layers with two different kinds of claim, kept apart because they are not the same
+ * statement and one cannot be derived from the other:
  *
- * 1. Structural fit (decides membership). A chord is listed iff EVERY pitch class of its full
- *    declared formula is a member of the scale. Not the "required degrees" subset: that rule
- *    describes which tones a voicing may omit, not whether the scale can stand in for the chord.
- *    (C7 over C Whole Tone fails because the natural 5th G is absent, even though the 5th is
- *    "optional" in a voicing.)
- * 2. Canonical label (sort order and wording only, never membership). A chord that already passed
- *    layer 1 is marked when this scale is its textbook chord-scale pairing.
+ *  - `canonical` — curated practice: this scale is the standard choice over that chord
+ *    (canonical-chord-scales.ts). Admitted whether or not every chord tone is in the scale: the
+ *    altered scale is *the* scale for a 7#9 precisely because it replaces the chord's natural 5th.
+ *    `tonesOutsideScale` names what it replaces, so the card never overstates.
+ *  - `containment` — deductive fact: every note of the chord is in the scale. A literal claim
+ *    about notes, not a recommendation. It can admit a chord the scale merely spells
+ *    enharmonically (a minor triad over Lydian #2, whose #2 is also a b3) — true as stated, which
+ *    is why the UI states it exactly rather than implying the chord sounds idiomatic.
  *
- * Idiomatic/stylistic pairings (blues and pentatonic practice, riff-oriented power chords) are
- * intentionally out of scope for v1.
+ * Deliberately excluded from v1: stylistic/colour options (the "you could also try" layer).
  */
 
-/**
- * Chords whose `primary` entry in related-scales.ts is a stylistic or ambiguous convention rather
- * than a standard chord-scale pairing, so it must not be presented as canonical: power chords have
- * no third to define a scale, and suspended chords are equally at home over several scales.
- */
-const NON_CANONICAL_CHORD_IDS: ReadonlySet<string> = new Set(['power-5', 'sus2', 'sus4']);
-
-/** `${chordId}|${scaleId}` for every audited canonical pairing, derived from the curated table. */
-const CANONICAL_PAIRINGS: ReadonlySet<string> = (() => {
-    const pairs = new Set<string>();
-    for (const entry of CHORD_REGISTRY_LIST) {
-        if (NON_CANONICAL_CHORD_IDS.has(entry.id)) continue;
-        for (const suggestion of getRelatedScaleSuggestionsForChord(entry.id)) {
-            if (suggestion.category === 'primary') {
-                pairs.add(`${entry.id}|${buildScaleId(suggestion.group, suggestion.name)}`);
-            }
-        }
-    }
-    return pairs;
-})();
+export type ChordScaleFitBasis = 'canonical' | 'containment';
 
 export interface ScaleCompatibleChord {
     chordId: string;
-    /** Registry suffix, e.g. "m7", "maj7" ("" for a plain major triad). */
+    /** Registry suffix, e.g. "m7" ("" for a plain major triad). */
     chordSuffix: string;
     rootPitchClass: PitchClass;
-    /** The full formula pitch classes, every one of which is in the scale. */
-    formulaPitchClasses: PitchClass[];
-    /** True when this scale is the textbook chord-scale pairing for the chord. */
-    canonical: boolean;
+    /** Root spelled as the scale's tonic, e.g. "F#". */
+    rootNoteName: string;
+    basis: ChordScaleFitBasis;
+    /** Chord tones spelled in the chord's own frame, e.g. ["C", "E", "G", "Bb"]. */
+    toneNames: string[];
+    /** Chord tones the scale does not contain — always empty for `containment`. */
+    tonesOutsideScale: string[];
 }
 
 function normalizePitchClass(value: number): PitchClass {
     return ((value % 12) + 12) % 12;
+}
+
+function spellTones(entry: ChordRegistryEntry, rootPitchClass: PitchClass): string[] {
+    return entry.formula.degrees.map((degree, index) =>
+        // canonicalTone is the registry's own rule for the fully diminished 7th, whose top note
+        // is stored as '6' but functions (and must be spelled) as a bb7.
+        spellChordToneName(rootPitchClass, canonicalTone(entry.id, degree), entry.formula.intervals[index]));
 }
 
 export function getScaleCompatibleChords(
@@ -62,32 +57,37 @@ export function getScaleCompatibleChords(
     tonicPitchClass: PitchClass
 ): ScaleCompatibleChord[] {
     const intervals = SCALES[scaleGroup]?.[scaleName];
-    if (!intervals || intervals.length === 0) {
-        return [];
-    }
+    if (!intervals || intervals.length === 0) return [];
 
-    const scalePitchClasses = new Set(intervals.map((interval) => normalizePitchClass(tonicPitchClass + interval)));
-    const scaleId = buildScaleId(scaleGroup, scaleName);
-    const results: ScaleCompatibleChord[] = [];
+    const root = normalizePitchClass(tonicPitchClass);
+    const rootNoteName = getKeyName(root);
+    const scalePitchClasses = new Set(intervals.map((interval) => normalizePitchClass(root + interval)));
+    const canonicalIds = new Set(getCanonicalChordsForScale(scaleGroup, scaleName));
+
+    const canonical: ScaleCompatibleChord[] = [];
+    const containment: ScaleCompatibleChord[] = [];
 
     for (const entry of CHORD_REGISTRY_LIST) {
-        const formulaPitchClasses = entry.formula.intervals.map((interval) => normalizePitchClass(tonicPitchClass + interval));
-        if (!formulaPitchClasses.every((pitchClass) => scalePitchClasses.has(pitchClass))) {
-            continue;
-        }
+        const isCanonical = canonicalIds.has(entry.id);
+        const outside = entry.formula.intervals
+            .map((interval, index) => ({ index, pitchClass: normalizePitchClass(root + interval) }))
+            .filter(({ pitchClass }) => !scalePitchClasses.has(pitchClass));
 
-        results.push({
+        if (!isCanonical && outside.length > 0) continue;
+
+        const toneNames = spellTones(entry, root);
+        const chord: ScaleCompatibleChord = {
             chordId: entry.id,
             chordSuffix: getChordTypeSuffix(entry),
-            rootPitchClass: normalizePitchClass(tonicPitchClass),
-            formulaPitchClasses,
-            canonical: CANONICAL_PAIRINGS.has(`${entry.id}|${scaleId}`),
-        });
+            rootPitchClass: root,
+            rootNoteName,
+            basis: isCanonical ? 'canonical' : 'containment',
+            toneNames,
+            tonesOutsideScale: outside.map(({ index }) => toneNames[index]),
+        };
+        (isCanonical ? canonical : containment).push(chord);
     }
 
-    // Stable sort: canonical pairings first, registry order otherwise.
-    return results
-        .map((item, index) => ({ item, index }))
-        .sort((a, b) => Number(b.item.canonical) - Number(a.item.canonical) || a.index - b.index)
-        .map(({ item }) => item);
+    // Canonical pairings first: the practice claim is the headline, literal note-fit follows.
+    return [...canonical, ...containment];
 }

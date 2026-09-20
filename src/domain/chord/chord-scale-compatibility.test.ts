@@ -1,109 +1,125 @@
 import { describe, expect, it } from 'vitest';
 
 import { SCALES } from '@/domain/scale';
-import { CHORD_REGISTRY_LIST } from './registry';
+import { getCanonicalChordsForScale } from './canonical-chord-scales';
 import { getScaleCompatibleChords } from './chord-scale-compatibility';
+import { CHORD_REGISTRY_LIST } from './registry';
 import { getRelatedScaleSuggestionsForChord } from './related-scales';
 
-const ids = (group: string, name: string, tonic = 0) => getScaleCompatibleChords(group, name, tonic).map((item) => item.chordId);
-const canonicalIds = (group: string, name: string, tonic = 0) =>
-    getScaleCompatibleChords(group, name, tonic).filter((item) => item.canonical).map((item) => item.chordId);
+const ids = (group: string, name: string, tonic = 0) =>
+    getScaleCompatibleChords(group, name, tonic).map((chord) => chord.chordId);
+const byBasis = (group: string, name: string, basis: 'canonical' | 'containment', tonic = 0) =>
+    getScaleCompatibleChords(group, name, tonic).filter((chord) => chord.basis === basis).map((chord) => chord.chordId);
+const find = (group: string, name: string, chordId: string, tonic = 0) =>
+    getScaleCompatibleChords(group, name, tonic).find((chord) => chord.chordId === chordId);
 
-describe('scale-compatible chords ("Play this scale over")', () => {
-    it('admits major-family chords over Ionian and rejects the dominant seventh', () => {
-        const admitted = ids('Diatonic Modes', 'Ionian');
-        expect(admitted).toEqual(expect.arrayContaining(['major', 'major-7', 'major-9', 'major-6', 'add9', 'six-nine', 'sus2', 'sus4']));
-        expect(admitted).not.toContain('dominant-7');
-        expect(canonicalIds('Diatonic Modes', 'Ionian')).toEqual(['major', 'major-7', 'major-9']);
+describe('"Play this scale over" — canonical layer (curated practice)', () => {
+    it('leads with the standard pairing for the scale', () => {
+        expect(byBasis('Diatonic Modes', 'Ionian', 'canonical')).toEqual(['major', 'major-7', 'major-6', 'major-9']);
+        expect(byBasis('Diatonic Modes', 'Mixolydian', 'canonical', 7))
+            .toEqual(['dominant-7', 'dominant-9', 'dominant-13', 'dominant-7-sus4']);
+        expect(byBasis('Diatonic Modes', 'Locrian', 'canonical', 11)).toEqual(['half-diminished-7']);
+        expect(byBasis('Harmonic Minor Modes', 'Harmonic Minor', 'canonical', 9)).toEqual(['minor-major-7']);
     });
 
-    it('admits the characteristic minor sixth over Dorian and rejects minor-major-7 and dominant chords', () => {
-        const admitted = ids('Diatonic Modes', 'Dorian', 2);
-        expect(admitted).toEqual(expect.arrayContaining(['minor', 'minor-7', 'minor-6', 'minor-9', 'minor-11']));
-        expect(admitted).not.toContain('minor-major-7');
-        expect(admitted).not.toContain('dominant-7');
-        expect(canonicalIds('Diatonic Modes', 'Dorian', 2)).toEqual(['minor', 'minor-7', 'minor-9']);
+    it('sorts canonical pairings ahead of merely-fitting chords', () => {
+        const chords = getScaleCompatibleChords('Diatonic Modes', 'Ionian', 0);
+        const firstContainment = chords.findIndex((chord) => chord.basis === 'containment');
+        expect(firstContainment).toBeGreaterThan(0);
+        expect(chords.slice(0, firstContainment).every((chord) => chord.basis === 'canonical')).toBe(true);
+        expect(chords.slice(firstContainment).every((chord) => chord.basis === 'containment')).toBe(true);
     });
 
-    it('admits the dominant family over Mixolydian and rejects maj7', () => {
-        const admitted = ids('Diatonic Modes', 'Mixolydian', 7);
-        expect(admitted).toEqual(expect.arrayContaining(['dominant-7', 'dominant-9', 'dominant-13']));
-        expect(admitted).not.toContain('major-7');
-        expect(canonicalIds('Diatonic Modes', 'Mixolydian', 7)).toEqual(['dominant-7', 'dominant-9', 'dominant-13']);
+    // The case strict containment gets wrong: the altered scale IS the scale for an altered
+    // dominant precisely because it replaces the chord's natural 5th.
+    it('admits the altered dominant family over the Altered scale, naming the replaced tone', () => {
+        // Registry order, the same stable order the containment group uses.
+        expect(byBasis('Jazz Minor Modes', 'Altered scale', 'canonical'))
+            .toEqual(['hendrix-7-sharp-9', 'dominant-7-flat-9', 'dominant-7-sharp-5', 'dominant-7-flat-5']);
+
+        const hendrix = find('Jazz Minor Modes', 'Altered scale', 'hendrix-7-sharp-9')!;
+        expect(hendrix.toneNames).toEqual(['C', 'E', 'G', 'Bb', 'D#']);
+        expect(hendrix.tonesOutsideScale).toEqual(['G']);
+
+        // A pairing the scale fully contains claims nothing extra.
+        expect(find('Jazz Minor Modes', 'Altered scale', 'dominant-7-sharp-5')!.tonesOutsideScale).toEqual([]);
     });
 
-    it('admits half-diminished but not fully diminished over Locrian', () => {
-        const admitted = ids('Diatonic Modes', 'Locrian', 11);
-        expect(admitted).toContain('half-diminished-7');
-        expect(admitted).not.toContain('diminished-7');
-        expect(canonicalIds('Diatonic Modes', 'Locrian', 11)).toEqual(['half-diminished-7']);
+    it('still refuses a plain dominant 7th over the Altered and Whole Tone scales', () => {
+        expect(ids('Jazz Minor Modes', 'Altered scale')).not.toContain('dominant-7');
+        expect(ids('Symmetric', 'Whole Tone')).not.toContain('dominant-7');
+        expect(byBasis('Symmetric', 'Whole Tone', 'canonical')).toEqual(['augmented', 'dominant-7-sharp-5']);
+    });
+});
+
+describe('"Play this scale over" — containment layer (literal fact)', () => {
+    it('admits a chord only when the scale holds every one of its notes', () => {
+        const dorian = ids('Diatonic Modes', 'Dorian', 2);
+        expect(dorian).toEqual(expect.arrayContaining(['minor-6', 'minor-11', 'minor-9']));
+        expect(dorian).not.toContain('minor-major-7'); // needs a natural 7
+        expect(dorian).not.toContain('dominant-7'); // needs a major 3rd
+
+        expect(ids('Diatonic Modes', 'Mixolydian', 7)).not.toContain('major-7');
+        expect(ids('Diatonic Modes', 'Locrian', 11)).not.toContain('diminished-7');
+        expect(ids('Harmonic Minor Modes', 'Harmonic Minor', 9)).not.toContain('minor-6');
     });
 
-    it('admits minor-major-7 over Harmonic Minor but not minor-6, with no canonical label available', () => {
-        const admitted = ids('Harmonic Minor Modes', 'Harmonic Minor', 9);
-        expect(admitted).toContain('minor-major-7');
-        expect(admitted).not.toContain('minor-6');
-        expect(canonicalIds('Harmonic Minor Modes', 'Harmonic Minor', 9)).not.toContain('minor-major-7');
-    });
-
-    it('rejects a plain dominant seventh over Whole Tone because its natural 5th is absent', () => {
-        const admitted = ids('Symmetric', 'Whole Tone');
-        expect(admitted).not.toContain('dominant-7');
-        expect(admitted).toEqual(expect.arrayContaining(['augmented', 'dominant-7-sharp-5', 'dominant-7-flat-5']));
-        expect(admitted).not.toContain('major-7');
-    });
-
-    it('limits the Altered scale to altered-fifth dominants (no natural 5th exists in it)', () => {
-        const admitted = ids('Jazz Minor Modes', 'Altered scale');
-        expect(admitted).toEqual(expect.arrayContaining(['dominant-7-sharp-5', 'dominant-7-flat-5']));
-        expect(admitted).not.toContain('dominant-7');
-        expect(admitted).not.toContain('dominant-7-flat-9');
-        expect(admitted).not.toContain('hendrix-7-sharp-9');
-    });
-
-    it('treats pentatonics by literal containment (A major: add9 and 6 fit, maj7 does not)', () => {
-        const admitted = ids('Pentatonic', 'Major Pentatonic', 9);
-        expect(admitted).toEqual(expect.arrayContaining(['major', 'add9', 'major-6']));
-        expect(admitted).not.toContain('major-7');
-    });
-
-    it('lists canonical pairings first, then structural matches in registry order', () => {
-        const items = getScaleCompatibleChords('Diatonic Modes', 'Ionian', 0);
-        const firstNonCanonical = items.findIndex((item) => !item.canonical);
-        expect(firstNonCanonical).toBeGreaterThan(0);
-        expect(items.slice(0, firstNonCanonical).every((item) => item.canonical)).toBe(true);
-        expect(items.slice(firstNonCanonical).every((item) => !item.canonical)).toBe(true);
-    });
-
-    it('never labels power chords or suspensions as canonical, despite their curated primary entries', () => {
-        for (const id of ['power-5', 'sus2', 'sus4']) {
-            expect(getRelatedScaleSuggestionsForChord(id).some((suggestion) => suggestion.category === 'primary')).toBe(true);
-        }
-        const labelled = new Set<string>();
+    it('lists a non-canonical chord if and only if every formula tone is in the scale', () => {
         for (const group of Object.keys(SCALES)) {
             for (const name of Object.keys(SCALES[group])) {
-                for (const item of getScaleCompatibleChords(group, name, 0)) {
-                    if (item.canonical) labelled.add(item.chordId);
+                const canonical = new Set(getCanonicalChordsForScale(group, name));
+                for (const tonic of [0, 3, 8]) {
+                    const scale = new Set(SCALES[group][name].map((interval) => (tonic + interval) % 12));
+                    const admitted = new Set(byBasis(group, name, 'containment', tonic));
+                    for (const entry of CHORD_REGISTRY_LIST) {
+                        if (canonical.has(entry.id)) continue;
+                        const fits = entry.formula.intervals.every((interval) => scale.has((tonic + interval) % 12));
+                        expect(admitted.has(entry.id), `${group}/${name}@${tonic} ${entry.id}`).toBe(fits);
+                    }
                 }
             }
         }
-        expect(labelled.has('power-5') || labelled.has('sus2') || labelled.has('sus4')).toBe(false);
     });
 
-    it('lists a chord if and only if every formula tone is in the scale, for every scale', () => {
+    /**
+     * Known and accepted: containment is a claim about pitch classes, so a scale that spells a
+     * pitch enharmonically still "contains" a chord built on it — C Lydian #2's ♯2 (D#) is also
+     * a minor third (Eb), so Cm is listed. The claim the UI makes ("every note of this chord is
+     * in the scale") stays true; what it deliberately does not claim is that the chord sounds
+     * idiomatic, which is the separate canonical layer's job. Pinned so a future change to the
+     * wording or the rule has to face this case.
+     */
+    it('admits a chord the scale only spells enharmonically, without calling it canonical', () => {
+        const minor = find('Harmonic Minor Modes', 'Lydian #2', 'minor');
+        expect(minor?.basis).toBe('containment');
+        expect(byBasis('Harmonic Minor Modes', 'Lydian #2', 'canonical')).toEqual([]);
+    });
+
+    it('never reports an out-of-scale tone for a containment match', () => {
         for (const group of Object.keys(SCALES)) {
             for (const name of Object.keys(SCALES[group])) {
-                for (const tonic of [0, 3, 8]) {
-                    const scale = new Set(SCALES[group][name].map((interval) => (tonic + interval) % 12));
-                    const admitted = new Set<string>();
-                    for (const item of getScaleCompatibleChords(group, name, tonic)) {
-                        admitted.add(item.chordId);
-                        expect(item.rootPitchClass).toBe(tonic);
-                        expect(item.formulaPitchClasses.every((pc) => scale.has(pc)), `${group}/${name} ${item.chordId}`).toBe(true);
-                    }
-                    for (const entry of CHORD_REGISTRY_LIST) {
-                        const fits = entry.formula.intervals.every((interval) => scale.has((tonic + interval) % 12));
-                        expect(admitted.has(entry.id), `${group}/${name} ${entry.id}`).toBe(fits);
+                for (const chord of getScaleCompatibleChords(group, name, 0)) {
+                    if (chord.basis === 'containment') expect(chord.tonesOutsideScale).toEqual([]);
+                }
+            }
+        }
+    });
+});
+
+describe('"Play this scale over" — spelling', () => {
+    it('spells the root and tones in the chord\'s own frame, including the diminished 7th', () => {
+        expect(find('Diatonic Modes', 'Ionian', 'major-7', 6)!.rootNoteName).toBe('F#');
+        expect(find('Diatonic Modes', 'Ionian', 'major-7', 6)!.toneNames).toEqual(['F#', 'A#', 'C#', 'E#']);
+        expect(find('Symmetric', 'Diminished', 'diminished-7', 0)!.toneNames).toEqual(['C', 'Eb', 'Gb', 'Bbb']);
+    });
+
+    it('spells every admitted chord over every scale and tonic without falling back', () => {
+        for (const group of Object.keys(SCALES)) {
+            for (const name of Object.keys(SCALES[group])) {
+                for (let tonic = 0; tonic < 12; tonic += 1) {
+                    for (const chord of getScaleCompatibleChords(group, name, tonic)) {
+                        expect(chord.toneNames).toHaveLength(chord.toneNames.filter(Boolean).length);
+                        expect(chord.toneNames[0], `${group}/${name}@${tonic}`).toBe(chord.rootNoteName);
                     }
                 }
             }

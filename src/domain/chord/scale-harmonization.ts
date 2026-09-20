@@ -1,4 +1,4 @@
-import { getScaleDegreeNumeral, SCALES } from '@/domain/scale';
+import { getSpelledScaleDegrees, SCALES, type SpelledScaleDegree } from '@/domain/scale';
 import { identifyChordsForPitchClasses } from './chordRecognition';
 import { getChordTypeSuffix } from './helpers';
 import { getChordRegistryEntry, type ChordRegistryEntry } from './registry';
@@ -19,6 +19,8 @@ export const HARMONIZABLE_PITCH_CLASS_COUNT = 7;
 export interface HarmonizedChord {
     degreeIndex: number;
     rootPitchClass: PitchClass;
+    /** Root spelled as the scale spells that degree, e.g. "D#" for Lydian #2's ♯ii. */
+    rootNoteName: string;
     chordId: string;
     /** Registry suffix, e.g. "m7", "maj7", "dim" ("" for a plain major triad). */
     chordSuffix: string;
@@ -46,34 +48,35 @@ function acceptsStack(entry: ChordRegistryEntry, size: 3 | 4): boolean {
     return size === 3 ? entry.family === 'triad' : entry.family === 'seventh' && hasSeventhDegree(degrees);
 }
 
+/**
+ * Cases and marks the scale degree's own numeral by chord quality: lowercase for a minor third,
+ * ° / ø for diminished, + for augmented. The numeral and its accidental come from the scale's
+ * formula (so Lydian #2's raised second is ♯II, never ♭III) and are never re-derived here.
+ */
 function buildRomanNumeral(base: string, entry: ChordRegistryEntry, size: 3 | 4): string {
     const { degrees } = entry.formula;
-    const match = /^([b#]?)(.*)$/.exec(base)!;
-    const accidental = match[1] === 'b' ? '♭' : match[1] === '#' ? '♯' : '';
-    const isMinorThird = degrees.includes('b3');
-    let numeral = isMinorThird ? match[2].toLowerCase() : match[2];
-    let seventh = '';
+    const match = /^([♭♯]*)(.*)$/.exec(base)!;
+    const [, accidentals, numeral] = match;
+    let cased = degrees.includes('b3') ? numeral.toLowerCase() : numeral;
     if (degrees.includes('b3') && degrees.includes('b5')) {
-        numeral += size === 4 && degrees.includes('b7') ? 'ø' : '°';
+        cased += size === 4 && degrees.includes('b7') ? 'ø' : '°';
     } else if (degrees.includes('#5')) {
-        numeral += '+';
+        cased += '+';
     }
-    if (size === 4) seventh = degrees.includes('7') ? 'M7' : '7';
-    return `${accidental}${numeral}${seventh}`;
+    const seventh = size === 4 ? (degrees.includes('7') ? 'M7' : '7') : '';
+    return `${accidentals}${cased}${seventh}`;
 }
 
 function harmonizeDegree(
-    scaleGroup: string,
-    scaleName: string,
-    intervals: readonly number[],
-    tonicPitchClass: PitchClass,
+    degrees: SpelledScaleDegree[],
     degreeIndex: number,
     size: 3 | 4
 ): HarmonizedChord | null {
-    const count = intervals.length;
+    const count = degrees.length;
     const offsets = size === 3 ? [0, 2, 4] : [0, 2, 4, 6];
-    const stack = offsets.map((step) => normalizePitchClass(tonicPitchClass + intervals[(degreeIndex + step) % count]));
-    const rootPitchClass = stack[0];
+    const stack = offsets.map((step) => degrees[(degreeIndex + step) % count].pitchClass);
+    const rootDegree = degrees[degreeIndex];
+    const rootPitchClass = rootDegree.pitchClass;
 
     const candidate = identifyChordsForPitchClasses(stack).find((item) => {
         // Exact, root-anchored match only. Symmetric sets (augmented, diminished) have several
@@ -89,9 +92,10 @@ function harmonizeDegree(
     return {
         degreeIndex,
         rootPitchClass,
+        rootNoteName: rootDegree.noteName,
         chordId: entry.id,
         chordSuffix: getChordTypeSuffix(entry),
-        romanNumeral: buildRomanNumeral(getScaleDegreeNumeral(scaleGroup, scaleName, intervals[degreeIndex]), entry, size),
+        romanNumeral: buildRomanNumeral(rootDegree.romanNumeral, entry, size),
     };
 }
 
@@ -108,13 +112,15 @@ export function getScaleHarmonization(
 
     const intervals = SCALES[scaleGroup]?.[scaleName] ?? [];
     const pitchClassCount = new Set(intervals.map(normalizePitchClass)).size;
+    const degrees = pitchClassCount === HARMONIZABLE_PITCH_CLASS_COUNT
+        ? getSpelledScaleDegrees(scaleGroup, scaleName, tonicPitchClass)
+        : null;
 
     let result: ScaleHarmonization;
-    if (pitchClassCount !== HARMONIZABLE_PITCH_CLASS_COUNT || intervals.length !== HARMONIZABLE_PITCH_CLASS_COUNT) {
+    if (!degrees || degrees.length !== HARMONIZABLE_PITCH_CLASS_COUNT) {
         result = { defined: false, pitchClassCount };
     } else {
-        const build = (size: 3 | 4) => intervals.map((_, degreeIndex) =>
-            harmonizeDegree(scaleGroup, scaleName, intervals, tonicPitchClass, degreeIndex, size));
+        const build = (size: 3 | 4) => degrees.map((_, degreeIndex) => harmonizeDegree(degrees, degreeIndex, size));
         result = { defined: true, triads: build(3), sevenths: build(4) };
     }
     cache.set(key, result);

@@ -11,7 +11,6 @@ export {
     getScaleEngineIntervalLabels,
     isDoubleStopSupported,
     generateModeData,
-    getScaleDegreeNumeral,
     getModalSiblings,
     getScaleTonicTriadQuality,
 } from './scales';
@@ -44,3 +43,6 @@ export type { HarmonicInterval, DoubleStopPair, PlayableDoubleStop } from './typ
 
 export type { ScaleDerivedDataToggles, ScaleDiatonicChord, ScaleDerivedData } from './getScaleDerivedData';
 export { getScaleDerivedData } from './getScaleDerivedData';
+
+export type { SpelledScaleDegree } from './scale-spelling';
+export { getSpelledScaleDegrees } from './scale-spelling';

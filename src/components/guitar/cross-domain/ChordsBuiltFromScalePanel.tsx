@@ -4,7 +4,7 @@ import React from 'react';
 
 import { getScaleHarmonization } from '@/domain/chord/scale-harmonization';
 import { getScaleDisplayName } from '@/domain/scale';
-import { getKeyName } from '@/domain/shared/keys';
+import { formatAccidentals } from '@/domain/shared/spelling';
 import { TabsRail } from '../../ui/design-system/TabsRail';
 
 interface ChordsBuiltFromScalePanelProps {
@@ -26,7 +26,7 @@ export function ChordsBuiltFromScalePanel({ scaleGroup, scaleName, tonicPitchCla
         () => getScaleHarmonization(scaleGroup, scaleName, tonicPitchClass),
         [scaleGroup, scaleName, tonicPitchClass]
     );
-    const scaleLabel = `${getKeyName(tonicPitchClass)} ${getScaleDisplayName(scaleName)}`;
+    const scaleLabel = getScaleDisplayName(scaleName);
 
     if (!harmonization.defined) {
         return (
@@ -56,7 +56,7 @@ export function ChordsBuiltFromScalePanel({ scaleGroup, scaleName, tonicPitchCla
                     >
                         <span className="text-xs font-semibold text-white/40">{chord?.romanNumeral ?? '—'}</span>
                         <span className="text-[15px] font-bold leading-none text-white">
-                            {chord ? `${getKeyName(chord.rootPitchClass)}${chord.chordSuffix}` : 'No chord'}
+                            {chord ? formatAccidentals(`${chord.rootNoteName}${chord.chordSuffix}`) : 'No chord'}
                         </span>
                     </li>
                 ))}

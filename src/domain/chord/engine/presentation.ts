@@ -1,19 +1,24 @@
 import type { ResolvedVoicingNote } from '../types';
 import type { ChordRegistryEntry } from '../registry';
 import { getKeyName } from '../../shared/keys';
+import { formatNoteName, parseDegreeLabel, parseNoteName, spellDegree } from '../../shared/spelling';
 import { parseAllocationId } from './identity';
 import { EngineError } from './errors';
 import { integer } from './validation';
 import type { PhysicalReason, PresentationCandidate } from './types';
 
-const LETTERS=['C','D','E','F','G','A','B'],NATURAL_PITCHES=[0,2,4,5,7,9,11];
 export function formatDegreeLabel(degree:string):string{return degree.replace(/b/g,'♭').replace(/#/g,'♯');}
+/** Bare note name for a chord tone, letter-cycle spelled from the chord's own root and degree. */
+export function spellChordToneName(rootPitchClass:number,degree:string,interval:number):string {
+    const parsed=parseDegreeLabel(degree);
+    if(!parsed||parsed.number<1)throw new RangeError(`Invalid chord degree: ${degree}`);
+    const root=parseNoteName(getKeyName(rootPitchClass));
+    const spelled=root&&spellDegree(root,parsed.number,rootPitchClass+interval);
+    if(!spelled)throw new RangeError(`Unspellable chord tone: ${degree} over ${rootPitchClass}`);
+    return spelled.name;
+}
 export function formatChordToneLabel(rootPitchClass:number,degree:string,interval:number):string {
-    const match=/^[b#]*(\d+)$/.exec(degree);
-    if(!match||Number(match[1])<1)throw new RangeError(`Invalid chord degree: ${degree}`);
-    const letterIndex=(LETTERS.indexOf(getKeyName(rootPitchClass)[0])+Number(match[1])-1)%7;
-    const pc=((rootPitchClass+interval)%12+12)%12,accidental=((pc-NATURAL_PITCHES[letterIndex]+18)%12)-6;
-    return `${LETTERS[letterIndex]}${accidental<0?'♭'.repeat(-accidental):'♯'.repeat(accidental)} · ${formatDegreeLabel(degree)}`;
+    return `${formatNoteName(spellChordToneName(rootPitchClass,degree,interval))} · ${formatDegreeLabel(degree)}`;
 }
 export function getChordToneChoices(entry:ChordRegistryEntry,rootPitchClass:number) {
     return entry.formula.degrees.map((degree,index)=>({value:degree,label:formatChordToneLabel(rootPitchClass,degree,entry.formula.intervals[index])}));
