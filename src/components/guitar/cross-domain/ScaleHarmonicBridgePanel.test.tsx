@@ -18,27 +18,45 @@ describe('ScaleHarmonicBridgePanel', () => {
         );
         expect(markup).toContain('Play this scale over');
         expect(markup).toContain('Chords built from this scale');
-        expect(markup).toContain('standard scale to play over');
+        expect(markup).toContain('Primary chords to play');
     });
 });
 
 describe('PlayThisScaleOverPanel states only what the domain computed', () => {
     it('separates the practice claim from the note-containment claim', () => {
         const markup = playOver('Diatonic Modes', 'Ionian', 0);
-        expect(markup).toContain('standard scale to play over');
+        expect(markup).toContain('Primary chords to play');
         expect(markup).toContain('whose every note is in');
         expect(markup).toContain('Cmaj7');
         expect(markup).toContain('Csus4');
     });
 
-    it('says which tone an altered-dominant pairing replaces, rather than implying a full fit', () => {
-        const markup = playOver('Jazz Minor Modes', 'Altered scale', 0);
-        expect(markup).toContain('C7♯9');
-        expect(markup).toContain('The scale replaces G');
+    it('distinguishes characteristic modal colors from primary chords without overclaiming', () => {
+        const phrygian = playOver('Diatonic Modes', 'Phrygian', 0);
+        expect(phrygian).toContain('Characteristic modal and color pairings for C Phrygian');
+        expect(phrygian).toContain('Cm7');
+        expect(phrygian).not.toContain('Primary chords to play');
+
+        const lydianDom = playOver('Jazz Minor Modes', 'Lydian Dominant', 0);
+        expect(lydianDom).toContain('Characteristic modal and color pairings for C Lydian Dominant');
+        expect(lydianDom).toContain('C7');
+        expect(lydianDom).not.toContain('Primary chords to play');
+
+        const locrianNat2 = playOver('Jazz Minor Modes', 'Locrian ♮2', 0);
+        expect(locrianNat2).toContain('Characteristic modal and color pairings');
+        expect(locrianNat2).toContain('Cm7♭5');
+        expect(locrianNat2).not.toContain('Primary chords to play');
     });
 
-    it('says plainly when no chord has this scale as its standard scale', () => {
-        expect(playOver('Harmonic Minor Modes', 'Lydian #2', 0)).toContain('No chord in the library has');
+    it('states that the natural 5th is altered rather than claiming mechanical substitution', () => {
+        const markup = playOver('Jazz Minor Modes', 'Altered scale', 0);
+        expect(markup).toContain('C7♯9');
+        expect(markup).toContain('Natural 5th (G) is altered in this scale');
+        expect(markup).not.toContain('The scale replaces G');
+    });
+
+    it('says plainly when no curated chord pairing exists for the scale', () => {
+        expect(playOver('Harmonic Minor Modes', 'Lydian #2', 0)).toContain('No curated standard chord pairings for C Lydian #2');
     });
 
     it('renders chord tones in the chord\'s own spelling', () => {

@@ -28,6 +28,7 @@ export const ROMAN_NUMERAL_CHORDS: Record<string, { interval: number; type: stri
     // Diminished & Augmented Chords (Harmonic/Melodic/Altered Scales)
     'i°': { interval: 0, type: 'Diminished' },
     'ii°': { interval: 2, type: 'Diminished' },
+    '#ii°': { interval: 3, type: 'Diminished' },
     'iii°': { interval: 4, type: 'Diminished' },
     '#iv°': { interval: 6, type: 'Diminished' },
     'v°': { interval: 7, type: 'Diminished' },
@@ -35,12 +36,23 @@ export const ROMAN_NUMERAL_CHORDS: Record<string, { interval: number; type: stri
     'vii°': { interval: 11, type: 'Diminished' },
     'bvii°': { interval: 10, type: 'Diminished' },
 
+    'I+': { interval: 0, type: 'Augmented' },
+    'II+': { interval: 2, type: 'Augmented' },
     'bIII+': { interval: 3, type: 'Augmented' },
-    'bVI+': { interval: 8, type: 'Augmented' }
+    'III+': { interval: 4, type: 'Augmented' },
+    'bIV+': { interval: 4, type: 'Augmented' },
+    '#IV+': { interval: 6, type: 'Augmented' },
+    'bV+': { interval: 6, type: 'Augmented' },
+    '#V+': { interval: 8, type: 'Augmented' },
+    'bVI+': { interval: 8, type: 'Augmented' },
+    'bVII+': { interval: 10, type: 'Augmented' },
+
+    'bbVII': { interval: 9, type: 'Major' },
 };
 
 export function getChordFromDegree(degree: string): { interval: number; type: string } {
-    return ROMAN_NUMERAL_CHORDS[degree] || { interval: 0, type: 'Major' };
+    const ascii = degree.replace(/♭/g, 'b').replace(/♯/g, '#');
+    return ROMAN_NUMERAL_CHORDS[degree] || ROMAN_NUMERAL_CHORDS[ascii] || { interval: 0, type: 'Major' };
 }
 
 const CHORD_TYPE_SUFFIX: Record<string, string> = {

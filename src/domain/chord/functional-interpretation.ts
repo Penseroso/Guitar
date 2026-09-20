@@ -1,6 +1,7 @@
 import { getKeyName } from '@/domain/shared/keys';
 import { isMinorKeyScale } from '@/domain/scale/scaleSelector';
-import { SCALE_DISPLAY_FORMULAS } from '@/domain/scale/scales';
+import { getScaleEngineIntervalLabels } from '@/domain/scale/scales';
+import { GENERIC_INTERVAL_ROMAN, parseDegreeLabel, romanNumeralForDegree } from '@/domain/shared/spelling';
 import { resolveChordRegistryEntry } from './helpers';
 import type { ChordRegistryEntry } from './registry';
 import type { HarmonicTonalContext } from './related-scales';
@@ -28,34 +29,16 @@ export interface HarmonicFunctionInterpretation {
     summary: string;
 }
 
-const INTERVAL_TO_DEGREE: Record<number, string> = {
-    0: 'I',
-    1: 'bII',
-    2: 'II',
-    3: 'bIII',
-    4: 'III',
-    5: 'IV',
-    6: 'bV',
-    7: 'V',
-    8: 'bVI',
-    9: 'VI',
-    10: 'bVII',
-    11: 'VII',
-};
-
-// Same ambiguity as scales.ts's INTERVAL_TO_ROMAN: the tritone degree is enharmonically both
-// "b5" and "#4". Spell it "#IV" when the active scale's own interval label says "#4" (Lydian
-// family), otherwise keep "bV" — matches the fix already applied in scales.ts's generateModeData.
-const TRITONE_INTERVAL = 6;
-const SHARP_FOUR_LABEL = '#4';
-
 function getRelativeDegreeLabel(relativeInterval: number, scaleGroup: string, scaleName: string): string {
-    if (relativeInterval === TRITONE_INTERVAL
-        && SCALE_DISPLAY_FORMULAS[scaleGroup]?.[scaleName]?.[TRITONE_INTERVAL] === SHARP_FOUR_LABEL) {
-        return '#IV';
+    const engineLabel = getScaleEngineIntervalLabels(scaleGroup, scaleName)?.[relativeInterval];
+    if (engineLabel) {
+        const parsed = parseDegreeLabel(engineLabel);
+        if (parsed) {
+            return romanNumeralForDegree(parsed);
+        }
     }
 
-    return INTERVAL_TO_DEGREE[relativeInterval] ?? '?';
+    return GENERIC_INTERVAL_ROMAN[relativeInterval] ?? '?';
 }
 
 function getTonicPitchClass(tonalContext: HarmonicTonalContext, fallbackPitchClass: number) {

@@ -1,4 +1,10 @@
-// c:\Projects\Guitar\src\utils\guitar\scales.ts
+import {
+    formatTriadRomanNumeral,
+    GENERIC_INTERVAL_ROMAN,
+    parseDegreeLabel,
+    romanNumeralForDegree,
+    type TriadQuality,
+} from '@/domain/shared/spelling';
 
 export interface ModeData {
     role: string;
@@ -184,29 +190,6 @@ export function isDoubleStopSupported(groupName: string, modeName: string): bool
         || groupName === 'Pentatonic';
 }
 
-const INTERVAL_TO_ROMAN: Record<number, string> = {
-    0: 'I',
-    1: 'bII',
-    2: 'II',
-    3: 'bIII',
-    4: 'III',
-    5: 'IV',
-    6: 'bV',
-    7: 'V',
-    8: 'bVI',
-    9: 'VI',
-    10: 'bVII',
-    11: 'VII'
-};
-
-// The tritone degree (6 semitones) is the one ambiguous spot in INTERVAL_TO_ROMAN: it's
-// enharmonically both "b5" and "#4", and which one is idiomatic depends on the scale. A scale
-// whose own interval label spells it "#4" (Lydian-family modes, Whole Tone) should get a "#IV"
-// chord root, not "bV" — otherwise the scale's note label and its own triad's roman numeral
-// contradict each other for the same pitch.
-const TRITONE_INTERVAL = 6;
-const SHARP_FOUR_LABEL = '#4';
-
 /**
  * Calculates absolute intervals for any given mode based on its parent scale.
  * Handles generic modulo operation based on the parent's length (N)
@@ -253,7 +236,7 @@ for (const group in SCALE_REGISTRY) {
  * 각 음에 쌓아 올린 3화음(Triad)을 계산하여 로마 숫자와 테마 색상을 동적 할당합니다.
  * 펜타토닉 등 결손 음계는 `subset` 필드를 이용해 필터링합니다.
  */
-export type TriadQuality = 'Major' | 'Minor' | 'Diminished' | 'Augmented';
+export type { TriadQuality };
 
 /** Stacks the scale's own 3rd and 5th degrees above degree `d` and classifies the resulting triad. */
 function getStackedTriadQuality(fullRotatedIntervals: number[], N: number, d: number): TriadQuality {
@@ -291,16 +274,6 @@ export function getScaleTonicTriadQuality(groupName: string, modeName: string): 
     return getStackedTriadQuality(fullRotatedIntervals, N, 0);
 }
 
-/**
- * Uppercase, tonic-relative roman numeral (with accidental) for a scale degree whose root sits
- * `rootInterval` semitones above the tonic — e.g. 'bVII', or '#IV' for Lydian-family scales.
- */
-function getScaleDegreeNumeral(groupName: string, modeName: string, rootInterval: number): string {
-    const usesSharpFourSpelling = rootInterval === TRITONE_INTERVAL
-        && SCALE_DISPLAY_FORMULAS[groupName]?.[modeName]?.[TRITONE_INTERVAL] === SHARP_FOUR_LABEL;
-    return usesSharpFourSpelling ? '#IV' : (INTERVAL_TO_ROMAN[rootInterval] || '?');
-}
-
 export function generateModeData(groupName: string, modeName: string): ScaleDictionary {
     const registryGroup = SCALE_REGISTRY[groupName] || SCALE_REGISTRY['Diatonic Modes'];
     const modeInfo = registryGroup[modeName] || SCALE_REGISTRY['Diatonic Modes']['Aeolian'];
@@ -310,6 +283,7 @@ export function generateModeData(groupName: string, modeName: string): ScaleDict
 
     // 부모 스케일을 순환시켜 모드의 절대 인터벌 배열 도출
     const fullRotatedIntervals = calculateScaleIntervals(parentIntervals, modeInfo.rootOffsetIndex);
+    const engineLabels = getScaleEngineIntervalLabels(groupName, modeName);
 
     const modeData: ScaleDictionary = {};
 
@@ -324,11 +298,10 @@ export function generateModeData(groupName: string, modeName: string): ScaleDict
 
         const quality = getStackedTriadQuality(fullRotatedIntervals, N, d);
 
-        // 로마 숫자 파싱
-        let roman = getScaleDegreeNumeral(groupName, modeName, rootInterval);
-        if (quality === 'Minor') roman = roman.toLowerCase();
-        else if (quality === 'Diminished') roman = roman.toLowerCase() + '°';
-        else if (quality === 'Augmented') roman = roman + '+';
+        const degreeLabel = engineLabels[rootInterval];
+        const parsed = degreeLabel ? parseDegreeLabel(degreeLabel) : null;
+        const baseNumeral = parsed ? romanNumeralForDegree(parsed) : (GENERIC_INTERVAL_ROMAN[rootInterval] ?? '?');
+        const roman = formatTriadRomanNumeral(baseNumeral, quality);
 
         // 테마 색상 동적 매핑
         let color = '#7dd3fc'; // Light Blue (Minor) by default

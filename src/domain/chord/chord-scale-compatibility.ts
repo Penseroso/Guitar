@@ -1,5 +1,5 @@
 import { getKeyName } from '@/domain/shared/keys';
-import { getCanonicalChordsForScale } from './canonical-chord-scales';
+import { getCuratedChordsForScale } from './canonical-chord-scales';
 import { canonicalTone } from './engine/catalog';
 import { spellChordToneName } from './engine/presentation';
 import { getChordTypeSuffix } from './helpers';
@@ -9,22 +9,17 @@ import type { PitchClass } from './types';
 
 /**
  * "Play this scale over": which chords, rooted on the scale's own tonic, this scale can be played
- * over. Two layers with two different kinds of claim, kept apart because they are not the same
- * statement and one cannot be derived from the other:
+ * over. Kept apart into three explicit layers:
  *
- *  - `canonical` — curated practice: this scale is the standard choice over that chord
- *    (canonical-chord-scales.ts). Admitted whether or not every chord tone is in the scale: the
- *    altered scale is *the* scale for a 7#9 precisely because it replaces the chord's natural 5th.
- *    `tonesOutsideScale` names what it replaces, so the card never overstates.
+ *  - `primary` — curated practice: this scale is the primary, standard choice over that chord
+ *    (e.g. Dorian over m7, Mixolydian over 7, Altered over 7#9/7b9).
+ *  - `characteristic` — curated practice: this scale is an established modal or tension colour
+ *    pairing (e.g. Phrygian over m7 with b2, Lydian Dominant over 7 with #11, Locrian ♮2 over m7b5).
  *  - `containment` — deductive fact: every note of the chord is in the scale. A literal claim
- *    about notes, not a recommendation. It can admit a chord the scale merely spells
- *    enharmonically (a minor triad over Lydian #2, whose #2 is also a b3) — true as stated, which
- *    is why the UI states it exactly rather than implying the chord sounds idiomatic.
- *
- * Deliberately excluded from v1: stylistic/colour options (the "you could also try" layer).
+ *    about notes, not an idiom claim.
  */
 
-export type ChordScaleFitBasis = 'canonical' | 'containment';
+export type ChordScaleFitBasis = 'primary' | 'characteristic' | 'containment';
 
 export interface ScaleCompatibleChord {
     chordId: string;
@@ -62,32 +57,46 @@ export function getScaleCompatibleChords(
     const root = normalizePitchClass(tonicPitchClass);
     const rootNoteName = getKeyName(root);
     const scalePitchClasses = new Set(intervals.map((interval) => normalizePitchClass(root + interval)));
-    const canonicalIds = new Set(getCanonicalChordsForScale(scaleGroup, scaleName));
+    const curated = getCuratedChordsForScale(scaleGroup, scaleName);
+    const primaryIds = new Set(curated.primary ?? []);
+    const characteristicIds = new Set(curated.characteristic ?? []);
 
-    const canonical: ScaleCompatibleChord[] = [];
+    const primary: ScaleCompatibleChord[] = [];
+    const characteristic: ScaleCompatibleChord[] = [];
     const containment: ScaleCompatibleChord[] = [];
 
     for (const entry of CHORD_REGISTRY_LIST) {
-        const isCanonical = canonicalIds.has(entry.id);
+        const isPrimary = primaryIds.has(entry.id);
+        const isCharacteristic = characteristicIds.has(entry.id);
+        const isCurated = isPrimary || isCharacteristic;
+
         const outside = entry.formula.intervals
             .map((interval, index) => ({ index, pitchClass: normalizePitchClass(root + interval) }))
             .filter(({ pitchClass }) => !scalePitchClasses.has(pitchClass));
 
-        if (!isCanonical && outside.length > 0) continue;
+        if (!isCurated && outside.length > 0) continue;
 
         const toneNames = spellTones(entry, root);
+        const basis: ChordScaleFitBasis = isPrimary
+            ? 'primary'
+            : isCharacteristic
+                ? 'characteristic'
+                : 'containment';
+
         const chord: ScaleCompatibleChord = {
             chordId: entry.id,
             chordSuffix: getChordTypeSuffix(entry),
             rootPitchClass: root,
             rootNoteName,
-            basis: isCanonical ? 'canonical' : 'containment',
+            basis,
             toneNames,
             tonesOutsideScale: outside.map(({ index }) => toneNames[index]),
         };
-        (isCanonical ? canonical : containment).push(chord);
+
+        if (isPrimary) primary.push(chord);
+        else if (isCharacteristic) characteristic.push(chord);
+        else containment.push(chord);
     }
 
-    // Canonical pairings first: the practice claim is the headline, literal note-fit follows.
-    return [...canonical, ...containment];
+    return [...primary, ...characteristic, ...containment];
 }

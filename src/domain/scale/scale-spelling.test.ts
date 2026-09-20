@@ -35,7 +35,19 @@ describe('scale degree spelling', () => {
             for (const name of Object.keys(SCALES[group])) {
                 if (SCALES[group][name].length !== 7) continue;
                 for (let tonic = 0; tonic < 12; tonic += 1) {
-                    expect(getSpelledScaleDegrees(group, name, tonic), `${group}/${name}@${tonic}`).not.toBeNull();
+                    const degrees = getSpelledScaleDegrees(group, name, tonic);
+                    expect(degrees, `${group}/${name}@${tonic}`).not.toBeNull();
+                    expect(degrees).toHaveLength(7);
+
+                    // 7 distinct letters
+                    const letters = degrees!.map((d) => d.noteName[0]);
+                    expect(new Set(letters).size, `${group}/${name}@${tonic} letter cycle`).toBe(7);
+
+                    // pitch classes match (tonic + interval) % 12
+                    degrees!.forEach((d, idx) => {
+                        const expectedPitchClass = (tonic + SCALES[group][name][idx]) % 12;
+                        expect(d.pitchClass, `${group}/${name}@${tonic} degree ${idx} pitch class`).toBe(expectedPitchClass);
+                    });
                 }
                 spelled += 1;
             }

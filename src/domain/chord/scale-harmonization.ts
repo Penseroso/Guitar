@@ -1,4 +1,5 @@
 import { getSpelledScaleDegrees, SCALES, type SpelledScaleDegree } from '@/domain/scale';
+import { formatTriadRomanNumeral } from '@/domain/shared/spelling';
 import { identifyChordsForPitchClasses } from './chordRecognition';
 import { getChordTypeSuffix } from './helpers';
 import { getChordRegistryEntry, type ChordRegistryEntry } from './registry';
@@ -55,15 +56,26 @@ function acceptsStack(entry: ChordRegistryEntry, size: 3 | 4): boolean {
  */
 function buildRomanNumeral(base: string, entry: ChordRegistryEntry, size: 3 | 4): string {
     const { degrees } = entry.formula;
+    if (size === 3) {
+        const quality = degrees.includes('b3') && degrees.includes('b5')
+            ? 'Diminished'
+            : degrees.includes('#5')
+                ? 'Augmented'
+                : degrees.includes('b3')
+                    ? 'Minor'
+                    : 'Major';
+        return formatTriadRomanNumeral(base, quality);
+    }
+
     const match = /^([♭♯]*)(.*)$/.exec(base)!;
     const [, accidentals, numeral] = match;
     let cased = degrees.includes('b3') ? numeral.toLowerCase() : numeral;
     if (degrees.includes('b3') && degrees.includes('b5')) {
-        cased += size === 4 && degrees.includes('b7') ? 'ø' : '°';
+        cased += degrees.includes('b7') ? 'ø' : '°';
     } else if (degrees.includes('#5')) {
         cased += '+';
     }
-    const seventh = size === 4 ? (degrees.includes('7') ? 'M7' : '7') : '';
+    const seventh = degrees.includes('7') ? 'M7' : '7';
     return `${accidentals}${cased}${seventh}`;
 }
 

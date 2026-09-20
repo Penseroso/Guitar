@@ -78,4 +78,13 @@ describe('getScaleDerivedData', () => {
         expect(unsupported.isDoubleStopVisible).toBe(false);
         expect(unsupported.playableDoubleStops).toEqual([]);
     });
+
+    it('maintains complete Roman numeral consistency between diatonicChords, generateModeData, and harmonic bridge', () => {
+        const supported = getScaleDerivedData('Harmonic Minor Modes', 'Lydian #2', 0, NO_TOGGLES);
+        const degrees = supported.diatonicChords.map((c) => c.degree);
+        // Interval 3 (degree 1) is #2 -> ♯ii°
+        expect(degrees[1]).toBe('♯ii°');
+        // Interval 6 (degree 3) is #4 -> ♯iv°
+        expect(degrees[3]).toBe('♯iv°');
+    });
 });

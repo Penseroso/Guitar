@@ -123,6 +123,21 @@ export function spellDegree(tonic: SpelledNote, degreeNumber: number, targetPitc
     };
 }
 
+export const GENERIC_INTERVAL_ROMAN: Readonly<Record<number, string>> = {
+    0: 'I',
+    1: '♭II',
+    2: 'II',
+    3: '♭III',
+    4: 'III',
+    5: 'IV',
+    6: '♭V',
+    7: 'V',
+    8: '♭VI',
+    9: 'VI',
+    10: '♭VII',
+    11: 'VII',
+};
+
 const ROMAN_BY_DEGREE = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'] as const;
 
 /**
@@ -132,4 +147,21 @@ const ROMAN_BY_DEGREE = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'] as const;
 export function romanNumeralForDegree(degree: DegreeSpelling): string {
     const numeral = ROMAN_BY_DEGREE[degreeToLetterStep(degree.number) - 1];
     return renderAccidentalSymbol(degree.alteration) + numeral;
+}
+
+export type TriadQuality = 'Major' | 'Minor' | 'Diminished' | 'Augmented';
+
+/**
+ * Formats an uppercase roman numeral (with Unicode accidentals, e.g. "♭III", "♯II") according to
+ * triad quality: lowercase for minor, lowercase + "°" for diminished, uppercase + "+" for
+ * augmented, uppercase for major.
+ */
+export function formatTriadRomanNumeral(baseNumeral: string, quality: TriadQuality): string {
+    const match = /^([♭♯]*)(.*)$/.exec(baseNumeral);
+    if (!match) return baseNumeral;
+    const [, accidentals, numeral] = match;
+    if (quality === 'Minor') return `${accidentals}${numeral.toLowerCase()}`;
+    if (quality === 'Diminished') return `${accidentals}${numeral.toLowerCase()}°`;
+    if (quality === 'Augmented') return `${accidentals}${numeral}+`;
+    return `${accidentals}${numeral}`;
 }

@@ -47,7 +47,7 @@ describe('functional harmonic interpretation', () => {
         expect(interpretation.fit).toBe('color');
     });
 
-    it('spells the tritone degree as #IV when the active scale itself labels it #4 (Lydian family)', () => {
+    it('spells the tritone degree as ♯IV when the active scale itself labels it #4 (Lydian family)', () => {
         const interpretation = interpretChordAgainstTonalCenter('major-7', 6, {
             selectedKey: 0,
             tonicPitchClass: 0,
@@ -55,10 +55,10 @@ describe('functional harmonic interpretation', () => {
             scaleName: 'Lydian',
         });
 
-        expect(interpretation.relativeDegree).toBe('#IV');
+        expect(interpretation.relativeDegree).toBe('♯IV');
     });
 
-    it('keeps bV for scales that label the tritone degree b5 (Locrian family)', () => {
+    it('keeps ♭V for scales that label the tritone degree b5 (Locrian family)', () => {
         const interpretation = interpretChordAgainstTonalCenter('half-diminished-7', 6, {
             selectedKey: 0,
             tonicPitchClass: 0,
@@ -66,7 +66,33 @@ describe('functional harmonic interpretation', () => {
             scaleName: 'Locrian',
         });
 
-        expect(interpretation.relativeDegree).toBe('bV');
+        expect(interpretation.relativeDegree).toBe('♭V');
+    });
+
+    it('spells modal degrees from the scale formula (Lydian #2 and Ultralocrian)', () => {
+        const sharpTwo = interpretChordAgainstTonalCenter('diminished', 3, {
+            selectedKey: 0,
+            tonicPitchClass: 0,
+            scaleGroup: 'Harmonic Minor Modes',
+            scaleName: 'Lydian #2',
+        });
+        expect(sharpTwo.relativeDegree).toBe('♯II');
+
+        const flatFour = interpretChordAgainstTonalCenter('augmented', 4, {
+            selectedKey: 0,
+            tonicPitchClass: 0,
+            scaleGroup: 'Harmonic Minor Modes',
+            scaleName: 'Ultralocrian',
+        });
+        expect(flatFour.relativeDegree).toBe('♭IV');
+
+        const doubleFlatSeven = interpretChordAgainstTonalCenter('major', 9, {
+            selectedKey: 0,
+            tonicPitchClass: 0,
+            scaleGroup: 'Harmonic Minor Modes',
+            scaleName: 'Ultralocrian',
+        });
+        expect(doubleFlatSeven.relativeDegree).toBe('♭♭VII');
     });
 
     it('reads a plain diminished (not just minor) chord at degree II as pre-dominant', () => {
