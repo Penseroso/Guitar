@@ -39,6 +39,13 @@ export function renderAccidental(alteration: number): string {
 }
 
 /**
+ * Normalizes Unicode accidentals (♭, ♯) in a string to ASCII (b, #).
+ */
+export function normalizeAccidentalsToAscii(text: string): string {
+    return text.replace(/♭/g, 'b').replace(/♯/g, '#');
+}
+
+/**
  * Renders ASCII accidentals as Unicode for display: "Bbb" -> "B♭♭", "Cm7b5" -> "Cm7♭5".
  * Safe on a whole chord label as well as a bare note, since no chord suffix in the registry
  * uses a literal "b" or "#" that is not an accidental.
@@ -46,6 +53,9 @@ export function renderAccidental(alteration: number): string {
 export function formatAccidentals(text: string): string {
     return text.replace(/b/g, '♭').replace(/#/g, '♯');
 }
+
+/** Normalizes ASCII accidentals (b, #) to Unicode (♭, ♯). Alias of formatAccidentals. */
+export const normalizeAccidentalsToUnicode = formatAccidentals;
 
 /** Renders an ASCII-spelled note name (e.g. "Bbb") with Unicode accidentals. */
 export const formatNoteName = formatAccidentals;

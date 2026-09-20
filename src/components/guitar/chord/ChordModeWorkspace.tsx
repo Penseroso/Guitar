@@ -3,6 +3,7 @@
 import React, { useId, useRef, useState } from 'react';
 import { RootDial } from './RootDial';
 import { ChoiceGroup } from './ChoiceGroup';
+import { formatAccidentals } from '@/domain/shared/spelling';
 import styles from './chord-ui.module.css';
 
 interface SelectorGroup {
@@ -51,7 +52,7 @@ function ChordTypeSelector({ value, groups, onChange }: {
             <ChoiceGroup label="Chord quality" value={value} compact onChange={onChange}
                 options={active.options.map(option => ({ value: option.stateValue,
                     label: option.id === 'augmented' ? 'aug' : option.id === 'diminished' ? 'dim'
-                        : option.label.replace(/b/g, '♭').replace(/#/g, '♯'),
+                        : formatAccidentals(option.label),
                     accessibleLabel: qualityNames[option.id] ?? option.label }))} />
         </div>}
     </div>;

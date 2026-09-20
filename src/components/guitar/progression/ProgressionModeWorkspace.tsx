@@ -17,6 +17,7 @@ import { ProgressionInspector } from './ProgressionInspector';
 import type { ProgressionPlaybackData } from '@/domain/progression/getProgressionPlaybackData';
 import { degreeToChordName, getChordFromDegree } from '@/domain/progression/degrees';
 import { getKeyName } from '@/domain/shared/keys';
+import { normalizeAccidentalsToAscii } from '@/domain/shared/spelling';
 import type {
     ChordNode,
     HarmonicFunction,
@@ -49,15 +50,15 @@ type ActiveOverData = {
 } | null;
 
 function DraggablePaletteItem({ degree, selectedKey, color }: { degree: string; selectedKey: number; color?: string }) {
+    const ascii = normalizeAccidentalsToAscii(degree);
     let harmonicFunction: HarmonicFunction = 'Tonic';
-    if (['V', 'vii°'].includes(degree)) harmonicFunction = 'Dominant';
-    if (['IV', 'ii'].includes(degree)) harmonicFunction = 'Subdominant';
+    if ((ascii.includes('V') && !ascii.includes('IV')) || ascii.toLowerCase().includes('vii')) {
+        harmonicFunction = 'Dominant';
+    } else if (ascii.toLowerCase().includes('iv') || ascii.toLowerCase().includes('ii')) {
+        harmonicFunction = 'Subdominant';
+    }
 
-    const { interval, type } = getChordFromDegree(degree);
-    const rootNoteIdx = (selectedKey + interval) % 12;
-    const rootText = getKeyName(rootNoteIdx);
-    const suffix = type === 'Minor' ? 'm' : type === 'Diminished' ? 'dim' : '';
-    const displayName = `${rootText}${suffix}`;
+    const displayName = degreeToChordName(degree, degree, selectedKey);
 
     const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
         id: degree,

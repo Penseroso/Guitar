@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 
 import {
     degreeToLetterStep,
+    normalizeAccidentalsToAscii,
+    normalizeAccidentalsToUnicode,
     parseDegreeLabel,
     parseNoteName,
     romanNumeralForDegree,
@@ -70,3 +72,20 @@ describe('roman numerals', () => {
         expect(romanNumeralForDegree({ number: 1, alteration: 0 })).toBe('I');
     });
 });
+
+describe('accidental normalization', () => {
+    it('normalizes Unicode accidentals to ASCII', () => {
+        expect(normalizeAccidentalsToAscii('♭III')).toBe('bIII');
+        expect(normalizeAccidentalsToAscii('♯iv°')).toBe('#iv°');
+        expect(normalizeAccidentalsToAscii('♭♭VII')).toBe('bbVII');
+        expect(normalizeAccidentalsToAscii('C♯m7♭5')).toBe('C#m7b5');
+    });
+
+    it('normalizes ASCII accidentals to Unicode', () => {
+        expect(normalizeAccidentalsToUnicode('bIII')).toBe('♭III');
+        expect(normalizeAccidentalsToUnicode('#iv°')).toBe('♯iv°');
+        expect(normalizeAccidentalsToUnicode('bbVII')).toBe('♭♭VII');
+        expect(normalizeAccidentalsToUnicode('C#m7b5')).toBe('C♯m7♭5');
+    });
+});
+
