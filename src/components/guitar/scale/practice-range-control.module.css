@@ -1,0 +1,22 @@
+.practice { display: flex; align-items: center; gap: 24px; width: 100%; padding: 10px 0 0; color: #f4f4f5; }
+.options { display: flex; align-items: flex-end; gap: 8px; min-width: 0; }
+.strings { min-width: 0; border: 0; margin: 0; padding: 0; }
+.strings legend { color: var(--workspace-muted); font-size: 12px; line-height: 18px; margin-bottom: 2px; }
+.strings legend span { margin-left: 4px; opacity: .7; }
+.stringButtons { display: flex; gap: 2px; }
+.stringButton, .reset { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; border: 0; background: transparent; color: var(--workspace-muted); font: inherit; font-size: 12px; cursor: pointer; transition: color .18s ease; }
+.stringButton { flex-direction: column; gap: 5px; padding: 6px 0; }
+.stringButton:hover:not(:disabled), .reset:hover:not(:disabled) { color: #fff; }
+.stringButton[aria-pressed="true"] { color: #fff; }
+.stringMark { width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: 0; transition: opacity .18s ease; }
+.stringButton[aria-pressed="true"] .stringMark { opacity: 1; }
+.stringButton:disabled, .reset:disabled { cursor: default; }
+.reset:disabled { opacity: .42; }
+.stringButton:focus-visible, .reset:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: 2px; border-radius: 4px; }
+.reset { margin-bottom: 0; }
+@media (max-width: 740px) {
+    .practice { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; }
+    .options { gap: 2px; overflow-x: auto; }
+    .strings, .reset { flex-shrink: 0; }
+    .stringButtons { gap: 0; }
+}

@@ -40,11 +40,16 @@ const toneValue = (extreme: ViewRequest['bass']) => extreme && 'tone' in extreme
 
 export function ChordExplorationPanel({ engine, context, onContextChange, onSelect, showIntervals, onToggleIntervals, toneChoices, title }: Props) {
     const [filtersOpen, setFiltersOpen] = useState(false), [neckOpen, setNeckOpen] = useState(false);
-    const neckTrigger = useRef<HTMLButtonElement>(null), id = useId();
+    const neckTrigger = useRef<HTMLButtonElement>(null), filtersRail = useRef<HTMLElement>(null), id = useId();
     const audio = useVoicingAudio();
     const cancelAudio = audio.cancel;
     useEffect(() => { cancelAudio(); return () => cancelAudio(); }, [cancelAudio, engine.requestEpoch]);
     useEffect(() => { if (engine.phase === 'error' || engine.phase === 'cancelled') cancelAudio(); }, [cancelAudio, engine.phase]);
+    useEffect(() => {
+        if (filtersOpen && window.matchMedia('(max-width: 1023px)').matches) {
+            filtersRail.current?.scrollIntoView?.({ behavior: 'smooth', block: 'start' });
+        }
+    }, [filtersOpen]);
     const cancelSearch = () => { cancelAudio(); engine.cancel(); };
     const { selected, view, summary } = engine, page = engine.phase === 'ready' ? engine.page : null;
     const busy = ['idle', 'loading', 'running'].includes(engine.phase);
@@ -102,10 +107,10 @@ export function ChordExplorationPanel({ engine, context, onContextChange, onSele
                 })}</div><nav aria-label="Voicing result pages" className={styles.row}><button className={styles.action} onClick={engine.firstPage}>First page</button><button className={styles.action} disabled={!engine.canPrevious} onClick={engine.previousPage}>Previous page</button><button className={styles.action} disabled={!page.summary.hasMore || !page.nextCursor} onClick={engine.nextPage}>Next page</button></nav>
             </>}
         </div>
-        {filtersOpen && <aside id={id + '-filters'} className={styles.filtersRail} aria-label="Filters">
+        {filtersOpen && <aside ref={filtersRail} id={id + '-filters'} className={styles.filtersRail} aria-label="Filters">
             <FretRangeControl min={view.position?.low ?? 0} max={view.position?.high ?? 15} onChange={(low, high) => engine.setView({ position: low === 0 && high === 15 ? null : { low, high } })} />
             <div className={styles.accompaniment}><label className={styles.contextSwitch}><input type="checkbox" checked={context === 'accompaniment'} aria-describedby={id + '-context-help'} onChange={event => onContextChange(event.target.checked ? 'accompaniment' : 'standalone')} /><span className={styles.switchTrack} aria-hidden="true" /><span>Include accompaniment shapes</span></label>
-                <p id={id + '-context-help'} className={styles.small}>Makes the root optional and allows at least two distinct tones while preserving required chord identity tones.</p></div>
+                <p id={id + '-context-help'} className={styles.small}>Optional root · two-tone minimum · identity tones retained</p></div>
             <ChoiceRail label="Bass" value={toneValue(view.bass)} options={degreeOptions} onChange={value => engine.setView({ bass: value ? { tone: value } : null })} />
             <ChoiceRail label="Top" value={toneValue(view.top)} options={degreeOptions} onChange={value => engine.setView({ top: value ? { tone: value } : null })} />
             <ChoiceRail label="Sounding strings" value={String(view.soundingCount ?? '')} expandAny options={[...[2, 3, 4, 5, 6].map(count => ({ value: String(count), label: String(count) })), { value: '', label: 'Any' }]} onChange={value => engine.setView({ soundingCount: value ? Number(value) : null })} />
@@ -113,7 +118,7 @@ export function ChordExplorationPanel({ engine, context, onContextChange, onSele
             <ChoiceRail label="Root inclusion" value={view.root} options={rootOptions} onChange={value => engine.setView({ root: value as ViewRequest['root'] })} />
             <ChoiceRail label="Chord-tone coverage" value={view.coverage} options={coverageOptions} onChange={value => engine.setView({ coverage: value as ViewRequest['coverage'] })} />
             <ChoiceRail label="Physical assessment" value={view.statuses.length === 2 ? 'both' : view.statuses[0]} options={[{ value: 'both', label: 'Both' }, { value: 'PASS', label: 'PASS' }, { value: 'UNCERTAIN', label: 'UNCERTAIN' }]} onChange={value => engine.setView({ statuses: value === 'both' ? ['PASS', 'UNCERTAIN'] : [value as 'PASS' | 'UNCERTAIN'] })} />
-            <p className={styles.small}>Bass is the lowest sounding note; Top is the highest. All tones means the complete chord formula. With omissions means at least one formula tone is absent. Assessment filters do not change ranking.</p>
+            <p className={styles.small}>Bass = lowest · Top = highest · All tones = complete formula · With omissions = partial formula</p>
         </aside>}
         {audio.error && <p role="alert" className={styles.warning}>{audio.error}</p>}
         {neckOpen && selected && <ChordDialog title="Full fretboard" returnFocusRef={neckTrigger} onClose={() => setNeckOpen(false)}><div className={styles.row}><p>{title} · {positionLabel(selected)}</p>{playButton(selected, true)}</div>{engine.request ? <ChordNeckView candidate={selected} rootPitchClass={engine.request.interpretation.rootPitchClass} showIntervals={showIntervals} /> : <p role="status">Waiting for the current request to validate this snapshot.</p>}{audio.error && <p role="alert" className={styles.warning}>{audio.error}</p>}</ChordDialog>}

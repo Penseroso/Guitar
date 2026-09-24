@@ -1,0 +1,14 @@
+.control { min-width: 0; border: 0; padding: 8px 22px 0; margin: 0; }
+.control legend { font-size: 12px; color: var(--workspace-muted); }
+.control strong { color: #f4f4f5; margin-left: 8px; font-weight: 600; }
+.track { position: relative; height: 44px; touch-action: none; }
+.track::before { content: ''; position: absolute; top: 20px; height: 4px; width: 100%; border-radius: 99px; background: linear-gradient(to right, rgba(255, 255, 255, 0.12) var(--range-start), #f4f4f5 var(--range-start), #f4f4f5 var(--range-end), rgba(255, 255, 255, 0.12) var(--range-end)); pointer-events: none; }
+.thumb { position: absolute; top: 0; transform: translateX(-50%); width: 44px; height: 44px; padding: 0; background: transparent; border: 0; border-radius: 50%; cursor: grab; touch-action: none; }
+.thumb::after { content: ''; display: block; width: 18px; height: 18px; margin: auto; border-radius: 50%; border: 2px solid var(--workspace-panel); background: #fff; }
+.thumb:active { cursor: grabbing; }
+.thumb:focus-visible { z-index: 1; outline: 2px solid var(--workspace-focus); outline-offset: 3px; }
+.ticks { position: relative; height: 18px; color: var(--workspace-muted); font-size: 11px; margin-bottom: 8px; }
+.ticks span { position: absolute; transform: translateX(-50%); }
+.help { color: var(--workspace-muted); font-size: 12px; line-height: 1.5; margin: 0; }
+.compact { flex: 1 1 240px; padding-top: 0; }
+.compact .ticks { margin-bottom: 0; }

@@ -27,7 +27,7 @@ vi.mock('./scale/ScaleModeWorkspace', () => ({
             ref: props.scaleRef, root: props.rootNote, key: props.selectedKey,
             group: props.scaleGroup, name: props.scaleName, active: props.activeNotes,
             selectedChordId: props.selectedChordId, analysis: props.analysis?.scaleRef,
-            chordTones: props.chordTones, intervals: props.showIntervals,
+            chordTones: props.chordTones, intervals: props.showIntervals, showChordTones: props.showChordTones,
         })}</output>
         <button onClick={() => props.onScaleChange('Diatonic Modes', 'Dorian')}>Explore Dorian</button>
         <button onClick={() => props.onScaleChange('Symmetric', 'Half-Whole Diminished')}>Explore Half–Whole</button>
@@ -37,6 +37,8 @@ vi.mock('./scale/ScaleModeWorkspace', () => ({
         <button onClick={() => props.onSelectChord('minor-7')}>Analyze minor seventh</button>
         <button onClick={() => props.onSelectChord('dominant-7-flat-9')}>Analyze dominant flat nine</button>
         <button onClick={props.onToggleIntervals}>Scale interval display</button>
+        <button onClick={props.onToggleChordTones}>Scale chord highlighting</button>
+        <button onClick={() => props.onSelectChord(null)}>Clear scale analysis</button>
     </section>,
 }));
 
@@ -74,6 +76,22 @@ function lastTonalContext() {
 }
 
 describe('ClientApp Scale context boundary', () => {
+    it('clears chord highlighting on analysis clear, scale change, and transposition', () => {
+        render(<ClientApp />);
+        click('Explore Dorian');
+        click('Analyze minor seventh');
+        click('Scale chord highlighting');
+        expect(snapshot('scale-context').showChordTones).toBe(true);
+        click('Clear scale analysis');
+        click('Analyze minor seventh');
+        expect(snapshot('scale-context').showChordTones).toBe(false);
+        click('Scale chord highlighting');
+        click('Scale tonic D');
+        expect(snapshot('scale-context')).toMatchObject({ showChordTones: false, selectedChordId: 'minor-7' });
+        click('Scale chord highlighting');
+        click('Explore Ionian');
+        expect(snapshot('scale-context')).toMatchObject({ showChordTones: false, selectedChordId: null });
+    });
     it('keeps Scale tonic, scale identity, analysis, and display state across independent Chord/Progression edits', () => {
         render(<ClientApp />);
         click('Explore Dorian');

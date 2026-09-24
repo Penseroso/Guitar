@@ -90,7 +90,7 @@ export function ReverseChordPanel({ states, onStatesChange, onStartFromVoicing }
                 </div>;
             })()}
             {inference.status === 'named' && <>
-                <p className={styles.small}>Click a chord name to see its intervals on the fretboard above.</p>
+                <p className={styles.small}>Select a name → intervals on fretboard</p>
                 {readingGroup('Best match', inference.best, titleByKey, focusedReadingKey, toggleFocus)}
                 {readingGroup('Other names', inference.other, titleByKey, focusedReadingKey, toggleFocus)}
                 {inference.looser.length > 0 && <details>

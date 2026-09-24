@@ -1,10 +1,10 @@
 "use client";
 
 import React from 'react';
-
 import { getScaleCompatibleChords, type ScaleCompatibleChord } from '@/domain/chord/chord-scale-compatibility';
 import { getScalePresentationName } from '@/domain/scale/scaleSelector';
 import { formatAccidentals, formatNoteName } from '@/domain/shared/spelling';
+import styles from './harmony.module.css';
 
 interface PlayThisScaleOverPanelProps {
     scaleGroup: string;
@@ -14,85 +14,56 @@ interface PlayThisScaleOverPanelProps {
     onSelectChord?: (chordId: string) => void;
 }
 
-function chordName(chord: ScaleCompatibleChord) {
-    return formatAccidentals(`${chord.rootNoteName}${chord.chordSuffix}`);
-}
+const chordName = (chord: ScaleCompatibleChord) => formatAccidentals(`${chord.rootNoteName}${chord.chordSuffix}`);
 
-function ChordCard({ chord, selected, onSelect }: { chord: ScaleCompatibleChord; selected: boolean; onSelect?: (id: string) => void }) {
-    return (
-        <li>
-          <button type="button" aria-label={`Analyze ${chordName(chord)}`} aria-pressed={selected}
-            onClick={() => onSelect?.(chord.chordId)}
-            className={`w-full h-full text-left rounded-[1rem] border px-3.5 py-3 flex flex-col gap-1.5 focus-visible:outline-2 focus-visible:outline-cyan-200 ${selected ? 'border-cyan-200/60 bg-cyan-200/10' : 'border-white/10 bg-white/[0.02] hover:bg-white/5'}`}>
-            <span className="text-[15px] font-bold leading-none text-white">{chordName(chord)}</span>
-            <span className="text-xs text-white/40">{chord.toneNames.map(formatNoteName).join(' ')}</span>
-            {chord.tonesOutsideScale.length > 0 && (
-                <span className="text-xs text-white/40">
-                    Natural 5th ({chord.tonesOutsideScale.map(formatNoteName).join(', ')}) is altered in this scale
-                </span>
-            )}
-          </button>
-        </li>
-    );
+function ChordList({ chords, selectedChordId, onSelectChord }: {
+    chords: ScaleCompatibleChord[];
+    selectedChordId: string | null;
+    onSelectChord?: (id: string) => void;
+}) {
+    return <ul className={styles.chordList}>{chords.map(chord => <li key={chord.chordId}>
+        <button type="button" className={styles.chordButton} aria-label={`Analyze ${chordName(chord)}`}
+            aria-pressed={selectedChordId === chord.chordId} onClick={() => onSelectChord?.(chord.chordId)}>{chordName(chord)}</button>
+    </li>)}</ul>;
 }
 
 export function PlayThisScaleOverPanel({ scaleGroup, scaleName, tonicPitchClass, selectedChordId = null, onSelectChord }: PlayThisScaleOverPanelProps) {
-    const chords = React.useMemo(
-        () => getScaleCompatibleChords(scaleGroup, scaleName, tonicPitchClass),
-        [scaleGroup, scaleName, tonicPitchClass]
-    );
-
-    const primary = chords.filter((chord) => chord.basis === 'primary');
-    const characteristic = chords.filter((chord) => chord.basis === 'characteristic');
-    const containment = chords.filter((chord) => chord.basis === 'containment');
+    const chords = React.useMemo(() => getScaleCompatibleChords(scaleGroup, scaleName, tonicPitchClass), [scaleGroup, scaleName, tonicPitchClass]);
+    const primary = chords.filter(chord => chord.basis === 'primary');
+    const characteristic = chords.filter(chord => chord.basis === 'characteristic');
+    const containment = chords.filter(chord => chord.basis === 'containment');
+    const selected = chords.find(chord => chord.chordId === selectedChordId);
     const scaleLabel = chords.length > 0
         ? `${formatNoteName(chords[0].rootNoteName)} ${getScalePresentationName(scaleName)}`
         : getScalePresentationName(scaleName);
-
     const hasCurated = primary.length > 0 || characteristic.length > 0;
+    const containmentList = <ChordList chords={containment} selectedChordId={selectedChordId} onSelectChord={onSelectChord} />;
 
-    return (
-        <div className="flex flex-col gap-5">
-            {primary.length > 0 && (
-                <section className="flex flex-col gap-3">
-                    <p className="text-sm text-white/50">
-                        Primary chords to play {scaleLabel} over.
-                    </p>
-                    <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2.5">
-                        {primary.map((chord) => <ChordCard key={chord.chordId} chord={chord} selected={selectedChordId === chord.chordId} onSelect={onSelectChord} />)}
-                    </ul>
-                </section>
-            )}
-
-            {characteristic.length > 0 && (
-                <section className="flex flex-col gap-3">
-                    <p className="text-sm text-white/50">
-                        Characteristic modal and color pairings for {scaleLabel}.
-                    </p>
-                    <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2.5">
-                        {characteristic.map((chord) => <ChordCard key={chord.chordId} chord={chord} selected={selectedChordId === chord.chordId} onSelect={onSelectChord} />)}
-                    </ul>
-                </section>
-            )}
-
-            {!hasCurated && (
-                <section className="flex flex-col gap-3">
-                    <p className="text-sm text-white/40">
-                        No curated standard chord pairings for {scaleLabel}.
-                    </p>
-                </section>
-            )}
-
-            {containment.length > 0 && (
-                <section className="flex flex-col gap-3">
-                    <p className="text-sm text-white/50">
-                        Other chords whose every note is in {scaleLabel}.
-                    </p>
-                    <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2.5">
-                        {containment.map((chord) => <ChordCard key={chord.chordId} chord={chord} selected={selectedChordId === chord.chordId} onSelect={onSelectChord} />)}
-                    </ul>
-                </section>
-            )}
-        </div>
-    );
+    return <div>
+        {primary.length > 0 && <section className={styles.section}>
+            <h2 className={styles.label}>Primary · {scaleLabel}</h2>
+            <ChordList chords={primary} selectedChordId={selectedChordId} onSelectChord={onSelectChord} />
+        </section>}
+        {characteristic.length > 0 && <section className={styles.section}>
+            <h2 className={styles.label}>Color · {scaleLabel}</h2>
+            <ChordList chords={characteristic} selectedChordId={selectedChordId} onSelectChord={onSelectChord} />
+        </section>}
+        {!hasCurated && <p className={styles.meta}>Curated pairings · none</p>}
+        {containment.length > 0 && (hasCurated
+            ? <details className={styles.disclosure} open={selected?.basis === 'containment' ? true : undefined}>
+                <summary>Other contained chords · {containment.length}</summary>
+                <p className={styles.meta}>Shared notes only · pairing unverified</p>
+                {containmentList}
+            </details>
+            : <section className={styles.section}>
+                <h2 className={styles.label}>Other contained chords · {containment.length}</h2>
+                <p className={styles.meta}>Shared notes only · pairing unverified</p>
+                {containmentList}
+            </section>)}
+        {selected && <div className={styles.selectedSummary} aria-live="polite">
+            <h3>{chordName(selected)} <span className={styles.meta}>· {selected.basis === 'containment' ? 'note containment' : selected.basis} pairing</span></h3>
+            <p className={styles.description}>Chord tones · {selected.toneNames.map(formatNoteName).join(' · ')}</p>
+            {selected.tonesOutsideScale.length > 0 && <p className={styles.meta}>Outside scale · {selected.tonesOutsideScale.map(formatNoteName).join(' · ')}</p>}
+        </div>}
+    </div>;
 }

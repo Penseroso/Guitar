@@ -16,20 +16,19 @@
 .workspace button { font: inherit; cursor: pointer; }
 .workspace .action, .familyTabs button, .choice { touch-action: manipulation; }
 .workspace :is(button, input, summary, [tabindex]):focus-visible { outline: 2px solid var(--chord-focus); outline-offset: 3px; }
-.workspace button:disabled { cursor: wait; opacity: .6; }
+.workspace button:disabled { cursor: default; opacity: .45; }
+.workspace button:disabled[aria-busy="true"] { cursor: wait; opacity: .6; }
 
-/* Secondary action — the one button language for Details/Filters/Close/Clear/Play(icon)/
-   pagination/chips, matching the shared control recipe (subtle resting surface, white/10 hover,
-   white/20 hover border) already used by KeyButton and the rest of the app. */
+/* Secondary actions read as quiet text controls; playback remains the single filled action. */
 .workspace .action {
     display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-    min-height: 44px; min-width: 44px; padding: 8px 12px; border-radius: 12px;
-    border: 1px solid var(--chord-border); background: rgba(255, 255, 255, 0.03); color: rgba(255, 255, 255, 0.8);
-    transition: background 150ms ease, border-color 150ms ease;
+    min-height: 44px; min-width: 44px; padding: 8px 10px; border: 0; border-radius: 4px;
+    background: transparent; color: var(--chord-muted);
+    transition: color 150ms ease;
 }
-.workspace .action:hover { background: rgba(255, 255, 255, 0.10); border-color: rgba(255, 255, 255, 0.20); }
-.workspace .action[aria-expanded="true"] { background: rgba(255, 255, 255, 0.10); border-color: rgba(255, 255, 255, 0.30); }
-.workspace .primary { min-height: 48px; background: #f4f4f5; color: #050505; font-weight: 650; font-size: 12px; }
+.workspace .action:hover, .workspace .action[aria-expanded="true"] { color: #fff; }
+.workspace .action[aria-expanded="true"] { text-decoration: underline; text-underline-offset: 7px; }
+.workspace .primary { min-height: 48px; background: #f4f4f5; color: #050505; border-radius: 999px; font-weight: 650; font-size: 12px; }
 .workspace .primary:hover { background: #fff; }
 .row { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
 .small, .controlLabel { font-size: 12px; color: var(--chord-muted); }
@@ -51,15 +50,18 @@
 .controlLabel { grid-column: 2; grid-row: 1; min-height: 18px; }
 .currentQuality { color: #f4f4f5; margin-left: 6px; }
 
-/* Family tabs (Basic / 6-7 / Extended) — same track+tab recipe as the shared TabsRail
-   (Scale/Chord/Prog switch, ScaleRootNavigator's Orbit/Matrix toggle): a bordered track,
-   equal-weight tabs, white/10 active fill. */
-.familyTabs { grid-column: 2; grid-row: 1; margin-top: 24px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; border: 1px solid var(--chord-border); background: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 4px; }
-.familyTabs button { min-height: 40px; min-width: 0; border: 0; border-radius: 8px; background: transparent; color: var(--chord-muted); font-size: 12px; font-weight: 700; letter-spacing: 0.02em; padding: 4px; transition: background 150ms ease, color 150ms ease; }
-.familyTabs button:hover { color: rgba(255, 255, 255, 0.7); }
-.familyTabs button[aria-selected="true"] { background: rgba(255, 255, 255, 0.10); color: white; }
+/* The chord family is navigation, not another framed segmented control. */
+.familyTabs { grid-column: 2; grid-row: 1; margin-top: 24px; display: flex; width: min(100%, 420px); gap: 8px; border-bottom: 1px solid var(--chord-border); }
+.familyTabs button { position: relative; flex: 1; min-height: 44px; min-width: 0; border: 0; background: transparent; color: var(--chord-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.02em; padding: 6px 4px; transition: color 150ms ease; }
+.familyTabs button:hover { color: #fff; }
+.familyTabs button[aria-selected="true"] { color: #fff; }
+.familyTabs button[aria-selected="true"]::after { position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; background: #f4f4f5; content: ''; }
 .qualityChoices { grid-column: 1 / -1; }
-.qualityChoices .choices { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.qualityChoices .choices { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px 10px; width: min(100%, 800px); }
+.qualityChoices .choice span { position: relative; border: 0; border-radius: 0; background: transparent; }
+.qualityChoices .choice input:checked + span { color: #fff; border: 0; background: transparent; }
+.qualityChoices .choice input:checked + span::after { position: absolute; right: 12px; bottom: 3px; left: 12px; height: 1px; background: currentColor; content: ''; }
+.qualityChoices .choice:hover span { border: 0; color: #fff; }
 .accompaniment { grid-column: 1 / -1; padding-bottom: 14px; border-bottom: 1px solid var(--chord-border); }
 .contextSwitch { position: relative; display: flex; align-items: center; gap: 12px; min-height: 44px; cursor: pointer; }
 .contextSwitch input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
@@ -79,44 +81,44 @@
 .choice input:focus-visible + span { outline: 2px solid var(--chord-focus); outline-offset: 3px; }
 .choice:hover span { border-color: rgba(255, 255, 255, 0.20); }
 
-/* Segmented variant — a track of equal-weight tabs for true binary/ternary workflow toggles
-   (workflow intent, voicing surface, diagram labels), instead of the chip-grid look above.
-   Same recipe as the shared TabsRail. */
-.segmented { display: flex; gap: 0; padding: 4px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--chord-border); border-radius: 12px; width: fit-content; max-width: 100%; }
+/* Workflow and display preferences share the same quiet selected-line vocabulary. */
+.segmented { display: flex; gap: 8px; padding: 0; background: transparent; border: 0; width: fit-content; max-width: 100%; }
 .segmentedChoice { flex: 1 1 0; min-width: 0; }
-.segmentedChoice span { border: 0; background: transparent; border-radius: 8px; padding: 8px 16px; color: var(--chord-muted); font-size: 12px; font-weight: 700; letter-spacing: 0.02em; white-space: nowrap; }
-.segmentedChoice:hover span { border-color: transparent; color: rgba(255, 255, 255, 0.7); }
-.segmentedChoice input:checked + span { background: rgba(255, 255, 255, 0.10); color: #fff; border-color: transparent; font-weight: 700; }
+.segmentedChoice span { position: relative; border: 0; background: transparent; border-radius: 0; padding: 8px 10px; color: var(--chord-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
+.segmentedChoice:hover span { border-color: transparent; color: #fff; }
+.segmentedChoice input:checked + span { background: transparent; color: #fff; border-color: transparent; font-weight: 700; }
+.segmentedChoice input:checked + span::after { position: absolute; right: 10px; bottom: 3px; left: 10px; height: 1px; background: currentColor; content: ''; }
 
 .layout { display: grid; gap: 20px; align-items: start; }
-.selected { background: var(--chord-panel); border: 1px solid var(--chord-border); border-radius: 24px; padding: 16px; min-width: 0; }
+.selected { border-bottom: 1px solid var(--chord-border); padding: 0 4px 16px; min-width: 0; }
 .hero { display: grid; grid-template-columns: 136px minmax(0, 1fr); gap: 8px; align-items: center; }
 .hero > div:first-child svg, .cardSelect > div:first-child svg { width: 136px; max-width: 100%; height: auto; }
 .action svg { flex: none; }
 .heroInfo { display: flex; flex-direction: column; align-items: stretch; gap: 4px; min-width: 0; }
+.heroInfo .primary { align-self: flex-start; min-width: 140px; }
 .heroInfo h2 { margin: 0; }
 .endNotes { color: var(--chord-muted); font-size: 12px; }
 .selected > .warning { margin-top: 8px; }
-.selectedTools { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--chord-border); }
+.selectedTools { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin-top: 8px; }
 .selectedTools .action { padding: 8px; font-size: 12px; }
 .browser { min-width: 0; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
 .workspace .chip { font-size: 12px; }
 .empty { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; color: #fde68a; font-size: 12px; }
 .empty p { width: 100%; }
-.cards { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 12px; }
+.cards { display: grid; grid-template-columns: 1fr; gap: 0 20px; margin-top: 12px; }
 .reversePanel { display: flex; flex-direction: column; gap: 20px; }
 .reverseControls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-.readingCard { display: flex; flex-direction: column; gap: 4px; padding: 14px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--chord-border); border-radius: 16px; min-width: 0; }
+.readingCard { display: flex; flex-direction: column; gap: 4px; padding: 14px 4px; border-bottom: 1px solid var(--chord-border); min-width: 0; }
 .readingCard ul { margin: 4px 0; padding-left: 18px; display: flex; flex-direction: column; gap: 2px; }
 .readingTitle { background: none; border: 0; padding: 0; margin: 0; text-align: left; cursor: pointer; color: #f4f4f5; }
 .readingTitle[aria-pressed="true"] { text-decoration: underline; text-underline-offset: 3px; color: #fff; }
-.card { display: grid; grid-template-columns: minmax(0, 1fr) 44px; align-items: center; gap: 4px; padding: 8px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--chord-border); border-radius: 16px; min-width: 0; }
-.cardSelected { border-color: rgba(255, 255, 255, 0.30); background: rgba(255, 255, 255, 0.06); }
+.card { display: grid; grid-template-columns: minmax(0, 1fr) 44px; align-items: center; gap: 4px; padding: 10px 4px; border-bottom: 1px solid var(--chord-border); min-width: 0; }
+.cardSelected { border-bottom-color: rgba(255, 255, 255, 0.4); }
 .workspace .cardSelect { display: grid; grid-template-columns: 136px minmax(0, 1fr); align-items: center; gap: 4px; width: 100%; padding: 0; border: 0; background: transparent; text-align: left; border-radius: 12px; min-width: 0; }
 .cardInfo { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .selectionMark { font-size: 11px; color: #f4f4f5; }
-.workspace .cardPlay { padding: 8px; border-radius: 50%; }
+.workspace .cardPlay { padding: 8px; border-radius: 50%; color: #f4f4f5; }
 .workspace .showMore { width: 100%; margin-top: 12px; }
 .workspace .dialog { background: var(--chord-panel); color: #f4f4f5; border: 1px solid var(--chord-border); border-radius: 24px; padding: 20px; width: min(1100px, calc(100vw - 24px)); max-width: calc(100vw - 24px); max-height: calc(100dvh - 24px); margin: auto; overflow: auto; }
 .dialog::backdrop { background: #000b; }
@@ -124,7 +126,7 @@
 /* Filters rail — a right-side column on desktop (beside the results, not above them), a
    stacked section on narrower layouts. One subtle boundary, not a stack of framed sub-cards:
    the ChoiceRail/FretRangeControl controls it holds already carry their own track styling. */
-.filtersRail { display: flex; flex-direction: column; gap: 18px; min-width: 0; background: var(--chord-panel); border: 1px solid var(--chord-border); border-radius: 24px; padding: 16px; }
+.filtersRail { display: flex; flex-direction: column; gap: 18px; min-width: 0; border-top: 1px solid var(--chord-border); padding: 20px 4px; }
 .neckScroll { overflow-x: auto; margin-top: 12px; }
 /* Same subtle framing Scale gives its primary fretboard (border-y, faint tint, generous
    vertical breathing room) so Reverse's input surface reads as belonging to the same app. */
@@ -139,13 +141,12 @@
     .familyTabs { margin-top: 6px; }
     .qualityChoices { margin-top: 8px; }
     .layout { grid-template-columns: 320px minmax(0, 1fr); }
-    .selected { position: sticky; top: 16px; }
     .cards { grid-template-columns: 1fr; }
     /* Filters becomes a third column beside the results instead of a disclosure that pushes
        them down — opening/closing it never reflows the selected voicing or result cards
        vertically. */
     .layout[data-filters-open="true"] { grid-template-columns: 320px minmax(0, 1fr) 300px; }
-    .filtersRail { position: sticky; top: 16px; max-height: calc(100dvh - 32px); overflow-y: auto; }
+    .filtersRail { position: sticky; top: 16px; max-height: calc(100dvh - 32px); overflow-y: auto; border-top: 0; border-left: 1px solid var(--chord-border); padding: 0 0 0 20px; }
 }
 @media (min-width: 1280px) {
     .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }

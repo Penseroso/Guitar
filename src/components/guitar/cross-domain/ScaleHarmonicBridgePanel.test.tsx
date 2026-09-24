@@ -18,49 +18,49 @@ describe('ScaleHarmonicBridgePanel', () => {
         );
         expect(markup).toContain('Play this scale over');
         expect(markup).toContain('Chords built from this scale');
-        expect(markup).toContain('Primary chords to play');
+        expect(markup).toContain('Primary · C Ionian');
     });
 });
 
 describe('PlayThisScaleOverPanel states only what the domain computed', () => {
     it('separates the practice claim from the note-containment claim', () => {
         const markup = playOver('Diatonic Modes', 'Ionian', 0);
-        expect(markup).toContain('Primary chords to play');
-        expect(markup).toContain('whose every note is in');
+        expect(markup).toContain('Primary · C Ionian');
+        expect(markup).toContain('Shared notes only · pairing unverified');
         expect(markup).toContain('Cmaj7');
         expect(markup).toContain('Csus4');
     });
 
     it('distinguishes characteristic modal colors from primary chords without overclaiming', () => {
         const phrygian = playOver('Diatonic Modes', 'Phrygian', 0);
-        expect(phrygian).toContain('Characteristic modal and color pairings for C Phrygian');
+        expect(phrygian).toContain('Color · C Phrygian');
         expect(phrygian).toContain('Cm7');
-        expect(phrygian).not.toContain('Primary chords to play');
+        expect(phrygian).not.toContain('Primary · C Phrygian');
 
         const lydianDom = playOver('Jazz Minor Modes', 'Lydian Dominant', 0);
-        expect(lydianDom).toContain('Characteristic modal and color pairings for C Lydian Dominant');
+        expect(lydianDom).toContain('Color · C Lydian Dominant');
         expect(lydianDom).toContain('C7');
-        expect(lydianDom).not.toContain('Primary chords to play');
+        expect(lydianDom).not.toContain('Primary · C Lydian Dominant');
 
         const locrianNat2 = playOver('Jazz Minor Modes', 'Locrian ♮2', 0);
-        expect(locrianNat2).toContain('Characteristic modal and color pairings');
+        expect(locrianNat2).toContain('Color · C Locrian n2');
         expect(locrianNat2).toContain('Cm7♭5');
-        expect(locrianNat2).not.toContain('Primary chords to play');
+        expect(locrianNat2).not.toContain('Primary · C Locrian n2');
     });
 
     it('states that the natural 5th is altered rather than claiming mechanical substitution', () => {
-        const markup = playOver('Jazz Minor Modes', 'Altered scale', 0);
+        const markup = renderToStaticMarkup(<PlayThisScaleOverPanel scaleGroup="Jazz Minor Modes" scaleName="Altered scale" tonicPitchClass={0} selectedChordId="hendrix-7-sharp-9" />);
         expect(markup).toContain('C7♯9');
-        expect(markup).toContain('Natural 5th (G) is altered in this scale');
+        expect(markup).toContain('Outside scale · G');
         expect(markup).not.toContain('The scale replaces G');
     });
 
     it('says plainly when no curated chord pairing exists for the scale', () => {
-        expect(playOver('Harmonic Minor Modes', 'Lydian #2', 0)).toContain('No curated standard chord pairings for C Lydian #2');
+        expect(playOver('Harmonic Minor Modes', 'Lydian #2', 0)).toContain('Curated pairings · none');
     });
 
     it('renders chord tones in the chord\'s own spelling', () => {
-        const markup = playOver('Diatonic Modes', 'Ionian', 6);
+        const markup = renderToStaticMarkup(<PlayThisScaleOverPanel scaleGroup="Diatonic Modes" scaleName="Ionian" tonicPitchClass={6} selectedChordId="major-7" />);
         expect(markup).toContain('F♯maj7');
         expect(markup).toContain('A♯');
         expect(markup).not.toContain('Bbm');

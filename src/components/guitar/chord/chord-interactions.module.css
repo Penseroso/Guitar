@@ -1,21 +1,11 @@
 .label { color: var(--workspace-muted); font-size: 12px; }
 .rootControl { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
-.rootTrigger { display: flex; align-items: center; justify-content: center; gap: 8px; min-width: 64px; min-height: 48px; padding: 8px 12px; background: #fff; color: #050505; border: 1px solid #fff; border-radius: 16px; font-size: 16px; font-weight: 650; cursor: pointer; touch-action: none; }
+.rootTrigger { display: flex; align-items: center; justify-content: center; gap: 8px; width: 48px; min-height: 48px; padding: 8px; background: #fff; color: #050505; border: 1px solid #fff; border-radius: 50%; font-size: 16px; font-weight: 650; cursor: pointer; touch-action: none; }
 .rootPopover { position: fixed; margin: 0; inset: auto; width: min(360px, calc(100vw - 24px)); padding: 12px; border: 1px solid var(--workspace-border); border-radius: 24px; background: var(--workspace-panel); color: #f4f4f5; box-shadow: 0 20px 60px #000a; max-height: calc(100dvh - 24px); overflow: auto; }
 .popoverHeader { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 14px; font-weight: 600; padding-left: 8px; }
-.close { min-height: 44px; padding: 8px 12px; border: 1px solid var(--workspace-border); border-radius: 12px; color: rgba(255, 255, 255, 0.8); background: transparent; font-size: 12px; cursor: pointer; }
-.close:hover { background: rgba(255, 255, 255, 0.05); }
+.close { min-height: 44px; padding: 8px 12px; border: 0; color: var(--workspace-muted); background: transparent; font-size: 12px; cursor: pointer; }
+.close:hover { color: #fff; }
 .rootCircle { width: 100%; aspect-ratio: 1; touch-action: none; border-radius: 50%; }
 .help { color: var(--workspace-muted); font-size: 12px; line-height: 1.5; margin: 0; }
 .rootPopover .help { padding: 4px 8px; }
-.rootTrigger:focus-visible, .close:focus-visible, .rootCircle:focus-visible, .rangeThumb:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: 3px; }
-.rangeControl { min-width: 0; border: 0; padding: 8px 22px 0; margin: 0; }
-.rangeControl legend { font-size: 12px; color: var(--workspace-muted); }
-.rangeControl strong { color: #f4f4f5; margin-left: 8px; font-weight: 600; }
-.rangeTrack { position: relative; height: 44px; touch-action: none; }
-.rangeTrack::before { content: ''; position: absolute; top: 20px; height: 4px; width: 100%; border-radius: 99px; background: linear-gradient(to right, rgba(255, 255, 255, 0.12) var(--range-start), #f4f4f5 var(--range-start), #f4f4f5 var(--range-end), rgba(255, 255, 255, 0.12) var(--range-end)); pointer-events: none; }
-.rangeThumb { position: absolute; top: 0; transform: translateX(-50%); width: 44px; height: 44px; padding: 0; background: transparent; border: 0; border-radius: 50%; cursor: grab; touch-action: none; }
-.rangeThumb::after { content: ''; display: block; width: 18px; height: 18px; margin: auto; border-radius: 50%; border: 2px solid var(--workspace-panel); background: #fff; }
-.rangeThumb:active { cursor: grabbing; }
-.rangeThumb:focus-visible { z-index: 1; }
-.rangeTicks { display: flex; justify-content: space-between; color: var(--workspace-muted); font-size: 11px; margin-bottom: 8px; }
+.rootTrigger:focus-visible, .close:focus-visible, .rootCircle:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: 3px; }

@@ -1,0 +1,41 @@
+.section { min-width: 0; color: #f4f4f5; }
+.explorer { border-top: 1px solid var(--workspace-border); }
+.explorerTrigger { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 62px; padding: 10px 2px; cursor: pointer; list-style: none; }
+.explorerTrigger::-webkit-details-marker { display: none; }
+.explorerTrigger strong { display: block; font-size: 14px; font-weight: 650; }
+.explorerTrigger small { display: block; margin-top: 4px; color: var(--workspace-muted); font-size: 12px; }
+.explorerTrigger svg { flex: none; color: var(--workspace-muted); transition: transform 180ms ease; }
+.explorer[open] .explorerTrigger svg { transform: rotate(180deg); }
+.content { display: grid; gap: 24px; padding: 8px 0 20px; }
+.route { display: grid; gap: 12px; }
+.route + .route { padding-top: 18px; border-top: 1px solid var(--workspace-border); }
+.route h3 { margin: 0; font-size: 14px; font-weight: 650; }
+.field { display: grid; gap: 6px; width: min(100%, 360px); color: var(--workspace-muted); font-size: 12px; }
+.selectWrap { position: relative; display: block; width: 100%; }
+.select { appearance: none; width: 100%; min-height: 44px; padding: 9px 44px 9px 12px; border: 1px solid var(--workspace-border); border-radius: 10px; background: var(--workspace-panel); color: #f4f4f5; font: inherit; font-size: 14px; cursor: pointer; }
+.selectArrow { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--workspace-muted); pointer-events: none; }
+.comparison { display: grid; gap: 8px; min-width: 0; }
+.scaleLine { display: grid; gap: 5px; min-width: 0; }
+.scaleName { margin: 0; color: #e4e4e7; font-size: 13px; font-weight: 600; }
+.toneRow { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.tone { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; width: 44px; min-height: 46px; padding: 4px; border-radius: 7px; color: #f4f4f5; font-size: 13px; font-weight: 600; }
+.tone small { color: var(--workspace-muted); font-size: 10px; font-weight: 500; line-height: 1; }
+.tone[data-change="from"] { background: rgb(var(--accent-amber) / .12); box-shadow: inset 0 -2px 0 rgb(var(--accent-amber) / .75); }
+.tone[data-change="from"] small { color: rgb(var(--accent-amber)); }
+.tone[data-change="to"] { background: rgb(var(--accent-blue) / .16); box-shadow: inset 0 -2px 0 rgb(var(--accent-blue) / .9); }
+.tone[data-change="to"] small { color: #93c5fd; }
+.srOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.differenceRow { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px; align-items: start; }
+.differenceLabel { padding-top: 5px; color: var(--workspace-muted); font-size: 12px; }
+.chips, .actions { display: flex; flex-wrap: wrap; gap: 6px 14px; min-width: 0; }
+.chip { display: inline-flex; align-items: center; min-height: 28px; max-width: 100%; padding: 3px 9px; border: 1px solid var(--workspace-border); border-radius: 8px; background: rgba(255,255,255,.035); color: #e4e4e7; font-size: 12px; overflow-wrap: anywhere; }
+.empty { margin: 0; padding-top: 4px; color: var(--workspace-muted); font-size: 12px; }
+.action { min-height: 44px; padding: 8px 4px; border: 0; border-bottom: 1px solid transparent; background: transparent; color: #f4f4f5; cursor: pointer; font: inherit; font-size: 13px; text-align: left; }
+.action:hover { border-bottom-color: currentColor; }
+.comparison > .action { justify-self: start; margin-top: 2px; }
+.provenance { display: grid; gap: 16px; padding-top: 18px; border-top: 1px solid var(--workspace-border); }
+.provenanceItem { display: grid; justify-items: start; gap: 5px; }
+.provenanceItem h3 { margin: 0; font-size: 13px; font-weight: 650; }
+.explorerTrigger:focus-visible, .select:focus-visible, .action:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: 3px; }
+@media (max-width: 420px) { .differenceRow { grid-template-columns: 54px minmax(0, 1fr); } .tone { width: 40px; } }
+@media (prefers-reduced-motion: reduce) { .explorerTrigger svg { transition: none; } }

@@ -6,6 +6,8 @@ Scale exploration uses an independent tonic/scale selection, chord-card tone ana
 source-backed scale identities, and parallel/sibling/parent comparisons. See the
 [Scale architecture and interpretation contracts](docs/architecture/scale-exploration.md).
 
+UI changes follow the [THE MODUS design language and feature-level review checklist](docs/design-language.md).
+
 ## Current chord architecture
 
 The live chord path is `guitar-engine/2`:

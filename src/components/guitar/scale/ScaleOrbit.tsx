@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { getScalePresentationName, getScaleFamilyModes } from '@/domain/scale/scaleSelector';
 import { ScaleOrbitNode } from './ScaleOrbitNode';
 
@@ -15,19 +15,32 @@ export const ScaleOrbit: React.FC<ScaleOrbitProps> = ({
     onScaleChange,
 }) => {
     const modes = getScaleFamilyModes(selectedScaleGroup);
-    const radius = modes.length <= 2 ? 92 : 108;
+    const orbitRef = React.useRef<HTMLDivElement>(null);
+    const [width, setWidth] = React.useState(288);
+    const reducedMotion = useReducedMotion();
+    React.useEffect(() => {
+        const element = orbitRef.current;
+        if (!element || typeof ResizeObserver === 'undefined') return;
+        const observer = new ResizeObserver(([entry]) => {
+            if (entry.contentRect.width > 0) setWidth(entry.contentRect.width);
+        });
+        observer.observe(element);
+        return () => observer.disconnect();
+    }, []);
+    const radius = Math.min(modes.length <= 2 ? 92 : 108, Math.max(60, width / 2 - 40));
     const displayName = getScalePresentationName(selectedScaleName);
 
     return (
-        <div className="relative w-full h-[360px] rounded-[2rem] border border-white/5 bg-[#050505]/70 overflow-hidden shadow-[inset_0_0_80px_rgba(255,255,255,0.03)]">
+        <div ref={orbitRef} className="relative w-full h-[320px] sm:h-[360px] rounded-[2rem] border border-white/5 bg-[#050505]/70 overflow-hidden shadow-[inset_0_0_80px_rgba(255,255,255,0.03)]">
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(circle_at_center,_white_1px,_transparent_1px)] [background-size:18px_18px]" />
             <div className="absolute inset-x-10 top-10 h-24 rounded-full bg-white/[0.04] blur-3xl pointer-events-none" />
             <div className="relative w-full h-full flex items-center justify-center">
                 <div className="relative z-10 flex flex-col items-center justify-center">
                     <motion.span
                         key={selectedScaleGroup + selectedScaleName}
-                        initial={{ scale: 0.5, opacity: 0 }}
+                        initial={reducedMotion ? false : { opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: reducedMotion ? 0 : .18 }}
                         className="max-w-[150px] text-lg text-center font-black text-white tracking-tight drop-shadow-[0_0_20px_rgba(255,255,255,0.18)]"
                     >
                         {displayName}

@@ -5,7 +5,8 @@ import React from 'react';
 import { getScaleHarmonization } from '@/domain/chord/scale-harmonization';
 import { getScaleDisplayName } from '@/domain/scale';
 import { formatAccidentals } from '@/domain/shared/spelling';
-import { TabsRail } from '../../ui/design-system/TabsRail';
+import { HarmonyTabs } from './HarmonyTabs';
+import styles from './harmony.module.css';
 
 interface ChordsBuiltFromScalePanelProps {
     scaleGroup: string;
@@ -22,6 +23,7 @@ const LENGTH_TABS = [
 
 export function ChordsBuiltFromScalePanel({ scaleGroup, scaleName, tonicPitchClass }: ChordsBuiltFromScalePanelProps) {
     const [length, setLength] = React.useState<ChordLength>('triads');
+    const tabId = React.useId();
     const harmonization = React.useMemo(
         () => getScaleHarmonization(scaleGroup, scaleName, tonicPitchClass),
         [scaleGroup, scaleName, tonicPitchClass]
@@ -30,7 +32,7 @@ export function ChordsBuiltFromScalePanel({ scaleGroup, scaleName, tonicPitchCla
 
     if (!harmonization.defined) {
         return (
-            <p className="text-sm text-white/40">
+            <p className={styles.meta}>
                 Chord-by-chord harmonization in this panel is intentionally scoped to seven-note scales. {scaleLabel} has {harmonization.pitchClassCount} notes, so degree-by-degree chords are not shown here.
             </p>
         );
@@ -39,27 +41,29 @@ export function ChordsBuiltFromScalePanel({ scaleGroup, scaleName, tonicPitchCla
     const chords = length === 'triads' ? harmonization.triads : harmonization.sevenths;
 
     return (
-        <div className="flex flex-col gap-4">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <p className="text-sm text-white/50">
+        <div className={styles.section}>
+            <div className={styles.section}>
+                <p className={styles.description}>
                     The chord you get by stacking {scaleLabel} notes in thirds on each scale degree.
                 </p>
-                <TabsRail tabs={LENGTH_TABS} activeId={length} onChange={(id) => setLength(id as ChordLength)} />
+                <HarmonyTabs tabs={LENGTH_TABS as { id: ChordLength; label: string }[]} active={length} onChange={setLength} label="Chord length" idBase={tabId} />
             </div>
 
-            <ul className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5">
+            <div role="tabpanel" id={`${tabId}-panel`} aria-labelledby={`${tabId}-${length}`}>
+            <ul className={styles.builtList}>
                 {chords.map((chord, index) => (
                     <li
                         key={index}
-                        className="rounded-[1rem] border border-white/6 bg-white/[0.02] px-3 py-3 flex flex-col gap-1.5"
+                        className={styles.builtItem}
                     >
-                        <span className="text-xs font-semibold text-white/40">{chord?.romanNumeral ?? '—'}</span>
-                        <span className="text-[15px] font-bold leading-none text-white">
+                        <span className={styles.builtNumeral}>{chord?.romanNumeral ?? '—'}</span>
+                        <span className={styles.builtName}>
                             {chord ? formatAccidentals(`${chord.rootNoteName}${chord.chordSuffix}`) : 'No chord'}
                         </span>
                     </li>
                 ))}
             </ul>
+            </div>
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 
 interface ScaleOrbitNodeProps {
     label: string;
@@ -18,6 +18,7 @@ export const ScaleOrbitNode: React.FC<ScaleOrbitNodeProps> = ({
     y,
     onClick,
 }) => {
+    const reducedMotion = useReducedMotion();
     return (
         <motion.button
             type="button"
@@ -25,9 +26,10 @@ export const ScaleOrbitNode: React.FC<ScaleOrbitNodeProps> = ({
             aria-pressed={isActive}
             initial={false}
             animate={{ x, y, scale: isActive ? 1.1 : 1 }}
-            whileHover={{ scale: isActive ? 1.1 : 1.15, transition: { duration: 0.2 } }}
+            transition={{ duration: reducedMotion ? 0 : .18, ease: 'easeOut' }}
+            whileHover={reducedMotion ? undefined : { scale: 1.1, transition: { duration: 0.18 } }}
             onClick={onClick}
-            className={`absolute w-16 h-16 rounded-full border flex flex-col items-center justify-center transition-all duration-500 shadow-lg ${
+            className={`absolute w-16 h-16 rounded-full border flex flex-col items-center justify-center focus-visible:outline-2 focus-visible:outline-cyan-200 focus-visible:outline-offset-4 shadow-lg ${
                 isActive
                     ? 'bg-white border-white text-black shadow-[0_0_30px_rgba(255,255,255,0.3)] z-30'
                     : 'bg-black/55 border-white/10 text-white/45 hover:text-white hover:border-white/35 backdrop-blur-sm z-10'

@@ -12,7 +12,7 @@ describe('ReverseChordPanel', () => {
     it('shows a Best-match section with a concrete card for an entered shape', () => {
         const markup = renderToStaticMarkup(<ReverseChordPanel states={openC} onStatesChange={noop} />);
         expect(markup).toContain('Best match');
-        expect(markup).toContain('Click a chord name to see its intervals');
+        expect(markup).toContain('Select a name → intervals on fretboard');
     });
 
     it('prompts to start rather than showing any group when nothing is entered', () => {

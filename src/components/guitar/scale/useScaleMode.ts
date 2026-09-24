@@ -13,14 +13,20 @@ export const useScaleMode = () => {
     const [doubleStopInterval, setDoubleStopInterval] = useState<HarmonicInterval>(3);
     const [doubleStopStrings, setDoubleStopStrings] = useState<[number, number]>([1, 2]);
 
-    const commitScaleRef = useCallback((next: ScaleRef) => dispatch({ type: 'select-scale', scaleRef: next }), []);
+    const commitScaleRef = useCallback((next: ScaleRef) => {
+        if (resolveScaleRef(next) && (next.scaleId !== scaleRef.scaleId || next.tonic !== scaleRef.tonic)) setShowChordTones(false);
+        dispatch({ type: 'select-scale', scaleRef: next });
+    }, [scaleRef]);
     const commitScaleSelection = useCallback((group: string, name: string) => {
         commitScaleRef(createScaleRef(group, name, scaleRef.tonic));
     }, [commitScaleRef, scaleRef.tonic]);
     const setTonic = useCallback((tonic: number) => {
         commitScaleRef({ ...scaleRef, tonic: ((tonic % 12) + 12) % 12 });
     }, [commitScaleRef, scaleRef]);
-    const selectAnalysisChord = useCallback((chordId: string | null) => dispatch({ type: 'select-chord', chordId }), []);
+    const selectAnalysisChord = useCallback((chordId: string | null) => {
+        if (chordId === null) setShowChordTones(false);
+        dispatch({ type: 'select-chord', chordId });
+    }, []);
     const onToggleIntervals = useCallback(() => setShowIntervals(previous => !previous), []);
 
     const onToggleChordTones = useCallback(() => setShowChordTones((prev) => !prev), []);

@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import { TabsRail } from '../../ui/design-system/TabsRail';
+import { HarmonyTabs } from './HarmonyTabs';
+import styles from './harmony.module.css';
 import { ChordsBuiltFromScalePanel } from './ChordsBuiltFromScalePanel';
 import { PlayThisScaleOverPanel } from './PlayThisScaleOverPanel';
 import { ToneRolesPanel } from '../scale/ToneRolesPanel';
@@ -32,11 +33,14 @@ const BRIDGE_TABS = [
  */
 export function ScaleHarmonicBridgePanel(props: ScaleHarmonicBridgePanelProps) {
     const [tab, setTab] = React.useState<BridgeTab>('play-over');
+    const tabId = React.useId();
 
     return (
-        <div className="flex flex-col gap-4 bg-[#050505]/50 border border-white/5 rounded-3xl p-6 backdrop-blur-sm animate-in fade-in duration-500">
-            <TabsRail tabs={BRIDGE_TABS} activeId={tab} onChange={(id) => setTab(id as BridgeTab)} />
-            {tab === 'play-over' ? <PlayThisScaleOverPanel {...props} /> : <ChordsBuiltFromScalePanel {...props} />}
+        <div className={styles.bridge}>
+            <HarmonyTabs tabs={BRIDGE_TABS as { id: BridgeTab; label: string }[]} active={tab} onChange={setTab} label="Harmony views" idBase={tabId} />
+            <div role="tabpanel" id={`${tabId}-panel`} aria-labelledby={`${tabId}-${tab}`}>
+                {tab === 'play-over' ? <PlayThisScaleOverPanel {...props} /> : <ChordsBuiltFromScalePanel {...props} />}
+            </div>
             <ToneRolesPanel analysis={props.analysis ?? null} onClear={() => props.onSelectChord?.(null)} focusedInterval={props.focusedInterval} onFocusTone={props.onFocusTone} />
         </div>
     );

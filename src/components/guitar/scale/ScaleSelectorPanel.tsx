@@ -8,6 +8,7 @@ import {
 } from '@/domain/scale/scaleSelector';
 import { SelectPill } from '../../ui/design-system/SelectPill';
 import { ScaleOrbit } from './ScaleOrbit';
+import styles from './scale-workspace.module.css';
 
 interface ScaleSelectorPanelProps {
     selectedScaleGroup: string;
@@ -32,7 +33,7 @@ export const ScaleSelectorPanel: React.FC<ScaleSelectorPanelProps> = ({
     }));
 
     return (
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-[2rem] p-7 flex flex-col gap-6 shadow-2xl relative w-full overflow-visible">
+        <div className={`${styles.selectorPanel} bg-[#0a0a0a] border border-white/5 rounded-[2rem] flex flex-col gap-6 shadow-2xl relative w-full overflow-visible`}>
             <div className="absolute inset-0 opacity-[0.04] pointer-events-none bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.11),_transparent_42%)]" />
 
             <div className="relative z-10 flex items-center gap-2">
