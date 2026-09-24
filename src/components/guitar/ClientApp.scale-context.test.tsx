@@ -61,6 +61,9 @@ vi.mock('./harmony/HarmonyModeWorkspace', () => ({
         <button onClick={props.onUseScaleFrame}>Use source tonal frame</button>
         <button onClick={() => props.onOpenChord({ root: 'Db', chordId: 'dominant-7' })}>Open substitute in Chord</button>
         <button onClick={() => props.onOpenScale(createScaleRef('Diatonic Modes', 'Aeolian', 9))}>Open local collection in Scale</button>
+        <button onClick={() => props.onQueryChange({ ...props.query, kind: 'passing', context: { before: { root: 'C', chordId: 'major' }, middle: { root: 'C#', chordId: 'diminished-7' } } })}>Observe passing chords</button>
+        <button onClick={() => props.onQueryChange({ ...props.query, context: { ...props.query.context, bassConfirmed: true, rhythmConfirmed: true } })}>Verify observed path</button>
+        <button onClick={() => props.onQueryChange({ ...props.query, target: { ...props.query.target, bass: 'E' } })}>Change target bass</button>
     </section>,
 }));
 
@@ -76,6 +79,17 @@ function lastTonalContext() {
 }
 
 describe('ClientApp Scale context boundary', () => {
+    it('retains observed neighbors when editing the target inversion and invalidates old confirmations', () => {
+        render(<ClientApp />);
+        switchMode('Harmony');
+        click('Observe passing chords');
+        click('Verify observed path');
+        expect(snapshot('harmony-context').context).toMatchObject({ bassConfirmed: true, rhythmConfirmed: true });
+        click('Change target bass');
+        expect(snapshot('harmony-context')).toMatchObject({ target: { root: 'C', bass: 'E' }, context: { before: { root: 'C' }, middle: { root: 'C#' } } });
+        expect(snapshot('harmony-context').context.bassConfirmed).toBeUndefined();
+        expect(snapshot('harmony-context').context.rhythmConfirmed).toBeUndefined();
+    });
     it('carries an exact ScaleRef into Harmony and changes the frame only through an explicit compatible source action', () => {
         render(<ClientApp />);
         click('Explore Dorian');

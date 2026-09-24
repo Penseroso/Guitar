@@ -9,6 +9,66 @@ const query = (kind: RelationKind, changes: Partial<RelationQuery> = {}): Relati
 });
 
 describe('Harmony relation conditions', () => {
+    it.each(['dominant-7', 'dominant-9', 'dominant-7-flat-9', 'dominant-11', 'dominant-13'])('does not infer tonic function from the root and major third of %s', chordId => {
+        for (const tonic of ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B']) {
+            const changes = { frame: { ...frame, tonic }, target: { root: tonic, chordId } };
+            for (const kind of ['dominant', 'ii-v', 'predominant', 'leading', 'tritone'] as const) {
+                const result = exploreRelation(query(kind, changes));
+                expect(result.status).toBe('possible');
+                expect(result.observations).toContain('Root · key center ≠ tonic function');
+                expect(result.observations).not.toContain('Target · key center');
+                expect(result.examples.length).toBeGreaterThan(0);
+                expect(result.examples.some(example => example.label === 'Local tonicization')).toBe(false);
+                for (const example of result.examples) {
+                    expect(example.steps.at(-1)!.chord.chordId).toBe(chordId);
+                    expect(example.steps.every(step => !step.roman.includes('/I'))).toBe(true);
+                }
+            }
+            for (const kind of ['tonic-sub', 'minor-sub'] as const) {
+                const result = exploreRelation(query(kind, changes));
+                expect(result.status).toBe('unsupported');
+                expect(result.examples).toEqual([]);
+                expect(result.scaleLinks).toEqual([]);
+                expect(result.observations.join(' ')).toContain('tonic-family quality');
+            }
+        }
+    });
+
+    it.each(['major', 'major-7', 'major-6', 'major-9', 'add9', 'six-nine'])('keeps explicitly supported major tonic target %s', chordId => {
+        const changes = { target: { root: 'C', chordId } };
+        expect(exploreRelation(query('dominant', changes)).observations).toContain('Target · key center');
+        for (const kind of ['tonic-sub', 'minor-sub'] as const) {
+            expect(exploreRelation(query(kind, changes)).status).toBe('possible');
+        }
+    });
+
+    it.each(['minor', 'minor-7', 'minor-6', 'minor-major-7', 'minor-9', 'minor-add9', 'minor-11', 'minor-13'])('requires a matching minor frame for tonic target %s', chordId => {
+        const target = { root: 'C', chordId };
+        const inMinor = exploreRelation(query('dominant', { target, frame: { ...frame, mode: 'minor' } }));
+        expect(inMinor.observations).toContain('Target · key center');
+        expect(inMinor.examples[0].steps[0].roman).toBe('V7');
+        const inMajor = exploreRelation(query('dominant', { target }));
+        expect(inMajor.observations).not.toContain('Target · key center');
+        expect(inMajor.examples[0].steps[0].roman).toBe('V7/i');
+    });
+
+    it('keeps an applied approach to a non-tonic-root dominant-quality target contextual', () => {
+        const result = exploreRelation(query('dominant', { target: { root: 'F', chordId: 'dominant-7' } }));
+        expect(result.status).toBe('possible');
+        expect(result.observations).toContain('Target quality · tonic function unconfirmed');
+        expect(result.examples[0].steps[0]).toMatchObject({ roman: 'V7/IV', role: 'Possible applied dominant' });
+    });
+
+    it.each(['major', 'minor'])('does not classify IV → tonic-root dominant quality as plagal in %s', mode => {
+        const result = exploreRelation(query('cadence', {
+            frame: { ...frame, mode: mode as TonalFrame['mode'] },
+            target: { root: 'C', chordId: 'dominant-7' },
+            context: { before: { root: 'F', chordId: 'major' }, phraseEnding: true, bassConfirmed: true, soprano: 'C' },
+        }));
+        expect(result.status).toBe('unsupported');
+        expect(result.observations).toEqual(['No supported cadence pattern established by this pair']);
+    });
+
     it('keeps E7 as V7/vi when C major has the local target Am', () => {
         const result = exploreRelation(query('dominant', { target: { root: 'A', chordId: 'minor' } }));
         expect(result.status).toBe('matched');
@@ -139,7 +199,7 @@ describe('Harmony relation conditions', () => {
         const result = exploreRelation(query('cadence', {
             target, context: { before, phraseEnding: true, bassConfirmed: true, soprano: 'C' },
         }));
-        expect(result.status).toBe('possible');
+        expect(result.status).toBe('unsupported');
         expect(result.observations.join(' ')).not.toContain('authentic cadence');
     });
 });

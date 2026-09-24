@@ -44,6 +44,16 @@ The default view should answer **what am I exploring, what is selected, what can
 
 Use concise labels and scannable fragments rather than instructional paragraphs in the main path. Preserve necessary distinctions; for example “same tonic” and “same notes” are different relationships, and chord-relative roles only make sense after a chord is selected. When comparing scales, show both complete note/degree sequences, highlight only what changed, and offer a direct action to switch; do not rely on theory terminology alone. Put sources in a detail context, not inside “Play this scale over.”
 
+### Harmony vocabulary and mapping
+
+- Prefer working-musician terminology: Key, Major / Minor, Resolve to, Harmonic relationships, Dominant motion, Predominant, Tonic substitutes, Subdominant minor, Diminished approach, Cadence. Theory style is a secondary disclosure; notation convention belongs there too.
+- Translate engine statuses into Established relation, Possible interpretation, More context needed, and Outside current scope. Never change domain status semantics to simplify copy.
+- Chord identity is a vertical hierarchy: Roman numeral, chord name, function. Keep guide-tone motion and explanation on separate lines, not a chain of dot-separated phrases.
+- Voice correspondence is horizontal: retain common-tone lanes; link actual notes; prioritize the supplied guide-tone paths. Keep many-to-one resolutions visible. Do not independently re-sort every chord into formula order.
+- Comparison uses A/B structure and non-directional common/chromatic connections; a functional approach uses a directional path. Tritone original/substitute views stay in a stable A/B order with the same pitch lanes. Comparison links are not a new theory rule or inferred performance.
+- Root-motion labels use spelled interval direction. Pitch-class distances and shared/removed/added counts belong in Details. Hearing guide tones and selecting notes should highlight relevant connections, not trigger decorative animations.
+- A wide three-chord mapping may scroll inside its own labeled, keyboard-focusable region on narrow screens; the page must not overflow. Do not turn non-spatial explanations into decorative diagrams.
+
 Repeated musical data should be explorable, not presented as a full table by default. A note strip, chord choices, or compact result rows can reveal richer interpretation upon selection. Empty and disabled states must explain or suggest the next valid action, without appearing broken or silently inactive.
 
 ## 4. Existing reference patterns

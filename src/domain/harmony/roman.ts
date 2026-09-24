@@ -35,6 +35,7 @@ export function relativeChord(anchor: string, degree: number, semitones: number,
     if (!spelled) throw new Error('This relation needs an unsupported spelling');
     return { root: spelled.name, chordId };
 }
+/** Lens-independent major-reference notation, also in minor (e.g. ♭III, ♭VI, ♭VII). */
 export function romanRef(chord: ChordRef, frame: TonalFrame): RomanRef {
     const tonic = note(frame.tonic), root = note(chord.root);
     const degree = (root.letterIndex - tonic.letterIndex + 7) % 7 + 1;

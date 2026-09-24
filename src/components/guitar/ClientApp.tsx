@@ -265,15 +265,25 @@ export default function ClientApp() {
         setMode('harmony');
     }, [harmonyQuery, setHarmonyQuery]);
     const changeHarmonyQuery = useCallback((next: RelationQuery) => {
-        if (next.target.root !== harmonyQuery.target.root || next.target.chordId !== harmonyQuery.target.chordId || next.target.bass !== harmonyQuery.target.bass) {
+        if (next.target.root !== harmonyQuery.target.root || next.target.chordId !== harmonyQuery.target.chordId) {
             setHarmonySourceScaleRef(null);
             const changed = { ...next };
             delete changed.context;
             setHarmonyQuery(changed);
             return;
         }
+        const chordChanged = (left?: ChordRef, right?: ChordRef) => left?.root !== right?.root || left?.chordId !== right?.chordId || left?.bass !== right?.bass;
+        if (next.target.bass !== harmonyQuery.target.bass || chordChanged(next.context?.before, harmonyQuery.context?.before) || chordChanged(next.context?.middle, harmonyQuery.context?.middle)) {
+            // Editing an observed inversion must not erase the other chords, but
+            // the old bass/rhythm confirmation no longer describes this path.
+            const context = { ...next.context };
+            delete context.bassConfirmed;
+            delete context.rhythmConfirmed;
+            setHarmonyQuery({ ...next, context });
+            return;
+        }
         setHarmonyQuery(next);
-    }, [harmonyQuery.target, setHarmonyQuery]);
+    }, [harmonyQuery.target, harmonyQuery.context, setHarmonyQuery]);
     const openHarmonyFromScale = useCallback((selection: ScaleHarmonySelection) => {
         const link = linkScaleToHarmony(harmonyQuery, selection);
         setHarmonyQuery(link.query);

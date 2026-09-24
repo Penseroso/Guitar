@@ -19,6 +19,15 @@ const keys = [
 const frame: TonalFrame = { tonic: 'C', mode: 'major', lens: 'jazz-pop' };
 
 describe('Harmony structured Roman identity and spelling', () => {
+    it.each(['jazz-pop', 'classical'] as const)('keeps minor Roman notation major-referenced under the %s rule lens', lens => {
+        const minorFrame: TonalFrame = { ...frame, mode: 'minor', lens };
+        for (const [root, label] of [['Eb', '♭III'], ['Ab', '♭VI'], ['Bb', '♭VII']]) {
+            const chord = { root, chordId: 'major' };
+            expect(romanLabel(chord, minorFrame)).toBe(label);
+            expect(resolveRoman(parseRoman(label)!, minorFrame)).toEqual(chord);
+        }
+    });
+
     it.each(keys)('preserves written degrees in all twelve tonic classes: %s', (tonic, major, minor) => {
         for (const [mode, expected] of [['major', major], ['minor', minor]] as const) {
             const tonalFrame: TonalFrame = { ...frame, tonic, mode };

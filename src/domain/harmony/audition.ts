@@ -1,9 +1,34 @@
 import { midiNoteLabel } from '@/domain/chord/engine/presentation';
 import type { RelationExample } from './types';
+import { exampleTransitions, toneLabel } from './connections';
 
 /** Fixed register demonstration, not a guitar fingering or voice-leading optimizer.
  * Guide correspondence is supplied by the theory example, never guessed by this adapter. */
 export function buildAudition(example: RelationExample, guidesOnly = false): { midi: number[]; durationMs: number }[] {
+    if (guidesOnly && example.kind === 'motion') {
+        const transitions = exampleTransitions(example);
+        const pitches = example.steps.map(() => new Map<string, number>());
+        const nearest = (pitchClass: number, from: number) => {
+            let pitch = 60 + pitchClass;
+            while (pitch - from > 6) pitch -= 12;
+            while (from - pitch > 6) pitch += 12;
+            return pitch;
+        };
+        // A middle chord may receive and depart with different voices. Keep both
+        // sets, keyed by formula degree, instead of pairing arbitrary array slots.
+        for (let index = 0; index < example.steps.length; index++) {
+            for (const edge of transitions.filter(item => item.fromStep === index)) {
+                for (const voice of edge.voices) {
+                    const from = toneLabel(example.steps[index], voice.fromDegree);
+                    const to = toneLabel(example.steps[edge.toStep], voice.toDegree);
+                    const start = pitches[index].get(voice.fromDegree) ?? 60 + from.pitchClass;
+                    pitches[index].set(voice.fromDegree, start);
+                    if (!pitches[edge.toStep].has(voice.toDegree)) pitches[edge.toStep].set(voice.toDegree, nearest(to.pitchClass, start));
+                }
+            }
+        }
+        return pitches.map(voices => ({ midi: [...new Set(voices.values())].sort((a, b) => a - b), durationMs: 1050 }));
+    }
     let prior: number[] = [];
     return example.steps.map(step => {
         const tones = guidesOnly ? step.guides.map(degree => {
