@@ -7,11 +7,13 @@ type EndingObservation = Pick<RelationResult, 'status' | 'observations' | 'missi
 /** Illustrative voices for a recognized pattern; this is not an inferred performance or optimizer. */
 export function endingConnections(before: ResolvedHarmonyChord, target: ResolvedHarmonyChord, pattern: string): RelationTransition[] {
     const voices: ToneConnection[] = [];
-    const add = (fromDegree: string, toDegree: string, kind: ToneConnection['kind'] = 'resolution') => {
-        if (before.tones.some(tone => tone.degree === fromDegree) && target.tones.some(tone => tone.degree === toDegree)) voices.push({ fromDegree, toDegree, kind });
+    const add = (fromDegree: string, toDegree: string, kind: ToneConnection['kind'] = 'resolution', guide = false) => {
+        if (before.tones.some(tone => tone.degree === fromDegree) && target.tones.some(tone => tone.degree === toDegree)) voices.push({ fromDegree, toDegree, kind, ...(guide ? { guide } : {}) });
     };
     if (pattern === 'authentic' || pattern === 'picardy') {
-        add('3', '1'); add('b7', target.tones.some(tone => tone.degree === 'b3') ? 'b3' : '3');
+        // Guide lines need a V7; a V triad's 3rd still resolves, but not as a guide-tone pair.
+        const seventh = before.tones.some(tone => tone.degree === 'b7');
+        add('3', '1', 'resolution', seventh); add('b7', target.tones.some(tone => tone.degree === 'b3') ? 'b3' : '3', 'resolution', seventh);
     } else if (pattern === 'deceptive') {
         add('3', target.tones.some(tone => tone.degree === 'b3') ? 'b3' : '3'); add('b7', '5');
     } else if (pattern === 'plagal') {
@@ -25,7 +27,7 @@ export function endingConnections(before: ResolvedHarmonyChord, target: Resolved
         const to = target.tones.find(tone => tone.pitchClass === target.bassPitchClass)!;
         add(from.degree, to.degree, from.pitchClass === to.pitchClass ? 'held' : 'approach');
     }
-    return [{ fromStep: 0, toStep: 1, voices }];
+    return [{ fromStep: 0, toStep: 1, basis: 'supplied', voices }];
 }
 
 /** A bounded pair observer. Phrase conclusions require supplied observations, never roots alone. */

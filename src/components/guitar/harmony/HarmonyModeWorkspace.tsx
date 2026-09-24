@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type KeyboardEvent } from 'react';
 import type { ChordRef, RelationKind, RelationQuery, RelationResult } from '@/domain/harmony/types';
-import { exampleTransitions } from '@/domain/harmony/connections';
+import { auditionLines } from '@/domain/harmony/connections';
 import { resolveChord } from '@/domain/harmony/roman';
 import { formatAccidentals, parseNoteName } from '@/domain/shared/spelling';
 import { getKeyName, getMinorKeyName } from '@/domain/shared/keys';
@@ -59,7 +59,7 @@ type Props = {
 
 export function HarmonyModeWorkspace({ query, result, onQueryChange, onOpenChord, onOpenScale, sourceScaleRef, onUseScaleFrame }: Props) {
     const [selectedExampleId, setSelectedExampleId] = useState<string | null>(null);
-    const { play, cancel, loading, error: audioError, playing, step: activeStep } = useHarmonyAudio();
+    const { play, cancel, loading, mode: audioMode, error: audioError, playing, step: activeStep } = useHarmonyAudio();
     const family = FAMILIES.find(item => item.kinds.some(kind => kind.id === query.kind)) ?? FAMILIES[0];
     const examples = result.examples.filter(item => query.kind === 'predominant' ? item.id === 'iv-v' : query.kind === 'ii-v' ? item.id === 'ii-v' : true);
     const example = examples.find(item => item.id === selectedExampleId) ?? examples[0];
@@ -70,7 +70,9 @@ export function HarmonyModeWorkspace({ query, result, onQueryChange, onOpenChord
         ? example.steps.map(step => step.roman).join(' → ')
         : item.id === 'predominant' ? preparationLabel : item.id === 'ii-v' ? predominantLabel : item.label;
     const exampleLabel = (id: string, label: string) => query.kind === 'tonic-sub' ? (id === 'iii' ? 'iii7' : id === 'vi' ? 'vi7' : label) : query.kind === 'tritone' ? (id === 'original' ? 'Original dominant' : 'Substitute dominant') : label;
-    const hasGuideTones = !!example && (example.kind === 'comparison' ? example.steps.some(step => step.guides.length > 0) : exampleTransitions(example).some(transition => transition.voices.length > 0));
+    const lines = example?.kind === 'motion' ? auditionLines(example) : null;
+    const hasGuideTones = !!example && (lines ? lines.transitions.some(transition => transition.voices.length > 0) : example.steps.some(step => step.guides.length > 0));
+    const linesLabel = !lines || lines.guide ? 'Hear guide tones' : 'Hear voice lines';
     const unmetConditions = result.checks?.filter(check => check.state === 'fail').length ?? 0;
     const unknownConditions = result.checks?.filter(check => check.state === 'unknown').length ?? 0;
     const conditionSummary = [unmetConditions ? `${unmetConditions} unmet` : '', unknownConditions ? `${unknownConditions} unknown` : ''].filter(Boolean).join(', ') || 'confirmed';
@@ -147,9 +149,13 @@ export function HarmonyModeWorkspace({ query, result, onQueryChange, onOpenChord
             <div className={styles.resultHeading}>
                 <div><span className={styles.status} data-status={result.status}>{STATUS_LABELS[result.status]}</span><h3>{resultTitle}</h3></div>
                 {example && <div className={styles.playActions}>
-                    <button type="button" className={styles.playButton} disabled={loading} aria-busy={loading} onClick={() => play(example, false)}>{loading ? 'Loading sound…' : playing ? 'Play again' : 'Play relation'}</button>
-                    {hasGuideTones && <button type="button" className={styles.quietButton} disabled={loading} onClick={() => play(example, true)}>Hear guide tones</button>}
-                    {(loading || playing) && <button type="button" className={styles.quietButton} onClick={cancel}>Stop</button>}
+                    {/* Each button is its own play/stop toggle; there is no separate Stop control. */}
+                    <button type="button" className={styles.playButton} disabled={audioMode !== 'relation' && loading} aria-busy={audioMode === 'relation' && loading} aria-pressed={audioMode === 'relation' && playing} onClick={audioMode === 'relation' && (loading || playing) ? cancel : () => play(example, false)}>
+                        {audioMode === 'relation' && loading ? 'Loading sound…' : audioMode === 'relation' && playing ? 'Stop' : playing ? 'Play again' : 'Play relation'}
+                    </button>
+                    {hasGuideTones && <button type="button" className={styles.quietButton} disabled={audioMode !== 'guide' && loading} aria-busy={audioMode === 'guide' && loading} aria-pressed={audioMode === 'guide' && playing} onClick={audioMode === 'guide' && (loading || playing) ? cancel : () => play(example, true)}>
+                        {audioMode === 'guide' && loading ? 'Loading…' : audioMode === 'guide' && playing ? 'Stop' : linesLabel}
+                    </button>}
                 </div>}
             </div>
             {exampleTabs}

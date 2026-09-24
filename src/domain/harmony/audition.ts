@@ -1,12 +1,12 @@
 import { midiNoteLabel } from '@/domain/chord/engine/presentation';
 import type { RelationExample } from './types';
-import { exampleTransitions, toneLabel } from './connections';
+import { auditionLines, toneLabel } from './connections';
 
 /** Fixed register demonstration, not a guitar fingering or voice-leading optimizer.
- * Guide correspondence is supplied by the theory example, never guessed by this adapter. */
+ * Lines come from the same validated transitions the diagram draws, never guessed here. */
 export function buildAudition(example: RelationExample, guidesOnly = false): { midi: number[]; durationMs: number }[] {
     if (guidesOnly && example.kind === 'motion') {
-        const transitions = exampleTransitions(example);
+        const { transitions } = auditionLines(example);
         const pitches = example.steps.map(() => new Map<string, number>());
         const nearest = (pitchClass: number, from: number) => {
             let pitch = 60 + pitchClass;

@@ -86,7 +86,7 @@
 .playActions button { min-height: 44px; padding: 0 14px; border-radius: 3px; font: inherit; font-size: 13px; cursor: pointer; }
 .playButton { background: var(--ink); color: #0a0a0a; border: 1px solid var(--ink); font-weight: 650 !important; }
 .quietButton { background: none; color: var(--ink); border: 1px solid transparent; }
-.quietButton:hover { border-bottom-color: var(--ink); }
+.quietButton:hover, .quietButton[aria-pressed="true"] { border-bottom-color: var(--ink); }
 .playActions button:disabled { opacity: .55; cursor: wait; }
 .findings { display: grid; gap: 4px; border-top: 1px solid var(--line); padding-top: 13px; }
 .findings p { margin: 0; color: var(--muted); line-height: 1.45; }

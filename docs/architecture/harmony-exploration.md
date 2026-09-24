@@ -9,9 +9,16 @@ Harmony owns relationships and their conditional explanations. Scale owns pitch 
 - Lens controls **rule applicability only**, not Roman notation. Both Jazz/pop and Classical use the same major-reference accidentals: C minor's E♭, A♭ and B♭ major chords are ♭III, ♭VI and ♭VII. The UI states this fixed notation convention; Classical is not a switch to traditional minor-key Roman spelling.
 - `facts.ts`: pitch-class intersection/difference and directed root intervals. These facts do not establish harmonic function.
 - `target-policy.ts`: separates key-center root, global tonic-family eligibility, and a local resolution target. A local dominant-quality target may support a possible applied approach without becoming global tonic harmony.
-- `connections.ts`: validates explicit canonical-degree voice edges, held pitches, and pitch-preserving analytical spellings. Rendering and guide audition consume the same edges. Common-tone neighbor spelling does not change the Chord registry identity.
+- `connections.ts`: derives and validates canonical-degree voice edges; rendering and line audition consume the same edges. Common-tone neighbor spelling does not change the Chord registry identity. Contract:
+  - Every motion example declares its transitions; nothing is paired by array position.
+  - A source tone has at most one edge. Several sources may converge on one destination tone (e.g. vii°7 → I).
+  - `held` exactly when the pitch class is retained. A common tone is never also drawn as a resolution.
+  - `guide` only on the 3rd/7th of a seventh chord in descending-fifth motion or a tritone-substitute dominant. Triads never carry guide tones.
+  - Functional basis (`tendency`/`guide-tone`): common tones hold, the leading tone rises to the destination root, a chordal 7th and the leading tone's tritone partner fall by step. Other tones stay unconnected, e.g. the doubling-dependent 3rd of vii°7.
+  - Triadic fifth motion uses the `nearest` basis: only the moves that every minimal step-wise one-to-one mapping agrees on. Ties stay unconnected. It is labelled voice leading, not guide tones.
+  - Edges are pitch-class correspondences. Destination bass/inversion does not change them.
 - `ending-observation.ts`: pattern-specific evidence requirements for endings, separate from illustrative approaches. Explicitly non-final motion is not a cadence; unknown phrase position remains missing context.
-- `relations.ts`: deterministic, rule-scoped examples and context checks. Comparison examples do not imply a sequence. Guide paths are supplied illustrations, not an optimal voice-leading solution.
+- `relations.ts`: deterministic, rule-scoped examples and context checks. Comparison examples do not imply a sequence. Voice edges come from `connections.ts` rules or a rule-curated list (backdoor, common-tone, passing, cadence), never an optimal voice-leading solution.
 - `knowledge.ts`: versioned conditions, limitations, and source references. Jazz/pop family rules must not silently become classical claims.
 - `audition.ts`: names and MIDI derive from the same resolved chords. Playback is illustrative keyboard-register audio, not guitar fingering. Cancellation prevents later scheduled chords; already-triggered release tails may ring out.
 

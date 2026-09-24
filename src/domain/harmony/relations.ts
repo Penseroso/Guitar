@@ -5,7 +5,7 @@ import { note, pc, relativeChord, resolveChord, romanLabel, validateFrame } from
 import { spellDegree } from '@/domain/shared/spelling';
 import { targetPolicy } from './target-policy';
 import { endingConnections, observeEnding } from './ending-observation';
-import { exampleTransitions } from './connections';
+import { connectChords, exampleTransitions } from './connections';
 import type { ChordRef, RelationExample, RelationQuery, RelationResult, RelationStep } from './types';
 
 const FUNCTIONAL_APPROACHES = new Set(['dominant', 'ii-v', 'predominant', 'leading', 'tritone']);
@@ -33,7 +33,11 @@ export function exploreRelation(query: RelationQuery): RelationResult {
         const targetRoman = romanLabel({ ...target, chordId: minor ? 'minor' : 'major' }, query.frame);
         const step = (ref: ChordRef, role: string, guides: string[], roman?: string): RelationStep => ({ chord: resolveChord(ref), role, guides, roman: roman ?? romanLabel(ref, query.frame) });
         const end = () => step(target, 'Target', ['1', third]);
-        const example = (id: string, label: string, steps: RelationStep[], kind: RelationExample['kind'] = 'motion', transitions?: RelationExample['transitions']) => {
+        const derive = (steps: RelationStep[], index: number, mode?: 'nearest') => ({ fromStep: index, toStep: index + 1, ...connectChords(steps[index].chord, steps[index + 1].chord, mode) });
+        const example = (id: string, label: string, steps: RelationStep[], kind: RelationExample['kind'] = 'motion', supplied?: RelationExample['transitions'] | 'nearest') => {
+            const transitions = Array.isArray(supplied) ? supplied : kind === 'motion' ? steps.slice(1).map((_, i) => derive(steps, i, supplied)) : undefined;
+            // A motion step's guides are exactly the degrees on its guide lines.
+            if (transitions) steps.forEach((s, i) => { s.guides = [...new Set(transitions.flatMap(t => t.voices.filter(v => v.guide).flatMap(v => t.fromStep === i ? [v.fromDegree] : t.toStep === i ? [v.toDegree] : [])))]; });
             result.examples.push({ id, label, kind, steps, provenance: ['passing', 'cadence'].includes(query.kind) && query.context?.before ? 'observation' : 'illustration', transitions,
                 facts: steps.slice(1).map((s, i) => compareChords(steps[i].chord, s.chord)) });
         };
@@ -50,7 +54,8 @@ export function exploreRelation(query: RelationQuery): RelationResult {
                 break;
             case 'fifths': {
                 const from = relativeChord(target.root, 5, 7, minor ? 'minor' : 'major');
-                example('fifths', 'Root motion', [step(from, 'Fifth above target', [minor ? 'b3' : '3', '1']), end()]);
+                // Triads: plain voice leading, not guide tones.
+                example('fifths', 'Root motion', [step(from, 'Fifth above target', []), end()], 'motion', 'nearest');
                 result.status = 'possible';
                 result.observations = ['Down a fifth · up a fourth', 'Function · context needed'];
                 break;
@@ -111,12 +116,11 @@ export function exploreRelation(query: RelationQuery): RelationResult {
                 const iv = relativeChord(target.root, 4, 5, 'minor-7');
                 const backdoor = () => step(flatSeven, 'Backdoor approach', ['5', 'b7']);
                 const arrival = () => step(target, 'Target', ['3', '5']);
-                const resolution = [{ fromDegree: '5', toDegree: '3', kind: 'resolution' as const }, { fromDegree: 'b7', toDegree: '5', kind: 'resolution' as const }];
-                example('backdoor', '♭VII7–I', [backdoor(), arrival()], 'motion', [{ fromStep: 0, toStep: 1, voices: resolution }]);
-                example('minor-backdoor', 'iv7–♭VII7–I', [step(iv, 'Minor subdominant', ['1', 'b3']), backdoor(), arrival()], 'motion', [
-                    { fromStep: 0, toStep: 1, voices: [{ fromDegree: '1', toDegree: '5', kind: 'held' }, { fromDegree: 'b3', toDegree: 'b7', kind: 'held' }] },
-                    { fromStep: 1, toStep: 2, voices: resolution },
-                ]);
+                // Curated lines: ♭VII7–I is neither fifth motion nor a tritone substitute.
+                const resolution = { fromStep: 1, toStep: 2, basis: 'supplied' as const, voices: [{ fromDegree: '5', toDegree: '3', kind: 'resolution' as const }, { fromDegree: 'b7', toDegree: '5', kind: 'resolution' as const }] };
+                example('backdoor', '♭VII7–I', [backdoor(), arrival()], 'motion', [{ ...resolution, fromStep: 0, toStep: 1 }]);
+                const minorBackdoor = [step(iv, 'Minor subdominant', []), backdoor(), arrival()];
+                example('minor-backdoor', 'iv7–♭VII7–I', minorBackdoor, 'motion', [derive(minorBackdoor, 0), resolution]);
                 result.status = 'possible';
                 result.observations = ['Jazz/pop · minor-subdominant connection', '♭VII7 fifth → third · ♭7 → fifth', 'Melody + phrase · fit remains contextual'];
                 result.scaleLinks = [{ label: `${target.root} Aeolian · borrowed collection`, ref: createScaleRef('Diatonic Modes', 'Aeolian', target.rootPitchClass) }];
