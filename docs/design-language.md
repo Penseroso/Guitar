@@ -21,6 +21,7 @@ Do not solve a weak information structure by putting every item into a bordered 
 | --- | --- | --- |
 | Main instrument/visualization | One deliberate surface with breathing room, e.g. fretboard, orbit, dial | A new card around every adjacent control |
 | Navigation or mutually exclusive choice | Text tabs with a thin active line | Nested segmented boxes and filled pills |
+| Binary diagram-label display | A compact two-position switch with both endpoint labels visible | Treating a display preference like a navigation tab or leaving “off” unexplained |
 | Independent on/off preference | Text with a small state dot; visible `aria-pressed` | A large toggle card for each setting |
 | Continuous range | Direct-manipulation slider with readable endpoints and live value | Numeric input boxes when the range is spatial |
 | Repeated results | Open rows separated by a hairline; selection distinguished within the row | A wall of rounded result cards |
@@ -46,7 +47,8 @@ Repeated musical data should be explorable, not presented as a full table by def
 
 These are implementation references, not licenses to copy every incidental CSS value:
 
-- [Scale visualization controls](../src/components/guitar/scale/scale-visual-controls.module.css): text choices, active line, small on/off dot; no enclosing control card.
+- [Scale visualization controls](../src/components/guitar/scale/scale-visual-controls.module.css): compact label switch, small on/off dots; no enclosing control card.
+- [Shared diagram-label switch](../src/components/guitar/shared/DiagramLabelSwitch.tsx): the same Notes/Intervals control in Scale and Chord, with explicit endpoints and keyboard support.
 - [Practice range](../src/components/guitar/scale/PracticeRangeControl.tsx) and [shared range slider](../src/components/guitar/shared/FretRangeControl.tsx): range below the fretboard, 44px touch targets, compact string selection with state dots.
 - [Harmony tabs and chord choices](../src/components/guitar/cross-domain/harmony.module.css): selected line, concise primary/other grouping, detail on demand.
 - [Tone roles](../src/components/guitar/scale/ToneRolesPanel.tsx): compact note selection, chord-relative detail only when relevant.

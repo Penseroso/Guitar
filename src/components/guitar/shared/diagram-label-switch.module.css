@@ -1,0 +1,12 @@
+.group { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+.caption { margin-bottom: 6px; color: var(--workspace-muted); font-size: 12px; }
+.control { position: relative; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--workspace-muted); cursor: pointer; white-space: nowrap; }
+.control input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.option { font-size: 12px; font-weight: 600; transition: color 180ms ease; }
+.control[data-intervals="false"] .option:first-of-type, .control[data-intervals="true"] .option:last-of-type { color: #f4f4f5; }
+.track { position: relative; width: 36px; height: 20px; flex: none; border: 1px solid rgba(255,255,255,.24); border-radius: 999px; background: rgba(255,255,255,.07); }
+.thumb { position: absolute; top: 3px; left: 3px; width: 12px; height: 12px; border-radius: 50%; background: #f4f4f5; transition: transform 180ms ease; }
+.control[data-intervals="true"] .thumb { transform: translateX(16px); }
+.control:hover .option { color: #f4f4f5; }
+.control:has(input:focus-visible) { outline: 2px solid var(--workspace-focus); outline-offset: 3px; border-radius: 4px; }
+@media (prefers-reduced-motion: reduce) { .option, .thumb { transition: none; } }

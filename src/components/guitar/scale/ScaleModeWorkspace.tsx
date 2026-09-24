@@ -12,6 +12,7 @@ import { ScaleRootNavigator } from './ScaleRootNavigator';
 import { ScaleSelectorPanel } from './ScaleSelectorPanel';
 import styles from './scale-workspace.module.css';
 import { PracticeRangeControl } from './PracticeRangeControl';
+import { DiagramLabelSwitch } from '../shared/DiagramLabelSwitch';
 import { getScalePresentationName } from '@/domain/scale/scaleSelector';
 import { getScaleCompatibleChords } from '@/domain/chord/chord-scale-compatibility';
 import { formatAccidentals } from '@/domain/shared/spelling';
@@ -154,10 +155,7 @@ export function ScaleModeWorkspace({
                     <section className={controlStyles.controls} aria-label="Visualization Overrides">
                         <div className={controlStyles.header}><SlidersHorizontal size={14} aria-hidden="true" /> Visualization Overrides</div>
                         <div className={controlStyles.row}>
-                            <div className={controlStyles.display} role="group" aria-label="Fretboard labels">
-                                <button type="button" aria-pressed={!showIntervals} onClick={() => { if (showIntervals) onToggleIntervals(); }}>Notes</button>
-                                <button type="button" aria-pressed={showIntervals} onClick={() => { if (!showIntervals) onToggleIntervals(); }}>Intervals</button>
-                            </div>
+                            <DiagramLabelSwitch showIntervals={showIntervals} onToggle={onToggleIntervals} />
                             <button type="button" className={controlStyles.toggle} aria-pressed={showChordTones && !!analysis?.chord}
                                 disabled={!analysis?.chord && !defaultChord} onClick={toggleChordTones}
                                 title={!analysis?.chord && defaultChord ? `Selects ${formatAccidentals(defaultChord.rootNoteName + defaultChord.chordSuffix)}` : undefined}>

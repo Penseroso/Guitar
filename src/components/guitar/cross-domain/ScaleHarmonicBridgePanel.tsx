@@ -38,10 +38,12 @@ export function ScaleHarmonicBridgePanel(props: ScaleHarmonicBridgePanelProps) {
     return (
         <div className={styles.bridge}>
             <HarmonyTabs tabs={BRIDGE_TABS as { id: BridgeTab; label: string }[]} active={tab} onChange={setTab} label="Harmony views" idBase={tabId} />
-            <div role="tabpanel" id={`${tabId}-panel`} aria-labelledby={`${tabId}-${tab}`}>
-                {tab === 'play-over' ? <PlayThisScaleOverPanel {...props} /> : <ChordsBuiltFromScalePanel {...props} />}
+            <div role="tabpanel" id={`${tabId}-panel`} aria-labelledby={`${tabId}-${tab}`} className={styles.tabPanel}>
+                {tab === 'play-over' ? <>
+                    <PlayThisScaleOverPanel {...props} />
+                    <ToneRolesPanel analysis={props.analysis ?? null} onClear={() => props.onSelectChord?.(null)} focusedInterval={props.focusedInterval} onFocusTone={props.onFocusTone} />
+                </> : <ChordsBuiltFromScalePanel {...props} />}
             </div>
-            <ToneRolesPanel analysis={props.analysis ?? null} onClear={() => props.onSelectChord?.(null)} focusedInterval={props.focusedInterval} onFocusTone={props.onFocusTone} />
         </div>
     );
 }

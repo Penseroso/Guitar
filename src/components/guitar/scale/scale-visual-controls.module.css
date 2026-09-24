@@ -1,12 +1,11 @@
 .controls { display: flex; flex-wrap: wrap; align-items: center; column-gap: 20px; min-width: 0; padding: 0 4px; color: #f4f4f5; }
 .header { display: inline-flex; align-items: center; gap: 8px; color: var(--workspace-muted); font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; white-space: nowrap; }
-.row, .display, .detail { display: flex; flex-wrap: wrap; align-items: center; }
+.row, .detail { display: flex; flex-wrap: wrap; align-items: center; }
 .row { gap: 0 14px; }
-.display { gap: 2px; }
-.display button, .toggle, .detail button { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 9px; border: 0; border-radius: 0; background: transparent; color: var(--workspace-muted); font: inherit; font-size: 12px; font-weight: 600; white-space: nowrap; cursor: pointer; transition: color .18s ease; }
-.display button:hover, .toggle:hover, .detail button:hover:not(:disabled) { color: #fff; }
-.display button[aria-pressed="true"], .toggle[aria-pressed="true"], .detail button[aria-pressed="true"] { color: #fff; }
-.display button[aria-pressed="true"]::after, .detail button[aria-pressed="true"]::after { position: absolute; right: 9px; bottom: 3px; left: 9px; height: 1px; background: currentColor; content: ""; }
+.toggle, .detail button { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 9px; border: 0; border-radius: 0; background: transparent; color: var(--workspace-muted); font: inherit; font-size: 12px; font-weight: 600; white-space: nowrap; cursor: pointer; transition: color .18s ease; }
+.toggle:hover, .detail button:hover:not(:disabled) { color: #fff; }
+.toggle[aria-pressed="true"], .detail button[aria-pressed="true"] { color: #fff; }
+.detail button[aria-pressed="true"]::after { position: absolute; right: 9px; bottom: 3px; left: 9px; height: 1px; background: currentColor; content: ""; }
 .toggle { gap: 9px; }
 .dot { width: 6px; height: 6px; flex: none; border: 1px solid currentColor; border-radius: 50%; opacity: .6; }
 .toggle[aria-pressed="true"] .dot { background: currentColor; opacity: 1; }
@@ -14,5 +13,5 @@
 .detailLabel { margin-right: 2px; color: var(--workspace-muted); font-size: 11px; }
 .detailLabel:not(:first-child) { margin-left: 16px; }
 .detail button:disabled { opacity: .35; cursor: default; }
-.display button:focus-visible, .toggle:focus-visible, .detail button:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: 2px; border-radius: 4px; }
-@media (max-width: 639px) { .controls { column-gap: 8px; } .header { flex-basis: 100%; margin-bottom: 2px; } .row { gap: 0 8px; } .display button, .toggle, .detail button { padding-inline: 7px; } .detailLabel:not(:first-child) { margin-left: 8px; } }
+.toggle:focus-visible, .detail button:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: 2px; border-radius: 4px; }
+@media (max-width: 639px) { .controls { column-gap: 8px; } .header { flex-basis: 100%; margin-bottom: 2px; } .row { gap: 0 8px; } .toggle, .detail button { padding-inline: 7px; } .detailLabel:not(:first-child) { margin-left: 8px; } }

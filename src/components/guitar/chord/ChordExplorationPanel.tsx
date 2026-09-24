@@ -13,6 +13,7 @@ import { ChordNeckView } from './ChordNeckView';
 import { ChoiceGroup, type ChordChoice } from './ChoiceGroup';
 import { ChoiceRail } from './ChoiceRail';
 import { FretRangeControl } from './FretRangeControl';
+import { DiagramLabelSwitch } from '../shared/DiagramLabelSwitch';
 import { formatChordToneLabel, formatDegreeLabel } from './tone-labels';
 import styles from './chord-ui.module.css';
 
@@ -75,7 +76,7 @@ export function ChordExplorationPanel({ engine, context, onContextChange, onSele
     return <section aria-label="Chord voicings" className={styles.layout} data-filters-open={filtersOpen}>
         <div className={styles.panelToolbar} style={{ gridColumn: '1 / -1' }}>
             <ChoiceGroup label="Voicing surface" segmented value={engine.surface} options={[{ value: 'recommended', label: 'Recommended' }, { value: 'all', label: 'All voicings' }]} onChange={value => engine.setSurface(value as 'recommended' | 'all')} />
-            <ChoiceGroup label="Diagram labels" segmented value={showIntervals ? 'degree' : 'note'} onChange={value => { if ((value === 'degree') !== showIntervals) onToggleIntervals(); }} options={[{ value: 'note', label: 'Notes' }, { value: 'degree', label: 'Intervals' }]} />
+            <DiagramLabelSwitch caption="Diagram labels" showIntervals={showIntervals} onToggle={onToggleIntervals} />
         </div>
         {engine.error && <div role="alert" className={styles.warning} style={{ gridColumn: '1 / -1' }}><p>{engine.error.message}</p><button className={styles.action} onClick={engine.retry}>Retry search</button></div>}
         {selected ? <aside className={styles.selected} aria-label="Selected voicing" data-selected-id={selected.candidate.allocationId} data-selection-stale={engine.selectionStale}>

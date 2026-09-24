@@ -58,6 +58,8 @@ describe('Scale harmonic analysis interactions', () => {
         screen.getByRole('button', { name: 'Analyze Cm7' }).focus();
         await user.keyboard('{Enter}');
         await user.click(screen.getByRole('tab', { name: 'Chords built from this scale' }));
+        expect(screen.queryByText('Tone roles')).toBeNull();
+        await user.click(screen.getByRole('tab', { name: 'Play this scale over' }));
         expect(screen.getByText('Analyzing Cm7')).toBeTruthy();
         await user.click(screen.getByRole('button', { name: 'Clear analysis chord' }));
         expect(screen.queryByText('Analyzing Cm7')).toBeNull();

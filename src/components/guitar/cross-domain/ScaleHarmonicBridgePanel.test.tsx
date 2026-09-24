@@ -1,10 +1,17 @@
+// @vitest-environment jsdom
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
+import { cleanup, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { ChordsBuiltFromScalePanel } from './ChordsBuiltFromScalePanel';
 import { PlayThisScaleOverPanel } from './PlayThisScaleOverPanel';
 import { ScaleHarmonicBridgePanel } from './ScaleHarmonicBridgePanel';
+import { createScaleRef } from '@/domain/scale/scale-ref';
+import { getScaleToneAnalysis } from '@/domain/chord/scale-tone-analysis';
+
+afterEach(cleanup);
 
 const playOver = (group: string, name: string, tonic: number) =>
     renderToStaticMarkup(<PlayThisScaleOverPanel scaleGroup={group} scaleName={name} tonicPitchClass={tonic} />);
@@ -19,6 +26,19 @@ describe('ScaleHarmonicBridgePanel', () => {
         expect(markup).toContain('Play this scale over');
         expect(markup).toContain('Chords built from this scale');
         expect(markup).toContain('Primary · C Ionian');
+    });
+
+    it('shows tone roles only in the chord-pairing view without clearing the selected analysis', async () => {
+        const user = userEvent.setup();
+        const analysis = getScaleToneAnalysis(createScaleRef('Diatonic Modes', 'Ionian', 0), 'major-9');
+        render(<ScaleHarmonicBridgePanel scaleGroup="Diatonic Modes" scaleName="Ionian" tonicPitchClass={0}
+            selectedChordId="major-9" analysis={analysis} />);
+        expect(screen.getByText('Tone roles')).toBeTruthy();
+        expect(screen.getByText('Analyzing Cmaj9')).toBeTruthy();
+        await user.click(screen.getByRole('tab', { name: 'Chords built from this scale' }));
+        expect(screen.queryByText('Tone roles')).toBeNull();
+        await user.click(screen.getByRole('tab', { name: 'Play this scale over' }));
+        expect(screen.getByText('Analyzing Cmaj9')).toBeTruthy();
     });
 });
 
