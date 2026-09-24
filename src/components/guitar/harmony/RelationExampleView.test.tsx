@@ -13,6 +13,17 @@ const examples = (kind: RelationKind, classical = false) => exploreRelation({
 }).examples;
 
 describe('Harmony musical diagrams', () => {
+    it.each([
+        ['fifths', ['→ Voice leading', '— Common tones'], 'Guide tones', ['G held as G', 'B to C', 'D to E']],
+        ['dominant', ['Guide tones', '— Common tones'], 'Voice leading', ['G held as G', 'B to C', 'F to E']],
+    ] as const)('%s legend and correspondence name only what the theory result draws', (kind, legend, absent, spoken) => {
+        render(<RelationExampleView example={examples(kind)[0]} onOpenChord={vi.fn()} activeStep={null} />);
+        for (const item of legend) expect(screen.getByText(item)).toBeTruthy();
+        expect(screen.queryByText(absent)).toBeNull();
+        const list = screen.getByRole('list', { name: 'Tone correspondence' });
+        expect(within(list).getAllByRole('listitem').map(item => item.textContent).sort()).toEqual([...spoken].sort());
+    });
+
     it('keeps numerical diagnostics collapsed and exposes them on demand', async () => {
         const user = userEvent.setup();
         render(<RelationExampleView example={examples('dominant')[0]} onOpenChord={vi.fn()} activeStep={null} />);

@@ -37,9 +37,18 @@ export interface RelationStep {
 export interface ToneConnection {
     fromDegree: string;
     toDegree: string;
+    /** `held` exactly when both ends share a pitch class. */
     kind: 'held' | 'resolution' | 'neighbor' | 'approach';
+    /** A functional 3rd/7th line of a seventh chord. Never inferred from pitch overlap. */
+    guide?: boolean;
 }
-export interface RelationTransition { fromStep: number; toStep: number; voices: ToneConnection[] }
+/**
+ * guide-tone: tendency lines including 3rd/7th lines in fifth motion or tritone substitution.
+ * tendency: common tones plus fixed-direction tendency tones only. nearest: triad voice
+ * leading, only moves every smallest one-to-one mapping agrees on. supplied: curated by the rule.
+ */
+export type ConnectionBasis = 'guide-tone' | 'tendency' | 'nearest' | 'supplied';
+export interface RelationTransition { fromStep: number; toStep: number; basis?: ConnectionBasis; voices: ToneConnection[] }
 export interface RelationExample {
     id: string;
     label: string;
