@@ -80,20 +80,6 @@ export function getRequiredChordDegrees(entryInput: string | ChordRegistryEntry)
     return entry.formula.degrees.filter((degree) => isRequiredChordDegree(entry, degree));
 }
 
-export function buildToneDegreeMap(entry: ChordRegistryEntry): Map<number, { degree: string; isRequired: boolean }> {
-    const tones = buildChordTonesFromRegistryEntry(entry, 0).tones;
-
-    return new Map(
-        tones.map((tone) => [
-            normalizePitchClass(tone.pitchClass),
-            {
-                degree: tone.degree,
-                isRequired: tone.isRequired ?? false,
-            },
-        ])
-    );
-}
-
 export function getRequiredChordTones(entryInput: string | ChordRegistryEntry, rootPitchClass: number): ChordTone[] {
     return buildChordTonesFromRegistryEntry(entryInput, rootPitchClass).tones.filter((tone) => tone.isRequired);
 }

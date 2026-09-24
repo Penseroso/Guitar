@@ -25,7 +25,6 @@
 .setup { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 28px; padding: 0 0 24px; border-bottom: 1px solid var(--line); }
 .fieldGroup { display: grid; align-content: start; gap: 8px; min-width: 0; }
 .contextFields { display: flex; flex-wrap: wrap; align-items: end; gap: 10px 15px; min-width: 0; }
-.lensField { display: grid; gap: 4px; min-width: 0; }
 .notationHint { margin: 0; max-width: 208px; color: var(--muted); font-size: 11px; line-height: 1.5; }
 .chordFields { display: grid; align-content: start; gap: 10px; min-width: 0; }
 .chordPrimaryRow { display: flex; align-items: end; flex-wrap: wrap; gap: 10px 15px; min-width: 0; }
@@ -109,36 +108,6 @@
 .conditionDetails summary span, .readingDetails summary span { color: var(--muted); }
 .conditionDetails summary:hover, .readingDetails summary:hover { text-decoration: underline; text-underline-offset: 4px; }
 .readingDetails .readingDetail { margin-bottom: 5px; }
-.steps { display: grid; gap: 0; }
-.stepGroup { min-width: 0; }
-.motion { display: flex; align-items: center; min-height: 34px; gap: 7px; color: var(--muted); font-size: 11px; letter-spacing: .01em; }
-.motion > span:first-child { font-size: 17px; color: var(--ink); }
-.motionDetails { color: #888; }
-.guideMotion { margin: -1px 0 6px 23px; color: var(--ink); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
-.guideMotion [data-linked="true"] { text-decoration: underline; text-underline-offset: 4px; }
-.step { border-top: 1px solid var(--line); padding: 12px 0 13px; }
-.step[data-playing="true"] { border-top-color: var(--ink); }
-.comparisonIndex { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .12em; }
-.stepHead { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; }
-.stepHead > div { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; }
-.roman { font-size: 18px; font-weight: 650; }
-.role { color: var(--muted); font-size: 12px; }
-.chordLink { border: 0; background: none; color: var(--ink); min-width: 44px; min-height: 44px; padding: 0 2px; font: inherit; font-size: 18px; font-weight: 650; cursor: pointer; }
-.chordLink:hover { text-decoration: underline; text-underline-offset: 4px; }
-.chordLink span { font-size: 12px; vertical-align: 2px; color: var(--muted); }
-.toneStrip { display: flex; flex-wrap: wrap; gap: 0; margin-top: 5px; }
-.tone { display: grid; gap: 2px; min-width: 55px; min-height: 44px; padding: 5px 10px 5px 0; color: var(--ink); background: none; border: 0; text-align: left; font: inherit; cursor: pointer; }
-.tone + .tone { padding-left: 10px; border-left: 1px solid var(--line); }
-.tone:hover .toneName { text-decoration: underline; text-underline-offset: 5px; }
-.tone[aria-pressed="true"] .toneName { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; }
-.tone[data-linked="true"] .toneName { text-decoration: underline dotted; text-underline-offset: 5px; }
-.linkedMark { color: var(--ink); font-weight: 700; }
-.toneDegree { color: var(--muted); font-size: 11px; }
-.toneName { font-size: 15px; }
-.sharedTone .toneName { text-decoration: underline; text-decoration-color: rgba(255,255,255,.55); text-underline-offset: 5px; }
-.changedTone .toneName { font-weight: 700; }
-.toneDetail { margin: 7px 0 0; color: var(--ink); font-size: 12px; }
-.guide { margin: 8px 0 0; color: var(--muted); font-size: 12px; }
 .nowPlaying { margin: -10px 0 0; color: var(--muted); font-size: 12px; }
 
 .scaleLinks { display: flex; align-items: center; flex-wrap: wrap; gap: 1px 16px; border-top: 1px solid var(--line); padding-top: 12px; }
@@ -148,7 +117,7 @@
 .scaleLinks button span { color: var(--muted); font-size: 11px; }
 .workspace button:focus-visible, .workspace input:focus-visible, .workspace summary:focus-visible, .checkField:focus-within { outline: 2px solid var(--workspace-focus); outline-offset: 3px; }
 @media (max-width: 760px) { .setup { grid-template-columns: minmax(0, 1fr); gap: 20px; } .workspace { gap: 26px; } }
-@media (max-width: 420px) { .familyTabs { gap: 15px; } .motionDetails { display: none; } .stepHead { align-items: center; } }
+@media (max-width: 420px) { .familyTabs { gap: 15px; } }
 @media (prefers-reduced-motion: reduce) { .tab { transition: none; } }
 
 /* Relationship setup and progressive result copy. */

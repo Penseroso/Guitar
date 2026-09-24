@@ -2,7 +2,7 @@ import { exampleTransitions } from '@/domain/harmony/connections';
 import { degreeNumber } from '@/domain/harmony/roman';
 import type { RelationExample, ToneConnection } from '@/domain/harmony/types';
 
-export interface MapEdge { from: number; to: number; fromDegree: string; toDegree: string; held: boolean; guide: boolean; kind: ToneConnection['kind'] | 'compare' }
+interface MapEdge { from: number; to: number; fromDegree: string; toDegree: string; held: boolean; guide: boolean; kind: ToneConnection['kind'] | 'compare' }
 /** Presentation only. Motion edges are exactly the domain transitions; comparisons show shared/changed tones. */
 export function voiceMap(example: RelationExample) {
     const edges: MapEdge[] = exampleTransitions(example).flatMap(edge => edge.voices.map(voice => ({

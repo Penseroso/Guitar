@@ -6,7 +6,7 @@ import type { RelationExample } from '@/domain/harmony/types';
 
 const IDLE: HarmonyPlaybackState = { playing: false, error: null, step: null };
 
-export type HarmonyAudioMode = 'relation' | 'guide' | null;
+type HarmonyAudioMode = 'relation' | 'guide' | null;
 
 /** Which control is the active play/stop toggle: the pressed button owns cancel, not a separate Stop control. */
 export function useHarmonyAudio() {

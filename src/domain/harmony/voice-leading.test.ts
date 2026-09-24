@@ -73,8 +73,6 @@ describe('Correspondence invariants across relations and targets', () => {
                         expect(['3', 'b3', '7', 'b7', 'bb7']).toContain(voice.fromDegree);
                     }
                 }
-                // Every step's highlighted guides are exactly the guide-line degrees.
-                expect([...from.guides].sort()).toEqual([...new Set(exampleTransitions(example).flatMap(t => t.voices.filter(v => v.guide).flatMap(v => t.fromStep === transition.fromStep ? [v.fromDegree] : t.toStep === transition.fromStep ? [v.toDegree] : [])))].sort());
             }
         });
     }

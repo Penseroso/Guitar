@@ -30,7 +30,6 @@ export interface RelationStep {
     chord: ResolvedHarmonyChord;
     roman: string;
     role: string;
-    guides: string[];
     /** Analysis-only spelling; keys still refer to canonical chord formula degrees. */
     toneLabels?: Record<string, { name: string; degree: string }>;
 }

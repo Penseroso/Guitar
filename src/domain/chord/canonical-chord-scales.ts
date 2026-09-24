@@ -165,8 +165,6 @@ export const CHORDS_WITHOUT_CANONICAL_SCALE: Readonly<Record<string, string>> = 
     'minor-13': 'A colour of the minor 7th family; Dorian already covers it.',
 };
 
-const UNCLAIMED = new Set(Object.keys(CHORDS_WITHOUT_CANONICAL_SCALE));
-
 /** Curated chord categories for this scale. */
 export function getCuratedChordsForScale(scaleGroup: string, scaleName: string): ScaleCuratedChords {
     return CURATED_CHORDS_BY_SCALE[scaleGroup]?.[scaleName] ?? {};
@@ -176,8 +174,4 @@ export function getCuratedChordsForScale(scaleGroup: string, scaleName: string):
 export function getCanonicalChordsForScale(scaleGroup: string, scaleName: string): readonly string[] {
     const curated = getCuratedChordsForScale(scaleGroup, scaleName);
     return [...(curated.primary ?? []), ...(curated.characteristic ?? [])];
-}
-
-export function isChordDeclaredWithoutCanonicalScale(chordId: string): boolean {
-    return UNCLAIMED.has(chordId);
 }

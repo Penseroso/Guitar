@@ -31,19 +31,17 @@ export function exploreRelation(query: RelationQuery): RelationResult {
         if (context.soprano !== undefined && context.soprano !== '') note(context.soprano);
         // Applied numerals name a tonicized degree, not the target's complete chord suffix.
         const targetRoman = romanLabel({ ...target, chordId: minor ? 'minor' : 'major' }, query.frame);
-        const step = (ref: ChordRef, role: string, guides: string[], roman?: string): RelationStep => ({ chord: resolveChord(ref), role, guides, roman: roman ?? romanLabel(ref, query.frame) });
-        const end = () => step(target, 'Target', ['1', third]);
+        const step = (ref: ChordRef, role: string, roman?: string): RelationStep => ({ chord: resolveChord(ref), role, roman: roman ?? romanLabel(ref, query.frame) });
+        const end = () => step(target, 'Target');
         const derive = (steps: RelationStep[], index: number, mode?: 'nearest') => ({ fromStep: index, toStep: index + 1, ...connectChords(steps[index].chord, steps[index + 1].chord, mode) });
         const example = (id: string, label: string, steps: RelationStep[], kind: RelationExample['kind'] = 'motion', supplied?: RelationExample['transitions'] | 'nearest') => {
             const transitions = Array.isArray(supplied) ? supplied : kind === 'motion' ? steps.slice(1).map((_, i) => derive(steps, i, supplied)) : undefined;
-            // A motion step's guides are exactly the degrees on its guide lines.
-            if (transitions) steps.forEach((s, i) => { s.guides = [...new Set(transitions.flatMap(t => t.voices.filter(v => v.guide).flatMap(v => t.fromStep === i ? [v.fromDegree] : t.toStep === i ? [v.toDegree] : [])))]; });
             result.examples.push({ id, label, kind, steps, provenance: ['passing', 'cadence'].includes(query.kind) && query.context?.before ? 'observation' : 'illustration', transitions,
                 facts: steps.slice(1).map((s, i) => compareChords(steps[i].chord, s.chord)) });
         };
         const dominant = relativeChord(target.root, 5, 7, 'dominant-7');
         const domRoman = tonicHarmony ? 'V7' : appliedTarget ? `V7/${targetRoman}` : romanLabel(dominant, query.frame);
-        const dom = () => step(dominant, tonicHarmony ? 'Dominant' : appliedTarget ? 'Possible applied dominant' : 'Dominant approach', ['3', 'b7'], domRoman);
+        const dom = () => step(dominant, tonicHarmony ? 'Dominant' : appliedTarget ? 'Possible applied dominant' : 'Dominant approach', domRoman);
         const localScale = createScaleRef('Diatonic Modes', minor ? 'Aeolian' : 'Ionian', target.rootPitchClass);
         // A tonic reference is not a claim that this collection fits every chord in the example.
         result.scaleLinks.push({ label: `${target.root} ${minor ? 'Aeolian' : 'Ionian'} · tonic reference`, ref: localScale });
@@ -55,7 +53,7 @@ export function exploreRelation(query: RelationQuery): RelationResult {
             case 'fifths': {
                 const from = relativeChord(target.root, 5, 7, minor ? 'minor' : 'major');
                 // Triads: plain voice leading, not guide tones.
-                example('fifths', 'Root motion', [step(from, 'Fifth above target', []), end()], 'motion', 'nearest');
+                example('fifths', 'Root motion', [step(from, 'Fifth above target'), end()], 'motion', 'nearest');
                 result.status = 'possible';
                 result.observations = ['Down a fifth · up a fourth', 'Function · context needed'];
                 break;
@@ -65,7 +63,7 @@ export function exploreRelation(query: RelationQuery): RelationResult {
                 if (query.frame.lens === 'classical') return unsupported('Tritone substitution is shown under the jazz/pop lens; augmented-sixth reinterpretation is outside this rule.');
                 const substitute = relativeChord(target.root, 2, 1, 'dominant-7');
                 example('original', 'Original dominant', [dom(), end()]);
-                example('substitute', 'Tritone substitute', [step(substitute, 'Substitute dominant', ['b7', '3'], tonicHarmony || appliedTarget ? `subV7/${targetRoman}` : romanLabel(substitute, query.frame)), end()]);
+                example('substitute', 'Tritone substitute', [step(substitute, 'Substitute dominant', tonicHarmony || appliedTarget ? `subV7/${targetRoman}` : romanLabel(substitute, query.frame)), end()]);
                 const a = resolveChord(dominant), b = resolveChord(substitute);
                 const thirds = a.tones.find(t => t.degree === '3')!, seventh = a.tones.find(t => t.degree === 'b7')!;
                 result.status = 'possible';
@@ -76,10 +74,10 @@ export function exploreRelation(query: RelationQuery): RelationResult {
             case 'predominant': {
                 const ii = relativeChord(target.root, 2, 2, minor ? 'half-diminished-7' : 'minor-7');
                 const applied = tonicHarmony ? '' : `/${targetRoman}`;
-                example('ii-v', 'ii–V preparation', [step(ii, 'Predominant', ['b7', 'b3'], tonicHarmony || appliedTarget ? `${minor ? 'iiø7' : 'ii7'}${applied}` : romanLabel(ii, query.frame)), dom(), end()]);
+                example('ii-v', 'ii–V preparation', [step(ii, 'Predominant', tonicHarmony || appliedTarget ? `${minor ? 'iiø7' : 'ii7'}${applied}` : romanLabel(ii, query.frame)), dom(), end()]);
                 if (query.kind === 'predominant') {
                     const iv = relativeChord(target.root, 4, 5, minor ? 'minor-7' : 'major-7');
-                    example('iv-v', 'IV–V preparation', [step(iv, 'Predominant in this example', ['1', minor ? 'b3' : '3']), dom(), end()]);
+                    example('iv-v', 'IV–V preparation', [step(iv, 'Predominant in this example'), dom(), end()]);
                 }
                 result.observations = [minor ? 'Minor · iiø7 → V7' : 'Major · ii7 → V7', 'Predominant · role in this context'];
                 break;
@@ -90,7 +88,7 @@ export function exploreRelation(query: RelationQuery): RelationResult {
                 const main = { root: target.root, chordId: 'major-7' };
                 for (const [degree, interval, id] of [[3, 4, 'iii'], [6, 9, 'vi']] as const) {
                     const alternate = relativeChord(target.root, degree, interval, 'minor-7');
-                    example(id, `Imaj7 / ${id}7`, [step(main, 'Tonic family', ['3', '7']), step(alternate, 'Tonic-family alternative', ['b3', 'b7'])], 'comparison');
+                    example(id, `Imaj7 / ${id}7`, [step(main, 'Tonic family'), step(alternate, 'Tonic-family alternative')], 'comparison');
                 }
                 result.status = 'possible';
                 result.observations = ['Jazz/pop · tonic family', 'Shared tones ≠ interchangeable'];
@@ -101,9 +99,9 @@ export function exploreRelation(query: RelationQuery): RelationResult {
                 if (query.frame.lens === 'classical') return unsupported('These seventh-chord family comparisons use the jazz/pop lens, not a general classical substitute rule.');
                 if (!tonicHarmony || minor) return unsupported('Target · major tonic-family quality at the key center required for parallel-minor borrowing');
                 const iv = relativeChord(target.root, 4, 5, 'minor-7');
-                example('mixture', 'IVmaj7 / iv7', [step(relativeChord(target.root, 4, 5, 'major-7'), 'Major-key collection', ['3', '7']), step(iv, 'Parallel-minor colour', ['b3', 'b7'])], 'comparison');
-                example('minor-ii', 'iv7 / iiø7', [step(iv, 'Minor subdominant family', ['b3', 'b7']), step(relativeChord(target.root, 2, 2, 'half-diminished-7'), 'Related predominant', ['b3', 'b7'])], 'comparison');
-                example('flat-six', 'iv7 / ♭VImaj7', [step(iv, 'Minor subdominant family', ['b3', 'b7']), step(relativeChord(target.root, 6, 8, 'major-7'), 'Related borrowed colour', ['3', '7'])], 'comparison');
+                example('mixture', 'IVmaj7 / iv7', [step(relativeChord(target.root, 4, 5, 'major-7'), 'Major-key collection'), step(iv, 'Parallel-minor colour')], 'comparison');
+                example('minor-ii', 'iv7 / iiø7', [step(iv, 'Minor subdominant family'), step(relativeChord(target.root, 2, 2, 'half-diminished-7'), 'Related predominant')], 'comparison');
+                example('flat-six', 'iv7 / ♭VImaj7', [step(iv, 'Minor subdominant family'), step(relativeChord(target.root, 6, 8, 'major-7'), 'Related borrowed colour')], 'comparison');
                 result.status = 'possible';
                 result.observations = ['Parallel minor · borrowed colour', 'Family comparison · not a sequence'];
                 result.scaleLinks = [{ label: `${target.root} Aeolian · borrowed collection`, ref: createScaleRef('Diatonic Modes', 'Aeolian', target.rootPitchClass) }];
@@ -114,12 +112,12 @@ export function exploreRelation(query: RelationQuery): RelationResult {
                 if (!tonicHarmony || minor || query.frame.lens !== 'jazz-pop') return unsupported('Backdoor · major tonic-family target at the key center · jazz/pop only');
                 const flatSeven = relativeChord(target.root, 7, 10, 'dominant-7');
                 const iv = relativeChord(target.root, 4, 5, 'minor-7');
-                const backdoor = () => step(flatSeven, 'Backdoor approach', ['5', 'b7']);
-                const arrival = () => step(target, 'Target', ['3', '5']);
+                const backdoor = () => step(flatSeven, 'Backdoor approach');
+                const arrival = () => step(target, 'Target');
                 // Curated lines: ♭VII7–I is neither fifth motion nor a tritone substitute.
                 const resolution = { fromStep: 1, toStep: 2, basis: 'supplied' as const, voices: completeCommonTones(resolveChord(flatSeven), target, [{ fromDegree: '5', toDegree: '3', kind: 'resolution' as const }, { fromDegree: 'b7', toDegree: '5', kind: 'resolution' as const }]) };
                 example('backdoor', '♭VII7–I', [backdoor(), arrival()], 'motion', [{ ...resolution, fromStep: 0, toStep: 1 }]);
-                const minorBackdoor = [step(iv, 'Minor subdominant', []), backdoor(), arrival()];
+                const minorBackdoor = [step(iv, 'Minor subdominant'), backdoor(), arrival()];
                 example('minor-backdoor', 'iv7–♭VII7–I', minorBackdoor, 'motion', [derive(minorBackdoor, 0), resolution]);
                 result.status = 'possible';
                 result.observations = ['Jazz/pop · minor-subdominant connection', '♭VII7 fifth → third · ♭7 → fifth', 'Melody + phrase · fit remains contextual'];
@@ -128,14 +126,14 @@ export function exploreRelation(query: RelationQuery): RelationResult {
             }
             case 'leading': {
                 const leading = relativeChord(target.root, 7, 11, 'diminished-7');
-                example('leading', 'Leading-tone diminished', [step(leading, appliedTarget ? 'Applied leading tone' : 'Leading-tone approach', ['1', 'b5'], tonicHarmony ? 'vii°7' : appliedTarget ? `vii°7/${targetRoman}` : romanLabel(leading, query.frame)), end()]);
-                example('rootless', 'Compare V7♭9', [step({ ...dominant, chordId: 'dominant-7-flat-9' }, 'Dominant with ♭9', ['3', 'b7'], `${domRoman}(♭9)`), end()]);
+                example('leading', 'Leading-tone diminished', [step(leading, appliedTarget ? 'Applied leading tone' : 'Leading-tone approach', tonicHarmony ? 'vii°7' : appliedTarget ? `vii°7/${targetRoman}` : romanLabel(leading, query.frame)), end()]);
+                example('rootless', 'Compare V7♭9', [step({ ...dominant, chordId: 'dominant-7-flat-9' }, 'Dominant with ♭9', `${domRoman}(♭9)`), end()]);
                 result.observations = ['Same pitches · V7♭9 without root', 'Distinct chord identities', minor ? 'Minor · raised leading tone' : 'Major · chromatic ♭6'];
                 result.scaleLinks.push({ label: `${target.root} Harmonic Minor · leading-tone collection`, ref: createScaleRef('Harmonic Minor Modes', 'Harmonic Minor', target.rootPitchClass) });
                 break;
             }
             case 'common-tone': {
-                const embellishment = step({ root: target.root, chordId: 'diminished-7' }, 'Possible embellishment', ['1', 'b3', 'b5', 'bb7'], 'CT°7');
+                const embellishment = step({ root: target.root, chordId: 'diminished-7' }, 'Possible embellishment', 'CT°7');
                 embellishment.toneLabels = {};
                 // Analytical neighbor spelling is separate from the canonical diminished chord formula.
                 for (const [canonical, degree, number] of [['1', '1', 1], ['b3', minor ? 'b3' : '#2', minor ? 3 : 2], ['b5', '#4', 4], ['bb7', '6', 6]] as const) {
@@ -144,7 +142,7 @@ export function exploreRelation(query: RelationQuery): RelationResult {
                     if (!spelled) throw new Error('Common-tone analysis needs unsupported spelling');
                     embellishment.toneLabels[canonical] = { name: spelled.name, degree };
                 }
-                example('common-tone', 'Retained root · neighboring voices', [embellishment, step(target, 'Target', ['1', third, '5'])], 'motion', [{ fromStep: 0, toStep: 1, voices: [
+                example('common-tone', 'Retained root · neighboring voices', [embellishment, step(target, 'Target')], 'motion', [{ fromStep: 0, toStep: 1, voices: [
                     { fromDegree: '1', toDegree: '1', kind: 'held' },
                     { fromDegree: 'b3', toDegree: third, kind: minor ? 'held' : 'neighbor' },
                     { fromDegree: 'b5', toDegree: '5', kind: 'neighbor' },
@@ -164,7 +162,7 @@ export function exploreRelation(query: RelationQuery): RelationResult {
                 const chromaticBass = approach === arrival && [1, 11].includes(arrival);
                 const bassDegree = (chord: typeof target) => chord.tones.find(tone => tone.pitchClass === chord.bassPitchClass)!.degree;
                 const bassPath = [before, middle, target];
-                example('passing', 'Three-chord observation', [step(before, 'Before', [bassDegree(before)]), step(middle, 'Diminished link', [bassDegree(middle)]), step(target, 'Target', [bassDegree(target)])], 'motion', [0, 1].map(index => ({
+                example('passing', 'Three-chord observation', [step(before, 'Before'), step(middle, 'Diminished link'), step(target, 'Target')], 'motion', [0, 1].map(index => ({
                     fromStep: index, toStep: index + 1, voices: [{ fromDegree: bassDegree(bassPath[index]), toDegree: bassDegree(bassPath[index + 1]), kind: bassPath[index].bassPitchClass === bassPath[index + 1].bassPitchClass ? 'held' : 'approach' }],
                 })));
                 result.checks.push({ id: 'passing-bass-path', label: 'Chromatic bass path', state: !context.bassConfirmed ? 'unknown' : chromaticBass ? 'pass' : 'fail' });
@@ -190,7 +188,7 @@ export function exploreRelation(query: RelationQuery): RelationResult {
                 const before = context.before ? resolveChord(context.before) : resolveChord(dominant);
                 const observation = observeEnding(query.frame, before, target, context);
                 const transitions = endingConnections(before, target, observation.interpretations?.[0].id ?? 'unclassified');
-                example('cadence', context.before ? context.phraseEnding === true ? 'Observed ending' : 'Observed motion' : 'Illustration · not an observed cadence', [step(before, 'Before', transitions[0].voices.map(voice => voice.fromDegree)), step(target, 'Target', transitions[0].voices.map(voice => voice.toDegree))], 'motion', transitions);
+                example('cadence', context.before ? context.phraseEnding === true ? 'Observed ending' : 'Observed motion' : 'Illustration · not an observed cadence', [step(before, 'Before'), step(target, 'Target')], 'motion', transitions);
                 Object.assign(result, observation);
                 break;
             }

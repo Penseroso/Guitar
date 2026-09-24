@@ -38,14 +38,14 @@ export function relativeChord(anchor: string, degree: number, semitones: number,
     return { root: spelled.name, chordId };
 }
 /** Lens-independent major-reference notation, also in minor (e.g. ♭III, ♭VI, ♭VII). */
-export function romanRef(chord: ChordRef, frame: TonalFrame): RomanRef {
+function romanRef(chord: ChordRef, frame: TonalFrame): RomanRef {
     const tonic = note(frame.tonic), root = note(chord.root);
     const degree = (root.letterIndex - tonic.letterIndex + 7) % 7 + 1;
     let alteration = pc(root.pitchClass - tonic.pitchClass - MAJOR[degree - 1]);
     if (alteration > 6) alteration -= 12;
     return { degree, alteration, chordId: chord.chordId };
 }
-export function renderRoman(ref: RomanRef): string {
+function renderRoman(ref: RomanRef): string {
     if (ref.appliedTo) return `V7/${renderRoman(ref.appliedTo)}`;
     const entry = engineEntry(ref.chordId), degrees = entry.formula.degrees;
     const minor = degrees.includes('b3');

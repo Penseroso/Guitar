@@ -4,7 +4,7 @@ import { exampleTransitions, toneLabel } from './connections';
 import { resolveChord } from './roman';
 import type { RelationExample, RelationStep } from './types';
 
-const step = (root: string, chordId: string): RelationStep => ({ chord: resolveChord({ root, chordId }), roman: '', role: '', guides: [] });
+const step = (root: string, chordId: string): RelationStep => ({ chord: resolveChord({ root, chordId }), roman: '', role: '' });
 const commonTone = (minor = false): RelationExample => ({
     id: 'neighbors', label: 'Neighbor motion', kind: 'motion', provenance: 'illustration', facts: [],
     steps: [
