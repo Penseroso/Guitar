@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Research snapshots contain archived/generated code and are not shipped.
+    ".research/**",
     // Downloaded browser binaries are local validation tools, not project source.
     ".tmp-engine-browsers/**",
   ]),

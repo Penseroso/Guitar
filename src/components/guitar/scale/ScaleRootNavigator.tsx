@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useId, useState } from 'react';
 import { Target, Compass, Disc } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getKeyName } from '@/domain/shared/keys';
+import { getCircleOfFifthsOrder, getKeyName } from '@/domain/shared/keys';
+import { SCALES } from '@/domain/scale/scales';
 import { KeyButton } from '../../ui/design-system/KeyButton';
 import { CircleOfFifths } from '../shared/CircleOfFifths';
 import styles from './scale-workspace.module.css';
@@ -20,6 +21,9 @@ interface ScaleRootNavigatorProps {
 
 export function ScaleRootNavigator({ selectedKey, onKeyChange, selectedScaleGroup, selectedScaleName }: ScaleRootNavigatorProps) {
     const [rootViewMode, setRootViewMode] = useState<'orbit' | 'matrix'>('orbit');
+    const optionPrefix = useId();
+    const rootOnly = SCALES[selectedScaleGroup]?.[selectedScaleName]?.length !== 7;
+    const fifths = getCircleOfFifthsOrder();
 
     return (
         <div className={styles.panel}>
@@ -60,12 +64,24 @@ export function ScaleRootNavigator({ selectedKey, onKeyChange, selectedScaleGrou
                             exit={{ opacity: 0, scale: 0.95, filter: 'blur(4px)' }}
                             transition={{ duration: 0.3, ease: 'easeOut' }}
                             className="w-full max-w-[260px] aspect-square flex justify-center items-center"
+                            role={rootOnly ? 'listbox' : undefined}
+                            tabIndex={rootOnly ? 0 : undefined}
+                            aria-label={rootOnly ? 'Scale root in fifths order' : undefined}
+                            aria-activedescendant={rootOnly ? `${optionPrefix}-${selectedKey}` : undefined}
+                            onKeyDown={rootOnly ? event => {
+                                if (!['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+                                event.preventDefault();
+                                const step = event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? -1 : 1;
+                                onKeyChange(event.key === 'Home' ? fifths[0] : event.key === 'End' ? fifths[11] : fifths[(fifths.indexOf(selectedKey) + step + 12) % 12]);
+                            } : undefined}
                         >
                             <CircleOfFifths
                                 selectedKey={selectedKey}
                                 onKeySelect={onKeyChange}
                                 selectedScaleGroup={selectedScaleGroup}
                                 selectedScaleName={selectedScaleName}
+                                rootOnly={rootOnly}
+                                rootOptionIdPrefix={optionPrefix}
                             />
                         </motion.div>
                     ) : (

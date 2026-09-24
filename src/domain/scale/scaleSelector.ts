@@ -81,6 +81,11 @@ export function getScaleDisplayName(name: string) {
     return SCALE_NAME_LABELS[name] || name;
 }
 
+/** Scale exploration names; shared consumers retain their existing display labels. */
+export function getScalePresentationName(name: string) {
+    return name === 'Diminished' ? 'Whole–Half Diminished' : getScaleDisplayName(name);
+}
+
 export const getScaleOrbitLabel = getScaleDisplayName;
 
 export function getScaleFormula(group: string, name: string) {

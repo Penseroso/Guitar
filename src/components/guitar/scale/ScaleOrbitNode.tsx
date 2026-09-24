@@ -20,6 +20,9 @@ export const ScaleOrbitNode: React.FC<ScaleOrbitNodeProps> = ({
 }) => {
     return (
         <motion.button
+            type="button"
+            aria-label={label}
+            aria-pressed={isActive}
             initial={false}
             animate={{ x, y, scale: isActive ? 1.1 : 1 }}
             whileHover={{ scale: isActive ? 1.1 : 1.15, transition: { duration: 0.2 } }}

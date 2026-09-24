@@ -15,8 +15,7 @@ import { CSS } from '@dnd-kit/utilities';
 
 import { ProgressionInspector } from './ProgressionInspector';
 import type { ProgressionPlaybackData } from '@/domain/progression/getProgressionPlaybackData';
-import { degreeToChordName, getChordFromDegree } from '@/domain/progression/degrees';
-import { getKeyName } from '@/domain/shared/keys';
+import { degreeToChordName } from '@/domain/progression/degrees';
 import { normalizeAccidentalsToAscii } from '@/domain/shared/spelling';
 import type {
     ChordNode,

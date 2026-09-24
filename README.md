@@ -2,6 +2,10 @@
 
 Guitar is a Next.js application for chord, scale, and progression exploration. Music theory and engine behavior live in React-free TypeScript under `src/domain`; components render those results and manage interaction.
 
+Scale exploration uses an independent tonic/scale selection, chord-card tone analysis,
+source-backed scale identities, and parallel/sibling/parent comparisons. See the
+[Scale architecture and interpretation contracts](docs/architecture/scale-exploration.md).
+
 ## Current chord architecture
 
 The live chord path is `guitar-engine/2`:

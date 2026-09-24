@@ -43,7 +43,10 @@ export function ReverseChordPanel({ states, onStatesChange, onStartFromVoicing }
     const [focusedReadingKey, setFocusedReadingKey] = useState<string | null>(null);
     const shape = useMemo(() => deriveEnteredShape(states), [states]);
     const inference = useMemo(() => inferChordReadings(shape), [shape]);
-    const allReadings = inference.status === 'named' ? [...inference.best, ...inference.other, ...inference.looser] : [];
+    const allReadings = useMemo(
+        () => inference.status === 'named' ? [...inference.best, ...inference.other, ...inference.looser] : [],
+        [inference],
+    );
     const titleByKey = useMemo(() => buildTitleIndex(allReadings), [allReadings]);
     const shapeMidi = shape.notes.map((note) => note.midi);
     const focusedReading = allReadings.find((reading) => reading.key === focusedReadingKey) ?? null;
@@ -77,7 +80,7 @@ export function ReverseChordPanel({ states, onStatesChange, onStartFromVoicing }
             <h2 className="text-lg font-semibold">Possible names</h2>
             {inference.status === 'empty' && <p role="status">Tap a fret or open string to start.</p>}
             {inference.status === 'too-few-notes' && <p role="status">Not enough distinct notes yet — try adding another.</p>}
-            {inference.status === 'no-clear-name' && <p role="status">These notes don't resolve to a clear chord name. Try removing a note.</p>}
+            {inference.status === 'no-clear-name' && <p role="status">These notes do not resolve to a clear chord name. Try removing a note.</p>}
             {inference.status === 'dyad' && (() => {
                 const dyad = describeDyad(inference.dyad);
                 return <div role="status">

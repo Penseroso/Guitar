@@ -61,6 +61,7 @@ export const SCALE_REGISTRY: Record<string, ScaleRegistryGroup> = {
     },
     'Symmetric': {
         'Diminished': { parent: 'Diminished', rootOffsetIndex: 0 },
+        'Half-Whole Diminished': { parent: 'Diminished', rootOffsetIndex: 1 },
         'Whole Tone': { parent: 'Whole Tone', rootOffsetIndex: 0 }
     },
     'Pentatonic': {
@@ -153,6 +154,7 @@ export const SCALE_DISPLAY_FORMULAS: Record<string, ScaleFormulaGroup> = {
     },
     'Symmetric': {
         'Diminished': toIntervalLabelMap(['1', '2', 'b3', '4', 'b5', 'b6', '6', '7']),
+        'Half-Whole Diminished': toIntervalLabelMap(['1', 'b9', '#9', '3', '#11', '5', '13', 'b7']),
         'Whole Tone': toIntervalLabelMap(['1', '2', '3', '#4', '#5', 'b7'])
     },
     'Pentatonic': {
@@ -168,6 +170,10 @@ export function getScaleIntervalLabels(groupName: string, modeName: string): Sca
 
 export const SCALE_ENGINE_FORMULAS: Record<string, ScaleFormulaGroup> = {
     ...SCALE_DISPLAY_FORMULAS,
+    'Symmetric': {
+        ...SCALE_DISPLAY_FORMULAS['Symmetric'],
+        'Half-Whole Diminished': toIntervalLabelMap(['1', 'b2', 'b3', '3', '#4', '5', '6', 'b7'])
+    },
     'Jazz Minor Modes': {
         ...SCALE_DISPLAY_FORMULAS['Jazz Minor Modes'],
         'Altered scale': toIntervalLabelMap(['1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7'])
@@ -180,7 +186,7 @@ export function getScaleEngineIntervalLabels(groupName: string, modeName: string
 }
 
 export function isDoubleStopSupported(groupName: string, modeName: string): boolean {
-    if (groupName === 'Symmetric' && (modeName === 'Diminished' || modeName === 'Whole Tone')) {
+    if (!SCALE_REGISTRY[groupName]?.[modeName] || groupName === 'Symmetric') {
         return false;
     }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { getScaleDisplayName, getScaleFamilyModes, getScaleOrbitLabel } from '@/domain/scale/scaleSelector';
+import { getScalePresentationName, getScaleFamilyModes } from '@/domain/scale/scaleSelector';
 import { ScaleOrbitNode } from './ScaleOrbitNode';
 
 interface ScaleOrbitProps {
@@ -16,7 +16,7 @@ export const ScaleOrbit: React.FC<ScaleOrbitProps> = ({
 }) => {
     const modes = getScaleFamilyModes(selectedScaleGroup);
     const radius = modes.length <= 2 ? 92 : 108;
-    const displayName = getScaleDisplayName(selectedScaleName);
+    const displayName = getScalePresentationName(selectedScaleName);
 
     return (
         <div className="relative w-full h-[360px] rounded-[2rem] border border-white/5 bg-[#050505]/70 overflow-hidden shadow-[inset_0_0_80px_rgba(255,255,255,0.03)]">
@@ -28,7 +28,7 @@ export const ScaleOrbit: React.FC<ScaleOrbitProps> = ({
                         key={selectedScaleGroup + selectedScaleName}
                         initial={{ scale: 0.5, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
-                        className="text-2xl font-black text-white tracking-tight drop-shadow-[0_0_20px_rgba(255,255,255,0.18)]"
+                        className="max-w-[150px] text-lg text-center font-black text-white tracking-tight drop-shadow-[0_0_20px_rgba(255,255,255,0.18)]"
                     >
                         {displayName}
                     </motion.span>
@@ -42,7 +42,7 @@ export const ScaleOrbit: React.FC<ScaleOrbitProps> = ({
                     return (
                         <ScaleOrbitNode
                             key={`${mode.group}-${mode.name}`}
-                            label={getScaleOrbitLabel(mode.name)}
+                            label={getScalePresentationName(mode.name)}
                             indexLabel={`${index + 1}`}
                             isActive={mode.group === selectedScaleGroup && mode.name === selectedScaleName}
                             x={x}

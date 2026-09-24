@@ -55,7 +55,19 @@ describe('getScaleDerivedData', () => {
             secondNote: true,
         });
 
-        expect(result.modifierNotes).toEqual([6]);
+        expect(result.modifierNotes).toEqual([3]);
+    });
+
+    it('transposes major and minor blue notes without altering the base collection', () => {
+        for (let tonic = 0; tonic < 12; tonic++) {
+            for (const [name, offset] of [['Major Pentatonic', 3], ['Minor Pentatonic', 6]] as const) {
+                const base = getScaleDerivedData('Pentatonic', name, tonic, NO_TOGGLES);
+                const blue = getScaleDerivedData('Pentatonic', name, tonic, { ...NO_TOGGLES, blueNote: true });
+                expect(blue.modifierNotes).toEqual([(tonic + offset) % 12]);
+                expect(blue.scaleNotes).toEqual(base.scaleNotes);
+                expect(blue.scaleIntervalLabels).toEqual(base.scaleIntervalLabels);
+            }
+        }
     });
 
     it('exposes double-stop pairs only when the scale supports them and the toggle is active', () => {

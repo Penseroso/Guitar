@@ -1,32 +1,37 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useReducer, useState } from 'react';
 import type { HarmonicInterval } from '@/domain/scale/types';
+import { createScaleRef, resolveScaleRef, type ScaleRef } from '@/domain/scale/scale-ref';
+import { initialScaleModeState, reduceScaleMode } from './scale-mode-state';
 
 export const useScaleMode = () => {
-    const [scaleGroup, setScaleGroup] = useState('Diatonic Modes');
-    const [scaleName, setScaleName] = useState('Ionian');
-    const [showChordTones, setShowChordTones] = useState(false); // In scale mode, shows Triad of root
-    const [blueNote, setBlueNote] = useState(false);
-    const [sixthNote, setSixthNote] = useState(false);
-    const [secondNote, setSecondNote] = useState(false);
+    const [state, dispatch] = useReducer(reduceScaleMode, initialScaleModeState);
+    const { scaleRef, selectedChordId, blueNote, secondNote, sixthNote } = state;
+    const { group: scaleGroup, name: scaleName } = resolveScaleRef(scaleRef)!;
+    const [showIntervals, setShowIntervals] = useState(false);
+    const [showChordTones, setShowChordTones] = useState(false);
     const [isDoubleStopActive, setIsDoubleStopActive] = useState(false);
     const [doubleStopInterval, setDoubleStopInterval] = useState<HarmonicInterval>(3);
     const [doubleStopStrings, setDoubleStopStrings] = useState<[number, number]>([1, 2]);
 
+    const commitScaleRef = useCallback((next: ScaleRef) => dispatch({ type: 'select-scale', scaleRef: next }), []);
     const commitScaleSelection = useCallback((group: string, name: string) => {
-        setScaleGroup(group);
-        setScaleName(name);
-        setBlueNote(false);
-        setSixthNote(false);
-        setSecondNote(false);
-    }, []);
+        commitScaleRef(createScaleRef(group, name, scaleRef.tonic));
+    }, [commitScaleRef, scaleRef.tonic]);
+    const setTonic = useCallback((tonic: number) => {
+        commitScaleRef({ ...scaleRef, tonic: ((tonic % 12) + 12) % 12 });
+    }, [commitScaleRef, scaleRef]);
+    const selectAnalysisChord = useCallback((chordId: string | null) => dispatch({ type: 'select-chord', chordId }), []);
+    const onToggleIntervals = useCallback(() => setShowIntervals(previous => !previous), []);
 
     const onToggleChordTones = useCallback(() => setShowChordTones((prev) => !prev), []);
-    const onToggleBlueNote = useCallback(() => setBlueNote((prev) => !prev), []);
-    const onToggleSixthNote = useCallback(() => setSixthNote((prev) => !prev), []);
-    const onToggleSecondNote = useCallback(() => setSecondNote((prev) => !prev), []);
+    const onToggleBlueNote = useCallback(() => dispatch({ type: 'toggle-modifier', modifier: 'blueNote' }), []);
+    const onToggleSixthNote = useCallback(() => dispatch({ type: 'toggle-modifier', modifier: 'sixthNote' }), []);
+    const onToggleSecondNote = useCallback(() => dispatch({ type: 'toggle-modifier', modifier: 'secondNote' }), []);
     const onToggleDoubleStop = useCallback(() => setIsDoubleStopActive((prev) => !prev), []);
 
     return {
+        scaleRef, selectedChordId, selectAnalysisChord, commitScaleRef, setTonic,
+        showIntervals, onToggleIntervals,
         scaleGroup,
         scaleName,
         showChordTones,

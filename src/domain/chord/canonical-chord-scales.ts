@@ -115,6 +115,10 @@ export const CURATED_CHORDS_BY_SCALE: ScaleCuratedChordsTable = {
         'Diminished': {
             primary: ['diminished-7'],
         },
+        'Half-Whole Diminished': {
+            primary: ['dominant-7-flat-9', 'hendrix-7-sharp-9'],
+            characteristic: ['dominant-7'],
+        },
         'Whole Tone': {
             primary: ['dominant-7-sharp-5', 'augmented'],
         },

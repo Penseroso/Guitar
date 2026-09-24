@@ -10,6 +10,11 @@ export interface Fingering {
 }
 
 export interface FretboardProps {
+    /** Optional semantic annotations supplied by Scale analysis; no pitch-class role guessing. */
+    noteAnnotations?: Partial<Record<number, FretboardNoteAnnotation>>;
+    focusedPitchClass?: number | null;
+    fretRange?: [number, number];
+    visibleStrings?: number[];
     noteLabelsByPosition?: Partial<Record<string, string>>;
     tuning?: number[];
     activeNotes: number[];
@@ -25,4 +30,11 @@ export interface FretboardProps {
      *  direct-manipulation input surfaces (e.g. reverse chord-shape entry). Purely additive —
      *  omitting it leaves the fretboard exactly as display-only as before. */
     onCellClick?: (string: number, fret: number) => void;
+}
+
+export interface FretboardNoteAnnotation {
+    noteName: string;
+    intervalLabel: string;
+    role: 'root' | 'third' | 'fifth' | 'seventh' | 'chord-tone' | 'scale';
+    characteristic?: boolean;
 }

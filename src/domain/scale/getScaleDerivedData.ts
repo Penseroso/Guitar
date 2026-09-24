@@ -82,7 +82,7 @@ export function getScaleDerivedData(
 
     const modifierNotes: number[] = [];
     if (toggles.blueNote && isPentatonic) {
-        modifierNotes.push((selectedKey + 6) % 12);
+        modifierNotes.push((selectedKey + (scaleName === 'Major Pentatonic' ? 3 : 6)) % 12);
     }
     if (toggles.sixthNote && scaleName === 'Minor Pentatonic') {
         modifierNotes.push((selectedKey + 9) % 12);

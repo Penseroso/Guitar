@@ -12,6 +12,13 @@ import { ScaleHarmonicBridgePanel } from '../cross-domain/ScaleHarmonicBridgePan
 import { ScaleRootNavigator } from './ScaleRootNavigator';
 import { ScaleSelectorPanel } from './ScaleSelectorPanel';
 import styles from './scale-workspace.module.css';
+import analysisStyles from './scale-analysis.module.css';
+import { ScaleRelationsPanel } from './ScaleRelationsPanel';
+import type { ScaleRef } from '@/domain/scale/scale-ref';
+import type { ScaleToneAnalysis } from '@/domain/chord/scale-tone-analysis';
+import { getKeyName } from '@/domain/shared/keys';
+import { parseDegreeLabel, parseNoteName, spellDegree } from '@/domain/shared/spelling';
+import type { FretboardProps } from '@/domain/shared/types';
 
 // Top-level Scale workspace — a sibling of ChordModeWorkspace, not a child of the old
 // Controls+giant-visualization-shell architecture. The fretboard is the primary main-column
@@ -19,6 +26,11 @@ import styles from './scale-workspace.module.css';
 // main on narrower layouts). Reuses CircleOfFifths/ScaleSelectorPanel/ScaleOrbit and their
 // underlying domain logic unchanged — this is a layout refactor only.
 interface ScaleModeWorkspaceProps {
+    scaleRef: ScaleRef;
+    analysis: ScaleToneAnalysis | null;
+    selectedChordId: string | null;
+    onSelectChord: (id: string | null) => void;
+    onNavigateScale: (ref: ScaleRef) => void;
     selectedKey: number;
     onKeyChange: (key: number) => void;
     scaleGroup: string;
@@ -55,6 +67,11 @@ interface ScaleModeWorkspaceProps {
 }
 
 export function ScaleModeWorkspace({
+    scaleRef,
+    analysis,
+    selectedChordId,
+    onSelectChord,
+    onNavigateScale,
     selectedKey,
     onKeyChange,
     scaleGroup,
@@ -83,12 +100,28 @@ export function ScaleModeWorkspace({
     tuning,
     activeNotes,
     rootNote,
-    chordTones,
     modifierNotes,
     scaleIntervalLabels,
     fingering,
     doubleStops,
 }: ScaleModeWorkspaceProps) {
+    const [toneFocus, setToneFocus] = React.useState<{ scaleId: string; interval: number } | null>(null);
+    if (toneFocus && toneFocus.scaleId !== scaleRef.scaleId) setToneFocus(null);
+    const focusedInterval = toneFocus?.scaleId === scaleRef.scaleId ? toneFocus.interval : null;
+    const [fretRange, setFretRange] = React.useState<[number, number]>([0, 24]);
+    const [visibleStrings, setVisibleStrings] = React.useState([0, 1, 2, 3, 4, 5]);
+    const chordTones = analysis?.chord ? analysis.tones.filter(tone => tone.chordMembership === 'member').map(tone => tone.pitchClass) : [];
+    const noteAnnotations: NonNullable<FretboardProps['noteAnnotations']> = {};
+    const tonicNote = parseNoteName(getKeyName(rootNote));
+    for (const tone of analysis?.tones ?? []) {
+        const degree = analysis?.chord ? tone.chordDegree ?? tone.scaleDegree : scaleIntervalLabels[tone.interval] ?? tone.scaleDegree;
+        const parsed = parseDegreeLabel(degree);
+        const noteName = analysis?.chord ? tone.chordNoteName ?? tone.scaleNoteName : (tonicNote && parsed ? spellDegree(tonicNote, parsed.number, tone.pitchClass)?.name : null) ?? tone.scaleNoteName;
+        const member = tone.chordMembership === 'member';
+        const role = tone.interval === 0 ? 'root' : !member ? 'scale' : parsed?.number === 3 ? 'third' : parsed?.number === 5 ? 'fifth' : parsed?.number === 7 ? 'seventh' : 'chord-tone';
+        noteAnnotations[tone.pitchClass] = { noteName, intervalLabel: degree, role, characteristic: analysis?.identity.status === 'reviewed' && analysis.identity.markers.some(marker => marker.interval === tone.interval) };
+    }
+    const focusTone = (interval: number | null) => setToneFocus(interval === null ? null : { scaleId: scaleRef.scaleId, interval });
     return (
         <section className={styles.workspace} aria-label="Scale workspace">
             <div className={styles.layout}>
@@ -101,7 +134,9 @@ export function ScaleModeWorkspace({
 
                         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
                             <TogglePill label={showIntervals ? "Mode: Note" : "Mode: Interval"} isActive={showIntervals} onToggle={onToggleIntervals} hideDot={true} />
-                            <TogglePill label="Chord Tones" isActive={showChordTones} onToggle={onToggleChordTones} colorTheme="chord-tones" />
+                            <fieldset disabled={!analysis?.chord} title={!analysis?.chord ? 'Select a chord in Play this scale over first.' : undefined} className="min-w-0 disabled:opacity-40">
+                                <TogglePill label="Chord Tones" isActive={showChordTones && !!analysis?.chord} onToggle={onToggleChordTones} colorTheme="chord-tones" />
+                            </fieldset>
 
                             {isPentatonic && (
                                 <TogglePill label="Add Blue Note" isActive={blueNote} onToggle={onToggleBlueNote} />
@@ -164,6 +199,15 @@ export function ScaleModeWorkspace({
                         </div>
                     </div>
 
+                    <section className={analysisStyles.panel} aria-label="Fretboard practice range">
+                        <h2 className={analysisStyles.heading}>Practice range</h2>
+                        <div className={analysisStyles.practice}>
+                            <label className={analysisStyles.stack}>First fret<input type="number" className={analysisStyles.number} min={0} max={fretRange[1]} value={fretRange[0]} onChange={event => { const value = Number(event.target.value); if (Number.isInteger(value)) setFretRange([Math.max(0, Math.min(fretRange[1], value)), fretRange[1]]); }} /></label>
+                            <label className={analysisStyles.stack}>Last fret<input type="number" className={analysisStyles.number} min={fretRange[0]} max={24} value={fretRange[1]} onChange={event => { const value = Number(event.target.value); if (Number.isInteger(value)) setFretRange([fretRange[0], Math.min(24, Math.max(fretRange[0], value))]); }} /></label>
+                            <fieldset className={analysisStyles.stack}><legend>Strings · 1 is high E</legend><div className={analysisStyles.actions}>{[0, 1, 2, 3, 4, 5].map(string => <button type="button" key={string} className={analysisStyles.button} aria-label={`String ${string + 1}`} aria-pressed={visibleStrings.includes(string)} disabled={visibleStrings.length === 1 && visibleStrings[0] === string} onClick={() => setVisibleStrings(previous => previous.includes(string) ? previous.filter(item => item !== string) : [...previous, string].sort())}>{string + 1}</button>)}</div></fieldset>
+                            <button type="button" className={analysisStyles.button} onClick={() => { setFretRange([0, 24]); setVisibleStrings([0, 1, 2, 3, 4, 5]); focusTone(null); }}>Reset practice view</button>
+                        </div>
+                    </section>
                     <div className="border-y border-white/5 py-8 flex items-center justify-center relative overflow-hidden bg-white/[0.01] rounded-3xl">
                         <div ref={fretboardContainerRef} className="overflow-x-auto overflow-y-hidden custom-scrollbar relative w-full flex justify-center py-2">
                             <Fretboard
@@ -172,11 +216,15 @@ export function ScaleModeWorkspace({
                                 rootNote={rootNote}
                                 chordTones={chordTones}
                                 modifierNotes={modifierNotes}
-                                showChordTones={showChordTones}
+                                showChordTones={showChordTones && !!analysis?.chord}
                                 showIntervals={showIntervals}
                                 scaleIntervalLabels={scaleIntervalLabels}
                                 fingering={fingering}
                                 doubleStops={doubleStops}
+                                noteAnnotations={noteAnnotations}
+                                focusedPitchClass={focusedInterval === null ? null : (rootNote + focusedInterval) % 12}
+                                fretRange={fretRange}
+                                visibleStrings={visibleStrings}
                             />
                         </div>
                     </div>
@@ -185,7 +233,13 @@ export function ScaleModeWorkspace({
                         scaleGroup={scaleGroup}
                         scaleName={scaleName}
                         tonicPitchClass={rootNote}
+                        selectedChordId={selectedChordId}
+                        onSelectChord={onSelectChord}
+                        analysis={analysis}
+                        focusedInterval={focusedInterval}
+                        onFocusTone={focusTone}
                     />
+                    <ScaleRelationsPanel key={scaleRef.scaleId} scaleRef={scaleRef} onNavigateScale={onNavigateScale} />
                 </div>
 
                 <aside className={styles.rail} aria-label="Scale navigation">

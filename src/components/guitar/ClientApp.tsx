@@ -15,6 +15,7 @@ import { Mode, Fingering } from '@/domain/shared/types';
 import { useProgression } from './progression/useProgression';
 import { useScaleMode } from './scale/useScaleMode';
 import { getScaleDerivedData } from '@/domain/scale/getScaleDerivedData';
+import { getScaleToneAnalysis } from '@/domain/chord/scale-tone-analysis';
 import {
     createHarmonicWorkspaceState,
     reduceHarmonicWorkspaceState,
@@ -87,11 +88,22 @@ export default function ClientApp() {
     const [selectedKey, setSelectedKey] = useState(0); // C
     const [mode, setMode] = useState<Mode>('scale');
     const [showIntervals, setShowIntervals] = useState(false);
+    // Chord/Progression keep their existing context; Scale owns a separate ScaleRef.
+    const [legacyScale, setLegacyScale] = useState({ group: 'Diatonic Modes', name: 'Ionian' });
+    const { group: scaleGroup, name: scaleName } = legacyScale;
+    const commitLegacyScale = useCallback((group: string, name: string) => setLegacyScale({ group, name }), []);
 
     // --- State: Scale Mode ---
     const {
-        scaleGroup,
-        scaleName,
+        scaleRef,
+        scaleGroup: exploredScaleGroup,
+        scaleName: exploredScaleName,
+        setTonic,
+        commitScaleRef,
+        selectedChordId,
+        selectAnalysisChord,
+        showIntervals: scaleShowIntervals,
+        onToggleIntervals: onToggleScaleIntervals,
         showChordTones,
         blueNote,
         sixthNote,
@@ -153,7 +165,7 @@ export default function ClientApp() {
 
     // --- Derived Data: Scales ---
     const scaleDerived = useMemo(
-        () => getScaleDerivedData(scaleGroup, scaleName, selectedKey, {
+        () => getScaleDerivedData(exploredScaleGroup, exploredScaleName, scaleRef.tonic, {
             showChordTones,
             blueNote,
             sixthNote,
@@ -163,9 +175,9 @@ export default function ClientApp() {
             doubleStopStrings,
         }),
         [
-            scaleGroup,
-            scaleName,
-            selectedKey,
+            exploredScaleGroup,
+            exploredScaleName,
+            scaleRef.tonic,
             showChordTones,
             blueNote,
             sixthNote,
@@ -175,7 +187,12 @@ export default function ClientApp() {
             doubleStopStrings,
         ]
     );
-    const { diatonicChords, isDoubleStopAvailable, isDoubleStopVisible, isPentatonic, isMinorMode } = scaleDerived;
+    const { isDoubleStopAvailable, isDoubleStopVisible, isPentatonic } = scaleDerived;
+    const { diatonicChords, isMinorMode } = useMemo(() => getScaleDerivedData(scaleGroup, scaleName, selectedKey, {
+        showChordTones: false, blueNote: false, sixthNote: false, secondNote: false,
+        isDoubleStopActive: false, doubleStopInterval: 3, doubleStopStrings: [1, 2],
+    }), [scaleGroup, scaleName, selectedKey]);
+    const scaleAnalysis = useMemo(() => getScaleToneAnalysis(scaleRef, selectedChordId), [scaleRef, selectedChordId]);
 
     const modifierNotes = useMemo(
         () => (mode === 'scale' ? scaleDerived.modifierNotes : []),
@@ -290,7 +307,7 @@ export default function ClientApp() {
     // --- Chord Tone Highlighting ---
     const currentChordTones = useMemo(() => {
         if (mode === 'scale') {
-            return scaleDerived.scaleChordTones;
+            return scaleAnalysis?.tones.filter(tone => tone.chordMembership === 'member').map(tone => tone.pitchClass) ?? [];
         }
         if (mode === 'chord') {
             return [];
@@ -299,14 +316,15 @@ export default function ClientApp() {
             return progressionData?.tones || [];
         }
         return [];
-    }, [mode, scaleDerived.scaleChordTones, progressionData]);
+    }, [mode, scaleAnalysis, progressionData]);
 
     const rootNote = useMemo(() => {
+        if (mode === 'scale') return scaleRef.tonic;
         if (mode === 'progression') {
             return progressionData?.stepRoot ?? selectedKey;
         }
         return selectedKey;
-    }, [mode, progressionData, selectedKey]);
+    }, [mode, progressionData, selectedKey, scaleRef.tonic]);
 
     // --- Handlers ---
     const fretboardContainerRef = useRef<HTMLDivElement>(null);
@@ -333,7 +351,7 @@ export default function ClientApp() {
                     onKeyChange={setSelectedKey}
                     selectedScaleGroup={scaleGroup}
                     selectedScaleName={scaleName}
-                    onScaleChange={commitScaleSelection}
+                    onScaleChange={commitLegacyScale}
                     mode={mode}
                     onModeChange={setMode}
                     progressionName={progressionName}
@@ -343,13 +361,18 @@ export default function ClientApp() {
                 {mode === 'scale' && (
                     <div className="col-span-1 lg:col-span-12 min-w-0">
                         <ScaleModeWorkspace
-                            selectedKey={selectedKey}
-                            onKeyChange={setSelectedKey}
-                            scaleGroup={scaleGroup}
-                            scaleName={scaleName}
+                            scaleRef={scaleRef}
+                            analysis={scaleAnalysis}
+                            selectedChordId={selectedChordId}
+                            onSelectChord={selectAnalysisChord}
+                            onNavigateScale={commitScaleRef}
+                            selectedKey={scaleRef.tonic}
+                            onKeyChange={setTonic}
+                            scaleGroup={exploredScaleGroup}
+                            scaleName={exploredScaleName}
                             onScaleChange={commitScaleSelection}
-                            showIntervals={showIntervals}
-                            onToggleIntervals={() => setShowIntervals((prev) => !prev)}
+                            showIntervals={scaleShowIntervals}
+                            onToggleIntervals={onToggleScaleIntervals}
                             showChordTones={showChordTones}
                             onToggleChordTones={onToggleChordTones}
                             isPentatonic={isPentatonic}
@@ -449,6 +472,5 @@ export default function ClientApp() {
         </div>
     );
 }
-
 
 

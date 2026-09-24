@@ -27,12 +27,21 @@ export const Fretboard: React.FC<FretboardProps> = ({
     scaleIntervalLabels,
     noteLabelsByPosition,
     fingering,
-    doubleStops = [],
+    doubleStops: inputDoubleStops = [],
     onCellClick,
+    noteAnnotations,
+    focusedPitchClass = null,
+    fretRange,
+    visibleStrings,
 }) => {
     // Generate fret indices [0...24]
     const frets = useMemo(() => Array.from({ length: 25 }, (_, i) => i), []);
     const strings = useMemo(() => Array.from({ length: 6 }, (_, i) => i), []);
+    const isVisiblePosition = (string: number, fret: number) =>
+        (!visibleStrings || visibleStrings.includes(string))
+        && (!fretRange || (fret >= fretRange[0] && fret <= fretRange[1]));
+    const doubleStops = inputDoubleStops.filter(pair =>
+        isVisiblePosition(pair.string1, pair.fret1) && isVisiblePosition(pair.string2, pair.fret2));
 
     // Grid Template Columns: string of pixel values
     const gridTemplateColumns = FRET_WIDTHS.map(w => `${w}px`).join(' ');
@@ -73,13 +82,14 @@ export const Fretboard: React.FC<FretboardProps> = ({
         if (!onCellClick) return null;
         const set = new Set<string>();
         for (const s of strings) for (const f of frets) {
+            if ((visibleStrings && !visibleStrings.includes(s)) || (fretRange && (f < fretRange[0] || f > fretRange[1]))) continue;
             const noteIdx = (tuning[s] + f) % 12;
             const shouldShow = fingering ? fingering.some(fico => fico.string === s && fico.fret === f)
                 : activeNotes.includes(noteIdx) || modifierNotes.includes(noteIdx);
             if (shouldShow) set.add(`${s}:${f}`);
         }
         return set;
-    }, [onCellClick, strings, frets, tuning, fingering, activeNotes, modifierNotes]);
+    }, [onCellClick, strings, frets, tuning, fingering, activeNotes, modifierNotes, visibleStrings, fretRange]);
 
     // Roving tabindex: exactly one cell in the whole board is a Tab stop at a time (the other ~150
     // stay at tabIndex=-1, still reachable via arrow keys) — a real fretboard has too many cells for
@@ -245,7 +255,7 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                     if (fingering) shouldShow = !!specificFinger;
                                     else shouldShow = isNoteActive || isModifier;
 
-                                    if (!shouldShow) return null;
+                                    if (!shouldShow || !isVisiblePosition(s, f)) return null;
 
                                     const isDoubleStop = doubleStops.some(ds => (ds.string1 === s && ds.fret1 === f) || (ds.string2 === s && ds.fret2 === f));
 
@@ -256,6 +266,8 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                     if (showIntervals) {
                                         label = noteLabelsByPosition?.[`${s}:${f}`] ?? getIntervalLabel(noteIdx);
                                     }
+
+                                    const annotation = noteAnnotations?.[noteIdx];
 
                                     if (fingering && specificFinger) {
                                         if (specificFinger.label === 'X') {
@@ -298,9 +310,34 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                         }
                                     }
 
+                                    // Scale chooses its spelling frame and chord role explicitly.
+                                    // Keep legacy voicing and double-stop presentation unchanged.
+                                    if (annotation && !fingering) {
+                                        label = showIntervals ? annotation.intervalLabel : annotation.noteName;
+                                        if (!isDoubleStop) {
+                                            dotClass = isRoot ? styles.noteRoot : styles.noteScale;
+                                            if (showChordTones && isChordTone) {
+                                                const roleClasses = {
+                                                    root: styles.noteRoot,
+                                                    third: styles.note3rd,
+                                                    fifth: styles.note5th,
+                                                    seventh: styles.note7th,
+                                                    'chord-tone': styles.noteChordTone,
+                                                    scale: styles.noteScale,
+                                                };
+                                                dotClass = roleClasses[annotation.role];
+                                            }
+                                        }
+                                    }
+
                                     return (
                                         <div
                                             key={`note-${s}-${f}`}
+                                            data-string={s}
+                                            data-fret={f}
+                                            data-pitch-class={noteIdx}
+                                            data-tone-role={annotation?.role}
+                                            data-focused={noteIdx === focusedPitchClass || undefined}
                                             ref={onCellClick ? setCellRef(s, f) : undefined}
                                             className={styles.noteCell}
                                             style={{ gridRow: s + 1, gridColumn: f + 1, cursor: onCellClick ? 'pointer' : undefined }}
@@ -310,7 +347,7 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                             onClick={onCellClick ? () => activate(s, f) : undefined}
                                             onKeyDown={onCellClick ? cellKeyDown(s, f) : undefined}
                                         >
-                                            <div className={`${styles.noteDot} ${dotClass} ${(!isDoubleStop && doubleStops.length > 0) ? styles.faded : ''}`}>
+                                            <div className={`${styles.noteDot} ${dotClass} ${(!isDoubleStop && doubleStops.length > 0) ? styles.faded : ''} ${noteIdx === focusedPitchClass ? styles.noteFocused : ''}`}>
                                                 {label}
                                             </div>
                                         </div>
