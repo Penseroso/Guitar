@@ -1,0 +1,13 @@
+.picker { border: 0; margin: 0; padding: 0; min-width: 0; width: 208px; max-width: 100%; }
+.picker legend { color: var(--workspace-muted); font-size: 11px; margin-bottom: 3px; }
+.control { display: grid; grid-template-columns: 44px minmax(68px, 1fr) 44px; min-height: 44px; touch-action: pan-y; user-select: none; }
+.neighbor { min-width: 44px; min-height: 44px; padding: 0 3px; border: 0; background: transparent; color: var(--workspace-muted); font: inherit; font-size: 10px; cursor: pointer; opacity: .7; overflow: hidden; }
+.neighbor span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.neighbor:hover { opacity: 1; color: #f4f4f5; }
+.neighbor:disabled { opacity: .2; cursor: default; }
+.current { position: relative; min-height: 44px; cursor: ew-resize; border-bottom: 1px solid #f4f4f5; color: #f4f4f5; }
+.window { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.value { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; white-space: nowrap; font-size: 14px; font-weight: 600; transition: transform 180ms ease-out; }
+.control[data-dragging="true"] .value { transition: none; }
+.current:focus-visible, .neighbor:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: 2px; border-radius: 2px; }
+@media (prefers-reduced-motion: reduce) { .value { transition: none; } }

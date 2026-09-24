@@ -4,7 +4,7 @@ The live cutover to `guitar-engine/2` is complete. `useChordExploration.ts` star
 
 Stage 10 removed the superseded worker, boolean bridge, legacy search/ranking/template modules, adapter-only predicate, allocation-ID migration helper, and their isolated tests after verifying that no legitimate caller remained. The chord-domain barrel no longer exports retired search or ranking APIs. Stable `shape-v1` IDs remain unchanged.
 
-`classicFeatures.ts` and the version label `legacy-rank-features-v1` remain active because they implement the frozen `classic-v1` ranking inputs. Their name does not indicate a retired engine route. Scale/progression chord recognition, registry, helpers, semantics, and presentation types remain active shared domain code.
+`classicFeatures.ts` and the version label `legacy-rank-features-v1` remain active because they implement the frozen `classic-v1` ranking inputs. Their name does not indicate a retired engine route. Scale chord recognition, and the registry, helpers, semantics, and presentation types shared with Harmony, remain active domain code.
 
 Research and historical diagnostic tools are archived under the ignored local `.research/stage-10-archive/` tree. Frozen architecture, policy, research decisions, readiness summaries, and final release evidence remain under `docs/`. Production imports from `.research` and research scripts are prohibited by the live boundary test.
 

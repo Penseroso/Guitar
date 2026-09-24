@@ -51,8 +51,7 @@ const SCALE_CHORD_TONE_TARGET_INTERVALS = [0, 3, 4, 7, 10, 11];
 
 /**
  * Pure scale-theory pipeline: (scale selection, key, UI toggles) -> everything the
- * scale-mode fretboard/panels need to render. No React, no browser APIs — mirrors
- * domain/progression/getProgressionPlaybackData.ts.
+ * scale-mode fretboard/panels need to render. No React or browser APIs.
  */
 export function getScaleDerivedData(
     scaleGroup: string,

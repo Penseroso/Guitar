@@ -61,7 +61,7 @@ function ChordTypeSelector({ value, groups, onChange }: {
 export type ChordWorkspaceIntent = 'forward' | 'reverse';
 
 export function ChordModeWorkspace({ intent, onIntentChange, chordType, onChordTypeChange, chordSelectorGroups, root, onRootChange,
-    explorationPanel, reversePanel }: {
+    explorationPanel, reversePanel, onExploreHarmony, onReturnToHarmony }: {
     intent: ChordWorkspaceIntent;
     onIntentChange: (intent: ChordWorkspaceIntent) => void;
     chordType: string;
@@ -71,6 +71,8 @@ export function ChordModeWorkspace({ intent, onIntentChange, chordType, onChordT
     onRootChange: (root: number) => void;
     explorationPanel: React.ReactNode;
     reversePanel: React.ReactNode;
+    onExploreHarmony?: () => void;
+    onReturnToHarmony?: () => void;
 }) {
     return <section className={styles.workspace} aria-label="Chord workspace">
         <div className={styles.intentToggle}>
@@ -78,12 +80,14 @@ export function ChordModeWorkspace({ intent, onIntentChange, chordType, onChordT
                 onChange={(value) => onIntentChange(value as ChordWorkspaceIntent)}
                 options={[{ value: 'forward', label: 'Find voicings' }, { value: 'reverse', label: 'Name a shape' }]} />
         </div>
+        {onReturnToHarmony && <button type="button" className={styles.action} onClick={onReturnToHarmony}>← Return to Harmony</button>}
         {intent === 'forward' ? <>
             <div className={styles.inputs}>
                 <RootDial value={root} onChange={onRootChange} />
                 <ChordTypeSelector value={chordType} groups={chordSelectorGroups} onChange={onChordTypeChange} />
             </div>
             {explorationPanel}
+            {onExploreHarmony && <button type="button" className={styles.action} onClick={onExploreHarmony}>Explore in Harmony →</button>}
         </> : reversePanel}
     </section>;
 }

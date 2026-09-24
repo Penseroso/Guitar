@@ -1,5 +1,5 @@
 // Guitar-interpretation layer: which scale-degree pairs form playable double stops, and
-// where they fall on the fretboard. Shared across scale/chord/progression modes.
+// where they fall on the fretboard. Used by Scale mode.
 
 import { STRING_MIDI_PITCHES } from '@/domain/shared/tuning';
 import { DoubleStopPair, HarmonicInterval, PlayableDoubleStop } from './types';

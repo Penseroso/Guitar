@@ -24,6 +24,7 @@ Do not solve a weak information structure by putting every item into a bordered 
 | Binary diagram-label display | A compact two-position switch with both endpoint labels visible | Treating a display preference like a navigation tab or leaving “off” unexplained |
 | Independent on/off preference | Text with a small state dot; visible `aria-pressed` | A large toggle card for each setting |
 | Continuous range | Direct-manipulation slider with readable endpoints and live value | Numeric input boxes when the range is spatial |
+| Compact context or parameter choice | Swipeable picker showing the current value and adjacent candidates; keep keyboard/click alternatives | A wall of select fields or permanently expanded segmented rails |
 | Repeated results | Open rows separated by a hairline; selection distinguished within the row | A wall of rounded result cards |
 | Secondary action | Quiet text/icon control with a full hit area | Every action looking like a primary button |
 | Primary action | One clearly filled control where needed, e.g. Play | Several competing filled calls to action |
@@ -34,6 +35,8 @@ Use a border or background only when it communicates an actual surface boundary:
 The current shared tokens are in [`src/app/globals.css`](../src/app/globals.css): `--workspace-panel: #0a0a0a`, `--workspace-border: rgba(255,255,255,.09)`, `--workspace-muted: #aaa`, and `--workspace-focus: #a5f3fc`. Primary text is generally `#f4f4f5`. New mode-specific styling should consume these tokens instead of inventing a parallel palette. The accent/focus color is for keyboard focus, not a general decorative highlight.
 
 Selection must be visible without relying on color alone: use an underline, dot, check, or meaningful label plus the appropriate semantic state. Keep the active indicator small but unambiguous. Hover may brighten text; it should not make a control look permanently selected. Typical transitions are subtle (~150–220 ms) and must respect `prefers-reduced-motion`.
+
+For Harmony-style context entry, reuse the Chord root dial for key/root selection and a compact swipeable picker for Mode, Lens, Quality, and Bass. Show the current value and adjacent candidates rather than expanding the entire catalog; keep Quality in one picker instead of adding a permanent family row. Drag distance must allow several values per gesture, not require repeated single-step swipes. Horizontal gestures must not block vertical page scrolling. Preserve named current values, keyboard arrows/Home/End, previous/next click targets, bounded selection, and reduced-motion behavior. An optional observation needs an explicit unset state; never silently invent a chord to fill the control. Existing Chord filter rails remain appropriate where direct comparison of all few options matters; do not expand them into every setting by default.
 
 ## 3. Information hierarchy and copy
 

@@ -1,10 +1,14 @@
 # Guitar
 
-Guitar is a Next.js application for chord, scale, and progression exploration. Music theory and engine behavior live in React-free TypeScript under `src/domain`; components render those results and manage interaction.
+Guitar is a Next.js application for chord, scale, and Harmony relationship exploration. Music theory and engine behavior live in React-free TypeScript under `src/domain`; components render those results and manage interaction.
 
 Scale exploration uses an independent tonic/scale selection, chord-card tone analysis,
 source-backed scale identities, and parallel/sibling/parent comparisons. See the
 [Scale architecture and interpretation contracts](docs/architecture/scale-exploration.md).
+
+Harmony explores bounded chord relationships in a separate tonal frame. Chord and Scale selections can be opened there explicitly; returning to either workspace preserves the Harmony query. Scale's source collection is retained, with an explicit key-frame action only for Ionian and Aeolian. A supported slash bass opened in Chord becomes its Bass filter.
+
+See the [Harmony contracts, supported scope, and Progression deprecation](docs/architecture/harmony-exploration.md).
 
 UI changes follow the [THE MODUS design language and feature-level review checklist](docs/design-language.md).
 

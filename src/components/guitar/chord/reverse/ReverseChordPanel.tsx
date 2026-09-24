@@ -11,6 +11,8 @@ import { ShapeEntry } from './ShapeEntry';
 import { ChordReadingCard } from './ChordReadingCard';
 import { buildTitleIndex, describeDyad } from './reading-labels';
 import styles from '../chord-ui.module.css';
+import type { ChordRef } from '@/domain/harmony/types';
+import { chordRefFromReading } from '@/features/harmonic-workspace/links';
 
 const SHAPE_PLAYBACK_ID = 'reverse-shape';
 
@@ -19,6 +21,7 @@ export interface ReverseChordPanelProps {
     onStatesChange: (states: ShapeStates) => void;
     /** Shown only when the caller has a current forward voicing to seed the shape from. */
     onStartFromVoicing?: () => void;
+    onExploreHarmony?: (chord: ChordRef) => void;
 }
 
 function readingGroup(
@@ -38,7 +41,7 @@ function readingGroup(
     </section>;
 }
 
-export function ReverseChordPanel({ states, onStatesChange, onStartFromVoicing }: ReverseChordPanelProps) {
+export function ReverseChordPanel({ states, onStatesChange, onStartFromVoicing, onExploreHarmony }: ReverseChordPanelProps) {
     const audio = useVoicingAudio();
     const [focusedReadingKey, setFocusedReadingKey] = useState<string | null>(null);
     const shape = useMemo(() => deriveEnteredShape(states), [states]);
@@ -100,6 +103,8 @@ export function ReverseChordPanel({ states, onStatesChange, onStartFromVoicing }
                             focused={focusedReadingKey === reading.key} onToggleFocus={() => toggleFocus(reading)} />)}
                     </div>
                 </details>}
+                {focusedReading && onExploreHarmony && <button type="button" className={styles.action}
+                    onClick={() => onExploreHarmony(chordRefFromReading(focusedReading))}>Explore selected name in Harmony →</button>}
             </>}
         </div>
 

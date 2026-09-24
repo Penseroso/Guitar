@@ -26,7 +26,7 @@ export function applyTriggerClick(open: boolean, suppressClick: boolean, keyboar
     return { open: true, suppressClick };
 }
 
-export function RootDial({ value, onChange }: { value: number; onChange: (root: number) => void }) {
+export function RootDial({ value, onChange, label = 'Root', displayName }: { value: number; onChange: (root: number) => void; label?: string; displayName?: string }) {
     const [open, setOpen] = useState(false);
     const [draft, setDraft] = useState(value);
     const draftRef = useRef(value);
@@ -106,8 +106,8 @@ export function RootDial({ value, onChange }: { value: number; onChange: (root: 
     }, [open]);
 
     return <div className={styles.rootControl}>
-        <span className={styles.label}>Root</span>
-        <button ref={trigger} type="button" className={styles.rootTrigger} aria-label={`Root ${getKeyName(value)}`}
+        <span className={styles.label}>{label}</span>
+        <button ref={trigger} type="button" className={styles.rootTrigger} aria-label={`${label} ${displayName ?? getKeyName(value)}`}
             aria-haspopup="dialog" aria-expanded={open} aria-controls={open ? id : undefined}
             onPointerDown={event => {
                 if (event.button !== 0) return;
@@ -125,7 +125,7 @@ export function RootDial({ value, onChange }: { value: number; onChange: (root: 
                 suppressClick.current = decision.suppressClick;
                 if (decision.open !== open) { if (decision.open) begin(); else setOpen(false); }
             }}>
-            {getKeyName(value)}
+            {displayName ?? getKeyName(value)}
         </button>
         {open && <div ref={popup} id={id} popover="manual" role="dialog" aria-label="Choose root" className={styles.rootPopover}
             onBlur={event => {

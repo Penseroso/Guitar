@@ -9,7 +9,7 @@ import { KeyButton } from '../../ui/design-system/KeyButton';
 import { CircleOfFifths } from '../shared/CircleOfFifths';
 import styles from './scale-workspace.module.css';
 
-// Rail-sized presentation variant of the root navigator Controls.tsx also renders for Progression
+// Rail-sized presentation variant of the root navigator for Scale mode.
 // (orbit/matrix toggle + CircleOfFifths, or the 12-key matrix) — same components, same domain
 // theory, just scaled to fit a 320px context rail instead of a full-width hero panel.
 interface ScaleRootNavigatorProps {

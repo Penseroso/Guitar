@@ -1,6 +1,6 @@
 import type { PlayableDoubleStop } from '../scale/types';
 
-export type Mode = 'scale' | 'chord' | 'progression';
+export type Mode = 'scale' | 'chord' | 'harmony';
 
 export interface Fingering {
     string: number;

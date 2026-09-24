@@ -1,10 +1,11 @@
 import React from 'react';
 import { Zap } from 'lucide-react';
 import { TabsRail } from '../../ui/design-system/TabsRail';
+import type { Mode } from '@/domain/shared/types';
 
 export function WorkspaceHeader({ mode, onModeChange }: {
-    mode: 'scale' | 'chord' | 'progression';
-    onModeChange: (mode: 'scale' | 'chord' | 'progression') => void;
+    mode: Mode;
+    onModeChange: (mode: Mode) => void;
 }) {
     return (<header className="flex flex-col sm:flex-row justify-between sm:items-end gap-5 border-b border-white/5 pb-6 mb-6 sm:pb-8 sm:mb-8">
                     <div className="flex flex-col gap-1">
@@ -19,10 +20,10 @@ export function WorkspaceHeader({ mode, onModeChange }: {
                         tabs={[
                             { id: 'scale', label: 'Scale' },
                             { id: 'chord', label: 'Chord' },
-                            { id: 'progression', label: 'Prog' },
+                            { id: 'harmony', label: 'Harmony' },
                         ]}
                         activeId={mode}
-                        onChange={(id) => onModeChange(id as 'scale' | 'chord' | 'progression')}
+                        onChange={(id) => onModeChange(id as Mode)}
                     />
                 </header>);
 }

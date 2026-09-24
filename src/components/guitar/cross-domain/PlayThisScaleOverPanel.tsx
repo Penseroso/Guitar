@@ -5,6 +5,7 @@ import { getScaleCompatibleChords, type ScaleCompatibleChord } from '@/domain/ch
 import { getScalePresentationName } from '@/domain/scale/scaleSelector';
 import { formatAccidentals, formatNoteName } from '@/domain/shared/spelling';
 import styles from './harmony.module.css';
+import type { ChordRef } from '@/domain/harmony/types';
 
 interface PlayThisScaleOverPanelProps {
     scaleGroup: string;
@@ -12,6 +13,7 @@ interface PlayThisScaleOverPanelProps {
     tonicPitchClass: number;
     selectedChordId?: string | null;
     onSelectChord?: (chordId: string) => void;
+    onExploreHarmony?: (chord: ChordRef) => void;
 }
 
 const chordName = (chord: ScaleCompatibleChord) => formatAccidentals(`${chord.rootNoteName}${chord.chordSuffix}`);
@@ -27,7 +29,7 @@ function ChordList({ chords, selectedChordId, onSelectChord }: {
     </li>)}</ul>;
 }
 
-export function PlayThisScaleOverPanel({ scaleGroup, scaleName, tonicPitchClass, selectedChordId = null, onSelectChord }: PlayThisScaleOverPanelProps) {
+export function PlayThisScaleOverPanel({ scaleGroup, scaleName, tonicPitchClass, selectedChordId = null, onSelectChord, onExploreHarmony }: PlayThisScaleOverPanelProps) {
     const chords = React.useMemo(() => getScaleCompatibleChords(scaleGroup, scaleName, tonicPitchClass), [scaleGroup, scaleName, tonicPitchClass]);
     const primary = chords.filter(chord => chord.basis === 'primary');
     const characteristic = chords.filter(chord => chord.basis === 'characteristic');
@@ -64,6 +66,10 @@ export function PlayThisScaleOverPanel({ scaleGroup, scaleName, tonicPitchClass,
             <h3>{chordName(selected)} <span className={styles.meta}>· {selected.basis === 'containment' ? 'note containment' : selected.basis} pairing</span></h3>
             <p className={styles.description}>Chord tones · {selected.toneNames.map(formatNoteName).join(' · ')}</p>
             {selected.tonesOutsideScale.length > 0 && <p className={styles.meta}>Outside scale · {selected.tonesOutsideScale.map(formatNoteName).join(' · ')}</p>}
+            {onExploreHarmony && <button type="button" className={styles.quietLink}
+                onClick={() => onExploreHarmony({ root: selected.rootNoteName, chordId: selected.chordId })}>
+                Explore in Harmony →
+            </button>}
         </div>}
     </div>;
 }

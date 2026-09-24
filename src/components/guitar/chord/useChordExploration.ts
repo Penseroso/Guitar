@@ -12,7 +12,7 @@ export interface EngineExploration extends EngineExplorationState {
     nextPage:()=>void;previousPage:()=>void;firstPage:()=>void;retry:()=>void;continueSearch:()=>void;cancel:()=>void;
 }
 
-export function useChordExploration(enabled:boolean,chordId:string,rootPitchClass:number,context:'standalone'|'accompaniment',requestedCandidateId?:string|null):EngineExploration {
+export function useChordExploration(enabled:boolean,chordId:string,rootPitchClass:number,context:'standalone'|'accompaniment',requestedCandidateId?:string|null,requestedBassTone?:string|null):EngineExploration {
     const [attempt,setAttempt]=useState(0);
     const [controller]=useState(()=>createExplorationController(()=>new Worker(new URL('./engine.worker.ts',import.meta.url))));
     const state=useSyncExternalStore(controller.subscribe,controller.getSnapshot,controller.getServerSnapshot);
@@ -22,6 +22,11 @@ export function useChordExploration(enabled:boolean,chordId:string,rootPitchClas
         if(enabled)controller.start({chordId,rootPitchClass,context,requestEpoch});else controller.stop();
         return()=>controller.stop();
     },[controller,enabled,chordId,rootPitchClass,context,requestEpoch]);
+    useEffect(()=>{
+        // Undefined means ordinary Chord navigation: preserve the user's existing filter.
+        // Null is an explicit root-position-neutral transfer from Harmony.
+        if(enabled && requestedBassTone !== undefined)controller.setView({bass:requestedBassTone?{tone:requestedBassTone}:null});
+    },[controller,enabled,chordId,rootPitchClass,requestedBassTone]);
     const retry=useCallback(()=>setAttempt(value=>value+1),[]);
     // Hide a previous request synchronously, before effect cleanup/new worker setup.
     const changed=state.requestEpoch!==requestEpoch;

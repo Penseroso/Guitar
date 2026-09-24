@@ -19,6 +19,8 @@ import { formatAccidentals } from '@/domain/shared/spelling';
 import controlStyles from './scale-visual-controls.module.css';
 import { ScaleRelationsPanel } from './ScaleRelationsPanel';
 import type { ScaleRef } from '@/domain/scale/scale-ref';
+import type { ChordRef } from '@/domain/harmony/types';
+import type { ScaleHarmonySelection } from '@/features/harmonic-workspace/links';
 import type { ScaleToneAnalysis } from '@/domain/chord/scale-tone-analysis';
 import { getKeyName } from '@/domain/shared/keys';
 import { parseDegreeLabel, parseNoteName, spellDegree } from '@/domain/shared/spelling';
@@ -31,6 +33,8 @@ interface ScaleModeWorkspaceProps {
     selectedChordId: string | null;
     onSelectChord: (id: string | null) => void;
     onNavigateScale: (ref: ScaleRef) => void;
+    onExploreHarmony?: (selection: ScaleHarmonySelection) => void;
+    onReturnToHarmony?: () => void;
     selectedKey: number;
     onKeyChange: (key: number) => void;
     scaleGroup: string;
@@ -72,6 +76,8 @@ export function ScaleModeWorkspace({
     selectedChordId,
     onSelectChord,
     onNavigateScale,
+    onExploreHarmony,
+    onReturnToHarmony,
     selectedKey,
     onKeyChange,
     scaleGroup,
@@ -152,6 +158,7 @@ export function ScaleModeWorkspace({
                     </div>
                 </aside>
                 <div className={styles.main}>
+                    {onReturnToHarmony && <button type="button" className={styles.harmonyReturn} onClick={onReturnToHarmony}>← Return to Harmony</button>}
                     <section className={controlStyles.controls} aria-label="Visualization Overrides">
                         <div className={controlStyles.header}><SlidersHorizontal size={14} aria-hidden="true" /> Visualization Overrides</div>
                         <div className={controlStyles.row}>
@@ -218,6 +225,7 @@ export function ScaleModeWorkspace({
                         analysis={analysis}
                         focusedInterval={focusedInterval}
                         onFocusTone={focusTone}
+                        onExploreHarmony={onExploreHarmony ? (chord: ChordRef) => onExploreHarmony({ scaleRef, chord }) : undefined}
                     />
                     <ScaleRelationsPanel key={identity} scaleRef={scaleRef} onNavigateScale={onNavigateScale} />
                 </div>

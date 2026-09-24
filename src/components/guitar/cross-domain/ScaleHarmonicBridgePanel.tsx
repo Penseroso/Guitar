@@ -8,6 +8,7 @@ import { ChordsBuiltFromScalePanel } from './ChordsBuiltFromScalePanel';
 import { PlayThisScaleOverPanel } from './PlayThisScaleOverPanel';
 import { ToneRolesPanel } from '../scale/ToneRolesPanel';
 import type { ScaleToneAnalysis } from '@/domain/chord/scale-tone-analysis';
+import type { ChordRef } from '@/domain/harmony/types';
 
 interface ScaleHarmonicBridgePanelProps {
     scaleGroup: string;
@@ -18,6 +19,7 @@ interface ScaleHarmonicBridgePanelProps {
     analysis?: ScaleToneAnalysis | null;
     focusedInterval?: number | null;
     onFocusTone?: (interval: number | null) => void;
+    onExploreHarmony?: (chord: ChordRef) => void;
 }
 
 type BridgeTab = 'play-over' | 'built-from';

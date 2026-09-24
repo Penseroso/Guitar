@@ -1,7 +1,7 @@
 # Scale exploration
 
 Scale owns a `ScaleRef` (`group`, registry-backed `scaleId`, and pitch-class `tonic`) in
-`useScaleMode`. Chord and Progression retain their existing context separately. Switching
+`useScaleMode`. Chord and Harmony retain their existing context separately. Switching
 application modes never copies, resets, or synchronizes Scale's selection. All scales,
 including Half–Whole Diminished, follow the same state contract.
 
@@ -74,4 +74,4 @@ practice annotations, and real ClientApp mode isolation.
 
 Future all-root non-heptatonic containment belongs in an independent helper, not the seven-note
 harmonization function. Harmonic Major, Bebop, new playback sequencing, alternate-tuning
-double stops, and Chord/Progression feature work are outside this change.
+double stops, and Chord/Harmony feature work are outside this change.

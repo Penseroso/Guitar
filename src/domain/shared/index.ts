@@ -1,5 +1,5 @@
-// Cross-domain primitives: note/key theory and guitar hardware facts used by chord, scale, and
-// progression domains alike, plus the few types (Mode, FretboardProps, Fingering) that genuinely
+// Cross-domain primitives: note/key theory and guitar hardware facts used by guitar workspaces,
+// plus the few types (Mode, FretboardProps, Fingering) that genuinely
 // span all three rather than belonging to one.
 export { NOTES, NOTES_FLAT, getNoteName, getNoteIndex } from './notes';
 export {

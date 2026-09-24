@@ -1,18 +1,13 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef, useCallback, useReducer } from 'react';
-import { Controls } from './Controls';
-import { useProgressionAudio } from './progression/useProgressionAudio';
-import { getProgressionPlaybackData } from '@/domain/progression/getProgressionPlaybackData';
 import {CHORD_FAMILIES,CHORD_REGISTRY_LIST} from '@/domain/chord/registry';
 import {getChordTypeLabel,getChordTypeSuffix} from '@/domain/chord/helpers';
 import {engineEntry} from '@/domain/chord/engine/catalog';
 import type {PresentationCandidate,ResolvedRequest} from '@/domain/chord/engine/types';
 import { TUNING } from '@/domain/shared/tuning';
-import { SCALES } from '@/domain/scale/scales';
 import { getKeyName } from '@/domain/shared/keys';
 import { Mode, Fingering } from '@/domain/shared/types';
-import { useProgression } from './progression/useProgression';
 import { useScaleMode } from './scale/useScaleMode';
 import { getScaleDerivedData } from '@/domain/scale/getScaleDerivedData';
 import { getScaleToneAnalysis } from '@/domain/chord/scale-tone-analysis';
@@ -28,7 +23,12 @@ import { useChordExploration } from './chord/useChordExploration';
 import { getChordToneChoices } from './chord/tone-labels';
 import { ReverseChordPanel } from './chord/reverse/ReverseChordPanel';
 import { SILENT_SHAPE_STATES, type ShapeStates } from '@/domain/chord/reverse/enteredShape';
-import { ProgressionModeWorkspace } from './progression/ProgressionModeWorkspace';
+import { HarmonyModeWorkspace } from './harmony/HarmonyModeWorkspace';
+import { useHarmony } from './harmony/useHarmony';
+import type { ChordRef } from '@/domain/harmony/types';
+import type { RelationQuery } from '@/domain/harmony/types';
+import type { ScaleRef } from '@/domain/scale/scale-ref';
+import { chordRefBassTone, chordRefPitchClass, frameForScaleRef, linkChordToHarmony, linkScaleToHarmony, type ScaleHarmonySelection } from '@/features/harmonic-workspace/links';
 
 const CHORD_SELECTOR_ORDER_BY_FAMILY = {
     triad: ['major', 'minor', 'power-5', 'augmented', 'diminished', 'sus2', 'sus4'],
@@ -88,10 +88,9 @@ export default function ClientApp() {
     const [selectedKey, setSelectedKey] = useState(0); // C
     const [mode, setMode] = useState<Mode>('scale');
     const [showIntervals, setShowIntervals] = useState(false);
-    // Chord/Progression keep their existing context; Scale owns a separate ScaleRef.
-    const [legacyScale, setLegacyScale] = useState({ group: 'Diatonic Modes', name: 'Ionian' });
-    const { group: scaleGroup, name: scaleName } = legacyScale;
-    const commitLegacyScale = useCallback((group: string, name: string) => setLegacyScale({ group, name }), []);
+    // Chord's forward request keeps its established context; Scale owns a separate ScaleRef.
+    const scaleGroup = 'Diatonic Modes';
+    const scaleName = 'Ionian';
 
     // --- State: Scale Mode ---
     const {
@@ -123,6 +122,7 @@ export default function ClientApp() {
 
     // --- State: Chord Mode ---
     const [chordType, setChordType] = useState('major');
+    const [chordBassTone, setChordBassTone] = useState<string | null | undefined>(undefined);
     const [chordPlayingContext, setChordPlayingContext] = useState<ResolvedRequest['interpretation']['context']>('standalone');
 
     // --- State: Chord Mode — Reverse ("Name a shape") ---
@@ -130,38 +130,9 @@ export default function ClientApp() {
     // into Forward; the two are independent workflows within Chord mode.
     const [chordIntent, setChordIntent] = useState<ChordWorkspaceIntent>('forward');
     const [reverseShapeStates, setReverseShapeStates] = useState<ShapeStates>(SILENT_SHAPE_STATES);
-    const {
-        progressionName,
-        progressionDoc,
-        focusedNodeId,
-        setFocusedNodeId,
-        handleDragEnd,
-        addSecondaryDominant,
-        addTritoneSubstitution,
-        addSubdominantMinor,
-        applyPicardyThird,
-        addFlatSix,
-        addFlatSeven,
-        removeNode,
-        removeMeasure,
-        clearMeasure,
-        clearAllNodes,
-        appendMeasure,
-        applyPreset,
-        updateNodeDuration,
-    } = useProgression();
-
-    const { playProgressionChord } = useProgressionAudio();
-
-    // --- Effect: Auto-reset progression on Key/Mode change ---
-    useEffect(() => {
-        if (mode === 'progression') {
-            clearAllNodes();
-        }
-    }, [clearAllNodes, selectedKey, scaleName, mode]); // Also reset when entering progression mode? 
-
-    // Actually the user said "?? (when changing), so watching key/scale is correct.
-    // Adding `mode` ensures it resets if they change mode/key while in prog mode.
+    const { query: harmonyQuery, setQuery: setHarmonyQuery, result: harmonyResult } = useHarmony();
+    const [harmonySourceScaleRef, setHarmonySourceScaleRef] = useState<ScaleRef | null>(null);
+    const [harmonyReturnMode, setHarmonyReturnMode] = useState<'chord' | 'scale' | null>(null);
 
     // --- Derived Data: Scales ---
     const scaleDerived = useMemo(
@@ -188,10 +159,6 @@ export default function ClientApp() {
         ]
     );
     const { isDoubleStopAvailable, isDoubleStopVisible, isPentatonic } = scaleDerived;
-    const { diatonicChords, isMinorMode } = useMemo(() => getScaleDerivedData(scaleGroup, scaleName, selectedKey, {
-        showChordTones: false, blueNote: false, sixthNote: false, secondNote: false,
-        isDoubleStopActive: false, doubleStopInterval: 3, doubleStopStrings: [1, 2],
-    }), [scaleGroup, scaleName, selectedKey]);
     const scaleAnalysis = useMemo(() => getScaleToneAnalysis(scaleRef, selectedChordId), [scaleRef, selectedChordId]);
 
     const modifierNotes = useMemo(
@@ -228,7 +195,7 @@ export default function ClientApp() {
     }, [futureVoicingScopeKey, tonalContext]);
 
     const requestedFutureVoicingId = harmonicWorkspace.scopeKey===futureVoicingScopeKey?harmonicWorkspace.selectedCandidateId:null;
-    const exploration = useChordExploration(mode === 'chord', chordType, selectedKey, chordPlayingContext,requestedFutureVoicingId);
+    const exploration = useChordExploration(mode === 'chord', chordType, selectedKey, chordPlayingContext, requestedFutureVoicingId, chordBassTone);
 
     const activeFutureCandidate = exploration.selected;
     const activeFutureVoicingId = activeFutureCandidate?.candidate.allocationId??null;
@@ -258,33 +225,6 @@ export default function ClientApp() {
         return activeFutureVoicingFingering;
     }, [activeFutureVoicingFingering, mode]);
 
-    // --- Derived Data: Progression ---
-    const progressionData = useMemo(() => {
-        if (mode !== 'progression') return null;
-        return getProgressionPlaybackData(progressionDoc, focusedNodeId, selectedKey);
-    }, [mode, progressionDoc, focusedNodeId, selectedKey]);
-
-    const focusedNode = useMemo(() => {
-        if (!focusedNodeId) return null;
-        for (const m of progressionDoc.measures) {
-            const node = m.nodes.find(n => n.id === focusedNodeId);
-            if (node) return node;
-        }
-        return null;
-    }, [focusedNodeId, progressionDoc]);
-
-    // --- Derived: Cadence position (focused node is last in whole progression) ---
-    const isCadencePosition = useMemo(() => {
-        if (!focusedNodeId) return false;
-        const allNodes: string[] = [];
-        for (const m of progressionDoc.measures) {
-            for (const n of m.nodes) {
-                allNodes.push(n.id);
-            }
-        }
-        return allNodes.length > 0 && allNodes[allNodes.length - 1] === focusedNodeId;
-    }, [focusedNodeId, progressionDoc]);
-
     // --- Active Notes Calculation ---
     const activeNotes = useMemo(() => {
         if (mode === 'scale') {
@@ -294,12 +234,8 @@ export default function ClientApp() {
             if (fingering) return fingering.map(f => f.noteIdx);
             return [];
         }
-        if (mode === 'progression') {
-            const ionianScale = SCALES['Diatonic Modes']['Ionian'];
-            return ionianScale.map(i => (selectedKey + i) % 12);
-        }
         return [];
-    }, [mode, scaleDerived.scaleNotes, modifierNotes, fingering, selectedKey]);
+    }, [mode, scaleDerived.scaleNotes, modifierNotes, fingering]);
 
     // --- Derived Data: Double Stops ---
     const { harmonicDoubleStopPairsByInterval, playableDoubleStops } = scaleDerived;
@@ -312,22 +248,59 @@ export default function ClientApp() {
         if (mode === 'chord') {
             return [];
         }
-        if (mode === 'progression') {
-            return progressionData?.tones || [];
-        }
         return [];
-    }, [mode, scaleAnalysis, progressionData]);
+    }, [mode, scaleAnalysis]);
 
     const rootNote = useMemo(() => {
         if (mode === 'scale') return scaleRef.tonic;
-        if (mode === 'progression') {
-            return progressionData?.stepRoot ?? selectedKey;
-        }
         return selectedKey;
-    }, [mode, progressionData, selectedKey, scaleRef.tonic]);
+    }, [mode, selectedKey, scaleRef.tonic]);
 
     // --- Handlers ---
     const fretboardContainerRef = useRef<HTMLDivElement>(null);
+    const openHarmonyFromChord = useCallback((chord: ChordRef) => {
+        setHarmonyQuery(linkChordToHarmony(harmonyQuery, chord));
+        setHarmonySourceScaleRef(null);
+        setHarmonyReturnMode(null);
+        setMode('harmony');
+    }, [harmonyQuery, setHarmonyQuery]);
+    const changeHarmonyQuery = useCallback((next: RelationQuery) => {
+        if (next.target.root !== harmonyQuery.target.root || next.target.chordId !== harmonyQuery.target.chordId || next.target.bass !== harmonyQuery.target.bass) {
+            setHarmonySourceScaleRef(null);
+            const changed = { ...next };
+            delete changed.context;
+            setHarmonyQuery(changed);
+            return;
+        }
+        setHarmonyQuery(next);
+    }, [harmonyQuery.target, setHarmonyQuery]);
+    const openHarmonyFromScale = useCallback((selection: ScaleHarmonySelection) => {
+        const link = linkScaleToHarmony(harmonyQuery, selection);
+        setHarmonyQuery(link.query);
+        setHarmonySourceScaleRef(link.sourceScaleRef);
+        setHarmonyReturnMode(null);
+        setMode('harmony');
+    }, [harmonyQuery, setHarmonyQuery]);
+    const openChordFromHarmony = useCallback((chord: ChordRef) => {
+        const pitchClass = chordRefPitchClass(chord);
+        if (pitchClass === null) return;
+        setSelectedKey(pitchClass);
+        setChordType(chord.chordId);
+        setChordBassTone(chordRefBassTone(chord));
+        setChordIntent('forward');
+        setHarmonyReturnMode('chord');
+        setMode('chord');
+    }, []);
+    const openScaleFromHarmony = useCallback((ref: ScaleRef) => {
+        commitScaleRef(ref);
+        setHarmonyReturnMode('scale');
+        setMode('scale');
+    }, [commitScaleRef]);
+    const useScaleFrame = useCallback(() => {
+        if (!harmonySourceScaleRef) return;
+        const frame = frameForScaleRef(harmonySourceScaleRef, harmonyQuery.frame);
+        if (frame) setHarmonyQuery({ ...harmonyQuery, frame });
+    }, [harmonyQuery, harmonySourceScaleRef, setHarmonyQuery]);
 
     // --- Effects ---
 
@@ -342,21 +315,9 @@ export default function ClientApp() {
     }, [mode, fingering, selectedKey]);
 
     return (
-        <div className={`min-h-screen bg-[#050505] text-[#a0a0a0] selection:bg-white/20 ${mode === 'chord' || mode === 'scale' ? 'p-3 sm:p-8' : 'p-8'} flex flex-col items-center gap-12 overflow-x-hidden font-sans`}>
+        <div className="min-h-screen bg-[#050505] text-[#a0a0a0] selection:bg-white/20 p-3 sm:p-8 flex flex-col items-center gap-12 overflow-x-hidden font-sans">
             <div className={`w-full ${mode === 'scale' ? 'max-w-[1800px]' : 'max-w-6xl'} grid grid-cols-1 lg:grid-cols-12 gap-8 items-start`}>
-                {(mode === 'chord' || mode === 'scale') && <div className="col-span-1 lg:col-span-8"><WorkspaceHeader mode={mode} onModeChange={setMode} /></div>}
-                {/* Progression still drives its root/scale navigation through the frozen Controls rack. */}
-                {mode === 'progression' && <Controls
-                    selectedKey={selectedKey}
-                    onKeyChange={setSelectedKey}
-                    selectedScaleGroup={scaleGroup}
-                    selectedScaleName={scaleName}
-                    onScaleChange={commitLegacyScale}
-                    mode={mode}
-                    onModeChange={setMode}
-                    progressionName={progressionName}
-                    onProgressionChange={applyPreset}
-                />}
+                <div className="col-span-1 lg:col-span-8"><WorkspaceHeader mode={mode} onModeChange={(next) => { setHarmonyReturnMode(null); if (next === 'chord') setChordBassTone(undefined); setMode(next); }} /></div>
 
                 {mode === 'scale' && (
                     <div className="col-span-1 lg:col-span-12 min-w-0">
@@ -366,6 +327,8 @@ export default function ClientApp() {
                             selectedChordId={selectedChordId}
                             onSelectChord={selectAnalysisChord}
                             onNavigateScale={commitScaleRef}
+                            onExploreHarmony={openHarmonyFromScale}
+                            onReturnToHarmony={harmonyReturnMode === 'scale' ? () => { setHarmonyReturnMode(null); setMode('harmony'); } : undefined}
                             selectedKey={scaleRef.tonic}
                             onKeyChange={setTonic}
                             scaleGroup={exploredScaleGroup}
@@ -408,9 +371,11 @@ export default function ClientApp() {
                     <div className="col-span-1 lg:col-span-12 min-w-0">
                         <ChordModeWorkspace
                             intent={chordIntent} onIntentChange={setChordIntent}
-                            chordType={chordType} onChordTypeChange={setChordType}
+                            onExploreHarmony={() => openHarmonyFromChord({ root: getKeyName(selectedKey), chordId: chordType })}
+                            onReturnToHarmony={harmonyReturnMode === 'chord' ? () => { setHarmonyReturnMode(null); setMode('harmony'); } : undefined}
+                            chordType={chordType} onChordTypeChange={(next) => { setChordBassTone(undefined); setChordType(next); }}
                             chordSelectorGroups={CHORD_SELECTOR_GROUPS}
-                            root={selectedKey} onRootChange={setSelectedKey}
+                            root={selectedKey} onRootChange={(next) => { setChordBassTone(undefined); setSelectedKey(next); }}
                             explorationPanel={<ChordExplorationPanel
                                 key={`${chordType}:${selectedKey}`}
                                 context={chordPlayingContext} engine={exploration}
@@ -426,51 +391,22 @@ export default function ClientApp() {
                             reversePanel={<ReverseChordPanel
                                 states={reverseShapeStates} onStatesChange={setReverseShapeStates}
                                 onStartFromVoicing={activeFutureCandidate ? () => setReverseShapeStates(activeFutureCandidate.candidate.states as unknown as ShapeStates) : undefined}
+                                onExploreHarmony={openHarmonyFromChord}
                             />}
                         />
                         <BottomMetrics />
                     </div>
                 )}
 
-                {mode === 'progression' && (
-                    <div className="col-span-1 lg:col-span-12 bg-[#0a0a0a] border border-white/5 rounded-[3rem] p-12 relative group shadow-2xl overflow-hidden mt-4">
-                        {/* Decorative Grid */}
-                        <div
-                            className="absolute inset-0 opacity-[0.02] pointer-events-none"
-                            style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '20px 20px' }}
-                        />
-
-                        <ProgressionModeWorkspace
-                            diatonicChords={diatonicChords}
-                            selectedKey={selectedKey}
-                            progressionDoc={progressionDoc}
-                            appendMeasure={appendMeasure}
-                            removeMeasure={removeMeasure}
-                            clearMeasure={clearMeasure}
-                            focusedNodeId={focusedNodeId}
-                            setFocusedNodeId={setFocusedNodeId}
-                            handleDragEnd={handleDragEnd}
-                            updateNodeDuration={updateNodeDuration}
-                            focusedNode={focusedNode}
-                            progressionData={progressionData}
-                            isMinorMode={isMinorMode}
-                            isCadencePosition={isCadencePosition}
-                            addSecondaryDominant={addSecondaryDominant}
-                            addTritoneSubstitution={addTritoneSubstitution}
-                            addSubdominantMinor={addSubdominantMinor}
-                            addFlatSix={addFlatSix}
-                            addFlatSeven={addFlatSeven}
-                            applyPicardyThird={applyPicardyThird}
-                            removeNode={removeNode}
-                            playProgressionChord={playProgressionChord}
-                        />
-
-                        <BottomMetrics />
-                    </div>
-                )}
+                {mode === 'harmony' && <div className="col-span-1 lg:col-span-12 min-w-0">
+                    <HarmonyModeWorkspace
+                        query={harmonyQuery} result={harmonyResult} onQueryChange={changeHarmonyQuery}
+                        onOpenChord={openChordFromHarmony} onOpenScale={openScaleFromHarmony}
+                        sourceScaleRef={harmonySourceScaleRef} onUseScaleFrame={useScaleFrame}
+                    />
+                    <BottomMetrics />
+                </div>}
             </div>
         </div>
     );
 }
-
-
