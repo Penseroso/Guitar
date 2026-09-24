@@ -88,9 +88,50 @@ describe('Harmony musical diagrams', () => {
         const substituteCb = within(substituteDiagram).getByRole('button', { name: /^Cb, degree b7 in D♭7$/ });
         const originalF = within(originalDiagram).getByRole('button', { name: /^F, degree b7 in G7$/ });
         const substituteF = within(substituteDiagram).getByRole('button', { name: /^F, degree 3 in D♭7$/ });
-        expect(substituteCb.style.top).toBe(originalB.style.top);
-        expect(substituteF.style.top).toBe(originalF.style.top);
+        // Rows are roles, not pitch: the shared tritone sits in each dominant's own 3rd/♭7 rows.
+        expect(originalF.style.top).toBe(substituteCb.style.top);
+        expect(originalB.style.top).toBe(substituteF.style.top);
+        const destination = (diagram: HTMLElement) => ['C', 'E', 'G'].map(note => within(diagram).getByRole('button', { name: new RegExp(`^${note}, degree .+ in C$`) }).style.top);
+        expect(destination(substituteDiagram)).toEqual(destination(originalDiagram));
         expect(originalDiagram.querySelectorAll('[data-playing="true"]')).toHaveLength(0);
         expect(substituteDiagram.querySelectorAll('[data-playing="true"]').length).toBeGreaterThan(0);
+    });
+
+    it('badges an analytical slash bass in its own role row instead of moving it to the bottom', () => {
+        const [example] = exploreRelation({
+            kind: 'cadence', frame: { tonic: 'C', mode: 'major', lens: 'jazz-pop' }, target: { root: 'C', chordId: 'major', bass: 'E' },
+            context: { before: { root: 'G', chordId: 'dominant-7', bass: 'B' }, phraseEnding: true },
+        }).examples;
+        render(<RelationExampleView example={example} onOpenChord={vi.fn()} activeStep={null} />);
+        const bassE = screen.getByRole('button', { name: /^E, degree 3, bass in C\/E$/ });
+        const bassB = screen.getByRole('button', { name: /^B, degree 3, bass in G7\/B$/ });
+        expect(bassE.getAttribute('data-bass')).toBe('true');
+        expect(bassB.getAttribute('data-bass')).toBe('true');
+        // Role rows are unchanged: the root stays below the badged 3rd.
+        const root = screen.getByRole('button', { name: /^C, degree 1 in C\/E$/ });
+        expect(parseFloat(root.style.top)).toBeGreaterThan(parseFloat(bassE.style.top));
+        expect(screen.getAllByText('· bass')).toHaveLength(2);
+    });
+
+    it('shows no bass badge when no bass is supplied', () => {
+        render(<RelationExampleView example={examples('dominant')[0]} onOpenChord={vi.fn()} activeStep={null} />);
+        expect(screen.queryByText('· bass')).toBeNull();
+        expect(document.querySelectorAll('[data-bass="true"]')).toHaveLength(0);
+    });
+
+    it('states pitch direction in the selection detail, not by line slope', async () => {
+        const user = userEvent.setup();
+        render(<RelationExampleView example={examples('dominant')[0]} onOpenChord={vi.fn()} activeStep={null} />);
+        await user.click(screen.getByRole('button', { name: /^B, degree 3 in G7$/ }));
+        expect(screen.getByText('3rd → root · ½ step up')).toBeTruthy();
+        await user.click(screen.getByRole('button', { name: /^B, degree 3 in G7/ }));
+        await user.click(screen.getByRole('button', { name: /^G, degree 1 in G7$/ }));
+        expect(screen.getByText('Common tone')).toBeTruthy();
+    });
+
+    it('explains that rows are chord roles, not register', () => {
+        render(<RelationExampleView example={examples('fifths')[0]} onOpenChord={vi.fn()} activeStep={null} />);
+        expect(screen.getByText(/Rows show each chord’s tone roles \(root at the bottom\), not pitch or register/)).toBeTruthy();
+        expect(screen.getByText(/their slope is not melodic direction/)).toBeTruthy();
     });
 });

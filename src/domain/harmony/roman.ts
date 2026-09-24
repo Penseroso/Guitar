@@ -15,10 +15,12 @@ export function validateFrame(frame: TonalFrame) {
     note(frame.tonic);
     if (!['major', 'minor'].includes(frame.mode) || !['jazz-pop', 'classical'].includes(frame.lens)) throw new Error('Unsupported tonal frame');
 }
+/** Formula degree number without accidentals ('b7' → 7, '#9' → 9). Roles stack by this number. */
+export const degreeNumber = (degree: string) => Number(degree.replace(/[^0-9]/g, ''));
 export function resolveChord(ref: ChordRef): ResolvedHarmonyChord {
     const root = note(ref.root), entry = engineEntry(ref.chordId);
     const tones = entry.formula.degrees.map((degree, index) => {
-        const number = Number(degree.replace(/[^0-9]/g, ''));
+        const number = degreeNumber(degree);
         const pitchClass = pc(root.pitchClass + entry.formula.intervals[index]);
         const spelled = spellDegree(root, number, pitchClass);
         if (!spelled) throw new Error('This spelling is outside the supported accidental range');

@@ -2,18 +2,17 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import type { ChordRef, RelationExample } from '@/domain/harmony/types';
-import { exampleTransitions } from '@/domain/harmony/connections';
-import { toneLabel } from '@/domain/harmony/connections';
+import { exampleTransitions, toneLabel } from '@/domain/harmony/connections';
 import { formatAccidentals as accidental } from '@/domain/shared/spelling';
-import { rootMotionLabel, voiceMap, type VoiceLayout } from './voice-map';
+import { motionLabel, rootMotionLabel, voiceMap } from './voice-map';
 import styles from './relation-diagram.module.css';
 
 const degreeName = (degree: string) => ({ '1': 'root', '3': '3rd', b3: '♭3rd', '7': '7th', b7: '♭7', '5': '5th' }[degree] ?? accidental(degree));
 type Props = { example: RelationExample; onOpenChord: (chord: ChordRef) => void; activeStep: number | null };
 
-function VoiceDiagram({ example, onOpenChord, activeStep, label, align }: Props & { label?: string; align?: VoiceLayout }) {
+function VoiceDiagram({ example, onOpenChord, activeStep, label }: Props & { label?: string }) {
     const [focused, setFocused] = useState<{ step: number; degree: string } | null>(null);
-    const { edges, lanes, rows } = voiceMap(example, align), count = example.steps.length;
+    const { edges, lanes, rows } = voiceMap(example), count = example.steps.length;
     const surface = useRef<HTMLDivElement>(null);
     const [width, setWidth] = useState(count === 3 ? 330 : 290);
     useEffect(() => {
@@ -61,9 +60,11 @@ function VoiceDiagram({ example, onOpenChord, activeStep, label, align }: Props 
                     </div>
                     {example.steps.flatMap((step, index) => step.chord.tones.map(tone => {
                         const name = toneLabel(step, tone.degree), isLinked = linked.has(`${index}:${tone.degree}`);
+                        // Analytical bass: badged in its own role row, never moved to the bottom.
+                        const bass = step.chord.bass !== undefined && tone.pitchClass === step.chord.bassPitchClass;
                         const guide = edges.some(e => e.guide && (e.from === index && e.fromDegree === tone.degree || e.to === index && e.toDegree === tone.degree));
-                        return <button key={`${index}:${tone.degree}`} type="button" className={styles.tone} style={{ left: `${(index + .5) * 100 / count}%`, top: lanes[index].get(tone.degree)! * 60 + 8 }} data-guide={guide} data-linked={isLinked} data-playing={guide && activeStep === index} aria-pressed={selected(index, tone.degree)} aria-label={`${name.name}, degree ${name.degree} in ${step.chord.name}${isLinked ? ', connected to selected tone' : ''}`} onClick={() => setFocused(selected(index, tone.degree) ? null : { step: index, degree: tone.degree })}>
-                            <span className={styles.degree}>{degreeName(name.degree)}</span><span className={styles.note}>{accidental(name.name)}</span>
+                        return <button key={`${index}:${tone.degree}`} type="button" className={styles.tone} style={{ left: `${(index + .5) * 100 / count}%`, top: lanes[index].get(tone.degree)! * 60 + 8 }} data-guide={guide} data-linked={isLinked} data-playing={guide && activeStep === index} aria-pressed={selected(index, tone.degree)} data-bass={bass} aria-label={`${name.name}, degree ${name.degree}${bass ? ', bass' : ''} in ${step.chord.name}${isLinked ? ', connected to selected tone' : ''}`} onClick={() => setFocused(selected(index, tone.degree) ? null : { step: index, degree: tone.degree })}>
+                            <span className={styles.degree}>{degreeName(name.degree)}{bass && <span className={styles.bass} aria-hidden="true"> · bass</span>}</span><span className={styles.note}>{accidental(name.name)}</span>
                         </button>;
                     }))}
                 </div>
@@ -71,8 +72,9 @@ function VoiceDiagram({ example, onOpenChord, activeStep, label, align }: Props 
         </div>
         <div className={styles.motionLabels}>{example.facts.map((fact, i) => <p key={i}>{accidental(example.steps[i].chord.root)} {example.kind === 'comparison' ? '↔' : '→'} {accidental(example.steps[i + 1].chord.root)}<span>{rootMotionLabel(example.steps[i].chord.root, example.steps[i + 1].chord.root, fact.rootMotion)}</span></p>)}</div>
         <ul className={styles.srOnly} aria-label="Tone correspondence">{edges.map((edge, i) => <li key={i}>{toneLabel(example.steps[edge.from], edge.fromDegree).name} {edge.held ? 'held as' : example.kind === 'comparison' ? 'compared with' : 'to'} {toneLabel(example.steps[edge.to], edge.toDegree).name}</li>)}</ul>
-        {focused && <div className={styles.selection} aria-live="polite">{edges.filter(e => selected(e.from, e.fromDegree) || selected(e.to, e.toDegree)).map((e, i) => <p key={i}>{accidental(toneLabel(example.steps[e.from], e.fromDegree).name)} {e.held ? '—' : example.kind === 'comparison' ? '↔' : '→'} {accidental(toneLabel(example.steps[e.to], e.toDegree).name)}<span>{e.held ? 'Common tone' : `${degreeName(toneLabel(example.steps[e.from], e.fromDegree).degree)} → ${degreeName(toneLabel(example.steps[e.to], e.toDegree).degree)}`}</span></p>)}</div>}
+        {focused && <div className={styles.selection} aria-live="polite">{edges.filter(e => selected(e.from, e.fromDegree) || selected(e.to, e.toDegree)).map((e, i) => <p key={i}>{accidental(toneLabel(example.steps[e.from], e.fromDegree).name)} {e.held ? '—' : example.kind === 'comparison' ? '↔' : '→'} {accidental(toneLabel(example.steps[e.to], e.toDegree).name)}<span>{e.held ? 'Common tone' : `${degreeName(toneLabel(example.steps[e.from], e.fromDegree).degree)} → ${degreeName(toneLabel(example.steps[e.to], e.toDegree).degree)} · ${motionLabel(toneLabel(example.steps[e.from], e.fromDegree).pitchClass, toneLabel(example.steps[e.to], e.toDegree).pitchClass)}`}</span></p>)}</div>}
         <details className={styles.details}><summary>Details</summary>
+            <p>Rows show each chord&rsquo;s tone roles (root at the bottom), not pitch or register. Lines show correspondence; their slope is not melodic direction.</p>
             <p>{example.kind === 'comparison' ? 'Common tones and chromatic differences. Not a progression.' : nearest ? 'Smallest pitch-class motion; ambiguous moves stay unlinked. Not a performed voicing.' : 'Illustrative voice connections. Not a performed voicing.'}</p>
             {example.facts.map((fact, i) => <div key={i}><h5>{example.steps[i].chord.name} / {example.steps[i + 1].chord.name}</h5><p>Root distance: {fact.rootMotion} semitones up</p><p>Common tones: {fact.shared.map(pc => accidental(example.steps[i].chord.tones.find(t => t.pitchClass === pc)!.name)).join(', ') || 'None'}</p><p>Changed tones: {fact.removed.length} out, {fact.added.length} in</p></div>)}
         </details>
@@ -83,8 +85,7 @@ export function RelationExampleView({ example, alternative, onOpenChord, activeS
     const label = (item: RelationExample) => item.id === 'original' ? 'A — Original dominant' : 'B — Tritone substitute';
     if (alternative) {
         const pair = [example, alternative].sort((a, b) => Number(b.id === 'original') - Number(a.id === 'original'));
-        const original = pair[0], layout = voiceMap(original);
-        return <div className={styles.alternatives}>{pair.map(item => <VoiceDiagram key={item.id} example={item} onOpenChord={onOpenChord} activeStep={item.id === example.id ? activeStep : null} label={label(item)} align={item === original ? undefined : layout} />)}</div>;
+        return <div className={styles.alternatives}>{pair.map(item => <VoiceDiagram key={item.id} example={item} onOpenChord={onOpenChord} activeStep={item.id === example.id ? activeStep : null} label={label(item)} />)}</div>;
     }
     return <div>
         <VoiceDiagram example={example} onOpenChord={onOpenChord} activeStep={activeStep} />

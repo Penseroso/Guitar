@@ -67,6 +67,18 @@ function tendencies(from: ResolvedHarmonyChord, to: ResolvedHarmonyChord): ToneC
     });
 }
 
+/**
+ * Adds the held edge for every still-unconnected source whose pitch class the destination
+ * also contains, so curated rules never silently drop a common tone. The destination may
+ * already receive a resolution: sources never fork, but several may converge on one tone.
+ */
+export function completeCommonTones(from: ResolvedHarmonyChord, to: ResolvedHarmonyChord, voices: ToneConnection[]): ToneConnection[] {
+    return [...voices, ...from.tones.flatMap(tone => {
+        const same = to.tones.find(t => t.pitchClass === tone.pitchClass);
+        return same && !voices.some(v => v.fromDegree === tone.degree) ? [edge(tone, same)] : [];
+    })];
+}
+
 /** Theory-derived correspondence between adjacent chords. A source never forks. */
 export function connectChords(from: ResolvedHarmonyChord, to: ResolvedHarmonyChord, mode: 'functional' | 'nearest' = 'functional'): { basis: ConnectionBasis; voices: ToneConnection[] } {
     if (mode === 'nearest') return { basis: 'nearest', voices: agreedMoves(from.tones, to.tones).map(([a, b]) => edge(a, b, false, 'approach')) };

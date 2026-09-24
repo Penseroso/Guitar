@@ -25,11 +25,11 @@ describe('Explicit Harmony tone connections', () => {
         expect(toneLabel(example.steps[0], 'b3')).toEqual({ name: 'D#', degree: '#2', pitchClass: 3 });
         expect(example.steps[0].chord.tones.find(t => t.degree === 'b3')!.name).toBe('Eb');
         expect(exampleTransitions(example)[0].voices).toHaveLength(4);
-        expect(buildAudition(example, true).map(frame => frame.midi)).toEqual([[60, 63, 66, 69], [60, 64, 67]]);
+        expect(buildAudition(example, true).map(frame => frame.midi)).toEqual([[48, 51, 54, 57], [48, 52, 55]]);
     });
 
     it('auditions moving neighbors as well as the held C/Eb in a minor target', () => {
-        expect(buildAudition(commonTone(true), true).map(frame => frame.midi)).toEqual([[60, 63, 66, 69], [60, 63, 67]]);
+        expect(buildAudition(commonTone(true), true).map(frame => frame.midi)).toEqual([[48, 51, 54, 57], [48, 51, 55]]);
     });
 
     it('supports a middle chord with different incoming and outgoing selected degrees', () => {

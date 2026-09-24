@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { buildAudition } from './audition';
-import { auditionLines, connectChords, exampleTransitions, toneLabel } from './connections';
+import { auditionLines, completeCommonTones, connectChords, exampleTransitions, toneLabel } from './connections';
 import { exploreRelation } from './relations';
 import { resolveChord } from './roman';
 import type { ChordRef, RelationExample, RelationKind, ToneConnection } from './types';
@@ -107,12 +107,57 @@ describe('Audition derives from the drawn correspondence', () => {
         const { guide, transitions } = auditionLines(example);
         expect(guide).toBe(true);
         expect(transitions[0].voices.every(v => v.guide)).toBe(true);
-        expect(buildAudition(example, true).map(frame => frame.midi)).toEqual([[65, 71], [64, 72]]);
+        expect(buildAudition(example, true).map(frame => frame.midi)).toEqual([[59, 65], [60, 64]]);
     });
 
     it('triad voice-line playback plays every drawn line, not an extra guessed voice', () => {
         const example = relation('fifths').examples[0];
         expect(auditionLines(example).guide).toBe(false);
-        expect(buildAudition(example, true).map(frame => frame.midi)).toEqual([[62, 67, 71], [64, 67, 72]]);
+        expect(buildAudition(example, true).map(frame => frame.midi)).toEqual([[55, 59, 62], [55, 60, 64]]);
+    });
+});
+
+describe('The same chord pair keeps the same correspondence across relations', () => {
+    const cadence = (mode: 'major' | 'minor', target: ChordRef, before: ChordRef) => exploreRelation({
+        kind: 'cadence', frame: { tonic: 'C', mode, lens: 'jazz-pop' }, target, context: { before, phraseEnding: true },
+    }).examples[0];
+
+    it.each([
+        ['G7 → C (authentic)', 'major', { root: 'C', chordId: 'major' }],
+        ['G7 → Cm (minor authentic)', 'minor', { root: 'C', chordId: 'minor' }],
+        ['G7 → C in minor (Picardy)', 'minor', { root: 'C', chordId: 'major' }],
+    ] as const)('%s: cadence edges equal the dominant relation, common G included', (_, mode, target) => {
+        const dominant = relation('dominant', mode, target).examples[0];
+        const ending = cadence(mode, target, { root: 'G', chordId: 'dominant-7' });
+        expect(lines(ending)).toEqual(lines(dominant));
+        expect(lines(ending)[0]).toContain('G=G');
+    });
+
+    it.each([
+        ['authentic', 'major', { root: 'C', chordId: 'major' }, { root: 'G', chordId: 'dominant-7' }],
+        ['deceptive', 'major', { root: 'A', chordId: 'minor' }, { root: 'G', chordId: 'dominant-7' }],
+        ['plagal', 'major', { root: 'C', chordId: 'major' }, { root: 'F', chordId: 'major' }],
+        ['minor plagal', 'major', { root: 'C', chordId: 'major' }, { root: 'F', chordId: 'minor' }],
+        ['Phrygian', 'minor', { root: 'G', chordId: 'major' }, { root: 'F', chordId: 'minor', bass: 'Ab' }],
+    ] as const)('%s ending holds every shared pitch class as a common tone', (_, mode, target, before) => {
+        const ending = cadence(mode, target, before);
+        const [from, to] = ending.steps.map(step => step.chord);
+        const voices = exampleTransitions(ending)[0].voices;
+        for (const tone of from.tones.filter(t => to.tones.some(u => u.pitchClass === t.pitchClass))) {
+            expect(voices.find(v => v.fromDegree === tone.degree)?.kind).toBe('held');
+        }
+    });
+});
+
+describe('Common-tone completion for curated edges', () => {
+    it('keeps a real common tone even when its destination already receives a resolution', () => {
+        const from = resolveChord({ root: 'G', chordId: 'dominant-7' }), to = resolveChord({ root: 'C', chordId: 'major' });
+        const voices = completeCommonTones(from, to, [{ fromDegree: 'b7', toDegree: '5', kind: 'resolution' }]);
+        expect(voices).toEqual([{ fromDegree: 'b7', toDegree: '5', kind: 'resolution' }, { fromDegree: '1', toDegree: '5', kind: 'held' }]);
+    });
+
+    it('never forks a source that already has an edge', () => {
+        const from = resolveChord({ root: 'G', chordId: 'dominant-7' }), to = resolveChord({ root: 'C', chordId: 'major' });
+        expect(completeCommonTones(from, to, [{ fromDegree: '1', toDegree: '1', kind: 'resolution' }]).filter(v => v.fromDegree === '1')).toHaveLength(1);
     });
 });

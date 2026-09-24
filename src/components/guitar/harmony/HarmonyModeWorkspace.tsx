@@ -71,7 +71,8 @@ export function HarmonyModeWorkspace({ query, result, onQueryChange, onOpenChord
         : item.id === 'predominant' ? preparationLabel : item.id === 'ii-v' ? predominantLabel : item.label;
     const exampleLabel = (id: string, label: string) => query.kind === 'tonic-sub' ? (id === 'iii' ? 'iii7' : id === 'vi' ? 'vi7' : label) : query.kind === 'tritone' ? (id === 'original' ? 'Original dominant' : 'Substitute dominant') : label;
     const lines = example?.kind === 'motion' ? auditionLines(example) : null;
-    const hasGuideTones = !!example && (lines ? lines.transitions.some(transition => transition.voices.length > 0) : example.steps.some(step => step.guides.length > 0));
+    // Line playback exists only for motion; a comparison is not a progression.
+    const hasGuideTones = !!lines && lines.transitions.some(transition => transition.voices.length > 0);
     const linesLabel = !lines || lines.guide ? 'Hear guide tones' : 'Hear voice lines';
     const unmetConditions = result.checks?.filter(check => check.state === 'fail').length ?? 0;
     const unknownConditions = result.checks?.filter(check => check.state === 'unknown').length ?? 0;

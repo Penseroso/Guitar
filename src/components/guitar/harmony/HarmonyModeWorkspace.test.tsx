@@ -119,6 +119,18 @@ describe('HarmonyModeWorkspace', () => {
         expect(screen.queryByRole('tab', { name: 'V7 → I' })).toBeNull();
     });
 
+    it.each([
+        ['dominant', 'Hear guide tones'],
+        ['fifths', 'Hear voice lines'],
+        ['tonic-sub', null],
+        ['minor-sub', null],
+    ] as const)('%s offers %s as line playback (none for comparisons)', (kind, label) => {
+        render(<Harness initial={{ ...DEFAULT_HARMONY_QUERY, kind }} />);
+        expect(screen.getByRole('button', { name: 'Play relation' })).toBeTruthy();
+        const lines = screen.queryAllByRole('button', { name: /^Hear / });
+        expect(lines.map(button => button.textContent)).toEqual(label ? [label] : []);
+    });
+
     it('uses minor-key preparation labels for a minor destination', async () => {
         const user = userEvent.setup();
         render(<Harness initial={{ ...DEFAULT_HARMONY_QUERY, frame: { ...DEFAULT_HARMONY_QUERY.frame, mode: 'minor' }, target: { root: 'C', chordId: 'minor' }, kind: 'ii-v' }} />);

@@ -1,20 +1,23 @@
+import { completeCommonTones, connectChords } from './connections';
 import { note, pc } from './roman';
 import { targetPolicy } from './target-policy';
 import type { ObservationContext, RelationResult, RelationTransition, ResolvedHarmonyChord, TonalFrame, ToneConnection } from './types';
 
 type EndingObservation = Pick<RelationResult, 'status' | 'observations' | 'missing' | 'interpretations' | 'checks'>;
 
-/** Illustrative voices for a recognized pattern; this is not an inferred performance or optimizer. */
+/**
+ * Illustrative voices for a recognized pattern; not an inferred performance or optimizer.
+ * An authentic V–I pair is the same chord pair the dominant relation connects, so it uses
+ * the same rules. Curated patterns keep their resolutions and gain every common tone.
+ * Half/unclassified endings deliberately show only the supplied bass movement.
+ */
 export function endingConnections(before: ResolvedHarmonyChord, target: ResolvedHarmonyChord, pattern: string): RelationTransition[] {
+    if (pattern === 'authentic' || pattern === 'picardy') return [{ fromStep: 0, toStep: 1, ...connectChords(before, target) }];
     const voices: ToneConnection[] = [];
-    const add = (fromDegree: string, toDegree: string, kind: ToneConnection['kind'] = 'resolution', guide = false) => {
-        if (before.tones.some(tone => tone.degree === fromDegree) && target.tones.some(tone => tone.degree === toDegree)) voices.push({ fromDegree, toDegree, kind, ...(guide ? { guide } : {}) });
+    const add = (fromDegree: string, toDegree: string, kind: ToneConnection['kind'] = 'resolution') => {
+        if (before.tones.some(tone => tone.degree === fromDegree) && target.tones.some(tone => tone.degree === toDegree)) voices.push({ fromDegree, toDegree, kind });
     };
-    if (pattern === 'authentic' || pattern === 'picardy') {
-        // Guide lines need a V7; a V triad's 3rd still resolves, but not as a guide-tone pair.
-        const seventh = before.tones.some(tone => tone.degree === 'b7');
-        add('3', '1', 'resolution', seventh); add('b7', target.tones.some(tone => tone.degree === 'b3') ? 'b3' : '3', 'resolution', seventh);
-    } else if (pattern === 'deceptive') {
+    if (pattern === 'deceptive') {
         add('3', target.tones.some(tone => tone.degree === 'b3') ? 'b3' : '3'); add('b7', '5');
     } else if (pattern === 'plagal') {
         add('1', target.tones.some(tone => tone.degree === 'b3') ? 'b3' : '3');
@@ -26,8 +29,9 @@ export function endingConnections(before: ResolvedHarmonyChord, target: Resolved
         const from = before.tones.find(tone => tone.pitchClass === before.bassPitchClass)!;
         const to = target.tones.find(tone => tone.pitchClass === target.bassPitchClass)!;
         add(from.degree, to.degree, from.pitchClass === to.pitchClass ? 'held' : 'approach');
+        return [{ fromStep: 0, toStep: 1, basis: 'supplied', voices }];
     }
-    return [{ fromStep: 0, toStep: 1, basis: 'supplied', voices }];
+    return [{ fromStep: 0, toStep: 1, basis: 'supplied', voices: completeCommonTones(before, target, voices) }];
 }
 
 /** A bounded pair observer. Phrase conclusions require supplied observations, never roots alone. */

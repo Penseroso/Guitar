@@ -5,7 +5,7 @@ import { note, pc, relativeChord, resolveChord, romanLabel, validateFrame } from
 import { spellDegree } from '@/domain/shared/spelling';
 import { targetPolicy } from './target-policy';
 import { endingConnections, observeEnding } from './ending-observation';
-import { connectChords, exampleTransitions } from './connections';
+import { completeCommonTones, connectChords, exampleTransitions } from './connections';
 import type { ChordRef, RelationExample, RelationQuery, RelationResult, RelationStep } from './types';
 
 const FUNCTIONAL_APPROACHES = new Set(['dominant', 'ii-v', 'predominant', 'leading', 'tritone']);
@@ -117,7 +117,7 @@ export function exploreRelation(query: RelationQuery): RelationResult {
                 const backdoor = () => step(flatSeven, 'Backdoor approach', ['5', 'b7']);
                 const arrival = () => step(target, 'Target', ['3', '5']);
                 // Curated lines: ♭VII7–I is neither fifth motion nor a tritone substitute.
-                const resolution = { fromStep: 1, toStep: 2, basis: 'supplied' as const, voices: [{ fromDegree: '5', toDegree: '3', kind: 'resolution' as const }, { fromDegree: 'b7', toDegree: '5', kind: 'resolution' as const }] };
+                const resolution = { fromStep: 1, toStep: 2, basis: 'supplied' as const, voices: completeCommonTones(resolveChord(flatSeven), target, [{ fromDegree: '5', toDegree: '3', kind: 'resolution' as const }, { fromDegree: 'b7', toDegree: '5', kind: 'resolution' as const }]) };
                 example('backdoor', '♭VII7–I', [backdoor(), arrival()], 'motion', [{ ...resolution, fromStep: 0, toStep: 1 }]);
                 const minorBackdoor = [step(iv, 'Minor subdominant', []), backdoor(), arrival()];
                 example('minor-backdoor', 'iv7–♭VII7–I', minorBackdoor, 'motion', [derive(minorBackdoor, 0), resolution]);
