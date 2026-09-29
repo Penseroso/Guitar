@@ -2,13 +2,54 @@ import { createScaleRef } from '@/domain/scale/scale-ref';
 import { KNOWLEDGE } from './knowledge';
 import { compareChords } from './facts';
 import { note, pc, relativeChord, resolveChord, romanLabel, validateFrame } from './roman';
-import { spellDegree } from '@/domain/shared/spelling';
+import { formatAccidentals, spellDegree } from '@/domain/shared/spelling';
+import { getKeyName } from '@/domain/shared/keys';
 import { targetPolicy } from './target-policy';
 import { endingConnections, observeEnding } from './ending-observation';
 import { completeCommonTones, connectChords, exampleTransitions } from './connections';
-import type { ChordRef, RelationExample, RelationQuery, RelationResult, RelationStep } from './types';
+import type { ChordRef, RelationExample, RelationQuery, RelationResult, RelationStep, RelationTransition, TonalFrame } from './types';
 
-const FUNCTIONAL_APPROACHES = new Set(['dominant', 'ii-v', 'predominant', 'leading', 'tritone']);
+const FUNCTIONAL_APPROACHES = new Set(['dominant', 'dominant-colour', 'ii-v', 'predominant', 'leading', 'tritone']);
+const BOTH_LENSES: TonalFrame['lens'][] = ['jazz-pop', 'classical'];
+/**
+ * Registry dominant vocabulary shown as colour on V. Classical: dominant 9ths and the
+ * altered (♭5/♯5) dominants. The 13th, ♯9 and sus4 dominants are jazz/pop vocabulary; a
+ * classical V13's leap from the 13th to 1̂ is not a pitch-class correspondence.
+ */
+const DOMINANT_COLOURS = [
+    { id: '9', chordId: 'dominant-9', suffix: '9', lenses: BOTH_LENSES },
+    { id: '13', chordId: 'dominant-13', suffix: '13', lenses: ['jazz-pop'] },
+    { id: '7b9', chordId: 'dominant-7-flat-9', suffix: '7♭9', lenses: BOTH_LENSES },
+    { id: '7#9', chordId: 'hendrix-7-sharp-9', suffix: '7♯9', lenses: ['jazz-pop'] },
+    { id: '7b5', chordId: 'dominant-7-flat-5', suffix: '7♭5', lenses: BOTH_LENSES },
+    { id: '7#5', chordId: 'dominant-7-sharp-5', suffix: '7♯5', lenses: BOTH_LENSES },
+    { id: '7sus4', chordId: 'dominant-7-sus4', suffix: '7sus4', lenses: ['jazz-pop'] },
+] as const;
+const DOMINANT_CORE = ['1', '3', '5', 'b7'];
+const COLLECTIONS = { Ionian: [0, 2, 4, 5, 7, 9, 11], 'Harmonic Minor': [0, 2, 3, 5, 7, 8, 11] } as const;
+const MAJOR_SCALE = COLLECTIONS.Ionian;
+/** Colour degrees are 4, 9, 11, 13 or altered (♭9, ♯5 …). */
+const toneText = (degree: string) => /^\d+$/.test(degree) ? `${degree}th` : degree.replace(/^b/, '♭').replace(/^#/, '♯');
+/** A parallel-minor tone named against the major reference, e.g. ♭6. */
+const loweredDegree = (tonic: number, pitchClass: number) => `♭${MAJOR_SCALE.indexOf(pc(pitchClass - tonic + 1) as never) + 1}`;
+
+/** Colour-tone facts read from the example's own validated edge, never a separate claim. */
+function colourNotes(step: RelationStep, target: RelationStep, transition: RelationTransition, minorTarget: boolean): string[] {
+    const colours = step.chord.tones.filter(tone => !DOMINANT_CORE.includes(tone.degree));
+    const notes = colours.map(tone => {
+        const voice = transition.voices.find(item => item.fromDegree === tone.degree);
+        const label = `${toneText(tone.degree)} ${formatAccidentals(tone.name)}`;
+        if (!voice) return `${label} · no fixed resolution`;
+        const destination = target.chord.tones.find(item => item.degree === voice.toDegree)!;
+        return voice.kind === 'held' ? `${label} · common tone` : `${label} → ${formatAccidentals(destination.name)}`;
+    });
+    if (!step.chord.tones.some(tone => tone.degree === '3')) notes.unshift('No 3rd · no 3rd–♭7 tritone');
+    const name = minorTarget ? 'Harmonic Minor' : 'Ionian';
+    const outside = colours.filter(tone => !COLLECTIONS[name].includes(pc(tone.pitchClass - target.chord.rootPitchClass) as never));
+    const key = formatAccidentals(target.chord.root);
+    notes.push(outside.length ? `Outside ${key} ${name} · ${outside.map(tone => formatAccidentals(tone.name)).join(', ')}` : `Colour tones · within ${key} ${name}`);
+    return notes;
+}
 
 /** Bounded, rule-scoped examples. Not a progression generator or a recommendation order. */
 export function exploreRelation(query: RelationQuery): RelationResult {
@@ -50,6 +91,26 @@ export function exploreRelation(query: RelationQuery): RelationResult {
                 example('dominant', tonicHarmony ? 'Dominant resolution' : tonicFamilyTarget ? 'Local tonicization' : appliedTarget ? 'Possible applied dominant' : `Approach to ${target.name}`, [dom(), end()]);
                 result.observations = [tonicHarmony ? 'Target · key center' : `Local target · ${target.name}`, '3 → root · ♭7 → third'];
                 break;
+            case 'dominant-colour': {
+                const colours = DOMINANT_COLOURS.filter(colour => (colour.lenses as readonly string[]).includes(query.frame.lens));
+                result.checks.push({ id: 'colour-vocabulary', label: query.frame.lens === 'classical' ? 'Classical · V9, V♭9, altered 5th' : 'Jazz/pop · extended, altered, sus', state: 'pass' });
+                for (const colour of colours) {
+                    const variant = step({ ...dominant, chordId: colour.chordId }, dom().role, domRoman.replace(/^V7/, `V${colour.suffix}`));
+                    const steps = [variant, end()];
+                    example(colour.id, colour.suffix, steps);
+                    const added = result.examples.at(-1)!;
+                    added.notes = colourNotes(variant, steps[1], added.transitions![0], minor);
+                    if (colour.id === '7b5') {
+                        // Pitch-set fact only; the partner root takes a plain key spelling (A♭7♭5 ↔ D7♭5, not E𝄫).
+                        const partner = resolveChord({ root: getKeyName(pc(variant.chord.rootPitchClass + 6)), chordId: colour.chordId });
+                        if (partner.tones.every(tone => variant.chord.tones.some(item => item.pitchClass === tone.pitchClass))) added.notes.push(`Same pitches as ${partner.name} · different root`);
+                    }
+                    if (colour.id === '7b9') added.notes.push('Without the root · a diminished seventh');
+                }
+                result.status = 'possible';
+                result.observations = [tonicHarmony ? 'Target · key center' : `Local target · ${target.name}`, 'Where present · 3rd + ♭7 resolve as in V7', 'Alterations · not interchangeable · melody + voicing decide'];
+                break;
+            }
             case 'fifths': {
                 const from = relativeChord(target.root, 5, 7, minor ? 'minor' : 'major');
                 // Triads: plain voice leading, not guide tones.
@@ -82,16 +143,64 @@ export function exploreRelation(query: RelationQuery): RelationResult {
                 result.observations = [minor ? 'Minor · iiø7 → V7' : 'Major · ii7 → V7', 'Predominant · role in this context'];
                 break;
             }
+            case 'neapolitan': {
+                result.checks.push({ id: 'classical-rule', label: 'Classical lens', state: query.frame.lens === 'classical' ? 'pass' : 'fail' });
+                result.checks.push({ id: 'tonic-target', label: 'Tonic-family target at the key center', state: tonicHarmony ? 'pass' : 'fail' });
+                if (query.frame.lens !== 'classical') return unsupported('The Neapolitan sixth is shown under the classical lens; a jazz/pop ♭IImaj7 is a different, subV-related colour.');
+                if (!tonicHarmony) return unsupported('Target · tonic-family quality at the key center required for this Neapolitan rule');
+                const firstInversion = (ref: ChordRef) => ({ ...ref, bass: resolveChord(ref).tones.find(tone => ['3', 'b3'].includes(tone.degree))!.name });
+                const neapolitan = step(firstInversion(relativeChord(target.root, 2, 1, 'major')), 'Chromatic predominant', '♭II6');
+                const dominant7 = step(dominant, 'Dominant', 'V7');
+                // Curated: ♭2̂ falls to the leading tone, ♭6̂ to 5̂; the shared 4̂ is retained as V7's 7th.
+                const toDominant = { fromStep: 0, toStep: 1, basis: 'supplied' as const, voices: completeCommonTones(neapolitan.chord, dominant7.chord, [{ fromDegree: '1', toDegree: '3', kind: 'resolution' as const }, { fromDegree: '5', toDegree: '1', kind: 'resolution' as const }]) };
+                const cadential = [neapolitan, dominant7, end()];
+                example('neapolitan', '♭II6–V7–I', cadential, 'motion', [toDominant, derive(cadential, 1)]);
+                const ii = firstInversion(relativeChord(target.root, 2, 2, minor ? 'diminished' : 'minor'));
+                example('ii-neapolitan', minor ? 'ii°6 / ♭II6' : 'ii6 / ♭II6', [step(ii, 'Diatonic predominant', minor ? 'ii°6' : 'ii6'), step(neapolitan.chord, 'Chromatic predominant', '♭II6')], 'comparison');
+                result.observations = ['♭2 → leading tone · ♭6 → 5', 'Chromatic ii6 · same predominant role', '4̂ in the bass · first inversion'];
+                if (!minor) result.observations.push('Major key · ♭6 also borrowed from minor');
+                break;
+            }
             case 'tonic-sub': {
-                result.checks.push({ id: 'tonic-family-rule', label: 'Major tonic family · jazz/pop', state: tonicHarmony && !minor && query.frame.lens === 'jazz-pop' ? 'pass' : 'fail' });
-                if (!tonicHarmony || minor || query.frame.lens !== 'jazz-pop') return unsupported('Target · major tonic-family quality at the key center required · jazz/pop only');
-                const main = { root: target.root, chordId: 'major-7' };
-                for (const [degree, interval, id] of [[3, 4, 'iii'], [6, 9, 'vi']] as const) {
-                    const alternate = relativeChord(target.root, degree, interval, 'minor-7');
-                    example(id, `Imaj7 / ${id}7`, [step(main, 'Tonic family'), step(alternate, 'Tonic-family alternative')], 'comparison');
+                result.checks.push({ id: 'tonic-family-rule', label: 'Tonic family · jazz/pop', state: tonicHarmony && query.frame.lens === 'jazz-pop' ? 'pass' : 'fail' });
+                if (!tonicHarmony || query.frame.lens !== 'jazz-pop') return unsupported('Target · tonic-family quality at the key center required · jazz/pop only');
+                if (minor) {
+                    // Relative-major tonic area only; ♭VImaj7 reads as subdominant minor in jazz function charts.
+                    const alternate = relativeChord(target.root, 3, 3, 'major-7');
+                    example('flat-iii', 'im7 / ♭IIImaj7', [step({ root: target.root, chordId: 'minor-7' }, 'Tonic family'), step(alternate, 'Tonic-family alternative')], 'comparison');
+                    result.observations = ['Jazz/pop · minor tonic family', 'Relative major · shares ♭3, 5, ♭7', 'Shared tones ≠ interchangeable'];
+                } else {
+                    const main = { root: target.root, chordId: 'major-7' };
+                    for (const [degree, interval, id] of [[3, 4, 'iii'], [6, 9, 'vi']] as const) {
+                        const alternate = relativeChord(target.root, degree, interval, 'minor-7');
+                        example(id, `Imaj7 / ${id}7`, [step(main, 'Tonic family'), step(alternate, 'Tonic-family alternative')], 'comparison');
+                    }
+                    result.observations = ['Jazz/pop · tonic family', 'Shared tones ≠ interchangeable'];
                 }
                 result.status = 'possible';
-                result.observations = ['Jazz/pop · tonic family', 'Shared tones ≠ interchangeable'];
+                break;
+            }
+            case 'mixture': {
+                result.checks.push({ id: 'mixture-frame', label: 'Major key · major tonic-family target', state: tonicHarmony && !minor ? 'pass' : 'fail' });
+                if (query.frame.mode === 'minor') return unsupported('Minor frame · a major tonic from the parallel major is observed as the Picardy third under Cadence');
+                if (!tonicHarmony || minor) return unsupported('Target · major tonic-family quality at the key center required for parallel-minor borrowing');
+                const tonic = target.rootPitchClass;
+                // Same scale degree, diatonic chord vs parallel-minor chord. Comparison only.
+                for (const [id, degree, [fromInterval, fromQuality], [toInterval, toQuality]] of [
+                    ['ii', 2, [2, 'minor-7'], [2, 'half-diminished-7']],
+                    ['flat-iii', 3, [4, 'minor'], [3, 'major']],
+                    ['iv', 4, [5, 'major'], [5, 'minor']],
+                    ['flat-vi', 6, [9, 'minor'], [8, 'major']],
+                    ['flat-vii', 7, [11, 'diminished'], [10, 'major']],
+                ] as const) {
+                    const borrowed = step(relativeChord(target.root, degree, toInterval, toQuality), 'Borrowed · parallel minor');
+                    example(id, borrowed.roman, [step(relativeChord(target.root, degree, fromInterval, fromQuality), 'Major-key diatonic'), borrowed], 'comparison');
+                    const tones = borrowed.chord.tones.filter(tone => !MAJOR_SCALE.includes(pc(tone.pitchClass - tonic) as never));
+                    result.examples.at(-1)!.notes = [`Borrowed · ${tones.map(tone => `${formatAccidentals(tone.name)} (${loweredDegree(tonic, tone.pitchClass)})`).join(', ')}`, ...(id === 'flat-vii' ? ['Also in Mixolydian'] : [])];
+                }
+                result.status = 'possible';
+                result.observations = ['Parallel minor · borrowed colour', 'Same degree · changed quality', 'Functional readings · Subdominant minor, Backdoor', 'Comparison · not a sequence'];
+                result.scaleLinks = [{ label: `${target.root} Aeolian · borrowed collection`, ref: createScaleRef('Diatonic Modes', 'Aeolian', target.rootPitchClass) }];
                 break;
             }
             case 'minor-sub': {

@@ -20,8 +20,9 @@ describe('Harmony expansion interactions', () => {
         const user = userEvent.setup();
         const changed = vi.fn();
         render(<Harness initial={DEFAULT_HARMONY_QUERY} changed={changed} />);
-        await user.click(screen.getByRole('tab', { name: 'Subdominant minor' }));
-        const minorSub = screen.getByRole('tab', { name: 'Minor-subdominant family' });
+        await user.click(screen.getByRole('tab', { name: 'Modal interchange' }));
+        expect(screen.getByRole('tab', { name: 'Borrowed chords' }).getAttribute('aria-selected')).toBe('true');
+        const minorSub = screen.getByRole('tab', { name: 'Subdominant minor' });
         minorSub.focus();
         await user.keyboard('{ArrowRight}');
         expect(screen.getByRole('tab', { name: 'Backdoor' }).getAttribute('aria-selected')).toBe('true');
@@ -86,5 +87,47 @@ describe('Harmony expansion interactions', () => {
         await user.click(screen.getByRole('tab', { name: 'Leading-tone diminished' }));
         await user.click(screen.getByRole('tab', { name: 'Common-tone diminished' }));
         expect(screen.queryByRole('button', { name: /connected to selected tone/ })).toBeNull();
+    });
+
+    it('shows dominant colours as separate examples with their own tone facts', async () => {
+        const user = userEvent.setup();
+        render(<Harness initial={DEFAULT_HARMONY_QUERY} />);
+        await user.click(screen.getByRole('tab', { name: 'Dominant colours' }));
+        const colours = within(screen.getByRole('tablist', { name: 'Dominant colour' })).getAllByRole('tab');
+        expect(colours.map(tab => tab.textContent)).toEqual(['9', '13', '7♭9', '7♯9', '7♭5', '7♯5', '7sus4']);
+        expect(screen.getByRole('button', { name: 'Open G9 in Chord' })).toBeTruthy();
+        expect(screen.getByRole('button', { name: 'Hear guide tones' })).toBeTruthy();
+        expect(screen.getByText('9th A → G')).toBeTruthy();
+        await user.click(screen.getByRole('tab', { name: '7sus4' }));
+        expect(screen.getByRole('button', { name: 'Open G7sus4 in Chord' })).toBeTruthy();
+        expect(screen.getByText('No 3rd')).toBeTruthy();
+        expect(screen.getByRole('button', { name: 'Hear voice lines' })).toBeTruthy();
+        expect(screen.getByText('Possible interpretation')).toBeTruthy();
+    });
+
+    it('offers borrowed chords as comparisons before the functional interchange readings', async () => {
+        const user = userEvent.setup();
+        render(<Harness initial={DEFAULT_HARMONY_QUERY} />);
+        await user.click(screen.getByRole('tab', { name: 'Modal interchange' }));
+        expect(within(screen.getByRole('tablist', { name: 'Modal interchange relationships' })).getAllByRole('tab').map(tab => tab.textContent)).toEqual(['Borrowed chords', 'Subdominant minor', 'Backdoor']);
+        expect(within(screen.getByRole('tablist', { name: 'Examples' })).getAllByRole('tab').map(tab => tab.textContent)).toEqual(['iiø7', '♭III', 'iv', '♭VI', '♭VII']);
+        await user.click(screen.getByRole('tab', { name: '♭VI' }));
+        expect(screen.getByRole('region', { name: 'Chord comparison' })).toBeTruthy();
+        expect(screen.getByRole('button', { name: 'Open A♭ in Chord' })).toBeTruthy();
+        expect(screen.getByText('A♭ (♭6), E♭ (♭3)')).toBeTruthy();
+        expect(screen.queryAllByRole('button', { name: /^Hear / })).toEqual([]);
+    });
+
+    it('scopes the Neapolitan sixth to the classical lens', async () => {
+        const user = userEvent.setup();
+        const minorC = { ...DEFAULT_HARMONY_QUERY, target: { root: 'C', chordId: 'minor' }, kind: 'neapolitan' as const };
+        render(<Harness initial={{ ...minorC, frame: { ...DEFAULT_HARMONY_QUERY.frame, mode: 'minor' } }} />);
+        expect(screen.getByText('Outside current scope')).toBeTruthy();
+        cleanup();
+        render(<Harness initial={{ ...minorC, frame: { tonic: 'C', mode: 'minor', lens: 'classical' } }} />);
+        expect(screen.getByRole('tab', { name: 'Neapolitan ♭II6' }).getAttribute('aria-selected')).toBe('true');
+        expect(screen.getByRole('button', { name: 'Open D♭/F in Chord' })).toBeTruthy();
+        await user.click(screen.getByRole('tab', { name: 'ii°6 / ♭II6' }));
+        expect(screen.getByRole('region', { name: 'Chord comparison' })).toBeTruthy();
     });
 });

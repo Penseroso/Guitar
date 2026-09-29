@@ -44,14 +44,17 @@ function agreedMoves(sources: HarmonyTone[], targets: HarmonyTone[]): [HarmonyTo
 /**
  * Tendency-tone rules with a direction fixed by common-practice/jazz theory:
  * common tones hold; the leading tone rises to the destination root; a chordal
- * 7th and the leading tone's tritone partner fall by step. Any other tone (e.g.
- * vii°7's 3rd, whose motion depends on doubling) is left unconnected.
+ * 7th and the leading tone's tritone partner fall by step. On a dominant-quality
+ * source (3rd + ♭7), a 9th (♭9/9/♯9) and a lowered 5th fall by step and a raised 5th
+ * rises by half step. Any other tone (e.g. vii°7's 3rd, whose motion depends on
+ * doubling, or an 11th/13th that is not retained) is left unconnected.
  */
 function tendencies(from: ResolvedHarmonyChord, to: ResolvedHarmonyChord): ToneConnection[] {
     const root = to.tones.find(t => t.degree === '1')!;
     const leading = from.tones.find(t => pc(root.pitchClass - t.pitchClass) === 1);
     const fall = (tone: HarmonyTone) => to.tones.map(target => ({ target, size: pc(tone.pitchClass - target.pitchClass) }))
         .filter(item => item.size === 1 || item.size === 2).sort((a, b) => a.size - b.size)[0]?.target;
+    const rise = (tone: HarmonyTone) => to.tones.find(target => pc(target.pitchClass - tone.pitchClass) === 1);
     const motion = pc(to.rootPitchClass - from.rootPitchClass);
     const dominant = from.tones.some(t => t.degree === '3') && from.tones.some(t => t.degree === 'b7');
     // Guide tones: 3rd/7th lines in descending-fifth motion or a tritone-substitute dominant.
@@ -62,7 +65,9 @@ function tendencies(from: ResolvedHarmonyChord, to: ResolvedHarmonyChord): ToneC
         if (same) return [edge(tone, same, guide)];
         if (tone === leading) return [edge(tone, root, guide)];
         const partner = leading && distance(tone.pitchClass, leading.pitchClass) === 6;
-        const target = (SEVENTHS.includes(tone.degree) && isSeventhChord(from)) || partner ? fall(tone) : undefined;
+        // Every registry chord with a 7th degree is a seventh chord, including 7sus4 (no 3rd, no guide tones).
+        const falls = SEVENTHS.includes(tone.degree) || partner || (dominant && (/^[b#]?9$/.test(tone.degree) || tone.degree === 'b5'));
+        const target = falls ? fall(tone) : dominant && tone.degree === '#5' ? rise(tone) : undefined;
         return target ? [edge(tone, target, guide)] : [];
     });
 }

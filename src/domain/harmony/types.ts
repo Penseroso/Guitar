@@ -8,7 +8,7 @@ export interface TonalFrame {
 }
 export interface ChordRef { root: string; chordId: string; bass?: string }
 export interface RomanRef { degree: number; alteration: number; chordId: string; appliedTo?: RomanRef }
-export type RelationKind = 'dominant' | 'fifths' | 'ii-v' | 'tritone' | 'backdoor' | 'tonic-sub' | 'predominant' | 'minor-sub' | 'leading' | 'common-tone' | 'passing' | 'cadence';
+export type RelationKind = 'dominant' | 'dominant-colour' | 'fifths' | 'ii-v' | 'tritone' | 'backdoor' | 'tonic-sub' | 'predominant' | 'neapolitan' | 'mixture' | 'minor-sub' | 'leading' | 'common-tone' | 'passing' | 'cadence';
 export interface ObservationContext {
     before?: ChordRef;
     middle?: ChordRef;
@@ -57,6 +57,8 @@ export interface RelationExample {
     provenance?: 'illustration' | 'observation';
     /** Explicit, illustrative correspondences, not inferred optimal voice leading. */
     transitions?: RelationTransition[];
+    /** Facts specific to this example (e.g. a colour tone's connection); never a sequence claim. */
+    notes?: string[];
 }
 export type RelationStatus = 'matched' | 'possible' | 'insufficient-context' | 'unsupported';
 export interface RelationCheck { id: string; label: string; state: 'pass' | 'fail' | 'unknown' }
