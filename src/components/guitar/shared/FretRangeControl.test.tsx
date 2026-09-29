@@ -39,6 +39,27 @@ describe('FretRangeControl', () => {
         expect(onChange).toHaveBeenCalledWith(6, 24);
     });
 
+    it('reports each fret change during a live drag and reverts on cancel', () => {
+        const onChange = vi.fn();
+        const { container } = render(<FretRangeControl min={0} max={24} maxFret={24} live onChange={onChange} />);
+        const track = container.querySelector('[class*="track"]') as HTMLDivElement;
+        track.getBoundingClientRect = () => ({ left: 0, width: 240, top: 0, right: 240, bottom: 44, height: 44, x: 0, y: 0, toJSON: () => null });
+        track.setPointerCapture = vi.fn();
+        track.hasPointerCapture = vi.fn(() => true);
+        track.releasePointerCapture = vi.fn();
+        fireEvent.pointerDown(track, { pointerId: 7, button: 0, clientX: 60 });
+        expect(onChange).toHaveBeenLastCalledWith(6, 24);
+        fireEvent.pointerMove(track, { pointerId: 7, clientX: 80 });
+        expect(onChange).toHaveBeenLastCalledWith(8, 24);
+        fireEvent.pointerUp(track, { pointerId: 7, clientX: 80 });
+        expect(onChange).toHaveBeenCalledTimes(2);
+
+        onChange.mockClear();
+        fireEvent.pointerDown(track, { pointerId: 8, button: 0, clientX: 60 });
+        fireEvent.pointerCancel(track, { pointerId: 8 });
+        expect(onChange).toHaveBeenLastCalledWith(0, 24);
+    });
+
     it.each(['pointerCancel', 'lostPointerCapture'] as const)('discards the preview on %s', completion => {
         const onChange = vi.fn();
         const { container } = render(<FretRangeControl min={0} max={24} maxFret={24} onChange={onChange} />);

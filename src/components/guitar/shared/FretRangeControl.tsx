@@ -14,34 +14,43 @@ export interface FretRangeControlProps {
     ticks?: readonly number[];
     helpText?: string | null;
     compact?: boolean;
+    /** Report every fret change while dragging instead of only on release. */
+    live?: boolean;
 }
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 
 export function FretRangeControl({
     min, max, onChange, maxFret = 15, ticks = [0, 5, 10, 15],
-    helpText = 'Applies to fretted notes. Open strings use their own filter.', compact = false,
+    helpText = 'Applies to fretted notes. Open strings use their own filter.', compact = false, live = false,
 }: FretRangeControlProps) {
     const handles = useRef<Record<Handle, HTMLButtonElement | null>>({ min: null, max: null });
     const [preview, setPreview] = useState<Range | null>(null);
-    const drag = useRef<{ id: number; x: number; width: number; min: number; max: number; handle: Handle | null; pending: Range } | null>(null);
+    const drag = useRef<{ id: number; x: number; width: number; min: number; max: number; handle: Handle | null; pending: Range; start: Range; emitted: Range } | null>(null);
     const shownMin = preview?.[0] ?? min;
     const shownMax = preview?.[1] ?? max;
     const update = (handle: Handle, value: number) => {
         if (handle === 'min') onChange(clamp(value, 0, max), max);
         else onChange(min, clamp(value, min, maxFret));
     };
+    const emitLive = (current: NonNullable<typeof drag.current>) => {
+        if (!live || (current.pending[0] === current.emitted[0] && current.pending[1] === current.emitted[1])) return;
+        current.emitted = current.pending;
+        onChange(current.pending[0], current.pending[1]);
+    };
     const commit = (pointerId: number) => {
         if (drag.current?.id !== pointerId) return;
-        const [nextMin, nextMax] = drag.current.pending;
+        const { pending: [nextMin, nextMax], emitted } = drag.current;
         drag.current = null;
         setPreview(null);
-        if (nextMin !== min || nextMax !== max) onChange(nextMin, nextMax);
+        if (nextMin !== emitted[0] || nextMax !== emitted[1]) onChange(nextMin, nextMax);
     };
     const cancel = (pointerId: number) => {
         if (drag.current?.id !== pointerId) return;
+        const { start, emitted } = drag.current;
         drag.current = null;
         setPreview(null);
+        if (start[0] !== emitted[0] || start[1] !== emitted[1]) onChange(start[0], start[1]);
     };
 
     return <fieldset className={`${styles.control} ${compact ? styles.compact : ''}`}>
@@ -57,8 +66,9 @@ export function FretRangeControl({
                 const handle = min === max && targetHandle ? null : targetHandle ?? (Math.abs(fret - min) <= Math.abs(fret - max) ? 'min' : 'max');
                 const nextMin = !targetHandle && handle === 'min' ? Math.min(fret, max) : min;
                 const nextMax = !targetHandle && handle === 'max' ? Math.max(fret, min) : max;
-                drag.current = { id: event.pointerId, x: event.clientX, width: bounds.width, min: nextMin, max: nextMax, handle, pending: [nextMin, nextMax] };
+                drag.current = { id: event.pointerId, x: event.clientX, width: bounds.width, min: nextMin, max: nextMax, handle, pending: [nextMin, nextMax], start: [min, max], emitted: [min, max] };
                 setPreview(drag.current.pending);
+                emitLive(drag.current);
                 event.currentTarget.setPointerCapture(event.pointerId);
                 if (handle) handles.current[handle]?.focus({ preventScroll: true });
             }}
@@ -76,6 +86,7 @@ export function FretRangeControl({
                         ? [clamp(value, 0, current.max), current.max]
                         : [current.min, clamp(value, current.min, maxFret)];
                     setPreview(current.pending);
+                    emitLive(current);
                 }
             }}
             onPointerUp={event => {
