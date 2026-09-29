@@ -16,10 +16,11 @@ import { SwipePicker } from './SwipePicker';
 import styles from './harmony-workspace.module.css';
 
 const FAMILIES: { name: string; kinds: { id: RelationKind; label: string }[] }[] = [
-    { name: 'Dominant motion', kinds: [{ id: 'dominant', label: 'Dominant resolution' }, { id: 'fifths', label: 'Motion of 5th' }, { id: 'tritone', label: 'Tritone substitution (subV7)' }] },
-    { name: 'Predominant', kinds: [{ id: 'ii-v', label: 'ii–V' }, { id: 'predominant', label: 'IV–V' }] },
+    { name: 'Dominant motion', kinds: [{ id: 'dominant', label: 'Dominant resolution' }, { id: 'dominant-colour', label: 'Dominant colours' }, { id: 'fifths', label: 'Motion of 5th' }, { id: 'tritone', label: 'Tritone substitution (subV7)' }] },
+    { name: 'Predominant', kinds: [{ id: 'ii-v', label: 'ii–V' }, { id: 'predominant', label: 'IV–V' }, { id: 'neapolitan', label: 'Neapolitan ♭II6' }] },
     { name: 'Tonic substitutes', kinds: [{ id: 'tonic-sub', label: 'Tonic substitutes' }] },
-    { name: 'Subdominant minor', kinds: [{ id: 'minor-sub', label: 'Minor-subdominant family' }, { id: 'backdoor', label: 'Backdoor' }] },
+    // General borrowed colour first; the functional readings of borrowed chords follow it.
+    { name: 'Modal interchange', kinds: [{ id: 'mixture', label: 'Borrowed chords' }, { id: 'minor-sub', label: 'Subdominant minor' }, { id: 'backdoor', label: 'Backdoor' }] },
     { name: 'Diminished approach', kinds: [{ id: 'leading', label: 'Leading-tone diminished' }, { id: 'common-tone', label: 'Common-tone diminished' }, { id: 'passing', label: 'Passing diminished' }] },
     { name: 'Cadence', kinds: [{ id: 'cadence', label: 'Cadence' }] },
 ];
@@ -69,7 +70,7 @@ export function HarmonyModeWorkspace({ query, result, onQueryChange, onOpenChord
     const relationLabel = (item: { id: RelationKind; label: string }) => item.id === 'dominant' && query.kind === 'dominant' && example
         ? example.steps.map(step => step.roman).join(' → ')
         : item.id === 'predominant' ? preparationLabel : item.id === 'ii-v' ? predominantLabel : item.label;
-    const exampleLabel = (id: string, label: string) => query.kind === 'tonic-sub' ? (id === 'iii' ? 'iii7' : id === 'vi' ? 'vi7' : label) : query.kind === 'tritone' ? (id === 'original' ? 'Original dominant' : 'Substitute dominant') : label;
+    const exampleLabel = (id: string, label: string) => query.kind === 'tonic-sub' ? (id === 'iii' ? 'iii7' : id === 'vi' ? 'vi7' : id === 'flat-iii' ? '♭IIImaj7' : label) : query.kind === 'tritone' ? (id === 'original' ? 'Original dominant' : 'Substitute dominant') : label;
     const lines = example?.kind === 'motion' ? auditionLines(example) : null;
     // Line playback exists only for motion; a comparison is not a progression.
     const hasGuideTones = !!lines && lines.transitions.some(transition => transition.voices.length > 0);
@@ -109,7 +110,7 @@ export function HarmonyModeWorkspace({ query, result, onQueryChange, onOpenChord
     useEffect(() => { cancel(); }, [query, example?.id, cancel]);
 
     const update = (patch: Partial<RelationQuery>) => onQueryChange({ ...query, ...patch });
-    const exampleTabs = examples.length > 1 && <div className={styles.exampleTabs} role="tablist" aria-label={query.kind === 'tritone' ? 'Audition version' : 'Examples'}>
+    const exampleTabs = examples.length > 1 && <div className={styles.exampleTabs} role="tablist" aria-label={query.kind === 'tritone' ? 'Audition version' : query.kind === 'dominant-colour' ? 'Dominant colour' : 'Examples'}>
         {examples.map(item => <button key={item.id} type="button" role="tab" aria-selected={item.id === example?.id} tabIndex={item.id === example?.id ? 0 : -1} onKeyDown={onTabKeyDown} className={styles.tab} onClick={() => setSelectedExampleId(item.id)}>{exampleLabel(item.id, item.label)}</button>)}
     </div>;
 
@@ -164,7 +165,8 @@ export function HarmonyModeWorkspace({ query, result, onQueryChange, onOpenChord
             {playing && activeStep !== null && example && <p className={styles.nowPlaying}>Playing {example.steps[activeStep]?.chord.name}</p>}
             {example && <p className={styles.exampleLabel}><span className={styles.provenance}>{example.provenance === 'observation' ? 'Observed' : 'Example'}</span>{showExampleLabel && <span>{copyLines(example.label)}</span>}</p>}
             {example && <RelationExampleView key={`${example.id}:${JSON.stringify(query)}`} example={example} alternative={query.kind === 'tritone' ? result.examples.find(item => item.id !== example.id) : undefined} onOpenChord={onOpenChord} activeStep={activeStep} />}
-            {(mainObservations.length > 0 || result.missing.length > 0) && <div className={styles.findings}>
+            {(mainObservations.length > 0 || result.missing.length > 0 || !!example?.notes?.length) && <div className={styles.findings}>
+                {example?.notes?.map((note, index) => <p key={`note-${index}`}>{copyLines(note)}</p>)}
                 {mainObservations.map((observation, index) => <p key={`observation-${index}`}>{copyLines(observation)}</p>)}
                 {result.missing.map((missing, index) => <p key={`missing-${index}`} className={styles.missing}>Needed: {missing}</p>)}
             </div>}

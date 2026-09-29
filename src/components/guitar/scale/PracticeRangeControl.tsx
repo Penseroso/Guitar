@@ -19,7 +19,7 @@ export function PracticeRangeControl({ fretRange, visibleStrings, onRangeChange,
     const isDefault = fretRange[0] === 0 && fretRange[1] === 24 && ALL_STRINGS.every(string => visibleStrings.includes(string));
     return <section className={styles.practice} aria-label="Practice range">
         <FretRangeControl min={fretRange[0]} max={fretRange[1]} onChange={onRangeChange}
-            maxFret={24} ticks={[0, 12, 24]} helpText={null} compact />
+            maxFret={24} ticks={[0, 12, 24]} helpText={null} compact live />
         <div className={styles.options}>
             <fieldset className={styles.strings}>
                 <legend>Strings <span>1 is high E</span></legend>

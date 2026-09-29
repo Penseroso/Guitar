@@ -53,7 +53,7 @@ describe('Tone correspondence fixtures', () => {
     });
 });
 
-const KINDS: RelationKind[] = ['dominant', 'fifths', 'ii-v', 'predominant', 'tritone', 'leading', 'backdoor', 'common-tone', 'cadence'];
+const KINDS: RelationKind[] = ['dominant', 'dominant-colour', 'fifths', 'ii-v', 'predominant', 'tritone', 'leading', 'backdoor', 'common-tone', 'cadence'];
 const TARGETS: ChordRef[] = [{ root: 'C', chordId: 'major' }, { root: 'C', chordId: 'minor' }, { root: 'D', chordId: 'minor' }, { root: 'C', chordId: 'major-7' }, { root: 'A', chordId: 'minor-7' }, { root: 'C', chordId: 'major', bass: 'E' }];
 
 describe('Correspondence invariants across relations and targets', () => {

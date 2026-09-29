@@ -46,7 +46,7 @@ Use concise labels and scannable fragments rather than instructional paragraphs 
 
 ### Harmony vocabulary and mapping
 
-- Prefer working-musician terminology: Key, Major / Minor, Resolve to, Harmonic relationships, Dominant motion, Predominant, Tonic substitutes, Subdominant minor, Diminished approach, Cadence. Theory style is a secondary disclosure; notation convention belongs there too.
+- Prefer working-musician terminology: Key, Major / Minor, Resolve to, Harmonic relationships, Dominant motion, Dominant colours, Predominant, Tonic substitutes, Modal interchange (Borrowed chords, Subdominant minor, Backdoor), Diminished approach, Cadence. Theory style is a secondary disclosure; notation convention belongs there too.
 - Translate engine statuses into Established relation, Possible interpretation, More context needed, and Outside current scope. Never change domain status semantics to simplify copy.
 - Chord identity is a vertical hierarchy: Roman numeral, chord name, function. Keep guide-tone motion and explanation on separate lines, not a chain of dot-separated phrases.
 - Voice correspondence links actual chord tones by harmonic role. Rows are formula roles, not pitch: every chord stacks root, 3rd, 5th, 7th, extensions with the root at the bottom, and a tone is never moved to make a line horizontal, so slope carries no melodic meaning. Show direction in the selection detail (½ step up, common tone). Mark a supplied slash bass with a small `bass` badge in its role row; never imply register or a performed voicing. Keep many-to-one resolutions visible.

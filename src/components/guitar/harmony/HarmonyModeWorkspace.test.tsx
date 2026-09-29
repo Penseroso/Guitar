@@ -122,7 +122,9 @@ describe('HarmonyModeWorkspace', () => {
     it.each([
         ['dominant', 'Hear guide tones'],
         ['fifths', 'Hear voice lines'],
+        ['dominant-colour', 'Hear guide tones'],
         ['tonic-sub', null],
+        ['mixture', null],
         ['minor-sub', null],
     ] as const)('%s offers %s as line playback (none for comparisons)', (kind, label) => {
         render(<Harness initial={{ ...DEFAULT_HARMONY_QUERY, kind }} />);
