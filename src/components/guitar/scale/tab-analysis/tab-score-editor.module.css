@@ -1,0 +1,56 @@
+.score { max-width: 100%; min-width: 0; margin-top: 16px; }
+.system { max-width: 100%; min-width: 0; margin-bottom: 24px; }
+.viewport { max-width: 100%; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; border-block: 1px solid var(--workspace-border); background: var(--workspace-panel); }
+.sheet { width: 100%; padding-block: 8px 16px; box-sizing: border-box; }
+.headers, .row, .annotations, .insertions { display: grid; grid-template-columns: var(--score-columns); }
+.corner, .stringLabel { width: 44px; position: sticky; left: 0; z-index: 2; background: var(--workspace-panel); }
+.measureHeader { position: relative; display: flex; border-left: 1px solid var(--workspace-border); min-width: 0; min-height: 44px; }
+.measureNumber { position: absolute; top: 2px; left: 8px; pointer-events: none; color: var(--workspace-muted); font-size: 11px; }
+.header, .cell { min-width: 44px; box-sizing: border-box; }
+.header { position: relative; flex: 1; height: 44px; min-height: 44px; border: 0; padding: 24px 0 8px; background: transparent; color: var(--workspace-muted); cursor: col-resize; display: flex; align-items: center; justify-content: center; font: inherit; touch-action: pan-y; user-select: none; }
+.header[aria-pressed="true"]::after { content: ''; position: absolute; height: 1px; bottom: 0; left: 6px; right: 6px; background: #eee; }
+.scoreBody { position: relative; user-select: none; }
+.insertions { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.insertionSlot { position: relative; min-width: 44px; }
+.insertPosition { position: absolute; top: calc(50% - 22px); right: -22px; width: 44px; height: 44px; padding: 0; border: 0; background: transparent; color: var(--workspace-muted); opacity: 0; pointer-events: auto; cursor: pointer; font: 18px/1 ui-monospace, Consolas, monospace; transition: opacity 150ms; }
+.insertPosition:hover, .insertPosition:focus-visible { opacity: 1; }
+.insertPosition:disabled { opacity: 0; pointer-events: none; cursor: default; }
+.insertPosition:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: -2px; }
+.insertPosition > span { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: var(--workspace-panel); }
+.touchActions { position: absolute; top: 44px; z-index: 5; width: 52px; padding: 4px; box-sizing: border-box; border: 1px solid var(--workspace-border); border-radius: 10px; background: #1c1c1e; box-shadow: 0 8px 24px rgba(0,0,0,.35); }
+.touchActions button { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; padding: 0; border-radius: 6px; background: transparent; color: #ff453a; cursor: pointer; }
+.touchActions button:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: -2px; }
+.onsetDot { width: 3px; height: 3px; border-radius: 50%; background: transparent; }
+.header[aria-pressed="true"] .onsetDot { background: #eee; }
+.header:hover .onsetDot { background: var(--workspace-muted); }
+.stringLabel { display: flex; justify-content: center; align-items: center; min-height: 44px; font: 11px ui-monospace, Consolas, monospace; color: var(--workspace-muted); }
+.cell { position: relative; height: 44px; min-height: 44px; background: linear-gradient(transparent calc(50% - .5px), #353535 calc(50% - .5px), #353535 calc(50% + .5px), transparent calc(50% + .5px)); }
+.cell[data-bar-start="true"] { border-left: 1px solid var(--workspace-border); }
+.cell[data-selected="true"] { background-color: rgba(255,255,255,.025); }
+.cellButton { width: 100%; height: 44px; min-width: 44px; min-height: 44px; padding: 0; display: flex; align-items: center; justify-content: center; border: 0; border-radius: 0; background: transparent; color: #f4f4f5; cursor: text; }
+.cellButton:hover { background: rgba(255,255,255,.035); }
+.cellButton[data-editing="true"] { visibility: hidden; }
+.cell[data-active="true"]::after { content: ''; position: absolute; pointer-events: none; height: 2px; width: 20px; left: calc(50% - 10px); bottom: 7px; background: #eee; }
+.fret { min-width: 20px; padding: 0 4px; background: var(--workspace-panel); font: 16px/24px ui-monospace, Consolas, monospace; text-align: center; }
+.fret[data-focused="true"] { font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
+.empty { color: transparent; font-size: 20px; line-height: 24px; background: transparent; }
+.cell[data-active="true"] .empty, .cellButton:hover .empty { color: var(--workspace-muted); background: var(--workspace-panel); }
+.editor { position: absolute; inset: 0; width: 100%; height: 44px; min-width: 44px; min-height: 44px; padding: 0 3px; border: 0; border-radius: 0; outline-offset: -2px !important; background: var(--workspace-panel); color: #fff; text-align: center; font: 16px/24px ui-monospace, Consolas, monospace; caret-color: #fff; user-select: text; }
+.cellButton:focus-visible, .header:focus-visible, .editor:focus { outline: 2px solid var(--workspace-focus); outline-offset: -2px; }
+.annotations { grid-auto-rows: minmax(44px, auto); gap: 0; }
+.annotation { position: relative; min-width: 44px; min-height: 44px; display: flex; align-items: center; gap: 5px; padding: 0 8px; border: 0; color: #f4f4f5; background: transparent; text-align: left; font: inherit; font-size: 12px; cursor: pointer; }
+.annotation > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.annotation > small { flex-shrink: 0; color: var(--workspace-muted); font-size: 10px; }
+.annotation[data-span="true"]::after { content: ''; position: absolute; left: 8px; right: 8px; bottom: 5px; height: 4px; border: 1px solid var(--workspace-border); border-top: 0; }
+.annotation[data-source="candidate"]::after { border-style: dashed; }
+.annotation[data-kind="roman"] { font-family: ui-serif, Georgia, serif; font-size: 15px; }
+.annotation[aria-expanded="true"] { text-decoration: underline; text-underline-offset: 4px; }
+.annotation:hover { color: #fff; background: rgba(255,255,255,.025); }
+.annotation:focus-visible, .annotationDetail button:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: -2px; }
+.annotationDetail { display: flex; align-items: flex-start; gap: 16px; justify-content: space-between; padding: 12px 8px; border-bottom: 1px solid var(--workspace-border); font-size: 12px; }
+.annotationDetail strong { font-weight: 500; }
+.annotationDetail p { margin: 5px 0 0; color: var(--workspace-muted); line-height: 1.6; }
+.annotationDetail button { flex-shrink: 0; min-width: 44px; min-height: 44px; padding: 0; border: 0; background: transparent; color: var(--workspace-muted); cursor: pointer; font: inherit; font-size: 20px; }
+.error { font-size: 12px; color: #e6c896; margin: 8px 0 0; }
+@media (hover: none) { .insertPosition:hover { opacity: 0; } .insertionSlot[data-current="true"] .insertPosition:not(:disabled) { opacity: .85; } }
+@media (prefers-reduced-motion: reduce) { .viewport { scroll-behavior: auto; } .insertPosition { transition: none; } }

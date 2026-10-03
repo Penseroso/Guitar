@@ -7,7 +7,11 @@ including Half–Whole Diminished, follow the same state contract.
 
 ## Analysis entry and state
 
-The existing **Play this scale over** cards are the only chord-analysis entry point.
+Within the **Explore scale** workflow, the existing **Play this scale over** cards are the
+chord-analysis entry point. The independent **Analyze tab** workflow is specified in
+[`tab-analysis.md`](tab-analysis.md); it owns its document and context separately and has
+no fretboard. Workflow changes preserve each session, and adopting the Explore scale in
+tab analysis is an explicit one-time copy rather than shared state.
 Nothing is selected automatically. A card click does not play audio or select a voicing.
 All three existing bases (`primary`, `characteristic`, `containment`) remain distinct.
 

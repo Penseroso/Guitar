@@ -16,6 +16,9 @@ import {
     reduceHarmonicWorkspaceState,
 } from '../../features/harmonic-workspace/state';
 import { ScaleModeWorkspace } from './scale/ScaleModeWorkspace';
+import { TabAnalysisWorkspace } from './scale/tab-analysis/TabAnalysisWorkspace';
+import { createTabAnalysisState, reduceTabAnalysis } from '@/features/tab-analysis/state';
+import { ChoiceGroup } from './chord/ChoiceGroup';
 import { WorkspaceHeader } from './shared/WorkspaceHeader';
 import { ChordModeWorkspace, type ChordWorkspaceIntent } from './chord/ChordModeWorkspace';
 import { ChordExplorationPanel } from './chord/ChordExplorationPanel';
@@ -93,6 +96,9 @@ export default function ClientApp() {
     const scaleName = 'Ionian';
 
     // --- State: Scale Mode ---
+    const [scaleWorkflow, setScaleWorkflow] = useState<'explore' | 'analyze'>('explore');
+    // Owned above the conditional workspaces so mode switches retain the source and context.
+    const [tabAnalysis, dispatchTabAnalysis] = useReducer(reduceTabAnalysis, undefined, createTabAnalysisState);
     const {
         scaleRef,
         scaleGroup: exploredScaleGroup,
@@ -303,6 +309,7 @@ export default function ClientApp() {
     }, []);
     const openScaleFromHarmony = useCallback((ref: ScaleRef) => {
         commitScaleRef(ref);
+        setScaleWorkflow('explore');
         setHarmonyReturnMode('scale');
         setMode('scale');
     }, [commitScaleRef]);
@@ -326,12 +333,17 @@ export default function ClientApp() {
 
     return (
         <div className="min-h-screen bg-[#050505] text-[#a0a0a0] selection:bg-white/20 p-3 sm:p-8 flex flex-col items-center gap-12 overflow-x-hidden font-sans">
-            <div className={`w-full ${mode === 'scale' ? 'max-w-[1800px]' : 'max-w-6xl'} grid grid-cols-1 lg:grid-cols-12 gap-8 items-start`}>
+            <div className={`w-full ${mode === 'scale' && scaleWorkflow === 'explore' ? 'max-w-[1800px]' : 'max-w-6xl'} grid grid-cols-1 lg:grid-cols-12 gap-8 items-start`}>
                 <div className="col-span-1 lg:col-span-8"><WorkspaceHeader mode={mode} onModeChange={(next) => { setHarmonyReturnMode(null); if (next === 'chord') setChordBassTone(undefined); setMode(next); }} /></div>
 
                 {mode === 'scale' && (
                     <div className="col-span-1 lg:col-span-12 min-w-0">
-                        <ScaleModeWorkspace
+                        <div className="mb-5">
+                            <ChoiceGroup label="Scale workflow" compact segmented name="scale-workflow" value={scaleWorkflow}
+                                onChange={value => setScaleWorkflow(value as 'explore' | 'analyze')}
+                                options={[{ value: 'explore', label: 'Explore scales' }, { value: 'analyze', label: 'Analyze tab' }]} />
+                        </div>
+                        {scaleWorkflow === 'analyze' ? <TabAnalysisWorkspace state={tabAnalysis} dispatch={dispatchTabAnalysis} exploredScale={scaleRef} /> : <ScaleModeWorkspace
                             scaleRef={scaleRef}
                             analysis={scaleAnalysis}
                             selectedChordId={selectedChordId}
@@ -372,7 +384,7 @@ export default function ClientApp() {
                             scaleIntervalLabels={scaleDerived.scaleIntervalLabels}
                             fingering={fingering}
                             doubleStops={playableDoubleStops}
-                        />
+                        />}
                         <BottomMetrics />
                     </div>
                 )}
