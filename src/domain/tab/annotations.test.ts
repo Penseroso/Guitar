@@ -73,7 +73,9 @@ describe('score annotation evidence adapter', () => {
         expect(candidate).toMatchObject({ start: 0, end: 3, source: 'candidate' });
         expect(candidate?.label).toContain('Am7');
         expect(candidate?.label).toContain('C6');
-        expect(result.some(item => item.kind === 'chord' || item.kind === 'roman')).toBe(false);
+        expect(result.some(item => item.kind === 'chord')).toBe(false);
+        expect(result.find(item => item.kind === 'roman')).toMatchObject({ source: 'candidate' });
+        expect(result.find(item => item.kind === 'roman')?.detail).toContain('Only if this complete single-note bar');
     });
 
     it('groups equal dyad intervals within a measure and separates bar boundaries', () => {

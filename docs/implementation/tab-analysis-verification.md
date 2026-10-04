@@ -1,6 +1,13 @@
 # Editable tab analysis verification
 
-## Current hover insertion and touch deletion — 2026-10-04
+## Current product and theory audit — 2026-10-04
+
+The subsequent [TAB Analysis audit](tab-analysis-audit-2026-10-04.md) records the current
+implementation, evidence boundaries and release judgment: **35 files / 852 tests passed**,
+production build and scoped lint passed, with default/changed browser checks at 390, 768
+and 1335px. The earlier interaction verification below remains useful historical context.
+
+## Earlier hover insertion and touch deletion — 2026-10-04
 
 Analyze always processes the whole score. Score selection is for editing; there are no
 Whole score/Selected passage buttons, separate input mode or persistent detail sidebar.

@@ -129,9 +129,22 @@ export function buildTabScoreAnnotations(
         add('arpeggio', arpeggio.start, arpeggio.end, `${namesLabel(candidates.map(candidate => candidate.name))} arpeggio?`,
             `Consecutive single notes match the complete pitch collection of ${candidateDetail(candidates)}. This is an arpeggio candidate, not an assertion of the actual accompaniment.`, 'candidate', 'above');
     }
+    for (const span of analysis.harmonicSpans) {
+        if (span.basis !== 'whole-bar-collection') continue;
+        const candidates = span.candidates.map(contextualCandidate);
+        const boundary = 'Only if this complete single-note bar is grouped as one harmonic collection. Bar boundaries do not establish harmonic duration or accompaniment.';
+        if (candidates.every(candidate => candidate.match === 'incomplete')) {
+            add('arpeggio', span.start, span.end, `${namesLabel(candidates.map(candidate => candidate.name))} (no 5)?`,
+                `Possible omitted-fifth arpeggio: ${candidateDetail(candidates)}. Root, third and seventh are present; the fifth is not inserted. ${boundary}`, 'candidate', 'above');
+        }
+        if (candidates.every(candidate => candidate.roman !== null)) {
+            add('roman', span.start, span.end, `${namesLabel([...new Set(candidates.map(candidate => candidate.roman!))])}?`,
+                `Candidate readings: ${candidateDetail(candidates)}, conditional on the supplied ${formatAccidentals(context.frame!.tonic)} ${context.frame!.mode} key. ${boundary}`, 'candidate', 'below');
+        }
+    }
     for (const progression of analysis.progressionReadings) {
         add('progression', progression.start, progression.end, progression.label,
-            progression.evidence, 'observed', 'below');
+            progression.evidence, progression.source, 'below');
     }
     return annotations;
 }

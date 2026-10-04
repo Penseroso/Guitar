@@ -329,7 +329,10 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
             const annotationRows = (placement: 'above' | 'below') => {
                 const placed: { annotation: TabScoreAnnotation; start: number; end: number; lane: number }[] = [];
                 const laneEnds: number[] = [];
-                for (const annotation of visibleAnnotations.filter(item => item.placement === placement)) {
+                // Pack in score order, independently of the engine's annotation-kind order.
+                const ordered = visibleAnnotations.filter(item => item.placement === placement)
+                    .sort((a, b) => a.start - b.start || b.end - a.end || a.id.localeCompare(b.id));
+                for (const annotation of ordered) {
                     const start = Math.max(0, slots.findIndex(item => item.index >= Math.max(firstIndex, annotation.start)));
                     const lastSlot = slots.findLastIndex(item => item.index >= 0 && item.index <= Math.min(lastIndex, annotation.end));
                     const end = Math.max(start, lastSlot);
@@ -344,7 +347,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                         data-span={end > start} data-source={annotation.source} data-kind={annotation.kind}
                         aria-label={`${annotation.label}, ${annotation.kind} annotation`} title={annotation.label} aria-expanded={openAnnotation === annotation.id}
                         onClick={() => { if (commit()) setOpenAnnotation(previous => previous === annotation.id ? null : annotation.id); }}>
-                        <span>{annotation.label}</span>{annotation.source === 'candidate' && !annotation.label.endsWith('?') && <small aria-label="Candidate">?</small>}
+                        <span>{annotation.source === 'candidate' ? annotation.label.replace(/\s*\?$/, '') : annotation.label}</span>{annotation.source === 'candidate' && <small aria-label="Candidate">?</small>}
                     </button>)}
                 </div>;
             };

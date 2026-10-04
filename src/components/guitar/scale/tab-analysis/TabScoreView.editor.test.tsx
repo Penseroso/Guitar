@@ -217,6 +217,23 @@ describe('editable tab score', () => {
         expect(screen.queryByRole('note', { name: 'Annotation detail' })).toBeNull();
     });
 
+    it('packs disjoint annotations in score order while preserving overlap and visible uncertainty', () => {
+        const annotation = (id: string, start: number, end: number): TabScoreAnnotation => ({
+            id, start, end, kind: 'arpeggio', startMomentId: `moment-${start}`, endMomentId: `moment-${end}`,
+            label: `${id}?`, detail: `Evidence for ${id}`, source: 'candidate', placement: 'above',
+        });
+        render(<Harness annotations={[annotation('Last', 2, 2), annotation('First', 0, 0), annotation('Middle', 1, 1), annotation('Across', 0, 2)]} />);
+        const first = screen.getByRole('button', { name: 'First?, arpeggio annotation' });
+        const middle = screen.getByRole('button', { name: 'Middle?, arpeggio annotation' });
+        const last = screen.getByRole('button', { name: 'Last?, arpeggio annotation' });
+        const across = screen.getByRole('button', { name: 'Across?, arpeggio annotation' });
+        expect(first.style.gridRow).toBe(middle.style.gridRow);
+        expect(middle.style.gridRow).toBe(last.style.gridRow);
+        expect(across.style.gridRow).not.toBe(first.style.gridRow);
+        expect(within(first).getByLabelText('Candidate').textContent).toBe('?');
+        expect(first.querySelector('span')?.textContent).toBe('First');
+    });
+
     it('offers insertion at the focused score position with the Insert key', async () => {
         const user = userEvent.setup();
         render(<Harness />);
@@ -340,6 +357,7 @@ describe('editable tab score', () => {
         vi.useFakeTimers();
         render(<Harness />);
         touchPointer('pointerdown', header(2));
+        expect(fireEvent.contextMenu(header(2))).toBe(false);
         act(() => vi.advanceTimersByTime(549));
         expect(screen.queryByRole('group', { name: 'Column actions' })).toBeNull();
         act(() => vi.advanceTimersByTime(1));

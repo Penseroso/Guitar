@@ -20,7 +20,7 @@
 .touchActions { position: absolute; top: 44px; z-index: 5; width: 52px; padding: 4px; box-sizing: border-box; border: 1px solid var(--workspace-border); border-radius: 10px; background: #1c1c1e; box-shadow: 0 8px 24px rgba(0,0,0,.35); }
 .touchActions button { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; padding: 0; border-radius: 6px; background: transparent; color: #ff453a; cursor: pointer; }
 .touchActions button:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: -2px; }
-.onsetDot { width: 3px; height: 3px; border-radius: 50%; background: transparent; }
+.onsetDot { width: 3px; height: 3px; border-radius: 50%; background: #666; }
 .header[aria-pressed="true"] .onsetDot { background: #eee; }
 .header:hover .onsetDot { background: var(--workspace-muted); }
 .stringLabel { display: flex; justify-content: center; align-items: center; min-height: 44px; font: 11px ui-monospace, Consolas, monospace; color: var(--workspace-muted); }
@@ -49,8 +49,9 @@
 .annotation:focus-visible, .annotationDetail button:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: -2px; }
 .annotationDetail { display: flex; align-items: flex-start; gap: 16px; justify-content: space-between; padding: 12px 8px; border-bottom: 1px solid var(--workspace-border); font-size: 12px; }
 .annotationDetail strong { font-weight: 500; }
+.annotationDetail > div { min-width: 0; overflow-wrap: anywhere; }
 .annotationDetail p { margin: 5px 0 0; color: var(--workspace-muted); line-height: 1.6; }
 .annotationDetail button { flex-shrink: 0; min-width: 44px; min-height: 44px; padding: 0; border: 0; background: transparent; color: var(--workspace-muted); cursor: pointer; font: inherit; font-size: 20px; }
 .error { font-size: 12px; color: #e6c896; margin: 8px 0 0; }
-@media (hover: none) { .insertPosition:hover { opacity: 0; } .insertionSlot[data-current="true"] .insertPosition:not(:disabled) { opacity: .85; } }
+@media (hover: none), (pointer: coarse) { .header { -webkit-touch-callout: none; } .insertPosition:hover { opacity: 0; } .insertionSlot[data-current="true"] .insertPosition:not(:disabled) { opacity: .85; } }
 @media (prefers-reduced-motion: reduce) { .viewport { scroll-behavior: auto; } .insertPosition { transition: none; } }

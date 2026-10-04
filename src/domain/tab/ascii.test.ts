@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { MAX_TAB_MOMENTS, MAX_TAB_SOURCE_LENGTH, parseAsciiTab } from './ascii';
 import { TAB_EXAMPLE, TAB_TUNINGS } from './types';
+import { analyzeTabSelection } from './analysis';
+import { buildTabScoreAnnotations } from './annotations';
 
 const block = (bodies: string[], labels: readonly string[] = ['e', 'B', 'G', 'D', 'A', 'E']) => bodies.map((body, index) => `${labels[index]}|${body}|`).join('\n');
 const one = (first: string) => block([first, ...Array(5).fill(first.replace(/[^|]/g, '-'))]);
@@ -74,11 +76,39 @@ describe('parseAsciiTab', () => {
         expect(resultDocument(block(Array(6).fill('0-'), ['Fb', 'Cb', 'G', 'D', 'A', 'E'])).moments[0].notes).toHaveLength(6);
     });
 
-    it('reports muted notes without inventing pitch or a silent-only analysis moment', () => {
+    it('retains muted-only positions as empty pitch observations without inventing rests', () => {
         const result = parseAsciiTab(one('x--0--X'));
         expect(result.ok).toBe(true);
         expect(result.diagnostics).toHaveLength(2);
-        if (result.ok) expect(result.document.moments).toHaveLength(1);
+        if (result.ok) {
+            expect(result.document.moments.map(moment => moment.notes.length)).toEqual([0, 1, 0]);
+            expect(result.document.moments.map(moment => moment.column)).toEqual([2, 5, 8]);
+            expect(result.document.moments[0]).not.toHaveProperty('duration');
+            expect(result.document.moments[0]).not.toHaveProperty('rest');
+        }
+    });
+
+    it('does not bridge a muted strum into an adjacent harmonic progression', () => {
+        const document = resultDocument(block(['3--x--0', '3--x--1', '4--x--0', '---x---', '---x---', '---x---']));
+        const context = { scale: null, chord: null, frame: { tonic: 'C', mode: 'major' as const, lens: 'jazz-pop' as const } };
+        const analysis = analyzeTabSelection(document, { start: 0, end: 2 }, context);
+        const annotations = buildTabScoreAnnotations(analysis, context);
+        expect(document.moments.map(moment => moment.notes.length)).toEqual([3, 0, 3]);
+        expect(annotations.filter(item => item.kind === 'chord').map(item => item.label)).toEqual(['G', 'C']);
+        expect(annotations.filter(item => item.kind === 'progression')).toEqual([]);
+    });
+
+    it('does not bridge a muted melodic event into an arpeggio collection', () => {
+        const document = resultDocument(one('0-3-x-7'));
+        const context = { scale: null, chord: null, frame: null };
+        const analysis = analyzeTabSelection(document, { start: 0, end: 3 }, context);
+        expect(buildTabScoreAnnotations(analysis, context).filter(item => item.kind === 'arpeggio')).toEqual([]);
+    });
+
+    it('keeps pitched observations when a different string is muted in the same column', () => {
+        const document = resultDocument(block(['0--', 'x--', '---', '---', '---', '---']));
+        expect(document.moments).toHaveLength(1);
+        expect(document.moments[0].notes.map(note => note.fret)).toEqual([0]);
     });
 
     it('warns about skipped prose, preserving actual source positions', () => {
@@ -88,7 +118,56 @@ describe('parseAsciiTab', () => {
         if (result.ok) expect(result.document.moments[0].notes[0].source).toEqual({ line: 2, column: 3 });
     });
 
-    it.each(['h', 'p', 'b', '/', '\\', '~', '^', 't', '\t', '<', '𝄞'])('rejects unsupported %s with an exact source location', (symbol) => {
+    it('retains a realistic legato phrase at its original fret columns without inventing attacks or timing', () => {
+        const result = parseAsciiTab(one('5h7p5--7/9\\7--10~~--12H14P12'));
+        expect(result.ok).toBe(true);
+        if (!result.ok) return;
+        expect(result.document.moments.map(moment => moment.notes[0].fret)).toEqual([5, 7, 5, 7, 9, 7, 10, 12, 14, 12]);
+        expect(result.document.moments.map(moment => moment.notes[0].source?.column)).toEqual([3, 5, 7, 10, 12, 14, 17, 23, 26, 29]);
+        expect(result.document.timing).toBe('order-only');
+        expect(result.document.moments[1]).not.toHaveProperty('attack');
+        expect(result.document.moments[1]).not.toHaveProperty('duration');
+        expect(result.diagnostics).toHaveLength(4);
+        expect(result.diagnostics[0]).toMatchObject({ severity: 'warning', line: 1, column: 4 });
+        expect(result.diagnostics[3].message).toContain('only the written base fret');
+    });
+
+    it('keeps other strings aligned with explicit technique endpoints and retains tuning/capo semantics', () => {
+        const source = block(['10h12--', '---10--', '-------', '-------', '-------', '0------'], ['e', 'B', 'G', 'D', 'A', 'D']);
+        const document = resultDocument(source, { tuningMidi: TAB_TUNINGS[1].midi, capo: 2 });
+        expect(document.moments.map(moment => moment.notes.map(note => note.midi))).toEqual([[76, 40], [78, 71]]);
+        expect(document.moments[1].notes.map(note => note.source)).toEqual([{ line: 1, column: 6 }, { line: 2, column: 6 }]);
+    });
+
+    it('does not collapse technique columns or align a note inside a multi-digit endpoint', () => {
+        const result = parseAsciiTab(block(['5h12-', '---2-', '-----', '-----', '-----', '-----']));
+        expect(result.ok).toBe(false);
+        expect(result.diagnostics.at(-1)).toMatchObject({ severity: 'error', line: 2, column: 6 });
+    });
+
+    it.each(['h5', '5h', '5h-7', '5hh7', '/7', '7/', '7\\', '5/p7', '5h|7', 'x~', '~7', '7~9', '7~~h9'])('rejects incomplete or ambiguous technique %s', (phrase) => {
+        expect(parseAsciiTab(one(phrase)).ok).toBe(false);
+    });
+
+    it.each(['7b9', '7b(9)', '7B9', '7r5', '7R5', '7^9'])('rejects bend/release %s without treating its target as another fret', (phrase) => {
+        const result = parseAsciiTab(one(phrase));
+        expect(result).toMatchObject({ ok: false, diagnostics: [{ severity: 'error', line: 1, column: 4 }] });
+        expect(result.diagnostics[0].message).toContain('target number may describe a bent pitch');
+        expect(result).not.toHaveProperty('document');
+    });
+
+    it('warns once per supported technique class across repeated phrases and blocks', () => {
+        const result = parseAsciiTab(`${one('5h7p5-7/9\\7~~')}\n\n${one('5h7p5-7/9\\7~~')}`);
+        expect(result.ok).toBe(true);
+        expect(result.diagnostics).toHaveLength(4);
+    });
+
+    it('checks endpoint fret limits and MIDI limits even when technique notation is accepted', () => {
+        expect(parseAsciiTab(one('35h37')).ok).toBe(false);
+        expect(parseAsciiTab(one('0h5'), { tuningMidi: [124, 59, 55, 50, 45, 40] }).ok).toBe(false);
+    });
+
+    it.each(['t', '\t', '<', '𝄞'])('rejects unsupported %s with an exact source location', (symbol) => {
         const result = parseAsciiTab(one(`0${symbol}2`));
         expect(result).toMatchObject({ ok: false, diagnostics: [{ severity: 'error', line: 1, column: 4 }] });
     });

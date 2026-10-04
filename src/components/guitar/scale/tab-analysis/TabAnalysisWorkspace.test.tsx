@@ -29,6 +29,23 @@ function textFile(name: string, text: () => Promise<string>) {
 const chooseFile = (file: File) => fireEvent.change(screen.getByLabelText('Open a text tab file'), { target: { files: [file] } });
 
 describe('score-first explicit analysis workflow', () => {
+    it('reveals the key prerequisite without assigning a key until the user explicitly sets one', async () => {
+        const user = userEvent.setup(); render(<Harness />);
+        expect(screen.getByText(/No key supplied/)).toBeTruthy();
+        expect(screen.getByText('Free timing · Positions are not beats.')).toBeTruthy();
+        await user.click(screen.getByRole('button', { name: 'Add key for Roman / progression' }));
+        await waitFor(() => expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Set a key' })));
+        expect(screen.queryByRole('button', { name: 'Clear key' })).toBeNull();
+        expect(screen.getByRole('button', { name: 'Add key for Roman / progression' })).toBeTruthy();
+        await user.click(screen.getByRole('button', { name: 'Set a key' }));
+        expect(screen.getByRole('button', { name: 'Key: C major' })).toBeTruthy();
+        await user.click(screen.getByRole('button', { name: 'Next Key mode' }));
+        expect(screen.getByRole('button', { name: 'Key: C minor' })).toBeTruthy();
+        expect(screen.getByText(/Pinned reference for this score, not a detected key/)).toBeTruthy();
+        expect(screen.getByText(/minor V–i, iv–i/)).toBeTruthy();
+        await user.click(screen.getByRole('button', { name: 'Clear key' }));
+        expect(screen.getByRole('button', { name: 'Add key for Roman / progression' })).toBeTruthy();
+    });
     it('commits the first typed note when Analyze is clicked and rejects an invalid draft', async () => {
         const user = userEvent.setup(); render(<Harness />);
         await user.click(screen.getByRole('button', { name: 'String 1, onset 1, empty' }));

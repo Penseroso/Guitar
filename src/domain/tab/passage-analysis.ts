@@ -1,3 +1,4 @@
+import { buildTabHarmonicSpans, observeTabProgressions, type TabHarmonicSpan } from './harmonic-spans';
 import { frameChords, romanLabel } from '@/domain/harmony/roman';
 import type { TonalFrame } from '@/domain/harmony/types';
 import { formatAccidentals, parseNoteName } from '@/domain/shared/spelling';
@@ -39,6 +40,7 @@ export interface TabProgressionReading {
     end: number;
     label: string;
     evidence: string;
+    source: 'observed' | 'candidate';
 }
 export interface TabPassageAnalysis {
     texture: 'empty' | 'monophonic' | 'dyads' | 'chordal' | 'mixed';
@@ -54,7 +56,8 @@ export interface TabPassageAnalysis {
         assumption: 'low-to-low-high-to-high';
     }[];
     arpeggios: { start: number; end: number; candidates: TabChordCandidate[]; provenance: 'pitch-collection' }[];
-    /** Bounded major-key patterns, not inferred phrase endings or confirmed functions. */
+    harmonicSpans: TabHarmonicSpan[];
+    /** Bounded key-conditional patterns, not inferred phrase endings or confirmed functions. */
     progressionReadings: TabProgressionReading[];
     chordSequence: {
         index: number;
@@ -121,42 +124,11 @@ function repeatedPatterns(runs: TabMelodicRun[]): TabPassageAnalysis['repeatedPa
         .slice(0, 3);
 }
 
-function observeProgressionPatterns(moments: TabAnalyzedMoment[], frame: TonalFrame | null): TabProgressionReading[] {
-    if (!frame || frame.mode !== 'major') return [];
-    const tonic = parseNoteName(frame.tonic);
-    if (!tonic) return [];
-    const exact = moments.map(moment => {
-        if (moment.kind !== 'chord') return null;
-        const candidates = moment.candidates.filter(candidate => candidate.match === 'exact');
-        // E.g. Dm7/F6 or C6/Am7 stay ambiguous even when one fits a familiar pattern.
-        return candidates.length === 1 ? candidates[0] : null;
-    });
-    const isDegree = (candidate: TabChordCandidate | null, interval: number, qualities: string[]) => {
-        const root = candidate && parseNoteName(candidate.chord.root);
-        return Boolean(candidate && root && root.pitchClass === (tonic.pitchClass + interval) % 12 && qualities.includes(candidate.chord.chordId));
-    };
-    const readings: TabProgressionReading[] = [];
-    for (let end = 1; end < moments.length; end++) {
-        if (!isDegree(exact[end], 0, ['major', 'major-7'])) continue;
-        let start = end - 1;
-        let label: string;
-        if (isDegree(exact[start], 7, ['major', 'dominant-7'])) {
-            if (start > 0 && isDegree(exact[start - 1], 2, ['minor', 'minor-7'])) {
-                start--;
-                label = 'ii–V–I pattern';
-            } else label = 'V–I motion';
-        } else if (isDegree(exact[start], 5, ['major', 'major-7'])) label = 'IV–I motion';
-        else continue;
-        readings.push({ start: moments[start].index, end: moments[end].index, label,
-            evidence: `Unique exact chord-formula matches at adjacent columns in the supplied ${formatAccidentals(frame.tonic)} major key. Phrase ending and harmonic function are not established.` });
-    }
-    return readings;
-}
-
 export function analyzeTabPassage(
     moments: TabAnalyzedMoment[],
     candidatesFor: (pitchClasses: number[]) => TabChordCandidate[],
     frame: TonalFrame | null,
+    completeMeasures: ReadonlySet<number> = new Set(),
 ): TabPassageAnalysis {
     const melodicRuns: TabMelodicRun[] = [];
     let singleNotes: TabAnalyzedMoment[] = [];
@@ -262,6 +234,7 @@ export function analyzeTabPassage(
     const kinds = new Set(moments.filter(moment => moment.kind !== 'empty').map(moment => moment.kind));
     const texture = !kinds.size ? 'empty' : kinds.size > 1 ? 'mixed'
         : kinds.has('single-note') ? 'monophonic' : kinds.has('dyad') ? 'dyads' : 'chordal';
-    return { texture, moments, melodicRuns, repeatedPatterns: repeatedPatterns(melodicRuns), dyadMotions, arpeggios, chordSequence,
-        progressionReadings: observeProgressionPatterns(moments, frame) };
+    const harmonicSpans = buildTabHarmonicSpans(moments, candidatesFor, completeMeasures);
+    return { texture, moments, melodicRuns, repeatedPatterns: repeatedPatterns(melodicRuns), dyadMotions, arpeggios, chordSequence, harmonicSpans,
+        progressionReadings: observeTabProgressions(harmonicSpans, frame) };
 }

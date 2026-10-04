@@ -43,7 +43,9 @@
 .capoControl output { min-width: 18px; color: #f4f4f5; }
 .capoControl input { min-width: 100px; min-height: 44px; flex: 1; accent-color: #e4e4e7; cursor: pointer; }
 .resultLayout { display: block; }
-.analysisToolbar { display: flex; align-items: center; justify-content: flex-end; gap: 8px 20px; flex-wrap: wrap; margin: 8px 0 12px; }
+.analysisToolbar { display: flex; align-items: center; justify-content: space-between; gap: 8px 20px; flex-wrap: wrap; margin: 8px 0 12px; }
+.touchHint { display: none; }
+@media (hover: none), (pointer: coarse) { .desktopHint { display: none; } .touchHint { display: block; } }
 .structureTools > summary { min-height: 44px; min-width: 44px; padding: 8px 4px; color: var(--workspace-muted); cursor: pointer; }
 .structureTools[open] { flex-basis: 100%; }
 .scoreSection, .analysis { min-width: 0; }

@@ -52,6 +52,7 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
     const fileInput = useRef<HTMLInputElement>(null);
     const sourceInput = useRef<HTMLTextAreaElement>(null);
     const contextElement = useRef<HTMLDetailsElement>(null);
+    const keyControls = useRef<HTMLDivElement>(null);
     const scoreHeading = useRef<HTMLHeadingElement>(null);
     const tuning = TAB_TUNINGS.find(item => item.id === state.tuningId) ?? TAB_TUNINGS[0];
     const scale = state.context.scale && resolveScaleRef(state.context.scale);
@@ -59,6 +60,15 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
         ? buildTabScoreAnnotations(state.analysis.result, state.analysis.context) : [],
     [state.analysisStatus, state.analysis]);
     const hasNotes = !!state.document?.moments.some(moment => moment.notes.length);
+    const keyTitle = state.context.frame ? `${state.context.frame.tonic} ${state.context.frame.mode}` : 'No key supplied';
+    const openKeyContext = () => {
+        setContextOpen(true);
+        requestAnimationFrame(() => {
+            keyControls.current?.scrollIntoView?.({ block: 'nearest' });
+            const target = keyControls.current?.querySelector<HTMLButtonElement>(state.context.frame ? 'button[aria-label^="Key tonic"]' : 'button');
+            target?.focus({ preventScroll: true });
+        });
+    };
 
     useEffect(() => () => { readRevision.current += 1; }, []);
     const cancelRead = () => { readRevision.current += 1; setReadingFile(false); setFileError(null); };
@@ -112,7 +122,7 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
                 aria-describedby="tab-input-hint" placeholder={'e|----------------|\nB|----------------|\nG|----------------|\nD|----------------|\nA|----------------|\nE|----------------|'}
                 onChange={event => { cancelRead(); dispatch({ type: 'edit-source', source: event.target.value }); }} />
             <div className={styles.inputFooter}>
-                <p id="tab-input-hint" className={styles.meta}>Six aligned lines, frets 0–36. Rhythm is left unknown.</p>
+                <p id="tab-input-hint" className={styles.meta}>Six aligned lines, frets 0–36. h/p, slides and ~ retain written frets; bends are unsupported. Rhythm is unknown.</p>
                 <div className={styles.actions}>
                     <button className={styles.primary} type="button" disabled={!state.source.trim() || readingFile} onClick={importTab}>Import tab</button>
                 </div>
@@ -124,7 +134,7 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
             </li>)}
         </ul>}
         <details ref={contextElement} className={styles.context} open={contextOpen} onToggle={event => setContextOpen(event.currentTarget.open)}>
-            <summary><span>Context</span><span className={styles.contextSummary}>{tuning.label} · Capo {state.capo} · {scaleTitle(state.context.scale)}</span></summary>
+            <summary><span>Context</span><span className={styles.contextSummary}>{tuning.label} · Capo {state.capo} · {keyTitle} · {scaleTitle(state.context.scale)}</span></summary>
             <div className={styles.contextBody}>
                 <div className={styles.contextGroup}>
                     <h2>Instrument</h2>
@@ -147,21 +157,25 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
                     </div>}
                     <p className={styles.meta}>A comparison collection. It does not establish the key of the music.</p>
                 </div>
-                <div className={styles.contextGroup}>
-                    <div className={styles.sectionHeading}><h2>Key for Roman numerals</h2>{state.context.frame && <button type="button" className={styles.textAction} onClick={() => dispatch({ type: 'set-frame', frame: null })}>Clear key</button>}</div>
+                <div ref={keyControls} className={styles.contextGroup}>
+                    <div className={styles.sectionHeading}><h2>Key reference</h2>{state.context.frame && <button type="button" className={styles.textAction} onClick={() => dispatch({ type: 'set-frame', frame: null })}>Clear key</button>}</div>
                     {state.context.frame ? <div className={styles.pitchControls}>
                         <RootDial label="Key tonic" value={parseNoteName(state.context.frame.tonic)?.pitchClass ?? 0} onChange={tonic => dispatch({ type: 'set-frame', frame: { ...state.context.frame!, tonic: getKeyName(tonic) } })} />
                         <SwipePicker label="Key mode" value={state.context.frame.mode} options={[{ value: 'major', label: 'Major' }, { value: 'minor', label: 'Minor' }]}
                             onChange={mode => dispatch({ type: 'set-frame', frame: { ...state.context.frame!, mode: mode as 'major' | 'minor' } })} />
                     </div> : <button className={styles.textAction} type="button" onClick={() => dispatch({ type: 'set-frame', frame: { tonic: 'C', mode: 'major', lens: 'jazz-pop' } })}>Set a key</button>}
-                    <p className={styles.meta}>Optional, user supplied. Roman accidentals use a major-scale reference in both major and minor.</p>
+                    <p className={styles.meta}>Pinned reference for this score, not a detected key. Patterns: major ii–V–I, V–I, IV–I; minor V–i, iv–i. Roman labels are conditional; accidentals use a major-scale reference in both modes.</p>
                 </div>
             </div>
         </details>
         {state.document && state.selection && <div className={styles.resultLayout}>
             <div className={styles.scoreSection}>
                 <div className={styles.sectionHeading}><h2 ref={scoreHeading} tabIndex={-1}>Your tab</h2><span className={styles.meta}>{state.documentName || 'Untitled'} · {state.document.measureCount} bars · {state.document.moments.length} positions</span></div>
+                <p className={styles.meta}>Free timing · Positions are not beats.</p>
                 <div className={styles.analysisToolbar}>
+                    <button type="button" className={styles.textAction} onClick={openKeyContext} aria-expanded={contextOpen}>
+                        {state.context.frame ? `Key: ${keyTitle}` : 'Add key for Roman / progression'}
+                    </button>
                     <div className={styles.actions}>
                         {state.analysisStatus === 'fresh' && <button className={styles.textAction} type="button" aria-pressed={annotationsVisible} onClick={() => setAnnotationsVisible(visible => !visible)}>Annotations <span aria-hidden="true">{annotationsVisible ? '●' : '○'}</span></button>}
                         <button className={styles.primary} type="button" disabled={draftStatus === 'invalid' || (!hasNotes && draftStatus !== 'note')} onClick={() => { cancelRead(); dispatch({ type: 'analyze', scope: 'all' }); setAnnotationsVisible(true); }}>Analyze</button>
@@ -192,7 +206,8 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
                         </div>
                     </details>
                 </div>
-                <p className={styles.meta}>Click or drag column headers · Delete selected columns · ← → positions · ↑ ↓ strings · Enter next · Empty positions have no assigned duration.</p>
+                <p className={`${styles.meta} ${styles.desktopHint}`}>Click a string to type · Hover between columns for + · Drag column headers, then Delete · Arrow keys move.</p>
+                <p className={`${styles.meta} ${styles.touchHint}`}>Tap a string to type · Tap + to add · Hold a column header dot to delete.</p>
             </div>
         </div>}
     </section>;

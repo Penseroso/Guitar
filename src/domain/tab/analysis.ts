@@ -75,7 +75,7 @@ function chordCandidates(pitchClasses: number[]): TabChordCandidate[] {
     return candidates.sort((left, right) => priority[left.match] - priority[right.match]);
 }
 
-/** Analyze inclusive moment indices without inferring rhythm, harmony spans, or key. */
+/** Analyze inclusive moment indices; any harmonic grouping stays an explicit hypothesis. */
 export function analyzeTabSelection(
     document: TabDocument,
     selection: TabSelection,
@@ -153,6 +153,11 @@ export function analyzeTabSelection(
             interval: momentNotes.length === 2 ? describeTabInterval(ordered[0], ordered[1]) : null,
             candidates: momentNotes.length >= 3 && pcs.length >= 2 ? candidatesFor(pcs) : [] };
     });
+    // A selected excerpt cannot promote a partial measure to a whole-bar hypothesis.
+    const completeMeasures = new Set(moments.map(moment => moment.measure));
+    for (const moment of document.moments) {
+        if (moment.index < start || moment.index > end) completeMeasures.delete(moment.measure);
+    }
     return { notes, candidates, selectionKind, pitchClasses, lowestNote, roman, diagnostics,
-        ...analyzeTabPassage(analyzedMoments, candidatesFor, validFrame ? context.frame : null) };
+        ...analyzeTabPassage(analyzedMoments, candidatesFor, validFrame ? context.frame : null, completeMeasures) };
 }

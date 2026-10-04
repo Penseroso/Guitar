@@ -10,6 +10,7 @@ const NATURAL_PC: Record<string, number> = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9,
 /** Conservative observer parser. Horizontal space conveys order, never duration. */
 export function parseAsciiTab(source: string, options: TabParseOptions = {}): TabParseResult {
     const diagnostics: TabDiagnostic[] = [];
+    const reportedTechniques = new Set<string>();
     const fail = (message: string, line?: number, column?: number): TabParseResult => ({
         ok: false, diagnostics: [...diagnostics, { severity: 'error', message, line, column }],
     });
@@ -58,8 +59,39 @@ export function parseAsciiTab(source: string, options: TabParseOptions = {}): Ta
                     diagnostics.push({ severity: 'warning', message: 'Muted x has no definite pitch and was excluded from pitch analysis.', line: row.line, column: row.offset + column + 1 });
                     continue;
                 }
+                if ('hHpP/\\'.includes(character)) {
+                    // Keep the original columns: connector symbols carry articulation,
+                    // while the explicitly written frets remain ordered pitch observations.
+                    if (!/[0-9]/.test(row.body[column - 1] ?? '') || !/[0-9]/.test(row.body[column + 1] ?? '')) {
+                        return fail('Write both fret endpoints directly around h, p, / or \\ (for example 5h7 or 7\\5). Unspecified slide pitches cannot be recovered.', row.line, row.offset + column + 1);
+                    }
+                    const technique = character.toLowerCase() === 'h' ? 'Hammer-on' : character.toLowerCase() === 'p' ? 'Pull-off' : 'Slide';
+                    if (!reportedTechniques.has(technique)) {
+                        diagnostics.push({ severity: 'warning', message: `${technique} notation: explicit fret endpoints were retained in order. Articulation, intervening pitches and timing are not represented.`, line: row.line, column: row.offset + column + 1 });
+                        reportedTechniques.add(technique);
+                    }
+                    continue;
+                }
+                if (character === '~') {
+                    if (!/[0-9]/.test(row.body[column - 1] ?? '')) {
+                        return fail('Place vibrato ~ directly after a fret number (for example 7~~).', row.line, row.offset + column + 1);
+                    }
+                    const start = column;
+                    while (row.body[column + 1] === '~') column++;
+                    if (!/[- |]/.test(row.body[column + 1] ?? ' ')) {
+                        return fail('Separate the next fret from vibrato with a dash or space (for example 7~~-9).', row.line, row.offset + column + 2);
+                    }
+                    if (!reportedTechniques.has('Vibrato')) {
+                        diagnostics.push({ severity: 'warning', message: 'Vibrato notation: only the written base fret was retained. Pitch variation and duration are unknown.', line: row.line, column: row.offset + start + 1 });
+                        reportedTechniques.add('Vibrato');
+                    }
+                    continue;
+                }
+                if ('bBrR^'.includes(character)) {
+                    return fail('Bend/release notation is not supported: a target number may describe a bent pitch rather than another played fret. Import a passage without the bend, or transcribe its intended pitches explicitly.', row.line, row.offset + column + 1);
+                }
                 if (!/[0-9]/.test(character)) {
-                    return fail(`Unsupported symbol ${JSON.stringify(character)}. Techniques and ties cannot be converted into pitches in this version.`, row.line, row.offset + column + 1);
+                    return fail(`Unsupported symbol ${JSON.stringify(character)}. Supported techniques are fret-to-fret h, p, /, \\ and postfix ~; ties and other techniques are not represented.`, row.line, row.offset + column + 1);
                 }
                 const start = column;
                 while (column + 1 < row.body.length && /[0-9]/.test(row.body[column + 1])) column++;
@@ -90,7 +122,6 @@ export function parseAsciiTab(source: string, options: TabParseOptions = {}): Ta
         }
         const grouped = new Map<number, Token[]>();
         for (const token of tokens) {
-            if (token.fret === null) continue;
             const group = grouped.get(token.start) ?? [];
             group.push(token);
             grouped.set(token.start, group);
@@ -100,7 +131,9 @@ export function parseAsciiTab(source: string, options: TabParseOptions = {}): Ta
             const index = moments.length;
             moments.push({
                 id: `moment-${index}`, index, measure: measureCount + 1 + internalBars.filter((bar) => bar < column).length, column: column + 1,
-                notes: group.map((token) => {
+                // An x-only column is an observed unpitched event, not silence.
+                // Retain its position so pitch analysis cannot bridge across it.
+                notes: group.filter(token => token.fret !== null).map((token) => {
                     const row = rows[token.row];
                     const midi = tuning[token.row] + capo + token.fret!;
                     return { id: `note-${index}-${token.row}`, string: token.row, fret: token.fret!, midi, pitchClass: midi % 12, source: { line: row.line, column: row.offset + token.start + 1 } };
@@ -139,7 +172,7 @@ export function parseAsciiTab(source: string, options: TabParseOptions = {}): Ta
         }
     }
     if (pending.length) return fail(`Each tab block needs six lines; this block has ${pending.length}.`, pending[0].line, pending[0].offset + 1);
-    if (moments.length === 0) return fail('No pitched notes found. Enter six tab lines with fret numbers, from the highest string to the lowest.');
+    if (!moments.some(moment => moment.notes.length > 0)) return fail('No pitched notes found. Enter six tab lines with fret numbers, from the highest string to the lowest.');
     const occupiedMeasures = new Set(moments.map(moment => moment.measure));
     if (moments.length + measureCount - occupiedMeasures.size > MAX_TAB_MOMENTS) {
         return fail(`Keep the tab within ${MAX_TAB_MOMENTS.toLocaleString('en-US')} positions, including one editable position per empty measure.`);

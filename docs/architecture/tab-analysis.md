@@ -19,8 +19,13 @@ Same-column entries start together; columns establish order. Blank columns are e
 positions, not rests. The document declares timing: order-only. Note lengths, meter,
 sustained overlap, ties and musical voices are unknown.
 
-The parser accepts six-string ASCII through .txt/.tab or pasted text, with located errors
-for unsupported symbols or misalignment. Limits remain 64 KB and 1024 editable positions
+The parser accepts six-string ASCII through .txt/.tab or pasted text. Adjacent explicit
+fret endpoints around h/p, / and backslash, and postfix ~ vibrato are accepted with located
+warnings: articulation, intermediate pitches and vibrato variation are not modeled.
+Bend/release targets, unspecified slides, ties and malformed gestures remain located errors;
+silently stripping these could invent pitches. Muted-only columns remain empty pitch
+observations that interrupt runs, never inferred rests. All-muted input still fails.
+Limits remain 64 KB and 1024 editable positions
 and measures. Imported empty measures receive one editable empty position. Imports
 verify the exact source/instrument snapshot. File reading uses cancellation/revision tokens.
 Guitar Pro, MusicXML, images/PDFs, timed notation and playback remain outside this adapter.
@@ -53,6 +58,8 @@ Delete on a string cell clears only that note. Deleting every position in a meas
 one empty stable position so the measure remains editable. + 4 bars appends a system;
 Structure exposes a barline after the cursor. Dense systems scroll inside the score viewport,
 including on mobile, with 44px input targets and no horizontal page overflow.
+The four initial positions are scaffolding. The UI explicitly labels free timing and
+states that positions are not beats. Header dots and pointer-specific hints reveal editing.
 
 ## Explicit analysis and score annotations
 
@@ -73,6 +80,9 @@ progression patterns. Generic mixed-contour labels are omitted where a specific 
 pattern already describes the run. Candidate labels retain uncertainty. Clicking a label
 reveals its evidence beside that system; there is no persistent detail sidebar. Annotations
 can be hidden without losing the snapshot.
+The key shortcut beside Analyze opens the existing context without assigning a key.
+Candidate question marks cannot be clipped away with their labels; evidence wraps outside
+the scrolling score. Annotation lanes pack in position order.
 
 ## Analysis and inference boundaries
 
@@ -91,12 +101,20 @@ single-note runs, double stops and chordal events in the same selection.
   measure) expose complete three- or four-pitch-class arpeggio collection matches
   separately from simultaneous chord readings. Maximal complete windows suppress
   contained fragments; alternatives remain candidates. They do not assert the actual accompaniment.
-- Chordal sequences retain alternatives with conditional Roman numerals under an explicit
-  key. Gaps and single notes do not establish hidden chords. No automatic harmonic-span
-  segmentation, cadence or key inference is claimed.
-- Under an explicitly supplied major key, adjacent unique exact formula matches can
-  establish bounded ii–V–I, V–I and IV–I patterns. These labels do not establish phrase
-  endings or harmonic function. Minor keys are outside this pattern observer's scope.
+- A separate TAB harmonic-span adapter retains simultaneous readings and whole-bar
+  single-note collection candidates independently of any key. A whole-bar candidate must
+  cover the full document measure (not a partial selection), contain 3–16 contiguous
+  single-note positions and 3–4 pitch classes. Empty/dyad/chord positions interrupt this
+  grouping. Sliding arpeggio windows never establish harmonic boundaries. If no exact
+  match exists, a root/third/seventh shell with only natural fifth omitted may be retained
+  as an incomplete candidate; the missing note is never inserted.
+- Under a supplied key, directly adjacent, nonoverlapping spans with unique exact formula
+  matches can establish bounded major ii–V–I, V–I, IV–I or minor V–i, iv–i patterns.
+  Natural-minor v is not promoted to major V. Blank positions, muted-only events and empty
+  measures break the sequence. Any sequential span makes the entire reading a candidate,
+  with explicit whole-bar grouping assumptions and no harmonic-duration claim.
+  Purely simultaneous patterns are structural observations conditional on the reference,
+  not proof of actual harmonic function, phrase endings or cadences.
   Exact alternatives such as Dm7/F6 and C6/Am7 remain ambiguous; incomplete and added-tone
   readings do not trigger these patterns. A longer ii–V–I suppresses its nested V–I label.
 
@@ -109,6 +127,26 @@ Copying Explore scale is a one-time snapshot. The domain retains optional select
 context, but the score-first UI does not expose a manual chord picker. Non-membership does not automatically establish a
 passing tone, tension or avoid note. Registry matching scores are not probabilities.
 Harmony's illustrative relationship generator is not a performed-score observer.
+
+## Tonal-reference policy
+
+The explicit-key policy is retained for Roman and named tonal-pattern interpretation,
+with the key understood as an optional pinned analysis frame applied across this score.
+It is neither detected global truth nor a statistical prior: it does not rank, remove or
+rewrite chord/span candidates. No key is required for notes, intervals, chord identities,
+arpeggio candidates or harmonic-span candidates. Reference-scale membership cannot supply
+a key implicitly. Conditional Roman coordinates such as VI7–ii under C do not claim an
+applied dominant, tonicization or modulation.
+
+Global center and local context are conceptually distinct. A future local-context layer
+would consume event candidates and return bounded competing contexts with provenance,
+before any functional interpretation. It must not relabel notes or silently override a
+pinned frame. Modal centers need a separate modal reference contract; reusing a modal
+scale as major/minor TonalFrame would conflate collection with center. No local-context
+data model or automatic key/modulation engine is introduced without richer evidence and
+an evaluation corpus. The present order-only model lacks duration, accents, phrase ends,
+sustained voices and ensemble bass, so it cannot reliably separate temporary tonicization
+from established modulation. See the implementation audit for alternatives and risks.
 
 ## Verification
 
