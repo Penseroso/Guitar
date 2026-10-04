@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import React, { useReducer } from 'react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createScaleRef } from '@/domain/scale/scale-ref';
@@ -8,6 +8,11 @@ import { createTabAnalysisState, reduceTabAnalysis } from '@/features/tab-analys
 import { TabAnalysisWorkspace } from './TabAnalysisWorkspace';
 
 afterEach(cleanup);
+beforeAll(() => {
+    // Match the shared Harmony dial harness: jsdom does not implement native popovers.
+    Object.defineProperty(HTMLElement.prototype, 'showPopover', { configurable: true, value: function (this: HTMLElement) { this.removeAttribute('popover'); } });
+    Object.defineProperty(HTMLElement.prototype, 'hidePopover', { configurable: true, value: function (this: HTMLElement) { this.setAttribute('popover', 'manual'); } });
+});
 const source = ['e|--0--1--0--|', 'B|--1--0--1--|', 'G|--0--0--0--|', 'D|--2--0--2--|', 'A|--3--2--3--|', 'E|-----3-----|'].join('\n');
 function Harness() {
     const [state, dispatch] = useReducer(reduceTabAnalysis, undefined, createTabAnalysisState);
@@ -29,6 +34,29 @@ function textFile(name: string, text: () => Promise<string>) {
 const chooseFile = (file: File) => fireEvent.change(screen.getByLabelText('Open a text tab file'), { target: { files: [file] } });
 
 describe('score-first explicit analysis workflow', () => {
+    it.each([
+        { steps: 7, majorName: 'Db', minorName: 'C#' },
+        { steps: 8, majorName: 'Ab', minorName: 'G#' },
+        { steps: 9, majorName: 'Eb', minorName: 'D#' },
+    ])('uses conventional tonic spelling when selecting and switching $minorName minor', async ({ steps, majorName, minorName }) => {
+        const user = userEvent.setup(); render(<Harness />);
+        await user.click(screen.getByRole('button', { name: 'Add key for Roman / progression' }));
+        await user.click(screen.getByRole('button', { name: 'Set a key' }));
+        await user.click(screen.getByRole('button', { name: 'Next Key mode' }));
+        await user.click(screen.getByRole('button', { name: 'Key tonic C' }));
+        const dial = screen.getByRole('listbox', { name: 'Root in fifths order' });
+        fireEvent.keyDown(dial, { key: 'Home' });
+        for (let i = 0; i < steps; i++) fireEvent.keyDown(dial, { key: 'ArrowRight' });
+        fireEvent.keyDown(dial, { key: 'Enter' });
+        expect(screen.getByRole('button', { name: `Key: ${minorName} minor` })).toBeTruthy();
+        expect(screen.getByRole('button', { name: `Key tonic ${minorName}` })).toBeTruthy();
+        await user.click(screen.getByRole('button', { name: 'Previous Key mode' }));
+        expect(screen.getByRole('button', { name: `Key: ${majorName} major` })).toBeTruthy();
+        expect(screen.getByRole('button', { name: `Key tonic ${majorName}` })).toBeTruthy();
+        await user.click(screen.getByRole('button', { name: 'Next Key mode' }));
+        expect(screen.getByRole('button', { name: `Key: ${minorName} minor` })).toBeTruthy();
+        expect(screen.getByRole('button', { name: `Key tonic ${minorName}` })).toBeTruthy();
+    });
     it('reveals the key prerequisite without assigning a key until the user explicitly sets one', async () => {
         const user = userEvent.setup(); render(<Harness />);
         expect(screen.getByText(/No key supplied/)).toBeTruthy();

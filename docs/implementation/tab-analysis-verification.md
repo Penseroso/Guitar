@@ -2,6 +2,10 @@
 
 ## Current product and theory audit — 2026-10-04
 
+The [contextual spelling follow-up](tab-contextual-spelling-2026-10-04.md) fixes Minor
+tonic entry/mode switching and unifies annotation/progression spelling. Its focused
+13-file / 336-test suite, typecheck, lint and build passed after the earlier broader audit.
+
 The subsequent [TAB Analysis audit](tab-analysis-audit-2026-10-04.md) records the current
 implementation, evidence boundaries and release judgment: **35 files / 852 tests passed**,
 production build and scoped lint passed, with default/changed browser checks at 390, 768

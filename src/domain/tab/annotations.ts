@@ -1,10 +1,9 @@
 import type { TabChordCandidate, TabSelectionAnalysis } from './analysis';
-import { frameChords, romanLabel } from '@/domain/harmony/roman';
-import { getChordTypeSuffix } from '@/domain/chord/helpers';
+import { createTabCandidateFormatter } from './contextual-spelling';
 import { resolveScaleRef } from '@/domain/scale/scale-ref';
 import { getScalePresentationName } from '@/domain/scale/scaleSelector';
 import { getKeyName } from '@/domain/shared/keys';
-import { formatAccidentals, parseNoteName } from '@/domain/shared/spelling';
+import { formatAccidentals } from '@/domain/shared/spelling';
 import type { TabAnalysisContext } from './types';
 
 /** Snapshot annotations describe evidence at score positions, independently of the cursor. */
@@ -43,30 +42,14 @@ export function buildTabScoreAnnotations(
         annotations.push({ id: `${kind}:${first.id}:${last.id}:${label}`, kind, start, end,
             startMomentId: first.id, endMomentId: last.id, label, detail, source, placement });
     };
-    const frameRoots = new Map<number, string>();
-    if (context.frame) {
-        try {
-            for (const chord of frameChords(context.frame)) {
-                frameRoots.set(parseNoteName(chord.root)!.pitchClass, chord.root);
-            }
-        } catch {
-            // Invalid or unsupported frame spelling supplies no Roman labels.
-        }
-    }
-    const contextualCandidate = (candidate: TabChordCandidate) => {
-        const pitchClass = parseNoteName(candidate.chord.root)?.pitchClass;
-        const root = pitchClass === undefined ? undefined : frameRoots.get(pitchClass);
-        if (!root || !context.frame) return { ...candidate, roman: null };
-        const chord = { ...candidate.chord, root };
-        return { ...candidate, chord, name: formatAccidentals(root + getChordTypeSuffix(chord.chordId)), roman: romanLabel(chord, context.frame) };
-    };
+    const contextualCandidate = createTabCandidateFormatter(context.frame);
 
     for (const moment of analysis.moments) {
         if (moment.kind !== 'chord' || !moment.candidates.length) continue;
         const exact = moment.candidates.filter(candidate => candidate.match === 'exact').map(contextualCandidate);
         if (!exact.length) {
             add('chord', moment.index, moment.index, 'Chord candidate',
-                `No complete chord formula matches these simultaneous notes. Registry alternatives: ${candidateDetail(moment.candidates)}.`, 'candidate', 'above');
+                `No complete chord formula matches these simultaneous notes. Registry alternatives: ${candidateDetail(moment.candidates.map(contextualCandidate))}.`, 'candidate', 'above');
             continue;
         }
         const source = exact.length === 1 ? 'observed' : 'candidate';

@@ -2,6 +2,7 @@ import { parseNoteName, formatAccidentals } from '@/domain/shared/spelling';
 import type { TonalFrame } from '@/domain/harmony/types';
 import type { TabChordCandidate } from './analysis';
 import type { TabAnalyzedMoment, TabProgressionReading } from './passage-analysis';
+import { createTabCandidateFormatter } from './contextual-spelling';
 
 /** Position bounds describe evidence, never a sounding chord's duration. */
 export interface TabHarmonicSpan {
@@ -49,9 +50,10 @@ export function observeTabProgressions(spans: TabHarmonicSpan[], frame: TonalFra
     if (!frame) return [];
     const tonic = parseNoteName(frame.tonic);
     if (!tonic) return [];
+    const contextualCandidate = createTabCandidateFormatter(frame);
     const exact = spans.map(span => {
         const candidates = span.candidates.filter(candidate => candidate.match === 'exact');
-        return candidates.length === 1 ? candidates[0] : null;
+        return candidates.length === 1 ? contextualCandidate(candidates[0]) : null;
     });
     const isDegree = (candidate: TabChordCandidate | null, interval: number, qualities: string[]) => {
         const root = candidate && parseNoteName(candidate.chord.root);

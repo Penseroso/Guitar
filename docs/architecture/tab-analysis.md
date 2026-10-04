@@ -122,6 +122,14 @@ Intervals use supplied spelling context where available; otherwise semitone dist
 shown without an assumed enharmonic reading. Shared scale structures, chord registry and
 spelling policy remain authoritative. Scale and chord-relative spelling can differ.
 
+Key entry uses shared `getKeyName` for major and `getMinorKeyName` for minor; changing
+mode preserves the tonic pitch class while adopting that mode's conventional key spelling.
+The dial trigger displays the supplied frame tonic. Score annotations, chord-sequence
+readings and progression evidence share `contextual-spelling.ts`, a presentation adapter
+over Harmony `frameChords` and `romanLabel`, not an independent spelling policy. Neutral
+recognition candidates remain unchanged; chromatic roots outside the frame's diatonic
+root map retain the existing spelling and inferred-Roman abstention.
+
 ScaleRef is a reference collection; TonalFrame is an explicit key. Neither implies the other.
 Copying Explore scale is a one-time snapshot. The domain retains optional selection chord
 context, but the score-first UI does not expose a manual chord picker. Non-membership does not automatically establish a

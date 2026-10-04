@@ -8,7 +8,7 @@ import type { TabAnalysisAction, TabAnalysisState } from '@/features/tab-analysi
 import { createScaleRef, resolveScaleRef, type ScaleRef } from '@/domain/scale/scale-ref';
 import { SCALE_REGISTRY } from '@/domain/scale/scales';
 import { getScalePresentationName } from '@/domain/scale/scaleSelector';
-import { getKeyName } from '@/domain/shared/keys';
+import { getKeyName, getMinorKeyName } from '@/domain/shared/keys';
 import { parseNoteName } from '@/domain/shared/spelling';
 import { RootDial } from '../../chord/RootDial';
 import { SwipePicker } from '../../harmony/SwipePicker';
@@ -160,9 +160,13 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
                 <div ref={keyControls} className={styles.contextGroup}>
                     <div className={styles.sectionHeading}><h2>Key reference</h2>{state.context.frame && <button type="button" className={styles.textAction} onClick={() => dispatch({ type: 'set-frame', frame: null })}>Clear key</button>}</div>
                     {state.context.frame ? <div className={styles.pitchControls}>
-                        <RootDial label="Key tonic" value={parseNoteName(state.context.frame.tonic)?.pitchClass ?? 0} onChange={tonic => dispatch({ type: 'set-frame', frame: { ...state.context.frame!, tonic: getKeyName(tonic) } })} />
+                        <RootDial label="Key tonic" displayName={state.context.frame.tonic} value={parseNoteName(state.context.frame.tonic)?.pitchClass ?? 0} onChange={tonic => dispatch({ type: 'set-frame', frame: { ...state.context.frame!, tonic: (state.context.frame!.mode === 'minor' ? getMinorKeyName : getKeyName)(tonic) } })} />
                         <SwipePicker label="Key mode" value={state.context.frame.mode} options={[{ value: 'major', label: 'Major' }, { value: 'minor', label: 'Minor' }]}
-                            onChange={mode => dispatch({ type: 'set-frame', frame: { ...state.context.frame!, mode: mode as 'major' | 'minor' } })} />
+                            onChange={mode => {
+                                const tonic = parseNoteName(state.context.frame!.tonic);
+                                if (tonic) dispatch({ type: 'set-frame', frame: { ...state.context.frame!, mode: mode as 'major' | 'minor',
+                                    tonic: (mode === 'minor' ? getMinorKeyName : getKeyName)(tonic.pitchClass) } });
+                            }} />
                     </div> : <button className={styles.textAction} type="button" onClick={() => dispatch({ type: 'set-frame', frame: { tonic: 'C', mode: 'major', lens: 'jazz-pop' } })}>Set a key</button>}
                     <p className={styles.meta}>Pinned reference for this score, not a detected key. Patterns: major ii–V–I, V–I, IV–I; minor V–i, iv–i. Roman labels are conditional; accidentals use a major-scale reference in both modes.</p>
                 </div>

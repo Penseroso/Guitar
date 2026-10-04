@@ -1,8 +1,7 @@
 import { buildTabHarmonicSpans, observeTabProgressions, type TabHarmonicSpan } from './harmonic-spans';
-import { frameChords, romanLabel } from '@/domain/harmony/roman';
+import { createTabCandidateFormatter } from './contextual-spelling';
 import type { TonalFrame } from '@/domain/harmony/types';
-import { formatAccidentals, parseNoteName } from '@/domain/shared/spelling';
-import { getChordTypeSuffix } from '@/domain/chord/helpers';
+import { parseNoteName } from '@/domain/shared/spelling';
 import type { TabAnalyzedNote, TabChordCandidate } from './analysis';
 
 export interface TabInterval {
@@ -208,14 +207,7 @@ export function analyzeTabPassage(
 
     // A chromatic root has several possible functional spellings. Only contextual
     // diatonic roots receive inferred Roman labels; user-supplied chords are separate.
-    const frameRootNames = new Map<number, string>();
-    if (frame) {
-        try {
-            for (const chord of frameChords(frame)) frameRootNames.set(parseNoteName(chord.root)!.pitchClass, chord.root);
-        } catch {
-            // Extreme key spellings can exceed the shared spelling engine's range.
-        }
-    }
+    const contextualCandidate = createTabCandidateFormatter(frame);
     const chordSequence: TabPassageAnalysis['chordSequence'] = [];
     for (let index = 0; index < moments.length; index++) {
         const moment = moments[index];
@@ -224,12 +216,7 @@ export function analyzeTabPassage(
         const continues = before?.kind === 'chord' && before.candidates.length > 0;
         if (!continues && !(after?.kind === 'chord' && after.candidates.length)) continue;
         chordSequence.push({ index: moment.index, continues,
-            candidates: moment.candidates.map(candidate => {
-                const root = frameRootNames.get(parseNoteName(candidate.chord.root)!.pitchClass);
-                if (!frame || !root) return { ...candidate, roman: null };
-                const chord = { ...candidate.chord, root };
-                return { ...candidate, chord, name: formatAccidentals(root + getChordTypeSuffix(chord.chordId)), roman: romanLabel(chord, frame) };
-            }) });
+            candidates: moment.candidates.map(contextualCandidate) });
     }
     const kinds = new Set(moments.filter(moment => moment.kind !== 'empty').map(moment => moment.kind));
     const texture = !kinds.size ? 'empty' : kinds.size > 1 ? 'mixed'
