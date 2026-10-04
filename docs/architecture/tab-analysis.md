@@ -16,19 +16,35 @@ The parent owns the score, active cell, selection and history across workflow sw
 Frets are integers 0–36, relative to capo. Pitch derives from fret, tuning and capo. Instrument
 changes retain frets and recalculate pitches. Each column has at most one note per string.
 Same-column entries start together; columns establish order. Blank columns are editable
-positions, not rests. The document declares timing: order-only. Note lengths, meter,
-sustained overlap, ties and musical voices are unknown.
+positions, not rests. The document continues to declare timing: order-only, even when
+optional written timing is supplied. No beat, duration or sustain is inferred from spacing.
+
+Optional input lives in the existing document: `meter` on TabDocument, bar-relative
+`beatOffset` on TabMoment, and `duration` on individual TabNotes. Durations/offsets use
+normalized exact fractions of a quarter note; meter retains its written numerator and
+denominator. Missing values mean unknown, not zero or a default quarter note. Same-column
+notes share an onset but can have different durations. Partial, overlapping or inconsistent
+timing may be preserved; this is not a validated measured timeline or a rhythm engine.
+
+An explicit whole-position `rest`, per-string unpitched `mutes`, and `sustains` referencing
+an original note ID are distinct from empty input. A rest excludes other events at that
+position. A continuation adds no pitch observation; its optional duration belongs to that
+continuation. Technique metadata belongs to the source note, independently of its pitch
+and duration. Fret-to-fret connectors reference stable endpoint IDs and retain their raw
+glyph; bend/release retain written target fret-equivalent values, not additional TabNotes.
 
 The parser accepts six-string ASCII through .txt/.tab or pasted text. Adjacent explicit
-fret endpoints around h/p, / and backslash, and postfix ~ vibrato are accepted with located
-warnings: articulation, intermediate pitches and vibrato variation are not modeled.
-Bend/release targets, unspecified slides, ties and malformed gestures remain located errors;
-silently stripping these could invent pitches. Muted-only columns remain empty pitch
-observations that interrupt runs, never inferred rests. All-muted input still fails.
+fret endpoints around h/p, / and backslash, postfix ~ vibrato, and numeric b/r gestures
+(5b7, 5b7r5) are retained with source locations and located boundary warnings. Targets do
+not become fret observations, even when another string has a real note at that source
+column. Intermediate pitch/gesture realization is not modeled. Standalone releases, ^,
+full/fractional/unspecified bend targets, ASCII ties and malformed gestures remain located
+errors. Muted-only columns interrupt pitch runs, never inferred rests. All-muted input is
+editable/importable; Analyze requires pitched notes. Completely blank imports still fail.
 Limits remain 64 KB and 1024 editable positions
 and measures. Imported empty measures receive one editable empty position. Imports
 verify the exact source/instrument snapshot. File reading uses cancellation/revision tokens.
-Guitar Pro, MusicXML, images/PDFs, timed notation and playback remain outside this adapter.
+Guitar Pro, MusicXML, images/PDFs, ASCII rhythm parsing and playback remain outside this adapter.
 
 Undo/redo stores at most 100 score/instrument snapshots. Import text and its filename are
 separate from the committed score name. Insertion/deletion remaps selection through stable
@@ -58,8 +74,27 @@ Delete on a string cell clears only that note. Deleting every position in a meas
 one empty stable position so the measure remains editable. + 4 bars appends a system;
 Structure exposes a barline after the cursor. Dense systems scroll inside the score viewport,
 including on mobile, with 44px input targets and no horizontal page overflow.
-The four initial positions are scaffolding. The UI explicitly labels free timing and
-states that positions are not beats. Header dots and pointer-specific hints reveal editing.
+The four initial positions are scaffolding. The default UI labels free timing and states
+that positions are not beats. If notation is supplied, it explicitly says the analysis
+preserves but does not interpret timing, ties or pitch gestures. Header dots and
+pointer-specific hints reveal editing.
+
+Collapsed Notation controls follow the active cell: optional meter, duration, explicit
+fractional start offset, whole-position Rest, string Mute x and Tie previous. Existing
+SwipePicker/quiet text actions retain 44px targets. x/X also works in direct native input.
+The score distinguishes R, x and a tied fret; duration/technique details are accessible
+and available beside the selected cell. Imported techniques are displayed, not manually
+authored through a new effects editor.
+
+Tie previous requires a previous same-string note/continuation; unknown blanks, rests
+and same-string mutes block this shortcut. A different-pitch current note is not silently
+converted. Explicit authored connections survive empty placeholder insertion but are
+removed when their endpoints disappear/change pitch or a rest/same-string attack/mute
+interrupts them. Opening a rest/tie cell without editing does not erase it. Fret changes
+retain duration but clear affected technique/continuation links; Undo restores the snapshot.
+Structural edits never invent new beat offsets. A bar split is refused if it would move
+positions with explicit offsets into a new bar with an unknown timing origin; the UI
+explains that starts after the cursor must be cleared first. Safe splits preserve timing.
 
 ## Explicit analysis and score annotations
 
@@ -89,6 +124,13 @@ the scrolling score. Annotation lanes pack in position order.
 Analysis is deterministic local TypeScript. Ordered moments and each note occurrence are
 preserved; a repeated melody is not collapsed to a pitch set. Mixed passages can contain
 single-note runs, double stops and chordal events in the same selection.
+
+Current inference consumes only the existing `notes` pitch/order projection. Meter,
+offsets, durations and technique gestures do not alter recognition, arpeggio grouping,
+Roman labels or progression rules. Empty/rest/mute-only/sustain-only positions are still
+pitch continuity barriers. No sounding-overlap reconstruction, metrical weighting or
+bend-target pitch realization occurs. Converting an attack to a continuation deliberately
+removes that attack from the projection; adding timing metadata alone never does.
 
 - Single notes expose pitch/register and optional reference-scale/chord membership.
 - Consecutive single-note runs expose directed intervals, contour and repeated interval

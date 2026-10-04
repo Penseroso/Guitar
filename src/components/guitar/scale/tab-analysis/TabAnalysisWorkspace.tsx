@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { parseAsciiTab, MAX_TAB_SOURCE_LENGTH } from '@/domain/tab/ascii';
 import { buildTabScoreAnnotations } from '@/domain/tab/annotations';
 import { TAB_TUNINGS } from '@/domain/tab/types';
+import { hasTabSplitTimingConflict } from '@/domain/tab/editing';
 import type { TabAnalysisAction, TabAnalysisState } from '@/features/tab-analysis/state';
 import { createScaleRef, resolveScaleRef, type ScaleRef } from '@/domain/scale/scale-ref';
 import { SCALE_REGISTRY } from '@/domain/scale/scales';
@@ -13,6 +14,7 @@ import { parseNoteName } from '@/domain/shared/spelling';
 import { RootDial } from '../../chord/RootDial';
 import { SwipePicker } from '../../harmony/SwipePicker';
 import { TabScoreView, type TabDraftStatus } from './TabScoreView';
+import { TabNotationEditor } from './TabNotationEditor';
 import styles from './tab-analysis.module.css';
 
 const SCALE_OPTIONS = Object.entries(SCALE_REGISTRY).flatMap(([group, scales]) => Object.keys(scales).map(name => ({
@@ -60,7 +62,12 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
         ? buildTabScoreAnnotations(state.analysis.result, state.analysis.context) : [],
     [state.analysisStatus, state.analysis]);
     const hasNotes = !!state.document?.moments.some(moment => moment.notes.length);
+    const hasUnpitchedEvents = !!state.document?.moments.some(moment => moment.rest || moment.mutes?.length || moment.sustains?.length);
+    const hasNotation = !!state.document?.meter || !!state.document?.moments.some(moment => moment.beatOffset || moment.rest || moment.mutes?.length || moment.sustains?.length
+        || moment.notes.some(note => note.duration || note.techniques?.length));
     const keyTitle = state.context.frame ? `${state.context.frame.tonic} ${state.context.frame.mode}` : 'No key supplied';
+    const splitAfter = state.activeCell?.momentId ?? state.document?.moments[state.selection?.end ?? 0]?.id;
+    const splitTimingConflict = !!(state.document && splitAfter && hasTabSplitTimingConflict(state.document, splitAfter));
     const openKeyContext = () => {
         setContextOpen(true);
         requestAnimationFrame(() => {
@@ -122,7 +129,7 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
                 aria-describedby="tab-input-hint" placeholder={'e|----------------|\nB|----------------|\nG|----------------|\nD|----------------|\nA|----------------|\nE|----------------|'}
                 onChange={event => { cancelRead(); dispatch({ type: 'edit-source', source: event.target.value }); }} />
             <div className={styles.inputFooter}>
-                <p id="tab-input-hint" className={styles.meta}>Six aligned lines, frets 0–36. h/p, slides and ~ retain written frets; bends are unsupported. Rhythm is unknown.</p>
+                <p id="tab-input-hint" className={styles.meta}>Six aligned lines, frets 0–36. h/p, slides, ~ and numeric bends (5b7r5) are retained. Spacing does not encode rhythm.</p>
                 <div className={styles.actions}>
                     <button className={styles.primary} type="button" disabled={!state.source.trim() || readingFile} onClick={importTab}>Import tab</button>
                 </div>
@@ -175,7 +182,7 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
         {state.document && state.selection && <div className={styles.resultLayout}>
             <div className={styles.scoreSection}>
                 <div className={styles.sectionHeading}><h2 ref={scoreHeading} tabIndex={-1}>Your tab</h2><span className={styles.meta}>{state.documentName || 'Untitled'} · {state.document.measureCount} bars · {state.document.moments.length} positions</span></div>
-                <p className={styles.meta}>Free timing · Positions are not beats.</p>
+                <p className={styles.meta}>{hasNotation ? 'Order-only analysis · Timing, ties and pitch gestures are preserved, not interpreted.' : 'Free timing · Positions are not beats.'}</p>
                 <div className={styles.analysisToolbar}>
                     <button type="button" className={styles.textAction} onClick={openKeyContext} aria-expanded={contextOpen}>
                         {state.context.frame ? `Key: ${keyTitle}` : 'Add key for Roman / progression'}
@@ -185,15 +192,18 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
                         <button className={styles.primary} type="button" disabled={draftStatus === 'invalid' || (!hasNotes && draftStatus !== 'note')} onClick={() => { cancelRead(); dispatch({ type: 'analyze', scope: 'all' }); setAnnotationsVisible(true); }}>Analyze</button>
                     </div>
                 </div>
-                <p className={styles.meta} role="status" aria-label="Analysis status">{state.analysisStatus === 'stale' ? 'Score or context changed. Analyze again to update annotations.'
+                <p className={styles.meta} role="status" aria-label="Analysis status">{!hasNotes
+                    ? hasUnpitchedEvents ? 'No pitched notes to analyze. Notation stays editable.' : 'Click a string and type a fret to begin.'
+                    : state.analysisStatus === 'stale' ? 'Score or context changed. Analyze again to update annotations.'
                     : state.analysisStatus === 'fresh' ? `Analyzed whole score. ${annotations.length ? 'Select a score annotation for its evidence.' : 'No supported pattern found in this score.'}`
-                        : hasNotes ? 'Ready to analyze. Notes stay editable on the score.' : 'Click a string and type a fret to begin.'}</p>
+                        : 'Ready to analyze. Notes stay editable on the score.'}</p>
                 <TabScoreView document={state.document} selection={state.selection} extend={false} focusedNoteId={null}
                     onDraftStatusChange={setDraftStatus}
                     annotations={annotationsVisible ? annotations : []}
                     activeCell={state.activeCell ?? { momentId: state.document.moments[0].id, string: 0 }}
                     onActiveCellChange={cell => dispatch({ type: 'set-active-cell', cell })}
                     onSetFret={edit => { cancelRead(); dispatch({ type: 'set-fret', ...edit }); }}
+                    onSetMute={edit => { cancelRead(); dispatch({ type: 'set-mute', ...edit }); }}
                     onUndo={() => dispatch({ type: 'undo' })} onRedo={() => dispatch({ type: 'redo' })}
                     onInsertMoment={afterId => dispatch({ type: 'insert-moment', afterId })}
                     onDeleteMoments={momentIds => dispatch({ type: 'delete-moments', momentIds })}
@@ -206,10 +216,12 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
                     <details className={styles.structureTools}>
                         <summary>Structure</summary>
                         <div className={styles.actions}>
-                            <button className={styles.textAction} type="button" onClick={() => dispatch({ type: 'split-measure', afterId: state.activeCell?.momentId ?? state.document!.moments[state.selection!.end].id })}>Barline after cursor</button>
+                            <button className={styles.textAction} type="button" disabled={splitTimingConflict} onClick={() => dispatch({ type: 'split-measure', afterId: splitAfter! })}>Barline after cursor</button>
+                            {splitTimingConflict && <span className={styles.meta}>Clear starts after the cursor before splitting this bar.</span>}
                         </div>
                     </details>
                 </div>
+                <TabNotationEditor document={state.document} cell={state.activeCell ?? { momentId: state.document.moments[0].id, string: 0 }} dispatch={action => { cancelRead(); dispatch(action); }} />
                 <p className={`${styles.meta} ${styles.desktopHint}`}>Click a string to type · Hover between columns for + · Drag column headers, then Delete · Arrow keys move.</p>
                 <p className={`${styles.meta} ${styles.touchHint}`}>Tap a string to type · Tap + to add · Hold a column header dot to delete.</p>
             </div>

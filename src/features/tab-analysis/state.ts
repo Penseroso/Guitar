@@ -1,7 +1,8 @@
 import {
     TAB_TUNINGS,
-    type TabAnalysisContext, type TabDiagnostic, type TabDocument, type TabParseResult, type TabSelection,
+    type TabAnalysisContext, type TabDiagnostic, type TabDocument, type TabParseResult, type TabSelection, type TabFraction, type TabMeter,
 } from '@/domain/tab/types';
+import { setTabBeatOffset, setTabDuration, setTabMeter, setTabMute, setTabRest, setTabSustain } from '@/domain/tab/input-capabilities';
 import { appendTabMeasures, createEmptyTabDocument, deleteTabMoment, deleteTabMoments, insertTabMoment, retuneTabDocument, setTabFret, splitTabMeasure } from '@/domain/tab/editing';
 import { analyzeTabSelection, type TabSelectionAnalysis } from '@/domain/tab/analysis';
 
@@ -45,6 +46,11 @@ export type TabAnalysisAction =
     | { type: 'select'; selection: TabSelection | null }
     | { type: 'set-active-cell'; cell: TabActiveCell }
     | { type: 'set-fret'; momentId: string; string: number; fret: number | null }
+    | { type: 'set-meter'; meter: TabMeter | undefined }
+    | { type: 'set-beat-offset'; momentId: string; offset: TabFraction | undefined }
+    | { type: 'set-duration'; momentId: string; string: number; duration: TabFraction | undefined }
+    | { type: 'set-rest'; momentId: string; enabled: boolean }
+    | { type: 'set-mute' | 'set-sustain'; momentId: string; string: number; enabled: boolean }
     | { type: 'insert-moment'; afterId: string }
     | { type: 'delete-moment'; momentId: string }
     | { type: 'delete-moments'; momentIds: string[] }
@@ -167,6 +173,21 @@ export function reduceTabAnalysis(state: TabAnalysisState, action: TabAnalysisAc
             if (!state.document) return state;
             const document = setTabFret(state.document, action.momentId, action.string, action.fret, `edit-note-${state.nextId}`);
             return document === state.document ? state : commit(state, { document, analyzedSource: null, nextId: state.nextId + 1 });
+        }
+        case 'set-meter':
+        case 'set-beat-offset':
+        case 'set-duration':
+        case 'set-rest':
+        case 'set-mute':
+        case 'set-sustain': {
+            if (!state.document) return state;
+            const document = action.type === 'set-meter' ? setTabMeter(state.document, action.meter)
+                : action.type === 'set-beat-offset' ? setTabBeatOffset(state.document, action.momentId, action.offset)
+                    : action.type === 'set-duration' ? setTabDuration(state.document, action.momentId, action.string, action.duration)
+                        : action.type === 'set-rest' ? setTabRest(state.document, action.momentId, action.enabled)
+                            : action.type === 'set-mute' ? setTabMute(state.document, action.momentId, action.string, action.enabled)
+                                : setTabSustain(state.document, action.momentId, action.string, action.enabled);
+            return document === state.document ? state : commit(state, { document, analyzedSource: null });
         }
         case 'insert-moment': {
             if (!state.document) return state;

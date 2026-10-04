@@ -9,26 +9,34 @@ import type { TabScoreAnnotation } from '@/domain/tab/annotations';
 import { createTabAnalysisState, reduceTabAnalysis } from '@/features/tab-analysis/state';
 import { TabScoreView, type TabActiveCell } from './TabScoreView';
 
-const edited = vi.fn(), undo = vi.fn(), redo = vi.fn(), insert = vi.fn(), deleteColumns = vi.fn();
+const edited = vi.fn(), muted = vi.fn(), undo = vi.fn(), redo = vi.fn(), insert = vi.fn(), deleteColumns = vi.fn();
 function fixture(): TabDocument {
     const result = parseAsciiTab(['e|5-6-7|', 'B|-----|', 'G|-----|', 'D|-----|', 'A|-----|', 'E|-----|'].join('\n'));
     if (!result.ok) throw new Error('Invalid fixture');
     return { ...result.document, moments: result.document.moments.map((moment, index) => index === 1 ? { ...moment, notes: [] } : moment) };
 }
-function Harness({ extend = false, initialScore, annotations }: { extend?: boolean; initialScore?: TabDocument; annotations?: TabScoreAnnotation[] }) {
+function Harness({ extend = false, initialScore, annotations, muteEditing = false, onDraftStatusChange }: { extend?: boolean; initialScore?: TabDocument; annotations?: TabScoreAnnotation[]; muteEditing?: boolean; onDraftStatusChange?: React.ComponentProps<typeof TabScoreView>['onDraftStatusChange'] }) {
     const [score, setScore] = useState(() => initialScore ?? fixture());
     const [active, setActive] = useState<TabActiveCell>({ momentId: 'moment-0', string: 0 });
     const [selection, setSelection] = useState<TabSelection>({ start: 0, end: 0 });
     return <><button>Before score</button><TabScoreView document={score} activeCell={active} onActiveCellChange={setActive}
         selection={selection} onSelect={next => setSelection({ start: Math.min(next.start, next.end), end: Math.max(next.start, next.end) })}
-        extend={extend} focusedNoteId={null} annotations={annotations} onInsertMoment={insert} onDeleteMoments={deleteColumns} onUndo={undo} onRedo={redo} onSetFret={change => {
+        extend={extend} focusedNoteId={null} annotations={annotations} onDraftStatusChange={onDraftStatusChange}
+        onSetMute={muteEditing ? change => {
+            muted(change);
+            setScore(previous => ({ ...previous, moments: previous.moments.map(moment => moment.id === change.momentId ? {
+                ...moment, notes: moment.notes.filter(note => note.string !== change.string),
+                mutes: [...(moment.mutes ?? []).filter(mute => mute.string !== change.string), ...(change.enabled ? [{ string: change.string }] : [])],
+            } : moment) }));
+        } : undefined}
+        onInsertMoment={insert} onDeleteMoments={deleteColumns} onUndo={undo} onRedo={redo} onSetFret={change => {
             edited(change);
             setScore(previous => ({ ...previous, moments: previous.moments.map(moment => {
                 if (moment.id !== change.momentId) return moment;
                 const notes = moment.notes.filter(note => note.string !== change.string);
                 const midi = previous.tuningMidi[change.string] + previous.capo + (change.fret ?? 0);
                 if (change.fret !== null) notes.push({ id: `edited-${moment.id}-${change.string}`, fret: change.fret, string: change.string, midi, pitchClass: midi % 12, source: { line: 1, column: 1 } });
-                return { ...moment, notes };
+                return { ...moment, notes, mutes: moment.mutes?.filter(mute => mute.string !== change.string) };
             }) }));
         }} /><button>After score</button><output data-testid="selection">{selection.start}:{selection.end}</output></>;
 }
@@ -52,6 +60,86 @@ const touchPointer = (type: string, target: HTMLElement, x = 25, y = 20, pointer
 afterEach(() => { cleanup(); vi.clearAllMocks(); vi.useRealTimers(); });
 
 describe('editable tab score', () => {
+    it.each(['x', 'X'])('commits %s as a mute rather than a numeric pitch and permits numeric replacement', async token => {
+        const user = userEvent.setup(), status = vi.fn();
+        render(<Harness muteEditing onDraftStatusChange={status} />);
+        cell(1, 1).focus();
+        await user.keyboard(`${token}{Enter}`);
+        expect(muted).toHaveBeenLastCalledWith({ momentId: 'moment-0', string: 0, enabled: true });
+        expect(edited).not.toHaveBeenCalled();
+        expect(status).toHaveBeenCalledWith('mute');
+        expect(cell(1, 1).getAttribute('aria-label')).toBe('String 1, onset 1, muted x');
+        await user.click(cell(1, 1));
+        expect(editor().value).toBe('x');
+        expect(editor().getAttribute('inputmode')).toBe('numeric');
+        await user.keyboard('12{Enter}');
+        expect(edited).toHaveBeenLastCalledWith({ momentId: 'moment-0', string: 0, fret: 12 });
+        expect(cell(1, 1).getAttribute('aria-label')).toBe('String 1, onset 1, fret 12');
+    });
+
+    it('clears a mute through the existing cell clear callback', async () => {
+        const user = userEvent.setup(), score = fixture();
+        score.moments[1].mutes = [{ string: 2 }];
+        render(<Harness muteEditing initialScore={score} />);
+        cell(3, 2).focus();
+        await user.keyboard('{Delete}');
+        expect(edited).toHaveBeenLastCalledWith({ momentId: 'moment-1', string: 2, fret: null });
+        expect(cell(3, 2).getAttribute('aria-label')).toBe('String 3, onset 2, empty');
+    });
+
+    it('distinguishes explicit rests, muted strings, and tied notes without creating attacks', () => {
+        const score = fixture(), source = score.moments[0].notes[0];
+        score.moments[1].sustains = [{ noteId: source.id, duration: { numerator: 2, denominator: 1 } }];
+        score.moments[1].mutes = [{ string: 1 }];
+        score.moments[2] = { ...score.moments[2], notes: [], rest: { duration: { numerator: 1, denominator: 2 } } };
+        render(<Harness initialScore={score} />);
+        expect(cell(1, 2).getAttribute('aria-label')).toContain('tied fret 5; duration 2/1 quarter notes');
+        expect(cell(1, 2).textContent).toBe('⌒5');
+        expect(cell(2, 2).getAttribute('aria-label')).toContain('muted x');
+        expect(cell(1, 3).textContent).toBe('R');
+        expect(cell(2, 3).getAttribute('aria-label')).toContain('rest');
+        expect(header(2).getAttribute('aria-label')).toContain('tied fret 5');
+        expect(header(3).getAttribute('aria-label')).toContain('rest, duration 1/2 quarter notes');
+        expect(score.moments[1].notes).toHaveLength(0);
+        expect(score.moments[2].notes).toHaveLength(0);
+    });
+
+    it('keeps rest and sustain metadata when their empty editor is opened and left unchanged', async () => {
+        const user = userEvent.setup(), score = fixture();
+        score.moments[1].sustains = [{ noteId: score.moments[0].notes[0].id }];
+        score.moments[2] = { ...score.moments[2], notes: [], rest: {} };
+        render(<Harness initialScore={score} />);
+        await user.click(cell(1, 2));
+        await user.click(cell(1, 3));
+        await user.click(screen.getByRole('button', { name: 'After score' }));
+        expect(edited).not.toHaveBeenCalled();
+        expect(cell(1, 2).getAttribute('aria-label')).toContain('tied fret 5');
+        expect(cell(1, 3).getAttribute('aria-label')).toContain('rest');
+        cell(1, 2).focus();
+        await user.keyboard('{Delete}');
+        expect(edited).toHaveBeenCalledWith({ momentId: 'moment-1', string: 0, fret: null });
+    });
+
+    it('preserves chord note durations and exposes imported technique metadata separately from frets', () => {
+        const score = fixture(), source = score.moments[0].notes[0], target = score.moments[2].notes[0];
+        source.duration = { numerator: 1, denominator: 2 };
+        source.techniques = [{ kind: 'hammer-on', toNoteId: target.id }, { kind: 'pull-off', toNoteId: target.id },
+            { kind: 'slide', toNoteId: target.id }, { kind: 'bend', targetFret: 9, notation: 'b9' },
+            { kind: 'release', targetFret: 5, notation: 'r5' }, { kind: 'vibrato', notation: '~~' }];
+        score.moments[0].notes.push({ ...source, id: 'chord-note', string: 1, fret: 3, techniques: [], duration: { numerator: 3, denominator: 1 } });
+        render(<Harness initialScore={score} />);
+        expect(cell(1, 1).getAttribute('aria-label')).toContain('fret 5; duration 1/2 quarter notes');
+        expect(cell(1, 1).getAttribute('title')).toContain('hammer-on to fret 7');
+        expect(cell(1, 1).getAttribute('title')).toContain('pull-off to fret 7');
+        expect(cell(1, 1).getAttribute('title')).toContain('slide to fret 7');
+        expect(cell(1, 1).getAttribute('title')).toContain('bend target fret-equivalent 9; not a new attack');
+        expect(cell(1, 1).getAttribute('title')).toContain('release target fret-equivalent 5');
+        expect(cell(1, 1).getAttribute('title')).toContain('vibrato ~~');
+        expect(cell(2, 1).getAttribute('aria-label')).toContain('duration 3/1 quarter notes');
+        expect(score.moments[0].notes).toHaveLength(2);
+        expect(score.moments[0].notes[0].fret).toBe(5);
+    });
+
     it('offers one roving cell across six rows, including empty onsets', async () => {
         const user = userEvent.setup();
         render(<Harness />);

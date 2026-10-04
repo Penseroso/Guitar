@@ -34,6 +34,46 @@ function textFile(name: string, text: () => Promise<string>) {
 const chooseFile = (file: File) => fireEvent.change(screen.getByLabelText('Open a text tab file'), { target: { files: [file] } });
 
 describe('score-first explicit analysis workflow', () => {
+    it('preserves mute-only imports and explains disabled analysis after replacing an analyzed score', async () => {
+        const user = userEvent.setup(); render(<Harness />);
+        await user.click(screen.getByRole('button', { name: 'String 1, onset 1, empty' }));
+        await user.type(screen.getByRole('textbox', { name: 'Fret for string 1, onset 1' }), '5');
+        await user.click(screen.getByRole('button', { name: 'Analyze' }));
+        await user.click(screen.getByRole('button', { name: 'Import text' }));
+        fireEvent.change(editor(), { target: { value: ['e|x--x|', 'B|----|', 'G|----|', 'D|----|', 'A|----|', 'E|----|'].join('\n') } });
+        await user.click(screen.getByRole('button', { name: 'Import tab' }));
+        expect(screen.getByRole('button', { name: 'String 1, onset 1, muted x' })).toBeTruthy();
+        expect(screen.getByRole('button', { name: 'String 1, onset 2, muted x' })).toBeTruthy();
+        expect(screen.getByRole('button', { name: 'Analyze' }).hasAttribute('disabled')).toBe(true);
+        expect(screen.getByRole('status', { name: 'Analysis status' }).textContent).toBe('No pitched notes to analyze. Notation stays editable.');
+    });
+    it('integrates notation controls and native mute input without treating mute or rest as pitch', async () => {
+        const user = userEvent.setup(); render(<Harness />);
+        await user.click(screen.getByRole('button', { name: 'String 1, onset 1, empty' }));
+        fireEvent.change(screen.getByRole('textbox', { name: 'Fret for string 1, onset 1' }), { target: { value: 'x' } });
+        await user.keyboard('{Enter}');
+        expect(screen.getByRole('button', { name: 'String 1, onset 1, muted x' })).toBeTruthy();
+        expect(screen.getByText('No pitched notes to analyze. Notation stays editable.')).toBeTruthy();
+        expect(screen.getByRole('button', { name: 'Analyze' }).hasAttribute('disabled')).toBe(true);
+        await user.click(screen.getByText('Notation', { selector: 'summary', exact: false }));
+        await user.click(screen.getByRole('button', { name: 'Rest' }));
+        expect(screen.getByRole('button', { name: 'String 1, onset 2, rest' })).toBeTruthy();
+        await user.click(screen.getByRole('button', { name: 'Next Duration' }));
+        expect(screen.getByRole('spinbutton', { name: 'Duration' }).getAttribute('aria-valuetext')).toBe('Whole');
+        await user.click(screen.getByRole('button', { name: 'Next Time signature' }));
+        expect(screen.getByRole('spinbutton', { name: 'Time signature' }).getAttribute('aria-valuetext')).toBe('2/4');
+        expect(screen.getByText(/Timing, ties and pitch gestures are preserved, not interpreted/)).toBeTruthy();
+        await user.click(screen.getByRole('button', { name: 'Undo' }));
+        expect(screen.getByRole('spinbutton', { name: 'Time signature' }).getAttribute('aria-valuetext')).toBe('Unspecified');
+        await user.click(screen.getByRole('button', { name: 'Redo' }));
+        expect(screen.getByRole('spinbutton', { name: 'Time signature' }).getAttribute('aria-valuetext')).toBe('2/4');
+        await user.type(screen.getByRole('textbox', { name: 'Start numerator' }), '1');
+        await user.click(screen.getByRole('button', { name: 'Set start' }));
+        await user.click(onset(1));
+        await user.click(screen.getByText('Structure', { selector: 'summary' }));
+        expect(screen.getByRole('button', { name: 'Barline after cursor' }).hasAttribute('disabled')).toBe(true);
+        expect(screen.getByText('Clear starts after the cursor before splitting this bar.')).toBeTruthy();
+    });
     it.each([
         { steps: 7, majorName: 'Db', minorName: 'C#' },
         { steps: 8, majorName: 'Ab', minorName: 'G#' },

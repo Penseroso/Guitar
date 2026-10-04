@@ -85,6 +85,8 @@ describe('parseAsciiTab', () => {
             expect(result.document.moments.map(moment => moment.column)).toEqual([2, 5, 8]);
             expect(result.document.moments[0]).not.toHaveProperty('duration');
             expect(result.document.moments[0]).not.toHaveProperty('rest');
+            expect(result.document.moments[0].mutes).toEqual([{ string: 0, source: { line: 1, column: 3 } }]);
+            expect(result.document.moments[2].mutes).toEqual([{ string: 0, source: { line: 1, column: 9 } }]);
         }
     });
 
@@ -109,6 +111,8 @@ describe('parseAsciiTab', () => {
         const document = resultDocument(block(['0--', 'x--', '---', '---', '---', '---']));
         expect(document.moments).toHaveLength(1);
         expect(document.moments[0].notes.map(note => note.fret)).toEqual([0]);
+        expect(document.moments[0].mutes).toEqual([{ string: 1, source: { line: 2, column: 3 } }]);
+        expect(document.moments[0].rest).toBeUndefined();
     });
 
     it('warns about skipped prose, preserving actual source positions', () => {
@@ -129,7 +133,12 @@ describe('parseAsciiTab', () => {
         expect(result.document.moments[1]).not.toHaveProperty('duration');
         expect(result.diagnostics).toHaveLength(4);
         expect(result.diagnostics[0]).toMatchObject({ severity: 'warning', line: 1, column: 4 });
-        expect(result.diagnostics[3].message).toContain('only the written base fret');
+        expect(result.diagnostics[3].message).toContain('Vibrato metadata');
+        expect(result.document.moments[0].notes[0].techniques).toEqual([{ kind: 'hammer-on', toNoteId: result.document.moments[1].notes[0].id, notation: 'h', source: { line: 1, column: 4 } }]);
+        expect(result.document.moments[1].notes[0].techniques).toEqual([{ kind: 'pull-off', toNoteId: result.document.moments[2].notes[0].id, notation: 'p', source: { line: 1, column: 6 } }]);
+        expect(result.document.moments[3].notes[0].techniques).toEqual([{ kind: 'slide', toNoteId: result.document.moments[4].notes[0].id, notation: '/', source: { line: 1, column: 11 } }]);
+        expect(result.document.moments[4].notes[0].techniques).toEqual([{ kind: 'slide', toNoteId: result.document.moments[5].notes[0].id, notation: '\\', source: { line: 1, column: 13 } }]);
+        expect(result.document.moments[6].notes[0].techniques).toEqual([{ kind: 'vibrato', notation: '~~', source: { line: 1, column: 19 } }]);
     });
 
     it('keeps other strings aligned with explicit technique endpoints and retains tuning/capo semantics', () => {
@@ -137,6 +146,14 @@ describe('parseAsciiTab', () => {
         const document = resultDocument(source, { tuningMidi: TAB_TUNINGS[1].midi, capo: 2 });
         expect(document.moments.map(moment => moment.notes.map(note => note.midi))).toEqual([[76, 40], [78, 71]]);
         expect(document.moments[1].notes.map(note => note.source)).toEqual([{ line: 1, column: 6 }, { line: 2, column: 6 }]);
+    });
+
+    it('preserves connector glyph and case without replacing written slide direction', () => {
+        const document = resultDocument(one('5/3-3\\5-5H7P5'));
+        expect(document.moments.map(moment => moment.notes[0].fret)).toEqual([5, 3, 3, 5, 5, 7, 5]);
+        expect(document.moments.flatMap(moment => moment.notes[0].techniques ?? []).map(technique => technique.notation)).toEqual(['/', '\\', 'H', 'P']);
+        expect(document.moments[0].notes[0].techniques?.[0]).toMatchObject({ kind: 'slide', notation: '/', toNoteId: document.moments[1].notes[0].id });
+        expect(document.moments[2].notes[0].techniques?.[0]).toMatchObject({ kind: 'slide', notation: '\\', toNoteId: document.moments[3].notes[0].id });
     });
 
     it('does not collapse technique columns or align a note inside a multi-digit endpoint', () => {
@@ -149,11 +166,80 @@ describe('parseAsciiTab', () => {
         expect(parseAsciiTab(one(phrase)).ok).toBe(false);
     });
 
-    it.each(['7b9', '7b(9)', '7B9', '7r5', '7R5', '7^9'])('rejects bend/release %s without treating its target as another fret', (phrase) => {
+    it.each(['7b(9)', '7r5', '7R5', '7^9', '7b', '7bfull', '7b1/2', '7b100', '7b9r', '7b9r100', '7b9h10', '7b9b11', '7b9r7r5'])('rejects unsupported bend/release %s without emitting target notes', (phrase) => {
         const result = parseAsciiTab(one(phrase));
-        expect(result).toMatchObject({ ok: false, diagnostics: [{ severity: 'error', line: 1, column: 4 }] });
-        expect(result.diagnostics[0].message).toContain('target number may describe a bent pitch');
+        expect(result.ok).toBe(false);
+        expect(result.diagnostics.at(-1)).toMatchObject({ severity: 'error', line: 1 });
+        expect(result.diagnostics.at(-1)?.message).toMatch(/target|release|bend/i);
         expect(result).not.toHaveProperty('document');
+    });
+
+    it.each(['5b7r5', '5B7R5'])('retains %s as gestures on one base fret, never target onsets', phrase => {
+        const result = parseAsciiTab(one(phrase));
+        expect(result.ok).toBe(true);
+        if (!result.ok) return;
+        expect(result.document.moments).toHaveLength(1);
+        expect(result.document.moments[0].notes).toHaveLength(1);
+        expect(result.document.moments[0].notes[0]).toMatchObject({ fret: 5, midi: 69, source: { line: 1, column: 3 }, techniques: [
+            { kind: 'bend', targetFret: 7, notation: phrase.slice(1, 3), source: { line: 1, column: 4 } },
+            { kind: 'release', targetFret: 5, notation: phrase.slice(3), source: { line: 1, column: 6 } },
+        ] });
+        expect(result.document.source).toBe(one(phrase));
+        expect(result.document.timing).toBe('order-only');
+        expect(result.diagnostics).toHaveLength(1);
+        expect(result.diagnostics[0].message).toContain('not another played fret');
+    });
+
+    it('allows fret-equivalent bend targets beyond the actual fret input range without inventing pitches', () => {
+        const document = resultDocument(one('36b99r0-7'));
+        expect(document.moments.map(moment => moment.notes[0].fret)).toEqual([36, 7]);
+        expect(document.moments[0].notes[0].techniques?.map(technique => technique.kind)).toEqual(['bend', 'release']);
+        expect(document.moments[1].notes[0].source).toEqual({ line: 1, column: 11 });
+        expect(parseAsciiTab(one('37b39')).ok).toBe(false);
+    });
+
+    it('retains a played fret after a separated bend and keeps vibrato on the base', () => {
+        const document = resultDocument(one('5b7~~-7'));
+        expect(document.moments.map(moment => moment.notes[0].fret)).toEqual([5, 7]);
+        expect(document.moments[0].notes[0].techniques).toEqual([
+            { kind: 'bend', targetFret: 7, notation: 'b7', source: { line: 1, column: 4 } },
+            { kind: 'vibrato', notation: '~~', source: { line: 1, column: 6 } },
+        ]);
+    });
+
+    it('does not occupy bend-target columns and preserves other string notes there', () => {
+        const document = resultDocument(block(['10b12r10--12', '---9------11', '----8-------', '------------', '------------', '0-----------']));
+        expect(document.moments.map(moment => moment.notes.map(note => note.fret))).toEqual([[10, 0], [9], [8], [12, 11]]);
+        expect(document.moments[1].notes[0].source).toEqual({ line: 2, column: 6 });
+        expect(document.moments[2].notes[0].source).toEqual({ line: 3, column: 7 });
+        expect(document.moments[0].notes[0].techniques?.[0]).toMatchObject({ kind: 'bend', targetFret: 12 });
+    });
+
+    it('links technique endpoints through simultaneous chords and across consecutive blocks', () => {
+        const document = resultDocument(`${block(['10h12', '9--11', '-----', '-----', '-----', '-----'])}\n\n${one('5p3/7')}`);
+        const notes = document.moments.flatMap(moment => moment.notes);
+        expect(notes[0].techniques?.[0]).toMatchObject({ toNoteId: notes[2].id });
+        expect(document.moments[2].notes[0].techniques?.[0]).toMatchObject({ kind: 'pull-off', toNoteId: document.moments[3].notes[0].id });
+        expect(document.moments[3].notes[0].techniques?.[0]).toMatchObject({ kind: 'slide', toNoteId: document.moments[4].notes[0].id });
+    });
+
+    it('preserves analysis and annotations when articulation metadata is attached to written endpoints', () => {
+        const plain = resultDocument(one('0-3-7'));
+        const decorated = resultDocument(one('0h3/7~~'));
+        const context = { scale: null, chord: null, frame: null };
+        const analyze = (document: typeof plain) => analyzeTabSelection(document, { start: 0, end: 2 }, context);
+        expect(decorated.moments.flatMap(moment => moment.notes).map(note => note.midi)).toEqual(plain.moments.flatMap(moment => moment.notes).map(note => note.midi));
+        expect(buildTabScoreAnnotations(analyze(decorated), context)).toEqual(buildTabScoreAnnotations(analyze(plain), context));
+    });
+
+    it('does not convert bend targets into chord or harmonic-span pitch observations', () => {
+        const plain = resultDocument(block(['5-----5', '5-----5', '5-----5', '-------', '-------', '-------']));
+        const decorated = resultDocument(block(['5b7r5-5', '5-----5', '5-----5', '-------', '-------', '-------']));
+        const context = { scale: null, chord: null, frame: { tonic: 'A', mode: 'minor' as const, lens: 'jazz-pop' as const } };
+        const analyze = (document: typeof plain) => analyzeTabSelection(document, { start: 0, end: 1 }, context);
+        expect(decorated.moments.map(moment => moment.notes.map(note => note.midi))).toEqual(plain.moments.map(moment => moment.notes.map(note => note.midi)));
+        expect(buildTabScoreAnnotations(analyze(decorated), context)).toEqual(buildTabScoreAnnotations(analyze(plain), context));
+        expect(analyze(decorated).harmonicSpans).toEqual(analyze(plain).harmonicSpans);
     });
 
     it('warns once per supported technique class across repeated phrases and blocks', () => {
@@ -202,9 +288,17 @@ describe('parseAsciiTab', () => {
         expect(parseAsciiTab(one('36'), { tuningMidi: [124, 59, 55, 50, 45, 40] }).ok).toBe(false);
     });
 
-    it('rejects empty and unpitched-only input', () => {
+    it('rejects empty input and blank TAB while preserving muted-only input', () => {
         expect(parseAsciiTab('').ok).toBe(false);
-        expect(parseAsciiTab(one('x--')).ok).toBe(false);
+        expect(parseAsciiTab(one('---')).ok).toBe(false);
+        const document = resultDocument(one('x-X'));
+        expect(document.timing).toBe('order-only');
+        expect(document.moments.map(moment => moment.notes)).toEqual([[], []]);
+        expect(document.moments.map(moment => moment.mutes)).toEqual([
+            [{ string: 0, source: { line: 1, column: 3 } }],
+            [{ string: 0, source: { line: 1, column: 5 } }],
+        ]);
+        expect(document.moments.every(moment => moment.rest === undefined)).toBe(true);
     });
 
     it('bounds source size and parsed event count', () => {

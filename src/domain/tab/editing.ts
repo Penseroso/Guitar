@@ -1,4 +1,6 @@
 import { TAB_TUNINGS, type TabDocument, type TabMoment } from './types';
+import { sanitizeTabLinks } from './input-capabilities';
+export { setTabMeter, setTabBeatOffset, setTabDuration, setTabRest, setTabMute, setTabSustain, canSustainFromPrevious } from './input-capabilities';
 
 export const MAX_EDITABLE_TAB_MOMENTS = 1_024;
 
@@ -14,10 +16,10 @@ export function createEmptyTabDocument(count = 8, measureCount = 1): TabDocument
     };
 }
 
-function replaceMoments(document: TabDocument, moments: TabMoment[]): TabDocument {
+function replaceMoments(document: TabDocument, moments: TabMoment[], invalidated: ReadonlySet<string> = new Set()): TabDocument {
     return {
         ...document, format: 'authored',
-        moments: moments.map((moment, index) => moment.index === index ? moment : { ...moment, index }),
+        moments: sanitizeTabLinks(moments, invalidated).map((moment, index) => moment.index === index ? moment : { ...moment, index }),
         measureCount: Math.max(document.measureCount, 1, ...moments.map(moment => moment.measure)),
     };
 }
@@ -30,14 +32,34 @@ export function setTabFret(document: TabDocument, momentId: string, string: numb
     if (index < 0) return document;
     const moment = document.moments[index];
     const old = moment.notes.find(note => note.string === string);
-    if ((fret === null && !old) || old?.fret === fret) return document;
+    const hasMute = moment.mutes?.some(mute => mute.string === string);
+    const originalNotes = new Map(document.moments.flatMap(item => item.notes).map(note => [note.id, note]));
+    const hasSustain = moment.sustains?.some(sustain => originalNotes.get(sustain.noteId)?.string === string);
+    if ((fret === null && !old && !hasMute && !hasSustain && !moment.rest) || old?.fret === fret) return document;
     const midi = document.tuningMidi[string] + document.capo + (fret ?? 0);
     if (!Number.isInteger(midi) || midi < 0 || midi > 127) return document;
     if (fret !== null && !old && document.moments.some(item => item.notes.some(note => note.id === noteId))) return document;
     const notes = moment.notes.filter(note => note.string !== string);
-    if (fret !== null) notes.push({ id: old?.id ?? noteId, string, fret, midi, pitchClass: midi % 12, source: null });
+    if (fret !== null) notes.push({ id: old?.id ?? noteId, string, fret, midi, pitchClass: midi % 12, source: null,
+        ...(old?.duration ? { duration: old.duration } : {}) });
     notes.sort((a, b) => a.string - b.string);
-    return replaceMoments(document, document.moments.map((item, offset) => offset === index ? { ...item, notes } : item));
+    const changed = { ...moment, notes };
+    const mutes = moment.mutes?.filter(mute => mute.string !== string);
+    const sustains = moment.sustains?.filter(sustain => originalNotes.get(sustain.noteId)?.string !== string);
+    if (mutes?.length) changed.mutes = mutes; else delete changed.mutes;
+    if (sustains?.length) changed.sustains = sustains; else delete changed.sustains;
+    delete changed.rest;
+    return replaceMoments(document, document.moments.map((item, offset) => offset === index ? changed : item), old ? new Set([old.id]) : new Set());
+}
+
+function hasPositionContent(moment: TabMoment): boolean {
+    return Boolean(moment.notes.length || moment.rest || moment.mutes?.length || moment.sustains?.length || moment.beatOffset);
+}
+
+function clearPosition(moment: TabMoment): TabMoment {
+    const changed = { ...moment, notes: [] };
+    delete changed.rest; delete changed.mutes; delete changed.sustains; delete changed.beatOffset;
+    return changed;
 }
 
 export function insertTabMoment(document: TabDocument, afterId: string, momentId: string): TabDocument {
@@ -55,8 +77,8 @@ export function insertTabMoment(document: TabDocument, afterId: string, momentId
 export function deleteTabMoment(document: TabDocument, momentId: string): TabDocument {
     const moment = document.moments.find(item => item.id === momentId);
     if (!moment) return document;
-    if (document.moments.filter(item => item.measure === moment.measure).length === 1) return moment.notes.length
-        ? replaceMoments(document, document.moments.map(item => item.id === momentId ? { ...item, notes: [] } : item)) : document;
+    if (document.moments.filter(item => item.measure === moment.measure).length === 1) return hasPositionContent(moment)
+        ? replaceMoments(document, document.moments.map(item => item.id === momentId ? clearPosition(item) : item)) : document;
     return replaceMoments(document, document.moments.filter(item => item.id !== momentId));
 }
 
@@ -80,9 +102,9 @@ export function deleteTabMoments(document: TabDocument, momentIds: readonly stri
             changed = true;
             return [];
         }
-        if (!moment.notes.length) return [moment];
+        if (!hasPositionContent(moment)) return [moment];
         changed = true;
-        return [{ ...moment, notes: [] }];
+        return [clearPosition(moment)];
     });
     if (!changed) return document;
     const columns = new Map<number, number>();
@@ -106,15 +128,24 @@ export function appendTabMeasures(document: TabDocument, count: number, momentId
     return replaceMoments({ ...document, measureCount: document.measureCount + count }, [...document.moments, ...added]);
 }
 
-/** Insert a barline after a position; splitting at a measure end creates an editable empty measure. */
+/** Moving timed positions to a new bar needs an explicitly supplied new timing origin. */
+export function hasTabSplitTimingConflict(document: TabDocument, afterId: string): boolean {
+    const index = document.moments.findIndex(moment => moment.id === afterId);
+    return index >= 0 && document.moments.slice(index + 1).some(moment => moment.measure === document.moments[index].measure && moment.beatOffset);
+}
+
+/** Insert a barline without discarding or silently rebasing authored timing. */
 export function splitTabMeasure(document: TabDocument, afterId: string, emptyMomentId: string): TabDocument {
     const index = document.moments.findIndex(moment => moment.id === afterId);
     if (index < 0 || document.measureCount >= MAX_EDITABLE_TAB_MOMENTS) return document;
+    if (hasTabSplitTimingConflict(document, afterId)) return document;
     const measure = document.moments[index].measure;
     const hasTrailing = document.moments[index + 1]?.measure === measure;
     if (!hasTrailing && (document.moments.length >= MAX_EDITABLE_TAB_MOMENTS || document.moments.some(moment => moment.id === emptyMomentId))) return document;
-    const moments = document.moments.map((moment, offset) => moment.measure > measure || (moment.measure === measure && offset > index)
-        ? { ...moment, measure: moment.measure + 1 } : moment);
+    const moments = document.moments.map((moment, offset) => {
+        return moment.measure > measure || (moment.measure === measure && offset > index)
+            ? { ...moment, measure: moment.measure + 1 } : moment;
+    });
     if (!hasTrailing) moments.splice(index + 1, 0, { id: emptyMomentId, index: index + 1, measure: measure + 1, column: 1, notes: [] });
     return replaceMoments({ ...document, measureCount: document.measureCount + 1 }, moments);
 }

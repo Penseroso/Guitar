@@ -98,13 +98,13 @@ export function buildTabScoreAnnotations(
         // A specific repeated pattern explains a mixed run better than another generic span.
         if (run.contour === 'mixed' && analysis.repeatedPatterns.some(pattern => pattern.occurrences.some(occurrence => occurrence.start >= run.start && occurrence.end <= run.end))) continue;
         add('melody', run.start, run.end, contourLabels[run.contour],
-            `Observed note order: ${run.intervals.map(step => `${step.interval.direction === 'down' ? '−' : step.interval.direction === 'up' ? '+' : ''}${step.interval.label}`).join(' → ')}. Rhythm and note lengths are unknown.`, 'observed', 'below');
+            `Observed note order: ${run.intervals.map(step => `${step.interval.direction === 'down' ? '−' : step.interval.direction === 'up' ? '+' : ''}${step.interval.label}`).join(' → ')}. Timing metadata is not interpreted by this order-only analysis.`, 'observed', 'below');
     }
     // Keep the score readable; the full ranked pattern set stays in the analysis snapshot.
     analysis.repeatedPatterns.slice(0, 1).forEach((pattern, patternIndex) => {
         for (const occurrence of pattern.occurrences) {
             add('repeat', occurrence.start, occurrence.end, `Pattern ${patternIndex + 1}`,
-                `Repeated interval pattern (${pattern.semitones.map(interval => `${interval > 0 ? '+' : ''}${interval}`).join(', ')} semitones), observed ${pattern.occurrences.length} times. Rhythm is unknown; this is not a confirmed rhythmic motif.`, 'observed', 'below');
+                `Repeated interval pattern (${pattern.semitones.map(interval => `${interval > 0 ? '+' : ''}${interval}`).join(', ')} semitones), observed ${pattern.occurrences.length} times. Timing metadata is not interpreted; this is not a confirmed rhythmic motif.`, 'observed', 'below');
         }
     });
     for (const arpeggio of analysis.arpeggios) {

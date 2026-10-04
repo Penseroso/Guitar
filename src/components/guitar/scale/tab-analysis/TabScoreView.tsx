@@ -2,19 +2,33 @@
 
 import React, { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { Trash2 } from 'lucide-react';
-import type { TabDocument, TabMoment, TabSelection } from '@/domain/tab/types';
+import type { TabDocument, TabFraction, TabMoment, TabNote, TabSelection } from '@/domain/tab/types';
 import type { TabScoreAnnotation } from '@/domain/tab/annotations';
 import { getKeyName } from '@/domain/shared/keys';
 import styles from './tab-score-editor.module.css';
 
 export interface TabActiveCell { momentId: string; string: number }
-export type TabDraftStatus = 'note' | 'empty' | 'invalid' | null;
+export type TabDraftStatus = 'note' | 'mute' | 'empty' | 'invalid' | null;
 interface Draft { cell: TabActiveCell; text: string; revision: number }
 const cellKey = (cell: TabActiveCell) => `${cell.momentId}:${cell.string}`;
+const durationDetail = (duration?: TabFraction) => duration ? `duration ${duration.numerator}/${duration.denominator} quarter notes` : '';
+
+function techniquePresentation(note: TabNote, notes: ReadonlyMap<string, TabNote>) {
+    return (note.techniques ?? []).map(technique => {
+        if (technique.kind === 'vibrato') return { mark: '~', detail: `vibrato ${technique.notation}` };
+        if ('targetFret' in technique) return {
+            mark: `${technique.kind === 'bend' ? 'b' : 'r'}${technique.targetFret}`,
+            detail: `${technique.kind} target fret-equivalent ${technique.targetFret}; not a new attack`,
+        };
+        const target = notes.get(technique.toNoteId);
+        const mark = technique.notation ?? (technique.kind === 'hammer-on' ? 'h' : technique.kind === 'pull-off' ? 'p' : target && target.fret < note.fret ? '\\' : '/');
+        return { mark, detail: `${technique.kind}${target ? ` to fret ${target.fret}` : ''}` };
+    });
+}
 
 export function TabScoreView({ document, selection, onSelect, extend, focusedNoteId,
     activeCell, onActiveCellChange, onSetFret, onUndo, onRedo,
-    annotations = [], onInsertMoment, onDeleteMoments, onDraftStatusChange,
+    annotations = [], onInsertMoment, onDeleteMoments, onDraftStatusChange, onSetMute,
 }: {
     document: TabDocument;
     selection: TabSelection;
@@ -24,6 +38,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     activeCell: TabActiveCell | null;
     onActiveCellChange: (cell: TabActiveCell) => void;
     onSetFret: (change: TabActiveCell & { fret: number | null }) => void;
+    onSetMute?: (change: TabActiveCell & { enabled: boolean }) => void;
     onUndo: () => void;
     onRedo: () => void;
     annotations?: readonly TabScoreAnnotation[];
@@ -56,6 +71,8 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         && activeCell.string >= 0 && activeCell.string < 6 ? activeCell
         : document.moments[0] ? { momentId: document.moments[0].id, string: 0 } : null;
     const lower = Math.min(selection.start, selection.end), upper = Math.max(selection.start, selection.end);
+    const notesById = new Map(document.moments.flatMap(moment => moment.notes.map(note => [note.id, note] as const)));
+    const sustainedAt = (moment: TabMoment, string: number) => moment.sustains?.find(sustain => notesById.get(sustain.noteId)?.string === string);
 
     const cancelHold = () => { if (hold.current) clearTimeout(hold.current.timer); hold.current = null; };
     useEffect(() => {
@@ -101,22 +118,34 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     const setDraft = (value: Draft | null) => {
         draftRef.current = value; setDraftState(value);
         onDraftStatusChange?.(value === null ? null : value.text === '' ? 'empty'
-            : /^\d{1,2}$/.test(value.text) && Number(value.text) <= 36 ? 'note' : 'invalid');
+            : onSetMute && /^[xX]$/.test(value.text) ? 'mute'
+                : /^\d{1,2}$/.test(value.text) && Number(value.text) <= 36 ? 'note' : 'invalid');
     };
     const fretAt = (cell: TabActiveCell) => document.moments.find(moment => moment.id === cell.momentId)?.notes.find(note => note.string === cell.string)?.fret ?? null;
+    const textAt = (cell: TabActiveCell) => {
+        const moment = document.moments.find(moment => moment.id === cell.momentId);
+        return moment?.mutes?.some(mute => mute.string === cell.string) ? 'x' : fretAt(cell)?.toString() ?? '';
+    };
     const writeFret = (cell: TabActiveCell, fret: number | null) => {
-        if (fretAt(cell) !== fret) onSetFret({ ...cell, fret });
+        const moment = document.moments.find(moment => moment.id === cell.momentId);
+        if (fretAt(cell) !== fret || moment?.rest || moment?.mutes?.some(mute => mute.string === cell.string)
+            || (moment && sustainedAt(moment, cell.string))) onSetFret({ ...cell, fret });
     };
     const commit = (keepInputUntilBlur = false) => {
         const edit = draftRef.current;
         if (!edit) return true;
-        if (edit.text !== '' && (!/^\d{1,2}$/.test(edit.text) || Number(edit.text) > 36)) {
-            setError('Enter a fret from 0–36, or leave the cell empty.');
+        const mute = Boolean(onSetMute && /^[xX]$/.test(edit.text));
+        if (!mute && edit.text !== '' && (!/^\d{1,2}$/.test(edit.text) || Number(edit.text) > 36)) {
+            setError(`Enter a fret from 0–36${onSetMute ? ', x for mute' : ''}, or leave the cell empty.`);
             return false;
         }
         if (!keepInputUntilBlur) setDraft(null);
         setError(null);
-        writeFret(edit.cell, edit.text === '' ? null : Number(edit.text));
+        // Opening a rest/sustain cell for inspection must not erase its metadata on blur.
+        // Delete explicitly clears it; typing a fret or x explicitly replaces it.
+        if (edit.text === '' && textAt(edit.cell) === '') return true;
+        if (mute) onSetMute?.({ ...edit.cell, enabled: true });
+        else writeFret(edit.cell, edit.text === '' ? null : Number(edit.text));
         return true;
     };
     const focusCell = (cell: TabActiveCell) => {
@@ -277,7 +306,8 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         if (navigate(event, cell)) return;
         if (event.key === 'Insert' && onInsertMoment) { event.preventDefault(); insertAt(cell); return; }
         if (/^\d$/.test(event.key)) { event.preventDefault(); begin(cell, event.key, 'end'); }
-        else if (event.key === 'Enter' || event.key === 'F2') { event.preventDefault(); begin(cell, fretAt(cell)?.toString() ?? '', 'all'); }
+        else if (onSetMute && /^[xX]$/.test(event.key)) { event.preventDefault(); begin(cell, 'x', 'end'); }
+        else if (event.key === 'Enter' || event.key === 'F2') { event.preventDefault(); begin(cell, textAt(cell), 'all'); }
         else if (event.key === 'Delete' || event.key === 'Backspace') { event.preventDefault(); clear(cell); }
     };
     const onInputKey = (event: React.KeyboardEvent<HTMLInputElement>, cell: TabActiveCell) => {
@@ -361,7 +391,12 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                                 style={{ gridColumn: `span ${Math.max(1, measure.moments.length)}` }}>
                                 <span className={styles.measureNumber} aria-hidden="true">{measure.number}</span>
                                 {measure.moments.map(({ moment, index }) => {
-                                    const description = moment.notes.map(note => `string ${note.string + 1}, fret ${note.fret}`).join('; ') || 'empty';
+                                    const description = [
+                                        moment.rest ? ['rest', durationDetail(moment.rest.duration)].filter(Boolean).join(', ') : '',
+                                        ...moment.notes.map(note => `string ${note.string + 1}, fret ${note.fret}${note.duration ? `, ${durationDetail(note.duration)}` : ''}`),
+                                        ...(moment.mutes ?? []).map(mute => `string ${mute.string + 1}, muted x`),
+                                        ...(moment.sustains ?? []).map(sustain => { const note = notesById.get(sustain.noteId); return note ? `string ${note.string + 1}, tied fret ${note.fret}` : 'sustain'; }),
+                                    ].filter(Boolean).join('; ') || 'empty';
                                     return <button key={moment.id} ref={element => { if (element) headers.current.set(moment.id, element); else headers.current.delete(moment.id); }}
                                         type="button" tabIndex={columnMode && current?.momentId === moment.id ? 0 : -1} className={styles.header}
                                         data-column-header="true"
@@ -404,22 +439,33 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                                         aria-label={`Empty bar ${measure}`} className={styles.cell} data-bar-start={startsBar} />;
                             const cell = { momentId: moment.id, string }, key = cellKey(cell);
                             const note = moment.notes.find(item => item.string === string);
+                            const mute = moment.mutes?.some(item => item.string === string);
+                            const sustain = sustainedAt(moment, string);
+                            const tiedNote = sustain && notesById.get(sustain.noteId);
+                            const techniques = note ? techniquePresentation(note, notesById) : [];
+                            const duration = note?.duration ?? sustain?.duration ?? moment.rest?.duration;
+                            const detail = [durationDetail(duration), ...techniques.map(technique => technique.detail)].filter(Boolean).join('; ');
                             const isActive = current !== null && cellKey(current) === key;
                             const isEditing = draft !== null && cellKey(draft.cell) === key;
-                            const label = `String ${string + 1}, onset ${index + 1}, ${note ? `fret ${note.fret}` : 'empty'}`;
+                            const valueLabel = note ? `fret ${note.fret}` : mute ? 'muted x' : tiedNote ? `tied fret ${tiedNote.fret}` : moment.rest ? 'rest' : 'empty';
+                            const label = `String ${string + 1}, onset ${index + 1}, ${valueLabel}${detail ? `; ${detail}` : ''}`;
                             return <div role="gridcell" aria-colindex={slotIndex + 2} aria-selected={isActive} className={styles.cell} key={key}
                                 data-active={isActive} data-selected={index >= lower && index <= upper} data-bar-start={startsBar}>
                                 <button ref={element => { if (element) buttons.current.set(key, element); else buttons.current.delete(key); }} type="button"
-                                    className={styles.cellButton} tabIndex={isActive && !isEditing && !columnMode ? 0 : -1} aria-label={label}
+                                    className={styles.cellButton} tabIndex={isActive && !isEditing && !columnMode ? 0 : -1} aria-label={label} title={detail || undefined}
                                     aria-hidden={isEditing || undefined} data-editing={isEditing}
                                     onClick={event => {
                                         if (!commit()) { input.current?.focus(); return; }
                                         choose(cell, event.shiftKey || extend);
-                                        begin(cell, note?.fret.toString() ?? '', 'all');
+                                        begin(cell, textAt(cell), 'all');
                                     }} onKeyDown={event => onCellKey(event, cell)}
                                     onPaste={event => { event.preventDefault(); begin(cell, event.clipboardData.getData('text/plain'), 'all'); }}>
-                                    {note ? <span className={styles.fret} data-focused={note.id === focusedNoteId}>{note.fret}</span>
-                                        : <span className={styles.empty} aria-hidden="true">·</span>}
+                                    {note ? <span className={styles.fret} data-focused={note.id === focusedNoteId}>{note.fret}
+                                        {techniques.length > 0 && <sup className={styles.technique} aria-hidden="true">{techniques.map(technique => technique.mark).join('')}</sup>}</span>
+                                        : mute ? <span className={styles.fret}>x</span>
+                                            : tiedNote ? <span className={`${styles.fret} ${styles.sustain}`} aria-hidden="true">⌒{tiedNote.fret}</span>
+                                                : moment.rest && string === 0 ? <span className={`${styles.fret} ${styles.rest}`} aria-hidden="true">R</span>
+                                                    : <span className={styles.empty} aria-hidden="true">·</span>}
                                 </button>
                                 {isEditing && <input ref={input} type="text" inputMode="numeric" autoComplete="off" spellCheck={false}
                                     className={styles.editor} value={draft.text} aria-label={`Fret for string ${string + 1}, onset ${index + 1}`}

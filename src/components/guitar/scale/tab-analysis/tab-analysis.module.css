@@ -48,6 +48,13 @@
 @media (hover: none), (pointer: coarse) { .desktopHint { display: none; } .touchHint { display: block; } }
 .structureTools > summary { min-height: 44px; min-width: 44px; padding: 8px 4px; color: var(--workspace-muted); cursor: pointer; }
 .structureTools[open] { flex-basis: 100%; }
+.notation { border-top: 1px solid var(--workspace-border); margin-top: 8px; }
+.notation > summary { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 20px; min-height: 44px; cursor: pointer; padding: 8px 4px; }
+.notation > .meta { margin: 8px 4px; }
+.notationRow { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 20px; padding: 8px 4px; border-top: 1px solid var(--workspace-border); font-size: 12px; }
+.notationRow > fieldset { width: min(100%, 360px); }
+.notationFraction { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.notationFraction input { width: 78px; min-height: 44px; background: transparent; border: 0; border-bottom: 1px solid var(--workspace-border); color: #f4f4f5; padding: 8px; font: inherit; }
 .scoreSection, .analysis { min-width: 0; }
 .sectionHeading { margin-bottom: 10px; }
 .scoreViewport { max-width: 100%; overflow-x: auto; border-block: 1px solid var(--workspace-border); background: var(--workspace-panel); margin-top: 20px; overscroll-behavior-x: contain; }
