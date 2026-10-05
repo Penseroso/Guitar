@@ -4,7 +4,6 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { parseAsciiTab, MAX_TAB_SOURCE_LENGTH } from '@/domain/tab/ascii';
 import { buildTabScoreAnnotations } from '@/domain/tab/annotations';
 import { TAB_TUNINGS } from '@/domain/tab/types';
-import { hasTabSplitTimingConflict } from '@/domain/tab/editing';
 import type { TabAnalysisAction, TabAnalysisState } from '@/features/tab-analysis/state';
 import { createScaleRef, resolveScaleRef, type ScaleRef } from '@/domain/scale/scale-ref';
 import { SCALE_REGISTRY } from '@/domain/scale/scales';
@@ -14,7 +13,6 @@ import { parseNoteName } from '@/domain/shared/spelling';
 import { RootDial } from '../../chord/RootDial';
 import { SwipePicker } from '../../harmony/SwipePicker';
 import { TabScoreView, type TabDraftStatus } from './TabScoreView';
-import { TabNotationEditor } from './TabNotationEditor';
 import styles from './tab-analysis.module.css';
 
 const SCALE_OPTIONS = Object.entries(SCALE_REGISTRY).flatMap(([group, scales]) => Object.keys(scales).map(name => ({
@@ -66,8 +64,6 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
     const hasNotation = !!state.document?.meter || !!state.document?.moments.some(moment => moment.beatOffset || moment.rest || moment.mutes?.length || moment.sustains?.length
         || moment.notes.some(note => note.duration || note.techniques?.length));
     const keyTitle = state.context.frame ? `${state.context.frame.tonic} ${state.context.frame.mode}` : 'No key supplied';
-    const splitAfter = state.activeCell?.momentId ?? state.document?.moments[state.selection?.end ?? 0]?.id;
-    const splitTimingConflict = !!(state.document && splitAfter && hasTabSplitTimingConflict(state.document, splitAfter));
     const openKeyContext = () => {
         setContextOpen(true);
         requestAnimationFrame(() => {
@@ -198,6 +194,7 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
                     : state.analysisStatus === 'fresh' ? `Analyzed whole score. ${annotations.length ? 'Select a score annotation for its evidence.' : 'No supported pattern found in this score.'}`
                         : 'Ready to analyze. Notes stay editable on the score.'}</p>
                 <TabScoreView document={state.document} selection={state.selection} extend={false} focusedNoteId={null}
+                    onEdit={action => { cancelRead(); dispatch(action); }}
                     onDraftStatusChange={setDraftStatus}
                     annotations={annotationsVisible ? annotations : []}
                     activeCell={state.activeCell ?? { momentId: state.document.moments[0].id, string: 0 }}
@@ -212,16 +209,7 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
                     <button className={styles.textAction} type="button" disabled={state.past.length === 0} onClick={() => dispatch({ type: 'undo' })}>Undo</button>
                     <button className={styles.textAction} type="button" disabled={state.future.length === 0} onClick={() => dispatch({ type: 'redo' })}>Redo</button>
                     <span className={styles.meta}>Position {state.activeCell ? state.document.moments.findIndex(moment => moment.id === state.activeCell!.momentId) + 1 : 1}</span>
-                    <button className={styles.textAction} type="button" disabled={state.document.moments.length > 1008} onClick={() => dispatch({ type: 'add-measures', count: 4 })}>+ 4 bars</button>
-                    <details className={styles.structureTools}>
-                        <summary>Structure</summary>
-                        <div className={styles.actions}>
-                            <button className={styles.textAction} type="button" disabled={splitTimingConflict} onClick={() => dispatch({ type: 'split-measure', afterId: splitAfter! })}>Barline after cursor</button>
-                            {splitTimingConflict && <span className={styles.meta}>Clear starts after the cursor before splitting this bar.</span>}
-                        </div>
-                    </details>
                 </div>
-                <TabNotationEditor document={state.document} cell={state.activeCell ?? { momentId: state.document.moments[0].id, string: 0 }} dispatch={action => { cancelRead(); dispatch(action); }} />
                 <p className={`${styles.meta} ${styles.desktopHint}`}>Click a string to type · Hover between columns for + · Drag column headers, then Delete · Arrow keys move.</p>
                 <p className={`${styles.meta} ${styles.touchHint}`}>Tap a string to type · Tap + to add · Hold a column header dot to delete.</p>
             </div>

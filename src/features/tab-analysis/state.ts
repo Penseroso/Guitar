@@ -3,7 +3,7 @@ import {
     type TabAnalysisContext, type TabDiagnostic, type TabDocument, type TabParseResult, type TabSelection, type TabFraction, type TabMeter,
 } from '@/domain/tab/types';
 import { setTabBeatOffset, setTabDuration, setTabMeter, setTabMute, setTabRest, setTabSustain } from '@/domain/tab/input-capabilities';
-import { appendTabMeasures, createEmptyTabDocument, deleteTabMoment, deleteTabMoments, insertTabMoment, retuneTabDocument, setTabFret, splitTabMeasure } from '@/domain/tab/editing';
+import { appendTabMeasures, createEmptyTabDocument, deleteTabMoment, deleteTabMoments, insertTabMoment, joinTabMeasure, retuneTabDocument, setTabFret, splitTabMeasure } from '@/domain/tab/editing';
 import { analyzeTabSelection, type TabSelectionAnalysis } from '@/domain/tab/analysis';
 
 export interface TabAnalysisSnapshot {
@@ -56,6 +56,7 @@ export type TabAnalysisAction =
     | { type: 'delete-moments'; momentIds: string[] }
     | { type: 'add-measures'; count: number }
     | { type: 'split-measure'; afterId: string }
+    | { type: 'join-measure'; afterId: string }
     | { type: 'analyze'; scope?: 'all' | 'selection' }
     | { type: 'undo' | 'redo' }
     | { type: 'set-scale'; scale: TabAnalysisContext['scale'] }
@@ -65,13 +66,13 @@ export type TabAnalysisAction =
     | { type: 'reset' };
 
 export function createTabAnalysisState(): TabAnalysisState {
-    const document = createEmptyTabDocument(16, 4);
+    const document = createEmptyTabDocument();
     return {
         source: '', sourceName: '', documentName: '', tuningId: 'standard', capo: 0,
         document, diagnostics: [], selection: { start: 0, end: 0 },
         activeCell: { momentId: document.moments[0].id, string: 0 },
         context: { scale: null, chord: null, frame: null },
-        analyzedSource: null, editorOpen: false, nextId: 16, past: [], future: [], analysis: null, analysisStatus: 'idle',
+        analyzedSource: null, editorOpen: false, nextId: 1, past: [], future: [], analysis: null, analysisStatus: 'idle',
     };
 }
 
@@ -219,13 +220,17 @@ export function reduceTabAnalysis(state: TabAnalysisState, action: TabAnalysisAc
         }
         case 'add-measures': {
             if (!state.document || !Number.isInteger(action.count) || action.count < 1 || action.count > 256) return state;
-            const ids = Array.from({ length: action.count * 4 }, (_, offset) => `edit-moment-${state.nextId + offset}`);
+            const ids = Array.from({ length: action.count }, (_, offset) => `edit-moment-${state.nextId + offset}`);
             const document = appendTabMeasures(state.document, action.count, ids);
-            return document === state.document ? state : commit(state, { document, analyzedSource: null, nextId: state.nextId + ids.length });
+            const index = state.document.moments.length;
+            return document === state.document ? state : commit(state, { document, analyzedSource: null, nextId: state.nextId + ids.length,
+                selection: { start: index, end: index }, activeCell: { momentId: ids[0], string: state.activeCell?.string ?? 0 } });
         }
+        case 'join-measure':
         case 'split-measure': {
             if (!state.document) return state;
-            const document = splitTabMeasure(state.document, action.afterId, `edit-moment-${state.nextId}`);
+            const document = action.type === 'join-measure' ? joinTabMeasure(state.document, action.afterId)
+                : splitTabMeasure(state.document, action.afterId, `edit-moment-${state.nextId}`);
             return document === state.document ? state : commit(state, {
                 document, selection: mapSelection(state, document), activeCell: mapCell(state, document),
                 analyzedSource: null, nextId: state.nextId + 1,

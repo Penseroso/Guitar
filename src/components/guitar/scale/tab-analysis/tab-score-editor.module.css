@@ -58,3 +58,17 @@
 .error { font-size: 12px; color: #e6c896; margin: 8px 0 0; }
 @media (hover: none), (pointer: coarse) { .header { -webkit-touch-callout: none; } .insertPosition:hover { opacity: 0; } .insertionSlot[data-current="true"] .insertPosition:not(:disabled) { opacity: .85; } }
 @media (prefers-reduced-motion: reduce) { .viewport { scroll-behavior: auto; } .insertPosition { transition: none; } }
+.measureLane { display: grid; grid-template-columns: var(--score-columns); }
+.measureControl, .addBar { min-width: 44px; min-height: 44px; border: 0; background: transparent; color: #f4f4f5; font: inherit; font-size: 12px; cursor: pointer; text-align: left; padding: 8px; }
+.measureControl { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; border-left: 1px solid var(--workspace-border); }
+.measureControl span { color: var(--workspace-muted); }
+.measureControl[aria-expanded="true"] { box-shadow: inset 0 -1px #eee; }
+.measureControl:focus-visible, .addBar:focus-visible, .viewport:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: -2px; }
+.addBar { display: block; margin-left: auto; color: var(--workspace-muted); }
+.addBar:disabled { opacity: .4; cursor: default; }
+.system { position: relative; }
+.positionLane { display: grid; grid-template-columns: var(--score-columns); min-height: 44px; }
+.positionTrigger { display: block; margin-inline: auto; width: 44px; height: 44px; padding: 0; border: 0; background: transparent; color: var(--workspace-muted); font: inherit; font-size: 11px; cursor: pointer; }
+.positionTrigger[aria-expanded="true"] { color: #f4f4f5; text-decoration: underline; text-underline-offset: 5px; }
+.positionTrigger:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: -2px; }
+.positionPopup { position: absolute; z-index: 6; width: min(420px, 100%); max-height: min(70vh, 620px); overflow: auto; overscroll-behavior: contain; padding: 8px 12px; box-sizing: border-box; background: var(--workspace-panel); border: 1px solid var(--workspace-border); box-shadow: 0 12px 32px rgba(0,0,0,.45); }

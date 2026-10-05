@@ -26,12 +26,14 @@ function put(state: TabAnalysisState, fret: number | null, string = 0, index = 0
     return reduceTabAnalysis(state, { type: 'set-fret', momentId: state.document!.moments[index].id, string, fret });
 }
 
+// Multi-position fixtures test editing semantics independently of the blank-score policy.
+function populatedState(): TabAnalysisState { return { ...createTabAnalysisState(), document: createEmptyTabDocument(16, 4), nextId: 16 }; }
 describe('editable tab session', () => {
-    it('starts with four editable measures and no musical context or analysis', () => {
+    it('starts with one editable position and no musical context or analysis', () => {
         const state = createTabAnalysisState();
         expect(state.context).toEqual({ scale: null, chord: null, frame: null });
-        expect(state.document?.moments).toHaveLength(16);
-        expect(state.document?.measureCount).toBe(4);
+        expect(state.document?.moments).toHaveLength(1);
+        expect(state.document?.measureCount).toBe(1);
         expect(state.analysisStatus).toBe('idle');
         expect(state.analysis).toBeNull();
         expect(state.selection).toEqual({ start: 0, end: 0 });
@@ -130,7 +132,7 @@ describe('editable tab session', () => {
     });
 
     it('preserves selected and active IDs across insertion/deletion before them', () => {
-        let state = createTabAnalysisState();
+        let state = populatedState();
         const selectedId = state.document!.moments[3].id;
         const firstId = state.document!.moments[0].id;
         state = reduceTabAnalysis(state, { type: 'select', selection: { start: 3, end: 4 } });
@@ -160,7 +162,7 @@ describe('editable tab session', () => {
     });
 
     it('deletes a selected batch in one history step and restores the score, cursor and selection with undo', () => {
-        let state = put(createTabAnalysisState(), 12, 0, 4);
+        let state = put(populatedState(), 12, 0, 4);
         state = reduceTabAnalysis(state, { type: 'select', selection: { start: 2, end: 7 } });
         state = reduceTabAnalysis(state, { type: 'set-active-cell', cell: { momentId: state.document!.moments[3].id, string: 2 } });
         state = reduceTabAnalysis(state, { type: 'analyze' });
@@ -187,7 +189,7 @@ describe('editable tab session', () => {
     });
 
     it('maps surviving selections through a batch and ignores deletions that cannot change the score', () => {
-        let state = createTabAnalysisState();
+        let state = populatedState();
         state = reduceTabAnalysis(state, { type: 'select', selection: { start: 2, end: 6 } });
         const activeId = state.document!.moments[4].id;
         state = reduceTabAnalysis(state, { type: 'set-active-cell', cell: { momentId: activeId, string: 5 } });
@@ -203,7 +205,7 @@ describe('editable tab session', () => {
     });
 
     it('keeps the cursor on the selected empty position after deleting a whole measure and repeating Delete', () => {
-        let state = put(createTabAnalysisState(), 9, 0, 0);
+        let state = put(populatedState(), 9, 0, 0);
         state = reduceTabAnalysis(state, { type: 'select', selection: { start: 0, end: 3 } });
         state = reduceTabAnalysis(state, { type: 'set-active-cell', cell: { momentId: state.document!.moments[3].id, string: 4 } });
         const retainedId = state.document!.moments[0].id;
@@ -220,7 +222,7 @@ describe('editable tab session', () => {
     });
 
     it('shrinks a range when its final column is deleted without selecting the following column', () => {
-        let state = createTabAnalysisState();
+        let state = populatedState();
         state = reduceTabAnalysis(state, { type: 'select', selection: { start: 1, end: 3 } });
         const deletedId = state.document!.moments[3].id;
         state = reduceTabAnalysis(state, { type: 'delete-moment', momentId: deletedId });
@@ -270,7 +272,7 @@ describe('editable tab session', () => {
     });
 
     it('runs analysis explicitly and keeps all-score results stable during cursor and range changes', () => {
-        const initial = put(createTabAnalysisState(), 0);
+        const initial = put(populatedState(), 0);
         expect(initial.analysis).toBeNull();
         const analyzed = reduceTabAnalysis(initial, { type: 'analyze' });
         expect(analyzed.analysisStatus).toBe('fresh');
@@ -292,7 +294,7 @@ describe('editable tab session', () => {
     });
 
     it('analyzes the explicit selected range with its own context snapshot and marks changed context stale', () => {
-        let state = put(createTabAnalysisState(), 0);
+        let state = put(populatedState(), 0);
         state = put(state, 3, 0, 1);
         state = reduceTabAnalysis(state, { type: 'set-scale', scale });
         state = reduceTabAnalysis(state, { type: 'set-frame', frame });
@@ -312,12 +314,12 @@ describe('editable tab session', () => {
     });
 
     it('adds and splits explicit measures with undoable flexible position counts', () => {
-        const initial = createTabAnalysisState();
+        const initial = { ...createTabAnalysisState(), document: createEmptyTabDocument(4), nextId: 4 };
         const appended = reduceTabAnalysis(initial, { type: 'add-measures', count: 4 });
-        expect(appended.document?.measureCount).toBe(8);
-        expect(appended.document?.moments).toHaveLength(32);
+        expect(appended.document?.measureCount).toBe(5);
+        expect(appended.document?.moments).toHaveLength(8);
         const split = reduceTabAnalysis(appended, { type: 'split-measure', afterId: appended.document!.moments[1].id });
-        expect(split.document?.measureCount).toBe(9);
+        expect(split.document?.measureCount).toBe(6);
         expect(split.document?.moments.filter(moment => moment.measure === 1)).toHaveLength(2);
         expect(split.document?.moments.filter(moment => moment.measure === 2)).toHaveLength(2);
         expect(reduceTabAnalysis(split, { type: 'undo' }).document).toBe(appended.document);

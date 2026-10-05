@@ -34,6 +34,66 @@ function textFile(name: string, text: () => Promise<string>) {
 const chooseFile = (file: File) => fireEvent.change(screen.getByLabelText('Open a text tab file'), { target: { files: [file] } });
 
 describe('score-first explicit analysis workflow', () => {
+    it('opens position input from the score by keyboard and returns focus with Escape or Close', async () => {
+        const user = userEvent.setup(); render(<Harness />);
+        screen.getByRole('button', { name: 'String 1, onset 1, empty' }).focus();
+        await user.tab({ shift: true });
+        const trigger = screen.getByRole('button', { name: 'Edit position 1, bar 1, string 1' });
+        expect(document.activeElement).toBe(trigger);
+        await user.keyboard('{Enter}');
+        expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Rest' }));
+        await user.keyboard('{Escape}');
+        expect(screen.queryByRole('group', { name: 'Position 1 notation' })).toBeNull();
+        expect(document.activeElement).toBe(trigger);
+        await user.keyboard('{Enter}');
+        await user.click(screen.getByRole('button', { name: 'Close position editor' }));
+        expect(document.activeElement).toBe(trigger);
+        await user.click(trigger);
+        screen.getByRole('button', { name: 'Add barline after position' }).focus();
+        await user.tab();
+        expect(screen.queryByRole('group', { name: 'Position 1 notation' })).toBeNull();
+        expect(document.activeElement).toBe(screen.getByRole('button', { name: '+ Add bar' }));
+        await user.click(trigger);
+        await user.click(screen.getByRole('button', { name: 'String 2, onset 1, empty' }));
+        expect(screen.queryByRole('group', { name: 'Position 1 notation' })).toBeNull();
+        await user.keyboard('{Escape}');
+        expect(screen.getByRole('button', { name: 'Edit position 1, bar 1, string 2' }).getAttribute('aria-expanded')).toBe('false');
+    });
+    it('keeps keyboard focus through undo/redo when appending crosses a system boundary', async () => {
+        const user = userEvent.setup(); render(<Harness />);
+        for (let index = 0; index < 4; index++) await user.click(screen.getByRole('button', { name: '+ Add bar' }));
+        expect(document.activeElement).toBe(screen.getByRole('button', { name: 'String 1, onset 5, empty' }));
+        await user.keyboard('{Control>}z{/Control}');
+        expect(screen.queryByRole('region', { name: 'Tab score — bars 5–5' })).toBeNull();
+        expect(document.activeElement).toBe(screen.getByRole('button', { name: 'String 1, onset 4, empty' }));
+        await user.keyboard('{Control>}{Shift>}z{/Shift}{/Control}');
+        expect(document.activeElement).toBe(screen.getByRole('button', { name: 'String 1, onset 5, empty' }));
+    });
+    it('owns meter at a bar and edits barlines at the selected position with reversible keyboard actions', async () => {
+        const user = userEvent.setup(); render(<Harness />);
+        await parseInput(user);
+        await user.click(screen.getByRole('button', { name: 'Bar 1 meter: unspecified' }));
+        const meter = screen.getByRole('spinbutton', { name: 'Time signature' });
+        expect(document.activeElement).toBe(meter);
+        fireEvent.keyDown(meter, { key: 'ArrowRight' });
+        expect(screen.getByRole('group', { name: 'Bar 1 meter' }).closest('section')?.getAttribute('aria-label')).toBe('Bars 1–1');
+        await user.click(onset(1));
+        await user.click(screen.getByRole('button', { name: /^Edit position/ }));
+        expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Rest' }));
+        await user.click(screen.getByRole('button', { name: 'Add barline after position' }));
+        expect(screen.getByText(/2 bars · 3 positions/)).toBeTruthy();
+        expect(screen.getByRole('button', { name: 'Remove barline after position' }).getAttribute('aria-pressed')).toBe('true');
+        expect(screen.getByRole('button', { name: 'Bar 2 meter: 2\/4' })).toBeTruthy();
+        await user.click(screen.getByRole('button', { name: 'Undo' }));
+        expect(screen.getByText(/1 bars · 3 positions/)).toBeTruthy();
+        await user.click(screen.getByRole('button', { name: 'Redo' }));
+        await user.click(screen.getByRole('button', { name: /^Edit position/ }));
+        await user.click(screen.getByRole('button', { name: 'Remove barline after position' }));
+        expect(screen.getByText(/1 bars · 3 positions/)).toBeTruthy();
+        expect(screen.getByRole('button', { name: 'String 1, onset 2, fret 1' })).toBeTruthy();
+        expect(screen.queryByText('Structure', { selector: 'summary' })).toBeNull();
+        expect(screen.queryByText('Notation', { selector: 'summary', exact: false })).toBeNull();
+    });
     it('preserves mute-only imports and explains disabled analysis after replacing an analyzed score', async () => {
         const user = userEvent.setup(); render(<Harness />);
         await user.click(screen.getByRole('button', { name: 'String 1, onset 1, empty' }));
@@ -49,17 +109,20 @@ describe('score-first explicit analysis workflow', () => {
     });
     it('integrates notation controls and native mute input without treating mute or rest as pitch', async () => {
         const user = userEvent.setup(); render(<Harness />);
+        await user.click(screen.getByRole('button', { name: 'Insert position after onset 1' }));
+        await user.keyboard('{Escape}');
         await user.click(screen.getByRole('button', { name: 'String 1, onset 1, empty' }));
         fireEvent.change(screen.getByRole('textbox', { name: 'Fret for string 1, onset 1' }), { target: { value: 'x' } });
         await user.keyboard('{Enter}');
         expect(screen.getByRole('button', { name: 'String 1, onset 1, muted x' })).toBeTruthy();
         expect(screen.getByText('No pitched notes to analyze. Notation stays editable.')).toBeTruthy();
         expect(screen.getByRole('button', { name: 'Analyze' }).hasAttribute('disabled')).toBe(true);
-        await user.click(screen.getByText('Notation', { selector: 'summary', exact: false }));
+        await user.click(screen.getByRole('button', { name: /^Edit position/ }));
         await user.click(screen.getByRole('button', { name: 'Rest' }));
         expect(screen.getByRole('button', { name: 'String 1, onset 2, rest' })).toBeTruthy();
         await user.click(screen.getByRole('button', { name: 'Next Duration' }));
         expect(screen.getByRole('spinbutton', { name: 'Duration' }).getAttribute('aria-valuetext')).toBe('Whole');
+        await user.click(screen.getByRole('button', { name: 'Bar 1 meter: unspecified' }));
         await user.click(screen.getByRole('button', { name: 'Next Time signature' }));
         expect(screen.getByRole('spinbutton', { name: 'Time signature' }).getAttribute('aria-valuetext')).toBe('2/4');
         expect(screen.getByText(/Timing, ties and pitch gestures are preserved, not interpreted/)).toBeTruthy();
@@ -67,12 +130,13 @@ describe('score-first explicit analysis workflow', () => {
         expect(screen.getByRole('spinbutton', { name: 'Time signature' }).getAttribute('aria-valuetext')).toBe('Unspecified');
         await user.click(screen.getByRole('button', { name: 'Redo' }));
         expect(screen.getByRole('spinbutton', { name: 'Time signature' }).getAttribute('aria-valuetext')).toBe('2/4');
+        await user.click(screen.getByRole('button', { name: /^Edit position/ }));
         await user.type(screen.getByRole('textbox', { name: 'Start numerator' }), '1');
         await user.click(screen.getByRole('button', { name: 'Set start' }));
         await user.click(onset(1));
-        await user.click(screen.getByText('Structure', { selector: 'summary' }));
-        expect(screen.getByRole('button', { name: 'Barline after cursor' }).hasAttribute('disabled')).toBe(true);
-        expect(screen.getByText('Clear starts after the cursor before splitting this bar.')).toBeTruthy();
+        await user.click(screen.getByRole('button', { name: /^Edit position/ }));
+        expect(screen.getByRole('button', { name: 'Add barline after position' }).hasAttribute('disabled')).toBe(true);
+        expect(screen.getByText('Clear starts in positions after this one before changing this barline.')).toBeTruthy();
     });
     it.each([
         { steps: 7, majorName: 'Db', minorName: 'C#' },
@@ -129,18 +193,25 @@ describe('score-first explicit analysis workflow', () => {
         await user.keyboard('{Escape}');
         expect(screen.getByRole('button', { name: 'Analyze' }).hasAttribute('disabled')).toBe(false);
     });
-    it('starts with four bars, expands a bar past four positions and appends four bars', async () => {
+    it('starts with one position, expands it freely and wraps only after the fourth bar', async () => {
         const user = userEvent.setup(); render(<Harness />);
-        expect(within(score()).getAllByRole('button', { name: /^Onset/ })).toHaveLength(16);
+        expect(within(score()).getAllByRole('button', { name: /^Onset/ })).toHaveLength(1);
         expect(screen.getByRole('button', { name: 'Analyze' }).hasAttribute('disabled')).toBe(true);
         expect(screen.queryByRole('region', { name: 'Selected passage analysis' })).toBeNull();
         expect(screen.queryByRole('button', { name: 'Add position' })).toBeNull();
-        for (let i = 0; i < 3; i++) await user.click(screen.getByRole('button', { name: 'Insert position after onset 1' }));
-        expect(within(score()).getAllByRole('button', { name: /^Onset \d+, bar 1:/ })).toHaveLength(7);
-        await user.click(screen.getByRole('button', { name: '+ 4 bars' }));
-        expect(screen.getByText(/8 bars · 35 positions/)).toBeTruthy();
+        for (let i = 0; i < 4; i++) await user.click(screen.getByRole('button', { name: 'Insert position after onset 1' }));
+        expect(within(score()).getAllByRole('button', { name: /^Onset \d+, bar 1:/ })).toHaveLength(5);
+        await user.click(screen.getByRole('button', { name: '+ Add bar' }));
+        expect(screen.getByText(/2 bars · 6 positions/)).toBeTruthy();
+        await user.click(screen.getByRole('button', { name: '+ Add bar' }));
+        await user.click(screen.getByRole('button', { name: '+ Add bar' }));
+        expect(screen.getByText(/4 bars · 8 positions/)).toBeTruthy();
+        expect(screen.queryByRole('region', { name: 'Tab score — bars 5–5' })).toBeNull();
+        await user.click(screen.getByRole('button', { name: '+ Add bar' }));
+        expect(screen.getByRole('region', { name: 'Tab score — bars 5–5' })).toBeTruthy();
+        expect(screen.getByText(/5 bars · 9 positions/)).toBeTruthy();
         await user.click(screen.getByRole('button', { name: 'Undo' }));
-        expect(screen.getByText(/4 bars · 19 positions/)).toBeTruthy();
+        expect(screen.getByText(/4 bars · 8 positions/)).toBeTruthy();
     });
     it('deletes header-selected columns together and restores them with one Undo', async () => {
         const user = userEvent.setup(); render(<Harness />); await parseInput(user);
@@ -250,7 +321,7 @@ describe('score-first explicit analysis workflow', () => {
         render(<Harness />); const file = textFile('score.gp', async () => source); chooseFile(file);
         expect(file.text).not.toHaveBeenCalled();
         expect(screen.getByRole('alert').textContent).toMatch(/plain-text/);
-        expect(within(score()).getAllByRole('button', { name: /^Onset/ })).toHaveLength(16);
+        expect(within(score()).getAllByRole('button', { name: /^Onset/ })).toHaveLength(1);
     });
     it('cancels a file read so it cannot replace newer input', async () => {
         const user = userEvent.setup(); render(<Harness />);

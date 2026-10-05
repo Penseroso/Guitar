@@ -4,8 +4,8 @@ export { setTabMeter, setTabBeatOffset, setTabDuration, setTabRest, setTabMute, 
 
 export const MAX_EDITABLE_TAB_MOMENTS = 1_024;
 
-export function createEmptyTabDocument(count = 8, measureCount = 1): TabDocument {
-    const length = Number.isInteger(count) ? Math.max(1, Math.min(MAX_EDITABLE_TAB_MOMENTS, count)) : 8;
+export function createEmptyTabDocument(count = 1, measureCount = 1): TabDocument {
+    const length = Number.isInteger(count) ? Math.max(1, Math.min(MAX_EDITABLE_TAB_MOMENTS, count)) : 1;
     const measures = Number.isInteger(measureCount) ? Math.max(1, Math.min(length, measureCount)) : 1;
     return {
         format: 'authored', timing: 'order-only', source: '',
@@ -116,7 +116,7 @@ export function deleteTabMoments(document: TabDocument, momentIds: readonly stri
 }
 
 /** Append explicitly authored measures. Positions establish order, never meter or duration. */
-export function appendTabMeasures(document: TabDocument, count: number, momentIds: string[], positionsPerMeasure = 4): TabDocument {
+export function appendTabMeasures(document: TabDocument, count: number, momentIds: string[], positionsPerMeasure = 1): TabDocument {
     if (!Number.isInteger(count) || count < 1 || !Number.isInteger(positionsPerMeasure) || positionsPerMeasure < 1
         || momentIds.length !== count * positionsPerMeasure || document.moments.length + momentIds.length > MAX_EDITABLE_TAB_MOMENTS
         || document.measureCount + count > MAX_EDITABLE_TAB_MOMENTS
@@ -132,6 +132,28 @@ export function appendTabMeasures(document: TabDocument, count: number, momentId
 export function hasTabSplitTimingConflict(document: TabDocument, afterId: string): boolean {
     const index = document.moments.findIndex(moment => moment.id === afterId);
     return index >= 0 && document.moments.slice(index + 1).some(moment => moment.measure === document.moments[index].measure && moment.beatOffset);
+}
+
+/** A join also changes the following bar's timing origin. Never guess that origin. */
+export function hasTabJoinTimingConflict(document: TabDocument, afterId: string): boolean {
+    const index = document.moments.findIndex(moment => moment.id === afterId);
+    const next = index >= 0 ? document.moments[index + 1] : undefined;
+    return !!next && next.measure !== document.moments[index].measure
+        && document.moments.some(moment => moment.measure === next.measure && moment.beatOffset);
+}
+
+/** Remove the boundary after a position, preserving IDs, durations and authored links. */
+export function joinTabMeasure(document: TabDocument, afterId: string): TabDocument {
+    const index = document.moments.findIndex(moment => moment.id === afterId);
+    const next = index >= 0 ? document.moments[index + 1] : undefined;
+    if (!next || next.measure !== document.moments[index].measure + 1 || hasTabJoinTimingConflict(document, afterId)) return document;
+    const moments = document.moments.map(moment => moment.measure >= next.measure ? { ...moment, measure: moment.measure - 1 } : moment);
+    const columns = new Map<number, number>();
+    return replaceMoments({ ...document, measureCount: document.measureCount - 1 }, moments.map(moment => {
+        const column = (columns.get(moment.measure) ?? 0) + 1;
+        columns.set(moment.measure, column);
+        return { ...moment, column };
+    }));
 }
 
 /** Insert a barline without discarding or silently rebasing authored timing. */

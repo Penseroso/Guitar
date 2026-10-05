@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import type { TabDocument, TabFraction, TabMoment, TabNote, TabSelection } from '@/domain/tab/types';
 import type { TabScoreAnnotation } from '@/domain/tab/annotations';
+import type { TabAnalysisAction } from '@/features/tab-analysis/state';
+import { TabMeasureEditor, TabNotationEditor } from './TabNotationEditor';
 import { getKeyName } from '@/domain/shared/keys';
 import styles from './tab-score-editor.module.css';
 
@@ -28,7 +30,7 @@ function techniquePresentation(note: TabNote, notes: ReadonlyMap<string, TabNote
 
 export function TabScoreView({ document, selection, onSelect, extend, focusedNoteId,
     activeCell, onActiveCellChange, onSetFret, onUndo, onRedo,
-    annotations = [], onInsertMoment, onDeleteMoments, onDraftStatusChange, onSetMute,
+    annotations = [], onInsertMoment, onDeleteMoments, onDraftStatusChange, onSetMute, onEdit,
 }: {
     document: TabDocument;
     selection: TabSelection;
@@ -45,6 +47,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     onInsertMoment?: (afterId: string) => void;
     onDeleteMoments?: (momentIds: string[]) => void;
     onDraftStatusChange?: (status: TabDraftStatus) => void;
+    onEdit?: (action: TabAnalysisAction) => void;
 }) {
     const buttons = useRef(new Map<string, HTMLButtonElement>());
     const headers = useRef(new Map<string, HTMLButtonElement>());
@@ -53,7 +56,12 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     const skipHeaderClick = useRef(false);
     const pendingHeader = useRef<string | null>(null);
     const pendingInsertion = useRef<{ document: TabDocument; afterId: string; successorId: string | undefined; string: number } | null>(null);
+    const pendingBar = useRef<TabDocument | null>(null);
+    const pendingHistory = useRef<{ document: TabDocument; columns: boolean } | null>(null);
     const input = useRef<HTMLInputElement>(null);
+    const meterEditor = useRef<HTMLDivElement>(null);
+    const positionEditor = useRef<HTMLDivElement>(null);
+    const positionTriggers = useRef(new Map<string, HTMLButtonElement>());
     const anchor = useRef(selection.start);
     const emittedSelection = useRef(selection);
     const pendingFocus = useRef<string | null>(null);
@@ -66,25 +74,59 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     const [openAnnotation, setOpenAnnotation] = useState<string | null>(null);
     const [columnMode, setColumnMode] = useState(false);
     const [touchActions, setTouchActions] = useState<string | null>(null);
+    const [meterBar, setMeterBar] = useState<number | null>(null);
+    const [positionPopup, setPositionPopup] = useState<{ key: string; left: number; top: number } | null>(null);
     const errorId = useId();
-    const current = activeCell && document.moments.some(moment => moment.id === activeCell.momentId)
+    const current = useMemo(() => activeCell && document.moments.some(moment => moment.id === activeCell.momentId)
         && activeCell.string >= 0 && activeCell.string < 6 ? activeCell
-        : document.moments[0] ? { momentId: document.moments[0].id, string: 0 } : null;
+        : document.moments[0] ? { momentId: document.moments[0].id, string: 0 } : null, [activeCell, document]);
     const lower = Math.min(selection.start, selection.end), upper = Math.max(selection.start, selection.end);
     const notesById = new Map(document.moments.flatMap(moment => moment.notes.map(note => [note.id, note] as const)));
     const sustainedAt = (moment: TabMoment, string: number) => moment.sustains?.find(sustain => notesById.get(sustain.noteId)?.string === string);
 
+    useLayoutEffect(() => {
+        if (meterBar === null) return;
+        meterEditor.current?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
+        meterEditor.current?.querySelector<HTMLElement>('[role="spinbutton"]')?.focus({ preventScroll: true });
+    }, [meterBar]);
+    useLayoutEffect(() => {
+        if (!positionPopup) return;
+        positionEditor.current?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
+        positionEditor.current?.querySelector<HTMLElement>('button[aria-pressed]')?.focus({ preventScroll: true });
+    }, [positionPopup]);
+    useLayoutEffect(() => {
+        if (!current || positionPopup?.key !== cellKey(current)) return;
+        const trigger = positionTriggers.current.get(cellKey(current));
+        const system = trigger?.closest('section');
+        if (!trigger || !system) return;
+        const anchor = trigger.getBoundingClientRect(), bounds = system.getBoundingClientRect();
+        const left = Math.max(0, Math.min(anchor.left - bounds.left, bounds.width - Math.min(420, bounds.width)));
+        const top = anchor.bottom - bounds.top;
+        if (left !== positionPopup.left || top !== positionPopup.top) setPositionPopup({ ...positionPopup, left, top });
+    }, [document, current, positionPopup]);
+    const closePositionEditor = () => {
+        setPositionPopup(null);
+        if (current) positionTriggers.current.get(cellKey(current))?.focus({ preventScroll: true });
+    };
+
     const cancelHold = () => { if (hold.current) clearTimeout(hold.current.timer); hold.current = null; };
     useEffect(() => {
         const dismiss = () => { cancelHold(); setTouchActions(null); };
+        const dismissPosition = () => setPositionPopup(null);
+        const dismissScroll = (event: Event) => {
+            dismiss();
+            if (event.target instanceof Element && event.target.getAttribute('aria-label')?.startsWith('Tab score — bars')) dismissPosition();
+        };
         const dismissOutside = (event: PointerEvent) => {
+            if (!(event.target instanceof Element) || !event.target.closest('[data-position-editor], [data-position-trigger]')) setPositionPopup(null);
             if (event.target instanceof Element && event.target.closest('[data-column-header], [data-column-actions]')) return;
             skipHeaderClick.current = false;
             dismiss();
         };
-        window.addEventListener('scroll', dismiss, true);
+        window.addEventListener('scroll', dismissScroll, true);
+        window.addEventListener('resize', dismissPosition);
         window.addEventListener('pointerdown', dismissOutside, true);
-        return () => { cancelHold(); window.removeEventListener('scroll', dismiss, true); window.removeEventListener('pointerdown', dismissOutside, true); };
+        return () => { cancelHold(); window.removeEventListener('scroll', dismissScroll, true); window.removeEventListener('resize', dismissPosition); window.removeEventListener('pointerdown', dismissOutside, true); };
     }, []);
 
     useLayoutEffect(() => {
@@ -101,6 +143,15 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [draft?.revision]);
     useLayoutEffect(() => {
+        if (pendingHistory.current && pendingHistory.current.document !== document) {
+            if (pendingHistory.current.columns) pendingHeader.current = '';
+            else if (current) pendingFocus.current = cellKey(current);
+            pendingHistory.current = null;
+        }
+        if (pendingBar.current && pendingBar.current !== document) {
+            pendingBar.current = null;
+            if (current) pendingFocus.current = cellKey(current);
+        }
         if (!draft && pendingHeader.current !== null) {
             const header = headers.current.get(pendingHeader.current)
                 ?? (current ? headers.current.get(current.momentId) : undefined);
@@ -163,6 +214,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         const next = { start: extending ? anchor.current : index, end: index };
         emittedSelection.current = next;
         setTouchActions(null);
+        setPositionPopup(null);
         setColumnMode(columns);
         onActiveCellChange(cell);
         onSelect(next);
@@ -203,6 +255,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         if (event.ctrlKey || event.metaKey) {
             if (event.key.toLowerCase() === 'z' || event.key.toLowerCase() === 'y') {
                 event.preventDefault();
+                pendingHistory.current = { document, columns: true };
                 if (event.shiftKey || event.key.toLowerCase() === 'y') onRedo(); else onUndo();
             }
             return;
@@ -296,6 +349,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         if (event.ctrlKey || event.metaKey) {
             if (event.key.toLowerCase() === 'z' || event.key.toLowerCase() === 'y') {
                 event.preventDefault();
+                pendingHistory.current = { document, columns: false };
                 if (event.shiftKey || event.key.toLowerCase() === 'y') onRedo(); else onUndo();
             }
             return;
@@ -382,14 +436,24 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                 </div>;
             };
             return <section className={styles.system} key={system[0].number} aria-label={`Bars ${system[0].number}–${system.at(-1)!.number}`}>
-                <div className={styles.viewport} role="region" aria-label={`Tab score — bars ${system[0].number}–${system.at(-1)!.number}`}>
+                <div className={styles.viewport} role="region" tabIndex={onEdit ? 0 : undefined} aria-label={`Tab score — bars ${system[0].number}–${system.at(-1)!.number}`}>
                     <div className={styles.sheet} style={sheetStyle}>
+                        {onEdit && <div className={styles.measureLane}>
+                            <span aria-hidden="true" />
+                            {system.map(measure => <button key={measure.number} type="button" className={styles.measureControl}
+                                style={{ gridColumn: `span ${Math.max(1, measure.moments.length)}` }}
+                                aria-label={`Bar ${measure.number} meter: ${document.meter ? `${document.meter.numerator}/${document.meter.denominator}` : 'unspecified'}`}
+                                aria-expanded={meterBar === measure.number}
+                                onClick={() => { if (commit()) setMeterBar(previous => previous === measure.number ? null : measure.number); }}>
+                                Bar {measure.number} <span>{document.meter ? `${document.meter.numerator}/${document.meter.denominator}` : 'Meter +'}</span>
+                            </button>)}
+                        </div>}
                         {annotationRows('above')}
                         <div className={styles.headers}>
                             <span className={styles.corner} aria-hidden="true" />
                             {system.map(measure => <div key={measure.number} className={styles.measureHeader} data-measure={measure.number}
                                 style={{ gridColumn: `span ${Math.max(1, measure.moments.length)}` }}>
-                                <span className={styles.measureNumber} aria-hidden="true">{measure.number}</span>
+                                {!onEdit && <span className={styles.measureNumber} aria-hidden="true">{measure.number}</span>}
                                 {measure.moments.map(({ moment, index }) => {
                                     const description = [
                                         moment.rest ? ['rest', durationDetail(moment.rest.duration)].filter(Boolean).join(', ') : '',
@@ -419,6 +483,25 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                                 </div>}
                             </div>)}
                         </div>
+                        {onEdit && <div className={styles.positionLane}>
+                            <span aria-hidden="true" />
+                            {slots.map(({ moment, index }, slotIndex) => <div key={moment?.id ?? `position-${slotIndex}`}>
+                                {moment && current?.momentId === moment.id && <button type="button" className={styles.positionTrigger}
+                                    ref={element => { const key = cellKey(current); if (element) positionTriggers.current.set(key, element); else positionTriggers.current.delete(key); }}
+                                    data-position-trigger="true" aria-label={`Edit position ${index + 1}, bar ${moment.measure}, string ${current.string + 1}`}
+                                    aria-controls={`${errorId}-position-editor`}
+                                    aria-expanded={positionPopup?.key === cellKey(current)}
+                                    onClick={event => {
+                                        if (!commit()) { input.current?.focus(); return; }
+                                        const trigger = event.currentTarget.getBoundingClientRect();
+                                        const bounds = event.currentTarget.closest('section')!.getBoundingClientRect();
+                                        const width = Math.min(420, bounds.width);
+                                        setPositionPopup(previous => previous?.key === cellKey(current) ? null : {
+                                            key: cellKey(current), left: Math.max(0, Math.min(trigger.left - bounds.left, bounds.width - width)), top: trigger.bottom - bounds.top,
+                                        });
+                                    }}>Edit</button>}
+                            </div>)}
+                        </div>}
                         <div className={styles.scoreBody}>
                         {onInsertMoment && <div className={styles.insertions}>
                             <span aria-hidden="true" />
@@ -482,6 +565,18 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                         {annotationRows('below')}
                     </div>
                 </div>
+                {onEdit && meterBar !== null && system.some(measure => measure.number === meterBar) &&
+                    <div ref={meterEditor}><TabMeasureEditor document={document} measure={meterBar} dispatch={onEdit} /></div>}
+                {onEdit && current && positionPopup?.key === cellKey(current) && system.some(measure => measure.moments.some(item => item.moment.id === current.momentId)) &&
+                    <div ref={positionEditor} id={`${errorId}-position-editor`} data-position-editor="true" className={styles.positionPopup}
+                        style={{ left: positionPopup.left, top: positionPopup.top }}
+                        onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setPositionPopup(null); }}
+                        onKeyDown={event => { if (event.key === 'Escape') { event.preventDefault(); closePositionEditor(); } }}>
+                        <TabNotationEditor document={document} cell={current} dispatch={onEdit} onClose={closePositionEditor} />
+                    </div>}
+                {onEdit && systemIndex === systems.length - 1 && <button type="button" className={styles.addBar}
+                    disabled={document.moments.length >= 1024 || document.measureCount >= 1024}
+                    onClick={() => { if (commit()) { setColumnMode(false); pendingBar.current = document; onEdit({ type: 'add-measures', count: 1 }); } }}>+ Add bar</button>}
                 {selectedAnnotation && <div className={styles.annotationDetail} role="note" aria-label="Annotation detail">
                     <div><strong>{selectedAnnotation.label}</strong><p>{selectedAnnotation.detail}</p></div>
                     <button type="button" onClick={() => setOpenAnnotation(null)} aria-label="Close annotation detail">×</button>

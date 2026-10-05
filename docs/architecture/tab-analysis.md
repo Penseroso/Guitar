@@ -7,8 +7,8 @@ selection indicators, hairline-separated results, shared tokens and 44px targets
 ## Document and state
 
 The committed TabDocument is independent of the ASCII import draft. The initial document
-has four measures with four empty positions each. These are starting positions, not a
-four-note limit or a 4/4 meter declaration. Stable IDs identify positions and notes. Editing a draft or failing
+has one measure with one empty position. Additional bars also start with one unknown
+position; neither document creation nor appending bars depends on system layout. Stable IDs identify positions and notes. Editing a draft or failing
 to import preserves the score; successful import is an undoable replacement. Imported notes
 retain source positions; authored/edited notes do not receive fictitious ASCII coordinates.
 The parent owns the score, active cell, selection and history across workflow switches.
@@ -71,16 +71,23 @@ on touch, holding a header opens a compact red-trash popover. Ordinary taps and 
 selection expose no persistent delete button. Movement or pointer cancellation cancels
 the hold gesture.
 Delete on a string cell clears only that note. Deleting every position in a measure retains
-one empty stable position so the measure remains editable. + 4 bars appends a system;
-Structure exposes a barline after the cursor. Dense systems scroll inside the score viewport,
+one empty stable position so the measure remains editable. Add bar at the score's end
+appends one measure and focuses its first position. The selected position's inline
+Edit trigger opens a contextual editor beside that position to add/remove its following
+barline. Dense systems scroll inside the score viewport,
 including on mobile, with 44px input targets and no horizontal page overflow.
-The four initial positions are scaffolding. The default UI labels free timing and states
+The single initial position is an editable placeholder. The default UI labels free timing and states
 that positions are not beats. If notation is supplied, it explicitly says the analysis
 preserves but does not interpret timing, ties or pitch gestures. Header dots and
 pointer-specific hints reveal editing.
 
-Collapsed Notation controls follow the active cell: optional meter, duration, explicit
-fractional start offset, whole-position Rest, string Mute x and Tie previous. Existing
+Each bar header reveals meter entry in that system and explicitly labels its current
+score-wide scope. An always-visible Edit trigger above the active position opens a
+compact contextual editor beside that column: duration, explicit fractional start offset, whole-position Rest, string
+Mute x, Tie previous and barline editing. There is no separate bottom Notation form or
+Structure menu. The editor fits the score viewport, scrolls internally when needed,
+focuses its first input, and Escape/Close returns focus to the Edit trigger. Selecting
+another position dismisses it. Existing
 SwipePicker/quiet text actions retain 44px targets. x/X also works in direct native input.
 The score distinguishes R, x and a tied fret; duration/technique details are accessible
 and available beside the selected cell. Imported techniques are displayed, not manually
@@ -94,7 +101,36 @@ interrupts them. Opening a rest/tie cell without editing does not erase it. Fret
 retain duration but clear affected technique/continuation links; Undo restores the snapshot.
 Structural edits never invent new beat offsets. A bar split is refused if it would move
 positions with explicit offsets into a new bar with an unknown timing origin; the UI
-explains that starts after the cursor must be cleared first. Safe splits preserve timing.
+explains that starts after the cursor must be cleared first. Removing a barline is also
+refused if the following bar has explicit offsets (including zero): its origin would
+change. Safe splits/joins retain note IDs, durations, techniques, sustains and offsets
+whose bar origins do not change. Each structural change is one undoable edit.
+
+### P0 measure ownership decision (2026-10-05)
+
+The original UX coupling came from `createEmptyTabDocument(16, 4)` in initial state
+and appending four positions per bar, alongside separate bottom controls. The renderer
+already groups variable-size measures independently into systems of at most four bars.
+The existing `moment.measure + measureCount` model suffices for P0: rendering, imported
+empty bars, position insertion/deletion, split/join and history work without new identities.
+Measure and position controls now belong to TabScoreView; the workspace supplies reducer
+actions and owns session/history/analysis. TabNotationEditor is a contextual position
+control; TabMeasureEditor handles the bar-owned entry for document-wide meter.
+
+Alternatives considered: explicit stable Measure entities would be suitable for local
+meter, measure reordering and persistent bar identity, but require parser/state/history
+migration beyond these P0 edits. A measure metadata map is an intermediate option,
+but indexing it by mutable bar numbers creates renumbering responsibilities while still
+lacking stable measure identity. Neither new layer solves this UI ownership issue by
+itself, so neither is introduced here. The document format and analysis projection stay
+unchanged.
+
+Deferred limitations: meter remains global; renumbered measure numbers are not stable
+IDs; structural edits cannot specify a new local timing origin. Local meter changes or
+timed boundary relocation need an explicit origin/rebasing policy and likely stable
+measure identity. Current guards intentionally refuse such edits. Sounding timelines,
+metrical inference, new formats, continuous string rendering and position-boundary +
+redesign remain outside P0.
 
 ## Explicit analysis and score annotations
 
@@ -206,3 +242,32 @@ input, invalid frets, history, selection, retuning, column mutation and stale/fa
 Integration tests preserve independent Scale/Chord/Harmony state. Browser checks cover
 390/768/1335px default and changed states, keyboard/focus, targets, contained overflow and
 reduced-motion styles. Relevant tests, typecheck, lint and production build are required.
+
+P0 verification (2026-10-05), based on fetched `origin/master` at `ab0cfb1` (this repository
+has no main branch): all 374 tests in the 15 TAB domain, session, score/input/workspace
+and ClientApp integration files passed. Targeted ESLint has no errors or warnings;
+TypeScript and production build passed. Chord, arpeggio and progression regressions
+remain unchanged; no analysis implementation was modified.
+
+Actual browser checks at 390/768/1335px covered blank score, 1→2→4→5 bar growth,
+system wrapping, keyboard-only fret/meter/duration entry, contextual editor entry and
+Escape/Close/Tab exit, position insertion, rest/mute/tie/start input, barline split/join,
+timing-origin refusal and structural undo/redo. Undo/redo across a system boundary
+retains the correct cell focus. Meter entry remains bar-owned with explicitly global
+scope. Visible new controls retain 44px targets; new controls add no motion and shared
+pickers retain reduced-motion rules. Touch selection/hold regression tests also pass.
+
+24-position ASCII import remains editable. At mobile width the page stayed 375px wide
+(390px including the scrollbar), while the 351px score viewport scrolled over a 1122px
+sheet; keyboard End moved its scrollLeft to 749px. Tablet also contained the dense
+sheet (689px viewport, 1122px content). Popovers fit the visible system and reposition
+after structural changes; page widths did not expand. Browser error logs were empty.
+P0 acceptance: GO; no P1 implementation was started.
+
+Screenshots: [desktop contextual input](../implementation/screenshots/tab-p0-desktop.jpg),
+[tablet input](../implementation/screenshots/tab-p0-tablet.jpg),
+[tablet blank](../implementation/screenshots/tab-p0-tablet-empty.jpg),
+[mobile blank](../implementation/screenshots/tab-p0-mobile-empty.jpg),
+[mobile input](../implementation/screenshots/tab-p0-mobile.jpg),
+[mobile five bars](../implementation/screenshots/tab-p0-mobile-five-bars.jpg),
+[mobile internal scrolling](../implementation/screenshots/tab-p0-mobile-dense.jpg).

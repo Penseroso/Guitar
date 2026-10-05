@@ -3,6 +3,7 @@ import React, { useReducer, useState } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { createEmptyTabDocument } from '@/domain/tab/editing';
 import { parseAsciiTab } from '@/domain/tab/ascii';
 import type { TabDocument, TabSelection } from '@/domain/tab/types';
 import type { TabScoreAnnotation } from '@/domain/tab/annotations';
@@ -44,7 +45,7 @@ const cell = (string: number, onset: number) => screen.getByRole('button', { nam
 const editor = () => screen.getByRole('textbox') as HTMLInputElement;
 const header = (onset: number) => screen.getByRole('button', { name: new RegExp(`^Onset ${onset}, bar`) });
 function ReducerHarness() {
-    const [state, dispatch] = useReducer(reduceTabAnalysis, undefined, createTabAnalysisState);
+    const [state, dispatch] = useReducer(reduceTabAnalysis, undefined, () => ({ ...createTabAnalysisState(), document: createEmptyTabDocument(16, 4), nextId: 16 }));
     return <TabScoreView document={state.document!} selection={state.selection!} activeCell={state.activeCell}
         extend={false} focusedNoteId={null} onSelect={selection => dispatch({ type: 'select', selection })}
         onActiveCellChange={cell => dispatch({ type: 'set-active-cell', cell })}

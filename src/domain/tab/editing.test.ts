@@ -8,15 +8,15 @@ describe('canonical tab editing', () => {
         const document = createEmptyTabDocument();
         expect(document.format).toBe('authored');
         expect(document.timing).toBe('order-only');
-        expect(document.moments).toHaveLength(8);
-        expect(new Set(document.moments.map(moment => moment.id)).size).toBe(8);
+        expect(document.moments).toHaveLength(1);
+        expect(new Set(document.moments.map(moment => moment.id)).size).toBe(1);
         expect(document.moments.every(moment => moment.notes.length === 0)).toBe(true);
         expect(createEmptyTabDocument(0).moments).toHaveLength(1);
         expect(createEmptyTabDocument(2000).moments).toHaveLength(MAX_EDITABLE_TAB_MOMENTS);
     });
 
     it.each([0, 10, 12, 24, 36])('sets fret %i without changing its column or other notes', fret => {
-        const original = createEmptyTabDocument();
+        const original = createEmptyTabDocument(8);
         const id = original.moments[0].id;
         const document = setTabFret(original, id, 0, fret, 'authored-note');
         expect(document.moments[0].id).toBe(id);
@@ -26,7 +26,7 @@ describe('canonical tab editing', () => {
     });
 
     it('builds aligned notes in one column and sequential notes in separate columns', () => {
-        let document = createEmptyTabDocument();
+        let document = createEmptyTabDocument(8);
         const first = document.moments[0].id, second = document.moments[1].id;
         document = setTabFret(document, first, 0, 0, 'note-1');
         document = setTabFret(document, first, 1, 1, 'note-2');
@@ -51,7 +51,7 @@ describe('canonical tab editing', () => {
     });
 
     it('rejects out-of-range frets, strings and pitch overflow atomically', () => {
-        const document = createEmptyTabDocument(), id = document.moments[0].id;
+        const document = createEmptyTabDocument(8), id = document.moments[0].id;
         for (const fret of [-1, 37, 1.5, NaN, Infinity]) expect(setTabFret(document, id, 0, fret, 'note')).toBe(document);
         for (const string of [-1, 6, 0.5, NaN]) expect(setTabFret(document, id, string, 1, 'note')).toBe(document);
         expect(setTabFret(document, 'missing', 0, 1, 'note')).toBe(document);
@@ -112,7 +112,7 @@ describe('canonical tab editing', () => {
     });
 
     it('recomputes pitch for tuning/capo while preserving frets and identities', () => {
-        const blank = createEmptyTabDocument(), id = blank.moments[0].id;
+        const blank = createEmptyTabDocument(8), id = blank.moments[0].id;
         const original = setTabFret(blank, id, 5, 0, 'low-note');
         const changed = retuneTabDocument(original, TAB_TUNINGS[1].midi, 3);
         expect(changed.moments[0].notes[0]).toEqual({ ...original.moments[0].notes[0], midi: 41, pitchClass: 5 });
@@ -141,7 +141,7 @@ describe('canonical tab editing', () => {
 
     it('appends measures atomically and splits positions without altering stable musical identities', () => {
         const initial = createEmptyTabDocument(4);
-        const appended = appendTabMeasures(initial, 2, Array.from({ length: 8 }, (_, index) => `appended-${index}`));
+        const appended = appendTabMeasures(initial, 2, Array.from({ length: 8 }, (_, index) => `appended-${index}`), 4);
         expect(appended.measureCount).toBe(3);
         expect(appended.moments.filter(moment => moment.measure === 3)).toHaveLength(4);
         expect(appendTabMeasures(initial, 1, ['duplicate', 'duplicate', 'a', 'b'])).toBe(initial);

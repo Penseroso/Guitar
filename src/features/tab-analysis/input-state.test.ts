@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { createEmptyTabDocument } from '@/domain/tab/editing';
 import { parseAsciiTab } from '@/domain/tab/ascii';
 import { analyzeTabSelection } from '@/domain/tab/analysis';
 import { createTabAnalysisState, reduceTabAnalysis, type TabAnalysisAction, type TabAnalysisState } from './state';
@@ -14,6 +15,34 @@ function edit(state: TabAnalysisState, action: TabAnalysisAction) { return reduc
 const quarter = { numerator: 1, denominator: 1 };
 
 describe('input metadata in the canonical TAB session', () => {
+    it('preserves metadata and IDs through safe split, join, append and structural undo/redo; refuses unknown origins', () => {
+        let state = imported();
+        const first = state.document!.moments[0].id;
+        const second = state.document!.moments[1].id;
+        state = edit(state, { type: 'set-meter', meter: { numerator: 6, denominator: 8 } });
+        state = edit(state, { type: 'set-duration', momentId: first, string: 0, duration: quarter });
+        state = edit(state, { type: 'set-beat-offset', momentId: first, offset: { numerator: 0, denominator: 1 } });
+        const original = state;
+        const split = edit(state, { type: 'split-measure', afterId: first });
+        expect(split.document!.measureCount).toBe(2);
+        expect(split.document!.moments.map(moment => moment.id)).toEqual(original.document!.moments.map(moment => moment.id));
+        expect(split.document!.moments[0]).toEqual(original.document!.moments[0]);
+        expect(split.document!.moments[1].notes).toEqual(original.document!.moments[1].notes);
+        const joined = edit(split, { type: 'join-measure', afterId: first });
+        expect(joined.document!.measureCount).toBe(1);
+        expect(joined.document!.moments.map(moment => moment.notes)).toEqual(original.document!.moments.map(moment => moment.notes));
+        expect(joined.document!.meter).toEqual(original.document!.meter);
+        expect(edit(joined, { type: 'undo' }).document).toBe(split.document);
+        expect(edit(edit(joined, { type: 'undo' }), { type: 'redo' }).document).toBe(joined.document);
+        const appended = edit(joined, { type: 'add-measures', count: 1 });
+        expect(appended.document!.moments.slice(0, -1)).toEqual(joined.document!.moments);
+        expect(appended.document!.moments.at(-1)).toMatchObject({ notes: [], measure: 2 });
+        expect(appended.document!.moments.at(-1)!.beatOffset).toBeUndefined();
+        const timedSplit = edit(split, { type: 'set-beat-offset', momentId: second, offset: { numerator: 0, denominator: 1 } });
+        expect(edit(timedSplit, { type: 'join-measure', afterId: first })).toBe(timedSplit);
+        const timedOriginal = edit(original, { type: 'set-beat-offset', momentId: second, offset: quarter });
+        expect(edit(timedOriginal, { type: 'split-measure', afterId: first })).toBe(timedOriginal);
+    });
     it('retains imported connectors, bend targets and mute events through timing edits and import undo/redo', () => {
         const base = createTabAnalysisState();
         const state = imported();
@@ -61,7 +90,7 @@ describe('input metadata in the canonical TAB session', () => {
     });
 
     it('preserves separate chord durations and explicit tie continuity without synthesizing an attack', () => {
-        let state = createTabAnalysisState();
+        let state: TabAnalysisState = { ...createTabAnalysisState(), document: createEmptyTabDocument(3), nextId: 3 };
         const [first, second, third] = state.document!.moments.map(moment => moment.id);
         state = edit(state, { type: 'set-fret', momentId: first, string: 0, fret: 5 });
         state = edit(state, { type: 'set-fret', momentId: first, string: 1, fret: 5 });

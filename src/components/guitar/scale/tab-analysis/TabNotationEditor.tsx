@@ -4,6 +4,7 @@ import { useState } from 'react';
 import type { TabDocument, TabFraction, TabMoment } from '@/domain/tab/types';
 import type { TabActiveCell, TabAnalysisAction } from '@/features/tab-analysis/state';
 import { canSustainFromPrevious } from '@/domain/tab/input-capabilities';
+import { hasTabJoinTimingConflict, hasTabSplitTimingConflict } from '@/domain/tab/editing';
 import { SwipePicker } from '../../harmony/SwipePicker';
 import styles from './tab-analysis.module.css';
 
@@ -21,6 +22,16 @@ const fractionFromValue = (value: string): TabFraction | undefined => {
     return { numerator, denominator };
 };
 const meters = ['', '2/4', '3/4', '4/4', '5/4', '6/8', '7/8', '9/8', '12/8'].map(value => ({ value, label: value || 'Unspecified' }));
+
+/** The meter is currently score-wide; the bar header owns its entry, not its storage. */
+export function TabMeasureEditor({ document, measure, dispatch }: { document: TabDocument; measure: number; dispatch: (action: TabAnalysisAction) => void }) {
+    const value = fractionValue(document.meter);
+    const options = meters.some(option => option.value === value) ? meters : [...meters, { value, label: value }];
+    return <div role="group" aria-label={`Bar ${measure} meter`} className={styles.notationRow}>
+        <span>Bar {measure} · Meter applies to all bars</span>
+        <SwipePicker label="Time signature" value={value} options={options} onChange={next => dispatch({ type: 'set-meter', meter: fractionFromValue(next) })} />
+    </div>;
+}
 
 function PositionOffset({ moment, dispatch }: { moment: TabMoment; dispatch: (action: TabAnalysisAction) => void }) {
     const [numerator, setNumerator] = useState(moment.beatOffset?.numerator.toString() ?? '');
@@ -40,7 +51,7 @@ function PositionOffset({ moment, dispatch }: { moment: TabMoment; dispatch: (ac
 }
 
 /** Optional written information; no placement, duration or sounding pitch is auto-filled. */
-export function TabNotationEditor({ document, cell, dispatch }: { document: TabDocument; cell: TabActiveCell; dispatch: (action: TabAnalysisAction) => void }) {
+export function TabNotationEditor({ document, cell, dispatch, onClose }: { document: TabDocument; cell: TabActiveCell; dispatch: (action: TabAnalysisAction) => void; onClose?: () => void }) {
     const moment = document.moments.find(item => item.id === cell.momentId);
     if (!moment) return null;
     const note = moment.notes.find(item => item.string === cell.string);
@@ -49,13 +60,13 @@ export function TabNotationEditor({ document, cell, dispatch }: { document: TabD
     const duration = moment.rest?.duration ?? note?.duration ?? sustain?.duration;
     const durationValue = fractionValue(duration);
     const availableDurations = durationOptions.some(option => option.value === durationValue) ? durationOptions : [...durationOptions, { value: durationValue, label: `${durationValue} quarter notes` }];
-    const meterValue = document.meter ? `${document.meter.numerator}/${document.meter.denominator}` : '';
-    const availableMeters = meters.some(option => option.value === meterValue) ? meters : [...meters, { value: meterValue, label: meterValue }];
-    return <details className={styles.notation}>
-        <summary>Notation <span className={styles.meta}>{document.meter ? `${meterValue} · ` : ''}Position {moment.index + 1} · String {cell.string + 1}</span></summary>
-        <p className={styles.meta}>Optional written timing. Analysis uses fret order; durations, ties and pitch gestures are not interpreted.</p>
+    const next = document.moments[moment.index + 1];
+    const hasBarline = !!next && next.measure !== moment.measure;
+    const conflict = hasBarline ? hasTabJoinTimingConflict(document, moment.id) : hasTabSplitTimingConflict(document, moment.id);
+    return <div role="group" aria-label={`Position ${moment.index + 1} notation`}>
         <div className={styles.notationRow}>
-            <SwipePicker label="Time signature" value={meterValue} options={availableMeters} onChange={value => dispatch({ type: 'set-meter', meter: fractionFromValue(value) })} />
+            <span>Position {moment.index + 1} · Bar {moment.measure} · String {cell.string + 1}</span>
+            {onClose && <button className={styles.textAction} type="button" aria-label="Close position editor" onClick={onClose}>×</button>}
         </div>
         <div className={styles.notationRow}>
             <span>{moment.rest ? 'Whole position · rest' : `String ${cell.string + 1} · ${sustain ? 'tied continuation' : muted ? 'muted' : note ? `fret ${note.fret}` : 'empty'}`}</span>
@@ -69,6 +80,14 @@ export function TabNotationEditor({ document, cell, dispatch }: { document: TabD
             <SwipePicker label="Duration" value={durationValue} options={availableDurations} onChange={value => dispatch({ type: 'set-duration', ...cell, duration: fractionFromValue(value) })} />
         </div>}
         <PositionOffset key={`${moment.id}:${fractionValue(moment.beatOffset)}`} moment={moment} dispatch={dispatch} />
+        <div className={styles.notationRow}>
+            <button type="button" className={styles.textAction} aria-pressed={hasBarline}
+                disabled={conflict || (!hasBarline && (document.measureCount >= 1024 || (!next && document.moments.length >= 1024)))}
+                onClick={() => dispatch({ type: hasBarline ? 'join-measure' : 'split-measure', afterId: moment.id })}>
+                {hasBarline ? 'Remove barline after position' : 'Add barline after position'}
+            </button>
+            {conflict && <span className={styles.meta}>Clear starts in {hasBarline ? 'the following bar' : 'positions after this one'} before changing this barline.</span>}
+        </div>
         {!!note?.techniques?.length && <p className={styles.meta}>Techniques: {note.techniques.map(technique => {
             if ('targetFret' in technique) return `${technique.kind} target ${technique.targetFret} (fret-equivalent)`;
             if ('toNoteId' in technique) {
@@ -77,5 +96,5 @@ export function TabNotationEditor({ document, cell, dispatch }: { document: TabD
             }
             return 'vibrato';
         }).join(' · ')}</p>}
-    </details>;
+    </div>;
 }

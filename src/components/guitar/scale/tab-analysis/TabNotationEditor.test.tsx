@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { parseAsciiTab } from '@/domain/tab/ascii';
 import type { TabDocument } from '@/domain/tab/types';
 import { createTabAnalysisState, reduceTabAnalysis } from '@/features/tab-analysis/state';
-import { TabNotationEditor } from './TabNotationEditor';
+import { TabMeasureEditor, TabNotationEditor } from './TabNotationEditor';
 
 afterEach(cleanup);
 function fixture(): TabDocument {
@@ -19,6 +19,7 @@ function Harness({ initial = fixture() }: { initial?: TabDocument }) {
         ...createTabAnalysisState(), document, activeCell: { momentId: document.moments[0].id, string: 0 },
     }));
     return <>
+        <TabMeasureEditor document={state.document!} measure={1} dispatch={dispatch} />
         <TabNotationEditor document={state.document!} cell={state.activeCell!} dispatch={dispatch} />
         {state.document!.moments.map((moment, index) => <button key={moment.id} onClick={() => dispatch({ type: 'set-active-cell', cell: { momentId: moment.id, string: state.activeCell!.string } })}>Position {index + 1}</button>)}
         <button onClick={() => dispatch({ type: 'set-active-cell', cell: { ...state.activeCell!, string: 0 } })}>First string</button>
@@ -35,11 +36,10 @@ const choose = (label: string, index: number) => {
     fireEvent.keyDown(picker, { key: 'Home' });
     for (let step = 0; step < index; step++) fireEvent.keyDown(picker, { key: 'ArrowRight' });
 };
-const openNotation = () => fireEvent.click(screen.getByText('Notation', { exact: false, selector: 'summary' }));
 
 describe('optional TAB notation input through the real reducer', () => {
     it('stores and resets meter without inventing duration, offsets, or measured timing', () => {
-        render(<Harness />); openNotation();
+        render(<Harness />);
         expect(screen.getByRole('spinbutton', { name: 'Time signature' }).getAttribute('aria-valuetext')).toBe('Unspecified');
         expect(screen.getByRole('spinbutton', { name: 'Duration' }).getAttribute('aria-valuetext')).toBe('Unknown');
         choose('Time signature', 5);
@@ -54,7 +54,7 @@ describe('optional TAB notation input through the real reducer', () => {
     });
 
     it('sets independent durations for chord notes and clears only the selected duration', async () => {
-        const user = userEvent.setup(); render(<Harness />); openNotation();
+        const user = userEvent.setup(); render(<Harness />);
         choose('Duration', 5);
         await user.click(screen.getByRole('button', { name: 'Second string' }));
         choose('Duration', 2);
@@ -68,7 +68,7 @@ describe('optional TAB notation input through the real reducer', () => {
     });
 
     it('stores a normalized explicit offset, rejects a zero denominator and preserves it on meter changes', async () => {
-        const user = userEvent.setup(); render(<Harness />); openNotation();
+        const user = userEvent.setup(); render(<Harness />);
         expect(screen.getByRole('button', { name: 'Set start' }).hasAttribute('disabled')).toBe(true);
         fireEvent.change(screen.getByRole('textbox', { name: 'Start numerator' }), { target: { value: '6' } });
         fireEvent.change(screen.getByRole('textbox', { name: 'Start denominator' }), { target: { value: '0' } });
@@ -85,7 +85,7 @@ describe('optional TAB notation input through the real reducer', () => {
     });
 
     it('distinguishes whole-position rest from empty and supports duration plus undo/redo', async () => {
-        const user = userEvent.setup(); render(<Harness />); openNotation();
+        const user = userEvent.setup(); render(<Harness />);
         await user.click(screen.getByRole('button', { name: 'Rest' }));
         expect(documentState().moments[0].notes).toHaveLength(0);
         expect(documentState().moments[0].rest).toEqual({});
@@ -103,7 +103,7 @@ describe('optional TAB notation input through the real reducer', () => {
     });
 
     it('marks only the chosen string muted and does not give a mute a rest duration', async () => {
-        const user = userEvent.setup(); render(<Harness />); openNotation();
+        const user = userEvent.setup(); render(<Harness />);
         await user.click(screen.getByRole('button', { name: 'Mute x' }));
         expect(documentState().moments[0].mutes).toEqual([{ string: 0 }]);
         expect(documentState().moments[0].notes.map(note => note.string)).toEqual([1]);
@@ -115,7 +115,7 @@ describe('optional TAB notation input through the real reducer', () => {
     });
 
     it('authors explicit tie continuity and independent continuation duration with undo/redo', async () => {
-        const user = userEvent.setup(); render(<Harness />); openNotation();
+        const user = userEvent.setup(); render(<Harness />);
         expect(screen.getByRole('button', { name: 'Tie previous' }).hasAttribute('disabled')).toBe(true);
         const origin = documentState().moments[0].notes.find(note => note.string === 0)!;
         await user.click(screen.getByRole('button', { name: 'Position 2' }));
@@ -141,14 +141,14 @@ describe('optional TAB notation input through the real reducer', () => {
         origin.techniques = [{ kind: 'hammer-on', toNoteId: target.id }, { kind: 'pull-off', toNoteId: target.id },
             { kind: 'slide', toNoteId: target.id }, { kind: 'bend', targetFret: 7, notation: 'b7' },
             { kind: 'release', targetFret: 5, notation: 'r5' }, { kind: 'vibrato', notation: '~~' }];
-        render(<Harness initial={score} />); openNotation();
+        render(<Harness initial={score} />);
         expect(screen.getByText(/^Techniques:/).textContent).toBe('Techniques: hammer-on to fret 5 · pull-off to fret 5 · slide to fret 5 · bend target 7 (fret-equivalent) · release target 5 (fret-equivalent) · vibrato');
         expect(documentState().moments[0].notes[0].fret).toBe(5);
         expect(documentState().moments[0].notes).toHaveLength(2);
     });
 
     it('marks prior analysis stale on optional input changes while preserving the order-only document', async () => {
-        const user = userEvent.setup(); render(<Harness />); openNotation();
+        const user = userEvent.setup(); render(<Harness />);
         await user.click(screen.getByRole('button', { name: 'Analyze' }));
         expect(screen.getByTestId('analysis-status').textContent).toBe('fresh');
         choose('Duration', 5);
