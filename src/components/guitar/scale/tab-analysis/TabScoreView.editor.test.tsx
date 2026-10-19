@@ -44,8 +44,8 @@ function Harness({ extend = false, initialScore, annotations, muteEditing = fals
 const cell = (string: number, onset: number) => screen.getByRole('button', { name: new RegExp(`^String ${string}, onset ${onset},`) });
 const editor = () => screen.getByRole('textbox') as HTMLInputElement;
 const header = (onset: number) => screen.getByRole('button', { name: new RegExp(`^Onset ${onset}, bar`) });
-function ReducerHarness() {
-    const [state, dispatch] = useReducer(reduceTabAnalysis, undefined, () => ({ ...createTabAnalysisState(), document: createEmptyTabDocument(16, 4), nextId: 16 }));
+function ReducerHarness({ initialScore = createEmptyTabDocument(16, 4) }: { initialScore?: TabDocument }) {
+    const [state, dispatch] = useReducer(reduceTabAnalysis, undefined, () => ({ ...createTabAnalysisState(), document: initialScore, nextId: initialScore.moments.length }));
     return <TabScoreView document={state.document!} selection={state.selection!} activeCell={state.activeCell}
         extend={false} focusedNoteId={null} onSelect={selection => dispatch({ type: 'select', selection })}
         onActiveCellChange={cell => dispatch({ type: 'set-active-cell', cell })}
@@ -239,7 +239,11 @@ describe('editable tab score', () => {
         await user.keyboard('12');
         await user.tab();
         expect(edited).toHaveBeenLastCalledWith({ momentId: 'moment-1', string: 1, fret: 12 });
+        expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Insert position after onset 2' }));
+        await user.tab();
         expect(document.activeElement).toBe(screen.getByRole('button', { name: 'After score' }));
+        await user.tab({ shift: true });
+        expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Insert position after onset 2' }));
         await user.tab({ shift: true });
         expect(document.activeElement).toBe(cell(2, 2));
         await user.keyboard('7');
@@ -329,6 +333,79 @@ describe('editable tab score', () => {
         cell(1, 1).focus();
         await user.keyboard('{Insert}');
         expect(insert).toHaveBeenCalledWith('moment-0');
+    });
+
+    it('offers a named insertion lane from the blank score and opens successive positions by keyboard', async () => {
+        const user = userEvent.setup();
+        render(<ReducerHarness initialScore={createEmptyTabDocument()} />);
+        const lane = screen.getByRole('group', { name: 'Insert positions' });
+        expect(within(lane).getByText('Position').getAttribute('aria-hidden')).toBe('true');
+        expect(within(lane).getByRole('button').textContent).toBe('+');
+        cell(3, 1).focus();
+        await user.keyboard('{ArrowDown}');
+        await user.tab();
+        expect(document.activeElement).toBe(within(lane).getByRole('button', { name: 'Insert position after onset 1' }));
+        await user.keyboard('{Enter}');
+        expect(editor().getAttribute('aria-label')).toBe('Fret for string 4, onset 2');
+        await user.keyboard('12{Enter}');
+        await user.tab();
+        await user.keyboard(' ');
+        expect(editor().getAttribute('aria-label')).toBe('Fret for string 4, onset 3');
+        expect(cell(4, 2).getAttribute('aria-label')).toContain('fret 12');
+        expect(within(lane).getAllByRole('button').filter(button => button.tabIndex === 0)).toHaveLength(1);
+    });
+
+    it('moves between insertion boundaries without changing notes or selection, with a single Tab stop', async () => {
+        const user = userEvent.setup();
+        render(<Harness />);
+        cell(1, 1).focus();
+        await user.tab();
+        const insertion = (index: number) => screen.getByRole('button', { name: `Insert position after onset ${index}` });
+        expect(document.activeElement).toBe(insertion(1));
+        await user.keyboard('{ArrowRight}{End}');
+        expect(document.activeElement).toBe(insertion(3));
+        expect(screen.getByTestId('selection').textContent).toBe('0:0');
+        expect(edited).not.toHaveBeenCalled();
+        expect(within(screen.getByRole('group', { name: 'Insert positions' })).getAllByRole('button').filter(button => button.tabIndex === 0)).toEqual([insertion(3)]);
+        await user.keyboard('{Home}{ArrowRight}{Escape}');
+        expect(document.activeElement).toBe(cell(1, 1));
+        await user.tab();
+        await user.keyboard('{ArrowUp}');
+        expect(document.activeElement).toBe(cell(1, 2));
+        expect(screen.getByTestId('selection').textContent).toBe('1:1');
+    });
+
+    it('navigates boundaries across a system wrap and retains insertion access through undo/redo', async () => {
+        const user = userEvent.setup();
+        render(<ReducerHarness initialScore={createEmptyTabDocument(5, 5)} />);
+        cell(1, 1).focus();
+        await user.tab();
+        await user.keyboard('{End}');
+        const insert = screen.getByRole('button', { name: 'Insert position after onset 5' });
+        expect(document.getElementById(insert.getAttribute('aria-describedby')!)?.textContent).toContain('bar 5');
+        expect(document.activeElement).toBe(insert);
+        await user.keyboard('{Enter}{Escape}');
+        expect(document.activeElement).toBe(cell(1, 6));
+        await user.tab();
+        await user.keyboard('{Control>}z{/Control}');
+        expect(screen.queryByRole('button', { name: /^Onset 6,/ })).toBeNull();
+        expect(document.activeElement).toBe(cell(1, 1));
+        await user.keyboard('{Control>}{Shift>}z{/Shift}{/Control}');
+        expect(screen.getByRole('button', { name: /^Onset 6, bar 5:/ })).toBeTruthy();
+        expect(document.activeElement).toBe(cell(1, 6));
+        await user.tab();
+        expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Insert position after onset 6' }));
+    });
+
+    it('inserts from an ordinary touch tap with no hover or header-hold prerequisite', () => {
+        render(<ReducerHarness initialScore={createEmptyTabDocument()} />);
+        const boundary = screen.getByRole('button', { name: 'Insert position after onset 1' });
+        touchPointer('pointerdown', boundary);
+        touchPointer('pointerup', boundary);
+        fireEvent.click(boundary);
+        expect(editor().getAttribute('aria-label')).toBe('Fret for string 1, onset 2');
+        expect(document.activeElement).toBe(editor());
+        expect(screen.queryByRole('group', { name: 'Column actions' })).toBeNull();
     });
 
     it('inserts directly between columns without opening a fret draft', async () => {

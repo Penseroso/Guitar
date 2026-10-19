@@ -51,6 +51,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
 }) {
     const buttons = useRef(new Map<string, HTMLButtonElement>());
     const headers = useRef(new Map<string, HTMLButtonElement>());
+    const insertionButtons = useRef(new Map<string, HTMLButtonElement>());
     const drag = useRef<{ pointerId: number; startId: string; moved: boolean; longPressed?: boolean } | null>(null);
     const hold = useRef<{ timer: ReturnType<typeof setTimeout>; x: number; y: number; pointerId: number } | null>(null);
     const skipHeaderClick = useRef(false);
@@ -73,6 +74,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     const [error, setError] = useState<string | null>(null);
     const [openAnnotation, setOpenAnnotation] = useState<string | null>(null);
     const [columnMode, setColumnMode] = useState(false);
+    const [insertionCursor, setInsertionCursor] = useState<string | null>(null);
     const [touchActions, setTouchActions] = useState<string | null>(null);
     const [meterBar, setMeterBar] = useState<number | null>(null);
     const [positionPopup, setPositionPopup] = useState<{ key: string; left: number; top: number } | null>(null);
@@ -81,6 +83,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         && activeCell.string >= 0 && activeCell.string < 6 ? activeCell
         : document.moments[0] ? { momentId: document.moments[0].id, string: 0 } : null, [activeCell, document]);
     const lower = Math.min(selection.start, selection.end), upper = Math.max(selection.start, selection.end);
+    const insertionStop = document.moments.some(moment => moment.id === insertionCursor) ? insertionCursor : current?.momentId;
     const notesById = new Map(document.moments.flatMap(moment => moment.notes.map(note => [note.id, note] as const)));
     const sustainedAt = (moment: TabMoment, string: number) => moment.sustains?.find(sustain => notesById.get(sustain.noteId)?.string === string);
 
@@ -215,6 +218,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         emittedSelection.current = next;
         setTouchActions(null);
         setPositionPopup(null);
+        setInsertionCursor(null);
         setColumnMode(columns);
         onActiveCellChange(cell);
         onSelect(next);
@@ -234,6 +238,31 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         setTouchActions(null);
         pendingInsertion.current = { document, afterId: cell.momentId, successorId: document.moments[index + 1]?.id, string: cell.string };
         onInsertMoment(cell.momentId);
+    };
+    const onInsertionKey = (event: React.KeyboardEvent<HTMLButtonElement>, momentId: string) => {
+        if (event.ctrlKey || event.metaKey) {
+            if (event.key.toLowerCase() === 'z' || event.key.toLowerCase() === 'y') {
+                event.preventDefault();
+                pendingHistory.current = { document, columns: false };
+                if (event.shiftKey || event.key.toLowerCase() === 'y') onRedo(); else onUndo();
+            }
+            return;
+        }
+        if (event.key === 'Escape' && current) { event.preventDefault(); focusCell(current); return; }
+        if (event.key === 'ArrowUp') {
+            event.preventDefault();
+            const cell = { momentId, string: current?.string ?? 0 };
+            choose(cell, false); focusCell(cell); return;
+        }
+        const index = document.moments.findIndex(moment => moment.id === momentId);
+        const nextIndex = event.key === 'ArrowLeft' ? Math.max(0, index - 1)
+            : event.key === 'ArrowRight' ? Math.min(document.moments.length - 1, index + 1)
+                : event.key === 'Home' ? 0 : event.key === 'End' ? document.moments.length - 1 : null;
+        if (nextIndex === null) return;
+        event.preventDefault();
+        const button = insertionButtons.current.get(document.moments[nextIndex].id);
+        button?.focus({ preventScroll: true });
+        button?.scrollIntoView?.({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
     };
     const focusHeader = (momentId: string) => {
         pendingFocus.current = null;
@@ -503,17 +532,12 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                             </div>)}
                         </div>}
                         <div className={styles.scoreBody}>
-                        {onInsertMoment && <div className={styles.insertions}>
-                            <span aria-hidden="true" />
-                            {slots.map(({ moment, index }, slotIndex) => <div key={moment?.id ?? `empty-insert-${slotIndex}`}
-                                className={styles.insertionSlot} data-current={moment?.id === current?.momentId}>
-                                {moment && <button type="button" tabIndex={-1} className={styles.insertPosition}
-                                    aria-label={`Insert position after onset ${index + 1}`} title="Insert position"
-                                    disabled={document.moments.length >= 1024}
-                                    onClick={() => insertAt({ momentId: moment.id, string: current?.string ?? 0 })}><span aria-hidden="true">+</span></button>}
-                            </div>)}
-                        </div>}
                         <div role="grid" aria-label={systemIndex === 0 ? 'Editable tab' : `Editable tab, bars ${system[0].number}–${system.at(-1)!.number}`} aria-rowcount={6} aria-colcount={slots.length + 1} className={styles.grid}>
+                            <div className={styles.barlines} aria-hidden="true">
+                                <span />
+                                {system.map(measure => <span key={measure.number} className={styles.measureRule}
+                                    style={{ gridColumn: `span ${Math.max(1, measure.moments.length)}` }} />)}
+                            </div>
                             {document.tuningMidi.map((midi, string) => <div role="row" aria-rowindex={string + 1} className={styles.row} key={string}>
                                 <span role="rowheader" aria-colindex={1} className={styles.stringLabel} aria-label={`String ${string + 1}, ${getKeyName(midi % 12)}`}>{getKeyName(midi % 12)}</span>
                                 {slots.map(({ moment, index, measure }, slotIndex) => {
@@ -551,7 +575,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                                                     : <span className={styles.empty} aria-hidden="true">·</span>}
                                 </button>
                                 {isEditing && <input ref={input} type="text" inputMode="numeric" autoComplete="off" spellCheck={false}
-                                    className={styles.editor} value={draft.text} aria-label={`Fret for string ${string + 1}, onset ${index + 1}`}
+                                    className={styles.editor} value={draft.text} data-empty={draft.text === ''} aria-label={`Fret for string ${string + 1}, onset ${index + 1}`}
                                     aria-invalid={error ? true : undefined} aria-describedby={error ? errorId : undefined}
                                     onChange={event => { setDraft({ ...draft, text: event.target.value }); setError(null); }}
                                     onCompositionStart={() => { composing.current = true; }} onCompositionEnd={() => { composing.current = false; }}
@@ -562,6 +586,20 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                             </div>)}
                         </div>
                         </div>
+                        {onInsertMoment && <div className={styles.insertions} role="group" aria-label="Insert positions">
+                            <span className={styles.insertionLabel} aria-hidden="true">Position</span>
+                            {slots.map(({ moment, index }, slotIndex) => <div key={moment?.id ?? `empty-insert-${slotIndex}`}
+                                className={styles.insertionSlot} data-current={moment?.id === current?.momentId}>
+                                {moment && <button type="button" tabIndex={insertionStop === moment.id ? 0 : -1} className={styles.insertPosition}
+                                    ref={element => { if (element) insertionButtons.current.set(moment.id, element); else insertionButtons.current.delete(moment.id); }}
+                                    aria-label={`Insert position after onset ${index + 1}`} title={`Insert position in bar ${moment.measure}`}
+                                    aria-describedby={`${errorId}-insert-bar-${moment.measure}`}
+                                    disabled={document.moments.length >= 1024}
+                                    onFocus={() => setInsertionCursor(moment.id)} onKeyDown={event => onInsertionKey(event, moment.id)}
+                                    onClick={() => insertAt({ momentId: moment.id, string: current?.string ?? 0 })}><span aria-hidden="true">+</span></button>}
+                            </div>)}
+                            {system.map(measure => <span key={measure.number} hidden id={`${errorId}-insert-bar-${measure.number}`}>Adds an empty position in bar {measure.number}.</span>)}
+                        </div>}
                         {annotationRows('below')}
                     </div>
                 </div>

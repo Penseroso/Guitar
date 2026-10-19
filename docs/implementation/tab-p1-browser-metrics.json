@@ -1,0 +1,656 @@
+{
+  "evidence": [
+    {
+      "state": "five-bars-tablet",
+      "grids": [
+        {
+          "activeEditor": [],
+          "barRules": [
+            {
+              "height": 220,
+              "width": 207.65625,
+              "x": 76
+            },
+            {
+              "height": 220,
+              "width": 207.671875,
+              "x": 283.65625
+            },
+            {
+              "height": 220,
+              "width": 103.828125,
+              "x": 491.328125
+            },
+            {
+              "height": 220,
+              "width": 103.84375,
+              "x": 595.15625
+            }
+          ],
+          "columns": 6,
+          "headerAlignment": [
+            0,
+            0,
+            0.0078125,
+            0.0078125,
+            0,
+            0
+          ],
+          "insertionAlignment": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "insertionTargets": [
+            {
+              "height": 44,
+              "opacity": "1",
+              "tabIndex": -1,
+              "transition": "0s",
+              "width": 44
+            },
+            {
+              "height": 44,
+              "opacity": "1",
+              "tabIndex": -1,
+              "transition": "0s",
+              "width": 44
+            },
+            {
+              "height": 44,
+              "opacity": "1",
+              "tabIndex": -1,
+              "transition": "0s",
+              "width": 44
+            },
+            {
+              "height": 44,
+              "opacity": "1",
+              "tabIndex": -1,
+              "transition": "0s",
+              "width": 44
+            },
+            {
+              "height": 44,
+              "opacity": "1",
+              "tabIndex": -1,
+              "transition": "0s",
+              "width": 44
+            },
+            {
+              "height": 44,
+              "opacity": "1",
+              "tabIndex": -1,
+              "transition": "0s",
+              "width": 44
+            }
+          ],
+          "lines": [
+            {
+              "color": "rgb(53, 53, 53)",
+              "height": "1px",
+              "left": "44px",
+              "width": "623px",
+              "z": "1"
+            },
+            {
+              "color": "rgb(53, 53, 53)",
+              "height": "1px",
+              "left": "44px",
+              "width": "623px",
+              "z": "1"
+            },
+            {
+              "color": "rgb(53, 53, 53)",
+              "height": "1px",
+              "left": "44px",
+              "width": "623px",
+              "z": "1"
+            },
+            {
+              "color": "rgb(53, 53, 53)",
+              "height": "1px",
+              "left": "44px",
+              "width": "623px",
+              "z": "1"
+            },
+            {
+              "color": "rgb(53, 53, 53)",
+              "height": "1px",
+              "left": "44px",
+              "width": "623px",
+              "z": "1"
+            },
+            {
+              "color": "rgb(53, 53, 53)",
+              "height": "1px",
+              "left": "44px",
+              "width": "623px",
+              "z": "1"
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "activeEditor": [],
+          "barRules": [
+            {
+              "height": 220,
+              "width": 623,
+              "x": 76
+            }
+          ],
+          "columns": 1,
+          "headerAlignment": [
+            0
+          ],
+          "insertionAlignment": [
+            0
+          ],
+          "insertionTargets": [
+            {
+              "height": 44,
+              "opacity": "1",
+              "tabIndex": 0,
+              "transition": "0s",
+              "width": 44
+            }
+          ],
+          "lines": [
+            {
+              "color": "rgb(53, 53, 53)",
+              "height": "1px",
+              "left": "44px",
+              "width": "623px",
+              "z": "1"
+            },
+            {
+              "color": "rgb(53, 53, 53)",
+              "height": "1px",
+              "left": "44px",
+              "width": "623px",
+              "z": "1"
+            },
+            {
+              "color": "rgb(53, 53, 53)",
+              "height": "1px",
+              "left": "44px",
+              "width": "623px",
+              "z": "1"
+            },
+            {
+              "color": "rgb(53, 53, 53)",
+              "height": "1px",
+              "left": "44px",
+              "width": "623px",
+              "z": "1"
+            },
+            {
+              "color": "rgb(53, 53, 53)",
+              "height": "1px",
+              "left": "44px",
+              "width": "623px",
+              "z": "1"
+            },
+            {
+              "color": "rgb(53, 53, 53)",
+              "height": "1px",
+              "left": "44px",
+              "width": "623px",
+              "z": "1"
+            }
+          ],
+          "rows": 6
+        }
+      ],
+      "pageScrollWidth": 753,
+      "pageWidth": 753,
+      "viewports": [
+        {
+          "content": 689,
+          "label": "Tab score — bars 1–4",
+          "scrollLeft": 0,
+          "width": 689
+        },
+        {
+          "content": 689,
+          "label": "Tab score — bars 5–5",
+          "scrollLeft": 0,
+          "width": 689
+        }
+      ],
+      "width": 768
+    },
+    {
+      "state": "dense-24-mobile",
+      "barRuleHeights": [
+        220
+      ],
+      "contentWidth": 1122,
+      "focus": "Insert position after onset 24",
+      "focusLeft": 319,
+      "focusRight": 363,
+      "headerAlignmentMax": 0,
+      "insertionAlignmentMax": 0,
+      "pageScrollWidth": 375,
+      "pageWidth": 375,
+      "positions": 24,
+      "rowLines": [
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1056px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1056px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1056px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1056px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1056px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1056px"
+        }
+      ],
+      "scrollLeft": 771,
+      "tabStops": 1,
+      "targetMinHeight": 44,
+      "targetMinWidth": 44,
+      "transition": [
+        "0s"
+      ],
+      "unobscuredLeft": 56,
+      "viewportRight": 363,
+      "viewportWidth": 351,
+      "visibleOpacity": [
+        "1"
+      ],
+      "width": 390
+    },
+    {
+      "state": "dense-24-tablet",
+      "barRuleHeights": [
+        220
+      ],
+      "contentWidth": 1122,
+      "focus": "Insert position after onset 24",
+      "focusLeft": 677,
+      "focusRight": 721,
+      "headerAlignmentMax": 0,
+      "insertionAlignmentMax": 0,
+      "pageScrollWidth": 753,
+      "pageWidth": 753,
+      "positions": 24,
+      "rowLines": [
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1056px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1056px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1056px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1056px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1056px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1056px"
+        }
+      ],
+      "scrollLeft": 433,
+      "tabStops": 1,
+      "targetMinHeight": 44,
+      "targetMinWidth": 44,
+      "transition": [
+        "0s"
+      ],
+      "unobscuredLeft": 76,
+      "viewportRight": 721,
+      "viewportWidth": 689,
+      "visibleOpacity": [
+        "1"
+      ],
+      "width": 768
+    },
+    {
+      "state": "dense-24-desktop",
+      "barRuleHeights": [
+        220
+      ],
+      "contentWidth": 1152,
+      "focus": "Insert position after onset 1",
+      "focusLeft": 151.234375,
+      "focusRight": 195.234375,
+      "headerAlignmentMax": 0.0078125,
+      "insertionAlignmentMax": 0,
+      "pageScrollWidth": 1320,
+      "pageWidth": 1320,
+      "positions": 24,
+      "rowLines": [
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1085.98px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1085.98px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1085.98px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1085.98px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1085.98px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1085.98px"
+        }
+      ],
+      "scrollLeft": 0,
+      "tabStops": 1,
+      "targetMinHeight": 44,
+      "targetMinWidth": 44,
+      "transition": [
+        "0s"
+      ],
+      "unobscuredLeft": 128,
+      "viewportRight": 1235.984375,
+      "viewportWidth": 1152,
+      "visibleOpacity": [
+        "1"
+      ],
+      "width": 1335
+    },
+    {
+      "state": "blank-desktop",
+      "barRuleHeights": [
+        220
+      ],
+      "contentWidth": 1152,
+      "focus": "String 1, onset 1, empty",
+      "focusLeft": 128,
+      "focusRight": 1213.984375,
+      "headerAlignmentMax": 0,
+      "insertionAlignmentMax": 0,
+      "pageScrollWidth": 1320,
+      "pageWidth": 1320,
+      "positions": 1,
+      "rowLines": [
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1085.98px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1085.98px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1085.98px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1085.98px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1085.98px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "1085.98px"
+        }
+      ],
+      "scrollLeft": 0,
+      "tabStops": 1,
+      "targetMinHeight": 44,
+      "targetMinWidth": 44,
+      "transition": [
+        "0s"
+      ],
+      "unobscuredLeft": 128,
+      "viewportRight": 1235.984375,
+      "viewportWidth": 1152,
+      "visibleOpacity": [
+        "1"
+      ],
+      "width": 1335
+    },
+    {
+      "state": "blank-tablet",
+      "barRuleHeights": [
+        220
+      ],
+      "contentWidth": 689,
+      "focus": "String 1, onset 1, empty",
+      "focusLeft": 76,
+      "focusRight": 699,
+      "headerAlignmentMax": 0,
+      "insertionAlignmentMax": 0,
+      "pageScrollWidth": 753,
+      "pageWidth": 753,
+      "positions": 1,
+      "rowLines": [
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "623px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "623px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "623px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "623px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "623px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "623px"
+        }
+      ],
+      "scrollLeft": 0,
+      "tabStops": 1,
+      "targetMinHeight": 44,
+      "targetMinWidth": 44,
+      "transition": [
+        "0s"
+      ],
+      "unobscuredLeft": 76,
+      "viewportRight": 721,
+      "viewportWidth": 689,
+      "visibleOpacity": [
+        "1"
+      ],
+      "width": 768
+    },
+    {
+      "state": "blank-mobile",
+      "barRuleHeights": [
+        220
+      ],
+      "contentWidth": 351,
+      "focus": "String 1, onset 1, empty",
+      "focusLeft": 56,
+      "focusRight": 341,
+      "headerAlignmentMax": 0,
+      "insertionAlignmentMax": 0,
+      "pageScrollWidth": 375,
+      "pageWidth": 375,
+      "positions": 1,
+      "rowLines": [
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "285px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "285px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "285px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "285px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "285px"
+        },
+        {
+          "animation": "none",
+          "color": "rgb(53, 53, 53)",
+          "height": "1px",
+          "width": "285px"
+        }
+      ],
+      "scrollLeft": 0,
+      "tabStops": 1,
+      "targetMinHeight": 44,
+      "targetMinWidth": 44,
+      "transition": [
+        "0s"
+      ],
+      "unobscuredLeft": 56,
+      "viewportRight": 363,
+      "viewportWidth": 351,
+      "visibleOpacity": [
+        "1"
+      ],
+      "width": 390
+    }
+  ],
+  "editingChecks": [
+    {
+      "cellWidth": 45.234375,
+      "height": 44,
+      "lineWidth": "1085.98px",
+      "mask": "32px 24px",
+      "onset": "Fret for string 1, onset 1",
+      "width": 45.234375
+    },
+    {
+      "cellWidth": 45.25,
+      "height": 44,
+      "lineWidth": "1085.98px",
+      "mask": "32px 24px",
+      "onset": "Fret for string 1, onset 12",
+      "width": 45.25
+    },
+    {
+      "cellWidth": 45.234375,
+      "height": 44,
+      "lineWidth": "1085.98px",
+      "mask": "32px 24px",
+      "onset": "Fret for string 1, onset 24",
+      "width": 45.234375
+    }
+  ]
+}

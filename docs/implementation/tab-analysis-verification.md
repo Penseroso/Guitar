@@ -1,5 +1,15 @@
 # Editable tab analysis verification
 
+## P1 score interaction and continuous strings — 2026-10-19
+
+The [P1 audit](tab-p1-interaction-audit-2026-10-19.md) supersedes the historical hover
+insertion contract below. A visible position-boundary lane replaces string overlays;
+row-owned continuous lines and explicit measure rules replace cell-local paint. P0
+ownership and domain/analysis semantics remain unchanged. **15 files / 378 tests**,
+scoped lint, TypeScript and production build pass. Real-browser checks at 390/768/1335px
+cover blank/dense/annotated scores, keyboard focus/history and contained scrolling.
+Touch events are tested; physical touch-device verification remains unperformed. **GO**.
+
 ## Current product and theory audit — 2026-10-04
 
 The [contextual spelling follow-up](tab-contextual-spelling-2026-10-04.md) fixes Minor

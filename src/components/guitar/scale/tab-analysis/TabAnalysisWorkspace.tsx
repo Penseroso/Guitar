@@ -210,7 +210,7 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
                     <button className={styles.textAction} type="button" disabled={state.future.length === 0} onClick={() => dispatch({ type: 'redo' })}>Redo</button>
                     <span className={styles.meta}>Position {state.activeCell ? state.document.moments.findIndex(moment => moment.id === state.activeCell!.momentId) + 1 : 1}</span>
                 </div>
-                <p className={`${styles.meta} ${styles.desktopHint}`}>Click a string to type · Hover between columns for + · Drag column headers, then Delete · Arrow keys move.</p>
+                <p className={`${styles.meta} ${styles.desktopHint}`}>Click a string to type · Insert adds a position · Drag column headers, then Delete · Arrow keys move.</p>
                 <p className={`${styles.meta} ${styles.touchHint}`}>Tap a string to type · Tap + to add · Hold a column header dot to delete.</p>
             </div>
         </div>}

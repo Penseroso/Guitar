@@ -62,10 +62,13 @@ Undo/redo applies to committed edits, retuning, imports and column mutations. IM
 and native input events must work without global shortcut interception.
 
 Four explicit measures form each system. A measure can contain a variable number of
-positions; inline + controls between columns insert directly, and Insert adds after the
-cursor. The + controls overlay the vertical center of the strings, without a dedicated
-row. Desktop controls appear on hover near the insertion boundary; touch exposes the
-active position's insertion affordance. Column headers support click, drag and Shift-arrow range selection. Delete or
+positions; + controls in a named lane immediately below the strings insert at each
+column's trailing boundary, and Insert adds after the cursor. The gutter says Position;
+small persistent plus/stem marks share 44px targets on mouse, touch and keyboard.
+One roving Tab entry and Left/Right/Home/End reach insertion boundaries without changing
+selection; Enter/Space opens the inserted position on the current string. Escape returns
+to the selected cell; Up returns to the position preceding that boundary. Tab exits the
+cell grid to this lane and then leaves it normally. Column headers support click, drag and Shift-arrow range selection. Delete or
 Backspace on a focused header deletes the selected columns together, as one undoable edit;
 on touch, holding a header opens a compact red-trash popover. Ordinary taps and desktop
 selection expose no persistent delete button. Movement or pointer cancellation cancels
@@ -79,7 +82,15 @@ including on mobile, with 44px input targets and no horizontal page overflow.
 The single initial position is an editable placeholder. The default UI labels free timing and states
 that positions are not beats. If notation is supplied, it explicitly says the analysis
 preserves but does not interpret timing, ties or pitch gestures. Header dots and
-pointer-specific hints reveal editing.
+pointer-specific hints supplement direct score affordances.
+
+Each string row owns one continuous decorative line across the system, independently
+of cell state. Musical glyphs and the centered text area of native input mask only their
+text area; an empty input leaves its line visible. A pointer-transparent layer draws
+explicit measure boundaries between the first and sixth string centers using the same
+grid template. These presentation layers do not define timing or change the document.
+See the [P1 audit](../implementation/tab-p1-interaction-audit-2026-10-19.md) for the
+alternative comparison, interaction contract and browser evidence.
 
 Each bar header reveals meter entry in that system and explicitly labels its current
 score-wide scope. An always-visible Edit trigger above the active position opens a
@@ -271,3 +282,12 @@ Screenshots: [desktop contextual input](../implementation/screenshots/tab-p0-des
 [mobile input](../implementation/screenshots/tab-p0-mobile.jpg),
 [mobile five bars](../implementation/screenshots/tab-p0-mobile-five-bars.jpg),
 [mobile internal scrolling](../implementation/screenshots/tab-p0-mobile-dense.jpg).
+
+P1 verification (2026-10-19), based on fetched `origin/master` at `6dc9630`: all
+378 tests in the same 15 TAB/integration files passed; scoped lint, TypeScript and
+production build passed. Browser checks at 390/768/1335px cover blank, dense, annotated
+and edited scores, 4→5-bar wrapping, insertion/history focus, and contained scrolling.
+Insertion targets are 44×44px with 0px boundary drift. New controls are independent of
+hover/coarse-pointer visibility and add no motion. Touch pointer events pass; physical
+device coverage is not claimed. See the P1 audit for screenshots, measurements and
+deferred items. P1 acceptance: GO; no P2 analysis or sounding-timeline work started.
