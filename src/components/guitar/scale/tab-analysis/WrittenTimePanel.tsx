@@ -1,7 +1,7 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState, type MouseEvent } from 'react';
-import { getTabWrittenNotesAt, type TabWrittenTimeSnapshot } from '@/domain/tab/written-time';
+import { useLayoutEffect, useMemo, useRef, useState, type MouseEvent } from 'react';
+import { getTabWrittenInspectionPoints, inspectTabWrittenNotesAt, type TabWrittenTimeSnapshot } from '@/domain/tab/written-time';
 import type { TabExactFraction } from '@/domain/tab/exact-time';
 import { getNoteName } from '@/domain/shared/notes';
 import styles from './written-time-panel.module.css';
@@ -19,15 +19,17 @@ export function WrittenTimePanel({ snapshot, onClose, onAction }: {
     onAction: () => boolean;
 }) {
     const data = snapshot.data;
+    // Candidate positions depend on the frozen data, never the caller's document token.
+    const points = useMemo(() => getTabWrittenInspectionPoints({ data, sourceDocument: undefined }), [data]);
     const [view, setView] = useState({ data, page: 0, point: 0 });
     const pageCount = Math.max(1, Math.ceil(data.intervals.length / PAGE_SIZE));
     const page = view.data === data ? Math.min(view.page, pageCount - 1) : 0;
-    const pointIndex = view.data === data ? Math.min(view.point, Math.max(0, data.endpointDeltas.length - 1)) : 0;
+    const pointIndex = view.data === data ? Math.min(view.point, Math.max(0, points.length - 1)) : 0;
     const visible = data.intervals.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
-    const canQuery = data.noteCoverage === 'complete' && data.intervals.length > 0 && data.endpointDeltas.length > 0;
-    const time = canQuery ? data.endpointDeltas[pointIndex].time : null;
-    const query = time ? getTabWrittenNotesAt(snapshot, time) : null;
-    const active = query?.status === 'complete' ? new Set(query.notes.map(note => note.noteId)) : null;
+    const canQuery = data.noteCoverage !== 'unreadable' && data.intervals.length > 0 && points.length > 0;
+    const time = canQuery ? points[pointIndex] : null;
+    const query = useMemo(() => time ? inspectTabWrittenNotesAt(snapshot, time) : null, [snapshot, time]);
+    const active = useMemo(() => query?.status === 'complete' ? new Set(query.notes.map(note => note.noteId)) : null, [query]);
     const previousPage = useRef<HTMLButtonElement>(null), nextPage = useRef<HTMLButtonElement>(null);
     const previousPoint = useRef<HTMLButtonElement>(null), nextPoint = useRef<HTMLButtonElement>(null);
     const focusAfterChange = useRef<'previous-page' | 'next-page' | 'previous-point' | 'next-point' | null>(null);
@@ -48,7 +50,7 @@ export function WrittenTimePanel({ snapshot, onClose, onAction }: {
     const movePoint = (next: number) => {
         if (!onAction()) return;
         if (next === 0) focusAfterChange.current = 'next-point';
-        else if (next === data.endpointDeltas.length - 1) focusAfterChange.current = 'previous-point';
+        else if (next === points.length - 1) focusAfterChange.current = 'previous-point';
         setView({ data, page, point: next });
     };
     const close = () => { if (onAction()) onClose(); };
@@ -80,11 +82,14 @@ export function WrittenTimePanel({ snapshot, onClose, onAction }: {
         {data.noteCoverage !== 'unreadable' && visible.length > 0 && <>
             {canQuery && <div className={styles.cursor} role="group" aria-label="Written time points">
                 <button type="button" ref={previousPoint} className={styles.action} aria-label="Previous written time point" disabled={pointIndex === 0} onClick={() => movePoint(pointIndex - 1)}>Previous point</button>
-                <span>Point {pointIndex + 1} of {data.endpointDeltas.length}</span>
-                <button type="button" ref={nextPoint} className={styles.action} aria-label="Next written time point" disabled={pointIndex === data.endpointDeltas.length - 1} onClick={() => movePoint(pointIndex + 1)}>Next point</button>
+                <span>Point {pointIndex + 1} of {points.length}</span>
+                <button type="button" ref={nextPoint} className={styles.action} aria-label="Next written time point" disabled={pointIndex === points.length - 1} onClick={() => movePoint(pointIndex + 1)}>Next point</button>
+                {data.noteCoverage === 'partial' && query?.status === 'complete' && <p role="status" className={styles.pointStatus}>Complete at this point</p>}
                 <p role="status" className={styles.pointStatus}>{query?.status === 'complete'
                     ? query.notes.length ? `${query.notes.length} written ${query.notes.length === 1 ? 'note' : 'notes'} at this point` : 'No written notes at this point'
-                    : 'Outside observed range'}</p>
+                    : query?.status === 'partial' ? 'More timing needed at this point'
+                        : query?.status === 'unreadable' ? 'Timing unreadable at this point'
+                            : query?.status === 'invalid-query' ? 'Invalid time point' : 'Outside observed range'}</p>
             </div>}
             <div className={styles.axis} aria-hidden="true"><span>{range && approximateLabel(range.start)}</span><span>Quarter notes</span><span>{range && approximateLabel(range.end)}</span></div>
             <ul className={styles.notes} aria-label="Written notes">
@@ -106,6 +111,10 @@ export function WrittenTimePanel({ snapshot, onClose, onAction }: {
                 <summary onClick={disclosure}>Details</summary>
                 <p className={styles.hint}>Exact quarter notes from this bar&apos;s start. Each interval keeps its own written length.</p>
                 {time && <p>Current point · {exactLabel(time)}</p>}
+                {query?.status === 'complete' && <>
+                    <p>Proof · {query.proof.basis === 'whole-population' ? 'All written notes timed' : 'Later starts excluded'}</p>
+                    <p>Excluded notes · {query.proof.excluded.length}</p>
+                </>}
                 <ul className={styles.exactNotes}>{visible.map(note => <li key={`${note.momentIndex}:${note.noteIndex}`}>
                     <p>Position {note.momentIndex + 1} · String {note.string + 1} · {pitchLabel(note.midi)}</p>
                     <dl><dt>Start</dt><dd>{exactLabel(note.start)}</dd><dt>Length</dt><dd>{exactLabel(note.duration)}</dd><dt>Local end</dt><dd>{exactLabel(note.end)}</dd></dl>

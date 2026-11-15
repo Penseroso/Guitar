@@ -4,12 +4,13 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { observeTabWrittenTime, type TabWrittenTimeSnapshot } from '@/domain/tab/written-time';
+import * as writtenTime from '@/domain/tab/written-time';
 import { createEmptyTabDocument, setTabFret } from '@/domain/tab/editing';
 import { setTabBeatOffset, setTabDuration, setTabRest } from '@/domain/tab/input-capabilities';
 import type { TabDocument } from '@/domain/tab/types';
 import { WrittenTimePanel } from './WrittenTimePanel';
 
-afterEach(cleanup);
+afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 const f = (numerator: number, denominator = 1) => ({ numerator, denominator });
 function documentWithNotes(count = 2): TabDocument {
     let document = createEmptyTabDocument(count);
@@ -93,15 +94,55 @@ describe('read-only written time panel', () => {
         expect(screen.getByText('1 written note at this point')).toBeTruthy();
     });
 
-    it('shows known intervals of a partial population without cursor controls or a complete active-set claim', () => {
-        const document = documentWithNotes(); delete document.moments[1].notes[0].duration;
+    it('retains a globally incomplete view while proving only points strictly before a missing-duration onset', async () => {
+        const user = userEvent.setup(); const document = documentWithNotes();
+        document.moments[0].notes[0].duration = f(2); delete document.moments[1].notes[0].duration;
         mount(observeTabWrittenTime(document, 1));
         expect(screen.getByText('Timing incomplete')).toBeTruthy();
         expect(screen.getByText('1 of 2 notes timed')).toBeTruthy();
         expect(rows()).toHaveLength(1);
-        expect(screen.queryByRole('group', { name: 'Written time points' })).toBeNull();
+        expect(screen.getByText('Complete at this point')).toBeTruthy();
+        expect(screen.getByText('1 written note at this point')).toBeTruthy();
+        expect(rows()[0].getAttribute('data-active')).toBe('true');
+        await user.click(screen.getByText('Details'));
+        expect(screen.getByText('Proof · Later starts excluded')).toBeTruthy();
+        expect(screen.getByText('Excluded notes · 1')).toBeTruthy();
+        expect(screen.getByText('Point 1 of 3')).toBeTruthy();
+        await user.click(nextPoint());
+        expect(screen.getByText('Current point · 1/1')).toBeTruthy();
+        expect(screen.getByText('More timing needed at this point')).toBeTruthy();
+        expect(screen.queryByText('Complete at this point')).toBeNull();
+        expect(screen.queryByText('Proof · Later starts excluded')).toBeNull();
         expect(rows()[0].hasAttribute('data-active')).toBe(false);
         expect(screen.queryByText(/written note.*at this point/)).toBeNull();
+        await user.click(nextPoint());
+        expect(screen.getByText('Current point · 2/1')).toBeTruthy();
+        expect(screen.getByText('More timing needed at this point')).toBeTruthy();
+        expect(screen.queryByText('Outside observed range')).toBeNull();
+        expect(screen.getByText('Timing incomplete')).toBeTruthy();
+    });
+
+    it('never exposes a complete count or active set when a source onset is unknown', async () => {
+        const user = userEvent.setup(); const document = documentWithNotes(); delete document.moments[1].beatOffset;
+        mount(observeTabWrittenTime(document, 1));
+        expect(screen.getByText('More timing needed at this point')).toBeTruthy();
+        expect(rows()[0].hasAttribute('data-active')).toBe(false);
+        await user.click(nextPoint());
+        expect(screen.getByText('More timing needed at this point')).toBeTruthy();
+        expect(screen.queryByText('Complete at this point')).toBeNull();
+        expect(screen.queryByText('Outside observed range')).toBeNull();
+        expect(screen.queryByText(/written note.*at this point/)).toBeNull();
+    });
+
+    it('keeps an older partial snapshot without a coverage ledger conservative', () => {
+        const document = documentWithNotes(); delete document.moments[1].notes[0].duration;
+        const snapshot = observeTabWrittenTime(document, 1);
+        const { coverageFacts: omitted, ...data } = snapshot.data;
+        expect(omitted).toHaveLength(1);
+        mount({ sourceDocument: snapshot.sourceDocument, data });
+        expect(screen.getByText('More timing needed at this point')).toBeTruthy();
+        expect(screen.queryByText('Complete at this point')).toBeNull();
+        expect(rows()[0].hasAttribute('data-active')).toBe(false);
     });
 
     it('offers the existing Edit path when no partial intervals are known', () => {
@@ -136,6 +177,54 @@ describe('read-only written time panel', () => {
         expect(container.querySelectorAll('li')).toHaveLength(16);
         expect(screen.getByText('Page 1 of 768')).toBeTruthy();
         expect(screen.getByText('6144 written notes at this point')).toBeTruthy();
+    });
+
+    it('summarizes a 3072-note exclusion proof without rendering its members or additional rows', async () => {
+        const user = userEvent.setup(); const document = denseDocument();
+        document.moments.slice(512).forEach(moment => {
+            moment.beatOffset = f(1, 2);
+            moment.notes.forEach(note => { delete note.duration; });
+        });
+        const snapshot = observeTabWrittenTime(document, 1), before = JSON.stringify(snapshot.data);
+        const { container } = mount(snapshot);
+        expect(screen.getByText('Timing incomplete')).toBeTruthy();
+        expect(screen.getByText('Complete at this point')).toBeTruthy();
+        expect(screen.getByText('3072 written notes at this point')).toBeTruthy();
+        expect(rows()).toHaveLength(8); expect(container.querySelectorAll('li')).toHaveLength(16);
+        await user.click(screen.getByText('Details'));
+        expect(screen.getByText('Excluded notes · 3072')).toBeTruthy();
+        expect(container.querySelectorAll('li')).toHaveLength(16);
+        await user.click(nextPoint());
+        expect(screen.getByText('More timing needed at this point')).toBeTruthy();
+        expect(screen.queryByText('Excluded notes · 3072')).toBeNull();
+        expect(rows().every(row => !row.hasAttribute('data-active'))).toBe(true);
+        expect(JSON.stringify(snapshot.data)).toBe(before);
+    });
+
+    it('reuses candidate points and the point query when only note pages change', async () => {
+        const user = userEvent.setup();
+        const candidates = vi.spyOn(writtenTime, 'getTabWrittenInspectionPoints');
+        const inspect = vi.spyOn(writtenTime, 'inspectTabWrittenNotesAt');
+        mount(observeTabWrittenTime(documentWithNotes(9), 1));
+        expect(candidates).toHaveBeenCalledOnce(); expect(inspect).toHaveBeenCalledOnce();
+        await user.click(nextPage()); await user.click(previousPage());
+        expect(candidates).toHaveBeenCalledOnce(); expect(inspect).toHaveBeenCalledOnce();
+        await user.click(nextPoint());
+        expect(candidates).toHaveBeenCalledOnce(); expect(inspect).toHaveBeenCalledTimes(2);
+        await user.click(nextPage()); expect(inspect).toHaveBeenCalledTimes(2);
+    });
+
+    it.each([
+        { status: 'invalid-query', reason: 'invalid-time', label: 'Invalid time point' },
+        { status: 'unreadable', reason: 'unreadable-population', label: 'Timing unreadable at this point' },
+    ] as const)('maps $status separately from partial and complete note claims', ({ status, label }) => {
+        vi.spyOn(writtenTime, 'inspectTabWrittenNotesAt').mockReturnValue(status === 'invalid-query'
+            ? { status: 'invalid-query', reason: 'invalid-time' }
+            : { status: 'unreadable', reason: 'unreadable-population' });
+        mount(); expect(screen.getByText(label)).toBeTruthy();
+        expect(screen.queryByText('More timing needed at this point')).toBeNull();
+        expect(screen.queryByText(/written note.*at this point/)).toBeNull();
+        expect(rows().every(row => !row.hasAttribute('data-active'))).toBe(true);
     });
 
     it('pages bounded rows and moves focus to an enabled page control at each end', async () => {

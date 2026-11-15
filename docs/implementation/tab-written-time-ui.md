@@ -1,5 +1,9 @@
 # P3.1: written-time view
 
+This records P3.1 acceptance. The subsequent [P3.2 point-coverage extension](tab-written-time-point-coverage.md)
+adds partial-input point navigation and proven local completeness; its contract
+supersedes the partial-row/no-query UI behavior below.
+
 Baseline: P3 core at `ded09286592c4dfe590560c02dc93292a71a814f`, on the shared
 `feat/tab-timing-inspection` branch. No historical local timeline candidate is imported.
 

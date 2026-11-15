@@ -56,7 +56,9 @@ without changing the domain implementation.
 `ownedNoteCount` counts enumerated entries; it does not establish a total for an
 unreadable population. An unreadable notes list is never converted into an empty one.
 Marker-only positions can have complete empty note coverage even when their own
-metadata has diagnostics. No time-specific completeness proof is implemented.
+metadata has diagnostics. The legacy getter performs no time-specific completeness
+proof. [P3.2 point inspection](tab-written-time-point-coverage.md) adds a separate
+API without changing this getter's conservative contract.
 
 `getTabWrittenNotesAt(snapshot, time)` applies this precedence:
 **invalid-query → unreadable → partial → outside-range → complete**.

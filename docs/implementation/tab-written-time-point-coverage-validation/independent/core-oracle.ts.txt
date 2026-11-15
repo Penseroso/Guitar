@@ -1,0 +1,148 @@
+import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { performance } from 'node:perf_hooks';
+import { observeTabWrittenTime, getTabWrittenNotesAt, inspectTabWrittenNotesAt, getTabWrittenInspectionPoints } from '/workspace/Guitar-p2/src/domain/tab/written-time';
+
+const OUT='/workspace/p32-validation/independent';
+const path='/workspace/Guitar-p2/src/domain/tab/written-time.ts';
+const hash=()=>createHash('sha256').update(readFileSync(path)).digest('hex');
+const beforeHash=hash();
+const fraction=(numerator:number,denominator=1)=>({numerator,denominator});
+const query=(numerator:number|string,denominator:number|string=1)=>({numerator:String(numerator),denominator:String(denominator)});
+const n=(id:string,duration:unknown=fraction(1),string=0)=>({id,string,midi:[64,59,55,50,45,40][string]+5,fret:5,pitchClass:([64,59,55,50,45,40][string]+5)%12,source:null,duration});
+const p=(id:string,notes:unknown,start:unknown=fraction(0),measure:unknown=1)=>({id,index:0,column:1,measure,notes,beatOffset:start});
+const doc=(moments:unknown[])=>({format:'authored',timing:'order-only',source:'',tuningMidi:[64,59,55,50,45,40],capo:0,measureCount:2,moments});
+const freeze=(v:unknown)=>{if(v&&typeof v==='object'){Object.values(v).forEach(freeze);Object.freeze(v)}};
+const absent=(id:string,string=1)=>{const x:Record<string,unknown>=n(id,undefined,string);delete x.duration;return x};
+const activeIds=(result:ReturnType<typeof inspectTabWrittenNotesAt>)=>result.status==='complete'?result.notes.map(x=>x.noteId).sort():null;
+const counters={randomSources:0,queries:0,complete:0,partial:0,unreadable:0,outside:0,invalidQuery:0,completionWorlds:0,mutation:0};
+
+// Finite manually specified completion worlds. The oracle uses integer 1/1024
+// quarter ticks, independently of production rational helpers and coverage ledger.
+const completions=[];
+for(const starts of [[256],[512,768],[1,1023],[1024,1024]]){
+    const source=doc([p('known',[n('known',fraction(1))]),...starts.map((s,i)=>p(`future-p${i}`,[absent(`future${i}`)],fraction(s,1024)))]);
+    const before=JSON.stringify(source);freeze(source);const snapshot=observeTabWrittenTime(source,1);
+    assert.equal(snapshot.data.noteCoverage,'partial');assert.equal(snapshot.data.intervals.length,1);
+    for(const tick of [-1,0,1,128,255,256,512,767,768,1023,1024,1025]){
+        const result=inspectTabWrittenNotesAt(snapshot,query(tick,1024));
+        assert.equal(getTabWrittenNotesAt(snapshot,query(tick,1024)).status,'partial');
+        const allFuture=starts.every(s=>tick<s);
+        const expectedStatus=!allFuture?'partial':tick<0||tick>=1024?'outside-range':'complete';
+        assert.equal(result.status,expectedStatus);
+        const worlds=starts.length===1?[[1],[128],[1024]]:[[1,1],[1,128],[1,1024],[128,1],[128,128],[128,1024],[1024,1],[1024,128],[1024,1024]];
+        for(const lengths of worlds){
+            const expected:string[]=[];
+            if(0<=tick&&tick<1024)expected.push('known');
+            starts.forEach((s,i)=>{if(s<=tick&&tick<s+lengths[i])expected.push(`future${i}`)});
+            if(result.status==='complete')assert.deepEqual(activeIds(result),expected.sort());
+            counters.completionWorlds++;
+        }
+        if(result.status==='complete'){
+            assert.equal(result.proof.basis,'onset-exclusion');assert.equal(result.proof.excluded.length,starts.length);
+            assert.deepEqual(result.notes.map(x=>x.noteId),['known']);
+        }else assert.ok(!('notes' in result));
+    }
+    assert.equal(JSON.stringify(source),before);completions.push({startsInTicks:starts,sourceCoverage:snapshot.data.noteCoverage,projectedIntervals:snapshot.data.intervals.length,proofNeverAddsIntervals:true});
+}
+
+// Randomly mix source faults. Eligibility is assigned by the fixture generator,
+// not inferred from observer outputs; invalid-present duration never equals absent.
+let seed=0x32decaf;
+const random=(max:number)=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return(seed>>>0)%max};
+const faultCounts:Record<string,number>={};
+const results:Record<string,number>={};
+for(let run=0;run<2000;run++){
+    const moments:unknown[]=[p('known-p',[n('known',fraction(1))])];
+    const eligibleStarts:number[]=[];let unresolved=false,population=false,ownedMissing=0;
+    const modes=['eligible','eligible','eligible','duration-null','duration-zero','start-missing','start-invalid','id-missing','midi-invalid','string-invalid','shape','ownership','notes-list','other-bar','marker-only'];
+    for(let i=0;i<1+random(4);i++){
+        const mode=modes[random(modes.length)];faultCounts[mode]=(faultCounts[mode]??0)+1;
+        const tick=random(1025),note:Record<string,unknown>=absent(`b${i}`),moment:Record<string,unknown>=p(`bp${i}`,[note],fraction(tick,1024));
+        if(mode==='eligible'){eligibleStarts.push(tick);ownedMissing++;}
+        else if(mode==='other-bar'){moment.measure=2;moment.notes=null;}
+        else if(mode==='marker-only'){moment.notes=[];moment.rest={duration:{numerator:1,denominator:0}};moment.mutes=null;moment.sustains=[{noteId:'missing'}];delete moment.beatOffset;}
+        else if(mode==='ownership'){moment.measure=null;population=true;}
+        else if(mode==='notes-list'){moment.notes=null;population=true;}
+        else{
+            unresolved=true;ownedMissing++;
+            if(mode==='duration-null')note.duration=null;
+            if(mode==='duration-zero')note.duration=fraction(0);
+            if(mode==='start-missing')delete moment.beatOffset;
+            if(mode==='start-invalid')moment.beatOffset=fraction(-1);
+            if(mode==='id-missing')note.id='';
+            if(mode==='midi-invalid')note.midi=128;
+            if(mode==='string-invalid')note.string=6;
+            if(mode==='shape')moment.notes=[null];
+        }
+        moments.push(moment);
+    }
+    const source=doc(moments),before=JSON.stringify(source);freeze(source);
+    const snapshot=observeTabWrittenTime(source,1);
+    const isPartial=unresolved||ownedMissing>0;
+    assert.equal(snapshot.data.noteCoverage,population?'unreadable':isPartial?'partial':'complete');
+    assert.deepEqual(snapshot.data.intervals.map(x=>x.noteId),['known']);
+    assert.doesNotThrow(()=>JSON.stringify(snapshot.data));
+    const pointsBefore=JSON.stringify(snapshot.data.endpointDeltas);
+    const points=getTabWrittenInspectionPoints(snapshot);
+    assert.equal(JSON.stringify(snapshot.data.endpointDeltas),pointsBefore);
+    if(population)assert.equal(points.length,0);
+    for(const tick of [-1,0,random(1024),1024,1025]){
+        const observed=inspectTabWrittenNotesAt(snapshot,query(tick,1024));
+        const uncertainty=isPartial&&(unresolved||!eligibleStarts.every(s=>tick<s));
+        const expected=population?'unreadable':uncertainty?'partial':tick<0||tick>=1024?'outside-range':'complete';
+        assert.equal(observed.status,expected,`fixture ${run}, tick ${tick}`);
+        results[expected]=(results[expected]??0)+1;counters.queries++;
+        if(observed.status==='complete'){
+            assert.deepEqual(activeIds(observed),['known']);
+            assert.equal(observed.proof.basis,isPartial?'onset-exclusion':'whole-population');
+            assert.equal(observed.proof.excluded.length,isPartial?eligibleStarts.length:0);counters.complete++;
+        }else{
+            assert.ok(!('notes' in observed));
+            if(observed.status==='partial')counters.partial++;
+            if(observed.status==='unreadable')counters.unreadable++;
+            if(observed.status==='outside-range')counters.outside++;
+        }
+        const legacy=getTabWrittenNotesAt(snapshot,query(tick,1024));
+        assert.equal(legacy.status,population?'unreadable':isPartial?'partial':tick<0||tick>=1024?'outside-range':'complete');
+    }
+    assert.equal(inspectTabWrittenNotesAt(snapshot,query('1.5')).status,'invalid-query');counters.invalidQuery++;
+    assert.equal(JSON.stringify(source),before);counters.randomSources++;
+}
+
+// Optional ledger compatibility and exact, not approximately rounded, choices.
+const partial=observeTabWrittenTime(doc([p('k',[n('known')]),p('b',[absent('b')],fraction(1,2))]),1);
+const {coverageFacts:_omitted,...oldData}=partial.data;
+assert.equal(inspectTabWrittenNotesAt({sourceDocument:partial.sourceDocument,data:oldData},query(0)).status,'partial');
+const exact=observeTabWrittenTime(doc([p('k',[n('known')]),p('a',[absent('a')],fraction(1,1024)),p('b',[absent('b')],fraction(2,1024))]),1);
+assert.deepEqual(getTabWrittenInspectionPoints(exact),[query(0),query(1,1024),query(1,512),query(1)]);
+assert.equal(inspectTabWrittenNotesAt(exact,query(0)).status,'complete');
+assert.equal(inspectTabWrittenNotesAt(exact,query(1,1024)).status,'partial');
+assert.equal(exact.data.intervals.length,1);
+
+const bench=[];
+for(const pattern of ['complete','one-future-missing','half-future-missing'] as const){
+    const moments=Array.from({length:1024},(_,i)=>p(`p${i}`,Array.from({length:6},(_,string)=>{
+        const x:Record<string,unknown>=n(`n${i}-${string}`,fraction(1),string);
+        if((pattern==='one-future-missing'&&i===1023&&string===5)||(pattern==='half-future-missing'&&i>=512))delete x.duration;
+        return x;
+    }),fraction(i)));
+    const input=doc(moments);freeze(input);
+    const snapshots=[];const observeMs=[];
+    observeTabWrittenTime(input,1);
+    for(let i=0;i<5;i++){const at=performance.now();snapshots.push(observeTabWrittenTime(input,1));observeMs.push(performance.now()-at)}
+    const snapshot=snapshots.at(-1)!;const inspectMs=[],uncertainMs=[],pointMs=[];
+    for(let i=0;i<7;i++){
+        let at=performance.now();const good=inspectTabWrittenNotesAt(snapshot,query(0));inspectMs.push(performance.now()-at);assert.equal(good.status,'complete');
+        at=performance.now();const later=inspectTabWrittenNotesAt(snapshot,query(pattern==='half-future-missing'?512:1023));uncertainMs.push(performance.now()-at);
+        assert.equal(later.status,pattern==='complete'?'complete':'partial');
+        at=performance.now();getTabWrittenInspectionPoints(snapshot);pointMs.push(performance.now()-at);
+    }
+    const median=(a:number[])=>[...a].sort((x,y)=>x-y)[Math.floor(a.length/2)];
+    bench.push({pattern,notes:6144,projected:snapshot.data.intervals.length,coverageFacts:snapshot.data.coverageFacts?.length,observeSamplesMs:observeMs,observeMedianMs:median(observeMs),inspectAtZeroSamplesMs:inspectMs,inspectAtZeroMedianMs:median(inspectMs),inspectLaterSamplesMs:uncertainMs,inspectLaterMedianMs:median(uncertainMs),pointSamplesMs:pointMs,pointsMedianMs:median(pointMs),dataBytes:Buffer.byteLength(JSON.stringify(snapshot.data)),limits:'Host Node synthetic source/inspection cost; no browser or physical-mobile SLO claim; no product algorithm recommendation'});
+}
+assert.equal(hash(),beforeHash,'Runtime source changed during this execution; repeat against frozen final source');
+const output={scope:'Independent finite 1/1024-grid completion oracle, randomized source faults and max editing-size host costs. No interval inference or production arithmetic helpers in expected-value construction.',seed:'0x32decaf',sourceSha256:beforeHash,counters,faultCounts,queryStatuses:results,completionFixtures:completions,optionalLedgerFailClosed:true,exactEligiblePointBoundary:true,bench};
+writeFileSync(`${OUT}/core-results.json`,JSON.stringify(output,null,2));
+console.log(JSON.stringify({counters,queryStatuses:results,bench:bench.map(({pattern,observeMedianMs,inspectAtZeroMedianMs,inspectLaterMedianMs,pointsMedianMs})=>({pattern,observeMedianMs,inspectAtZeroMedianMs,inspectLaterMedianMs,pointsMedianMs}))}));

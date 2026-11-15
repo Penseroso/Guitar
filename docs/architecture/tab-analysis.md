@@ -378,3 +378,20 @@ and closing dispatch no score, selection or history action. Close/Escape returns
 focus to View after the shared guard allows the action.
 
 See [P3.1 UI contract and verification](../implementation/tab-written-time-ui.md).
+
+## P3.2 point-local written-note coverage
+
+`inspectTabWrittenNotesAt` can prove a point complete within a partial snapshot only
+when every nonprojected note is otherwise valid, has only a missing duration, and
+starts strictly after the query. The observer records these exclusion facts during
+its existing validation pass. All other unresolved entries block promotion, and an
+unreadable population never becomes complete. Overall `noteCoverage` and the legacy
+`getTabWrittenNotesAt` remain conservative and unchanged.
+
+The panel retains uncertain points in navigation, removes active-set emphasis there,
+and distinguishes proof at the current point from completeness of the whole bar.
+Added candidate times are exact eligible starts inside the known interval extent;
+the known extent itself is never a completeness proof or bar length. Snapshot
+lifetime, pending input, score editing and P2 are unchanged.
+
+See [P3.2 contract and verification](../implementation/tab-written-time-point-coverage.md).

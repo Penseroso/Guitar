@@ -113,15 +113,69 @@ describe('written-time view integration with the canonical TAB editor', () => {
         expect(readState()).toEqual(before);
     });
 
-    it('retains known intervals in a partial view and never offers a complete active-note query', async () => {
-        const user = userEvent.setup(); const initial = completeFixture();
+    it('keeps a partial snapshot global while inspecting locally proven and unresolved points without score writes', async () => {
+        const user = userEvent.setup(); let initial = completeFixture();
+        initial = setTabDuration(initial, initial.moments[0].id, 0, { numerator: 2, denominator: 1 });
         delete initial.moments[1].notes[0].duration;
         render(<Harness initial={initial}/>); const before = readState(); await user.click(view());
+        expect(within(panel()).getByText('Timing incomplete')).toBeTruthy();
         expect(within(panel()).getByText('1 of 2 notes timed')).toBeTruthy();
         expect(within(within(panel()).getByRole('list', { name: 'Written notes' })).getAllByRole('listitem')).toHaveLength(1);
-        expect(within(panel()).queryByRole('button', { name: 'Next written time point' })).toBeNull();
+        expect(within(panel()).getByText('Complete at this point')).toBeTruthy();
+        expect(within(panel()).getByText('1 written note at this point')).toBeTruthy();
+        await user.click(within(panel()).getByText('Details', { exact: true }));
+        expect(within(panel()).getByText('Proof · Later starts excluded')).toBeTruthy();
+        expect(within(panel()).getByText('Excluded notes · 1')).toBeTruthy();
+        await user.click(nextPoint());
+        expect(within(panel()).getByText('Current point · 1/1')).toBeTruthy();
+        expect(within(panel()).getByText('More timing needed at this point')).toBeTruthy();
+        expect(within(panel()).queryByText('Complete at this point')).toBeNull();
+        expect(within(panel()).queryByText(/written note[s]? at this point/)).toBeNull();
+        await user.click(nextPoint());
+        expect(within(panel()).getByText('Current point · 2/1')).toBeTruthy();
+        expect(within(panel()).getByText('More timing needed at this point')).toBeTruthy();
+        expect(within(panel()).queryByText('Outside observed range')).toBeNull();
         expect(within(panel()).queryByText(/written note[s]? at this point/)).toBeNull();
         expect(readState()).toEqual(before);
+        await user.click(close()); expect(document.activeElement).toBe(view());
+    });
+
+    it('keeps every point partial when a source onset is unknown', async () => {
+        const user = userEvent.setup(); const initial = completeFixture(); delete initial.moments[1].beatOffset;
+        render(<Harness initial={initial}/>); const before = readState(); await user.click(view());
+        expect(within(panel()).getByText('More timing needed at this point')).toBeTruthy();
+        await user.click(nextPoint());
+        expect(within(panel()).getByText('More timing needed at this point')).toBeTruthy();
+        expect(within(panel()).queryByText('Complete at this point')).toBeNull();
+        expect(within(panel()).queryByText(/written note[s]? at this point/)).toBeNull();
+        expect(readState()).toEqual(before);
+    });
+
+    it('guards partial-view inspection during IME input and requires a fresh view after editor/history changes', async () => {
+        const user = userEvent.setup(); let initial = completeFixture();
+        initial = setTabDuration(initial, initial.moments[0].id, 0, { numerator: 2, denominator: 1 });
+        delete initial.moments[1].notes[0].duration;
+        render(<Harness initial={initial}/>); const before = readState(); await user.click(view());
+        await user.click(edit());
+        fireEvent.compositionStart(start()); fireEvent.change(start(), { target: { value: '2' } });
+        await user.click(nextPoint()); await user.click(close());
+        expect(start().value).toBe('2');
+        expect(within(panel()).getByText('Complete at this point')).toBeTruthy();
+        expect(within(panel()).getByText('Point 1 of 3')).toBeTruthy();
+        expect(readState()).toEqual(before);
+        fireEvent.compositionEnd(start());
+        expect(within(panel()).getByText('Point 1 of 3')).toBeTruthy();
+        await user.click(screen.getByRole('button', { name: 'Cancel start input' }));
+        await user.click(nextPoint());
+        expect(within(panel()).getByText('More timing needed at this point')).toBeTruthy();
+        expect(readState()).toEqual(before);
+        await user.click(screen.getByRole('button', { name: 'Edit fixture note' }));
+        expect(screen.queryByRole('region', { name: 'Written time' })).toBeNull();
+        await user.click(screen.getByRole('button', { name: 'Undo fixture' }));
+        expect(screen.queryByRole('region', { name: 'Written time' })).toBeNull();
+        await user.click(view());
+        expect(within(panel()).getByText('Complete at this point')).toBeTruthy();
+        expect(within(panel()).getByText('Point 1 of 3')).toBeTruthy();
     });
 
     it('pages interval details without adding history or moving the score selection', async () => {

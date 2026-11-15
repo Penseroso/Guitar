@@ -1,0 +1,97 @@
+{
+  "baselineCommit": "72d7c0fdefaa346f8e540e1384732243731c9f22",
+  "branch": "feat/tab-timing-inspection",
+  "protectedSha256": {
+    "src/domain/tab/exact-time.ts": "03d85000b5e5e4942e46ecaf720517c03448f0f7ffdedf1e1309b84741ac129a",
+    "src/domain/tab/types.ts": "a9a9f3ffca87c555d5bc7f9c9b2044344ae867f173f1f0f9833c7e4847ce9977",
+    "src/domain/tab/analysis.ts": "ce5771ef4203ae247f6139ad690490c2d19e9d42d69c9d494641af6185bd811e",
+    "src/domain/tab/input-capabilities.ts": "2f8f8949234a605bae0506ccfa861054e85295769560ce5c4d56baf40e34325a",
+    "src/domain/tab/timing-inspection.ts": "254fcb82e8332ef3024915878f203397e81297a4b1c28b790557fc7e10423a69",
+    "src/features/tab-analysis/state.ts": "9039f9240fc3d137fd45ea7136e5babe5a56db1778f7cf6341cbdfa072b6452f",
+    "src/components/guitar/scale/tab-analysis/TabScoreView.tsx": "5fae657d122de7723af368f475da4cda6fbeab3e8eaf2b077c7929cc03624fd7",
+    "src/components/guitar/scale/tab-analysis/TabNotationEditor.tsx": "a79b10f7c4f25443e131c96da3cd87915014b73a860195f9ea3b02431f1d6b35",
+    "package.json": "be9c381ef703c1dec01e79bc887ddbcc21430278e7a39ba392d7078b4d3050c0",
+    "package-lock.json": "c0bf00d9a0f3100f5d5ee84504b7685e470c18f8a1e33ad0a7f34f71d863a478"
+  },
+  "scope": "P3.2 query-local onset exclusion for duration-only missing notes and read-only UI connection",
+  "buildId": "sb2qtTnIvX1KUp6CbtGrG",
+  "sourceSha256": {
+    "src/domain/tab/written-time.ts": "204f6b2dc542e1f67c69fa217450c291b315f954da32f526fbdb6f32e4b09e2c",
+    "src/domain/tab/written-time.coverage.test.ts": "37a20b84f0fa3905845a2786089b10986fb72bb8a574865c4b2a390da4370f4b",
+    "src/components/guitar/scale/tab-analysis/WrittenTimePanel.tsx": "441bf0af9efd5eaf961f5a57943889328266a41d71a01f46c5bbaf60b127814b",
+    "src/components/guitar/scale/tab-analysis/WrittenTimePanel.test.tsx": "76dba1bb598acab49e7086d98fb85ec59152ea93b6abe6aed2fa34ea79309e18",
+    "src/components/guitar/scale/tab-analysis/WrittenTimeIntegration.test.tsx": "e127065162b7da89410d45752c0dceb9d0421c49aab2d2388977e87ef4a7c633"
+  },
+  "legacyGetterSha256": "c9d964a00b228e02057000fd84c0d9a7998444ac574aba8438442969eeb4cee3",
+  "legacyGetterUnchanged": true,
+  "checks": {
+    "relatedSuite": {
+      "status": "pass",
+      "files": 24,
+      "tests": 627,
+      "newTests": 38,
+      "command": "npx vitest run src/domain/tab src/features/tab-analysis src/components/guitar/scale/tab-analysis src/components/guitar/ClientApp.tab-analysis.test.tsx --maxWorkers 2"
+    },
+    "scopedESLint": {
+      "status": "pass",
+      "warnings": 0,
+      "paths": [
+        "src/domain/tab/written-time.ts",
+        "src/domain/tab/written-time.coverage.test.ts",
+        "src/components/guitar/scale/tab-analysis/WrittenTimePanel.tsx",
+        "src/components/guitar/scale/tab-analysis/WrittenTimePanel.test.tsx",
+        "src/components/guitar/scale/tab-analysis/WrittenTimeIntegration.test.tsx"
+      ]
+    },
+    "typescript": {
+      "status": "pass",
+      "command": "npx tsc --noEmit"
+    },
+    "productionBuild": {
+      "status": "pass",
+      "command": "npm run build",
+      "warning": "Existing Tailwind MODULE_TYPELESS_PACKAGE_JSON warning"
+    },
+    "independentCore": {
+      "status": "pass",
+      "sources": 2000,
+      "exactQueries": 10000,
+      "invalidQueries": 2000,
+      "completionWorlds": 360,
+      "sourceMutation": 0,
+      "maximumNotes": 6144
+    },
+    "rootBrowserVisual": {
+      "status": "pass",
+      "widths": [
+        390,
+        768,
+        1335
+      ],
+      "pageAndConsoleErrors": 0
+    },
+    "independentNativeBrowser": {
+      "status": "pass",
+      "widths": [
+        390,
+        768,
+        1335
+      ],
+      "partialViewGroupsPerWidth": 6,
+      "nativeCDPIME": true,
+      "pointerModes": "390px touch emulation; 768/1335px mouse",
+      "pageAndConsoleErrors": 0,
+      "physicalDeviceOSIMEOrScreenReaderStudy": "not-measured"
+    },
+    "p2BrowserRegression": {
+      "status": "pass",
+      "widths": [
+        390,
+        768,
+        1335
+      ],
+      "productionBuildId": "sb2qtTnIvX1KUp6CbtGrG"
+    }
+  },
+  "acceptance": "GO for declared P3.2 point-local written-note scope and read-only UI"
+}

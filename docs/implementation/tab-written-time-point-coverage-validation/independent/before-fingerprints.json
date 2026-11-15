@@ -1,0 +1,22 @@
+{
+  "head": "72d7c0fdefaa346f8e540e1384732243731c9f22",
+  "branch": "feat/tab-timing-inspection",
+  "worktreeBefore": {
+    "src/domain/tab/written-time.ts": "a8193829a7f832e77c63fde5c47b3df88fdc002450861536ef2299f7c97e9ee8",
+    "src/domain/tab/exact-time.ts": "03d85000b5e5e4942e46ecaf720517c03448f0f7ffdedf1e1309b84741ac129a",
+    "src/components/guitar/scale/tab-analysis/TabScoreView.tsx": "5fae657d122de7723af368f475da4cda6fbeab3e8eaf2b077c7929cc03624fd7",
+    "src/components/guitar/scale/tab-analysis/WrittenTimePanel.tsx": "d014eb6e4047021b3a5b2bdb8d06e924bdd2e79efbaf80178f6cefacb9781efb",
+    "src/components/guitar/scale/tab-analysis/written-time-panel.module.css": "54540eb23a596f1f2b48f446e4d06ac93bf54bb4022f6166383c1ab89a75253e",
+    "package.json": "be9c381ef703c1dec01e79bc887ddbcc21430278e7a39ba392d7078b4d3050c0",
+    "package-lock.json": "c0bf00d9a0f3100f5d5ee84504b7685e470c18f8a1e33ad0a7f34f71d863a478"
+  },
+  "committedBefore": {
+    "src/domain/tab/written-time.ts": "a8193829a7f832e77c63fde5c47b3df88fdc002450861536ef2299f7c97e9ee8",
+    "src/domain/tab/exact-time.ts": "03d85000b5e5e4942e46ecaf720517c03448f0f7ffdedf1e1309b84741ac129a",
+    "src/components/guitar/scale/tab-analysis/TabScoreView.tsx": "5fae657d122de7723af368f475da4cda6fbeab3e8eaf2b077c7929cc03624fd7",
+    "src/components/guitar/scale/tab-analysis/WrittenTimePanel.tsx": "d014eb6e4047021b3a5b2bdb8d06e924bdd2e79efbaf80178f6cefacb9781efb",
+    "src/components/guitar/scale/tab-analysis/written-time-panel.module.css": "54540eb23a596f1f2b48f446e4d06ac93bf54bb4022f6166383c1ab89a75253e",
+    "package.json": "be9c381ef703c1dec01e79bc887ddbcc21430278e7a39ba392d7078b4d3050c0",
+    "package-lock.json": "c0bf00d9a0f3100f5d5ee84504b7685e470c18f8a1e33ad0a7f34f71d863a478"
+  }
+}

@@ -25,6 +25,17 @@ export interface TabWrittenMarkerFact {
     readonly noteIndex?: number;
     readonly value: TabWrittenJson;
 }
+export type TabWrittenMissingDurationFact = {
+    readonly momentIndex: number;
+    readonly noteIndex: number;
+    readonly kind: 'missing-duration';
+    readonly start: TabExactFraction;
+};
+export type TabWrittenCoverageFact = TabWrittenMissingDurationFact | {
+    readonly momentIndex: number;
+    readonly noteIndex: number;
+    readonly kind: 'unresolved';
+};
 export interface TabWrittenTimeData {
     readonly scope: {
         readonly measure: number | null;
@@ -41,6 +52,8 @@ export interface TabWrittenTimeData {
     };
     readonly markerFacts: readonly TabWrittenMarkerFact[];
     readonly intervals: readonly TabWrittenNoteInterval[];
+    /** Optional for compatibility with earlier snapshots; one fact per nonprojected owned note. */
+    readonly coverageFacts?: readonly TabWrittenCoverageFact[];
     readonly endpointDeltas: readonly { readonly time: TabExactFraction; readonly starts: readonly string[]; readonly ends: readonly string[] }[];
     /** Extent of known intervals only; never a bar length or a coverage proof. */
     readonly observedRange: { readonly start: TabExactFraction; readonly end: TabExactFraction } | null;
@@ -57,6 +70,14 @@ export type TabWrittenNotesQuery =
     | { readonly status: 'partial'; readonly reason: 'incomplete-owned-notes' }
     | { readonly status: 'outside-range'; readonly reason: 'no-observed-range' | 'outside-observed-range' }
     | { readonly status: 'complete'; readonly notes: readonly TabWrittenNoteInterval[] };
+export type TabWrittenNotesInspection = Exclude<TabWrittenNotesQuery, { readonly status: 'complete' }> | {
+    readonly status: 'complete';
+    readonly notes: readonly TabWrittenNoteInterval[];
+    readonly proof: {
+        readonly basis: 'whole-population' | 'onset-exclusion';
+        readonly excluded: readonly TabWrittenMissingDurationFact[];
+    };
+};
 
 type RecordValue = Record<string, unknown>;
 const record = (v: unknown): v is RecordValue => typeof v === 'object' && v !== null && !Array.isArray(v);
@@ -84,6 +105,7 @@ export function observeTabWrittenTime(document: unknown, measure: number): TabWr
     const sourceFacts: { document: Record<string, TabWrittenJson>; positions: { momentIndex: number; value: TabWrittenJson }[] } = { document: {}, positions: [] };
     const markerFacts: TabWrittenMarkerFact[] = [];
     const intervals: TabWrittenNoteInterval[] = [];
+    const coverageFacts: TabWrittenCoverageFact[] = [];
     const endpoints = new Map<string, { time: ExactTime; starts: string[]; ends: string[] }>();
     let unreadable = false, partial = false, ownedNoteCount = 0;
 
@@ -142,7 +164,7 @@ export function observeTabWrittenTime(document: unknown, measure: number): TabWr
         const data: TabWrittenTimeData = {
             scope: { measure: integer(measure, 1, 1024) ? measure : null, population: 'measure-owned-source-notes', coordinates: 'bar-relative-quarter-notes', interpretation: 'nominal-written-base-midi' },
             noteCoverage: unreadable ? 'unreadable' : partial ? 'partial' : 'complete', ownedNoteCount,
-            sourceFacts, markerFacts, intervals,
+            sourceFacts, markerFacts, intervals, coverageFacts,
             endpointDeltas: sorted.map(delta => ({ time: serializeExactTime(delta.time), starts: delta.starts, ends: delta.ends })),
             observedRange: sorted.length ? { start: serializeExactTime(sorted[0].time), end: serializeExactTime(sorted[sorted.length - 1].time) } : null,
             issues,
@@ -196,7 +218,10 @@ export function observeTabWrittenTime(document: unknown, measure: number): TabWr
         }
         for (const [noteIndex, note] of raw.notes.entries()) {
             const notePath = `${path}.notes.${noteIndex}`;
-            if (!record(note)) { partial = true; add('note', 'note-shape', notePath); continue; }
+            if (!record(note)) {
+                partial = true; add('note', 'note-shape', notePath);
+                coverageFacts.push({ momentIndex, noteIndex, kind: 'unresolved' }); continue;
+            }
             if (note.techniques !== undefined) keepMarker('techniques', note.techniques, momentIndex, noteIndex);
             let valid = validPosition;
             if (!identifier(note.id) || noteCounts.get(note.id) !== 1) {
@@ -206,8 +231,15 @@ export function observeTabWrittenTime(document: unknown, measure: number): TabWr
             if (!integer(note.midi, 0, 127)) { valid = false; add('note', 'note-midi', `${notePath}.midi`); }
             const start = fromTabFraction(raw.beatOffset, true), duration = fromTabFraction(note.duration, false);
             if (!start) { valid = false; add('note', raw.beatOffset === undefined ? 'missing-start' : 'start-value', `${path}.beatOffset`, raw.beatOffset === undefined ? 'missing' : 'invalid'); }
+            const onlyDurationCanBeMissing = valid && start !== null;
             if (!duration) { valid = false; add('note', note.duration === undefined ? 'missing-duration' : 'duration-value', `${notePath}.duration`, note.duration === undefined ? 'missing' : 'invalid'); }
-            if (!valid || !start || !duration) { partial = true; continue; }
+            if (!valid || !start || !duration) {
+                partial = true;
+                coverageFacts.push(onlyDurationCanBeMissing && note.duration === undefined && start
+                    ? { momentIndex, noteIndex, kind: 'missing-duration', start: serializeExactTime(start) }
+                    : { momentIndex, noteIndex, kind: 'unresolved' });
+                continue;
+            }
             const end = addExactTimes(start, duration);
             const interval: TabWrittenNoteInterval = {
                 momentId: raw.id as string, noteId: note.id as string, momentIndex, noteIndex,
@@ -232,4 +264,53 @@ export function getTabWrittenNotesAt(snapshot: TabWrittenTimeSnapshot, time: unk
     if (compareExactTimes(query, first) < 0 || compareExactTimes(query, last) >= 0) return { status: 'outside-range', reason: 'outside-observed-range' };
     const notes = data.intervals.filter(note => compareExactTimes(parseExactTime(note.start)!, query) <= 0 && compareExactTimes(query, parseExactTime(note.end)!) < 0);
     return Object.freeze({ status: 'complete', notes: Object.freeze(notes) });
+}
+
+/**
+ * Inspect one point without changing conservative legacy query semantics. A note
+ * with a known onset cannot contribute strictly before that onset, regardless of
+ * its missing positive length. No other missing/invalid fact earns this proof.
+ */
+export function inspectTabWrittenNotesAt(snapshot: TabWrittenTimeSnapshot, time: unknown): TabWrittenNotesInspection {
+    const query = parseExactTime(time);
+    if (!query) return { status: 'invalid-query', reason: 'invalid-time' };
+    const data = snapshot.data;
+    if (data.noteCoverage !== 'partial') {
+        const result = getTabWrittenNotesAt(snapshot, time);
+        return result.status === 'complete'
+            ? freezeData({ ...result, proof: { basis: 'whole-population' as const, excluded: [] } })
+            : result;
+    }
+    const facts = data.coverageFacts;
+    if (!Array.isArray(facts) || !facts.length || data.intervals.length + facts.length !== data.ownedNoteCount) {
+        return { status: 'partial', reason: 'incomplete-owned-notes' };
+    }
+    const excluded: TabWrittenMissingDurationFact[] = [];
+    for (const fact of facts) {
+        const start = fact.kind === 'missing-duration' ? parseExactTime(fact.start) : null;
+        if (!start || compareExactTimes(query, start) >= 0) return { status: 'partial', reason: 'incomplete-owned-notes' };
+        excluded.push({ momentIndex: fact.momentIndex, noteIndex: fact.noteIndex, kind: 'missing-duration', start: serializeExactTime(start) });
+    }
+    // Resolve every population uncertainty before considering the known extent.
+    if (!data.observedRange) return { status: 'outside-range', reason: 'no-observed-range' };
+    const first = parseExactTime(data.observedRange.start)!, last = parseExactTime(data.observedRange.end)!;
+    if (compareExactTimes(query, first) < 0 || compareExactTimes(query, last) >= 0) return { status: 'outside-range', reason: 'outside-observed-range' };
+    const notes = data.intervals.filter(note => compareExactTimes(parseExactTime(note.start)!, query) <= 0 && compareExactTimes(query, parseExactTime(note.end)!) < 0);
+    return freezeData({ status: 'complete', notes, proof: { basis: 'onset-exclusion', excluded } });
+}
+
+/** Finite inspection choices; unknown ends are never manufactured as endpoints. */
+export function getTabWrittenInspectionPoints(snapshot: TabWrittenTimeSnapshot): readonly TabExactFraction[] {
+    const data = snapshot.data;
+    if (data.noteCoverage === 'unreadable' || !data.observedRange) return Object.freeze([]);
+    const first = parseExactTime(data.observedRange.start)!, last = parseExactTime(data.observedRange.end)!;
+    const points = new Map<string, ExactTime>();
+    const add = (value: TabExactFraction) => {
+        const time = parseExactTime(value);
+        if (!time || compareExactTimes(time, first) < 0 || compareExactTimes(time, last) > 0) return;
+        points.set(`${time.numerator}/${time.denominator}`, time);
+    };
+    data.endpointDeltas.forEach(delta => add(delta.time));
+    data.coverageFacts?.forEach(fact => { if (fact.kind === 'missing-duration') add(fact.start); });
+    return freezeData([...points.values()].sort(compareExactTimes).map(serializeExactTime));
 }

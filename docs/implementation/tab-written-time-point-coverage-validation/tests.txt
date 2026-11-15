@@ -1,0 +1,8 @@
+
+ RUN  v4.1.2 /workspace/Guitar-p2
+
+
+ Test Files  24 passed (24)
+      Tests  627 passed (627)
+   Start at  16:36:49
+   Duration  25.21s (transform 1.83s, setup 0ms, import 4.48s, tests 34.69s, environment 6.88s)
