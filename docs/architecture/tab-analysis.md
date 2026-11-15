@@ -341,7 +341,7 @@ See [P2 implementation and verification](../implementation/tab-timing-inspection
 
 `observeTabWrittenTime` and `getTabWrittenNotesAt` provide opt-in, read-only domain
 observations of explicitly authored note intervals owned by one measure. The source
-document remains order-only; existing Analyze, UI, editing and P2 checks do not invoke
+document remains order-only; Analyze, editing and P2 checks do not invoke
 this core or change behavior. It introduces no global anchor, sounding realization,
 harmonic interpretation, external runtime, cache or worker.
 
@@ -359,3 +359,22 @@ half-open extent, and a gap is empty only relative to the declared written-note
 population. Existing report invalidation and input protection contracts are unchanged.
 
 See [P3 contract and implementation verification](../implementation/tab-written-time.md).
+
+## P3.1 written-time view
+
+`View written time` explicitly observes the active position's bar, independently of
+`Check timing`. The read-only panel draws known nominal intervals, eight per page.
+Only complete, nonempty note coverage offers exact endpoint queries; partial views
+show known intervals without a complete active-note set. Empty ownership says
+`No written notes`; an interior gap and the final outside-range endpoint remain
+distinct. Neither means performed silence. Approximate drawing geometry never feeds
+the exact query or edits source values.
+
+The panel shares P2's pending-input guard, including pointer-down before blur,
+keyboard activation and composition. A document or active-bar change immediately
+hides the snapshot and requires an explicit new view; Undo cannot resurrect it.
+Tonal-reference changes retain the same document and view. Opening, querying, paging
+and closing dispatch no score, selection or history action. Close/Escape returns
+focus to View after the shared guard allows the action.
+
+See [P3.1 UI contract and verification](../implementation/tab-written-time-ui.md).

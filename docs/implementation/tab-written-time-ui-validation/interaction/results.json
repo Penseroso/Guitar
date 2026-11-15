@@ -1,0 +1,716 @@
+{
+  "browser": "system Chromium; native CDP IME, no physical-device/OS-IME coverage claim",
+  "results": [
+    {
+      "width": 390,
+      "pointerMode": "touch",
+      "passed": [
+        "complete gap/final boundary, paging and point movement preserve score and selection",
+        "clean panel Escape closes and returns View focus",
+        "valid/invalid fret pointer, keyboard, panel Escape guards without commit/discard",
+        "fraction actual Shift+Tab and pointer panel actions preserve unapplied value",
+        "native CDP IME and composing Escape; no deferred View/page/point action",
+        "panel actions create no history edit; Undo invalidates and Redo never resurrects",
+        "unrelated key/scale context retains; retune/capo invalidates immediately",
+        "Enter/Tab edits, successful import and active-bar change invalidate; rejected import retains current snapshot"
+      ],
+      "nativeIMEEvents": [
+        {
+          "type": "compositionstart",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": "5",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "5"
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "5"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "key": null,
+          "composing": true,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Previous written notes page",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Previous written notes page",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Next written time point",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Next written time point",
+          "value": ""
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "key": null,
+          "composing": true,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "compositionend",
+          "trusted": false,
+          "key": null,
+          "composing": null,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Previous written notes page",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Previous written notes page",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Next written time point",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Next written time point",
+          "value": ""
+        }
+      ],
+      "errors": []
+    },
+    {
+      "width": 768,
+      "pointerMode": "mouse",
+      "passed": [
+        "complete gap/final boundary, paging and point movement preserve score and selection",
+        "clean panel Escape closes and returns View focus",
+        "valid/invalid fret pointer, keyboard, panel Escape guards without commit/discard",
+        "fraction actual Shift+Tab and pointer panel actions preserve unapplied value",
+        "native CDP IME and composing Escape; no deferred View/page/point action",
+        "panel actions create no history edit; Undo invalidates and Redo never resurrects",
+        "unrelated key/scale context retains; retune/capo invalidates immediately",
+        "Enter/Tab edits, successful import and active-bar change invalidate; rejected import retains current snapshot"
+      ],
+      "nativeIMEEvents": [
+        {
+          "type": "compositionstart",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": "5",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "5"
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "5"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "key": null,
+          "composing": true,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Previous written notes page",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Previous written notes page",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Next written time point",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Next written time point",
+          "value": ""
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "key": null,
+          "composing": true,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "compositionend",
+          "trusted": false,
+          "key": null,
+          "composing": null,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Previous written notes page",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Previous written notes page",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Next written time point",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Next written time point",
+          "value": ""
+        }
+      ],
+      "errors": []
+    },
+    {
+      "width": 1335,
+      "pointerMode": "mouse",
+      "passed": [
+        "complete gap/final boundary, paging and point movement preserve score and selection",
+        "clean panel Escape closes and returns View focus",
+        "valid/invalid fret pointer, keyboard, panel Escape guards without commit/discard",
+        "fraction actual Shift+Tab and pointer panel actions preserve unapplied value",
+        "native CDP IME and composing Escape; no deferred View/page/point action",
+        "panel actions create no history edit; Undo invalidates and Redo never resurrects",
+        "unrelated key/scale context retains; retune/capo invalidates immediately",
+        "Enter/Tab edits, successful import and active-bar change invalidate; rejected import retains current snapshot"
+      ],
+      "nativeIMEEvents": [
+        {
+          "type": "compositionstart",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": "5",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "5"
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "5"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "key": null,
+          "composing": true,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Previous written notes page",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Previous written notes page",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Next written time point",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Next written time point",
+          "value": ""
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "key": null,
+          "composing": true,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "compositionend",
+          "trusted": false,
+          "key": null,
+          "composing": null,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Previous written notes page",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Previous written notes page",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Next written time point",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Next written time point",
+          "value": ""
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

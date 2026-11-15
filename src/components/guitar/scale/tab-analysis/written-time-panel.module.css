@@ -1,0 +1,33 @@
+.panel { min-width: 0; margin: 8px 0 12px; padding: 8px 0; border-block: 1px solid var(--workspace-border); color: var(--workspace-muted); font-size: 12px; }
+.heading { display: flex; align-items: center; gap: 8px 16px; flex-wrap: wrap; }
+.title { flex: 1; min-width: 90px; }
+.title h3 { margin: 0; color: #f4f4f5; font-size: 13px; font-weight: 500; }
+.title p { margin: 2px 0 0; }
+.action { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; padding: 8px 4px; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; text-align: left; overflow-wrap: anywhere; }
+.action:hover { color: #fff; }
+.action:disabled { opacity: .45; cursor: default; }
+.action:focus-visible, .panel summary:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: 2px; }
+.panel summary { min-height: 44px; padding: 12px 4px; cursor: pointer; }
+.about { flex: 0 0 auto; }
+.about[open] { flex-basis: 100%; order: 1; }
+.about p, .hint { margin: 6px 0; line-height: 1.5; }
+.cursor, .paging { display: flex; align-items: center; justify-content: space-between; gap: 4px 12px; flex-wrap: wrap; }
+.cursor { margin-top: 4px; border-top: 1px solid var(--workspace-border); }
+.pointStatus { flex-basis: 100%; margin: 0 0 8px; }
+.axis { display: flex; justify-content: space-between; gap: 8px; padding: 8px 0 4px; font-variant-numeric: tabular-nums; }
+.notes, .exactNotes { list-style: none; margin: 0; padding: 0; }
+.notes li { padding: 8px 0 12px; border-top: 1px solid var(--workspace-border); }
+.noteLabel { display: flex; justify-content: space-between; gap: 8px; line-height: 1.5; }
+.notes li[data-active] .noteLabel { color: #f4f4f5; text-decoration: underline; text-underline-offset: 3px; }
+.activeDot { margin-left: 6px; font-size: 7px; vertical-align: middle; }
+.rail { position: relative; height: 16px; margin-top: 6px; background: linear-gradient(var(--workspace-border),var(--workspace-border)) left center / 100% 1px no-repeat; }
+.interval { position: absolute; top: 6px; height: 3px; min-width: 1px; background: #aaa; }
+.notes li[data-active] .interval { height: 4px; background: #f4f4f5; }
+.timeCursor { position: absolute; top: 0; width: 1px; height: 16px; background: #f4f4f5; }
+.paging { border-top: 1px solid var(--workspace-border); }
+.details { border-top: 1px solid var(--workspace-border); }
+.exactNotes li { padding: 8px 0; border-top: 1px solid var(--workspace-border); overflow-wrap: anywhere; }
+.exactNotes p { margin: 0 0 4px; }
+.exactNotes dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0; font-variant-numeric: tabular-nums; }
+.exactNotes dd { margin: 0; }
+.srOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }

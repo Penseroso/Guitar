@@ -1,0 +1,1378 @@
+{
+  "browser": "system Chromium, real authored inputs; not physical device or usability participant study",
+  "results": [
+    {
+      "width": 390,
+      "default": {
+        "viewport": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": null,
+        "score": {
+          "x": 12,
+          "y": 719.140625,
+          "width": 366,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n\u00b7\nB\n\u00b7\nG\n\u00b7\nD\n\u00b7\nA\n\u00b7\nE\n\u00b7\nPosition\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": []
+      },
+      "restOnly": {
+        "viewport": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 734.328125,
+          "width": 366,
+          "height": 62,
+          "text": "Bar 1\n\nNo written notes\n\nAbout written time\nClose",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 12,
+          "y": 808.328125,
+          "width": 366,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\nR\nB\n\u00b7\nG\n\u00b7\nD\n\u00b7\nA\n\u00b7\nE\n\u00b7\nPosition\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 198.4375,
+            "y": 743.328125,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 334,
+            "y": 743.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "complete": {
+        "viewport": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 734.328125,
+          "width": 366,
+          "height": 332.375,
+          "text": "Bar 1\n\nWritten timing\n\nAbout written time\nClose\nPrevious point\nPoint 1 of 4\nNext point\n\n1 written note at this point\n\n\u2248 0\nQuarter notes\n\u2248 3\nPosition 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nPosition 2 \u00b7 String 1\nA4\nDetails",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 12,
+          "y": 1078.703125,
+          "width": 366,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n5\n5\nB\n\u00b7\n\u00b7\nG\n\u00b7\n\u00b7\nD\n\u00b7\n\u00b7\nA\n\u00b7\n\u00b7\nE\n\u00b7\n\u00b7\nPosition\n+\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 198.4375,
+            "y": 743.328125,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 334,
+            "y": 743.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 12,
+            "y": 792.328125,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 315.0625,
+            "y": 792.328125,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 12,
+            "y": 1013.703125,
+            "width": 366,
+            "height": 44,
+            "text": "Details",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "gap": {
+        "viewport": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 734.328125,
+          "width": 366,
+          "height": 332.375,
+          "text": "Bar 1\n\nWritten timing\n\nAbout written time\nClose\nPrevious point\nPoint 2 of 4\nNext point\n\nNo written notes at this point\n\n\u2248 0\nQuarter notes\n\u2248 3\nPosition 1 \u00b7 String 1\nA4\nPosition 2 \u00b7 String 1\nA4\nDetails",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 12,
+          "y": 1078.703125,
+          "width": 366,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n5\n5\nB\n\u00b7\n\u00b7\nG\n\u00b7\n\u00b7\nD\n\u00b7\n\u00b7\nA\n\u00b7\n\u00b7\nE\n\u00b7\n\u00b7\nPosition\n+\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 198.4375,
+            "y": 743.328125,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 334,
+            "y": 743.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 12,
+            "y": 792.328125,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 315.0625,
+            "y": 792.328125,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 12,
+            "y": 1013.703125,
+            "width": 366,
+            "height": 44,
+            "text": "Details",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "partial": {
+        "viewport": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 734.328125,
+          "width": 366,
+          "height": 217.1875,
+          "text": "Bar 1\n\nTiming incomplete\n\nAbout written time\nClose\n\n1 of 2 notes timed\n\n\u2248 0\nQuarter notes\n\u2248 1\nPosition 1 \u00b7 String 1\nA4\nDetails",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 12,
+          "y": 963.515625,
+          "width": 366,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n5\n5\nB\n\u00b7\n\u00b7\nG\n\u00b7\n\u00b7\nD\n\u00b7\n\u00b7\nA\n\u00b7\n\u00b7\nE\n\u00b7\n\u00b7\nPosition\n+\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 198.4375,
+            "y": 743.328125,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 334,
+            "y": 743.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 12,
+            "y": 898.515625,
+            "width": 366,
+            "height": 44,
+            "text": "Details",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "dense": {
+        "viewport": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 734.328125,
+          "width": 366,
+          "height": 743.375,
+          "text": "Bar 1\n\nWritten timing\n\nAbout written time\nClose\nPrevious point\nPoint 1 of 10\nNext point\n\n1 written note at this point\n\n\u2248 0\nQuarter notes\n\u2248 9\nPosition 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nPosition 2 \u00b7 String 1\nA4\nPosition 3 \u00b7 String 1\nA4\nPosition 4 \u00b7 String 1\nA4\nPosition 5 \u00b7 String 1\nA4\nPosition 6 \u00b7 String 1\nA4\nPosition 7 \u00b7 String 1\nA4\nPosition 8 \u00b7 String 1\nA4\nPrevious\nPage 1 of 2\nNext\nDetails",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 12,
+          "y": 1489.703125,
+          "width": 366,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n5\n5\n5\n5\n5\n5\n5\n5\n5\nB\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\nG\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\nD\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\nA\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\nE\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\nPosition\n+\n+\n+\n+\n+\n+\n+\n+\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 198.4375,
+            "y": 743.328125,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 334,
+            "y": 743.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 12,
+            "y": 792.328125,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 315.0625,
+            "y": 792.328125,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 12,
+            "y": 1379.703125,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 334,
+            "y": 1379.703125,
+            "width": 44,
+            "height": 44,
+            "text": "Next",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 12,
+            "y": 1424.703125,
+            "width": 366,
+            "height": 44,
+            "text": "Details",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "aboutOpen": {
+        "viewport": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 734.328125,
+          "width": 366,
+          "height": 468.375,
+          "text": "Bar 1\n\nWritten timing\n\nAbout written time\n\nWritten notes owned by this bar only. Notes carried in from other bars and performed sound are outside this view. Rests, mutes, continuations and techniques are preserved, not realized. The drawing is approximate; Details keeps exact values.\n\nClose\nPrevious point\nPoint 1 of 4\nNext point\n\n1 written note at this point\n\n\u2248 0\nQuarter notes\n\u2248 3\nPosition 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nPosition 2 \u00b7 String 1\nA4\nDetails",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 12,
+          "y": 1214.703125,
+          "width": 366,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n5\n5\nB\n\u00b7\n\u00b7\nG\n\u00b7\n\u00b7\nD\n\u00b7\n\u00b7\nA\n\u00b7\n\u00b7\nE\n\u00b7\n\u00b7\nPosition\n+\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 12,
+            "y": 795.328125,
+            "width": 366,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 334,
+            "y": 743.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 12,
+            "y": 928.328125,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 315.0625,
+            "y": 928.328125,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 12,
+            "y": 1149.703125,
+            "width": 366,
+            "height": 44,
+            "text": "Details",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "detailsOpen": {
+        "viewport": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 734.328125,
+          "width": 366,
+          "height": 599.0625,
+          "text": "Bar 1\n\nWritten timing\n\nAbout written time\nClose\nPrevious point\nPoint 2 of 4\nNext point\n\nNo written notes at this point\n\n\u2248 0\nQuarter notes\n\u2248 3\nPosition 1 \u00b7 String 1\nA4\nPosition 2 \u00b7 String 1\nA4\nDetails\n\nExact quarter notes from this bar's start. Each interval keeps its own written length.\n\nCurrent point \u00b7 1/1\n\nPosition 1 \u00b7 String 1 \u00b7 A4\n\nStart\n0/1\nLength\n1/1\nLocal end\n1/1\n\nPosition 2 \u00b7 String 1 \u00b7 A4\n\nStart\n2/1\nLength\n1/1\nLocal end\n3/1",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 12,
+          "y": 1345.390625,
+          "width": 366,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n5\n5\nB\n\u00b7\n\u00b7\nG\n\u00b7\n\u00b7\nD\n\u00b7\n\u00b7\nA\n\u00b7\n\u00b7\nE\n\u00b7\n\u00b7\nPosition\n+\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 198.4375,
+            "y": 743.328125,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 334,
+            "y": 743.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 12,
+            "y": 792.328125,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 315.0625,
+            "y": 792.328125,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 12,
+            "y": 1013.703125,
+            "width": 366,
+            "height": 44,
+            "text": "Details",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "keyboardFocus": {
+        "focusVisible": true,
+        "outline": "solid"
+      },
+      "errors": [],
+      "passed": [
+        "quiet default",
+        "rest-only empty state",
+        "no-meter complete population",
+        "exact finite endpoint queries",
+        "gap without inferred rest",
+        "final endpoint outside range",
+        "partial no query",
+        "eight-row pagination",
+        "read-only source labels and Undo/Redo history",
+        "visible keyboard focus",
+        "44px controls",
+        "reduced motion",
+        "no page overflow"
+      ]
+    },
+    {
+      "width": 768,
+      "default": {
+        "viewport": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": null,
+        "score": {
+          "x": 32,
+          "y": 619.5625,
+          "width": 704,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n\u00b7\nB\n\u00b7\nG\n\u00b7\nD\n\u00b7\nA\n\u00b7\nE\n\u00b7\nPosition\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": []
+      },
+      "restOnly": {
+        "viewport": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 615.5625,
+          "width": 704,
+          "height": 62,
+          "text": "Bar 1\n\nNo written notes\n\nAbout written time\nClose",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 32,
+          "y": 689.5625,
+          "width": 704,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\nR\nB\n\u00b7\nG\n\u00b7\nD\n\u00b7\nA\n\u00b7\nE\n\u00b7\nPosition\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 556.4375,
+            "y": 624.5625,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 692,
+            "y": 624.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "complete": {
+        "viewport": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 615.5625,
+          "width": 704,
+          "height": 332.375,
+          "text": "Bar 1\n\nWritten timing\n\nAbout written time\nClose\nPrevious point\nPoint 1 of 4\nNext point\n\n1 written note at this point\n\n\u2248 0\nQuarter notes\n\u2248 3\nPosition 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nPosition 2 \u00b7 String 1\nA4\nDetails",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 32,
+          "y": 959.9375,
+          "width": 704,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n5\n5\nB\n\u00b7\n\u00b7\nG\n\u00b7\n\u00b7\nD\n\u00b7\n\u00b7\nA\n\u00b7\n\u00b7\nE\n\u00b7\n\u00b7\nPosition\n+\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 556.4375,
+            "y": 624.5625,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 692,
+            "y": 624.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 32,
+            "y": 673.5625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 673.0625,
+            "y": 673.5625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 32,
+            "y": 894.9375,
+            "width": 704,
+            "height": 44,
+            "text": "Details",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "gap": {
+        "viewport": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 615.5625,
+          "width": 704,
+          "height": 332.375,
+          "text": "Bar 1\n\nWritten timing\n\nAbout written time\nClose\nPrevious point\nPoint 2 of 4\nNext point\n\nNo written notes at this point\n\n\u2248 0\nQuarter notes\n\u2248 3\nPosition 1 \u00b7 String 1\nA4\nPosition 2 \u00b7 String 1\nA4\nDetails",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 32,
+          "y": 959.9375,
+          "width": 704,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n5\n5\nB\n\u00b7\n\u00b7\nG\n\u00b7\n\u00b7\nD\n\u00b7\n\u00b7\nA\n\u00b7\n\u00b7\nE\n\u00b7\n\u00b7\nPosition\n+\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 556.4375,
+            "y": 624.5625,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 692,
+            "y": 624.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 32,
+            "y": 673.5625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 673.0625,
+            "y": 673.5625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 32,
+            "y": 894.9375,
+            "width": 704,
+            "height": 44,
+            "text": "Details",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "partial": {
+        "viewport": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 615.5625,
+          "width": 704,
+          "height": 217.1875,
+          "text": "Bar 1\n\nTiming incomplete\n\nAbout written time\nClose\n\n1 of 2 notes timed\n\n\u2248 0\nQuarter notes\n\u2248 1\nPosition 1 \u00b7 String 1\nA4\nDetails",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 32,
+          "y": 844.75,
+          "width": 704,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n5\n5\nB\n\u00b7\n\u00b7\nG\n\u00b7\n\u00b7\nD\n\u00b7\n\u00b7\nA\n\u00b7\n\u00b7\nE\n\u00b7\n\u00b7\nPosition\n+\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 556.4375,
+            "y": 624.5625,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 692,
+            "y": 624.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 32,
+            "y": 779.75,
+            "width": 704,
+            "height": 44,
+            "text": "Details",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "dense": {
+        "viewport": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 615.5625,
+          "width": 704,
+          "height": 743.375,
+          "text": "Bar 1\n\nWritten timing\n\nAbout written time\nClose\nPrevious point\nPoint 1 of 10\nNext point\n\n1 written note at this point\n\n\u2248 0\nQuarter notes\n\u2248 9\nPosition 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nPosition 2 \u00b7 String 1\nA4\nPosition 3 \u00b7 String 1\nA4\nPosition 4 \u00b7 String 1\nA4\nPosition 5 \u00b7 String 1\nA4\nPosition 6 \u00b7 String 1\nA4\nPosition 7 \u00b7 String 1\nA4\nPosition 8 \u00b7 String 1\nA4\nPrevious\nPage 1 of 2\nNext\nDetails",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 32,
+          "y": 1370.9375,
+          "width": 704,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n5\n5\n5\n5\n5\n5\n5\n5\n5\nB\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\nG\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\nD\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\nA\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\nE\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\nPosition\n+\n+\n+\n+\n+\n+\n+\n+\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 556.4375,
+            "y": 624.5625,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 692,
+            "y": 624.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 32,
+            "y": 673.5625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 673.0625,
+            "y": 673.5625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 32,
+            "y": 1260.9375,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 692,
+            "y": 1260.9375,
+            "width": 44,
+            "height": 44,
+            "text": "Next",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 32,
+            "y": 1305.9375,
+            "width": 704,
+            "height": 44,
+            "text": "Details",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "aboutOpen": {
+        "viewport": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 615.5625,
+          "width": 704,
+          "height": 432.375,
+          "text": "Bar 1\n\nWritten timing\n\nAbout written time\n\nWritten notes owned by this bar only. Notes carried in from other bars and performed sound are outside this view. Rests, mutes, continuations and techniques are preserved, not realized. The drawing is approximate; Details keeps exact values.\n\nClose\nPrevious point\nPoint 1 of 4\nNext point\n\n1 written note at this point\n\n\u2248 0\nQuarter notes\n\u2248 3\nPosition 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nPosition 2 \u00b7 String 1\nA4\nDetails",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 32,
+          "y": 1059.9375,
+          "width": 704,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n5\n5\nB\n\u00b7\n\u00b7\nG\n\u00b7\n\u00b7\nD\n\u00b7\n\u00b7\nA\n\u00b7\n\u00b7\nE\n\u00b7\n\u00b7\nPosition\n+\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 32,
+            "y": 676.5625,
+            "width": 704,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 692,
+            "y": 624.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 32,
+            "y": 773.5625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 673.0625,
+            "y": 773.5625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 32,
+            "y": 994.9375,
+            "width": 704,
+            "height": 44,
+            "text": "Details",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "detailsOpen": {
+        "viewport": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 615.5625,
+          "width": 704,
+          "height": 581.0625,
+          "text": "Bar 1\n\nWritten timing\n\nAbout written time\nClose\nPrevious point\nPoint 2 of 4\nNext point\n\nNo written notes at this point\n\n\u2248 0\nQuarter notes\n\u2248 3\nPosition 1 \u00b7 String 1\nA4\nPosition 2 \u00b7 String 1\nA4\nDetails\n\nExact quarter notes from this bar's start. Each interval keeps its own written length.\n\nCurrent point \u00b7 1/1\n\nPosition 1 \u00b7 String 1 \u00b7 A4\n\nStart\n0/1\nLength\n1/1\nLocal end\n1/1\n\nPosition 2 \u00b7 String 1 \u00b7 A4\n\nStart\n2/1\nLength\n1/1\nLocal end\n3/1",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 32,
+          "y": 1208.625,
+          "width": 704,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n5\n5\nB\n\u00b7\n\u00b7\nG\n\u00b7\n\u00b7\nD\n\u00b7\n\u00b7\nA\n\u00b7\n\u00b7\nE\n\u00b7\n\u00b7\nPosition\n+\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 556.4375,
+            "y": 624.5625,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 692,
+            "y": 624.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 32,
+            "y": 673.5625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 673.0625,
+            "y": 673.5625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 32,
+            "y": 894.9375,
+            "width": 704,
+            "height": 44,
+            "text": "Details",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "keyboardFocus": {
+        "focusVisible": true,
+        "outline": "solid"
+      },
+      "errors": [],
+      "passed": [
+        "quiet default",
+        "rest-only empty state",
+        "no-meter complete population",
+        "exact finite endpoint queries",
+        "gap without inferred rest",
+        "final endpoint outside range",
+        "partial no query",
+        "eight-row pagination",
+        "read-only source labels and Undo/Redo history",
+        "visible keyboard focus",
+        "44px controls",
+        "reduced motion",
+        "no page overflow"
+      ]
+    },
+    {
+      "width": 1335,
+      "default": {
+        "viewport": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": null,
+        "score": {
+          "x": 91.5,
+          "y": 629.15625,
+          "width": 1151.984375,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n\u00b7\nB\n\u00b7\nG\n\u00b7\nD\n\u00b7\nA\n\u00b7\nE\n\u00b7\nPosition\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": []
+      },
+      "restOnly": {
+        "viewport": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 625.15625,
+          "width": 1151.984375,
+          "height": 62,
+          "text": "Bar 1\n\nNo written notes\n\nAbout written time\nClose",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 91.5,
+          "y": 699.15625,
+          "width": 1151.984375,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\nR\nB\n\u00b7\nG\n\u00b7\nD\n\u00b7\nA\n\u00b7\nE\n\u00b7\nPosition\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 1063.921875,
+            "y": 634.15625,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 1199.484375,
+            "y": 634.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "complete": {
+        "viewport": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 625.15625,
+          "width": 1151.984375,
+          "height": 332.375,
+          "text": "Bar 1\n\nWritten timing\n\nAbout written time\nClose\nPrevious point\nPoint 1 of 4\nNext point\n\n1 written note at this point\n\n\u2248 0\nQuarter notes\n\u2248 3\nPosition 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nPosition 2 \u00b7 String 1\nA4\nDetails",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 91.5,
+          "y": 969.53125,
+          "width": 1151.984375,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n5\n5\nB\n\u00b7\n\u00b7\nG\n\u00b7\n\u00b7\nD\n\u00b7\n\u00b7\nA\n\u00b7\n\u00b7\nE\n\u00b7\n\u00b7\nPosition\n+\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 1063.921875,
+            "y": 634.15625,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 1199.484375,
+            "y": 634.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 91.5,
+            "y": 683.15625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 1180.546875,
+            "y": 683.15625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 91.5,
+            "y": 904.53125,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "gap": {
+        "viewport": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 625.15625,
+          "width": 1151.984375,
+          "height": 332.375,
+          "text": "Bar 1\n\nWritten timing\n\nAbout written time\nClose\nPrevious point\nPoint 2 of 4\nNext point\n\nNo written notes at this point\n\n\u2248 0\nQuarter notes\n\u2248 3\nPosition 1 \u00b7 String 1\nA4\nPosition 2 \u00b7 String 1\nA4\nDetails",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 91.5,
+          "y": 969.53125,
+          "width": 1151.984375,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n5\n5\nB\n\u00b7\n\u00b7\nG\n\u00b7\n\u00b7\nD\n\u00b7\n\u00b7\nA\n\u00b7\n\u00b7\nE\n\u00b7\n\u00b7\nPosition\n+\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 1063.921875,
+            "y": 634.15625,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 1199.484375,
+            "y": 634.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 91.5,
+            "y": 683.15625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 1180.546875,
+            "y": 683.15625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 91.5,
+            "y": 904.53125,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "partial": {
+        "viewport": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 625.15625,
+          "width": 1151.984375,
+          "height": 217.1875,
+          "text": "Bar 1\n\nTiming incomplete\n\nAbout written time\nClose\n\n1 of 2 notes timed\n\n\u2248 0\nQuarter notes\n\u2248 1\nPosition 1 \u00b7 String 1\nA4\nDetails",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 91.5,
+          "y": 854.34375,
+          "width": 1151.984375,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n5\n5\nB\n\u00b7\n\u00b7\nG\n\u00b7\n\u00b7\nD\n\u00b7\n\u00b7\nA\n\u00b7\n\u00b7\nE\n\u00b7\n\u00b7\nPosition\n+\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 1063.921875,
+            "y": 634.15625,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 1199.484375,
+            "y": 634.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 91.5,
+            "y": 789.34375,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "dense": {
+        "viewport": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 625.15625,
+          "width": 1151.984375,
+          "height": 743.375,
+          "text": "Bar 1\n\nWritten timing\n\nAbout written time\nClose\nPrevious point\nPoint 1 of 10\nNext point\n\n1 written note at this point\n\n\u2248 0\nQuarter notes\n\u2248 9\nPosition 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nPosition 2 \u00b7 String 1\nA4\nPosition 3 \u00b7 String 1\nA4\nPosition 4 \u00b7 String 1\nA4\nPosition 5 \u00b7 String 1\nA4\nPosition 6 \u00b7 String 1\nA4\nPosition 7 \u00b7 String 1\nA4\nPosition 8 \u00b7 String 1\nA4\nPrevious\nPage 1 of 2\nNext\nDetails",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 91.5,
+          "y": 1380.53125,
+          "width": 1151.984375,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n5\n5\n5\n5\n5\n5\n5\n5\n5\nB\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\nG\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\nD\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\nA\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\nE\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\n\u00b7\nPosition\n+\n+\n+\n+\n+\n+\n+\n+\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 1063.921875,
+            "y": 634.15625,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 1199.484375,
+            "y": 634.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 91.5,
+            "y": 683.15625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 1180.546875,
+            "y": 683.15625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 91.5,
+            "y": 1270.53125,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 1199.484375,
+            "y": 1270.53125,
+            "width": 44,
+            "height": 44,
+            "text": "Next",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 91.5,
+            "y": 1315.53125,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "aboutOpen": {
+        "viewport": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 625.15625,
+          "width": 1151.984375,
+          "height": 432.375,
+          "text": "Bar 1\n\nWritten timing\n\nAbout written time\n\nWritten notes owned by this bar only. Notes carried in from other bars and performed sound are outside this view. Rests, mutes, continuations and techniques are preserved, not realized. The drawing is approximate; Details keeps exact values.\n\nClose\nPrevious point\nPoint 1 of 4\nNext point\n\n1 written note at this point\n\n\u2248 0\nQuarter notes\n\u2248 3\nPosition 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nPosition 2 \u00b7 String 1\nA4\nDetails",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 91.5,
+          "y": 1069.53125,
+          "width": 1151.984375,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n5\n5\nB\n\u00b7\n\u00b7\nG\n\u00b7\n\u00b7\nD\n\u00b7\n\u00b7\nA\n\u00b7\n\u00b7\nE\n\u00b7\n\u00b7\nPosition\n+\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 91.5,
+            "y": 686.15625,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 1199.484375,
+            "y": 634.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 91.5,
+            "y": 783.15625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 1180.546875,
+            "y": 783.15625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 91.5,
+            "y": 1004.53125,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "detailsOpen": {
+        "viewport": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 625.15625,
+          "width": 1151.984375,
+          "height": 581.0625,
+          "text": "Bar 1\n\nWritten timing\n\nAbout written time\nClose\nPrevious point\nPoint 2 of 4\nNext point\n\nNo written notes at this point\n\n\u2248 0\nQuarter notes\n\u2248 3\nPosition 1 \u00b7 String 1\nA4\nPosition 2 \u00b7 String 1\nA4\nDetails\n\nExact quarter notes from this bar's start. Each interval keeps its own written length.\n\nCurrent point \u00b7 1/1\n\nPosition 1 \u00b7 String 1 \u00b7 A4\n\nStart\n0/1\nLength\n1/1\nLocal end\n1/1\n\nPosition 2 \u00b7 String 1 \u00b7 A4\n\nStart\n2/1\nLength\n1/1\nLocal end\n3/1",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "score": {
+          "x": 91.5,
+          "y": 1218.21875,
+          "width": 1151.984375,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n5\n5\nB\n\u00b7\n\u00b7\nG\n\u00b7\n\u00b7\nD\n\u00b7\n\u00b7\nA\n\u00b7\n\u00b7\nE\n\u00b7\n\u00b7\nPosition\n+\n+",
+          "background": "rgb(10, 10, 10)"
+        },
+        "controls": [
+          {
+            "x": 1063.921875,
+            "y": 634.15625,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 1199.484375,
+            "y": 634.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 91.5,
+            "y": 683.15625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 1180.546875,
+            "y": 683.15625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "x": 91.5,
+            "y": 904.53125,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        ]
+      },
+      "keyboardFocus": {
+        "focusVisible": true,
+        "outline": "solid"
+      },
+      "errors": [],
+      "passed": [
+        "quiet default",
+        "rest-only empty state",
+        "no-meter complete population",
+        "exact finite endpoint queries",
+        "gap without inferred rest",
+        "final endpoint outside range",
+        "partial no query",
+        "eight-row pagination",
+        "read-only source labels and Undo/Redo history",
+        "visible keyboard focus",
+        "44px controls",
+        "reduced motion",
+        "no page overflow"
+      ]
+    }
+  ],
+  "sourceSha256": {
+    "src/components/guitar/scale/tab-analysis/WrittenTimePanel.tsx": "d014eb6e4047021b3a5b2bdb8d06e924bdd2e79efbaf80178f6cefacb9781efb",
+    "src/components/guitar/scale/tab-analysis/written-time-panel.module.css": "54540eb23a596f1f2b48f446e4d06ac93bf54bb4022f6166383c1ab89a75253e",
+    "src/components/guitar/scale/tab-analysis/TabScoreView.tsx": "5fae657d122de7723af368f475da4cda6fbeab3e8eaf2b077c7929cc03624fd7"
+  },
+  "verdict": "GO for declared tested UI/design scope",
+  "productSourceModifiedByReviewer": false,
+  "executionSource": "real visible ASCII import and existing notation controls; no dev-state injection"
+}

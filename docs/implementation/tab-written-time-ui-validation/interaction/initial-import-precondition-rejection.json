@@ -1,0 +1,15 @@
+{
+  "width": 390,
+  "completed": [
+    "complete gap/final boundary, paging and point movement preserve score and selection",
+    "clean panel Escape closes and returns View focus",
+    "valid/invalid fret pointer, keyboard, panel Escape guards without commit/discard",
+    "fraction actual Shift+Tab and pointer panel actions preserve unapplied value",
+    "native CDP IME and composing Escape; no deferred View/page/point action",
+    "panel actions create no history edit; Undo invalidates and Redo never resurrects",
+    "unrelated key/scale context retains; retune/capo invalidates immediately"
+  ],
+  "error": "Locator expected to have count '0'\nActual value: 1 \nCall log:\n  - Expect \"to_have_count\" with timeout 5000ms\n  - waiting for get_by_role(\"region\", name=\"Written time\", exact=True)\n    14 \u00d7 locator resolved to 1 element\n       - unexpected value \"1\"\n",
+  "traceback": "Traceback (most recent call last):\n  File \"/workspace/p3-ui-validation/interaction/browser.py\", line 151, in <module>\n    p.get_by_role('button',name='Import tab',exact=True).click();expect(panel(p)).to_have_count(0);expect(view(p)).to_have_attribute('aria-expanded','false')\n                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/playwright/sync_api/_generated.py\", line 22365, in to_have_count\n    self._sync(\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/playwright/_impl/_sync_base.py\", line 115, in _sync\n    return task.result()\n           ^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/playwright/_impl/_assertions.py\", line 465, in to_have_count\n    await self._expect_impl(\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/playwright/_impl/_assertions.py\", line 128, in _expect_impl\n    _record_soft_or_raise(\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/playwright/_impl/_assertions.py\", line 60, in _record_soft_or_raise\n    raise error\nAssertionError: Locator expected to have count '0'\nActual value: 1 \nCall log:\n  - Expect \"to_have_count\" with timeout 5000ms\n  - waiting for get_by_role(\"region\", name=\"Written time\", exact=True)\n    14 \u00d7 locator resolved to 1 element\n       - unexpected value \"1\"\n\n",
+  "errors": []
+}

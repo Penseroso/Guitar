@@ -17,7 +17,9 @@ The returned snapshot keeps `sourceDocument` only as a caller association. Its f
 deltas, their finite extent, issues and `noteCoverage`. Querying reads only this copied
 data, never the current source object. Object identity is not a global version or a
 freshness guarantee against in-place mutation. Existing immutable reducer and P2
-history/report invalidation contracts remain unchanged; no cache or UI is added.
+history/report invalidation contracts remain unchanged; the core adds no cache or UI.
+The subsequent [P3.1 UI connection](tab-written-time-ui.md) consumes this contract
+without changing the domain implementation.
 
 - P3 independently checks the declared population, note/position identity, string,
   effective MIDI, explicit start and per-note length. Known duplicates affecting an
@@ -95,7 +97,7 @@ Probe sources are retained as `.ts.txt` reference data so they are not app compi
 inputs. Runnable originals and the exact command are documented in the report.
 
 Optional music21 comparison is **not-run** for this implementation: it is not a
-completion gate. No UI, external runtime or new product dependency is introduced.
+completion gate. This core phase introduced no UI, external runtime or new product dependency.
 Research reference success is not counted as production core correctness.
 
 ```ts

@@ -8,6 +8,8 @@ import type { TabAnalysisAction } from '@/features/tab-analysis/state';
 import { TabMeasureEditor, TabNotationEditor, type TabNotationDraftState } from './TabNotationEditor';
 import { inspectTabTiming, type TabTimingInspection, type TabTimingTarget } from '@/domain/tab/timing-inspection';
 import { TimingInspectionPanel } from './TimingInspectionPanel';
+import { observeTabWrittenTime, type TabWrittenTimeSnapshot } from '@/domain/tab/written-time';
+import { WrittenTimePanel } from './WrittenTimePanel';
 import timingStyles from './timing-inspection.module.css';
 import { getKeyName } from '@/domain/shared/keys';
 import styles from './tab-score-editor.module.css';
@@ -68,12 +70,16 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     const [timingOpen, setTimingOpen] = useState(false);
     const [timingStale, setTimingStale] = useState(false);
     const [timingNotice, setTimingNotice] = useState<string | null>(null);
+    const [writtenReport, setWrittenReport] = useState<{ snapshot: TabWrittenTimeSnapshot; serial: number } | null>(null);
+    const [writtenStale, setWrittenStale] = useState<'score' | 'bar' | null>(null);
     const reportNotationDraft = useCallback((state: TabNotationDraftState) => {
         notationDraft.current = state;
         if (!state.dirty && !state.composing) setTimingNotice(null);
     }, []);
     const timingSerial = useRef(0);
     const checkButton = useRef<HTMLButtonElement>(null);
+    const writtenButton = useRef<HTMLButtonElement>(null);
+    const writtenSerial = useRef(0);
     const timingReturn = useRef<{ document: TabDocument; origin: HTMLButtonElement } | null>(null);
     const meterEditor = useRef<HTMLDivElement>(null);
     const positionEditor = useRef<HTMLDivElement>(null);
@@ -97,6 +103,8 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     const current = useMemo(() => activeCell && document.moments.some(moment => moment.id === activeCell.momentId)
         && activeCell.string >= 0 && activeCell.string < 6 ? activeCell
         : document.moments[0] ? { momentId: document.moments[0].id, string: 0 } : null, [activeCell, document]);
+    const writtenMeasure = document.moments.find(moment => moment.id === current?.momentId)?.measure ?? document.moments[0]?.measure ?? 1;
+    const writtenCurrent = writtenReport?.snapshot.sourceDocument === document && writtenReport.snapshot.data.scope.measure === writtenMeasure;
     const lower = Math.min(selection.start, selection.end), upper = Math.max(selection.start, selection.end);
     const insertionStop = document.moments.some(moment => moment.id === insertionCursor) ? insertionCursor : current?.momentId;
     const notesById = new Map(document.moments.flatMap(moment => moment.notes.map(note => [note.id, note] as const)));
@@ -107,6 +115,11 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
             setTimingReport(null); setTimingOpen(false); setTimingStale(true); setTimingNotice(null); timingReturn.current = null;
         }
     }, [document, timingReport]);
+    useLayoutEffect(() => {
+        if (!writtenReport || writtenCurrent) return;
+        setWrittenStale(writtenReport.snapshot.sourceDocument !== document ? 'score' : 'bar');
+        setWrittenReport(null);
+    }, [document, writtenCurrent, writtenReport]);
     const timingBlocked = () => {
         const edit = draftRef.current;
         const original = edit && document.moments.find(moment => moment.id === edit.cell.momentId);
@@ -500,6 +513,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                 if ((event.key === 'Enter' || event.key === ' ') && !guardTiming()) { event.preventDefault(); event.stopPropagation(); }
             }}
             onClickCapture={event => { if (!guardTiming()) { event.preventDefault(); event.stopPropagation(); } }}>
+            <div className={timingStyles.toolbar}>
             <button type="button" ref={checkButton} className={timingStyles.action} aria-expanded={timingOpen && timingReport?.document === document}
                 onClick={() => {
                     if (!guardTiming()) return;
@@ -507,8 +521,24 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                     setTimingReport({ document, result: inspectTabTiming(document), serial: ++timingSerial.current });
                     setTimingOpen(true); setTimingStale(false); setTimingNotice(null); timingReturn.current = null;
                 }}>Check timing</button>
+            <button type="button" ref={writtenButton} className={timingStyles.action} aria-expanded={writtenCurrent}
+                onClick={() => {
+                    if (!guardTiming()) return;
+                    setPositionPopup(null); setMeterBar(null);
+                    // The shared guard permits closing only an unchanged fret draft.
+                    if (draftRef.current) setDraft(null);
+                    setWrittenReport({ snapshot: observeTabWrittenTime(document, writtenMeasure), serial: ++writtenSerial.current });
+                    setWrittenStale(null); setTimingNotice(null);
+                }}>View written time</button>
+            </div>
             {timingNotice && <p role="status">{timingNotice}</p>}
             {timingStale && <p role="status">Score changed · Check again</p>}
+            {writtenStale && <p role="status">{writtenStale === 'score' ? 'Score changed · View again' : 'Bar changed · View again'}</p>}
+            {writtenCurrent && writtenReport && <WrittenTimePanel key={writtenReport.serial} snapshot={writtenReport.snapshot}
+                onAction={guardTiming} onClose={() => {
+                    if (!guardTiming()) return;
+                    setWrittenReport(null); setWrittenStale(null); writtenButton.current?.focus();
+                }} />}
             {timingOpen && timingReport?.document === document && <TimingInspectionPanel key={timingReport.serial}
                 document={document} report={timingReport.result} onNavigate={navigateTiming}
                 onClose={() => { setTimingOpen(false); timingReturn.current = null; checkButton.current?.focus(); }} />}
