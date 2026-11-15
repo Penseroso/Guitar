@@ -1,0 +1,26 @@
+{
+  "fuzz-inputs.ts.txt": {
+    "bytes": 3008,
+    "sha256": "dd17259c3f0afbca91075a0c8f44a098d94b45e726ea41e50aa1b8ce0b5e0a5c"
+  },
+  "oracle.ts.txt": {
+    "bytes": 1371,
+    "sha256": "5db196d6e7fb94c5645262576ee245e27d060d5bfd074d64466bc21237deb7f9"
+  },
+  "report.md": {
+    "bytes": 6897,
+    "sha256": "74516bacfbd94a04a9aed55eb0ed52faf073020f5b7a92d51e31b9044e348807"
+  },
+  "results.json": {
+    "bytes": 11925,
+    "sha256": "34e464e3f7c4e3524b388ac27026e23b25f7b75500dd06c9bc35781131ff7d09"
+  },
+  "validate.ts.txt": {
+    "bytes": 12019,
+    "sha256": "5a0ff281502d661c8e274bd578c64fd52e3f119d2dd713bae442fee8c681d9f1"
+  },
+  "verification.json": {
+    "bytes": 1934,
+    "sha256": "d7ade255fa9fe424253db1dc78c13bcff11c3f7d79257e9e40624bd7513e03ac"
+  }
+}

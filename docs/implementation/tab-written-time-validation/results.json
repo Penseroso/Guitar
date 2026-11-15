@@ -1,0 +1,531 @@
+{
+  "scope": "standalone validation against read-only product APIs; no music21; ordinary finite JSON only",
+  "fuzz": {
+    "cases": 50000,
+    "exceptions": 0,
+    "mutations": 0,
+    "nonJsonOutputs": 0,
+    "firstFailures": [],
+    "elapsedMs": 1942.069767
+  },
+  "oracle": {
+    "randomScores": 1000,
+    "finiteQueries": 33036,
+    "mismatches": 0
+  },
+  "manual": [
+    {
+      "id": "current-valid-narrow-overlap",
+      "checks": [
+        {
+          "at": "-834/1001",
+          "status": "outside-range",
+          "expectedNoteIds": []
+        },
+        {
+          "at": "167/1001",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n0:0"
+          ],
+          "actualNoteIds": [
+            "n0:0"
+          ]
+        },
+        {
+          "at": "940941/2016014",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n0:0"
+          ],
+          "actualNoteIds": [
+            "n0:0"
+          ]
+        },
+        {
+          "at": "772/1007",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n0:0",
+            "n1:0"
+          ],
+          "actualNoteIds": [
+            "n0:0",
+            "n1:0"
+          ]
+        },
+        {
+          "at": "1548635089/2020046028",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n0:0",
+            "n1:0"
+          ],
+          "actualNoteIds": [
+            "n0:0",
+            "n1:0"
+          ]
+        },
+        {
+          "at": "768935/1003002",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n1:0"
+          ],
+          "actualNoteIds": [
+            "n1:0"
+          ]
+        },
+        {
+          "at": "3602281685/4040092056",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n1:0"
+          ],
+          "actualNoteIds": [
+            "n1:0"
+          ]
+        },
+        {
+          "at": "4095/4028",
+          "status": "outside-range",
+          "expectedNoteIds": []
+        }
+      ],
+      "intervalCount": 2,
+      "endpointReferences": 4
+    },
+    {
+      "id": "close-exact-local-ends",
+      "checks": [
+        {
+          "at": "-500/501",
+          "status": "outside-range",
+          "expectedNoteIds": []
+        },
+        {
+          "at": "1/501",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n0:0"
+          ],
+          "actualNoteIds": [
+            "n0:0"
+          ]
+        },
+        {
+          "at": "1001/501000",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n0:0"
+          ],
+          "actualNoteIds": [
+            "n0:0"
+          ]
+        },
+        {
+          "at": "1/500",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n0:0",
+            "n1:0"
+          ],
+          "actualNoteIds": [
+            "n0:0",
+            "n1:0"
+          ]
+        },
+        {
+          "at": "1253/501500",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n0:0",
+            "n1:0"
+          ],
+          "actualNoteIds": [
+            "n0:0",
+            "n1:0"
+          ]
+        },
+        {
+          "at": "1503/501500",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n0:0"
+          ],
+          "actualNoteIds": [
+            "n0:0"
+          ]
+        },
+        {
+          "at": "501499999/167333499000",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n0:0"
+          ],
+          "actualNoteIds": [
+            "n0:0"
+          ]
+        },
+        {
+          "at": "500/166833",
+          "status": "outside-range",
+          "expectedNoteIds": []
+        }
+      ],
+      "intervalCount": 2,
+      "endpointReferences": 4
+    },
+    {
+      "id": "source-order-unisons-simultaneous-end-start-repeat",
+      "checks": [
+        {
+          "at": "-1/1",
+          "status": "outside-range",
+          "expectedNoteIds": []
+        },
+        {
+          "at": "0/1",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n1:0"
+          ],
+          "actualNoteIds": [
+            "n1:0"
+          ]
+        },
+        {
+          "at": "1/4",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n1:0"
+          ],
+          "actualNoteIds": [
+            "n1:0"
+          ]
+        },
+        {
+          "at": "1/2",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n0:0",
+            "n0:1",
+            "n0:2"
+          ],
+          "actualNoteIds": [
+            "n0:0",
+            "n0:1",
+            "n0:2"
+          ]
+        },
+        {
+          "at": "2/3",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n0:0",
+            "n0:1",
+            "n0:2"
+          ],
+          "actualNoteIds": [
+            "n0:0",
+            "n0:1",
+            "n0:2"
+          ]
+        },
+        {
+          "at": "5/6",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n0:0",
+            "n0:1"
+          ],
+          "actualNoteIds": [
+            "n0:0",
+            "n0:1"
+          ]
+        },
+        {
+          "at": "11/12",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n0:0",
+            "n0:1"
+          ],
+          "actualNoteIds": [
+            "n0:0",
+            "n0:1"
+          ]
+        },
+        {
+          "at": "1/1",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n0:1",
+            "n2:0"
+          ],
+          "actualNoteIds": [
+            "n0:1",
+            "n2:0"
+          ]
+        },
+        {
+          "at": "5/4",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n0:1",
+            "n2:0"
+          ],
+          "actualNoteIds": [
+            "n0:1",
+            "n2:0"
+          ]
+        },
+        {
+          "at": "3/2",
+          "status": "outside-range",
+          "expectedNoteIds": []
+        }
+      ],
+      "intervalCount": 5,
+      "endpointReferences": 10
+    },
+    {
+      "id": "interior-unknown-gap-is-complete-empty-owned-population",
+      "checks": [
+        {
+          "at": "-1/1",
+          "status": "outside-range",
+          "expectedNoteIds": []
+        },
+        {
+          "at": "0/1",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n0:0"
+          ],
+          "actualNoteIds": [
+            "n0:0"
+          ]
+        },
+        {
+          "at": "1/2",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n0:0"
+          ],
+          "actualNoteIds": [
+            "n0:0"
+          ]
+        },
+        {
+          "at": "1/1",
+          "status": "complete",
+          "expectedNoteIds": [],
+          "actualNoteIds": []
+        },
+        {
+          "at": "3/2",
+          "status": "complete",
+          "expectedNoteIds": [],
+          "actualNoteIds": []
+        },
+        {
+          "at": "2/1",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n1:0"
+          ],
+          "actualNoteIds": [
+            "n1:0"
+          ]
+        },
+        {
+          "at": "5/2",
+          "status": "complete",
+          "expectedNoteIds": [
+            "n1:0"
+          ],
+          "actualNoteIds": [
+            "n1:0"
+          ]
+        },
+        {
+          "at": "3/1",
+          "status": "outside-range",
+          "expectedNoteIds": []
+        }
+      ],
+      "intervalCount": 2,
+      "endpointReferences": 4
+    },
+    {
+      "id": "partial-does-not-publish-known-note-subset",
+      "coverage": "partial",
+      "query": {
+        "status": "partial",
+        "reason": "incomplete-owned-notes"
+      }
+    },
+    {
+      "id": "unknown-source-ownership-prevents-complete-population",
+      "coverage": "unreadable",
+      "query": {
+        "status": "unreadable",
+        "reason": "unreadable-population"
+      }
+    },
+    {
+      "id": "non-note-marker-shape-is-metadata-not-note-coverage",
+      "coverage": "complete",
+      "issues": [
+        {
+          "kind": "invalid",
+          "scope": "metadata",
+          "code": "marker-shape",
+          "path": "moments.0.rest"
+        },
+        {
+          "kind": "invalid",
+          "scope": "metadata",
+          "code": "marker-duration",
+          "path": "moments.0.sustains.0.duration"
+        },
+        {
+          "kind": "invalid",
+          "scope": "metadata",
+          "code": "marker-reference",
+          "path": "moments.0.sustains.0.noteId"
+        }
+      ]
+    }
+  ],
+  "benchmarks": [
+    {
+      "positions": 128,
+      "notes": 768,
+      "pattern": "one bar; all notes duration1, starts i/1024; dense growing overlap",
+      "samples": 7,
+      "buildMs": [
+        6.9928359999998975,
+        9.612631999999849,
+        7.239172999999937,
+        6.84031799999957,
+        6.847189000000071,
+        6.492960999999923,
+        6.91031299999986
+      ],
+      "buildMedianMs": 6.91031299999986,
+      "queryWithOraclePerPointMs": [
+        0.2754364285714083,
+        0.2680869999999881,
+        0.9186397142856809,
+        0.8847591428571572,
+        0.26551157142856546,
+        0.3548075714285395,
+        0.2679508571428154
+      ],
+      "queryWithOraclePerPointMedianMs": 0.2754364285714083,
+      "heapDeltaBytes": [
+        1754240,
+        1753608,
+        9001000,
+        8952000,
+        8927656,
+        8949648,
+        8925528
+      ],
+      "heapDeltaMedianBytes": 8927656,
+      "jsonBytes": [
+        315001,
+        315001,
+        315001,
+        315001,
+        315001,
+        315001,
+        315001
+      ],
+      "endpointReferences": [
+        1536,
+        1536,
+        1536,
+        1536,
+        1536,
+        1536,
+        1536
+      ],
+      "noStoredActiveSetPerEndpoint": true
+    },
+    {
+      "positions": 1024,
+      "notes": 6144,
+      "pattern": "one bar; all notes duration1, starts i/1024; dense growing overlap",
+      "samples": 7,
+      "buildMs": [
+        103.74191599999995,
+        52.4154910000002,
+        145.50830900000028,
+        112.28757700000006,
+        52.58831700000019,
+        49.17885400000023,
+        50.91214900000023
+      ],
+      "buildMedianMs": 52.58831700000019,
+      "queryWithOraclePerPointMs": [
+        3.665586714285707,
+        2.7778817142857406,
+        3.473504571428618,
+        3.33685799999999,
+        3.4847012857142414,
+        3.2986224285714343,
+        3.1566575714285654
+      ],
+      "queryWithOraclePerPointMedianMs": 3.33685799999999,
+      "heapDeltaBytes": [
+        11858104,
+        12564808,
+        12044376,
+        67042000,
+        67067904,
+        66044608,
+        66153408
+      ],
+      "heapDeltaMedianBytes": 66044608,
+      "jsonBytes": [
+        2554960,
+        2554960,
+        2554960,
+        2554960,
+        2554960,
+        2554960,
+        2554960
+      ],
+      "endpointReferences": [
+        12288,
+        12288,
+        12288,
+        12288,
+        12288,
+        12288,
+        12288
+      ],
+      "noStoredActiveSetPerEndpoint": true
+    }
+  ],
+  "storage": {
+    "noteScale": 8,
+    "jsonByteScale": 8.110958377909911,
+    "endpointReferenceScale": 8,
+    "scope": "structural refs2N and actual serialized-size growth; not a heap-growth proof on arbitrary source metadata"
+  },
+  "sourceHashes": {
+    "written-time.ts": "a8193829a7f832e77c63fde5c47b3df88fdc002450861536ef2299f7c97e9ee8",
+    "exact-time.ts": "03d85000b5e5e4942e46ecaf720517c03448f0f7ffdedf1e1309b84741ac129a"
+  },
+  "limits": [
+    "finite ordinary JSON only; no proxies/accessors/cycles",
+    "typed query snapshot is a real opaque observer result, not arbitrary forged snapshot",
+    "benchmarks host Node with optional explicitGC; no UI/device/SLO claim",
+    "query timing includes independent oracle and assertions",
+    "maximum-case full output does not store active ID sets per endpoint"
+  ]
+}

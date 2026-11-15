@@ -1,0 +1,36 @@
+/** Ordinary finite JSON-like inputs only; no cycles, accessors or Proxies. */
+let state=0x41f5ca;
+const next=()=>{state^=state<<13;state^=state>>>17;state^=state<<5;return(state>>>0)/0x100000000;};
+const pick=<T>(a:T[])=>a[Math.floor(next()*a.length)];
+const scalars:unknown[]=[null,false,true,0,1,-1,1.5,1024,1025,1e308,'','x','1/2'];
+const fractions:unknown[]=[{numerator:0,denominator:1},{numerator:1,denominator:2},{numerator:1,denominator:0},{numerator:1025,denominator:1},{numerator:'1',denominator:1},{numerator:1,denominator:1.5}, {}, [], ...scalars];
+const unknownValue=()=>pick(fractions);
+export function malformed():unknown{
+    if(next()<.10)return unknownValue();
+    const moments=Array.from({length:Math.floor(next()*7)},(_,i)=>{
+        if(next()<.14)return unknownValue();
+        const notes=Array.from({length:Math.floor(next()*7)},(_,j)=>{
+            if(next()<.15)return unknownValue();
+            return {id:pick(['n0','n1','n2','',null]),string:pick([0,1,5,6,-1,null,'1']),fret:pick([0,5,36,37,-1,null]),midi:pick([60,64,127,128,-1,null,'60']),pitchClass:pick([0,4,11,12,null]),source:null,
+                ...(next()<.65?{duration:unknownValue()}:{}),
+                ...(next()<.35?{techniques:next()<.3?unknownValue():[{kind:pick(['hammer-on','pull-off','slide','bend','release','vibrato',null,{}]),toNoteId:pick(['n0','n1','none',null,{}]),targetFret:pick([0,5,37,null])}]}:{})};
+        });
+        return {id:pick(['p0','p1','p2','',null]),index:pick([i,-1,0,null]),measure:pick([1,2,0,-1,1.5,1025,null]),column:pick([i,0,-1,null]),
+            notes:next()<.15?unknownValue():notes,
+            ...(next()<.65?{beatOffset:unknownValue()}:{}),
+            ...(next()<.25?{rest:unknownValue()}:{}),
+            ...(next()<.25?{mutes:next()<.3?unknownValue():[{string:pick([0,1,5,6,-1,null,'1'])}]}:{}),
+            ...(next()<.35?{sustains:next()<.3?unknownValue():[{noteId:pick(['n0','n1','absent',null,{}]),duration:unknownValue()}]}:{})};
+    });
+    return {format:pick(['authored','ascii',null]),timing:pick(['order-only',null]),source:'',tuningMidi:[64,59,55,50,45,40],capo:pick([0,12,-1,null]),measureCount:pick([1,2,0,-1,1.5,1025,null]),moments:next()<.1?unknownValue():moments,...(next()<.5?{meter:unknownValue()}:{})};
+}
+export function queryUnknown():unknown{
+    return pick([null,{},[],{measure:1,offset:{numerator:'1',denominator:'2'}},{measure:0,offset:{numerator:'0',denominator:'1'}},{measure:1,offset:{numerator:1,denominator:0}},...fractions]);
+}
+export function freeze(value:unknown):void{if(value&&typeof value==='object'){Object.values(value).forEach(freeze);Object.freeze(value);}}
+export function verifyJson(value:unknown,path='result'):void{
+    if(typeof value==='bigint')throw new Error(path+' leaked bigint');
+    if(typeof value==='number'&&!Number.isFinite(value))throw new Error(path+' leaked nonfinite number');
+    if(value&&typeof value==='object')for(const[k,v]of Object.entries(value))verifyJson(v,path+'.'+k);
+    JSON.stringify(value);
+}

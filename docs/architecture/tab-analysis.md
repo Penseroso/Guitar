@@ -336,3 +336,26 @@ fret Enter/Tab/Escape semantics remain; Set start commits fractions and Cancel s
 input restores their committed value. No new action auto-saves a draft.
 
 See [P2 implementation and verification](../implementation/tab-timing-inspection.md).
+
+## P3 measure-owned written-time core
+
+`observeTabWrittenTime` and `getTabWrittenNotesAt` provide opt-in, read-only domain
+observations of explicitly authored note intervals owned by one measure. The source
+document remains order-only; existing Analyze, UI, editing and P2 checks do not invoke
+this core or change behavior. It introduces no global anchor, sounding realization,
+harmonic interpretation, external runtime, cache or worker.
+
+The population and coordinate frame are explicit: source note occurrences in the
+selected measure, in bar-relative quarter-note units. Written durations are not clipped
+at barlines or merged with continuations. Notes keep their IDs, string and already
+computed MIDI; non-note markers remain source facts. Exact BigInt rationals are
+serialized as integer-string fractions in separately copied JSON-safe snapshot data.
+
+Coverage is independently validated, never derived from P2 timingInput or issue totals.
+A confidently empty note population can be complete with no observed range; querying
+it is outside-range, not proof of silence. Partial observations retain known intervals
+but never return a complete note set. Complete queries apply only inside their finite
+half-open extent, and a gap is empty only relative to the declared written-note
+population. Existing report invalidation and input protection contracts are unchanged.
+
+See [P3 contract and implementation verification](../implementation/tab-written-time.md).
