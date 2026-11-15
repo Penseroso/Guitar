@@ -1,0 +1,3013 @@
+{
+  "baseline": "/workspace/Guitar-p2 current revalidated P2, not earlier unmerged explicit-timeline module",
+  "caseCount": 22,
+  "mutations": 0,
+  "cases": [
+    {
+      "name": "free-order-only",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 0,
+                "fret": 0,
+                "source": null
+              }
+            ]
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "midi": 67,
+                "pitchClass": 7,
+                "string": 0,
+                "fret": 3,
+                "source": null
+              }
+            ]
+          }
+        ]
+      },
+      "inspection": {
+        "timingInput": "none",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          4,
+          7
+        ],
+        "noteIDs": [
+          "a",
+          "b"
+        ],
+        "midis": [
+          64,
+          67
+        ],
+        "strings": [
+          0,
+          0
+        ],
+        "kind": "passage",
+        "candidates": [],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "single-note",
+            "noteIDs": [
+              "a"
+            ],
+            "candidates": []
+          },
+          {
+            "id": "p1",
+            "kind": "single-note",
+            "noteIDs": [
+              "b"
+            ],
+            "candidates": []
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "Order and authored MIDI observations only. No timing support is implied by a clean notation check."
+    },
+    {
+      "name": "no-meter-local-onset-length",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 0,
+                "fret": 0,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "midi": 67,
+                "pitchClass": 7,
+                "string": 0,
+                "fret": 3,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [
+          {
+            "code": "missing-meter",
+            "message": "Time signature is not supplied.",
+            "kind": "missing"
+          }
+        ],
+        "summary": {
+          "missing": 1,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          4,
+          7
+        ],
+        "noteIDs": [
+          "a",
+          "b"
+        ],
+        "midis": [
+          64,
+          67
+        ],
+        "strings": [
+          0,
+          0
+        ],
+        "kind": "passage",
+        "candidates": [],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "single-note",
+            "noteIDs": [
+              "a"
+            ],
+            "candidates": []
+          },
+          {
+            "id": "p1",
+            "kind": "single-note",
+            "noteIDs": [
+              "b"
+            ],
+            "candidates": []
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "Bar-local relative starts/lengths are authored; document-global bar placement lacks a bar-length contract. Missing meter is completeness, not invalidity."
+    },
+    {
+      "name": "duration-only-no-start",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 0,
+                "fret": 0,
+                "source": null,
+                "duration": {
+                  "numerator": 2,
+                  "denominator": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "midi": 67,
+                "pitchClass": 7,
+                "string": 0,
+                "fret": 3,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [
+          {
+            "code": "missing-start",
+            "message": "Start position is not supplied.",
+            "target": {
+              "momentId": "p0"
+            },
+            "kind": "missing"
+          },
+          {
+            "code": "missing-start",
+            "message": "Start position is not supplied.",
+            "target": {
+              "momentId": "p1"
+            },
+            "kind": "missing"
+          },
+          {
+            "code": "missing-meter",
+            "message": "Time signature is not supplied.",
+            "kind": "missing"
+          }
+        ],
+        "summary": {
+          "missing": 3,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          4,
+          7
+        ],
+        "noteIDs": [
+          "a",
+          "b"
+        ],
+        "midis": [
+          64,
+          67
+        ],
+        "strings": [
+          0,
+          0
+        ],
+        "kind": "passage",
+        "candidates": [],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "single-note",
+            "noteIDs": [
+              "a"
+            ],
+            "candidates": []
+          },
+          {
+            "id": "p1",
+            "kind": "single-note",
+            "noteIDs": [
+              "b"
+            ],
+            "candidates": []
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "Lengths alone cannot place attacks."
+    },
+    {
+      "name": "meter-only",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 0,
+                "fret": 0,
+                "source": null
+              }
+            ]
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "midi": 67,
+                "pitchClass": 7,
+                "string": 0,
+                "fret": 3,
+                "source": null
+              }
+            ]
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [
+          {
+            "code": "missing-start",
+            "message": "Start position is not supplied.",
+            "target": {
+              "momentId": "p0"
+            },
+            "kind": "missing"
+          },
+          {
+            "code": "missing-duration",
+            "message": "Duration is not supplied.",
+            "target": {
+              "momentId": "p0",
+              "noteId": "a",
+              "string": 0
+            },
+            "kind": "missing"
+          },
+          {
+            "code": "missing-start",
+            "message": "Start position is not supplied.",
+            "target": {
+              "momentId": "p1"
+            },
+            "kind": "missing"
+          },
+          {
+            "code": "missing-duration",
+            "message": "Duration is not supplied.",
+            "target": {
+              "momentId": "p1",
+              "noteId": "b",
+              "string": 0
+            },
+            "kind": "missing"
+          }
+        ],
+        "summary": {
+          "missing": 4,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          4,
+          7
+        ],
+        "noteIDs": [
+          "a",
+          "b"
+        ],
+        "midis": [
+          64,
+          67
+        ],
+        "strings": [
+          0,
+          0
+        ],
+        "kind": "passage",
+        "candidates": [],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "single-note",
+            "noteIDs": [
+              "a"
+            ],
+            "candidates": []
+          },
+          {
+            "id": "p1",
+            "kind": "single-note",
+            "noteIDs": [
+              "b"
+            ],
+            "candidates": []
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "Meter does not supply any note onset or duration."
+    },
+    {
+      "name": "mixed-known-and-unknown",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 0,
+                "fret": 0,
+                "source": null,
+                "duration": {
+                  "numerator": 2,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "midi": 67,
+                "pitchClass": 7,
+                "string": 0,
+                "fret": 3,
+                "source": null
+              }
+            ]
+          }
+        ]
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [
+          {
+            "code": "missing-start",
+            "message": "Start position is not supplied.",
+            "target": {
+              "momentId": "p1"
+            },
+            "kind": "missing"
+          },
+          {
+            "code": "missing-duration",
+            "message": "Duration is not supplied.",
+            "target": {
+              "momentId": "p1",
+              "noteId": "b",
+              "string": 0
+            },
+            "kind": "missing"
+          },
+          {
+            "code": "missing-meter",
+            "message": "Time signature is not supplied.",
+            "kind": "missing"
+          }
+        ],
+        "summary": {
+          "missing": 3,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          4,
+          7
+        ],
+        "noteIDs": [
+          "a",
+          "b"
+        ],
+        "midis": [
+          64,
+          67
+        ],
+        "strings": [
+          0,
+          0
+        ],
+        "kind": "passage",
+        "candidates": [],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "single-note",
+            "noteIDs": [
+              "a"
+            ],
+            "candidates": []
+          },
+          {
+            "id": "p1",
+            "kind": "single-note",
+            "noteIDs": [
+              "b"
+            ],
+            "candidates": []
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "Incomplete later input must not erase the already-authored local observation, nor become automatic silence."
+    },
+    {
+      "name": "cross-bar-written-length",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 2,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 0,
+                "fret": 0,
+                "source": null,
+                "duration": {
+                  "numerator": 2,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 3,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 2,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "midi": 67,
+                "pitchClass": 7,
+                "string": 0,
+                "fret": 3,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          4,
+          7
+        ],
+        "noteIDs": [
+          "a",
+          "b"
+        ],
+        "midis": [
+          64,
+          67
+        ],
+        "strings": [
+          0,
+          0
+        ],
+        "kind": "passage",
+        "candidates": [],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "single-note",
+            "noteIDs": [
+              "a"
+            ],
+            "candidates": []
+          },
+          {
+            "id": "p1",
+            "kind": "single-note",
+            "noteIDs": [
+              "b"
+            ],
+            "candidates": []
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "P2 accepts authored duration crossing a barline; it does not decide how a sounding event is clipped, tied or globally positioned."
+    },
+    {
+      "name": "same-onset-independent-note-lengths",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "c",
+                "midi": 60,
+                "pitchClass": 0,
+                "string": 5,
+                "fret": 20,
+                "source": null,
+                "duration": {
+                  "numerator": 2,
+                  "denominator": 1
+                }
+              },
+              {
+                "id": "e",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 3,
+                "fret": 14,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              },
+              {
+                "id": "g",
+                "midi": 67,
+                "pitchClass": 7,
+                "string": 2,
+                "fret": 12,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 2
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          0,
+          4,
+          7
+        ],
+        "noteIDs": [
+          "c",
+          "e",
+          "g"
+        ],
+        "midis": [
+          60,
+          64,
+          67
+        ],
+        "strings": [
+          5,
+          3,
+          2
+        ],
+        "kind": "aligned-chord",
+        "candidates": [
+          {
+            "key": "0:major",
+            "match": "exact"
+          },
+          {
+            "key": "0:power-5",
+            "match": "added-tone"
+          },
+          {
+            "key": "4:minor",
+            "match": "added-tone"
+          },
+          {
+            "key": "7:sus4",
+            "match": "added-tone"
+          }
+        ],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "chord",
+            "noteIDs": [
+              "c",
+              "e",
+              "g"
+            ],
+            "candidates": [
+              "0:major",
+              "0:power-5",
+              "4:minor",
+              "7:sus4"
+            ]
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [
+          {
+            "start": 0,
+            "end": 0,
+            "measure": 1,
+            "basis": "simultaneous",
+            "candidates": [
+              {
+                "key": "0:major",
+                "chord": {
+                  "root": "C",
+                  "chordId": "major"
+                },
+                "name": "C",
+                "omitted": [],
+                "added": [],
+                "match": "exact"
+              },
+              {
+                "key": "0:power-5",
+                "chord": {
+                  "root": "C",
+                  "chordId": "power-5"
+                },
+                "name": "C5",
+                "omitted": [],
+                "added": [
+                  4
+                ],
+                "match": "added-tone"
+              },
+              {
+                "key": "4:minor",
+                "chord": {
+                  "root": "E",
+                  "chordId": "minor"
+                },
+                "name": "Em",
+                "omitted": [
+                  "5"
+                ],
+                "added": [
+                  0
+                ],
+                "match": "added-tone"
+              },
+              {
+                "key": "7:sus4",
+                "chord": {
+                  "root": "G",
+                  "chordId": "sus4"
+                },
+                "name": "Gsus4",
+                "omitted": [
+                  "5"
+                ],
+                "added": [
+                  4
+                ],
+                "match": "added-tone"
+              }
+            ]
+          }
+        ],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "Each note retains a distinct length; a Moment-level scalar duration would lose authored facts."
+    },
+    {
+      "name": "repeated-pitch-is-two-attacks",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 0,
+                "fret": 0,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 0,
+                "fret": 0,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          4
+        ],
+        "noteIDs": [
+          "a",
+          "b"
+        ],
+        "midis": [
+          64,
+          64
+        ],
+        "strings": [
+          0,
+          0
+        ],
+        "kind": "passage",
+        "candidates": [],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "single-note",
+            "noteIDs": [
+              "a"
+            ],
+            "candidates": []
+          },
+          {
+            "id": "p1",
+            "kind": "single-note",
+            "noteIDs": [
+              "b"
+            ],
+            "candidates": []
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "Equal MIDI is not an explicit continuation."
+    },
+    {
+      "name": "different-string-unison-identity",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 0,
+                "fret": 0,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              },
+              {
+                "id": "b",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 1,
+                "fret": 5,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          4
+        ],
+        "noteIDs": [
+          "a",
+          "b"
+        ],
+        "midis": [
+          64,
+          64
+        ],
+        "strings": [
+          0,
+          1
+        ],
+        "kind": "dyad",
+        "candidates": [],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "dyad",
+            "noteIDs": [
+              "a",
+              "b"
+            ],
+            "candidates": []
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "Two note/string identities survive; PC deduplication is only the recognition view."
+    },
+    {
+      "name": "authored-continuation-has-no-new-attack",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 0,
+                "fret": 0,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 1
+            },
+            "sustains": [
+              {
+                "noteId": "a",
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ]
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          4
+        ],
+        "noteIDs": [
+          "a"
+        ],
+        "midis": [
+          64
+        ],
+        "strings": [
+          0
+        ],
+        "kind": "passage",
+        "candidates": [],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "single-note",
+            "noteIDs": [
+              "a"
+            ],
+            "candidates": []
+          },
+          {
+            "id": "p1",
+            "kind": "empty",
+            "noteIDs": [],
+            "candidates": []
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "Current analyzer returns one pitch observation and labels the continuation position empty. Temporal adjacency/merge is not resolved."
+    },
+    {
+      "name": "explicit-rest-vs-unknown-gap",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 0,
+                "fret": 0,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 1
+            },
+            "rest": {
+              "duration": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            }
+          },
+          {
+            "id": "p2",
+            "index": 2,
+            "measure": 1,
+            "column": 3,
+            "notes": [
+              {
+                "id": "b",
+                "midi": 67,
+                "pitchClass": 7,
+                "string": 0,
+                "fret": 3,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 3,
+              "denominator": 1
+            }
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          4,
+          7
+        ],
+        "noteIDs": [
+          "a",
+          "b"
+        ],
+        "midis": [
+          64,
+          67
+        ],
+        "strings": [
+          0,
+          0
+        ],
+        "kind": "passage",
+        "candidates": [],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "single-note",
+            "noteIDs": [
+              "a"
+            ],
+            "candidates": []
+          },
+          {
+            "id": "p1",
+            "kind": "empty",
+            "noteIDs": [],
+            "candidates": []
+          },
+          {
+            "id": "p2",
+            "kind": "single-note",
+            "noteIDs": [
+              "b"
+            ],
+            "candidates": []
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "Rest declaration is known; the unnotated interval between rest end and next attack is not thereby an authored rest."
+    },
+    {
+      "name": "blank-is-not-rest",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 0,
+                "fret": 0,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p2",
+            "index": 2,
+            "measure": 1,
+            "column": 3,
+            "notes": [
+              {
+                "id": "b",
+                "midi": 67,
+                "pitchClass": 7,
+                "string": 0,
+                "fret": 3,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 3,
+              "denominator": 1
+            }
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          4,
+          7
+        ],
+        "noteIDs": [
+          "a",
+          "b"
+        ],
+        "midis": [
+          64,
+          67
+        ],
+        "strings": [
+          0,
+          0
+        ],
+        "kind": "passage",
+        "candidates": [],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "single-note",
+            "noteIDs": [
+              "a"
+            ],
+            "candidates": []
+          },
+          {
+            "id": "p1",
+            "kind": "empty",
+            "noteIDs": [],
+            "candidates": []
+          },
+          {
+            "id": "p2",
+            "kind": "single-note",
+            "noteIDs": [
+              "b"
+            ],
+            "candidates": []
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "A timed empty placeholder has no rest/duration; P2 does not create one."
+    },
+    {
+      "name": "bend-trajectory-not-authored",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "midi": 69,
+                "pitchClass": 9,
+                "string": 0,
+                "fret": 5,
+                "source": null,
+                "duration": {
+                  "numerator": 2,
+                  "denominator": 1
+                },
+                "techniques": [
+                  {
+                    "kind": "bend",
+                    "targetFret": 7,
+                    "notation": "5b7"
+                  },
+                  {
+                    "kind": "release",
+                    "targetFret": 5,
+                    "notation": "r5"
+                  }
+                ]
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          9
+        ],
+        "noteIDs": [
+          "a"
+        ],
+        "midis": [
+          69
+        ],
+        "strings": [
+          0
+        ],
+        "kind": "single-note",
+        "candidates": [],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "single-note",
+            "noteIDs": [
+              "a"
+            ],
+            "candidates": []
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "Base MIDI and fret-equivalent target are facts; attack times/curve/target dwell and perceived harmonic role are not supplied."
+    },
+    {
+      "name": "hammer-endpoints-not-playback-policy",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "midi": 69,
+                "pitchClass": 9,
+                "string": 0,
+                "fret": 5,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                },
+                "techniques": [
+                  {
+                    "kind": "hammer-on",
+                    "toNoteId": "b"
+                  }
+                ]
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "midi": 71,
+                "pitchClass": 11,
+                "string": 0,
+                "fret": 7,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          9,
+          11
+        ],
+        "noteIDs": [
+          "a",
+          "b"
+        ],
+        "midis": [
+          69,
+          71
+        ],
+        "strings": [
+          0,
+          0
+        ],
+        "kind": "passage",
+        "candidates": [],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "single-note",
+            "noteIDs": [
+              "a"
+            ],
+            "candidates": []
+          },
+          {
+            "id": "p1",
+            "kind": "single-note",
+            "noteIDs": [
+              "b"
+            ],
+            "candidates": []
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "Both note-event endpoints are authored; current analysis ignores articulation/performance realization. A note onset is not proof of a separately picked attack."
+    },
+    {
+      "name": "arpeggio-collection-not-sounding-verticality",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "c",
+                "midi": 60,
+                "pitchClass": 0,
+                "string": 5,
+                "fret": 20,
+                "source": null,
+                "duration": {
+                  "numerator": 3,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "e",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 3,
+                "fret": 14,
+                "source": null,
+                "duration": {
+                  "numerator": 2,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p2",
+            "index": 2,
+            "measure": 1,
+            "column": 3,
+            "notes": [
+              {
+                "id": "g",
+                "midi": 67,
+                "pitchClass": 7,
+                "string": 2,
+                "fret": 12,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 2,
+              "denominator": 1
+            }
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          0,
+          4,
+          7
+        ],
+        "noteIDs": [
+          "c",
+          "e",
+          "g"
+        ],
+        "midis": [
+          60,
+          64,
+          67
+        ],
+        "strings": [
+          5,
+          3,
+          2
+        ],
+        "kind": "passage",
+        "candidates": [],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "single-note",
+            "noteIDs": [
+              "c"
+            ],
+            "candidates": []
+          },
+          {
+            "id": "p1",
+            "kind": "single-note",
+            "noteIDs": [
+              "e"
+            ],
+            "candidates": []
+          },
+          {
+            "id": "p2",
+            "kind": "single-note",
+            "noteIDs": [
+              "g"
+            ],
+            "candidates": []
+          }
+        ],
+        "arpeggios": [
+          {
+            "start": 0,
+            "end": 2,
+            "candidates": [
+              {
+                "key": "0:major",
+                "chord": {
+                  "root": "C",
+                  "chordId": "major"
+                },
+                "name": "C",
+                "omitted": [],
+                "added": [],
+                "match": "exact"
+              }
+            ],
+            "provenance": "pitch-collection"
+          }
+        ],
+        "harmonicSpans": [
+          {
+            "start": 0,
+            "end": 2,
+            "measure": 1,
+            "basis": "whole-bar-collection",
+            "candidates": [
+              {
+                "key": "0:major",
+                "chord": {
+                  "root": "C",
+                  "chordId": "major"
+                },
+                "name": "C",
+                "omitted": [],
+                "added": [],
+                "match": "exact"
+              }
+            ]
+          }
+        ],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "Current whole-bar collection and arpeggio are order-based hypotheses; new verticality observation cannot silently relabel these as harmonic segmentation."
+    },
+    {
+      "name": "C6-Am7-ambiguity-retained",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "c",
+                "midi": 60,
+                "pitchClass": 0,
+                "string": 5,
+                "fret": 20,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              },
+              {
+                "id": "e",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 3,
+                "fret": 14,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              },
+              {
+                "id": "g",
+                "midi": 67,
+                "pitchClass": 7,
+                "string": 2,
+                "fret": 12,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              },
+              {
+                "id": "a",
+                "midi": 69,
+                "pitchClass": 9,
+                "string": 0,
+                "fret": 5,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          0,
+          4,
+          7,
+          9
+        ],
+        "noteIDs": [
+          "c",
+          "e",
+          "g",
+          "a"
+        ],
+        "midis": [
+          60,
+          64,
+          67,
+          69
+        ],
+        "strings": [
+          5,
+          3,
+          2,
+          0
+        ],
+        "kind": "aligned-chord",
+        "candidates": [
+          {
+            "key": "0:major-6",
+            "match": "exact"
+          },
+          {
+            "key": "9:minor-7",
+            "match": "exact"
+          },
+          {
+            "key": "0:major",
+            "match": "added-tone"
+          },
+          {
+            "key": "9:minor",
+            "match": "added-tone"
+          }
+        ],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "chord",
+            "noteIDs": [
+              "c",
+              "e",
+              "g",
+              "a"
+            ],
+            "candidates": [
+              "0:major-6",
+              "9:minor-7",
+              "0:major",
+              "9:minor"
+            ]
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [
+          {
+            "start": 0,
+            "end": 0,
+            "measure": 1,
+            "basis": "simultaneous",
+            "candidates": [
+              {
+                "key": "0:major-6",
+                "chord": {
+                  "root": "C",
+                  "chordId": "major-6"
+                },
+                "name": "C6",
+                "omitted": [],
+                "added": [],
+                "match": "exact"
+              },
+              {
+                "key": "9:minor-7",
+                "chord": {
+                  "root": "A",
+                  "chordId": "minor-7"
+                },
+                "name": "Am7",
+                "omitted": [],
+                "added": [],
+                "match": "exact"
+              },
+              {
+                "key": "0:major",
+                "chord": {
+                  "root": "C",
+                  "chordId": "major"
+                },
+                "name": "C",
+                "omitted": [],
+                "added": [
+                  9
+                ],
+                "match": "added-tone"
+              },
+              {
+                "key": "9:minor",
+                "chord": {
+                  "root": "A",
+                  "chordId": "minor"
+                },
+                "name": "Am",
+                "omitted": [],
+                "added": [
+                  7
+                ],
+                "match": "added-tone"
+              }
+            ]
+          }
+        ],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "Exact C6/Am7 readings remain alternatives, not an inferred tonic or best chord."
+    },
+    {
+      "name": "midi-already-includes-tuning-and-capo",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          38
+        ],
+        "capo": 2,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "midi": 66,
+                "pitchClass": 6,
+                "string": 0,
+                "fret": 0,
+                "source": null
+              }
+            ]
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "midi": 69,
+                "pitchClass": 9,
+                "string": 0,
+                "fret": 3,
+                "source": null
+              }
+            ]
+          }
+        ]
+      },
+      "inspection": {
+        "timingInput": "none",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          6,
+          9
+        ],
+        "noteIDs": [
+          "a",
+          "b"
+        ],
+        "midis": [
+          66,
+          69
+        ],
+        "strings": [
+          0,
+          0
+        ],
+        "kind": "passage",
+        "candidates": [],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "single-note",
+            "noteIDs": [
+              "a"
+            ],
+            "candidates": []
+          },
+          {
+            "id": "p1",
+            "kind": "single-note",
+            "noteIDs": [
+              "b"
+            ],
+            "candidates": []
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "MIDI is recomputed as tuning[string]+capo+fret; an external adapter must not transpose it a second time."
+    },
+    {
+      "name": "invalid-vs-unsupported-vs-incomplete",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 0,
+                "fret": 0,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 0
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [
+          {
+            "code": "duration-value",
+            "message": "Check the written duration.",
+            "target": {
+              "momentId": "p0",
+              "noteId": "a",
+              "string": 0
+            },
+            "kind": "invalid"
+          }
+        ],
+        "summary": {
+          "missing": 0,
+          "invalid": 1
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          4
+        ],
+        "noteIDs": [
+          "a"
+        ],
+        "midis": [
+          64
+        ],
+        "strings": [
+          0
+        ],
+        "kind": "single-note",
+        "candidates": [],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "single-note",
+            "noteIDs": [
+              "a"
+            ],
+            "candidates": []
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "Invalid duration is different from missing fields and from unsupported performed bend interpretation."
+    },
+    {
+      "name": "clean-inspection-not-tie-continuity",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 0,
+                "fret": 0,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [],
+            "beatOffset": {
+              "numerator": 3,
+              "denominator": 1
+            },
+            "sustains": [
+              {
+                "noteId": "a",
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ]
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          4
+        ],
+        "noteIDs": [
+          "a"
+        ],
+        "midis": [
+          64
+        ],
+        "strings": [
+          0
+        ],
+        "kind": "passage",
+        "candidates": [],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "single-note",
+            "noteIDs": [
+              "a"
+            ],
+            "candidates": []
+          },
+          {
+            "id": "p1",
+            "kind": "empty",
+            "noteIDs": [],
+            "candidates": []
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "Explicit continuation across an unnotated time gap is structurally valid; P2 does not verify actual endpoint continuity or fill the gap."
+    },
+    {
+      "name": "clean-inspection-not-same-string-overlap-policy",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 0,
+                "fret": 0,
+                "source": null,
+                "duration": {
+                  "numerator": 3,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "midi": 67,
+                "pitchClass": 7,
+                "string": 0,
+                "fret": 3,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          4,
+          7
+        ],
+        "noteIDs": [
+          "a",
+          "b"
+        ],
+        "midis": [
+          64,
+          67
+        ],
+        "strings": [
+          0,
+          0
+        ],
+        "kind": "passage",
+        "candidates": [],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "single-note",
+            "noteIDs": [
+              "a"
+            ],
+            "candidates": []
+          },
+          {
+            "id": "p1",
+            "kind": "single-note",
+            "noteIDs": [
+              "b"
+            ],
+            "candidates": []
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "P2 does not decide whether a new same-string note truncates an earlier written duration; realization needs an explicit policy."
+    },
+    {
+      "name": "clean-inspection-not-temporal-order",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 0,
+                "fret": 0,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 3,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "midi": 67,
+                "pitchClass": 7,
+                "string": 0,
+                "fret": 3,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          4,
+          7
+        ],
+        "noteIDs": [
+          "a",
+          "b"
+        ],
+        "midis": [
+          64,
+          67
+        ],
+        "strings": [
+          0,
+          0
+        ],
+        "kind": "passage",
+        "candidates": [],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "single-note",
+            "noteIDs": [
+              "a"
+            ],
+            "candidates": []
+          },
+          {
+            "id": "p1",
+            "kind": "single-note",
+            "noteIDs": [
+              "b"
+            ],
+            "candidates": []
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "Position order can disagree with supplied starts while all field formats are valid; inspection is not projection readiness."
+    },
+    {
+      "name": "exact-sevenths-preserved",
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "midi": 64,
+                "pitchClass": 4,
+                "string": 0,
+                "fret": 0,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 7
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 7
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "midi": 67,
+                "pitchClass": 7,
+                "string": 0,
+                "fret": 3,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 7
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 7
+            }
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysis": {
+        "pitchClasses": [
+          4,
+          7
+        ],
+        "noteIDs": [
+          "a",
+          "b"
+        ],
+        "midis": [
+          64,
+          67
+        ],
+        "strings": [
+          0,
+          0
+        ],
+        "kind": "passage",
+        "candidates": [],
+        "moments": [
+          {
+            "id": "p0",
+            "kind": "single-note",
+            "noteIDs": [
+              "a"
+            ],
+            "candidates": []
+          },
+          {
+            "id": "p1",
+            "kind": "single-note",
+            "noteIDs": [
+              "b"
+            ],
+            "candidates": []
+          }
+        ],
+        "arpeggios": [],
+        "harmonicSpans": [],
+        "progressionReadings": [],
+        "roman": null,
+        "diagnostics": []
+      },
+      "meaning": "Product stores exact rational inputs; integer tick rounding must not become the authoritative rational observation."
+    }
+  ],
+  "modalContextProbe": {
+    "scale": {
+      "group": "Diatonic Modes",
+      "scaleId": "Diatonic Modes::Dorian",
+      "tonic": 2
+    },
+    "scaleAccepted": true,
+    "modalFrameDiagnostics": [
+      "The tonal frame is unsupported; only explicit major or minor frames are supported."
+    ]
+  },
+  "freeOrderAnalyzeAccepted": true,
+  "stateChanges": [
+    {
+      "action": {
+        "type": "set-meter",
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "status": "stale",
+      "history": 1
+    },
+    {
+      "action": {
+        "type": "set-frame",
+        "frame": {
+          "tonic": "C",
+          "mode": "major",
+          "lens": "jazz-pop"
+        }
+      },
+      "status": "stale",
+      "history": 1
+    },
+    {
+      "action": {
+        "type": "undo"
+      },
+      "status": "stale",
+      "history": 0
+    },
+    {
+      "action": {
+        "type": "redo"
+      },
+      "status": "stale",
+      "history": 1
+    }
+  ],
+  "sourceSha256": {
+    "src/domain/tab/types.ts": "a9a9f3ffca87c555d5bc7f9c9b2044344ae867f173f1f0f9833c7e4847ce9977",
+    "src/domain/tab/analysis.ts": "ce5771ef4203ae247f6139ad690490c2d19e9d42d69c9d494641af6185bd811e",
+    "src/domain/tab/passage-analysis.ts": "64e3606495ed4719386c9054679f62a60fc19f56cf4c13f9c5058015c0a904a2",
+    "src/domain/tab/harmonic-spans.ts": "64543b31273d2cb512d1b9adbf4adb656d9d32ca482d89b8bc9886169463d025",
+    "src/domain/tab/timing-inspection.ts": "254fcb82e8332ef3024915878f203397e81297a4b1c28b790557fc7e10423a69",
+    "src/domain/tab/input-capabilities.ts": "2f8f8949234a605bae0506ccfa861054e85295769560ce5c4d56baf40e34325a",
+    "src/domain/tab/editing.ts": "9ce5bf2f1e63ae4c94f3cc1e776dca649cc1b6e7633787f977feb87bd1f16a5a",
+    "src/domain/chord/chordRecognition.ts": "5bef5698d6a619fdfc3a6799dc919c0e48acbf06e4c27eb9b8bfab77d15f92a5",
+    "src/domain/harmony/types.ts": "1e51dd4f657bb39f9077b7ba8a34870b2003d447eabf1c258722baf5af4d52f7",
+    "src/domain/harmony/roman.ts": "5284342dfe214f7cc23c657b02ab1845b48f70f914b9b7245f3b77da6e84de3e",
+    "src/domain/scale/scale-ref.ts": "f94d7e6a9634af818a5f77565c081c440e71ee636e162208195b1073edb301b5",
+    "src/features/tab-analysis/state.ts": "9039f9240fc3d137fd45ea7136e5babe5a56db1778f7cf6341cbdfa072b6452f"
+  }
+}

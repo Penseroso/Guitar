@@ -291,3 +291,48 @@ Insertion targets are 44×44px with 0px boundary drift. New controls are indepen
 hover/coarse-pointer visibility and add no motion. Touch pointer events pass; physical
 device coverage is not claimed. See the P1 audit for screenshots, measurements and
 deferred items. P1 acceptance: GO; no P2 analysis or sounding-timeline work started.
+
+## P2 notation inspection
+
+`inspectTabTiming` is a read-only notation/structure check, independent of Analyze.
+Check timing is opt-in above the score. No meter, offset, length, rest or performance
+is inferred, and missing timing never disables the existing order-only analyzer.
+
+The inspection separates `none` (free timing), `some` (one or more numerical timing
+fields supplied) and `unreadable` input. Rest, mute, continuation and technique markers
+alone do not establish numerical timing. Free timing still receives structural checks,
+but no missing-value list. With partial timing, only event-bearing positions require
+start completeness; notes, rests and continuations contribute duration completeness.
+Mutes and blank placeholders do not require durations. Missing fields are information,
+not invalid notation. Numeric fields use the existing fraction/meter bounds without
+normalizing or repairing the document.
+
+Structural checks include unique position/note IDs, rest exclusivity, one event per
+string, and source references. A continuation must reference an earlier note; technique
+endpoints for h/p/slide must refer forward on the same string. Their time, performed
+pitch and expressive realization remain unassessed. Written durations crossing a
+barline, overlaps and offset order are deliberately outside this inspection.
+Explicit rests, same-string mutes and new attacks between relation endpoints are
+structural interruptions. Blanks, other-string events and continuations do not
+establish an interruption. The check reports the contradiction without removing links.
+
+Timing results are local UI snapshots, separate from ASCII line/column diagnostics and
+harmonic annotations. Document/instrument/history changes invalidate their targets;
+cursor, selection, draft import text and tonal-reference changes do not. Navigation
+requires a current snapshot and unique target, recomputes bar/position labels and moves
+actual keyboard focus with contained scrolling. Escape returns to the originating
+diagnostic. Check/open/close/navigation create no score edit or history entry.
+The current position editor handles Escape before diagnostic return. Its first Escape
+closes the editor and focuses Edit; a subsequent Escape can return to the diagnostic.
+The expanded accessibility state follows the actual current report; explicit draft
+resolution clears blocked guidance. Technical scope is disclosed in About this check.
+
+Timing pointer, click and keyboard activation share a draft guard. Dirty fret input,
+unapplied fractional text and IME composition block these actions without a pending
+automatic retry. Pointer-down is intercepted before blur can commit; timing controls
+are excluded from outside-dismiss. Dirty/composing fractional editors remain mounted
+when keyboard focus passes outside them, including native viewport scrolling. Existing
+fret Enter/Tab/Escape semantics remain; Set start commits fractions and Cancel start
+input restores their committed value. No new action auto-saves a draft.
+
+See [P2 implementation and verification](../implementation/tab-timing-inspection.md).

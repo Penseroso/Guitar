@@ -1,0 +1,94 @@
+{
+  "a": [
+    501,
+    999
+  ],
+  "b": [
+    500,
+    1003
+  ],
+  "ends": [
+    "21845780852/166833",
+    "65668417503/501500"
+  ],
+  "midpoint": "21911318194555999/167333499000",
+  "floatEnds": [
+    130944.00299700897,
+    130944.00299700898
+  ],
+  "floatMid": 130944.00299700898,
+  "decision": {
+    "status": "REFUSED",
+    "reasons": [
+      "chordify-close-point-skip",
+      "chordify-fraction-reconstruction-loss",
+      "no-canonical-strict-interior-query"
+    ],
+    "operations": {
+      "tree": {
+        "status": "ADMITTED",
+        "reasons": []
+      },
+      "chordify": {
+        "status": "REFUSED",
+        "reasons": [
+          "chordify-close-point-skip",
+          "chordify-fraction-reconstruction-loss",
+          "no-canonical-strict-interior-query"
+        ]
+      }
+    },
+    "boundaryCount": 4,
+    "coordinateFrame": {
+      "kind": "declared-relative",
+      "origin": "0"
+    }
+  },
+  "treeMismatches": [
+    {
+      "at": "21911318194555999/167333499000",
+      "expectedIds": [
+        "artifact:a"
+      ],
+      "treeIds": [],
+      "chordifyIds": [],
+      "treeMatch": false,
+      "chordifyMatch": false
+    }
+  ],
+  "manifest": {
+    "scopeId": "research-fixture",
+    "coordinateFrame": {
+      "kind": "declared-relative",
+      "origin": "0"
+    },
+    "coverageComplete": true,
+    "provenanceComplete": true,
+    "fixedPitchIntervalsDeclared": true,
+    "authoredRelationsResolved": true,
+    "events": [
+      {
+        "artifactId": "artifact:a",
+        "sourceNoteId": "a",
+        "sourcePositionId": "position:0",
+        "string": 0,
+        "kind": "attack",
+        "midi": 60,
+        "start": "65602945/501",
+        "duration": "1/999"
+      },
+      {
+        "artifactId": "artifact:b",
+        "sourceNoteId": "b",
+        "sourcePositionId": "position:1",
+        "string": 1,
+        "kind": "attack",
+        "midi": 64,
+        "start": "65472001/500",
+        "duration": "1/1003"
+      }
+    ],
+    "authoredRests": [],
+    "unknownGapsAreAuthoredRests": false
+  }
+}

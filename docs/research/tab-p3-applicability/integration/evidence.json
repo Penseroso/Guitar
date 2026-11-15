@@ -1,0 +1,334 @@
+{
+  "stage": "P3 applicability; read-only product",
+  "date": "2026-11-15",
+  "baseline": {
+    "repository": "/workspace/Guitar-p2",
+    "master": "3ef63568353ee395eb3a46e02f27541bfdca8adf",
+    "currentP2WorkingCopy": true,
+    "oldUnmergedExplicitTimelineExcluded": true
+  },
+  "method": "source/function/test tracing only; no runtime claims and no product implementation",
+  "sources": [
+    {
+      "path": "src/domain/tab/types.ts",
+      "line": 5,
+      "functionsOrContract": "TabFraction/TabMoment/TabDocument",
+      "sha256": "a9a9f3ffca87c555d5bc7f9c9b2044344ae867f173f1f0f9833c7e4847ce9977",
+      "matchesMasterBaseline": true,
+      "localLink": "/workspace/Guitar-p2/src/domain/tab/types.ts:5",
+      "masterPermalink": "https://github.com/Penseroso/Guitar/blob/3ef63568353ee395eb3a46e02f27541bfdca8adf/src/domain/tab/types.ts#L5"
+    },
+    {
+      "path": "src/domain/tab/analysis.ts",
+      "line": 54,
+      "functionsOrContract": "chordCandidates/analyzeTabSelection",
+      "sha256": "ce5771ef4203ae247f6139ad690490c2d19e9d42d69c9d494641af6185bd811e",
+      "matchesMasterBaseline": true,
+      "localLink": "/workspace/Guitar-p2/src/domain/tab/analysis.ts:54",
+      "masterPermalink": "https://github.com/Penseroso/Guitar/blob/3ef63568353ee395eb3a46e02f27541bfdca8adf/src/domain/tab/analysis.ts#L54"
+    },
+    {
+      "path": "src/domain/tab/harmonic-spans.ts",
+      "line": 7,
+      "functionsOrContract": "TabHarmonicSpan/buildTabHarmonicSpans/observeTabProgressions",
+      "sha256": "64543b31273d2cb512d1b9adbf4adb656d9d32ca482d89b8bc9886169463d025",
+      "matchesMasterBaseline": true,
+      "localLink": "/workspace/Guitar-p2/src/domain/tab/harmonic-spans.ts:7",
+      "masterPermalink": "https://github.com/Penseroso/Guitar/blob/3ef63568353ee395eb3a46e02f27541bfdca8adf/src/domain/tab/harmonic-spans.ts#L7"
+    },
+    {
+      "path": "src/domain/chord/chordRecognition.ts",
+      "line": 10,
+      "functionsOrContract": "identifyChordsForPitchClasses",
+      "sha256": "5bef5698d6a619fdfc3a6799dc919c0e48acbf06e4c27eb9b8bfab77d15f92a5",
+      "matchesMasterBaseline": true,
+      "localLink": "/workspace/Guitar-p2/src/domain/chord/chordRecognition.ts:10",
+      "masterPermalink": "https://github.com/Penseroso/Guitar/blob/3ef63568353ee395eb3a46e02f27541bfdca8adf/src/domain/chord/chordRecognition.ts#L10"
+    },
+    {
+      "path": "src/domain/tab/editing.ts",
+      "line": 28,
+      "functionsOrContract": "setTabFret/retuneTabDocument",
+      "sha256": "9ce5bf2f1e63ae4c94f3cc1e776dca649cc1b6e7633787f977feb87bd1f16a5a",
+      "matchesMasterBaseline": true,
+      "localLink": "/workspace/Guitar-p2/src/domain/tab/editing.ts:28",
+      "masterPermalink": "https://github.com/Penseroso/Guitar/blob/3ef63568353ee395eb3a46e02f27541bfdca8adf/src/domain/tab/editing.ts#L28"
+    },
+    {
+      "path": "src/domain/tab/input-capabilities.test.ts",
+      "line": 255,
+      "functionsOrContract": "notation metadata does not change existing pitch analysis",
+      "sha256": "f384fc02127025c9f094515be334b873872bd6f95c73eb416dff19ec35eab785",
+      "matchesMasterBaseline": true,
+      "localLink": "/workspace/Guitar-p2/src/domain/tab/input-capabilities.test.ts:255",
+      "masterPermalink": "https://github.com/Penseroso/Guitar/blob/3ef63568353ee395eb3a46e02f27541bfdca8adf/src/domain/tab/input-capabilities.test.ts#L255"
+    },
+    {
+      "path": "src/domain/tab/harmonic-spans.test.ts",
+      "line": 60,
+      "functionsOrContract": "ambiguity/reference/modal separation",
+      "sha256": "d2a0c56ff18f35cacac2892bfaecb75e0bb078834c8583b53e9e9faf3ac29e07",
+      "matchesMasterBaseline": true,
+      "localLink": "/workspace/Guitar-p2/src/domain/tab/harmonic-spans.test.ts:60",
+      "masterPermalink": "https://github.com/Penseroso/Guitar/blob/3ef63568353ee395eb3a46e02f27541bfdca8adf/src/domain/tab/harmonic-spans.test.ts#L60"
+    },
+    {
+      "path": "src/features/tab-analysis/state.ts",
+      "line": 239,
+      "functionsOrContract": "synchronous analyze/current-context staleness",
+      "sha256": "9039f9240fc3d137fd45ea7136e5babe5a56db1778f7cf6341cbdfa072b6452f",
+      "matchesMasterBaseline": true,
+      "localLink": "/workspace/Guitar-p2/src/features/tab-analysis/state.ts:239",
+      "masterPermalink": "https://github.com/Penseroso/Guitar/blob/3ef63568353ee395eb3a46e02f27541bfdca8adf/src/features/tab-analysis/state.ts#L239"
+    },
+    {
+      "path": "src/domain/chord/engine/workerProtocol.ts",
+      "line": 241,
+      "functionsOrContract": "RevisionGate",
+      "sha256": "c5a30c6756b29c07e67336df362e14c782840584bd6a25b77043d53ebe23c264",
+      "matchesMasterBaseline": true,
+      "localLink": "/workspace/Guitar-p2/src/domain/chord/engine/workerProtocol.ts:241",
+      "masterPermalink": "https://github.com/Penseroso/Guitar/blob/3ef63568353ee395eb3a46e02f27541bfdca8adf/src/domain/chord/engine/workerProtocol.ts#L241"
+    },
+    {
+      "path": "src/components/guitar/chord/engineClient.ts",
+      "line": 17,
+      "functionsOrContract": "createEngineClient",
+      "sha256": "b9961406ad35bef2b413b5b2a26a0b4afec2c8910562ccd385dbc0d40f0b0012",
+      "matchesMasterBaseline": true,
+      "localLink": "/workspace/Guitar-p2/src/components/guitar/chord/engineClient.ts:17",
+      "masterPermalink": "https://github.com/Penseroso/Guitar/blob/3ef63568353ee395eb3a46e02f27541bfdca8adf/src/components/guitar/chord/engineClient.ts#L17"
+    },
+    {
+      "path": "src/domain/chord/engine/workerService.test.ts",
+      "line": 56,
+      "functionsOrContract": "superseded/cancellation tests",
+      "sha256": "184b834a85c1d90a74451f2ce5275a989bffc36b769218ec837fd132549d03af",
+      "matchesMasterBaseline": true,
+      "localLink": "/workspace/Guitar-p2/src/domain/chord/engine/workerService.test.ts:56",
+      "masterPermalink": "https://github.com/Penseroso/Guitar/blob/3ef63568353ee395eb3a46e02f27541bfdca8adf/src/domain/chord/engine/workerService.test.ts#L56"
+    },
+    {
+      "path": "src/domain/tab/timing-inspection.ts",
+      "line": 24,
+      "functionsOrContract": "inspectTabTiming",
+      "sha256": "254fcb82e8332ef3024915878f203397e81297a4b1c28b790557fc7e10423a69",
+      "matchesMasterBaseline": false,
+      "localLink": "/workspace/Guitar-p2/src/domain/tab/timing-inspection.ts:24",
+      "masterPermalink": null
+    },
+    {
+      "path": "src/components/guitar/scale/tab-analysis/TabScoreView.tsx",
+      "line": 105,
+      "functionsOrContract": "P2 report snapshot/draft guard",
+      "sha256": "3dbc8526bdccdc811fd3951d5376bed7e628e6656f6fe184c1342eabef2941fd",
+      "matchesMasterBaseline": false,
+      "localLink": "/workspace/Guitar-p2/src/components/guitar/scale/tab-analysis/TabScoreView.tsx:105",
+      "masterPermalink": null
+    },
+    {
+      "path": "docs/design-language.md",
+      "line": 7,
+      "functionsOrContract": "NON VERBATIM/INTUITIVE acceptance principles",
+      "sha256": "da3c29383fbef2da265b99bb6658e32e454954429b38061c39dcd0f021a8f5f9",
+      "matchesMasterBaseline": true,
+      "localLink": "/workspace/Guitar-p2/docs/design-language.md:7",
+      "masterPermalink": "https://github.com/Penseroso/Guitar/blob/3ef63568353ee395eb3a46e02f27541bfdca8adf/docs/design-language.md#L7"
+    }
+  ],
+  "decisions": [
+    {
+      "element": "authored identities and fact/inference distinction",
+      "decision": "ADOPT",
+      "gate": "GO"
+    },
+    {
+      "element": "supported written-time observation subset",
+      "decision": "ADAPT",
+      "gate": "CONDITIONAL_GO"
+    },
+    {
+      "element": "offline comparison as independent test reference",
+      "decision": "ADAPT",
+      "gate": "CONDITIONAL_GO_FOR_COMPARABLE_VALIDATION_SUBSET_ONLY",
+      "conditions": [
+        "exact source sidecar and stable IDs",
+        "explicit coordinate mapping",
+        "precision capability gate before comparison",
+        "non-comparable library limitations are not source invalidity",
+        "manual expectation remains primary oracle"
+      ]
+    },
+    {
+      "element": "revision/cancellation principles",
+      "decision": "ADAPT",
+      "gate": "CONDITIONAL_GO_IF_ASYNC_NEEDED"
+    },
+    {
+      "element": "timed harmonic adapter",
+      "decision": "DEFER",
+      "gate": "NO_IMPLEMENTATION_GO_YET"
+    },
+    {
+      "element": "upstream defaults/repair as authored facts",
+      "decision": "REJECT",
+      "gate": "NO_GO"
+    },
+    {
+      "element": "grammar/automatic tonal center inference",
+      "decision": "DEFER",
+      "gate": "OUTSIDE_CURRENT_GO_SCOPE"
+    }
+  ],
+  "requiredBeforeImplementation": [
+    "written vs realized semantics",
+    "bar-local vs global coordinate/anchor coverage",
+    "temporal conflict and continuation joining semantics",
+    "region-level completeness/support/error handling",
+    "exact arithmetic bounds and interval convention"
+  ],
+  "excludedUntilSupported": [
+    "performance pitch trajectory or picked-attack claims",
+    "unanchored cross-bar global comparison",
+    "auto-filled unknown onsets/lengths/gaps",
+    "automatic merging across sustain gap/overlap",
+    "unresolved duration vs rest/mute cutoff",
+    "String interpreted as Voice"
+  ],
+  "noProductFilesChanged": true,
+  "performanceClaims": null,
+  "uiValidationClaim": false,
+  "sourceLicenseChecks": {
+    "alphaTab": "/tmp/modus-p2-research/alpha/LICENSE:1 MPL-2.0",
+    "music21": "/tmp/modus-p2-research/music21/LICENSE:1 three-clause BSD text",
+    "ImproVisor": "/tmp/modus-p2-research/impro/COPYING.txt:5 GPL-2.0-or-later code notice; dictionaries/assets require scope check"
+  },
+  "fixtures": [
+    {
+      "id": "G01",
+      "case": "order-only/free timing",
+      "inputEvidence": "No onset or duration",
+      "acceptance": "Keep current Analyze available; no inferred meter/rest/time",
+      "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+    },
+    {
+      "id": "G02",
+      "case": "bar-local complete without meter",
+      "inputEvidence": "Two same-bar offsets and lengths known",
+      "acceptance": "Allow local relation evaluation; do not require global meter or invent global origin",
+      "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+    },
+    {
+      "id": "G03",
+      "case": "known length/missing onset",
+      "inputEvidence": "Duration supplied, no beatOffset",
+      "acceptance": "Length fact retained, temporal placement remains unknown",
+      "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+    },
+    {
+      "id": "G04",
+      "case": "known onset/missing length",
+      "inputEvidence": "beatOffset supplied, no duration",
+      "acceptance": "Onset event fact retained, end/overlap unknown",
+      "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+    },
+    {
+      "id": "G05",
+      "case": "unknown gap",
+      "inputEvidence": "Two disjoint written intervals, no rest",
+      "acceptance": "Do not synthesize authored silence/rest or carry note through gap",
+      "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+    },
+    {
+      "id": "G06",
+      "case": "cross-bar written duration",
+      "inputEvidence": "Offset+length extends beyond bar, source preserved",
+      "acceptance": "Do not erase or label invalid solely because P2 does not assess it; global anchoring/semantics need explicit support",
+      "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+    },
+    {
+      "id": "G07",
+      "case": "sustain exact adjacency",
+      "inputEvidence": "Origin endpoint equals explicit continuation start",
+      "acceptance": "No new source note identity; test selected continuation semantics before any merged interval claim",
+      "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+    },
+    {
+      "id": "G08",
+      "case": "sustain temporal gap/overlap",
+      "inputEvidence": "Continuation start after/before origin end",
+      "acceptance": "Temporal interpretation excluded pending contract; no auto bridge/trim/merge",
+      "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+    },
+    {
+      "id": "G09",
+      "case": "rest/mute versus prior duration",
+      "inputEvidence": "Written note length crosses explicit rest/mute",
+      "acceptance": "Distinguish temporal contradiction/support decision; do not silently truncate duration",
+      "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+    },
+    {
+      "id": "G10",
+      "case": "repeated same MIDI",
+      "inputEvidence": "Separate notes with equal pitch",
+      "acceptance": "Preserve source identity and event boundary; no tie from equality",
+      "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+    },
+    {
+      "id": "G11",
+      "case": "unison across strings",
+      "inputEvidence": "Same MIDI on different string IDs",
+      "acceptance": "Keep both events; PC aggregation only at recognition boundary",
+      "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+    },
+    {
+      "id": "G12",
+      "case": "h/p/slide or bend",
+      "inputEvidence": "Authored note/technique endpoints",
+      "acceptance": "Keep source base pitches and provenance; do not call every endpoint a picked attack or infer pitch trajectory",
+      "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+    },
+    {
+      "id": "G13",
+      "case": "ambiguous verticality",
+      "inputEvidence": "C E G A",
+      "acceptance": "Preserve C6/Am7 alternatives; no unique function/key/progression chosen",
+      "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+    },
+    {
+      "id": "G14",
+      "case": "boundary/exactness",
+      "inputEvidence": "Simultaneous start/end; narrow rational gap",
+      "acceptance": "Exact fraction boundary oracle and declared half-open convention; detect float/tick/normalization loss before reference comparison; non-comparable reference is not invalid product input",
+      "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+    },
+    {
+      "id": "G15",
+      "case": "late async result",
+      "inputEvidence": "Document/instrument/context/history changes before result",
+      "acceptance": "Discard results when their actual input dependencies change: document/instrument/range/options for observations, additionally used tonal context for harmonic readings; unrelated tonal reference must not invalidate notation facts",
+      "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+    },
+    {
+      "id": "G16",
+      "case": "coverage and malformed input",
+      "inputEvidence": "One unsupported region plus independent known region",
+      "acceptance": "Retain known authored interval facts, but unknown-time notes may overlap any known region: no complete verticality, absence, silence or exact pitch-set claim without isolation proof; distinguish invalid/incomplete/unsupported/non-comparable",
+      "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+    }
+  ],
+  "invalidationDependencies": {
+    "writtenTimeObservation": [
+      "document/instrument revision",
+      "selected range if scope dependent",
+      "explicit interpretation/computation options"
+    ],
+    "harmonicReadingAdditional": [
+      "used tonal frame",
+      "used chord/scale reference",
+      "relevant registry/formatter semantics"
+    ],
+    "unrelatedContext": "does not invalidate P2 notation facts"
+  },
+  "coverageCaution": "Known local intervals are not proof of complete verticality; an unknown-time note elsewhere may overlap them. Region exclusion alone does not prove independence."
+}

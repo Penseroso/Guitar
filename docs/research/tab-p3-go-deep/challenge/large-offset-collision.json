@@ -1,0 +1,22 @@
+{
+  "globalAnchor": 130944,
+  "measure": 1024,
+  "meter": [
+    32,
+    1
+  ],
+  "a": {
+    "onset": "1/506",
+    "duration": "1/1015",
+    "exactEnd": "67251530481/513590"
+  },
+  "b": {
+    "onset": "1/507",
+    "duration": "1/1011",
+    "exactEnd": "22372961402/170859"
+  },
+  "endDelta": "1/87751473810",
+  "endDeltaApprox": 1.1395819996883537e-11,
+  "commonFloatEnd": 130944.00296150627,
+  "scope": "All authored fractions within current1024bounds; global anchor uses representable1024measures and meter32/1; derivedfloatconversionlosesdistinction"
+}

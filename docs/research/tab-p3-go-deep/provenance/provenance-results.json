@@ -1,0 +1,1287 @@
+{
+  "date": "2026-11-15",
+  "scope": "GO1 fact/provenance deep evaluation; existing API only; no product engine",
+  "cases": 20,
+  "inputMutations": 0,
+  "details": [
+    {
+      "name": "parsed-location-and-distinct-repeated-note-IDs",
+      "result": {
+        "format": "ascii",
+        "nextId": 1,
+        "analyzedSource": "e|5h7-7--|\nB|-------|\nG|-------|\nD|-------|\nA|-------|\nE|-------|",
+        "source": "e|5h7-7--|\nB|-------|\nG|-------|\nD|-------|\nA|-------|\nE|-------|",
+        "moments": [
+          {
+            "id": "moment-0",
+            "index": 0,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "note-0-0",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": {
+                  "line": 1,
+                  "column": 3
+                },
+                "techniques": [
+                  {
+                    "kind": "hammer-on",
+                    "toNoteId": "note-1-0",
+                    "notation": "h",
+                    "source": {
+                      "line": 1,
+                      "column": 4
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "moment-1",
+            "index": 1,
+            "measure": 1,
+            "column": 4,
+            "notes": [
+              {
+                "id": "note-1-0",
+                "string": 0,
+                "fret": 7,
+                "midi": 71,
+                "pitchClass": 11,
+                "source": {
+                  "line": 1,
+                  "column": 5
+                }
+              }
+            ]
+          },
+          {
+            "id": "moment-2",
+            "index": 2,
+            "measure": 1,
+            "column": 6,
+            "notes": [
+              {
+                "id": "note-2-0",
+                "string": 0,
+                "fret": 7,
+                "midi": 71,
+                "pitchClass": 11,
+                "source": {
+                  "line": 1,
+                  "column": 7
+                }
+              }
+            ]
+          }
+        ],
+        "selection": {
+          "start": 0,
+          "end": 0
+        },
+        "activeCell": {
+          "momentId": "moment-0",
+          "string": 0
+        }
+      }
+    },
+    {
+      "name": "timing-edit-preserves-import-fret-provenance",
+      "result": {
+        "note": {
+          "id": "note-0-0",
+          "string": 0,
+          "fret": 5,
+          "midi": 69,
+          "pitchClass": 9,
+          "source": {
+            "line": 1,
+            "column": 3
+          },
+          "techniques": [
+            {
+              "kind": "hammer-on",
+              "toNoteId": "note-1-0",
+              "notation": "h",
+              "source": {
+                "line": 1,
+                "column": 4
+              }
+            }
+          ],
+          "duration": {
+            "numerator": 3,
+            "denominator": 4
+          }
+        },
+        "start": {
+          "numerator": 0,
+          "denominator": 1
+        },
+        "meaning": "source tracks original played-fret token; newly authored duration has no separate source/revision field"
+      }
+    },
+    {
+      "name": "fret-noop-preserves-document-and-history",
+      "result": {
+        "sameState": true,
+        "sameDocument": true,
+        "past": 1,
+        "nextId": 1
+      }
+    },
+    {
+      "name": "fret-change-retains-ID-replaces-fact-and-null-source",
+      "result": {
+        "before": {
+          "id": "note-0-0",
+          "string": 0,
+          "fret": 5,
+          "midi": 69,
+          "pitchClass": 9,
+          "source": {
+            "line": 1,
+            "column": 3
+          },
+          "techniques": [
+            {
+              "kind": "hammer-on",
+              "toNoteId": "note-1-0",
+              "notation": "h",
+              "source": {
+                "line": 1,
+                "column": 4
+              }
+            }
+          ],
+          "duration": {
+            "numerator": 3,
+            "denominator": 2
+          }
+        },
+        "after": {
+          "id": "note-0-0",
+          "string": 0,
+          "fret": 6,
+          "midi": 70,
+          "pitchClass": 10,
+          "source": null,
+          "duration": {
+            "numerator": 3,
+            "denominator": 2
+          }
+        },
+        "sameID": true,
+        "documentSourceStillOriginal": true,
+        "format": "authored",
+        "meaning": "stable ID identifies editable note identity, not immutable content or source-text equality"
+      }
+    },
+    {
+      "name": "mute-replaces-note-with-authored-unpitched-event",
+      "result": {
+        "before": {
+          "id": "moment-0",
+          "index": 0,
+          "measure": 1,
+          "column": 2,
+          "notes": [
+            {
+              "id": "note-0-0",
+              "string": 0,
+              "fret": 5,
+              "midi": 69,
+              "pitchClass": 9,
+              "source": {
+                "line": 1,
+                "column": 3
+              },
+              "techniques": [
+                {
+                  "kind": "hammer-on",
+                  "toNoteId": "note-1-0",
+                  "notation": "h",
+                  "source": {
+                    "line": 1,
+                    "column": 4
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "after": {
+          "id": "moment-0",
+          "index": 0,
+          "measure": 1,
+          "column": 2,
+          "notes": [],
+          "mutes": [
+            {
+              "string": 0
+            }
+          ]
+        },
+        "meaning": "mute has no independent ID; position+string are current-snapshot address, not original note ID"
+      }
+    },
+    {
+      "name": "rest-replaces-whole-position-events",
+      "result": {
+        "before": {
+          "id": "moment-0",
+          "index": 0,
+          "measure": 1,
+          "column": 2,
+          "notes": [
+            {
+              "id": "note-0-0",
+              "string": 0,
+              "fret": 5,
+              "midi": 69,
+              "pitchClass": 9,
+              "source": {
+                "line": 1,
+                "column": 3
+              }
+            }
+          ]
+        },
+        "after": {
+          "id": "moment-0",
+          "index": 0,
+          "measure": 1,
+          "column": 2,
+          "notes": [],
+          "rest": {}
+        },
+        "undoRestoresOriginalDocument": true
+      }
+    },
+    {
+      "name": "sustain-conversion-removes-repeated-note-ID-and-keeps-origin",
+      "result": {
+        "before": {
+          "format": "authored",
+          "nextId": 1,
+          "analyzedSource": null,
+          "source": "e|5-5-5|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+          "moments": [
+            {
+              "id": "moment-0",
+              "index": 0,
+              "measure": 1,
+              "column": 2,
+              "notes": [
+                {
+                  "id": "note-0-0",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": {
+                    "line": 1,
+                    "column": 3
+                  }
+                }
+              ]
+            },
+            {
+              "id": "moment-1",
+              "index": 1,
+              "measure": 1,
+              "column": 4,
+              "notes": [
+                {
+                  "id": "note-1-0",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": {
+                    "line": 1,
+                    "column": 5
+                  },
+                  "duration": {
+                    "numerator": 2,
+                    "denominator": 1
+                  }
+                }
+              ]
+            },
+            {
+              "id": "moment-2",
+              "index": 2,
+              "measure": 1,
+              "column": 6,
+              "notes": [
+                {
+                  "id": "note-2-0",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": {
+                    "line": 1,
+                    "column": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "selection": {
+            "start": 0,
+            "end": 0
+          },
+          "activeCell": {
+            "momentId": "moment-0",
+            "string": 0
+          }
+        },
+        "after": {
+          "format": "authored",
+          "nextId": 1,
+          "analyzedSource": null,
+          "source": "e|5-5-5|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+          "moments": [
+            {
+              "id": "moment-0",
+              "index": 0,
+              "measure": 1,
+              "column": 2,
+              "notes": [
+                {
+                  "id": "note-0-0",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": {
+                    "line": 1,
+                    "column": 3
+                  }
+                }
+              ]
+            },
+            {
+              "id": "moment-1",
+              "index": 1,
+              "measure": 1,
+              "column": 4,
+              "notes": [],
+              "sustains": [
+                {
+                  "noteId": "note-0-0",
+                  "duration": {
+                    "numerator": 2,
+                    "denominator": 1
+                  }
+                }
+              ]
+            },
+            {
+              "id": "moment-2",
+              "index": 2,
+              "measure": 1,
+              "column": 6,
+              "notes": [],
+              "sustains": [
+                {
+                  "noteId": "note-0-0"
+                }
+              ]
+            }
+          ],
+          "selection": {
+            "start": 0,
+            "end": 0
+          },
+          "activeCell": {
+            "momentId": "moment-0",
+            "string": 0
+          }
+        },
+        "afterInterruption": {
+          "format": "authored",
+          "nextId": 1,
+          "analyzedSource": null,
+          "source": "e|5-5-5|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+          "moments": [
+            {
+              "id": "moment-0",
+              "index": 0,
+              "measure": 1,
+              "column": 2,
+              "notes": [
+                {
+                  "id": "note-0-0",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": {
+                    "line": 1,
+                    "column": 3
+                  }
+                }
+              ]
+            },
+            {
+              "id": "moment-1",
+              "index": 1,
+              "measure": 1,
+              "column": 4,
+              "notes": [],
+              "mutes": [
+                {
+                  "string": 0
+                }
+              ]
+            },
+            {
+              "id": "moment-2",
+              "index": 2,
+              "measure": 1,
+              "column": 6,
+              "notes": []
+            }
+          ],
+          "selection": {
+            "start": 0,
+            "end": 0
+          },
+          "activeCell": {
+            "momentId": "moment-0",
+            "string": 0
+          }
+        },
+        "meaning": "explicit conversion changes event kind; no synthetic attack should resurrect removed note ID"
+      }
+    },
+    {
+      "name": "origin-fret-change-invalidates-sustain-links-with-same-origin-ID",
+      "result": {
+        "originID": "note-0-0",
+        "originMIDIBefore": 69,
+        "originMIDIAfter": 70,
+        "continuationRemoved": true
+      }
+    },
+    {
+      "name": "split-join-preserve-IDs-but-change-address-coordinates",
+      "result": {
+        "before": {
+          "format": "ascii",
+          "nextId": 1,
+          "analyzedSource": "e|5h7-7|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+          "source": "e|5h7-7|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+          "moments": [
+            {
+              "id": "moment-0",
+              "index": 0,
+              "measure": 1,
+              "column": 2,
+              "notes": [
+                {
+                  "id": "note-0-0",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": {
+                    "line": 1,
+                    "column": 3
+                  },
+                  "techniques": [
+                    {
+                      "kind": "hammer-on",
+                      "toNoteId": "note-1-0",
+                      "notation": "h",
+                      "source": {
+                        "line": 1,
+                        "column": 4
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "moment-1",
+              "index": 1,
+              "measure": 1,
+              "column": 4,
+              "notes": [
+                {
+                  "id": "note-1-0",
+                  "string": 0,
+                  "fret": 7,
+                  "midi": 71,
+                  "pitchClass": 11,
+                  "source": {
+                    "line": 1,
+                    "column": 5
+                  }
+                }
+              ]
+            },
+            {
+              "id": "moment-2",
+              "index": 2,
+              "measure": 1,
+              "column": 6,
+              "notes": [
+                {
+                  "id": "note-2-0",
+                  "string": 0,
+                  "fret": 7,
+                  "midi": 71,
+                  "pitchClass": 11,
+                  "source": {
+                    "line": 1,
+                    "column": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "selection": {
+            "start": 0,
+            "end": 0
+          },
+          "activeCell": {
+            "momentId": "moment-0",
+            "string": 0
+          }
+        },
+        "split": {
+          "format": "authored",
+          "nextId": 2,
+          "analyzedSource": null,
+          "source": "e|5h7-7|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+          "moments": [
+            {
+              "id": "moment-0",
+              "index": 0,
+              "measure": 1,
+              "column": 2,
+              "notes": [
+                {
+                  "id": "note-0-0",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": {
+                    "line": 1,
+                    "column": 3
+                  },
+                  "techniques": [
+                    {
+                      "kind": "hammer-on",
+                      "toNoteId": "note-1-0",
+                      "notation": "h",
+                      "source": {
+                        "line": 1,
+                        "column": 4
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "moment-1",
+              "index": 1,
+              "measure": 2,
+              "column": 4,
+              "notes": [
+                {
+                  "id": "note-1-0",
+                  "string": 0,
+                  "fret": 7,
+                  "midi": 71,
+                  "pitchClass": 11,
+                  "source": {
+                    "line": 1,
+                    "column": 5
+                  }
+                }
+              ]
+            },
+            {
+              "id": "moment-2",
+              "index": 2,
+              "measure": 2,
+              "column": 6,
+              "notes": [
+                {
+                  "id": "note-2-0",
+                  "string": 0,
+                  "fret": 7,
+                  "midi": 71,
+                  "pitchClass": 11,
+                  "source": {
+                    "line": 1,
+                    "column": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "selection": {
+            "start": 0,
+            "end": 0
+          },
+          "activeCell": {
+            "momentId": "moment-0",
+            "string": 0
+          }
+        },
+        "joined": {
+          "format": "authored",
+          "nextId": 3,
+          "analyzedSource": null,
+          "source": "e|5h7-7|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+          "moments": [
+            {
+              "id": "moment-0",
+              "index": 0,
+              "measure": 1,
+              "column": 1,
+              "notes": [
+                {
+                  "id": "note-0-0",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": {
+                    "line": 1,
+                    "column": 3
+                  },
+                  "techniques": [
+                    {
+                      "kind": "hammer-on",
+                      "toNoteId": "note-1-0",
+                      "notation": "h",
+                      "source": {
+                        "line": 1,
+                        "column": 4
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "moment-1",
+              "index": 1,
+              "measure": 1,
+              "column": 2,
+              "notes": [
+                {
+                  "id": "note-1-0",
+                  "string": 0,
+                  "fret": 7,
+                  "midi": 71,
+                  "pitchClass": 11,
+                  "source": {
+                    "line": 1,
+                    "column": 5
+                  }
+                }
+              ]
+            },
+            {
+              "id": "moment-2",
+              "index": 2,
+              "measure": 1,
+              "column": 3,
+              "notes": [
+                {
+                  "id": "note-2-0",
+                  "string": 0,
+                  "fret": 7,
+                  "midi": 71,
+                  "pitchClass": 11,
+                  "source": {
+                    "line": 1,
+                    "column": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "selection": {
+            "start": 0,
+            "end": 0
+          },
+          "activeCell": {
+            "momentId": "moment-0",
+            "string": 0
+          }
+        },
+        "meaning": "source.line/column still refer to imported text; measure/index are current score coordinates and may change"
+      }
+    },
+    {
+      "name": "split-and-join-refuse-unresolved-rebasing",
+      "result": {
+        "timedSplitBlocked": true,
+        "timedJoinBlocked": true,
+        "meaning": "preservation does not mean inventing a replacement time origin"
+      }
+    },
+    {
+      "name": "insert-delete-preserve-survivor-IDs-and-selection-membership",
+      "result": {
+        "before": {
+          "format": "ascii",
+          "nextId": 1,
+          "analyzedSource": "e|5-7-7|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+          "source": "e|5-7-7|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+          "moments": [
+            {
+              "id": "moment-0",
+              "index": 0,
+              "measure": 1,
+              "column": 2,
+              "notes": [
+                {
+                  "id": "note-0-0",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": {
+                    "line": 1,
+                    "column": 3
+                  }
+                }
+              ]
+            },
+            {
+              "id": "moment-1",
+              "index": 1,
+              "measure": 1,
+              "column": 4,
+              "notes": [
+                {
+                  "id": "note-1-0",
+                  "string": 0,
+                  "fret": 7,
+                  "midi": 71,
+                  "pitchClass": 11,
+                  "source": {
+                    "line": 1,
+                    "column": 5
+                  }
+                }
+              ]
+            },
+            {
+              "id": "moment-2",
+              "index": 2,
+              "measure": 1,
+              "column": 6,
+              "notes": [
+                {
+                  "id": "note-2-0",
+                  "string": 0,
+                  "fret": 7,
+                  "midi": 71,
+                  "pitchClass": 11,
+                  "source": {
+                    "line": 1,
+                    "column": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "selection": {
+            "start": 1,
+            "end": 2
+          },
+          "activeCell": {
+            "momentId": "moment-0",
+            "string": 0
+          }
+        },
+        "inserted": {
+          "format": "authored",
+          "nextId": 2,
+          "analyzedSource": null,
+          "source": "e|5-7-7|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+          "moments": [
+            {
+              "id": "moment-0",
+              "index": 0,
+              "measure": 1,
+              "column": 2,
+              "notes": [
+                {
+                  "id": "note-0-0",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": {
+                    "line": 1,
+                    "column": 3
+                  }
+                }
+              ]
+            },
+            {
+              "id": "edit-moment-1",
+              "index": 1,
+              "measure": 1,
+              "column": 2,
+              "notes": []
+            },
+            {
+              "id": "moment-1",
+              "index": 2,
+              "measure": 1,
+              "column": 4,
+              "notes": [
+                {
+                  "id": "note-1-0",
+                  "string": 0,
+                  "fret": 7,
+                  "midi": 71,
+                  "pitchClass": 11,
+                  "source": {
+                    "line": 1,
+                    "column": 5
+                  }
+                }
+              ]
+            },
+            {
+              "id": "moment-2",
+              "index": 3,
+              "measure": 1,
+              "column": 6,
+              "notes": [
+                {
+                  "id": "note-2-0",
+                  "string": 0,
+                  "fret": 7,
+                  "midi": 71,
+                  "pitchClass": 11,
+                  "source": {
+                    "line": 1,
+                    "column": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "selection": {
+            "start": 2,
+            "end": 3
+          },
+          "activeCell": {
+            "momentId": "moment-0",
+            "string": 0
+          }
+        },
+        "deleted": {
+          "format": "authored",
+          "nextId": 2,
+          "analyzedSource": null,
+          "source": "e|5-7-7|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+          "moments": [
+            {
+              "id": "moment-0",
+              "index": 0,
+              "measure": 1,
+              "column": 2,
+              "notes": [
+                {
+                  "id": "note-0-0",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": {
+                    "line": 1,
+                    "column": 3
+                  }
+                }
+              ]
+            },
+            {
+              "id": "edit-moment-1",
+              "index": 1,
+              "measure": 1,
+              "column": 2,
+              "notes": []
+            },
+            {
+              "id": "moment-2",
+              "index": 2,
+              "measure": 1,
+              "column": 6,
+              "notes": [
+                {
+                  "id": "note-2-0",
+                  "string": 0,
+                  "fret": 7,
+                  "midi": 71,
+                  "pitchClass": 11,
+                  "source": {
+                    "line": 1,
+                    "column": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "selection": {
+            "start": 2,
+            "end": 2
+          },
+          "activeCell": {
+            "momentId": "moment-0",
+            "string": 0
+          }
+        },
+        "insertedID": "edit-moment-1"
+      }
+    },
+    {
+      "name": "last-position-deletion-clears-content-without-removing-position-ID",
+      "result": {
+        "positionID": "moment-0",
+        "beforeNoteID": "note-0-0",
+        "afterNotes": []
+      }
+    },
+    {
+      "name": "remove-readd-note-allocates-new-ID",
+      "result": {
+        "old": {
+          "id": "note-0-0",
+          "string": 0,
+          "fret": 5,
+          "midi": 69,
+          "pitchClass": 9,
+          "source": {
+            "line": 1,
+            "column": 3
+          }
+        },
+        "new": {
+          "id": "edit-note-2",
+          "string": 0,
+          "fret": 5,
+          "midi": 69,
+          "pitchClass": 9,
+          "source": null
+        }
+      }
+    },
+    {
+      "name": "retune-and-capo-keep-identity-and-import-location-but-recompute-MIDI",
+      "result": {
+        "before": [
+          {
+            "id": "note-0-0",
+            "string": 0,
+            "fret": 5,
+            "midi": 69,
+            "pitchClass": 9,
+            "source": {
+              "line": 1,
+              "column": 3
+            }
+          },
+          {
+            "id": "note-1-0",
+            "string": 0,
+            "fret": 7,
+            "midi": 71,
+            "pitchClass": 11,
+            "source": {
+              "line": 1,
+              "column": 5
+            }
+          }
+        ],
+        "capo": [
+          {
+            "id": "note-0-0",
+            "string": 0,
+            "fret": 5,
+            "midi": 71,
+            "pitchClass": 11,
+            "source": {
+              "line": 1,
+              "column": 3
+            }
+          },
+          {
+            "id": "note-1-0",
+            "string": 0,
+            "fret": 7,
+            "midi": 73,
+            "pitchClass": 1,
+            "source": {
+              "line": 1,
+              "column": 5
+            }
+          }
+        ],
+        "retuned": [
+          {
+            "id": "note-0-0",
+            "string": 0,
+            "fret": 5,
+            "midi": 69,
+            "pitchClass": 9,
+            "source": {
+              "line": 1,
+              "column": 3
+            }
+          },
+          {
+            "id": "note-1-0",
+            "string": 0,
+            "fret": 7,
+            "midi": 71,
+            "pitchClass": 11,
+            "source": {
+              "line": 1,
+              "column": 5
+            }
+          }
+        ],
+        "doubleCapoWouldBeWrong": [
+          71,
+          73
+        ],
+        "meaning": "MIDI is actual product coordinate, source identifies written fret token, not immutable acoustic pitch"
+      }
+    },
+    {
+      "name": "import-replacement-reuses-local-IDs-with-different-content",
+      "result": {
+        "before": {
+          "format": "ascii",
+          "nextId": 1,
+          "analyzedSource": "e|5-7|\nB|---|\nG|---|\nD|---|\nA|---|\nE|---|",
+          "source": "e|5-7|\nB|---|\nG|---|\nD|---|\nA|---|\nE|---|",
+          "moments": [
+            {
+              "id": "moment-0",
+              "index": 0,
+              "measure": 1,
+              "column": 2,
+              "notes": [
+                {
+                  "id": "note-0-0",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": {
+                    "line": 1,
+                    "column": 3
+                  }
+                }
+              ]
+            },
+            {
+              "id": "moment-1",
+              "index": 1,
+              "measure": 1,
+              "column": 4,
+              "notes": [
+                {
+                  "id": "note-1-0",
+                  "string": 0,
+                  "fret": 7,
+                  "midi": 71,
+                  "pitchClass": 11,
+                  "source": {
+                    "line": 1,
+                    "column": 5
+                  }
+                }
+              ]
+            }
+          ],
+          "selection": {
+            "start": 0,
+            "end": 0
+          },
+          "activeCell": {
+            "momentId": "moment-0",
+            "string": 0
+          }
+        },
+        "replacement": {
+          "format": "ascii",
+          "nextId": 1,
+          "analyzedSource": "e|9-11|\nB|----|\nG|----|\nD|----|\nA|----|\nE|----|",
+          "source": "e|9-11|\nB|----|\nG|----|\nD|----|\nA|----|\nE|----|",
+          "moments": [
+            {
+              "id": "moment-0",
+              "index": 0,
+              "measure": 1,
+              "column": 2,
+              "notes": [
+                {
+                  "id": "note-0-0",
+                  "string": 0,
+                  "fret": 9,
+                  "midi": 73,
+                  "pitchClass": 1,
+                  "source": {
+                    "line": 1,
+                    "column": 3
+                  }
+                }
+              ]
+            },
+            {
+              "id": "moment-1",
+              "index": 1,
+              "measure": 1,
+              "column": 4,
+              "notes": [
+                {
+                  "id": "note-1-0",
+                  "string": 0,
+                  "fret": 11,
+                  "midi": 75,
+                  "pitchClass": 3,
+                  "source": {
+                    "line": 1,
+                    "column": 5
+                  }
+                }
+              ]
+            }
+          ],
+          "selection": {
+            "start": 0,
+            "end": 0
+          },
+          "activeCell": {
+            "momentId": "moment-0",
+            "string": 0
+          }
+        },
+        "documentReferenceChanges": true,
+        "undoResurrectsPriorSnapshot": true,
+        "meaning": "ID-only cross-document cache aliases distinct notes"
+      }
+    },
+    {
+      "name": "same-content-reimport-new-snapshot-same-local-IDs",
+      "result": {
+        "sameValue": true,
+        "sameDocumentReference": false,
+        "sameLocalIDs": true,
+        "meaning": "value equality and document-instance identity are distinct"
+      }
+    },
+    {
+      "name": "nextId-not-rewound-on-undo-branch-and-reset-has-new-session-scope",
+      "result": {
+        "oldBranchID": "edit-moment-1",
+        "newBranchID": "edit-moment-2",
+        "nextIdNotRewound": true,
+        "resetNextId": 1,
+        "meaning": "allocator is session-local, and not part of edit snapshots"
+      }
+    },
+    {
+      "name": "selection-excludes-continuation-origin-so-selected-note-list-is-not-full-context",
+      "result": {
+        "selection": {
+          "start": 1,
+          "end": 1
+        },
+        "selectedNotes": [],
+        "selectedKind": "empty",
+        "originOutsideSelection": "note-0-0",
+        "fullDocumentNoteIDs": [
+          "note-0-0",
+          "note-2-0"
+        ],
+        "meaning": "future observer must define source-context/clip boundaries; current selected note list loses outside continuation context"
+      }
+    },
+    {
+      "name": "partial-selection-cannot-promote-whole-bar-collection",
+      "result": {
+        "fullSpan": [
+          {
+            "start": 0,
+            "end": 2,
+            "measure": 1,
+            "basis": "whole-bar-collection",
+            "candidates": [
+              {
+                "key": "0:major",
+                "chord": {
+                  "root": "C",
+                  "chordId": "major"
+                },
+                "name": "C",
+                "omitted": [],
+                "added": [],
+                "match": "exact"
+              }
+            ]
+          }
+        ],
+        "partialSpan": []
+      }
+    },
+    {
+      "name": "equal-MIDI-on-different-strings-is-not-event-equality",
+      "result": {
+        "notes": [
+          {
+            "id": "edit-note-1",
+            "string": 0,
+            "midi": 64,
+            "source": null
+          },
+          {
+            "id": "edit-note-2",
+            "string": 1,
+            "midi": 64,
+            "source": null
+          }
+        ],
+        "recognitionPCs": [
+          4
+        ]
+      }
+    }
+  ],
+  "sourceSha256": {
+    "src/domain/tab/ascii.ts": "2acc657618d6b5d34a8db55c47f46072b54434a081af296ad9350814c28b07bb",
+    "src/domain/tab/types.ts": "a9a9f3ffca87c555d5bc7f9c9b2044344ae867f173f1f0f9833c7e4847ce9977",
+    "src/domain/tab/editing.ts": "9ce5bf2f1e63ae4c94f3cc1e776dca649cc1b6e7633787f977feb87bd1f16a5a",
+    "src/domain/tab/input-capabilities.ts": "2f8f8949234a605bae0506ccfa861054e85295769560ce5c4d56baf40e34325a",
+    "src/features/tab-analysis/state.ts": "9039f9240fc3d137fd45ea7136e5babe5a56db1778f7cf6341cbdfa072b6452f",
+    "src/domain/tab/analysis.ts": "ce5771ef4203ae247f6139ad690490c2d19e9d42d69c9d494641af6185bd811e",
+    "src/components/guitar/scale/tab-analysis/TabScoreView.tsx": "3dbc8526bdccdc811fd3951d5376bed7e628e6656f6fe184c1342eabef2941fd"
+  }
+}

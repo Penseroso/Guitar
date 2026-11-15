@@ -1,0 +1,82 @@
+// Isolated evaluation driver. Invokes existing APIs; implements no timeline engine.
+import assert from 'node:assert/strict';
+import { writeFileSync } from 'node:fs';
+import { Score } from '@coderline/alphatab/model/Score';
+import { Track } from '@coderline/alphatab/model/Track';
+import { Staff } from '@coderline/alphatab/model/Staff';
+import { MasterBar } from '@coderline/alphatab/model/MasterBar';
+import { Bar } from '@coderline/alphatab/model/Bar';
+import { Voice } from '@coderline/alphatab/model/Voice';
+import { Beat } from '@coderline/alphatab/model/Beat';
+import { Note } from '@coderline/alphatab/model/Note';
+import { Duration } from '@coderline/alphatab/model/Duration';
+import { GraceType } from '@coderline/alphatab/model/GraceType';
+import { SlideOutType } from '@coderline/alphatab/model/SlideOutType';
+import { Settings } from '@coderline/alphatab/Settings';
+import { MidiFileGenerator } from '@coderline/alphatab/midi/MidiFileGenerator';
+import type { IMidiFileHandler } from '@coderline/alphatab/midi/IMidiFileHandler';
+import { createEmptyTabDocument, setTabFret } from '@/domain/tab/editing';
+import { setTabDuration, setTabBeatOffset, setTabMeter, setTabRest, setTabMute, setTabSustain } from '@/domain/tab/input-capabilities';
+import { inspectTabTiming } from '@/domain/tab/timing-inspection';
+import { analyzeTabSelection } from '@/domain/tab/analysis';
+import type { TabDocument } from '@/domain/tab/types';
+
+type Spec={fret?:number; duration?:Duration; tie?:boolean; ring?:boolean; dead?:boolean; staccato?:boolean; hammer?:boolean; legatoSlide?:boolean; grace?:GraceType};
+function upstream(specs:Spec[]){
+ const score=new Score(),track=new Track(),staff=new Staff(),master=new MasterBar(),bar=new Bar(),voice=new Voice();
+ score.addTrack(track);track.addStaff(staff);staff.stringTuning.tunings=[64,59,55,50,45,40];score.addMasterBar(master);staff.addBar(bar);bar.addVoice(voice);
+ specs.forEach(spec=>{const beat=new Beat();beat.duration=spec.duration??Duration.Quarter;beat.graceType=spec.grace??GraceType.None;voice.addBeat(beat);if(spec.fret!==undefined){const n=new Note();n.string=6;n.fret=spec.fret;n.isTieDestination=!!spec.tie;n.isLetRing=!!spec.ring;n.isDead=!!spec.dead;n.isStaccato=!!spec.staccato;n.isHammerPullOrigin=!!spec.hammer;n.slideOutType=spec.legatoSlide?SlideOutType.Legato:SlideOutType.None;beat.addNote(n);}});
+ const snapshot=()=>voice.beats.map((beat,i)=>({sourceOrdinal:i,beatId:beat.id,duration:beat.duration,grace:beat.graceType,isRest:beat.isRest,displayStart:beat.displayStart,displayDuration:beat.displayDuration,playbackStart:beat.playbackStart,playbackDuration:beat.playbackDuration,notes:beat.notes.map(n=>({id:n.id,string:n.string,fret:n.fret,tie:n.isTieDestination,tieOriginId:n.tieOrigin?.id??null,ring:n.isLetRing,dead:n.isDead,staccato:n.isStaccato,hammer:n.isHammerPullOrigin,hammerOriginId:n.hammerPullOrigin?.id??null,slide:n.slideOutType,slideOriginId:n.slideOrigin?.id??null}))}));
+ const before=snapshot(),authoredImage=JSON.stringify(before),settings=new Settings();score.finish(settings);const afterFinish=snapshot();
+ const events:any[]=[];const restTicks:number[]=[];let noteBendCount=0;
+ const handler=new Proxy({}, {get:(_,key)=>key==='addNote'?(_track:number,start:number,length:number,midi:number,velocity:number,channel:number)=>events.push({start,length,midi,velocity,channel}):key==='addRest'?(_track:number,tick:number)=>restTicks.push(tick):key==='addNoteBend'?()=>noteBendCount++:()=>{}}) as IMidiFileHandler;
+ new MidiFileGenerator(score,settings,handler).generate();
+ return {before,afterFinish,afterGenerate:snapshot(),events,restTicks,noteBendCount,authoredSnapshotUnchanged:JSON.stringify(before)===authoredImage};
+}
+const alpha={
+ ordinary:upstream([{fret:5},{fret:7}]),
+ contradictoryTieFret:upstream([{fret:5},{fret:9,tie:true}]),
+ tieAcrossExplicitRest:upstream([{fret:5},{},{fret:5,tie:true}]),
+ hammer:upstream([{fret:5,hammer:true},{fret:7}]),
+ legatoSlide:upstream([{fret:5,legatoSlide:true},{fret:7}]),
+ staccato:upstream([{fret:5,staccato:true}]),
+ deadNote:upstream([{fret:5,dead:true}]),
+ grace:upstream([{fret:5},{fret:7,duration:Duration.Sixteenth,grace:GraceType.BeforeBeat},{fret:9}]),
+ ringStoppedByNewAttack:upstream([{fret:5,ring:true},{fret:7},{fret:9}]),
+};
+// Expectations express independently specified semantic distinctions, not only snapshots.
+assert.equal(alpha.contradictoryTieFret.before[1].notes[0].fret,9);
+assert.equal(alpha.contradictoryTieFret.afterFinish[1].notes[0].fret,5);
+assert.equal(alpha.contradictoryTieFret.afterFinish[1].notes[0].id,alpha.contradictoryTieFret.before[1].notes[0].id);
+assert.equal(alpha.contradictoryTieFret.events.length,1);
+assert.equal(alpha.hammer.events.length,2);assert.deepEqual(alpha.hammer.events.map(e=>e.midi),[69,71]);
+assert.equal(alpha.hammer.afterFinish[1].notes[0].hammerOriginId,alpha.hammer.afterFinish[0].notes[0].id);
+assert.equal(alpha.legatoSlide.events.length,1);assert.ok(alpha.legatoSlide.noteBendCount>alpha.ordinary.noteBendCount);
+assert.equal(alpha.staccato.afterFinish[0].displayDuration,alpha.staccato.afterFinish[0].playbackDuration);
+assert.equal(alpha.staccato.events[0].length*2,alpha.staccato.afterFinish[0].playbackDuration);
+assert.equal(alpha.deadNote.afterFinish[0].duration,Duration.Quarter);assert.ok(alpha.deadNote.events[0].length<alpha.deadNote.afterFinish[0].displayDuration);
+assert.equal(alpha.grace.afterFinish[0].duration,Duration.Quarter);assert.ok(alpha.grace.afterFinish[0].playbackDuration<alpha.grace.afterFinish[0].displayDuration);
+assert.equal(alpha.tieAcrossExplicitRest.afterFinish[2].notes[0].tie,true);assert.equal(alpha.tieAcrossExplicitRest.events.length,1);assert.equal(alpha.tieAcrossExplicitRest.restTicks.length,1);
+Object.values(alpha).forEach(r=>assert.ok(r.authoredSnapshotUnchanged));
+
+const f=(numerator:number)=>({numerator,denominator:1});
+function base(){let d=createEmptyTabDocument(3);d=setTabFret(d,d.moments[0].id,0,5,'a');d=setTabMeter(d,{numerator:4,denominator:4});d=setTabDuration(d,d.moments[0].id,0,f(4));for(let i=0;i<3;i++)d=setTabBeatOffset(d,d.moments[i].id,f(i));return d;}
+const freeze=(x:unknown)=>{if(x&&typeof x==='object'){Object.values(x).forEach(freeze);Object.freeze(x);}};
+function productSnapshot(input:TabDocument){const before=structuredClone(input);freeze(input);const check=inspectTabTiming(input);const a=analyzeTabSelection(input,{start:0,end:2},{scale:null,chord:null,frame:null});assert.deepEqual(input,before);return {input,inspection:check,analysisNotes:a.notes.map(n=>({id:n.id,midi:n.midi,fret:n.fret,duration:n.duration,techniques:n.techniques})),analyzedKinds:a.moments?.map(m=>m.kind),writtenSourceDuration:input.moments[0].notes[0].duration};}
+const rest=base();const restDoc=setTabDuration(setTabRest(rest,rest.moments[1].id,true),rest.moments[1].id,0,f(1));
+const mute=base();const muteDoc=setTabMute(mute,mute.moments[1].id,0,true);
+const attack=base();const attackDoc=setTabDuration(setTabFret(attack,attack.moments[1].id,0,5,'b'),attack.moments[1].id,0,f(1));
+const sustainDoc=setTabSustain(attackDoc,attackDoc.moments[1].id,0,true);
+const h=base();let hdoc=setTabDuration(setTabFret(h,h.moments[1].id,0,7,'b'),h.moments[1].id,0,f(1));hdoc={...hdoc,moments:hdoc.moments.map((m,i)=>i===0?{...m,notes:m.notes.map(n=>({...n,techniques:[{kind:'hammer-on' as const,toNoteId:'b'}]}))}:m)};
+const b=base();const bdoc={...b,moments:b.moments.map((m,i)=>i===0?{...m,notes:m.notes.map(n=>({...n,techniques:[{kind:'bend' as const,targetFret:12,notation:'b12'}]}))}:m)};
+const interruptedSustainDoc={...restDoc,moments:restDoc.moments.map((m,i)=>i===2?{...m,sustains:[{noteId:'a',duration:f(1)}]}:m)};
+const product={restCrossingWrittenLength:productSnapshot(restDoc),muteCrossingWrittenLength:productSnapshot(muteDoc),reattackCrossingWrittenLength:productSnapshot(attackDoc),sustainWithOverlappingWrittenLength:productSnapshot(sustainDoc),hammerEndpointObservations:productSnapshot(hdoc),bendBasePitchObservation:productSnapshot(bdoc),interruptedSustainReference:productSnapshot(interruptedSustainDoc)};
+Object.entries(product).forEach(([k,r])=>{assert.deepEqual(r.writtenSourceDuration,f(4));assert.equal(r.inspection.summary.invalid,k==='interruptedSustainReference'?1:0);});
+assert.equal(product.interruptedSustainReference.inspection.issues[0].code,'sustain-interrupted');
+assert.equal(product.reattackCrossingWrittenLength.analysisNotes.length,2);
+assert.equal(product.sustainWithOverlappingWrittenLength.analysisNotes.length,1);
+assert.deepEqual(product.sustainWithOverlappingWrittenLength.input.moments[1].sustains,[{noteId:'a',duration:f(1)}]);
+assert.deepEqual(product.hammerEndpointObservations.analysisNotes.map(n=>n.midi),[69,71]);
+assert.deepEqual(product.bendBasePitchObservation.analysisNotes.map(n=>n.midi),[69]);
+const result={scope:'GO2 notation/realization separation only; existing source APIs, no new timeline engine',source:'alphaTab@5f50046a0e76229af5509f5a28e9567d5af634f0 and current revalidated P2 worktree',alpha,product};
+writeFileSync('/workspace/modus-p3-go-deep/separation/results.json',JSON.stringify(result,null,2));console.log(JSON.stringify({upstreamCases:Object.keys(alpha).length,currentProductCases:Object.keys(product).length,expectations:'PASS',sourceMutationByInspection:false}));

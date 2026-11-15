@@ -1,0 +1,14 @@
+.controls { margin: 8px 0 12px; color: var(--workspace-muted); font-size: 12px; min-width: 0; }
+.action { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; padding: 8px 4px; border: 0; background: transparent; color: var(--workspace-muted); font: inherit; cursor: pointer; text-align: left; overflow-wrap: anywhere; }
+.action:hover { color: #fff; }
+.action:focus-visible, .panel summary:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: 2px; }
+.action:disabled { opacity: .45; cursor: default; }
+.panel { border-block: 1px solid var(--workspace-border); padding: 8px 0; }
+.heading { display: flex; justify-content: space-between; align-items: center; gap: 8px 16px; flex-wrap: wrap; }
+.heading > p { flex: 1; min-width: 90px; margin: 0; }
+.scope { flex: 0 0 auto; }
+.scope[open] { flex-basis: 100%; order: 1; }
+.hint { font-size: 12px; color: var(--workspace-muted); }
+.panel summary { cursor: pointer; min-height: 44px; padding: 12px 4px; }
+.panel ul { list-style: none; padding: 0; margin: 0; }
+.panel li { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px 16px; padding: 4px; border-top: 1px solid var(--workspace-border); overflow-wrap: anywhere; }

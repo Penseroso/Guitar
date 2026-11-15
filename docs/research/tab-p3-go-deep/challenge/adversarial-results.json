@@ -1,0 +1,51 @@
+{
+  "scope": "Valid source fractions and meter/bar bounds. Uniform full-bar global anchoring is declared for this fixture, not implemented product policy.",
+  "globalAnchor": 130944,
+  "source": {
+    "a": {
+      "bar": 1024,
+      "start": "1/506",
+      "length": "1/1015"
+    },
+    "b": {
+      "bar": 1024,
+      "start": "1/507",
+      "length": "1/1011"
+    },
+    "meter": "32/1"
+  },
+  "exactEndA": "67251530481/513590",
+  "exactEndB": "22372961402/170859",
+  "endDelta": "1/87751473810",
+  "sameFloatEnd": 130944.00296150627,
+  "crossProducts": [
+    11490529246453179,
+    11490529246453180
+  ],
+  "atExactEndA": {
+    "expectedActive": [
+      "b"
+    ],
+    "treeCanonicalFloatActive": []
+  },
+  "treeOffsets": [
+    {
+      "id": "b",
+      "start": 130944.00197238658,
+      "end": 130944.00296150627
+    },
+    {
+      "id": "a",
+      "start": 130944.00197628459,
+      "end": 130944.00296150627
+    }
+  ],
+  "relativeIscloseCheck": {
+    "largeOffset": 130944,
+    "a": 130944.01,
+    "b": 130944.0100990099,
+    "delta": "1/10100",
+    "iscloseAbsTol1e7DefaultRel": true
+  },
+  "meaning": "Endpoint coalescence must reject a comparison before an empty active set can be counted as agreement; per-source fraction bounds do not establish floating or Number cross-product exactness."
+}

@@ -1,0 +1,133 @@
+// Evaluation harness only. Imports upstream source; does not implement a product engine.
+import { writeFileSync } from 'node:fs';
+import assert from 'node:assert/strict';
+import { performance } from 'node:perf_hooks';
+import { Score } from '@coderline/alphatab/model/Score';
+import { Track } from '@coderline/alphatab/model/Track';
+import { Staff } from '@coderline/alphatab/model/Staff';
+import { MasterBar } from '@coderline/alphatab/model/MasterBar';
+import { Bar } from '@coderline/alphatab/model/Bar';
+import { Voice } from '@coderline/alphatab/model/Voice';
+import { Beat } from '@coderline/alphatab/model/Beat';
+import { Note } from '@coderline/alphatab/model/Note';
+import { Duration } from '@coderline/alphatab/model/Duration';
+import { GraceType } from '@coderline/alphatab/model/GraceType';
+import { Settings } from '@coderline/alphatab/Settings';
+import { MidiFileGenerator } from '@coderline/alphatab/midi/MidiFileGenerator';
+import type { IMidiFileHandler } from '@coderline/alphatab/midi/IMidiFileHandler';
+
+type Spec = { fret?: number; string?: number; duration?: Duration; tie?: boolean; ring?: boolean;
+    tuplet?: [number, number]; grace?: GraceType; empty?: boolean; chord?: {fret:number;string:number}[] };
+type Event = { start: number; length: number; midi: number };
+function run(bars: Spec[][][], meters: [number, number][] = [[4, 4]], pickup = false) {
+    const score = new Score();
+    const track = new Track(); score.addTrack(track);
+    const staff = new Staff(); track.addStaff(staff);
+    staff.stringTuning.tunings = [64, 59, 55, 50, 45, 40];
+    for (const [i, voices] of bars.entries()) {
+        const mb = new MasterBar();
+        [mb.timeSignatureNumerator, mb.timeSignatureDenominator] = meters[i] ?? meters.at(-1)!;
+        mb.isAnacrusis = pickup && i === 0; score.addMasterBar(mb);
+        const bar = new Bar(); staff.addBar(bar);
+        for (const specs of voices) {
+            const voice = new Voice(); bar.addVoice(voice);
+            for (const spec of specs) {
+                const beat = new Beat();
+                if (spec.duration !== undefined) beat.duration = spec.duration;
+                if (spec.tuplet) [beat.tupletNumerator, beat.tupletDenominator] = spec.tuplet;
+                if (spec.grace !== undefined) beat.graceType = spec.grace;
+                if (spec.empty) beat.isEmpty = true;
+                voice.addBeat(beat);
+                if (spec.fret !== undefined) {
+                    const n = new Note(); n.fret = spec.fret; n.string = spec.string ?? 6;
+                    n.isTieDestination = Boolean(spec.tie); n.isLetRing = Boolean(spec.ring); beat.addNote(n);
+                    for(const extra of spec.chord ?? []){const c=new Note();c.fret=extra.fret;c.string=extra.string;beat.addNote(c);}
+                }
+            }
+        }
+    }
+    const start = performance.now();
+    const settings = new Settings(); score.finish(settings);
+    const events: Event[] = []; const rests: number[] = [];
+    const handler = new Proxy({}, { get: (_, key) => {
+        if (key === 'addNote') return (_track: number, start: number, length: number, midi: number) => events.push({start, length, midi});
+        if (key === 'addRest') return (_track: number, start: number) => rests.push(start);
+        return () => {};
+    } }) as IMidiFileHandler;
+    new MidiFileGenerator(score, settings, handler).generate();
+    return { events, rests, elapsedMs: performance.now() - start,
+        noteIdentities: staff.bars.flatMap((b,bi)=>b.voices.flatMap((v,vi)=>v.beats.flatMap((beat,bti)=>beat.notes.map(n=>({id:n.id,bar:bi,voice:vi,beat:bti,string:n.string,fret:n.fret,midi:n.realValue}))))),
+        barStarts: score.masterBars.map(b => b.start),
+        beats: staff.bars.map(b => b.voices.map(v => v.beats.map(beat => ({
+            start: beat.playbackStart, duration: beat.playbackDuration, displayDuration: beat.displayDuration,
+            notes: beat.notes.map(n => ({tie: n.isTieDestination, fret: n.fret, midi: n.realValue}))
+        })))) };
+}
+const q = (fret: number, extra: Partial<Spec> = {}): Spec => ({fret, duration: Duration.Quarter, ...extra});
+const results: Record<string, ReturnType<typeof run>> = {};
+results.quarters = run([[[q(0), q(2), q(4), q(5)]]]);
+assert.equal(results.quarters.events.length, 4);
+assert.deepEqual(results.quarters.events.map(e=>e.start), [0,960,1920,2880]);
+results.tie = run([[[q(0), q(0,{tie:true}), q(2)]]]);
+assert.equal(results.tie.events.length, 2);
+assert.equal(results.tie.events[0].length, 1920);
+results.danglingTie = run([[[q(0,{tie:true})]]]);
+assert.equal(results.danglingTie.beats[0][0][0].notes[0].tie, false);
+results.crossBarTie = run([[[{fret:0,duration:Duration.Whole}]], [[q(0,{tie:true}), q(2)]]]);
+assert.equal(results.crossBarTie.events[0].length, 4800);
+results.mixedVoices = run([[[{fret:0,duration:Duration.Half}], [{duration:Duration.Quarter},q(0,{string:5})]]]);
+assert.equal(results.mixedVoices.events.length, 2);
+assert.equal(results.mixedVoices.events[0].length, 1920);
+assert.equal(results.mixedVoices.events[1].start, 960);
+results.fullBarRest = run([[[{duration:Duration.Whole}]]], [[3,4]]);
+assert.equal(results.fullBarRest.beats[0][0][0].duration, 2880);
+results.missingDuration = run([[[{fret:0}]]]);
+assert.equal(results.missingDuration.events[0].length, 960);
+results.emptyPlaceholder = run([[[{empty:true}]]]);
+assert.equal(results.emptyPlaceholder.events.length, 0);
+results.septuplet = run([[[...Array.from({length:7},(_,i)=>q(i,{tuplet:[7,4]}))]]]);
+assert.equal(results.septuplet.events.at(-1)!.start + results.septuplet.events.at(-1)!.length,3836);
+results.meterChange = run([[[q(0),q(2),q(4)]], [[q(5),q(7)]]], [[3,4],[2,4]]);
+assert.deepEqual(results.meterChange.barStarts, [0,2880]);
+results.pickup = run([[[q(0)]], [[q(2)]]], [[4,4]], true);
+assert.deepEqual(results.pickup.barStarts, [0,960]);
+results.letRingDifferentString = run([[[q(0,{ring:true}),q(0,{string:5}),q(2,{string:4}),{duration:Duration.Quarter}]]]);
+results.letRingSameString = run([[[q(0,{ring:true}),q(2),{duration:Duration.Quarter}]]]);
+results.beforeBeatGrace = run([[[q(0),{fret:2,duration:Duration.Sixteenth,grace:GraceType.BeforeBeat},q(4)]]]);
+
+results.repeatedIdenticalAttacks = run([[[q(0),q(0)]]]);
+assert.deepEqual(results.repeatedIdenticalAttacks.events.map(e=>e.start),[0,960]);
+results.simultaneousUnisonVoices = run([[[q(0)],[q(0)]]]);
+assert.equal(results.simultaneousUnisonVoices.events.length,2);
+assert.deepEqual(results.simultaneousUnisonVoices.events[0],results.simultaneousUnisonVoices.events[1]);
+assert.notEqual(results.simultaneousUnisonVoices.noteIdentities[0].id,results.simultaneousUnisonVoices.noteIdentities[1].id);
+results.recreatedScoreSameInput = run([[[q(0),q(0)]]]);
+assert.notEqual(results.repeatedIdenticalAttacks.noteIdentities[0].id, results.recreatedScoreSameInput.noteIdentities[0].id);
+assert.deepEqual(results.repeatedIdenticalAttacks.events,results.recreatedScoreSameInput.events);
+results.sameBeatUnisonDifferentStrings = run([[[q(0,{chord:[{fret:5,string:5}]})]]]);
+assert.equal(results.sameBeatUnisonDifferentStrings.events.length,2);
+assert.deepEqual(results.sameBeatUnisonDifferentStrings.events[0],results.sameBeatUnisonDifferentStrings.events[1]);
+assert.deepEqual(results.sameBeatUnisonDifferentStrings.noteIdentities.map(n=>n.string),[6,5]);
+const precision = [];
+for(const [numerator,denominator] of [[3,2],[5,4],[7,4],[11,8],[13,8]]){
+  const result=run([[[...Array.from({length:numerator},(_,i)=>q(i,{tuplet:[numerator,denominator]}))]]],[[denominator,4]]);
+  const expected=960*denominator, actual=result.events.at(-1)!.start+result.events.at(-1)!.length;
+  precision.push({numerator,denominator,expectedTicks:expected,actualTicks:actual,errorTicks:actual-expected});
+}
+const benchmarks = [];
+for (const count of [32,128,1024]) {
+    const bars = Array.from({length:count/4},()=>[[q(0),q(2),q(4),q(5)]]);
+    run(bars); const samples = Array.from({length:7},()=>run(bars).elapsedMs).sort((a,b)=>a-b);
+    benchmarks.push({notes:count,samplesMs:samples,p50Ms:samples[3],maxMs:samples.at(-1)});
+}
+// Density probe only; six synthetic voices are not a proposed string-to-voice mapping.
+const denseBars = Array.from({length:256},()=>Array.from({length:6},(_,s)=>[q(0,{string:s+1}),q(2,{string:s+1}),q(4,{string:s+1}),q(5,{string:s+1})]));
+run(denseBars);
+const denseSamples=Array.from({length:3},()=>run(denseBars).elapsedMs).sort((a,b)=>a-b);
+benchmarks.push({notes:6144,samplesMs:denseSamples,p50Ms:denseSamples[1],maxMs:denseSamples.at(-1)});
+writeFileSync('/workspace/modus-p3-current/alpha/results.json', JSON.stringify({
+    source:'CoderLine/alphaTab@5f50046a0e76229af5509f5a28e9567d5af634f0',
+    scope:'Source-level Node model.finish + MIDI generation; no renderer, synth, browser or I/O',
+    results,precision,benchmarks
+},null,2));
+console.log(JSON.stringify({cases:Object.keys(results).length,precision,benchmarks}));

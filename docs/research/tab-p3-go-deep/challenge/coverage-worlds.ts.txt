@@ -1,0 +1,42 @@
+import assert from 'node:assert/strict';
+import { writeFileSync } from 'node:fs';
+import { createEmptyTabDocument, setTabFret } from '/workspace/Guitar-p2/src/domain/tab/editing';
+import { inspectTabTiming } from '/workspace/Guitar-p2/src/domain/tab/timing-inspection';
+
+let source = createEmptyTabDocument(2);
+source = setTabFret(source, source.moments[0].id, 0, 0, 'a');
+source = setTabFret(source, source.moments[1].id, 1, 8, 'b');
+source.meter = { numerator: 4, denominator: 4 };
+source.moments[0].beatOffset = { numerator: 0, denominator: 1 };
+source.moments[0].notes[0].duration = { numerator: 1, denominator: 1 };
+source.moments[1].beatOffset = { numerator: 1, denominator: 4 };
+const before = JSON.stringify(source);
+const originalCheck = inspectTabTiming(source);
+assert.deepEqual(originalCheck.issues.map(x => x.code), ['missing-duration']);
+const short = structuredClone(source), long = structuredClone(source);
+short.moments[1].notes[0].duration = { numerator: 1, denominator: 8 };
+long.moments[1].notes[0].duration = { numerator: 3, denominator: 4 };
+assert.deepEqual(inspectTabTiming(short).issues, []);
+assert.deepEqual(inspectTabTiming(long).issues, []);
+// These two expectations are manual two-interval arithmetic, not a new observer.
+assert.equal(1 / 4 + 1 / 8, 3 / 8);
+assert.equal(1 / 4 + 3 / 4, 1);
+const result = {
+    scope: 'Written-interval countermodels only; no sounding or production timeline is implemented.',
+    source,
+    inspection: originalCheck,
+    completions: [
+        { name: 'short-b', bDuration: '1/8', bEnd: '3/8', activeAt1_8: ['a'], activeAt1_2: ['a'] },
+        { name: 'long-b', bDuration: '3/4', bEnd: '1', activeAt1_8: ['a'], activeAt1_2: ['a', 'b'] },
+    ],
+    knownInterval: { noteId: 'a', range: '[0,1)' },
+    unknownEndB: { knownStart: '1/4', knownMIDI: 67, string: 1 },
+    interpretation: {
+        beforeKnownStartB: 'For this closed two-event scope, b cannot contaminate [0,1/4) under declared half-open written intervals.',
+        afterKnownStartB: 'Known a interval survives, but complete verticality at1/2 is undecidable from the source; absence of b cannot be claimed.',
+        caution: 'Adding another unknown-start event can invalidate even the bounded complete region; coverage depends on all relevant source records.',
+    },
+};
+assert.equal(JSON.stringify(source), before);
+writeFileSync('/workspace/modus-p3-go-deep/challenge/coverage-worlds.json', JSON.stringify(result, null, 2));
+console.log(JSON.stringify({ cases: 2, originalIssues: originalCheck.summary, completionP2Issues: [0, 0], differingActiveSetsAt1_2: true, sourceMutation: false }));

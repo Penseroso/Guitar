@@ -1,0 +1,154 @@
+import assert from 'node:assert/strict';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { performance } from 'node:perf_hooks';
+import { parseAsciiTab } from '/workspace/Guitar-p2/src/domain/tab/ascii';
+import { createTabAnalysisState, reduceTabAnalysis as reduce, type TabAnalysisState, type TabAnalysisAction } from '/workspace/Guitar-p2/src/features/tab-analysis/state';
+import { analyzeTabSelection } from '/workspace/Guitar-p2/src/domain/tab/analysis';
+import { createEmptyTabDocument } from '/workspace/Guitar-p2/src/domain/tab/editing';
+
+const OUT='/workspace/modus-p3-go-deep/provenance';
+const freeze=(v:unknown)=>{if(v&&typeof v==='object'&&!Object.isFrozen(v)){Object.values(v).forEach(freeze);Object.freeze(v)}};
+const src=(body:string)=>['e','B','G','D','A','E'].map((label,i)=>`${label}|${i?'-'.repeat(body.length):body}|`).join('\n');
+function imported(body:string, from=createTabAnalysisState()) {
+ const source=src(body);const parser=parseAsciiTab(source);assert(parser.ok);
+ return reduce(reduce(from,{type:'set-source',source,name:body+'.tab'}),{type:'parsed',result:parser});
+}
+const first=(s:TabAnalysisState)=>s.document!.moments[0];
+const notes=(s:TabAnalysisState)=>s.document!.moments.flatMap(m=>m.notes);
+const snapshot=(s:TabAnalysisState)=>({format:s.document!.format,nextId:s.nextId,analyzedSource:s.analyzedSource,source:s.document!.source,
+ moments:s.document!.moments.map(m=>({id:m.id,index:m.index,measure:m.measure,column:m.column,beatOffset:m.beatOffset,
+  notes:m.notes.map(n=>({...n})),mutes:m.mutes,rest:m.rest,sustains:m.sustains})),selection:s.selection,activeCell:s.activeCell});
+const cases:any[]=[];
+function probe(name:string,run:()=>unknown){const result=run();cases.push({name,result});}
+function edit(s:TabAnalysisState,a:TabAnalysisAction){const before=JSON.stringify(snapshot(s));freeze(s);const result=reduce(s,a);assert.equal(JSON.stringify(snapshot(s)),before,'mutation '+a.type);return result;}
+
+probe('parsed-location-and-distinct-repeated-note-IDs',()=>{
+ const s=imported('5h7-7--');const ns=notes(s);
+ assert.deepEqual(ns.map(n=>n.id),['note-0-0','note-1-0','note-2-0']);
+ assert.deepEqual(ns.map(n=>n.source),[{line:1,column:3},{line:1,column:5},{line:1,column:7}]);
+ assert.equal(ns[1].midi,ns[2].midi);assert.notEqual(ns[1].id,ns[2].id);
+ return snapshot(s);
+});
+probe('timing-edit-preserves-import-fret-provenance',()=>{
+ let s=imported('5h7-7--');const id=first(s).id,before=first(s).notes[0];
+ s=edit(s,{type:'set-duration',momentId:id,string:0,duration:{numerator:6,denominator:8}});
+ s=edit(s,{type:'set-beat-offset',momentId:id,offset:{numerator:0,denominator:9}});
+ assert.deepEqual(first(s).notes[0].source,before.source);assert.equal(first(s).notes[0].id,before.id);
+ assert.deepEqual(first(s).notes[0].duration,{numerator:3,denominator:4});assert.deepEqual(first(s).beatOffset,{numerator:0,denominator:1});
+ return {note:first(s).notes[0],start:first(s).beatOffset,meaning:'source tracks original played-fret token; newly authored duration has no separate source/revision field'};
+});
+probe('fret-noop-preserves-document-and-history',()=>{
+ const s=imported('5h7-7--');const r=edit(s,{type:'set-fret',momentId:first(s).id,string:0,fret:5});assert.equal(r,s);
+ return {sameState:true,sameDocument:r.document===s.document,past:r.past.length,nextId:r.nextId};
+});
+probe('fret-change-retains-ID-replaces-fact-and-null-source',()=>{
+ let s=imported('5h7-7--');s=edit(s,{type:'set-duration',momentId:first(s).id,string:0,duration:{numerator:3,denominator:2}});
+ const old=s,r=edit(s,{type:'set-fret',momentId:first(s).id,string:0,fret:6});
+ assert.equal(first(r).notes[0].id,first(old).notes[0].id);assert.equal(first(r).notes[0].source,null);
+ assert.deepEqual(first(r).notes[0].duration,{numerator:3,denominator:2});assert.equal(first(r).notes[0].techniques,undefined);
+ assert.equal(first(r).notes[0].midi,70);assert.equal(r.document!.source,old.document!.source);assert.equal(r.analyzedSource,null);
+ return {before:first(old).notes[0],after:first(r).notes[0],sameID:true,documentSourceStillOriginal:r.document!.source===src('5h7-7--'),format:r.document!.format,meaning:'stable ID identifies editable note identity, not immutable content or source-text equality'};
+});
+probe('mute-replaces-note-with-authored-unpitched-event',()=>{
+ const s=imported('5h7-7--'),r=edit(s,{type:'set-mute',momentId:first(s).id,string:0,enabled:true});
+ assert.equal(first(r).id,first(s).id);assert.equal(first(r).notes.length,0);assert.deepEqual(first(r).mutes,[{string:0}]);
+ return {before:first(s),after:first(r),meaning:'mute has no independent ID; position+string are current-snapshot address, not original note ID'};
+});
+probe('rest-replaces-whole-position-events',()=>{
+ const s=imported('5-7-7'),r=edit(s,{type:'set-rest',momentId:first(s).id,enabled:true});
+ assert.equal(first(r).id,first(s).id);assert.deepEqual(first(r).notes,[]);assert.deepEqual(first(r).rest,{});
+ const undo=edit(r,{type:'undo'});assert.equal(undo.document,s.document);assert.deepEqual(notes(undo)[0].source,{line:1,column:3});
+ return {before:first(s),after:first(r),undoRestoresOriginalDocument:true};
+});
+probe('sustain-conversion-removes-repeated-note-ID-and-keeps-origin',()=>{
+ let s=imported('5-5-5');const [a,b,c]=s.document!.moments;const ownB=b.notes[0].id;
+ s=edit(s,{type:'set-duration',momentId:b.id,string:0,duration:{numerator:2,denominator:1}});
+ const before=s;rAssert: {
+  s=edit(s,{type:'set-sustain',momentId:b.id,string:0,enabled:true});
+  s=edit(s,{type:'set-sustain',momentId:c.id,string:0,enabled:true});
+  assert.equal(s.document!.moments[1].notes.length,0);assert(!notes(s).some(n=>n.id===ownB));
+  assert.deepEqual(s.document!.moments[1].sustains,[{noteId:a.notes[0].id,duration:{numerator:2,denominator:1}}]);
+  assert.deepEqual(s.document!.moments[2].sustains,[{noteId:a.notes[0].id}]);
+ }
+ const muted=edit(s,{type:'set-mute',momentId:b.id,string:0,enabled:true});assert.equal(muted.document!.moments[2].sustains,undefined);
+ const undo=edit(s,{type:'undo'});assert.equal(undo.document!.moments[1].notes.length,0);
+ return {before:snapshot(before),after:snapshot(s),afterInterruption:snapshot(muted),meaning:'explicit conversion changes event kind; no synthetic attack should resurrect removed note ID'};
+});
+probe('origin-fret-change-invalidates-sustain-links-with-same-origin-ID',()=>{
+ let s=imported('5-5-5');const [a,b]=s.document!.moments;s=edit(s,{type:'set-sustain',momentId:b.id,string:0,enabled:true});
+ const r=edit(s,{type:'set-fret',momentId:a.id,string:0,fret:6});assert.equal(first(r).notes[0].id,a.notes[0].id);assert.equal(r.document!.moments[1].sustains,undefined);
+ return {originID:a.notes[0].id,originMIDIBefore:a.notes[0].midi,originMIDIAfter:first(r).notes[0].midi,continuationRemoved:true};
+});
+probe('split-join-preserve-IDs-but-change-address-coordinates',()=>{
+ let s=imported('5h7-7');const before=snapshot(s);const a=first(s).id;
+ const split=edit(s,{type:'split-measure',afterId:a});assert.deepEqual(notes(split),notes(s));assert.deepEqual(split.document!.moments.map(m=>m.id),s.document!.moments.map(m=>m.id));assert.deepEqual(split.document!.moments.map(m=>m.measure),[1,2,2]);
+ const joined=edit(split,{type:'join-measure',afterId:a});assert.deepEqual(notes(joined),notes(s));assert.deepEqual(joined.document!.moments.map(m=>m.measure),[1,1,1]);
+ assert.equal(edit(joined,{type:'undo'}).document,split.document);
+ return {before,split:snapshot(split),joined:snapshot(joined),meaning:'source.line/column still refer to imported text; measure/index are current score coordinates and may change'};
+});
+probe('split-and-join-refuse-unresolved-rebasing',()=>{
+ const s=imported('5-7-7');const [a,b]=s.document!.moments;
+ const timed=edit(s,{type:'set-beat-offset',momentId:b.id,offset:{numerator:1,denominator:1}});assert.equal(edit(timed,{type:'split-measure',afterId:a.id}),timed);
+ const split=edit(s,{type:'split-measure',afterId:a.id}),timedSplit=edit(split,{type:'set-beat-offset',momentId:b.id,offset:{numerator:0,denominator:1}});assert.equal(edit(timedSplit,{type:'join-measure',afterId:a.id}),timedSplit);
+ return {timedSplitBlocked:true,timedJoinBlocked:true,meaning:'preservation does not mean inventing a replacement time origin'};
+});
+probe('insert-delete-preserve-survivor-IDs-and-selection-membership',()=>{
+ let s=imported('5-7-7');s=edit(s,{type:'select',selection:{start:1,end:2}});const oldIDs=s.document!.moments.map(m=>m.id);
+ const inserted=edit(s,{type:'insert-moment',afterId:oldIDs[0]});assert.deepEqual(inserted.selection,{start:2,end:3});assert.deepEqual(inserted.document!.moments.filter(m=>oldIDs.includes(m.id)).map(m=>m.id),oldIDs);
+ const insertedID=inserted.document!.moments[1].id;
+ const deleted=edit(inserted,{type:'delete-moment',momentId:oldIDs[1]});assert.deepEqual(deleted.selection,{start:2,end:2});assert.equal(deleted.document!.moments[2].id,oldIDs[2]);
+ assert.deepEqual(deleted.document!.moments.map(m=>m.index),[0,1,2]);
+ return {before:snapshot(s),inserted:snapshot(inserted),deleted:snapshot(deleted),insertedID};
+});
+probe('last-position-deletion-clears-content-without-removing-position-ID',()=>{
+ const s=imported('5'),r=edit(s,{type:'delete-moment',momentId:first(s).id});assert.equal(first(r).id,first(s).id);assert.equal(first(r).notes.length,0);assert.equal(r.document!.moments.length,1);
+ return {positionID:first(r).id,beforeNoteID:first(s).notes[0].id,afterNotes:first(r).notes};
+});
+probe('remove-readd-note-allocates-new-ID',()=>{
+ const s=imported('5');const removed=edit(s,{type:'set-fret',momentId:first(s).id,string:0,fret:null});
+ const added=edit(removed,{type:'set-fret',momentId:first(removed).id,string:0,fret:5});assert.notEqual(first(added).notes[0].id,first(s).notes[0].id);assert.equal(first(added).notes[0].source,null);
+ return {old:first(s).notes[0],new:first(added).notes[0]};
+});
+probe('retune-and-capo-keep-identity-and-import-location-but-recompute-MIDI',()=>{
+ let s=imported('5-7');const before=notes(s);
+ const capo=edit(s,{type:'set-capo',capo:2});assert.deepEqual(notes(capo).map(n=>n.id),before.map(n=>n.id));assert.deepEqual(notes(capo).map(n=>n.source),before.map(n=>n.source));assert.deepEqual(notes(capo).map(n=>n.midi),before.map(n=>n.midi+2));
+ const retuned=edit(capo,{type:'set-tuning',id:'dadgad'});assert.deepEqual(notes(retuned).map(n=>n.midi),[69,71]);assert.deepEqual(notes(retuned).map(n=>n.id),before.map(n=>n.id));
+ return {before:before,capo:notes(capo),retuned:notes(retuned),doubleCapoWouldBeWrong:notes(retuned).map(n=>n.midi+retuned.capo),meaning:'MIDI is actual product coordinate, source identifies written fret token, not immutable acoustic pitch'};
+});
+probe('import-replacement-reuses-local-IDs-with-different-content',()=>{
+ const s=imported('5-7'),r=imported('9-11',s);
+ assert.equal(first(r).id,first(s).id);assert.equal(first(r).notes[0].id,first(s).notes[0].id);assert.notEqual(first(r).notes[0].midi,first(s).notes[0].midi);assert.notEqual(r.document,s.document);
+ const undone=edit(r,{type:'undo'});assert.equal(undone.document,s.document);const redone=edit(undone,{type:'redo'});assert.equal(redone.document,r.document);
+ return {before:snapshot(s),replacement:snapshot(r),documentReferenceChanges:true,undoResurrectsPriorSnapshot:true,meaning:'ID-only cross-document cache aliases distinct notes'};
+});
+probe('same-content-reimport-new-snapshot-same-local-IDs',()=>{
+ const s=imported('5-7'),r=imported('5-7',s);assert.notEqual(r.document,s.document);assert.deepEqual(r.document,s.document);
+ return {sameValue:true,sameDocumentReference:false,sameLocalIDs:true,meaning:'value equality and document-instance identity are distinct'};
+});
+probe('nextId-not-rewound-on-undo-branch-and-reset-has-new-session-scope',()=>{
+ let s=createTabAnalysisState();s=edit(s,{type:'insert-moment',afterId:first(s).id});const old=s.document!.moments[1].id,next=s.nextId;
+ const u=edit(s,{type:'undo'});assert.equal(u.nextId,next);const branch=edit(u,{type:'insert-moment',afterId:first(u).id});assert.notEqual(branch.document!.moments[1].id,old);
+ const reset=edit(branch,{type:'reset'});assert.equal(reset.nextId,1);assert.equal(first(reset).id,'edit-moment-0');
+ return {oldBranchID:old,newBranchID:branch.document!.moments[1].id,nextIdNotRewound:true,resetNextId:1,meaning:'allocator is session-local, and not part of edit snapshots'};
+});
+probe('selection-excludes-continuation-origin-so-selected-note-list-is-not-full-context',()=>{
+ let s=imported('5-5-5');const [a,b]=s.document!.moments;s=edit(s,{type:'set-sustain',momentId:b.id,string:0,enabled:true});s=edit(s,{type:'select',selection:{start:1,end:1}});
+ const selected=edit(s,{type:'analyze',scope:'selection'});assert.equal(selected.analysis!.result.notes.length,0);assert.equal(selected.analysis!.result.moments[0].kind,'empty');assert.equal(s.document!.moments[1].sustains![0].noteId,a.notes[0].id);
+ const all=edit(s,{type:'analyze',scope:'all'});assert.equal(all.analysis!.result.notes.length,2);
+ return {selection:selected.analysis!.selection,selectedNotes:selected.analysis!.result.notes,selectedKind:selected.analysis!.result.moments[0].kind,originOutsideSelection:a.notes[0].id,fullDocumentNoteIDs:notes(s).map(n=>n.id),meaning:'future observer must define source-context/clip boundaries; current selected note list loses outside continuation context'};
+});
+probe('partial-selection-cannot-promote-whole-bar-collection',()=>{
+ const source=['e|0--|','B|-1-|','G|--0|','D|---|','A|---|','E|---|'].join('\n');const p=parseAsciiTab(source);assert(p.ok);const d=p.document;
+ const whole=analyzeTabSelection(d,{start:0,end:2},{scale:null,chord:null,frame:null}),partial=analyzeTabSelection(d,{start:0,end:1},{scale:null,chord:null,frame:null});
+ assert(whole.harmonicSpans.some(x=>x.basis==='whole-bar-collection'));assert(!partial.harmonicSpans.some(x=>x.basis==='whole-bar-collection'));
+ return {fullSpan:whole.harmonicSpans,partialSpan:partial.harmonicSpans};
+});
+probe('equal-MIDI-on-different-strings-is-not-event-equality',()=>{
+ let s=createTabAnalysisState();const id=first(s).id;s=edit(s,{type:'set-fret',momentId:id,string:0,fret:0});s=edit(s,{type:'set-fret',momentId:id,string:1,fret:5});
+ const a=edit(s,{type:'analyze'}).analysis!.result;assert.equal(a.notes.length,2);assert.notEqual(a.notes[0].id,a.notes[1].id);assert.equal(a.notes[0].midi,a.notes[1].midi);assert.equal(a.pitchClasses.length,1);
+ return {notes:a.notes.map(n=>({id:n.id,string:n.string,midi:n.midi,source:n.source})),recognitionPCs:a.pitchClasses};
+});
+const paths=['src/domain/tab/ascii.ts','src/domain/tab/types.ts','src/domain/tab/editing.ts','src/domain/tab/input-capabilities.ts','src/features/tab-analysis/state.ts','src/domain/tab/analysis.ts','src/components/guitar/scale/tab-analysis/TabScoreView.tsx'];
+const result={date:'2026-11-15',scope:'GO1 fact/provenance deep evaluation; existing API only; no product engine',cases:cases.length,inputMutations:0,details:cases,sourceSha256:Object.fromEntries(paths.map(p=>[p,createHash('sha256').update(readFileSync('/workspace/Guitar-p2/'+p)).digest('hex')]))};
+writeFileSync(OUT+'/provenance-results.json',JSON.stringify(result,null,2));console.log(JSON.stringify({cases:cases.length,mutations:0}));

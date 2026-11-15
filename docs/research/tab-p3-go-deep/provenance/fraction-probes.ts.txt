@@ -1,0 +1,52 @@
+import assert from 'node:assert/strict';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { performance } from 'node:perf_hooks';
+import { normalizeTabFraction, isValidTabMeter } from '/workspace/Guitar-p2/src/domain/tab/input-capabilities';
+
+const OUT='/workspace/modus-p3-go-deep/provenance';
+type Q={n:bigint,d:bigint};
+const gcd=(a:bigint,b:bigint):bigint=>{while(b)[a,b]=[b,a%b];return a<0n?-a:a};
+const q=(n:bigint,d=1n):Q=>{assert(d>0n);const g=gcd(n,d);return {n:n/g,d:d/g}};
+const add=(a:Q,b:Q)=>q(a.n*b.d+b.n*a.d,a.d*b.d);
+const sub=(a:Q,b:Q)=>q(a.n*b.d-b.n*a.d,a.d*b.d);
+const text=(a:Q)=>({numerator:a.n.toString(),denominator:a.d.toString()});
+const source=(n:number,d:number)=>{const v={numerator:n,denominator:d};assert(normalizeTabFraction(v));return {input:v,exact:q(BigInt(n),BigInt(d)),float:n/d}};
+const cases:any[]=[];
+const a=source(1,10),b=source(1,5),c=source(3,10);
+assert.equal(sub(add(a.exact,b.exact),c.exact).n,0n);assert.notEqual(a.float+b.float,c.float);
+cases.push({name:'equal-exact-endpoints-float-unequal',source:[a.input,b.input,c.input],exactDifference:text(sub(add(a.exact,b.exact),c.exact)),numberLeft:a.float+b.float,numberRight:c.float,meaning:'endpoint equality can fail even with simple valid inputs; no timeline computation is performed by current P2'});
+for(const denominator of [7,10]){
+ const v=source(1,denominator);let sum=q(0n),floating=0;for(let i=0;i<denominator;i++){sum=add(sum,v.exact);floating+=v.float;}
+ assert.deepEqual(sum,q(1n));assert.notEqual(floating,1);
+ cases.push({name:`repeat-${denominator}-legal-fractions`,source:v.input,count:denominator,expected:text(sum),numberSum:floating,meaning:'standalone arithmetic stress; product does not currently infer serial starts by accumulating durations'});
+}
+const offsetA=source(1,506),durationA=source(1,1015),offsetB=source(1,507),durationB=source(1,1011);
+const meter={numerator:32,denominator:1};assert(isValidTabMeter(meter));const measure=1024,anchor=(measure-1)*meter.numerator*4/meter.denominator;
+const endA=add(q(BigInt(anchor)),add(offsetA.exact,durationA.exact)),endB=add(q(BigInt(anchor)),add(offsetB.exact,durationB.exact));
+const floatA=anchor+offsetA.float+durationA.float,floatB=anchor+offsetB.float+durationB.float;
+assert.notEqual(sub(endA,endB).n,0n);assert.equal(floatA,floatB);
+const crossA=endA.n*endB.d,crossB=endB.n*endA.d;assert.notEqual(crossA,crossB);assert.equal(Number(crossA),Number(crossB));
+cases.push({name:'distinct-legal-large-anchor-endpoints-collapse',meter,measure,anchor,source:{offsetA:offsetA.input,durationA:durationA.input,offsetB:offsetB.input,durationB:durationB.input},
+ exactEndA:text(endA),exactEndB:text(endB),exactDifference:text(sub(endA,endB)),floatEndA:floatA,floatEndB:floatB,
+ normalizedCrossProducts:{a:crossA.toString(),b:crossB.toString(),numberA:Number(crossA),numberB:Number(crossB),safe:false},
+ meaning:'all authored fields and measure count are within current limits; anchor arithmetic assumes full bars as a future contract, not current P2 behavior'});
+const primes:number[]=[];for(let i=2;i<=1024;i++)if(!Array.from({length:Math.floor(Math.sqrt(i))-1},(_,j)=>j+2).some(d=>i%d===0))primes.push(i);
+let sum=q(0n),firstUnsafe:any=null,firstNonfinite:any=null;
+for(let i=0;i<primes.length;i++){
+ const v=source(1,primes[i]);sum=add(sum,v.exact);
+ if(!firstUnsafe&&(!Number.isSafeInteger(Number(sum.n))||!Number.isSafeInteger(Number(sum.d))))firstUnsafe={count:i+1,denominators:primes.slice(0,i+1),exact:text(sum),numeratorSafe:Number.isSafeInteger(Number(sum.n)),denominatorSafe:Number.isSafeInteger(Number(sum.d))};
+ if(!firstNonfinite&&(!Number.isFinite(Number(sum.n))||!Number.isFinite(Number(sum.d))))firstNonfinite={count:i+1,denominators:primes.slice(0,i+1),numeratorDigits:sum.n.toString().length,denominatorDigits:sum.d.toString().length};
+}
+assert(firstUnsafe);assert(firstNonfinite);
+cases.push({name:'legal-denominator-aggregate-components-outgrow-Number',sourceNumerators:1,sourceDenominators:primes,sourceCount:primes.length,firstUnsafe,firstNonfinite,finalBits:{numerator:sum.n.toString(2).length,denominator:sum.d.toString(2).length},meaning:'arithmetic alternative stress only, not a claim that current product accumulates arbitrary duration sequences'});
+const grid=960;const seventh=source(1,7),tick=grid*seventh.input.numerator/seventh.input.denominator;assert(!Number.isInteger(tick));
+cases.push({name:'fixed-960-grid-cannot-exactly-cover-legal-1over7',source:seventh.input,grid,ticks:tick,roundedTicks:Math.round(tick),meaning:'a narrower exact tick subset requires explicit supported-denominator restrictions; display/playback quantization cannot replace source facts'});
+const timings:any[]=[];
+for(const size of [1024,6144]){
+ const values=Array.from({length:size},(_,i)=>q(1n,BigInt(primes[i%primes.length])));const samples:number[]=[];let last=q(0n);
+ for(let run=0;run<7;run++){const t=performance.now();last=q(0n);for(const v of values)last=add(last,v);samples.push(performance.now()-t);}
+ samples.sort((x,y)=>x-y);timings.push({terms:size,repetitions:7,medianMs:samples[3],minMs:samples[0],maxMs:samples[6],numeratorBits:last.n.toString(2).length,denominatorBits:last.d.toString(2).length});
+}
+const result={date:'2026-11-15',scope:'standalone rational arithmetic experiments, not a product timeline or chosen integration',sourceBounds:{numerator:'1..1024 duration / 0..1024 start',denominator:'1..1024',meterNumerator:'1..32',meterDenominators:[1,2,4,8,16,32],editablePositions:1024},cases,timings,
+ limitations:['host Node warm repeated samples; no browser/worker/serialization or physical mobile cost','BigInt reference chosen only as independent exact arithmetic oracle; not an implementation decision','aggregate sum stress is arithmetic-only; does not authorize inferring starts from note durations']};
+writeFileSync(OUT+'/fraction-results.json',JSON.stringify(result,null,2));console.log(JSON.stringify({cases:cases.length,firstUnsafe,firstNonfinite,timings}));

@@ -1,0 +1,12 @@
+{
+  "inputs": {
+    "aOnset": "167/1001",
+    "aLength": "601/1002",
+    "bOnset": "772/1007"
+  },
+  "aEnd": "768935/1003002",
+  "overlap": "1/1010023014",
+  "overlapApprox": 9.900764498817647e-10,
+  "allAuthoredNumeratorsAndDenominatorsAtMost1024": true,
+  "scope": "Independent rational arithmetic check only; library runtime result reviewed separately."
+}

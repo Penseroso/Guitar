@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "paths": {
+      "@/*": [
+        "/workspace/Guitar-p2/src/*"
+      ],
+      "@coderline/alphatab/*": [
+        "/tmp/modus-p2-research/alpha/packages/alphatab/src/*"
+      ],
+      "@coderline/alphatab-transpiler/src/*": [
+        "/tmp/modus-p2-research/alpha/packages/transpiler/src/*"
+      ],
+      "@coderline/alphatab-tooling/typescript": [
+        "/tmp/modus-p2-research/alpha/packages/tooling/src/typescript.ts"
+      ],
+      "typescript": [
+        "/workspace/modus-p3-evaluation/vendor/node_modules/typescript/lib/typescript.js"
+      ]
+    }
+  }
+}

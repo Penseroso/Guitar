@@ -1,0 +1,1222 @@
+{
+  "scope": "semantic claim thought experiments, not a new timeline engine; counterfactual active sets are independently manual",
+  "cases": [
+    {
+      "id": "C01",
+      "kind": "admissible-missing-field-completions",
+      "sourceInput": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "string": 1,
+                "fret": 5,
+                "midi": 64,
+                "pitchClass": 4,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ],
+        "measureCount": 1
+      },
+      "query": {
+        "bar": 1,
+        "localQuarter": "3/2"
+      },
+      "claimUnderTest": "A preceding unknown note length prevents complete active-set claim",
+      "counterfactualWorlds": [
+        {
+          "name": "A",
+          "assignmentsOnlyToPreviouslyUnknownFields": [
+            {
+              "path": "moments.0.notes.0.duration",
+              "value": {
+                "numerator": 1,
+                "denominator": 2
+              }
+            }
+          ],
+          "manuallyExpectedActiveAtQuery": [
+            "b"
+          ],
+          "assumptions": [
+            "interpret explicit starts and lengths as nominal half-open written intervals; no performance realization"
+          ]
+        },
+        {
+          "name": "B",
+          "assignmentsOnlyToPreviouslyUnknownFields": [
+            {
+              "path": "moments.0.notes.0.duration",
+              "value": {
+                "numerator": 2,
+                "denominator": 1
+              }
+            }
+          ],
+          "manuallyExpectedActiveAtQuery": [
+            "a",
+            "b"
+          ],
+          "assumptions": [
+            "interpret explicit starts and lengths as nominal half-open written intervals; no performance realization"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C02",
+      "kind": "admissible-missing-field-completions",
+      "sourceInput": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null,
+                "duration": {
+                  "numerator": 2,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "string": 1,
+                "fret": 5,
+                "midi": 64,
+                "pitchClass": 4,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 2
+                }
+              }
+            ]
+          }
+        ],
+        "measureCount": 1
+      },
+      "query": {
+        "bar": 1,
+        "localQuarter": "5/4"
+      },
+      "claimUnderTest": "A later ordered event without onset can overlap or miss the query",
+      "counterfactualWorlds": [
+        {
+          "name": "A",
+          "assignmentsOnlyToPreviouslyUnknownFields": [
+            {
+              "path": "moments.1.beatOffset",
+              "value": {
+                "numerator": 1,
+                "denominator": 4
+              }
+            }
+          ],
+          "manuallyExpectedActiveAtQuery": [
+            "a"
+          ],
+          "assumptions": [
+            "interpret explicit starts and lengths as nominal half-open written intervals; no performance realization"
+          ]
+        },
+        {
+          "name": "B",
+          "assignmentsOnlyToPreviouslyUnknownFields": [
+            {
+              "path": "moments.1.beatOffset",
+              "value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            }
+          ],
+          "manuallyExpectedActiveAtQuery": [
+            "a",
+            "b"
+          ],
+          "assumptions": [
+            "interpret explicit starts and lengths as nominal half-open written intervals; no performance realization"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C03",
+      "kind": "admissible-missing-field-completions",
+      "sourceInput": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null
+              }
+            ],
+            "beatOffset": {
+              "numerator": 3,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 2,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "string": 1,
+                "fret": 5,
+                "midi": 64,
+                "pitchClass": 4,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ],
+        "measureCount": 2,
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "query": {
+        "bar": 2,
+        "localQuarter": "3/2",
+        "illustrativeGlobalQuarter": "11/2"
+      },
+      "claimUnderTest": "Unknown duration in the previous bar can carry into the known bar",
+      "counterfactualWorlds": [
+        {
+          "name": "A",
+          "assignmentsOnlyToPreviouslyUnknownFields": [
+            {
+              "path": "moments.0.notes.0.duration",
+              "value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            }
+          ],
+          "manuallyExpectedActiveAtQuery": [
+            "b"
+          ],
+          "assumptions": [
+            "illustrative ordinary 4/4 bar2 origin=4; nominal intervals only"
+          ]
+        },
+        {
+          "name": "B",
+          "assignmentsOnlyToPreviouslyUnknownFields": [
+            {
+              "path": "moments.0.notes.0.duration",
+              "value": {
+                "numerator": 3,
+                "denominator": 1
+              }
+            }
+          ],
+          "manuallyExpectedActiveAtQuery": [
+            "a",
+            "b"
+          ],
+          "assumptions": [
+            "illustrative ordinary 4/4 bar2 origin=4; nominal intervals only"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C04",
+      "kind": "admissible-missing-field-completions",
+      "sourceInput": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null,
+                "duration": {
+                  "numerator": 3,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 3,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 2,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "string": 1,
+                "fret": 5,
+                "midi": 64,
+                "pitchClass": 4,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 2
+                }
+              }
+            ]
+          }
+        ],
+        "measureCount": 2,
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "query": {
+        "bar": 2,
+        "localQuarter": "5/4",
+        "illustrativeGlobalQuarter": "21/4"
+      },
+      "claimUnderTest": "A later-bar unknown onset matters where an earlier written interval crosses that bar",
+      "counterfactualWorlds": [
+        {
+          "name": "A",
+          "assignmentsOnlyToPreviouslyUnknownFields": [
+            {
+              "path": "moments.1.beatOffset",
+              "value": {
+                "numerator": 2,
+                "denominator": 1
+              }
+            }
+          ],
+          "manuallyExpectedActiveAtQuery": [
+            "a"
+          ],
+          "assumptions": [
+            "illustrative ordinary 4/4 bar2 origin=4; nominal intervals only"
+          ]
+        },
+        {
+          "name": "B",
+          "assignmentsOnlyToPreviouslyUnknownFields": [
+            {
+              "path": "moments.1.beatOffset",
+              "value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            }
+          ],
+          "manuallyExpectedActiveAtQuery": [
+            "a",
+            "b"
+          ],
+          "assumptions": [
+            "illustrative ordinary 4/4 bar2 origin=4; nominal intervals only"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C05",
+      "kind": "admissible-missing-field-completions",
+      "sourceInput": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null,
+                "duration": {
+                  "numerator": 3,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 2,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "string": 1,
+                "fret": 5,
+                "midi": 64,
+                "pitchClass": 4,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          }
+        ],
+        "measureCount": 2
+      },
+      "query": {
+        "illustrativeGlobalQuarter": "5/2"
+      },
+      "claimUnderTest": "Known bar-local coordinates do not identify a global relationship without bar anchors",
+      "counterfactualWorlds": [
+        {
+          "name": "A",
+          "assignmentsOnlyToPreviouslyUnknownFields": [
+            {
+              "path": "meter",
+              "value": {
+                "numerator": 2,
+                "denominator": 4
+              }
+            }
+          ],
+          "manuallyExpectedActiveAtQuery": [
+            "a",
+            "b"
+          ],
+          "assumptions": [
+            "illustrative ordinary bars use supplied meter; bar2 origin=2"
+          ]
+        },
+        {
+          "name": "B",
+          "assignmentsOnlyToPreviouslyUnknownFields": [
+            {
+              "path": "meter",
+              "value": {
+                "numerator": 4,
+                "denominator": 4
+              }
+            }
+          ],
+          "manuallyExpectedActiveAtQuery": [
+            "a"
+          ],
+          "assumptions": [
+            "illustrative ordinary bars use supplied meter; bar2 origin=4"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C06",
+      "kind": "admissible-missing-field-completions",
+      "sourceInput": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null,
+                "duration": {
+                  "numerator": 2,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "string": 1,
+                "fret": 5,
+                "midi": 64,
+                "pitchClass": 4,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ]
+          }
+        ],
+        "measureCount": 1
+      },
+      "query": {
+        "bar": 1,
+        "localQuarter": "3/2"
+      },
+      "claimUnderTest": "Declared population {a} can be complete relative to itself while source population {a,b} is not",
+      "counterfactualWorlds": [
+        {
+          "name": "A",
+          "assignmentsOnlyToPreviouslyUnknownFields": [
+            {
+              "path": "moments.1.beatOffset",
+              "value": {
+                "numerator": 3,
+                "denominator": 1
+              }
+            }
+          ],
+          "manuallyExpectedActiveAtQuery": [
+            "a"
+          ],
+          "assumptions": [
+            "interpret explicit starts and lengths as nominal half-open written intervals; no performance realization"
+          ]
+        },
+        {
+          "name": "B",
+          "assignmentsOnlyToPreviouslyUnknownFields": [
+            {
+              "path": "moments.1.beatOffset",
+              "value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            }
+          ],
+          "manuallyExpectedActiveAtQuery": [
+            "a",
+            "b"
+          ],
+          "assumptions": [
+            "interpret explicit starts and lengths as nominal half-open written intervals; no performance realization"
+          ]
+        }
+      ],
+      "declaredPopulation": [
+        "a"
+      ],
+      "declaredPopulationActiveBothWorlds": [
+        "a"
+      ]
+    },
+    {
+      "id": "C07",
+      "kind": "positive-nominal-subset",
+      "sourceInput": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null,
+                "duration": {
+                  "numerator": 2,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "string": 1,
+                "fret": 5,
+                "midi": 64,
+                "pitchClass": 4,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ],
+        "measureCount": 1
+      },
+      "query": {
+        "bar": 1,
+        "localQuarter": "3/2"
+      },
+      "claimUnderTest": "Both nominal intervals can be checked locally without a global meter",
+      "counterfactualWorlds": [],
+      "manualNominalActive": [
+        "a",
+        "b"
+      ],
+      "conditions": [
+        "declared finite source population is exactly {a,b}",
+        "half-open nominal written-interval interpretation explicitly chosen",
+        "no performance or whole-ensemble claim"
+      ]
+    },
+    {
+      "id": "C08",
+      "kind": "same-input-performance-nonidentifiability",
+      "sourceInput": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null,
+                "duration": {
+                  "numerator": 2,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          }
+        ],
+        "measureCount": 1
+      },
+      "query": {
+        "bar": 1,
+        "localQuarter": "3/2"
+      },
+      "claimUnderTest": "Even all supplied written fields do not uniquely determine physical sounding",
+      "counterfactualWorlds": [
+        {
+          "name": "A",
+          "assignmentsOnlyToPreviouslyUnknownFields": [],
+          "latentPerformance": "performer damps after 1/2 quarter; written note remains length2",
+          "manuallyExpectedPhysicalSoundingAtQuery": []
+        },
+        {
+          "name": "B",
+          "assignmentsOnlyToPreviouslyUnknownFields": [],
+          "latentPerformance": "performer lets note ring through its nominal2 quarters",
+          "manuallyExpectedPhysicalSoundingAtQuery": [
+            "a"
+          ]
+        }
+      ],
+      "proofScope": "physical performer behavior is absent from the current document; this is not a claim both performances obey identical execution rules"
+    },
+    {
+      "id": "C09",
+      "kind": "unresolved-temporal-policy-or-conflict",
+      "sourceInput": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null,
+                "duration": {
+                  "numerator": 4,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [],
+            "rest": {
+              "duration": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            },
+            "beatOffset": {
+              "numerator": 2,
+              "denominator": 1
+            }
+          }
+        ],
+        "measureCount": 1
+      },
+      "query": {
+        "bar": 1,
+        "localQuarter": "5/2"
+      },
+      "claimUnderTest": "Explicit rest versus earlier written length needs a declared conflict/cutoff policy",
+      "counterfactualWorlds": [],
+      "alternatives": [
+        "retain both authored declarations and flag temporal conflict",
+        "an explicitly selected future realization may cut earlier sounding at rest onset"
+      ],
+      "notProven": [
+        "both alternatives are source-equivalent authorized product semantics",
+        "source duration can be silently changed"
+      ]
+    },
+    {
+      "id": "C10",
+      "kind": "unresolved-temporal-policy-or-conflict",
+      "sourceInput": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null,
+                "duration": {
+                  "numerator": 4,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [],
+            "mutes": [
+              {
+                "string": 0
+              }
+            ],
+            "beatOffset": {
+              "numerator": 2,
+              "denominator": 1
+            }
+          }
+        ],
+        "measureCount": 1
+      },
+      "query": {
+        "bar": 1,
+        "localQuarter": "5/2"
+      },
+      "claimUnderTest": "A mute marker is not an implemented timestamped prior-note termination rule",
+      "counterfactualWorlds": [],
+      "alternatives": [
+        "retain source duration and mute as distinct declarations",
+        "future declared cutoff realization can be evaluated"
+      ],
+      "notProven": [
+        "mute establishes full-part silence",
+        "a mute has an implicit duration"
+      ]
+    },
+    {
+      "id": "C11",
+      "kind": "unresolved-temporal-policy-or-conflict",
+      "sourceInput": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null,
+                "duration": {
+                  "numerator": 4,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "string": 0,
+                "fret": 7,
+                "midi": 71,
+                "pitchClass": 11,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 2,
+              "denominator": 1
+            }
+          }
+        ],
+        "measureCount": 1
+      },
+      "query": {
+        "bar": 1,
+        "localQuarter": "5/2"
+      },
+      "claimUnderTest": "Same-string reattack and prior nominal length overlap; P2 does not resolve that time policy",
+      "counterfactualWorlds": [],
+      "alternatives": [
+        "written intervals overlap as supplied",
+        "future physically constrained realization uses a declared cutoff"
+      ],
+      "notProven": [
+        "both notes physically sound on one string",
+        "earlier written duration may be erased"
+      ]
+    },
+    {
+      "id": "C12",
+      "kind": "unresolved-temporal-policy-or-conflict",
+      "sourceInput": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [],
+            "sustains": [
+              {
+                "noteId": "a",
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 3,
+              "denominator": 1
+            }
+          }
+        ],
+        "measureCount": 1
+      },
+      "query": {
+        "bar": 1,
+        "localQuarter": "2"
+      },
+      "claimUnderTest": "A structural sustain link does not prove continuous sounding through an explicit time gap",
+      "counterfactualWorlds": [],
+      "alternatives": [
+        "report authored relation and gap separately",
+        "evaluate explicitly defined interpretation later"
+      ],
+      "notProven": [
+        "automatic fill of the gap",
+        "a second picked attack",
+        "continuous sounding"
+      ]
+    },
+    {
+      "id": "C13",
+      "kind": "unresolved-temporal-policy-or-conflict",
+      "sourceInput": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "moments": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null,
+                "duration": {
+                  "numerator": 2,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "p1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [],
+            "sustains": [
+              {
+                "noteId": "a",
+                "duration": {
+                  "numerator": 2,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ],
+        "measureCount": 1
+      },
+      "query": {
+        "bar": 1,
+        "localQuarter": "7/2"
+      },
+      "claimUnderTest": "Overlapping continuation lengths cannot simply be summed",
+      "counterfactualWorlds": [],
+      "alternatives": [
+        "nominal segments end at2 and3, with their relation unimplemented",
+        "future supported join policy requires explicit validation"
+      ],
+      "notProven": [
+        "adding2+2 makes end4",
+        "blind max/union is an approved relation semantics"
+      ]
+    }
+  ]
+}

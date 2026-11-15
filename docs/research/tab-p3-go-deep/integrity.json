@@ -1,0 +1,55 @@
+{
+  "runtimeCodeAssetsDependenciesUnchanged": true,
+  "baselineFilesCompared": 281,
+  "unchangedFiles": 280,
+  "testOnlyCorrection": {
+    "file": "/workspace/Guitar-p2/src/components/guitar/scale/tab-analysis/TimingInspection.test.tsx",
+    "line": 112,
+    "change": "Remove unsupported exact:true from getByRole options; string name already exact",
+    "beforeSha256": "3961f86dc22216a005ff1ac3137a6fc700cb237e36e749c3a24c9da34fdc2f58",
+    "afterSha256": "7d1799836114669c820f6438208afa78bc363e1711f79c83096a318e8f79e045",
+    "authorizedBy": "root final artifact compatibility correction; one test option only",
+    "runtimeCodeChanged": false,
+    "newCoverageAdded": false,
+    "targetedValidation": {
+      "command": "npx vitest run src/components/guitar/scale/tab-analysis/TimingInspection.test.tsx --maxWorkers 2",
+      "files": 1,
+      "tests": 17,
+      "status": "PASS",
+      "runtimeChanges": 0
+    }
+  },
+  "newEngineImplemented": false,
+  "newRuntimeDependency": false,
+  "researchPredicatesAreIsolatedProbes": true,
+  "priorRawResearchArtifactsPreserved": true,
+  "archiveCompatibility": {
+    "priorP3ScriptBytesUnchanged": true,
+    "renamedFiles": [
+      {
+        "originalArchivePath": "product/probes.ts",
+        "textArchivePath": "product/probes.ts.txt",
+        "sha256": "eebf8f6a05edc4e40405469e39ee633017581c6bf81f7cb32b5e5fa57744b3ce"
+      },
+      {
+        "originalArchivePath": "alpha/probes.ts",
+        "textArchivePath": "alpha/probes.ts.txt",
+        "sha256": "fde1fa2d12502dcc989b8ec203e7654d4e5df63fa239c7254bc809fb6d034d86"
+      },
+      {
+        "originalArchivePath": "alpha/vitest.config.mjs",
+        "textArchivePath": "alpha/vitest.config.mjs.txt",
+        "sha256": "c28a50d759e19ff7dc460b7fcc3c8ed72f75de5174af28f572c277dad436a9c9"
+      }
+    ],
+    "reason": "Reference TS/MJS scripts stored as text to avoid app compiler inputs; no tsconfig change"
+  },
+  "validation": {
+    "targetedPriorRegressionTestsPassed": 17,
+    "typecheckAfterCompatibilityCorrection": "PASS",
+    "productionBuild": "PASS",
+    "scopedTestLint": "PASS, zero warnings",
+    "diffCheck": "PASS",
+    "existingBuildWarning": "Tailwind MODULE_TYPELESS_PACKAGE_JSON; pre-existing"
+  }
+}

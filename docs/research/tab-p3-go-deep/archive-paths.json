@@ -1,0 +1,30 @@
+{
+  "reason": "Research TS/MJS source retained as text to stay outside application compiler inputs. Runnable originals remain in the research workspace; no tsconfig change.",
+  "files": [
+    {
+      "originalWorkspacePath": "/workspace/modus-p3-go-deep/provenance/fraction-probes.ts",
+      "archivePath": "provenance/fraction-probes.ts.txt",
+      "sha256": "26aac80f04df7445c716e995ea1bb9184315645d837d806f2fd4dedc4b7af8e7"
+    },
+    {
+      "originalWorkspacePath": "/workspace/modus-p3-go-deep/provenance/provenance-probes.ts",
+      "archivePath": "provenance/provenance-probes.ts.txt",
+      "sha256": "b111d9ac35fe7f970e9591f6fa1318a3704c4985c53b9b6760b68e30ea246c4b"
+    },
+    {
+      "originalWorkspacePath": "/workspace/modus-p3-go-deep/separation/probes.ts",
+      "archivePath": "separation/probes.ts.txt",
+      "sha256": "648ff27339fb3345ac1089f7f544f31f14b5ce2d94e1f09834817d3320a4ce48"
+    },
+    {
+      "originalWorkspacePath": "/workspace/modus-p3-go-deep/contracts/probes.ts",
+      "archivePath": "contracts/probes.ts.txt",
+      "sha256": "eeb456610c1d80fba4704c39964275b995e6e0bd313ee6a2474fc816ac72ec0e"
+    },
+    {
+      "originalWorkspacePath": "/workspace/modus-p3-go-deep/challenge/coverage-worlds.ts",
+      "archivePath": "challenge/coverage-worlds.ts.txt",
+      "sha256": "ef8c8a6445161914bedad20f8305eb7b81c59156f73c8202d37a775c73b5c5ec"
+    }
+  ]
+}

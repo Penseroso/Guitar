@@ -1,0 +1,114 @@
+[
+  {
+    "id": "G01",
+    "case": "order-only/free timing",
+    "inputEvidence": "No onset or duration",
+    "acceptance": "Keep current Analyze available; no inferred meter/rest/time",
+    "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+  },
+  {
+    "id": "G02",
+    "case": "bar-local complete without meter",
+    "inputEvidence": "Two same-bar offsets and lengths known",
+    "acceptance": "Allow local relation evaluation; do not require global meter or invent global origin",
+    "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+  },
+  {
+    "id": "G03",
+    "case": "known length/missing onset",
+    "inputEvidence": "Duration supplied, no beatOffset",
+    "acceptance": "Length fact retained, temporal placement remains unknown",
+    "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+  },
+  {
+    "id": "G04",
+    "case": "known onset/missing length",
+    "inputEvidence": "beatOffset supplied, no duration",
+    "acceptance": "Onset event fact retained, end/overlap unknown",
+    "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+  },
+  {
+    "id": "G05",
+    "case": "unknown gap",
+    "inputEvidence": "Two disjoint written intervals, no rest",
+    "acceptance": "Do not synthesize authored silence/rest or carry note through gap",
+    "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+  },
+  {
+    "id": "G06",
+    "case": "cross-bar written duration",
+    "inputEvidence": "Offset+length extends beyond bar, source preserved",
+    "acceptance": "Do not erase or label invalid solely because P2 does not assess it; global anchoring/semantics need explicit support",
+    "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+  },
+  {
+    "id": "G07",
+    "case": "sustain exact adjacency",
+    "inputEvidence": "Origin endpoint equals explicit continuation start",
+    "acceptance": "No new source note identity; test selected continuation semantics before any merged interval claim",
+    "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+  },
+  {
+    "id": "G08",
+    "case": "sustain temporal gap/overlap",
+    "inputEvidence": "Continuation start after/before origin end",
+    "acceptance": "Temporal interpretation excluded pending contract; no auto bridge/trim/merge",
+    "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+  },
+  {
+    "id": "G09",
+    "case": "rest/mute versus prior duration",
+    "inputEvidence": "Written note length crosses explicit rest/mute",
+    "acceptance": "Distinguish temporal contradiction/support decision; do not silently truncate duration",
+    "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+  },
+  {
+    "id": "G10",
+    "case": "repeated same MIDI",
+    "inputEvidence": "Separate notes with equal pitch",
+    "acceptance": "Preserve source identity and event boundary; no tie from equality",
+    "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+  },
+  {
+    "id": "G11",
+    "case": "unison across strings",
+    "inputEvidence": "Same MIDI on different string IDs",
+    "acceptance": "Keep both events; PC aggregation only at recognition boundary",
+    "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+  },
+  {
+    "id": "G12",
+    "case": "h/p/slide or bend",
+    "inputEvidence": "Authored note/technique endpoints",
+    "acceptance": "Keep source base pitches and provenance; do not call every endpoint a picked attack or infer pitch trajectory",
+    "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+  },
+  {
+    "id": "G13",
+    "case": "ambiguous verticality",
+    "inputEvidence": "C E G A",
+    "acceptance": "Preserve C6/Am7 alternatives; no unique function/key/progression chosen",
+    "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+  },
+  {
+    "id": "G14",
+    "case": "boundary/exactness",
+    "inputEvidence": "Simultaneous start/end; narrow rational gap",
+    "acceptance": "Exact fraction boundary oracle and declared half-open convention; detect float/tick/normalization loss before reference comparison; non-comparable reference is not invalid product input",
+    "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+  },
+  {
+    "id": "G15",
+    "case": "late async result",
+    "inputEvidence": "Document/instrument/context/history changes before result",
+    "acceptance": "Discard results when their actual input dependencies change: document/instrument/range/options for observations, additionally used tonal context for harmonic readings; unrelated tonal reference must not invalidate notation facts",
+    "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+  },
+  {
+    "id": "G16",
+    "case": "coverage and malformed input",
+    "inputEvidence": "One unsupported region plus independent known region",
+    "acceptance": "Retain known authored interval facts, but unknown-time notes may overlap any known region: no complete verticality, absence, silence or exact pitch-set claim without isolation proof; distinguish invalid/incomplete/unsupported/non-comparable",
+    "status": "PROPOSED_CONTRACT_CASE_NOT_EXECUTED_NEW_ENGINE"
+  }
+]

@@ -1,0 +1,63 @@
+import assert from 'node:assert/strict';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { inspectTabTiming } from '/workspace/Guitar-p2/src/domain/tab/timing-inspection';
+import { analyzeTabSelection } from '/workspace/Guitar-p2/src/domain/tab/analysis';
+import type { TabDocument } from '/workspace/Guitar-p2/src/domain/tab/types';
+
+const fixtures = JSON.parse(readFileSync('/workspace/modus-p3-go-deep/contracts/fixtures.json', 'utf8'));
+const freeze = (v: unknown) => { if (v && typeof v === 'object') { Object.values(v).forEach(freeze); Object.freeze(v); } };
+const context = { scale: null, chord: null, frame: null };
+function existingApi(doc: TabDocument) {
+    const before = JSON.stringify(doc); freeze(doc);
+    const inspection = inspectTabTiming(doc);
+    const analysis = analyzeTabSelection(doc, { start: 0, end: doc.moments.length - 1 }, context);
+    assert.equal(inspection.summary.invalid, 0);
+    assert.equal(JSON.stringify(doc), before);
+    return {
+        inspection, musicalProjection: {
+            noteIds: analysis.notes.map(n => n.id), midis: analysis.notes.map(n => n.midi),
+            pitchClasses: analysis.pitchClasses,
+            moments: analysis.moments.map(m => ({ id: m.id, kind: m.kind, candidates: m.candidates.map(c => c.key) })),
+            harmonicSpans: analysis.harmonicSpans, progressionReadings: analysis.progressionReadings,
+        },
+        originalWrittenLengths: doc.moments.flatMap(m => m.notes.map(n => ({ id: n.id, duration: n.duration }))),
+    };
+}
+let documentsChecked = 0, completionPairsChecked = 0;
+const results = [];
+for (const fixture of fixtures.cases) {
+    const original = existingApi(fixture.sourceInput); documentsChecked++;
+    const worlds = [];
+    if (fixture.kind === 'admissible-missing-field-completions') {
+        for (const world of fixture.counterfactualWorlds) {
+            const completed = structuredClone(fixture.sourceInput);
+            for (const assignment of world.assignmentsOnlyToPreviouslyUnknownFields) {
+                const parts = assignment.path.split('.'); let at = completed;
+                for (const part of parts.slice(0, -1)) at = at[part];
+                const field = parts.at(-1)!;
+                assert.equal(at[field], undefined, 'only an originally absent field may be assigned');
+                at[field] = structuredClone(assignment.value);
+            }
+            const actual = existingApi(completed); documentsChecked++;
+            assert.deepEqual(actual.musicalProjection, original.musicalProjection);
+            worlds.push({ name: world.name, assignments: world.assignmentsOnlyToPreviouslyUnknownFields,
+                structurallyAcceptedByCurrentInspector: true, currentMusicalProjectionUnchanged: true,
+                manualNominalActiveAtQuery: world.manuallyExpectedActiveAtQuery,
+                note: 'active set is manual thought-experiment evidence, not a newly implemented timeline output' });
+        }
+        assert.notDeepEqual(worlds[0].manualNominalActiveAtQuery, worlds[1].manualNominalActiveAtQuery);
+        completionPairsChecked++;
+    }
+    results.push({ id: fixture.id, kind: fixture.kind, existingApi: original, worlds,
+        manualOnlyClaims: fixture.counterfactualWorlds?.filter((w: { latentPerformance?: string }) => w.latentPerformance),
+        noTimelineEngineInvoked: true });
+}
+const report = {
+    stage: 'GO-only deepening: semantic claim contracts',
+    sourceInputFixtures: fixtures.cases.length, currentApiDocumentsChecked: documentsChecked,
+    missingFieldCompletionPairsChecked: completionPairsChecked, inputMutations: 0,
+    scope: 'Existing inspector and order/pitch analysis only. Original and completion docs are frozen. Manual active sets do not validate a new sounding engine. Zero invalid diagnostics is structural acceptance, not temporal correctness.',
+    results,
+};
+writeFileSync('/workspace/modus-p3-go-deep/contracts/results.json', JSON.stringify(report, null, 2));
+console.log(JSON.stringify({ sourceInputFixtures: report.sourceInputFixtures, currentApiDocumentsChecked: documentsChecked, missingFieldCompletionPairsChecked: completionPairsChecked, inputMutations: 0 }));

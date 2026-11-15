@@ -1,0 +1,91 @@
+{
+  "stage": "P3 GO-candidate deep analysis",
+  "date": "2026-11-15",
+  "productBaseline": "Revalidated uncommitted P2 over master3ef63568353ee395eb3a46e02f27541bfdca8adf",
+  "overall": "TWO_DEFINITE_GO_PRESERVED_TWO_CONDITIONAL_GO_REFINED",
+  "implementedProductFeature": false,
+  "decisions": [
+    {
+      "candidate": "current snapshot facts, provenance, scoped IDs, event multiplicity and exact values",
+      "decision": "ADOPT",
+      "gate": "GO",
+      "newConditionDetail": [
+        "ID is not content version or provenance",
+        "import reuses local IDs; retune changes MIDI without ID change",
+        "exact fraction value preservation is not preservation of typed lexeme",
+        "arithmetic representation remains unselected"
+      ]
+    },
+    {
+      "candidate": "written, playback, emitted-event and physical-performance claim separation",
+      "decision": "ADAPT",
+      "gate": "GO",
+      "newConditionDetail": [
+        "upstream finish can mutate authored fret while preserving ID",
+        "source occurrence is not MIDI note-on or physical picking",
+        "written duration is not final sounding duration",
+        "no automatic cutoff/continuation addition/union policy chosen"
+      ]
+    },
+    {
+      "candidate": "explicit written-time observation",
+      "decision": "ADAPT",
+      "gate": "CONDITIONAL_GO",
+      "remainingGates": [
+        "declared coordinates, nominal semantics and event population",
+        "influence exclusion proofs for partial coverage",
+        "continuation/rest/mute/re-attack interpretation and unsupported policy",
+        "exact arithmetic and output lifetime validated after implementation"
+      ]
+    },
+    {
+      "candidate": "offline reference comparison",
+      "decision": "ADAPT",
+      "gate": "CONDITIONAL_GO",
+      "remainingGates": [
+        "snapshot-bound source exporter and coverage lineage unimplemented",
+        "library pin/options and per-operation/query admission",
+        "exact source sidecar and ID/MIDI multiplicity preservation",
+        "precision refusal is not product invalidity",
+        "finite declared query checks are not all-rational-query guarantees"
+      ]
+    }
+  ],
+  "freshEvidence": {
+    "sourceLifecycleApiCases": 20,
+    "standaloneArithmeticExperiments": 6,
+    "alphaSourceSeparationCases": 9,
+    "currentProductSeparationCases": 7,
+    "semanticSourceFixtures": 13,
+    "currentApiDocumentsChecked": 25,
+    "missingFieldCompletionPairs": 6,
+    "comparisonCases": 22,
+    "combinedReferenceAdmitted": 12,
+    "combinedReferenceRefused": 10,
+    "treeOperationAdmitted": 14,
+    "treeOperationRefused": 8,
+    "chordifyOperationAdmitted": 12,
+    "chordifyOperationRefused": 10,
+    "independentTreeQueries": 92,
+    "independentChordifyQueries": 78,
+    "independentIdentityOrMidiMismatches": 0
+  },
+  "researchGateCorrection": "Tree-only strict-interior canonical query omission found independently, corrected only in research probe, pre-fix evidence preserved; combined gate already refused that case.",
+  "alternativeArithmeticChoices": [
+    "checked safe-integer rationals",
+    "BigInt rationals",
+    "local coordinate/anchor separation",
+    "declared exact tick subset"
+  ],
+  "architectureSelected": false,
+  "releaseReadinessClaimed": false,
+  "excluded": "Previously DEFER/REJECT targets were not reopened. No product UI, sounding engine, harmonic inference or runtime dependency introduced.",
+  "integrity": "integrity.json",
+  "reports": [
+    "provenance/report.md",
+    "separation/report.md",
+    "contracts/report.md",
+    "comparator/report.md",
+    "challenge/report.md"
+  ]
+}

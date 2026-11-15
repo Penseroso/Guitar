@@ -1,0 +1,25 @@
+{
+  "definiteGO": [
+    "source facts, snapshot-qualified IDs, string/register/multiplicity and exact written fractions",
+    "separation of written, displayed/playback and technique-realization claims"
+  ],
+  "conditionalGOOnlyToResolveConditions": [
+    "declared written-time observation subset",
+    "audited offline music21 comparison subset"
+  ],
+  "excluded": [
+    "product engine/UI implementation",
+    "automatic harmonic segmentation/key/modulation",
+    "full alphaTab model/runtime/Python migration",
+    "treating library defaults/repairs/generated rests as source truth"
+  ],
+  "roles": {
+    "root": "orchestration and final evidence gate",
+    "provenance": "source identity lifecycle and fraction arithmetic",
+    "separation": "authored/display/realized contracts",
+    "comparator": "comparison eligibility and independent exact controls",
+    "contracts": "coverage and supported-claim limits",
+    "challenge": "independent adversarial review"
+  },
+  "previousEvidence": "../modus-p3-current; preserved, not relabeled as fresh evidence"
+}

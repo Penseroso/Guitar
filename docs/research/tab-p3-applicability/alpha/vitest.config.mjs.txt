@@ -1,0 +1,10 @@
+export default {
+ root: '/tmp/modus-p2-research/alpha/packages/alphatab',
+ cacheDir: '/workspace/modus-p3-current/alpha/vite-cache',
+ resolve:{alias:{
+  '@coderline/alphatab': '/tmp/modus-p2-research/alpha/packages/alphatab/src',
+  'test': '/tmp/modus-p2-research/alpha/packages/alphatab/test',
+  'vitest': '/workspace/Guitar-p2/node_modules/vitest/dist/index.js'
+ }},
+ test:{include:['test/model/Beat.test.ts','test/audio/MidiFileGenerator.test.ts'],maxWorkers:2}
+};

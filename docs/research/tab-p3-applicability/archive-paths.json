@@ -1,0 +1,22 @@
+{
+  "reason": "Research scripts are reference data, not application compiler inputs; tsconfig includes **/*.ts. No tsconfig or runtime change.",
+  "packagingOnly": true,
+  "scriptBytesPreserved": true,
+  "files": [
+    {
+      "originalArchivePath": "product/probes.ts",
+      "textArchivePath": "product/probes.ts.txt",
+      "sha256": "eebf8f6a05edc4e40405469e39ee633017581c6bf81f7cb32b5e5fa57744b3ce"
+    },
+    {
+      "originalArchivePath": "alpha/probes.ts",
+      "textArchivePath": "alpha/probes.ts.txt",
+      "sha256": "fde1fa2d12502dcc989b8ec203e7654d4e5df63fa239c7254bc809fb6d034d86"
+    },
+    {
+      "originalArchivePath": "alpha/vitest.config.mjs",
+      "textArchivePath": "alpha/vitest.config.mjs.txt",
+      "sha256": "c28a50d759e19ff7dc460b7fcc3c8ed72f75de5174af28f572c277dad436a9c9"
+    }
+  ]
+}

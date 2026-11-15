@@ -1,0 +1,29 @@
+{
+  "scope": "GO2 separation only, no implementation",
+  "upstreamCommit": "5f50046a0e76229af5509f5a28e9567d5af634f0",
+  "upstreamTrackedStatus": "",
+  "sourceSha256": {
+    "product/src/domain/tab/types.ts": "a9a9f3ffca87c555d5bc7f9c9b2044344ae867f173f1f0f9833c7e4847ce9977",
+    "product/src/domain/tab/input-capabilities.ts": "2f8f8949234a605bae0506ccfa861054e85295769560ce5c4d56baf40e34325a",
+    "product/src/domain/tab/analysis.ts": "ce5771ef4203ae247f6139ad690490c2d19e9d42d69c9d494641af6185bd811e",
+    "product/src/domain/tab/timing-inspection.ts": "254fcb82e8332ef3024915878f203397e81297a4b1c28b790557fc7e10423a69"
+  },
+  "upstreamSourceSha256": {
+    "packages/alphatab/src/model/Note.ts": "2d84b2504d00da403c810e04a95d7b7ebb2a5fd8d4ca8291fe80c67563f1da30",
+    "packages/alphatab/src/model/Beat.ts": "1f991d19364533afee8fe1d948bb37caf802ffb46c0f254e298f295647e41ca9",
+    "packages/alphatab/src/model/Voice.ts": "42371a693bb2ec4d570de8387a14190d85f137f27be927fcf4674a233b979122",
+    "packages/alphatab/src/midi/MidiFileGenerator.ts": "66a035fb510a6a0e38e17af19d4c8a12b026e211866de818d83e7adbdba16dd8"
+  },
+  "artifacts": {
+    "probes.ts": "648ff27339fb3345ac1089f7f544f31f14b5ce2d94e1f09834817d3320a4ce48",
+    "report.md": "4d64614f78eddf5a9f9b8e410b22671e37d0d31784b307f19f38b1e4be5fa1f4",
+    "tsconfig.json": "14e349a69f8f85baf768fea09678aeea3b97bc5faa4a33daa81880520f4281a9",
+    "results.json": "a9f7597028ae12602bf4b1ea94f39031f27aa8cdb2b033216797fc329bd638b0"
+  },
+  "cases": {
+    "sourceModel": 9,
+    "currentProduct": 7,
+    "allExpectedAssertions": "PASS"
+  },
+  "productCodeChanged": false
+}

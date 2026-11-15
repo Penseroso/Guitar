@@ -1,0 +1,19 @@
+{
+  "testOnlyCorrection": {
+    "file": "/workspace/Guitar-p2/src/components/guitar/scale/tab-analysis/TimingInspection.test.tsx",
+    "line": 112,
+    "change": "Remove unsupported exact:true from getByRole options; string name already exact",
+    "beforeSha256": "3961f86dc22216a005ff1ac3137a6fc700cb237e36e749c3a24c9da34fdc2f58",
+    "afterSha256": "7d1799836114669c820f6438208afa78bc363e1711f79c83096a318e8f79e045",
+    "authorizedBy": "root final artifact compatibility correction; one test option only",
+    "runtimeCodeChanged": false,
+    "newCoverageAdded": false,
+    "targetedValidation": {
+      "command": "npx vitest run src/components/guitar/scale/tab-analysis/TimingInspection.test.tsx --maxWorkers 2",
+      "files": 1,
+      "tests": 17,
+      "status": "PASS",
+      "runtimeChanges": 0
+    }
+  }
+}

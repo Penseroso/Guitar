@@ -1,0 +1,1095 @@
+{
+  "stage": "GO-only deepening: semantic claim contracts",
+  "sourceInputFixtures": 13,
+  "currentApiDocumentsChecked": 25,
+  "missingFieldCompletionPairsChecked": 6,
+  "inputMutations": 0,
+  "scope": "Existing inspector and order/pitch analysis only. Original and completion docs are frozen. Manual active sets do not validate a new sounding engine. Zero invalid diagnostics is structural acceptance, not temporal correctness.",
+  "results": [
+    {
+      "id": "C01",
+      "kind": "admissible-missing-field-completions",
+      "existingApi": {
+        "inspection": {
+          "timingInput": "some",
+          "issues": [
+            {
+              "code": "missing-duration",
+              "message": "Duration is not supplied.",
+              "target": {
+                "momentId": "p0",
+                "noteId": "a",
+                "string": 0
+              },
+              "kind": "missing"
+            },
+            {
+              "code": "missing-meter",
+              "message": "Time signature is not supplied.",
+              "kind": "missing"
+            }
+          ],
+          "summary": {
+            "missing": 2,
+            "invalid": 0
+          }
+        },
+        "musicalProjection": {
+          "noteIds": [
+            "a",
+            "b"
+          ],
+          "midis": [
+            69,
+            64
+          ],
+          "pitchClasses": [
+            4,
+            9
+          ],
+          "moments": [
+            {
+              "id": "p0",
+              "kind": "single-note",
+              "candidates": []
+            },
+            {
+              "id": "p1",
+              "kind": "single-note",
+              "candidates": []
+            }
+          ],
+          "harmonicSpans": [],
+          "progressionReadings": []
+        },
+        "originalWrittenLengths": [
+          {
+            "id": "a"
+          },
+          {
+            "id": "b",
+            "duration": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "worlds": [
+        {
+          "name": "A",
+          "assignments": [
+            {
+              "path": "moments.0.notes.0.duration",
+              "value": {
+                "numerator": 1,
+                "denominator": 2
+              }
+            }
+          ],
+          "structurallyAcceptedByCurrentInspector": true,
+          "currentMusicalProjectionUnchanged": true,
+          "manualNominalActiveAtQuery": [
+            "b"
+          ],
+          "note": "active set is manual thought-experiment evidence, not a newly implemented timeline output"
+        },
+        {
+          "name": "B",
+          "assignments": [
+            {
+              "path": "moments.0.notes.0.duration",
+              "value": {
+                "numerator": 2,
+                "denominator": 1
+              }
+            }
+          ],
+          "structurallyAcceptedByCurrentInspector": true,
+          "currentMusicalProjectionUnchanged": true,
+          "manualNominalActiveAtQuery": [
+            "a",
+            "b"
+          ],
+          "note": "active set is manual thought-experiment evidence, not a newly implemented timeline output"
+        }
+      ],
+      "manualOnlyClaims": [],
+      "noTimelineEngineInvoked": true
+    },
+    {
+      "id": "C02",
+      "kind": "admissible-missing-field-completions",
+      "existingApi": {
+        "inspection": {
+          "timingInput": "some",
+          "issues": [
+            {
+              "code": "missing-start",
+              "message": "Start position is not supplied.",
+              "target": {
+                "momentId": "p1"
+              },
+              "kind": "missing"
+            },
+            {
+              "code": "missing-meter",
+              "message": "Time signature is not supplied.",
+              "kind": "missing"
+            }
+          ],
+          "summary": {
+            "missing": 2,
+            "invalid": 0
+          }
+        },
+        "musicalProjection": {
+          "noteIds": [
+            "a",
+            "b"
+          ],
+          "midis": [
+            69,
+            64
+          ],
+          "pitchClasses": [
+            4,
+            9
+          ],
+          "moments": [
+            {
+              "id": "p0",
+              "kind": "single-note",
+              "candidates": []
+            },
+            {
+              "id": "p1",
+              "kind": "single-note",
+              "candidates": []
+            }
+          ],
+          "harmonicSpans": [],
+          "progressionReadings": []
+        },
+        "originalWrittenLengths": [
+          {
+            "id": "a",
+            "duration": {
+              "numerator": 2,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "b",
+            "duration": {
+              "numerator": 1,
+              "denominator": 2
+            }
+          }
+        ]
+      },
+      "worlds": [
+        {
+          "name": "A",
+          "assignments": [
+            {
+              "path": "moments.1.beatOffset",
+              "value": {
+                "numerator": 1,
+                "denominator": 4
+              }
+            }
+          ],
+          "structurallyAcceptedByCurrentInspector": true,
+          "currentMusicalProjectionUnchanged": true,
+          "manualNominalActiveAtQuery": [
+            "a"
+          ],
+          "note": "active set is manual thought-experiment evidence, not a newly implemented timeline output"
+        },
+        {
+          "name": "B",
+          "assignments": [
+            {
+              "path": "moments.1.beatOffset",
+              "value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            }
+          ],
+          "structurallyAcceptedByCurrentInspector": true,
+          "currentMusicalProjectionUnchanged": true,
+          "manualNominalActiveAtQuery": [
+            "a",
+            "b"
+          ],
+          "note": "active set is manual thought-experiment evidence, not a newly implemented timeline output"
+        }
+      ],
+      "manualOnlyClaims": [],
+      "noTimelineEngineInvoked": true
+    },
+    {
+      "id": "C03",
+      "kind": "admissible-missing-field-completions",
+      "existingApi": {
+        "inspection": {
+          "timingInput": "some",
+          "issues": [
+            {
+              "code": "missing-duration",
+              "message": "Duration is not supplied.",
+              "target": {
+                "momentId": "p0",
+                "noteId": "a",
+                "string": 0
+              },
+              "kind": "missing"
+            }
+          ],
+          "summary": {
+            "missing": 1,
+            "invalid": 0
+          }
+        },
+        "musicalProjection": {
+          "noteIds": [
+            "a",
+            "b"
+          ],
+          "midis": [
+            69,
+            64
+          ],
+          "pitchClasses": [
+            4,
+            9
+          ],
+          "moments": [
+            {
+              "id": "p0",
+              "kind": "single-note",
+              "candidates": []
+            },
+            {
+              "id": "p1",
+              "kind": "single-note",
+              "candidates": []
+            }
+          ],
+          "harmonicSpans": [],
+          "progressionReadings": []
+        },
+        "originalWrittenLengths": [
+          {
+            "id": "a"
+          },
+          {
+            "id": "b",
+            "duration": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "worlds": [
+        {
+          "name": "A",
+          "assignments": [
+            {
+              "path": "moments.0.notes.0.duration",
+              "value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            }
+          ],
+          "structurallyAcceptedByCurrentInspector": true,
+          "currentMusicalProjectionUnchanged": true,
+          "manualNominalActiveAtQuery": [
+            "b"
+          ],
+          "note": "active set is manual thought-experiment evidence, not a newly implemented timeline output"
+        },
+        {
+          "name": "B",
+          "assignments": [
+            {
+              "path": "moments.0.notes.0.duration",
+              "value": {
+                "numerator": 3,
+                "denominator": 1
+              }
+            }
+          ],
+          "structurallyAcceptedByCurrentInspector": true,
+          "currentMusicalProjectionUnchanged": true,
+          "manualNominalActiveAtQuery": [
+            "a",
+            "b"
+          ],
+          "note": "active set is manual thought-experiment evidence, not a newly implemented timeline output"
+        }
+      ],
+      "manualOnlyClaims": [],
+      "noTimelineEngineInvoked": true
+    },
+    {
+      "id": "C04",
+      "kind": "admissible-missing-field-completions",
+      "existingApi": {
+        "inspection": {
+          "timingInput": "some",
+          "issues": [
+            {
+              "code": "missing-start",
+              "message": "Start position is not supplied.",
+              "target": {
+                "momentId": "p1"
+              },
+              "kind": "missing"
+            }
+          ],
+          "summary": {
+            "missing": 1,
+            "invalid": 0
+          }
+        },
+        "musicalProjection": {
+          "noteIds": [
+            "a",
+            "b"
+          ],
+          "midis": [
+            69,
+            64
+          ],
+          "pitchClasses": [
+            4,
+            9
+          ],
+          "moments": [
+            {
+              "id": "p0",
+              "kind": "single-note",
+              "candidates": []
+            },
+            {
+              "id": "p1",
+              "kind": "single-note",
+              "candidates": []
+            }
+          ],
+          "harmonicSpans": [],
+          "progressionReadings": []
+        },
+        "originalWrittenLengths": [
+          {
+            "id": "a",
+            "duration": {
+              "numerator": 3,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "b",
+            "duration": {
+              "numerator": 1,
+              "denominator": 2
+            }
+          }
+        ]
+      },
+      "worlds": [
+        {
+          "name": "A",
+          "assignments": [
+            {
+              "path": "moments.1.beatOffset",
+              "value": {
+                "numerator": 2,
+                "denominator": 1
+              }
+            }
+          ],
+          "structurallyAcceptedByCurrentInspector": true,
+          "currentMusicalProjectionUnchanged": true,
+          "manualNominalActiveAtQuery": [
+            "a"
+          ],
+          "note": "active set is manual thought-experiment evidence, not a newly implemented timeline output"
+        },
+        {
+          "name": "B",
+          "assignments": [
+            {
+              "path": "moments.1.beatOffset",
+              "value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            }
+          ],
+          "structurallyAcceptedByCurrentInspector": true,
+          "currentMusicalProjectionUnchanged": true,
+          "manualNominalActiveAtQuery": [
+            "a",
+            "b"
+          ],
+          "note": "active set is manual thought-experiment evidence, not a newly implemented timeline output"
+        }
+      ],
+      "manualOnlyClaims": [],
+      "noTimelineEngineInvoked": true
+    },
+    {
+      "id": "C05",
+      "kind": "admissible-missing-field-completions",
+      "existingApi": {
+        "inspection": {
+          "timingInput": "some",
+          "issues": [
+            {
+              "code": "missing-meter",
+              "message": "Time signature is not supplied.",
+              "kind": "missing"
+            }
+          ],
+          "summary": {
+            "missing": 1,
+            "invalid": 0
+          }
+        },
+        "musicalProjection": {
+          "noteIds": [
+            "a",
+            "b"
+          ],
+          "midis": [
+            69,
+            64
+          ],
+          "pitchClasses": [
+            4,
+            9
+          ],
+          "moments": [
+            {
+              "id": "p0",
+              "kind": "single-note",
+              "candidates": []
+            },
+            {
+              "id": "p1",
+              "kind": "single-note",
+              "candidates": []
+            }
+          ],
+          "harmonicSpans": [],
+          "progressionReadings": []
+        },
+        "originalWrittenLengths": [
+          {
+            "id": "a",
+            "duration": {
+              "numerator": 3,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "b",
+            "duration": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "worlds": [
+        {
+          "name": "A",
+          "assignments": [
+            {
+              "path": "meter",
+              "value": {
+                "numerator": 2,
+                "denominator": 4
+              }
+            }
+          ],
+          "structurallyAcceptedByCurrentInspector": true,
+          "currentMusicalProjectionUnchanged": true,
+          "manualNominalActiveAtQuery": [
+            "a",
+            "b"
+          ],
+          "note": "active set is manual thought-experiment evidence, not a newly implemented timeline output"
+        },
+        {
+          "name": "B",
+          "assignments": [
+            {
+              "path": "meter",
+              "value": {
+                "numerator": 4,
+                "denominator": 4
+              }
+            }
+          ],
+          "structurallyAcceptedByCurrentInspector": true,
+          "currentMusicalProjectionUnchanged": true,
+          "manualNominalActiveAtQuery": [
+            "a"
+          ],
+          "note": "active set is manual thought-experiment evidence, not a newly implemented timeline output"
+        }
+      ],
+      "manualOnlyClaims": [],
+      "noTimelineEngineInvoked": true
+    },
+    {
+      "id": "C06",
+      "kind": "admissible-missing-field-completions",
+      "existingApi": {
+        "inspection": {
+          "timingInput": "some",
+          "issues": [
+            {
+              "code": "missing-start",
+              "message": "Start position is not supplied.",
+              "target": {
+                "momentId": "p1"
+              },
+              "kind": "missing"
+            },
+            {
+              "code": "missing-meter",
+              "message": "Time signature is not supplied.",
+              "kind": "missing"
+            }
+          ],
+          "summary": {
+            "missing": 2,
+            "invalid": 0
+          }
+        },
+        "musicalProjection": {
+          "noteIds": [
+            "a",
+            "b"
+          ],
+          "midis": [
+            69,
+            64
+          ],
+          "pitchClasses": [
+            4,
+            9
+          ],
+          "moments": [
+            {
+              "id": "p0",
+              "kind": "single-note",
+              "candidates": []
+            },
+            {
+              "id": "p1",
+              "kind": "single-note",
+              "candidates": []
+            }
+          ],
+          "harmonicSpans": [],
+          "progressionReadings": []
+        },
+        "originalWrittenLengths": [
+          {
+            "id": "a",
+            "duration": {
+              "numerator": 2,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "b",
+            "duration": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "worlds": [
+        {
+          "name": "A",
+          "assignments": [
+            {
+              "path": "moments.1.beatOffset",
+              "value": {
+                "numerator": 3,
+                "denominator": 1
+              }
+            }
+          ],
+          "structurallyAcceptedByCurrentInspector": true,
+          "currentMusicalProjectionUnchanged": true,
+          "manualNominalActiveAtQuery": [
+            "a"
+          ],
+          "note": "active set is manual thought-experiment evidence, not a newly implemented timeline output"
+        },
+        {
+          "name": "B",
+          "assignments": [
+            {
+              "path": "moments.1.beatOffset",
+              "value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            }
+          ],
+          "structurallyAcceptedByCurrentInspector": true,
+          "currentMusicalProjectionUnchanged": true,
+          "manualNominalActiveAtQuery": [
+            "a",
+            "b"
+          ],
+          "note": "active set is manual thought-experiment evidence, not a newly implemented timeline output"
+        }
+      ],
+      "manualOnlyClaims": [],
+      "noTimelineEngineInvoked": true
+    },
+    {
+      "id": "C07",
+      "kind": "positive-nominal-subset",
+      "existingApi": {
+        "inspection": {
+          "timingInput": "some",
+          "issues": [
+            {
+              "code": "missing-meter",
+              "message": "Time signature is not supplied.",
+              "kind": "missing"
+            }
+          ],
+          "summary": {
+            "missing": 1,
+            "invalid": 0
+          }
+        },
+        "musicalProjection": {
+          "noteIds": [
+            "a",
+            "b"
+          ],
+          "midis": [
+            69,
+            64
+          ],
+          "pitchClasses": [
+            4,
+            9
+          ],
+          "moments": [
+            {
+              "id": "p0",
+              "kind": "single-note",
+              "candidates": []
+            },
+            {
+              "id": "p1",
+              "kind": "single-note",
+              "candidates": []
+            }
+          ],
+          "harmonicSpans": [],
+          "progressionReadings": []
+        },
+        "originalWrittenLengths": [
+          {
+            "id": "a",
+            "duration": {
+              "numerator": 2,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "b",
+            "duration": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "worlds": [],
+      "manualOnlyClaims": [],
+      "noTimelineEngineInvoked": true
+    },
+    {
+      "id": "C08",
+      "kind": "same-input-performance-nonidentifiability",
+      "existingApi": {
+        "inspection": {
+          "timingInput": "some",
+          "issues": [
+            {
+              "code": "missing-meter",
+              "message": "Time signature is not supplied.",
+              "kind": "missing"
+            }
+          ],
+          "summary": {
+            "missing": 1,
+            "invalid": 0
+          }
+        },
+        "musicalProjection": {
+          "noteIds": [
+            "a"
+          ],
+          "midis": [
+            69
+          ],
+          "pitchClasses": [
+            9
+          ],
+          "moments": [
+            {
+              "id": "p0",
+              "kind": "single-note",
+              "candidates": []
+            }
+          ],
+          "harmonicSpans": [],
+          "progressionReadings": []
+        },
+        "originalWrittenLengths": [
+          {
+            "id": "a",
+            "duration": {
+              "numerator": 2,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "worlds": [],
+      "manualOnlyClaims": [
+        {
+          "name": "A",
+          "assignmentsOnlyToPreviouslyUnknownFields": [],
+          "latentPerformance": "performer damps after 1/2 quarter; written note remains length2",
+          "manuallyExpectedPhysicalSoundingAtQuery": []
+        },
+        {
+          "name": "B",
+          "assignmentsOnlyToPreviouslyUnknownFields": [],
+          "latentPerformance": "performer lets note ring through its nominal2 quarters",
+          "manuallyExpectedPhysicalSoundingAtQuery": [
+            "a"
+          ]
+        }
+      ],
+      "noTimelineEngineInvoked": true
+    },
+    {
+      "id": "C09",
+      "kind": "unresolved-temporal-policy-or-conflict",
+      "existingApi": {
+        "inspection": {
+          "timingInput": "some",
+          "issues": [
+            {
+              "code": "missing-meter",
+              "message": "Time signature is not supplied.",
+              "kind": "missing"
+            }
+          ],
+          "summary": {
+            "missing": 1,
+            "invalid": 0
+          }
+        },
+        "musicalProjection": {
+          "noteIds": [
+            "a"
+          ],
+          "midis": [
+            69
+          ],
+          "pitchClasses": [
+            9
+          ],
+          "moments": [
+            {
+              "id": "p0",
+              "kind": "single-note",
+              "candidates": []
+            },
+            {
+              "id": "p1",
+              "kind": "empty",
+              "candidates": []
+            }
+          ],
+          "harmonicSpans": [],
+          "progressionReadings": []
+        },
+        "originalWrittenLengths": [
+          {
+            "id": "a",
+            "duration": {
+              "numerator": 4,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "worlds": [],
+      "manualOnlyClaims": [],
+      "noTimelineEngineInvoked": true
+    },
+    {
+      "id": "C10",
+      "kind": "unresolved-temporal-policy-or-conflict",
+      "existingApi": {
+        "inspection": {
+          "timingInput": "some",
+          "issues": [
+            {
+              "code": "missing-meter",
+              "message": "Time signature is not supplied.",
+              "kind": "missing"
+            }
+          ],
+          "summary": {
+            "missing": 1,
+            "invalid": 0
+          }
+        },
+        "musicalProjection": {
+          "noteIds": [
+            "a"
+          ],
+          "midis": [
+            69
+          ],
+          "pitchClasses": [
+            9
+          ],
+          "moments": [
+            {
+              "id": "p0",
+              "kind": "single-note",
+              "candidates": []
+            },
+            {
+              "id": "p1",
+              "kind": "empty",
+              "candidates": []
+            }
+          ],
+          "harmonicSpans": [],
+          "progressionReadings": []
+        },
+        "originalWrittenLengths": [
+          {
+            "id": "a",
+            "duration": {
+              "numerator": 4,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "worlds": [],
+      "manualOnlyClaims": [],
+      "noTimelineEngineInvoked": true
+    },
+    {
+      "id": "C11",
+      "kind": "unresolved-temporal-policy-or-conflict",
+      "existingApi": {
+        "inspection": {
+          "timingInput": "some",
+          "issues": [
+            {
+              "code": "missing-meter",
+              "message": "Time signature is not supplied.",
+              "kind": "missing"
+            }
+          ],
+          "summary": {
+            "missing": 1,
+            "invalid": 0
+          }
+        },
+        "musicalProjection": {
+          "noteIds": [
+            "a",
+            "b"
+          ],
+          "midis": [
+            69,
+            71
+          ],
+          "pitchClasses": [
+            9,
+            11
+          ],
+          "moments": [
+            {
+              "id": "p0",
+              "kind": "single-note",
+              "candidates": []
+            },
+            {
+              "id": "p1",
+              "kind": "single-note",
+              "candidates": []
+            }
+          ],
+          "harmonicSpans": [],
+          "progressionReadings": []
+        },
+        "originalWrittenLengths": [
+          {
+            "id": "a",
+            "duration": {
+              "numerator": 4,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "b",
+            "duration": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "worlds": [],
+      "manualOnlyClaims": [],
+      "noTimelineEngineInvoked": true
+    },
+    {
+      "id": "C12",
+      "kind": "unresolved-temporal-policy-or-conflict",
+      "existingApi": {
+        "inspection": {
+          "timingInput": "some",
+          "issues": [
+            {
+              "code": "missing-meter",
+              "message": "Time signature is not supplied.",
+              "kind": "missing"
+            }
+          ],
+          "summary": {
+            "missing": 1,
+            "invalid": 0
+          }
+        },
+        "musicalProjection": {
+          "noteIds": [
+            "a"
+          ],
+          "midis": [
+            69
+          ],
+          "pitchClasses": [
+            9
+          ],
+          "moments": [
+            {
+              "id": "p0",
+              "kind": "single-note",
+              "candidates": []
+            },
+            {
+              "id": "p1",
+              "kind": "empty",
+              "candidates": []
+            }
+          ],
+          "harmonicSpans": [],
+          "progressionReadings": []
+        },
+        "originalWrittenLengths": [
+          {
+            "id": "a",
+            "duration": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "worlds": [],
+      "manualOnlyClaims": [],
+      "noTimelineEngineInvoked": true
+    },
+    {
+      "id": "C13",
+      "kind": "unresolved-temporal-policy-or-conflict",
+      "existingApi": {
+        "inspection": {
+          "timingInput": "some",
+          "issues": [
+            {
+              "code": "missing-meter",
+              "message": "Time signature is not supplied.",
+              "kind": "missing"
+            }
+          ],
+          "summary": {
+            "missing": 1,
+            "invalid": 0
+          }
+        },
+        "musicalProjection": {
+          "noteIds": [
+            "a"
+          ],
+          "midis": [
+            69
+          ],
+          "pitchClasses": [
+            9
+          ],
+          "moments": [
+            {
+              "id": "p0",
+              "kind": "single-note",
+              "candidates": []
+            },
+            {
+              "id": "p1",
+              "kind": "empty",
+              "candidates": []
+            }
+          ],
+          "harmonicSpans": [],
+          "progressionReadings": []
+        },
+        "originalWrittenLengths": [
+          {
+            "id": "a",
+            "duration": {
+              "numerator": 2,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "worlds": [],
+      "manualOnlyClaims": [],
+      "noTimelineEngineInvoked": true
+    }
+  ]
+}

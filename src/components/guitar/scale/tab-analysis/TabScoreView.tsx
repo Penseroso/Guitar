@@ -1,11 +1,14 @@
 "use client";
 
-import React, { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import type { TabDocument, TabFraction, TabMoment, TabNote, TabSelection } from '@/domain/tab/types';
 import type { TabScoreAnnotation } from '@/domain/tab/annotations';
 import type { TabAnalysisAction } from '@/features/tab-analysis/state';
-import { TabMeasureEditor, TabNotationEditor } from './TabNotationEditor';
+import { TabMeasureEditor, TabNotationEditor, type TabNotationDraftState } from './TabNotationEditor';
+import { inspectTabTiming, type TabTimingInspection, type TabTimingTarget } from '@/domain/tab/timing-inspection';
+import { TimingInspectionPanel } from './TimingInspectionPanel';
+import timingStyles from './timing-inspection.module.css';
 import { getKeyName } from '@/domain/shared/keys';
 import styles from './tab-score-editor.module.css';
 
@@ -60,6 +63,18 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     const pendingBar = useRef<TabDocument | null>(null);
     const pendingHistory = useRef<{ document: TabDocument; columns: boolean } | null>(null);
     const input = useRef<HTMLInputElement>(null);
+    const notationDraft = useRef<TabNotationDraftState>({ dirty: false, composing: false });
+    const [timingReport, setTimingReport] = useState<{ document: TabDocument; result: TabTimingInspection; serial: number } | null>(null);
+    const [timingOpen, setTimingOpen] = useState(false);
+    const [timingStale, setTimingStale] = useState(false);
+    const [timingNotice, setTimingNotice] = useState<string | null>(null);
+    const reportNotationDraft = useCallback((state: TabNotationDraftState) => {
+        notationDraft.current = state;
+        if (!state.dirty && !state.composing) setTimingNotice(null);
+    }, []);
+    const timingSerial = useRef(0);
+    const checkButton = useRef<HTMLButtonElement>(null);
+    const timingReturn = useRef<{ document: TabDocument; origin: HTMLButtonElement } | null>(null);
     const meterEditor = useRef<HTMLDivElement>(null);
     const positionEditor = useRef<HTMLDivElement>(null);
     const positionTriggers = useRef(new Map<string, HTMLButtonElement>());
@@ -86,6 +101,38 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     const insertionStop = document.moments.some(moment => moment.id === insertionCursor) ? insertionCursor : current?.momentId;
     const notesById = new Map(document.moments.flatMap(moment => moment.notes.map(note => [note.id, note] as const)));
     const sustainedAt = (moment: TabMoment, string: number) => moment.sustains?.find(sustain => notesById.get(sustain.noteId)?.string === string);
+
+    useLayoutEffect(() => {
+        if (timingReport && timingReport.document !== document) {
+            setTimingReport(null); setTimingOpen(false); setTimingStale(true); setTimingNotice(null); timingReturn.current = null;
+        }
+    }, [document, timingReport]);
+    const timingBlocked = () => {
+        const edit = draftRef.current;
+        const original = edit && document.moments.find(moment => moment.id === edit.cell.momentId);
+        const originalText = original?.mutes?.some(mute => mute.string === edit?.cell.string) ? 'x'
+            : original?.notes.find(note => note.string === edit?.cell.string)?.fret.toString() ?? '';
+        return composing.current || notationDraft.current.composing || notationDraft.current.dirty
+            || Boolean(edit && edit.text !== originalText);
+    };
+    const guardTiming = () => {
+        if (!timingBlocked()) return true;
+        setTimingNotice('Finish or cancel this input first.');
+        return false;
+    };
+    const navigateTiming = (target: TabTimingTarget, origin: HTMLButtonElement) => {
+        if (!guardTiming() || timingReport?.document !== document) return;
+        const matches = document.moments.filter(moment => moment.id === target.momentId);
+        if (matches.length !== 1 || (target.noteId && document.moments.flatMap(moment => moment.notes).filter(note => note.id === target.noteId).length !== 1)) return;
+        const cell = { momentId: target.momentId, string: target.string ?? 0 };
+        // A clean, unchanged fret input may be closed without writing the score.
+        if (draftRef.current) setDraft(null);
+        choose(cell, false, target.string === undefined);
+        timingReturn.current = { document, origin };
+        if (target.string === undefined) pendingHeader.current = target.momentId;
+        else focusCell(cell);
+        setTimingNotice(null);
+    };
 
     useLayoutEffect(() => {
         if (meterBar === null) return;
@@ -115,12 +162,16 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     const cancelHold = () => { if (hold.current) clearTimeout(hold.current.timer); hold.current = null; };
     useEffect(() => {
         const dismiss = () => { cancelHold(); setTouchActions(null); };
-        const dismissPosition = () => setPositionPopup(null);
+        const dismissPosition = () => {
+            if (!notationDraft.current.dirty && !notationDraft.current.composing) setPositionPopup(null);
+        };
         const dismissScroll = (event: Event) => {
             dismiss();
             if (event.target instanceof Element && event.target.getAttribute('aria-label')?.startsWith('Tab score — bars')) dismissPosition();
         };
         const dismissOutside = (event: PointerEvent) => {
+            // These controls have their own guard, before blur can commit or unmount a draft.
+            if (event.target instanceof Element && event.target.closest('[data-timing-controls]')) return;
             if (!(event.target instanceof Element) || !event.target.closest('[data-position-editor], [data-position-trigger]')) setPositionPopup(null);
             if (event.target instanceof Element && event.target.closest('[data-column-header], [data-column-actions]')) return;
             skipHeaderClick.current = false;
@@ -171,6 +222,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
 
     const setDraft = (value: Draft | null) => {
         draftRef.current = value; setDraftState(value);
+        if (value === null) setTimingNotice(null);
         onDraftStatusChange?.(value === null ? null : value.text === '' ? 'empty'
             : onSetMute && /^[xX]$/.test(value.text) ? 'mute'
                 : /^\d{1,2}$/.test(value.text) && Number(value.text) <= 36 ? 'note' : 'invalid');
@@ -194,7 +246,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
             return false;
         }
         if (!keepInputUntilBlur) setDraft(null);
-        setError(null);
+        setError(null); setTimingNotice(null);
         // Opening a rest/sustain cell for inspection must not erase its metadata on blur.
         // Delete explicitly clears it; typing a fret or x explicitly replaces it.
         if (edit.text === '' && textAt(edit.cell) === '') return true;
@@ -430,7 +482,37 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     }));
     const systems = Array.from({ length: Math.ceil(measures.length / 4) }, (_, index) => measures.slice(index * 4, index * 4 + 4));
 
-    return <div className={styles.score} role="region" aria-label="Tab score — onsets in order">
+    return <div className={styles.score} role="region" aria-label="Tab score — onsets in order"
+        onKeyDownCapture={event => {
+            if (event.key !== 'Escape' || event.nativeEvent.isComposing || draftRef.current || timingBlocked()) return;
+            // Editors and contextual controls retain their own Escape behavior.
+            // Diagnostic return belongs to the score's cell/header navigation surface.
+            if (!(event.target instanceof Element) || !event.target.closest('[role="gridcell"] button, [data-column-header], [data-position-trigger]')) return;
+            const destination = timingReturn.current;
+            if (destination?.document !== document || !destination.origin.isConnected) return;
+            event.preventDefault(); event.stopPropagation(); destination.origin.focus({ preventScroll: true });
+            destination.origin.scrollIntoView?.({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
+            timingReturn.current = null;
+        }}>
+        <div data-timing-controls className={timingStyles.controls}
+            onPointerDownCapture={event => { if (!guardTiming()) event.preventDefault(); }}
+            onKeyDownCapture={event => {
+                if ((event.key === 'Enter' || event.key === ' ') && !guardTiming()) { event.preventDefault(); event.stopPropagation(); }
+            }}
+            onClickCapture={event => { if (!guardTiming()) { event.preventDefault(); event.stopPropagation(); } }}>
+            <button type="button" ref={checkButton} className={timingStyles.action} aria-expanded={timingOpen && timingReport?.document === document}
+                onClick={() => {
+                    if (!guardTiming()) return;
+                    setPositionPopup(null); setMeterBar(null);
+                    setTimingReport({ document, result: inspectTabTiming(document), serial: ++timingSerial.current });
+                    setTimingOpen(true); setTimingStale(false); setTimingNotice(null); timingReturn.current = null;
+                }}>Check timing</button>
+            {timingNotice && <p role="status">{timingNotice}</p>}
+            {timingStale && <p role="status">Score changed · Check again</p>}
+            {timingOpen && timingReport?.document === document && <TimingInspectionPanel key={timingReport.serial}
+                document={document} report={timingReport.result} onNavigate={navigateTiming}
+                onClose={() => { setTimingOpen(false); timingReturn.current = null; checkButton.current?.focus(); }} />}
+        </div>
         {systems.map((system, systemIndex) => {
             const slots = system.flatMap<{ moment: TabMoment | null; index: number; measure: number }>(measure => measure.moments.length ? measure.moments.map(item => ({ ...item, measure: measure.number })) : [{ moment: null, index: -1, measure: measure.number }]);
             const template = `44px repeat(${slots.length}, minmax(44px, 1fr))`;
@@ -580,7 +662,10 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                                     onChange={event => { setDraft({ ...draft, text: event.target.value }); setError(null); }}
                                     onCompositionStart={() => { composing.current = true; }} onCompositionEnd={() => { composing.current = false; }}
                                     onKeyDown={event => onInputKey(event, cell)}
-                                    onBlur={() => { if (!composing.current && !commit()) input.current?.focus({ preventScroll: true }); }} />}
+                                    onBlur={event => {
+                                        if (event.relatedTarget instanceof Element && event.relatedTarget.closest('[data-timing-controls]') && timingBlocked()) return;
+                                        if (!composing.current && !commit()) input.current?.focus({ preventScroll: true });
+                                    }} />}
                             </div>;
                                 })}
                             </div>)}
@@ -608,9 +693,15 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                 {onEdit && current && positionPopup?.key === cellKey(current) && system.some(measure => measure.moments.some(item => item.moment.id === current.momentId)) &&
                     <div ref={positionEditor} id={`${errorId}-position-editor`} data-position-editor="true" className={styles.positionPopup}
                         style={{ left: positionPopup.left, top: positionPopup.top }}
-                        onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setPositionPopup(null); }}
-                        onKeyDown={event => { if (event.key === 'Escape') { event.preventDefault(); closePositionEditor(); } }}>
-                        <TabNotationEditor document={document} cell={current} dispatch={onEdit} onClose={closePositionEditor} />
+                        onBlur={event => {
+                            if (event.relatedTarget instanceof Element && event.relatedTarget.closest('[data-timing-controls]')) return;
+                            // Tab may pass through other controls before reaching Check timing.
+                            // Keep unapplied text mounted until explicit cancel/apply or score selection.
+                            if (notationDraft.current.dirty || notationDraft.current.composing) return;
+                            if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setPositionPopup(null);
+                        }}
+                        onKeyDown={event => { if (event.key === 'Escape' && !event.nativeEvent.isComposing && !notationDraft.current.composing) { event.preventDefault(); closePositionEditor(); } }}>
+                        <TabNotationEditor document={document} cell={current} dispatch={onEdit} onClose={closePositionEditor} onDraftStateChange={reportNotationDraft} />
                     </div>}
                 {onEdit && systemIndex === systems.length - 1 && <button type="button" className={styles.addBar}
                     disabled={document.moments.length >= 1024 || document.measureCount >= 1024}

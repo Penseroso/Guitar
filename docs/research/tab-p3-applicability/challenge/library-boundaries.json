@@ -1,0 +1,44 @@
+{
+  "boundaryType": [
+    {
+      "type": "Fraction",
+      "value": "1/10",
+      "start": [],
+      "overlap": [
+        "a"
+      ]
+    },
+    {
+      "type": "float",
+      "value": "0.1",
+      "start": [
+        "b"
+      ],
+      "overlap": []
+    }
+  ],
+  "narrowBoundary": {
+    "sourceOverlap": "1/1010023014",
+    "treeAtBStart": [
+      "b",
+      "a"
+    ],
+    "chordifySlices": [
+      {
+        "offset": "167/1001",
+        "length": "601/1002",
+        "midis": [
+          60
+        ]
+      },
+      {
+        "offset": "772/1007",
+        "length": "0.25",
+        "midis": [
+          64
+        ]
+      }
+    ],
+    "hasExpectedOverlapSlice": false
+  }
+}
