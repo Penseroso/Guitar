@@ -1,5 +1,9 @@
 # P3.2: point-local written-note coverage
 
+This records the local P3.2 contract and acceptance. The later [P3.3 cross-bar view](tab-written-time-across-bars.md)
+adds separate model-qualified APIs and a bar-origin lower-bound proof without
+changing the local APIs or their default UI behavior.
+
 Baseline: verified P3.1 `72d7c0fdefaa346f8e540e1384732243731c9f22` on
 `feat/tab-timing-inspection`. The historical local timeline candidate is not imported.
 

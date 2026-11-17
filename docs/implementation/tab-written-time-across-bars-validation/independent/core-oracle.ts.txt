@@ -1,0 +1,163 @@
+import assert from 'node:assert/strict';
+import {readFileSync,writeFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+import {performance} from 'node:perf_hooks';
+import {observeTabAcrossBarsWrittenTime as observe,inspectTabAcrossBarsWrittenNotesAt as inspect,getTabAcrossBarsWrittenInspectionPoints as points} from '/workspace/Guitar-p2/src/domain/tab/written-time-across-bars';
+const OUT='/workspace/p33-validation/independent',FILE='/workspace/Guitar-p2/src/domain/tab/written-time-across-bars.ts';
+const hash=()=>createHash('sha256').update(readFileSync(FILE)).digest('hex'),beforeHash=hash();
+const f=(numerator:number,denominator=1)=>({numerator,denominator});
+const q=(numerator:number|string,denominator:number|string=1)=>({numerator:String(numerator),denominator:String(denominator)});
+const n=(id:string,duration:unknown=f(1),string=0)=>({id,string,midi:64+string,fret:5,pitchClass:(64+string)%12,source:null,duration});
+const p=(id:string,measure:unknown,offset:unknown,notes:unknown)=>({id,index:0,column:1,measure,beatOffset:offset,notes});
+const doc=(moments:unknown[],measureCount=4,meter:unknown={numerator:4,denominator:4})=>({format:'authored',timing:'order-only',source:'original source',tuningMidi:[64,59,55,50,45,40],capo:0,measureCount,meter,moments});
+const obs=(source:unknown,m=2)=>observe(source,m,{model:'regular-bar-origins'});
+const freeze=(v:any):void=>{if(v&&typeof v==='object'){Object.values(v).forEach(freeze);Object.freeze(v)}};
+const ids=(r:any)=>r.status==='complete'?r.notes.map((x:any)=>x.noteId):null;
+const counters={manualCases:0,randomSources:0,randomQueries:0,completionWorlds:0,invalidQueries:0};
+const manual:any[]=[];
+function mark(name:string,actual:unknown){manual.push({name,actual});counters.manualCases++}
+// Explicit regular 4/4 model: source order is not chronological order.
+{
+ const source=doc([p('pa',1,f(9),[n('a')]),p('pb',2,f(3),[n('b',f(3))]),p('pc',3,f(0),[n('c')])]);
+ const before=JSON.stringify(source);freeze(source);const s=obs(source,3);
+ assert.deepEqual(s.data.intervals.map(x=>x.noteId),['a','b','c']);
+ assert.deepEqual(ids(inspect(s,q(8))),['b','c']);assert.deepEqual(ids(inspect(s,q(9))),['a','b']);
+ assert.deepEqual(s.data.projectionDiagnostics.map(x=>[x.momentIndex,x.offset]),[[0,q(9)]]);
+ assert.deepEqual(s.data.intervals.map(x=>[x.sourceMeasure,x.sourceStart,x.start,x.end]),[[1,q(9),q(9),q(10)],[2,q(3),q(7),q(10)],[3,q(0),q(8),q(9)]]);
+ assert.equal(JSON.stringify(source),before);assert.equal(s.data.endpointDeltas.reduce((v,d)=>v+d.starts.length+d.ends.length,0),6);
+ mark('late offset / carry-in / exact boundary / source-query order',ids(inspect(s,q(9))));
+}
+{
+ const s=obs(doc([p('long',1,f(0),[n('long',f(12))]),p('empty',3,undefined,[])]),3);
+ assert.deepEqual(ids(inspect(s,q(9))),['long']);mark('carry-in crosses more than one bar and an empty-owned target',['long']);
+}
+{
+ const a=n('a',f(4)),b:any=n('future');delete b.duration;
+ const source=doc([p('known',2,f(0),[a]),p('future',3,f(0),[b])]);
+ assert.equal(inspect(obs(source,2),q(8)).status,'outside-window');
+ assert.equal(inspect(obs(source,3),q(8)).status,'partial');
+ assert.deepEqual(ids(inspect(obs(source,2),q(7))),['a']);
+ const missingStart=doc([p('known',2,f(0),[n('a',f(8))]),p('future',3,undefined,[n('future')])]);
+ assert.equal(inspect(obs(missingStart,2),q(8)).status,'outside-window');assert.equal(inspect(obs(missingStart,3),q(8)).status,'partial');
+ assert.deepEqual(ids(inspect(obs(missingStart,2),q(7))),['a']);
+ mark('same q8, W2 outside but W3 missing-start/duration origin equality partial',true);
+}
+for(const bad of [null,f(-1),f(1,0),f(1025),f(1.5)]){
+ for(const field of ['start','duration'] as const){
+  const future:any=p('future',3,undefined,[n('future')]);if(field==='start')future.beatOffset=bad;else future.notes[0].duration=bad;
+  const s=obs(doc([p('known',2,f(0),[n('known',f(4))]),future]));
+  assert.equal(s.data.coverageFacts[0].kind,'unresolved');assert.equal(inspect(s,q(5)).status,'partial');
+ }
+}mark('present invalid start/duration never earns future-anchor exclusion',true);
+for(const mode of ['note-id','position-id','midi','string','duplicate-note','duplicate-position','note-null','notes-null','ownership']){
+ const future:any=p('future',3,undefined,[n('future')]);const known:any=p('known',2,f(0),[n('known',f(4))]);
+ if(mode==='note-id')future.notes[0].id='';if(mode==='position-id')future.id='';if(mode==='midi')future.notes[0].midi=128;if(mode==='string')future.notes[0].string=6;
+ if(mode==='duplicate-note')future.notes[0].id='known';if(mode==='duplicate-position')future.id='known';if(mode==='note-null')future.notes=[null];if(mode==='notes-null')future.notes=null;if(mode==='ownership')future.measure=null;
+ const s=obs(doc([known,future]));assert.equal(inspect(s,q(5)).status,mode==='notes-null'||mode==='ownership'?'unreadable':'partial');
+ assert.equal(inspect(s,q(8)).status,'outside-window');assert.equal(inspect(s,q('NaN')).status,'invalid-query');
+}mark('identity/shape/MIDI/string failures fail closed; domain priority wins only outside',true);
+{
+ const source:any=doc([]);const s=obs(source);assert.equal(s.data.populationCoverage,'complete');assert.equal(s.data.observedRange,null);assert.equal(inspect(s,q(5)).status,'outside-range');assert.deepEqual(points(s),[]);
+ const noRange=obs(doc([p('future',3,undefined,[n('future')])]));assert.equal(inspect(noRange,q(5)).status,'outside-range');
+ const unknown=obs(doc([p('future',2,undefined,[n('future')])]));assert.equal(inspect(unknown,q(5)).status,'partial');
+ mark('empty/no-known-range never becomes complete empty, even with an excluded future note',true);
+}
+{
+ const source=doc([p('pa',1024,f(1,506),[n('a',f(1,1015))]),p('pb',1024,f(1,507),[n('b',f(1,1011),1)])],1024,{numerator:32,denominator:1});
+ const s=obs(source,1024);assert.deepEqual(ids(inspect(s,q('67251530481','513590'))),['b']);
+ assert.equal(inspect(s,q('22372961402','170859')).status,'outside-range');
+ assert.equal(Number(67251530481n)/Number(513590n),Number(22372961402n)/Number(170859n));
+ mark('valid max-anchor float-colliding endpoints remain distinct at a.end',ids(inspect(s,q('67251530481','513590'))));
+}
+{
+ const source:any=doc([p('a',2,f(0),[n('a',f(4))]),{...p('metadata',4,undefined,[]),rest:{duration:null},mutes:null,sustains:[{noteId:'ghost'}]}]);
+ const s=obs(source);assert.equal(s.data.populationCoverage,'complete');assert.deepEqual(ids(inspect(s,q(5))),['a']);
+ assert.equal(Object.isFrozen(source),false);source.moments[0].notes[0].midi=0;source.moments[0].beatOffset=f(100);
+ assert.deepEqual(inspect(s,q(5)).status==='complete'?(inspect(s,q(5)) as any).notes.map((x:any)=>x.midi):null,[64]);
+ const token={data:s.data,get sourceDocument(){throw Error('query read association')}};assert.deepEqual(ids(inspect(token,q(5))),['a']);
+ assert.doesNotThrow(()=>JSON.stringify(s.data));mark('literal metadata only, no aliases/source reread/original freeze',true);
+}
+for(const [change,reason] of [ ['missing-meter','missing-meter'],['invalid-meter','invalid-meter'],['bad-count','invalid-measure-count'],['bad-measure','invalid-measure'],['no-model','invalid-model']] as const){
+ const source:any=doc([]);if(change==='missing-meter')delete source.meter;if(change==='invalid-meter')source.meter={numerator:4,denominator:3};if(change==='bad-count')source.measureCount=1025;
+ const s=observe(source,change==='bad-measure'?5:2,change==='no-model'?{} as any:{model:'regular-bar-origins'});
+ assert.equal(s.data.reason,reason);assert.equal(inspect(s,q(100)).status,'unavailable');assert.equal(inspect(s,q('x')).status,'invalid-query');
+}mark('explicit-model/meter/count/query prerequisites and priority',true);
+
+{
+ const s=obs(doc([p('last',4,f(3),[n('last',f(4))])]),4);
+ assert.deepEqual(s.data.intervals[0].end,q(19));assert.deepEqual(ids(inspect(s,q(31,2))),['last']);assert.equal(inspect(s,q(16)).status,'outside-window');
+ const gap=obs(doc([p('a',2,f(0),[n('a')]),p('b',2,f(2),[n('b')])]));
+ assert.deepEqual(ids(inspect(gap,q(11,2))),[]);assert.equal(inspect(gap,q(7)).status,'outside-range');
+ mark('last-bar overflow remains literal; interior complete gap differs from known/window endpoints',true);
+}
+// Expected dispositions are assigned by generator, not inferred from production
+// coverage facts. All expected membership uses independent integer 1/1024 ticks.
+let seed=0x33decaf;const rand=(m:number)=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return(seed>>>0)%m};
+const faultCounts:Record<string,number>={},statuses:Record<string,number>={};
+for(let run=0;run<2400;run++){
+ const measureCount=3+rand(3),measure=1+rand(measureCount),meter=[{numerator:4,denominator:4},{numerator:7,denominator:8},{numerator:3,denominator:4}][rand(3)];
+ const L=4096*meter.numerator/meter.denominator,origin=(measure-1)*L;
+ type Fact={id:string,start:number,end:number};const valid:Fact[]=[{id:'known',start:origin,end:origin+4096}];
+ const moments:any[]=[p('known-p',measure,f(0),[n('known',f(4))])],bounds:number[]=[];let unresolved=false,unreadable=false;
+ const modes=['valid','eligible-length','missing-start','missing-both','bad-start','bad-length','bad-midi','bad-string','bad-id','bad-note','bad-notes','unknown-owner','metadata'];
+ for(let i=0;i<1+rand(5);i++){
+  const mode=modes[rand(modes.length)];faultCounts[mode]=(faultCounts[mode]??0)+1;
+  const owner=1+rand(measureCount),tick=rand(1025),length=1+rand(1024),global=(owner-1)*L+tick;
+  const note:any=n(`n${i}`,f(length,1024),i%6),moment:any=p(`p${i}`,owner,f(tick,1024),[note]);
+  if(mode==='valid')valid.push({id:`n${i}`,start:global,end:global+length});
+  else if(mode==='eligible-length'){delete note.duration;bounds.push(global)}
+  else if(mode==='missing-start'){delete moment.beatOffset;bounds.push((owner-1)*L)}
+  else if(mode==='missing-both'){delete moment.beatOffset;delete note.duration;bounds.push((owner-1)*L)}
+  else if(mode==='bad-notes'){moment.notes=null;unreadable=true}
+  else if(mode==='unknown-owner'){moment.measure=null;unreadable=true}
+  else if(mode==='metadata'){moment.notes=[];delete moment.beatOffset;moment.rest={duration:null};moment.mutes=null}
+  else{unresolved=true;if(mode==='bad-start')moment.beatOffset=null;if(mode==='bad-length')note.duration=null;if(mode==='bad-midi')note.midi=128;if(mode==='bad-string')note.string=6;if(mode==='bad-id')note.id='';if(mode==='bad-note')moment.notes=[null]}
+  moments.push(moment);
+ }
+ // Shuffle source order, including the fully known reference note.
+ for(let i=moments.length-1;i>0;i--){const j=rand(i+1);[moments[i],moments[j]]=[moments[j],moments[i]]}
+ const source=doc(moments,measureCount,meter),before=JSON.stringify(source);freeze(source);const s=obs(source,measure);
+ const validById=new Map(valid.map(x=>[x.id,x]));const expectedOrder=moments.flatMap(x=>Array.isArray(x.notes)?x.notes.filter((x:any)=>x&&validById.has(x.id)).map((x:any)=>x.id):[]);
+ assert.deepEqual(s.data.intervals.map(x=>x.noteId),expectedOrder);assert.doesNotThrow(()=>JSON.stringify(s.data));
+ for(const tick of [origin-1,origin,origin+rand(L),origin+L-1,origin+L,origin+L+1]){
+  const r=inspect(s,q(tick,1024));const partial=unresolved||bounds.some(b=>tick>=b);
+  const first=Math.min(...valid.map(v=>v.start)),last=Math.max(...valid.map(v=>v.end));
+  const expected=tick<origin||tick>=origin+L?'outside-window':unreadable?'unreadable':partial?'partial':tick<first||tick>=last?'outside-range':'complete';
+  assert.equal(r.status,expected,`source ${run}, tick ${tick}`);statuses[expected]=(statuses[expected]??0)+1;counters.randomQueries++;
+  if(r.status==='complete'){
+   assert.deepEqual(ids(r),expectedOrder.filter((id:string)=>{const v=validById.get(id)!;return v.start<=tick&&tick<v.end}));
+   assert.equal(r.proof.excluded.length,bounds.length);assert.equal(r.proof.basis,bounds.length?'onset-exclusion':'whole-population');
+  }else assert.ok(!('notes'in r));
+ }
+ assert.equal(inspect(s,q('1.5')).status,'invalid-query');counters.invalidQueries++;
+ assert.equal(JSON.stringify(source),before);counters.randomSources++;
+}
+// Completion worlds independently fill missing fields. Only reported complete
+// points must agree in every world; conservative partial outcomes need not vary.
+const completions:any[]=[];
+for(const mode of ['missing-start','missing-duration','missing-both']){
+ const note:any=n('unknown');const pos:any=p('u',3,f(0),[note]);if(mode!=='missing-duration')delete pos.beatOffset;if(mode!=='missing-start')delete note.duration;
+ const s=obs(doc([p('known',2,f(0),[n('known',f(8))]),pos]),2);
+ assert.equal(s.data.intervals.length,1);assert.equal(s.data.endpointDeltas.reduce((v,d)=>v+d.starts.length+d.ends.length,0),2);
+ for(const tick of [4096,4097,5120,7168,8191,8192]){
+  const r=inspect(s,q(tick,1024));
+  for(const st of mode==='missing-duration'?[0]:[0,1,128,1024])for(const len of mode==='missing-start'?[1024]:[1,128,1024]){
+   const expected=['known'];if(8192+st<=tick&&tick<8192+st+len)expected.push('unknown');
+   if(r.status==='complete')assert.deepEqual(ids(r),expected);counters.completionWorlds++;
+  }
+ }
+ completions.push({mode,intervals:s.data.intervals.length,coverageFact:s.data.coverageFacts[0],noFakeEndpoints:true});
+}
+const median=(xs:number[])=>[...xs].sort((a,b)=>a-b)[Math.floor(xs.length/2)],bench:any[]=[];
+for(const layout of ['spread','concentrated'] as const)for(const arithmetic of ['simple','source-limit-fractions'] as const){
+ const input=doc(Array.from({length:1024},(_,i)=>p(`p${i}`,layout==='spread'?i+1:1,arithmetic==='simple'?f(layout==='spread'?0:i):f(i%1024,1021),Array.from({length:6},(_,j)=>n(`n${i}-${j}`,arithmetic==='simple'?f(1):f(1023,1019),j)))),1024);
+ freeze(input);const measure=layout==='spread'?512:1,samples:number[]=[],queries:number[]=[],pointTimes:number[]=[];obs(input,measure);let s=obs(input,measure);
+ for(let i=0;i<5;i++){const at=performance.now();s=obs(input,measure);samples.push(performance.now()-at)}
+ const t=layout==='spread'?2044:0;
+ for(let i=0;i<7;i++){let at=performance.now();const r=inspect(s,q(t));queries.push(performance.now()-at);assert.equal(r.status,'complete');at=performance.now();points(s);pointTimes.push(performance.now()-at)}
+ assert.equal(s.data.intervals.length,6144);assert.equal(s.data.sourceFacts.positions.length,1024);assert.equal(s.data.endpointDeltas.reduce((v,d)=>v+d.starts.length+d.ends.length,0),12288);
+ bench.push({layout,arithmetic,bars:1024,positions:1024,notes:6144,observeSamplesMs:samples,observeMedianMs:median(samples),querySamplesMs:queries,queryMedianMs:median(queries),pointSamplesMs:pointTimes,pointMedianMs:median(pointTimes),dataBytes:Buffer.byteLength(JSON.stringify(s.data)),oneGlobalSnapshot:true});
+}
+assert.equal(hash(),beforeHash,'runtime changed during independent core run');
+const output={sourceSha256:beforeHash,seed:'0x33decaf',scope:'Finite independently assigned 1/1024 tick oracle + finite missing-field completion worlds + manual nonbinary/max-anchor exact counterexample. Not exhaustive rational proof or browser/physical-mobile latency certification.',counters,manual,faultCounts,statuses,completions,bench};
+writeFileSync(`${OUT}/core-results.json`,JSON.stringify(output,null,2));console.log(JSON.stringify({sourceSha256:beforeHash,counters,statuses,bench:bench.map(({layout,arithmetic,observeMedianMs,queryMedianMs,pointMedianMs,dataBytes})=>({layout,arithmetic,observeMedianMs,queryMedianMs,pointMedianMs,dataBytes}))}));

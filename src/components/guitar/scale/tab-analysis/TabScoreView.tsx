@@ -10,6 +10,10 @@ import { inspectTabTiming, type TabTimingInspection, type TabTimingTarget } from
 import { TimingInspectionPanel } from './TimingInspectionPanel';
 import { observeTabWrittenTime, type TabWrittenTimeSnapshot } from '@/domain/tab/written-time';
 import { WrittenTimePanel } from './WrittenTimePanel';
+import { isValidTabMeter } from '@/domain/tab/input-capabilities';
+import { observeTabAcrossBarsWrittenTime, type TabAcrossBarsWrittenTimeSnapshot } from '@/domain/tab/written-time-across-bars';
+import { AcrossBarsWrittenTimePanel } from './AcrossBarsWrittenTimePanel';
+import acrossStyles from './across-bars-written-time.module.css';
 import timingStyles from './timing-inspection.module.css';
 import { getKeyName } from '@/domain/shared/keys';
 import styles from './tab-score-editor.module.css';
@@ -70,7 +74,10 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     const [timingOpen, setTimingOpen] = useState(false);
     const [timingStale, setTimingStale] = useState(false);
     const [timingNotice, setTimingNotice] = useState<string | null>(null);
-    const [writtenReport, setWrittenReport] = useState<{ snapshot: TabWrittenTimeSnapshot; serial: number } | null>(null);
+    const [writtenReport, setWrittenReport] = useState<
+        | { kind: 'local'; snapshot: TabWrittenTimeSnapshot; serial: number }
+        | { kind: 'across'; snapshot: TabAcrossBarsWrittenTimeSnapshot; serial: number }
+        | null>(null);
     const [writtenStale, setWrittenStale] = useState<'score' | 'bar' | null>(null);
     const reportNotationDraft = useCallback((state: TabNotationDraftState) => {
         notationDraft.current = state;
@@ -132,6 +139,22 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         if (!timingBlocked()) return true;
         setTimingNotice('Finish or cancel this input first.');
         return false;
+    };
+    const hasProjectionMeter = Boolean(document.meter && isValidTabMeter(document.meter));
+    const showWrittenTime = (kind: 'local' | 'across') => {
+        if (!guardTiming() || (kind === 'across' && !hasProjectionMeter)) return;
+        setPositionPopup(null); setMeterBar(null);
+        // The shared guard permits closing only an unchanged fret draft.
+        if (draftRef.current) setDraft(null);
+        const serial = ++writtenSerial.current;
+        setWrittenReport(kind === 'local'
+            ? { kind, snapshot: observeTabWrittenTime(document, writtenMeasure), serial }
+            : { kind, snapshot: observeTabAcrossBarsWrittenTime(document, writtenMeasure, { model: 'regular-bar-origins' }), serial });
+        setWrittenStale(null); setTimingNotice(null);
+    };
+    const closeWrittenTime = () => {
+        if (!guardTiming()) return;
+        setWrittenReport(null); setWrittenStale(null); writtenButton.current?.focus();
     };
     const navigateTiming = (target: TabTimingTarget, origin: HTMLButtonElement) => {
         if (!guardTiming() || timingReport?.document !== document) return;
@@ -522,23 +545,27 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                     setTimingOpen(true); setTimingStale(false); setTimingNotice(null); timingReturn.current = null;
                 }}>Check timing</button>
             <button type="button" ref={writtenButton} className={timingStyles.action} aria-expanded={writtenCurrent}
-                onClick={() => {
-                    if (!guardTiming()) return;
-                    setPositionPopup(null); setMeterBar(null);
-                    // The shared guard permits closing only an unchanged fret draft.
-                    if (draftRef.current) setDraft(null);
-                    setWrittenReport({ snapshot: observeTabWrittenTime(document, writtenMeasure), serial: ++writtenSerial.current });
-                    setWrittenStale(null); setTimingNotice(null);
-                }}>View written time</button>
+                onClick={() => showWrittenTime('local')}>View written time</button>
             </div>
             {timingNotice && <p role="status">{timingNotice}</p>}
             {timingStale && <p role="status">Score changed · Check again</p>}
             {writtenStale && <p role="status">{writtenStale === 'score' ? 'Score changed · View again' : 'Bar changed · View again'}</p>}
-            {writtenCurrent && writtenReport && <WrittenTimePanel key={writtenReport.serial} snapshot={writtenReport.snapshot}
-                onAction={guardTiming} onClose={() => {
-                    if (!guardTiming()) return;
-                    setWrittenReport(null); setWrittenStale(null); writtenButton.current?.focus();
-                }} />}
+            {writtenCurrent && writtenReport && <>
+                <div className={timingStyles.toolbar} role="group" aria-label="Written time scope" onKeyDown={event => {
+                    if (event.key === 'Escape' && !event.nativeEvent.isComposing) { event.preventDefault(); event.stopPropagation(); closeWrittenTime(); }
+                }}>
+                    <button type="button" className={`${timingStyles.action} ${acrossStyles.scopeAction}`} aria-pressed={writtenReport.kind === 'local'}
+                        onClick={() => showWrittenTime('local')}>This bar</button>
+                    <button type="button" className={`${timingStyles.action} ${acrossStyles.scopeAction}`} aria-pressed={writtenReport.kind === 'across'} disabled={!hasProjectionMeter}
+                        onClick={() => showWrittenTime('across')}>Across full bars{hasProjectionMeter && document.meter ? ` · ${document.meter.numerator}/${document.meter.denominator}` : ''}</button>
+                    {!hasProjectionMeter && <p>Set meter to compare bars</p>}
+                </div>
+                {writtenReport.kind === 'local'
+                    ? <WrittenTimePanel key={writtenReport.serial} snapshot={writtenReport.snapshot}
+                        onAction={guardTiming} onClose={closeWrittenTime} />
+                    : <AcrossBarsWrittenTimePanel key={writtenReport.serial} snapshot={writtenReport.snapshot}
+                        onAction={guardTiming} onClose={closeWrittenTime} />}
+            </>}
             {timingOpen && timingReport?.document === document && <TimingInspectionPanel key={timingReport.serial}
                 document={document} report={timingReport.result} onNavigate={navigateTiming}
                 onClose={() => { setTimingOpen(false); timingReturn.current = null; checkButton.current?.focus(); }} />}

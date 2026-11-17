@@ -1,0 +1,26 @@
+{
+  "scope": "Root native scope Escape focus supplement",
+  "results": [
+    {
+      "width": 390,
+      "cleanLocalEscape": "pass",
+      "cleanAcrossEscape": "pass",
+      "pendingScopeEscapePreservesFret": "pass",
+      "explicitCancelThenScopeEscapeReturnsView": "pass"
+    },
+    {
+      "width": 768,
+      "cleanLocalEscape": "pass",
+      "cleanAcrossEscape": "pass",
+      "pendingScopeEscapePreservesFret": "pass",
+      "explicitCancelThenScopeEscapeReturnsView": "pass"
+    },
+    {
+      "width": 1335,
+      "cleanLocalEscape": "pass",
+      "cleanAcrossEscape": "pass",
+      "pendingScopeEscapePreservesFret": "pass",
+      "explicitCancelThenScopeEscapeReturnsView": "pass"
+    }
+  ]
+}

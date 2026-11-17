@@ -1,0 +1,1028 @@
+{
+  "browser": "system Chromium, reduced motion, native CDP IME; no physical device/OS-IME certification",
+  "results": [
+    {
+      "width": 390,
+      "pointerMode": "touch",
+      "passed": [
+        "no-meter Across disabled; explicit4/4 opts into carry-in view, strict-before proof becomes partial at quarter onset",
+        "valid12/invalid37 pending frets block scope/View/Close/page/point/disclosures/Check pointer+keyboard without source/history changes",
+        "pending fraction survives native Shift+Tab scope activation and pointer actions; explicit Cancel restores0",
+        "native CDP composition+finalized-uncommitted text protect scope, page, point and View; composing Escape does not discard",
+        "read-only Across operations add no history; Undo reaches actual Set start, Redo stays closed and every new View defaults This bar",
+        "sameDoc key/scale retained; retune/capo/meter/import/bar changes invalidate immediately, returning never resurrects old Across"
+      ],
+      "nativeIMEEvents": [
+        {
+          "type": "compositionstart",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": "5",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 2",
+          "value": "5"
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 2",
+          "value": "5"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "key": null,
+          "composing": true,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 2",
+          "value": "12"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "This bar",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "This bar",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Across full bars \u00b7 4/4",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Across full bars \u00b7 4/4",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Previous across-bars notes page",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Previous across-bars notes page",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Next across-bars time point",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Next across-bars time point",
+          "value": ""
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 2",
+          "value": "12"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "key": null,
+          "composing": true,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 2",
+          "value": "12"
+        },
+        {
+          "type": "compositionend",
+          "trusted": false,
+          "key": null,
+          "composing": null,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 2",
+          "value": "12"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "This bar",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "This bar",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Across full bars \u00b7 4/4",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Across full bars \u00b7 4/4",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Previous across-bars notes page",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Previous across-bars notes page",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Next across-bars time point",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "touch",
+          "label": "Next across-bars time point",
+          "value": ""
+        }
+      ],
+      "geometry": {
+        "width": 390,
+        "page": 390,
+        "targets": [
+          {
+            "name": "This bar",
+            "width": 49.921875,
+            "height": 44
+          },
+          {
+            "name": "Across full bars",
+            "width": 87.296875,
+            "height": 44
+          },
+          {
+            "name": "About written time",
+            "width": 119.5625,
+            "height": 44
+          },
+          {
+            "name": "Close written time",
+            "width": 44,
+            "height": 44
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "width": 768,
+      "pointerMode": "mouse",
+      "passed": [
+        "no-meter Across disabled; explicit4/4 opts into carry-in view, strict-before proof becomes partial at quarter onset",
+        "valid12/invalid37 pending frets block scope/View/Close/page/point/disclosures/Check pointer+keyboard without source/history changes",
+        "pending fraction survives native Shift+Tab scope activation and pointer actions; explicit Cancel restores0",
+        "native CDP composition+finalized-uncommitted text protect scope, page, point and View; composing Escape does not discard",
+        "read-only Across operations add no history; Undo reaches actual Set start, Redo stays closed and every new View defaults This bar",
+        "sameDoc key/scale retained; retune/capo/meter/import/bar changes invalidate immediately, returning never resurrects old Across"
+      ],
+      "nativeIMEEvents": [
+        {
+          "type": "compositionstart",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": "5",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 2",
+          "value": "5"
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 2",
+          "value": "5"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "key": null,
+          "composing": true,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 2",
+          "value": "12"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "This bar",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "This bar",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Across full bars \u00b7 4/4",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Across full bars \u00b7 4/4",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Previous across-bars notes page",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Previous across-bars notes page",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Next across-bars time point",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Next across-bars time point",
+          "value": ""
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 2",
+          "value": "12"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "key": null,
+          "composing": true,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 2",
+          "value": "12"
+        },
+        {
+          "type": "compositionend",
+          "trusted": false,
+          "key": null,
+          "composing": null,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 2",
+          "value": "12"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "This bar",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "This bar",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Across full bars \u00b7 4/4",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Across full bars \u00b7 4/4",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Previous across-bars notes page",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Previous across-bars notes page",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Next across-bars time point",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Next across-bars time point",
+          "value": ""
+        }
+      ],
+      "geometry": {
+        "width": 768,
+        "page": 768,
+        "targets": [
+          {
+            "name": "This bar",
+            "width": 49.921875,
+            "height": 44
+          },
+          {
+            "name": "Across full bars",
+            "width": 87.296875,
+            "height": 44
+          },
+          {
+            "name": "About written time",
+            "width": 119.5625,
+            "height": 44
+          },
+          {
+            "name": "Close written time",
+            "width": 44,
+            "height": 44
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "width": 1335,
+      "pointerMode": "mouse",
+      "passed": [
+        "no-meter Across disabled; explicit4/4 opts into carry-in view, strict-before proof becomes partial at quarter onset",
+        "valid12/invalid37 pending frets block scope/View/Close/page/point/disclosures/Check pointer+keyboard without source/history changes",
+        "pending fraction survives native Shift+Tab scope activation and pointer actions; explicit Cancel restores0",
+        "native CDP composition+finalized-uncommitted text protect scope, page, point and View; composing Escape does not discard",
+        "read-only Across operations add no history; Undo reaches actual Set start, Redo stays closed and every new View defaults This bar",
+        "sameDoc key/scale retained; retune/capo/meter/import/bar changes invalidate immediately, returning never resurrects old Across"
+      ],
+      "nativeIMEEvents": [
+        {
+          "type": "compositionstart",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": "5",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 2",
+          "value": "5"
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 2",
+          "value": "5"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "key": null,
+          "composing": true,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 2",
+          "value": "12"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "This bar",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "This bar",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Across full bars \u00b7 4/4",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Across full bars \u00b7 4/4",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Previous across-bars notes page",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Previous across-bars notes page",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Next across-bars time point",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Next across-bars time point",
+          "value": ""
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 2",
+          "value": "12"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "key": null,
+          "composing": true,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 2",
+          "value": "12"
+        },
+        {
+          "type": "compositionend",
+          "trusted": false,
+          "key": null,
+          "composing": null,
+          "data": "12",
+          "pointerType": null,
+          "label": "Fret for string 1, onset 2",
+          "value": "12"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "View written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "This bar",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "This bar",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Across full bars \u00b7 4/4",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Across full bars \u00b7 4/4",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Close written time",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Previous across-bars notes page",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Previous across-bars notes page",
+          "value": ""
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Next across-bars time point",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "key": null,
+          "composing": null,
+          "data": null,
+          "pointerType": "mouse",
+          "label": "Next across-bars time point",
+          "value": ""
+        }
+      ],
+      "geometry": {
+        "width": 1335,
+        "page": 1335,
+        "targets": [
+          {
+            "name": "This bar",
+            "width": 49.921875,
+            "height": 44
+          },
+          {
+            "name": "Across full bars",
+            "width": 87.296875,
+            "height": 44
+          },
+          {
+            "name": "About written time",
+            "width": 119.5625,
+            "height": 44
+          },
+          {
+            "name": "Close written time",
+            "width": 44,
+            "height": 44
+          }
+        ]
+      },
+      "errors": []
+    }
+  ]
+}

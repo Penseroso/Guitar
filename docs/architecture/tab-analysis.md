@@ -395,3 +395,23 @@ the known extent itself is never a completeness proof or bar length. Snapshot
 lifetime, pending input, score editing and P2 are unchanged.
 
 See [P3.2 contract and verification](../implementation/tab-written-time-point-coverage.md).
+
+## P3.3 cross-bar written-time observation
+
+An explicitly selected regular-origin model places bars by the existing score-wide
+meter, with first origin zero. This model is an interpretation, not measured bar
+timing or performance. New cross-bar APIs enumerate all source note occurrences and
+keep the selected bar's query window separate from the extent of known intervals.
+They preserve original ownership and authored values, including offsets beyond one
+modeled bar, with a nonblocking projection diagnostic rather than correction.
+
+Otherwise valid missing starts can use their known bar origin only as an exclusion
+lower bound under the declared nonnegative authored-offset domain. No onset or note
+endpoint is invented. Complete means nominal source-note completeness at a point,
+not sounding, silence, sustain realization or harmonic completeness.
+
+The opt-in Across view displays an exact-time-sorted copy with source labels and
+bounded pages; source/query order and the default This bar remain unchanged. Existing
+pending-input and report/history invalidation behavior also covers scope changes.
+
+See [P3.3 contract and verification](../implementation/tab-written-time-across-bars.md).
