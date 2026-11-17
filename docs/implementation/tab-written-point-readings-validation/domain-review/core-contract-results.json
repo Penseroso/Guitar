@@ -1,0 +1,43 @@
+{
+  "scope": "Independent source-contract probes, not the challenge agent musical oracle or browser gate",
+  "duplicatePCChordFormulas": [],
+  "duplicatePCScales": [],
+  "cases": [
+    {
+      "id": "B#-written-octave",
+      "expected": "B♯3",
+      "actual": "B♯3"
+    },
+    {
+      "id": "Cb-written-octave",
+      "expected": "C♭4",
+      "actual": "C♭4"
+    },
+    {
+      "id": "canonical-diminished-seventh",
+      "actual": [
+        [
+          "1",
+          "C4"
+        ],
+        [
+          "b3",
+          "E♭4"
+        ],
+        [
+          "b5",
+          "G♭4"
+        ],
+        [
+          "bb7",
+          "B♭♭4"
+        ]
+      ]
+    }
+  ],
+  "invalidReferencePairs": 64,
+  "invalidReferenceFailures": 0,
+  "modalCollectionDidNotSupplyAKey": true,
+  "coreSourceSha256": "153a1a6c81fe2b26cf44c1d5a2851103a7ced7fc44ed2cbd9fa7b06fbb9ef1be",
+  "verdict": "core checks pass; UI/lifecycle review pending"
+}

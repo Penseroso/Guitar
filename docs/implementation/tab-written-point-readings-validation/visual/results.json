@@ -1,0 +1,2938 @@
+{
+  "reviewer": "Independent P4-B production-browser visual/state audit",
+  "buildId": "aGxq0JQ61iHdPBf_UeD8a",
+  "sourceSha256": {
+    "src/components/guitar/scale/tab-analysis/AcrossBarsWrittenTimePanel.tsx": "c9a4e2ec968974eb391362cdc397f3fcd0bb20aa6973421abab83d87da3bee30",
+    "src/components/guitar/scale/tab-analysis/TabScoreView.tsx": "9fb6d33faae54b72b08f03ed9587234def06a335afff48425ae88fe79f61b794"
+  },
+  "results": [
+    {
+      "width": 390,
+      "local": {
+        "width": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 778.328125,
+          "width": 366,
+          "height": 743.375,
+          "text": "Bar 1\n\nWritten timing\n\nAbout written time\nClose\nPrevious point\nPoint 1 of 5\nNext point\n\n3 written notes at this point\n\n\u2248 0\nQuarter notes\n\u2248 4\nPosition 1 \u00b7 String 1\nE4\u25cf\n\u00b7 At this point\nPosition 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nPosition 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nPosition 2 \u00b7 String 1\nE4\nPosition 2 \u00b7 String 2\nC4\nPosition 2 \u00b7 String 3\nG3\nPosition 2 \u00b7 String 4\nA3\nPosition 3 \u00b7 String 1\nE4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 198.4375,
+            "y": 787.328125,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time"
+          },
+          {
+            "x": 334,
+            "y": 787.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 12,
+            "y": 836.328125,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 315.0625,
+            "y": 836.328125,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 12,
+            "y": 1423.703125,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 334,
+            "y": 1423.703125,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 12,
+            "y": 1468.703125,
+            "width": 366,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "closed": {
+        "width": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 778.328125,
+          "width": 366,
+          "height": 848.75,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 1 of 5\nNext point\n\nComplete at this point\n\n3 source notes at this point\n\nChord readings\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nE4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 1\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 3\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 4\nA3\nBar 1 \u00b7 Position 3 \u00b7 String 1\nE4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 203.015625,
+            "y": 787.328125,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 334,
+            "y": 787.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 12,
+            "y": 873.515625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 315.0625,
+            "y": 873.515625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 12,
+            "y": 964.890625,
+            "width": 366,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 12,
+            "y": 1529.078125,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 334,
+            "y": 1529.078125,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 12,
+            "y": 1574.078125,
+            "width": 366,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "facts": {
+        "width": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 778.328125,
+          "width": 366,
+          "height": 1105.3125,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 1 of 5\nNext point\n\nComplete at this point\n\n3 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 E \u00b7 G\n\nKey reference \u00b7 C major\n\nE4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\nFormula alternatives\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nE4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 1\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 3\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 4\nA3\nBar 1 \u00b7 Position 3 \u00b7 String 1\nE4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 203.015625,
+            "y": 787.328125,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 334,
+            "y": 787.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 12,
+            "y": 873.515625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 315.0625,
+            "y": 873.515625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 12,
+            "y": 964.890625,
+            "width": 366,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 16,
+            "y": 1165.453125,
+            "width": 358,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 16,
+            "y": 1213.453125,
+            "width": 358,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 12,
+            "y": 1785.640625,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 334,
+            "y": 1785.640625,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 12,
+            "y": 1830.640625,
+            "width": 366,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "selectedC": {
+        "width": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 778.328125,
+          "width": 366,
+          "height": 1483.0625,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 1 of 5\nNext point\n\nComplete at this point\n\n3 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 E \u00b7 G\n\nKey reference \u00b7 C major\n\nIf C\nClear reading\n\nIf C in C major \u00b7 I\n\nE4\nBar 1 \u00b7 Position 1 \u00b7 String 1\n\n3 \u00b7 E4 \u00b7 Formula member\n\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\n\n1 \u00b7 C4 \u00b7 Formula member\n\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\n\n5 \u00b7 G3 \u00b7 Formula member\n\nFormula alternatives\nAs C\nAs C5\nAs Em\nAs Gsus4\nFormula details\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nE4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 1\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 3\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 4\nA3\nBar 1 \u00b7 Position 3 \u00b7 String 1\nE4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 203.015625,
+            "y": 787.328125,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 334,
+            "y": 787.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 12,
+            "y": 873.515625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 315.0625,
+            "y": 873.515625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 12,
+            "y": 964.890625,
+            "width": 366,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 295.453125,
+            "y": 1053.890625,
+            "width": 78.546875,
+            "height": 44,
+            "text": "Clear reading"
+          },
+          {
+            "x": 16,
+            "y": 1307.203125,
+            "width": 358,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 16,
+            "y": 1360.203125,
+            "width": 358,
+            "height": 44,
+            "text": "As C"
+          },
+          {
+            "x": 16,
+            "y": 1405.203125,
+            "width": 358,
+            "height": 44,
+            "text": "As C5"
+          },
+          {
+            "x": 16,
+            "y": 1450.203125,
+            "width": 358,
+            "height": 44,
+            "text": "As Em"
+          },
+          {
+            "x": 16,
+            "y": 1495.203125,
+            "width": 358,
+            "height": 44,
+            "text": "As Gsus4"
+          },
+          {
+            "x": 16,
+            "y": 1543.203125,
+            "width": 358,
+            "height": 44,
+            "text": "Formula details"
+          },
+          {
+            "x": 16,
+            "y": 1591.203125,
+            "width": 358,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 12,
+            "y": 2163.390625,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 334,
+            "y": 2163.390625,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 12,
+            "y": 2208.390625,
+            "width": 366,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "omissions": {
+        "width": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 778.328125,
+          "width": 366,
+          "height": 1533.0625,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 1 of 5\nNext point\n\nComplete at this point\n\n3 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 E \u00b7 G\n\nKey reference \u00b7 C major\n\nIf Em\nClear reading\n\nIf Em in C major \u00b7 iii\n\nE4\nBar 1 \u00b7 Position 1 \u00b7 String 1\n\n1 \u00b7 E4 \u00b7 Formula member\n\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\n\nOutside this formula\n\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\n\nb3 \u00b7 G3 \u00b7 Formula member\n\nFormula alternatives\nAs C\nAs C5\nAs Em\nAs Gsus4\nFormula details\n\nOmitted formula degrees \u00b7 5\n\nOutside formula \u00b7 C4\n\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nE4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 1\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 3\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 4\nA3\nBar 1 \u00b7 Position 3 \u00b7 String 1\nE4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 203.015625,
+            "y": 787.328125,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 334,
+            "y": 787.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 12,
+            "y": 873.515625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 315.0625,
+            "y": 873.515625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 12,
+            "y": 964.890625,
+            "width": 366,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 295.453125,
+            "y": 1053.890625,
+            "width": 78.546875,
+            "height": 44,
+            "text": "Clear reading"
+          },
+          {
+            "x": 16,
+            "y": 1307.203125,
+            "width": 358,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 16,
+            "y": 1360.203125,
+            "width": 358,
+            "height": 44,
+            "text": "As C"
+          },
+          {
+            "x": 16,
+            "y": 1405.203125,
+            "width": 358,
+            "height": 44,
+            "text": "As C5"
+          },
+          {
+            "x": 16,
+            "y": 1450.203125,
+            "width": 358,
+            "height": 44,
+            "text": "As Em"
+          },
+          {
+            "x": 16,
+            "y": 1495.203125,
+            "width": 358,
+            "height": 44,
+            "text": "As Gsus4"
+          },
+          {
+            "x": 16,
+            "y": 1543.203125,
+            "width": 358,
+            "height": 44,
+            "text": "Formula details"
+          },
+          {
+            "x": 16,
+            "y": 1641.203125,
+            "width": 358,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 12,
+            "y": 2213.390625,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 334,
+            "y": 2213.390625,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 12,
+            "y": 2258.390625,
+            "width": 366,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "selectedAm7": {
+        "width": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 778.328125,
+          "width": 366,
+          "height": 1542.4375,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 2 of 5\nNext point\n\nComplete at this point\n\n4 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 E \u00b7 G \u00b7 A\n\nKey reference \u00b7 C major\n\nIf Am7\nClear reading\n\nIf Am7 in C major \u00b7 vi7\n\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 1\n\n5 \u00b7 E4 \u00b7 Formula member\n\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 2\n\nb3 \u00b7 C4 \u00b7 Formula member\n\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 3\n\nb7 \u00b7 G3 \u00b7 Formula member\n\nA3\nBar 1 \u00b7 Position 2 \u00b7 String 4\n\n1 \u00b7 A3 \u00b7 Formula member\n\nFormula alternatives\nAs C6\nAs Am7\nAs C\nAs Am\nFormula details\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nE4\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 1\nE4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 4\nA3\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 3 \u00b7 String 1\nE4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 203.015625,
+            "y": 787.328125,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 334,
+            "y": 787.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 12,
+            "y": 873.515625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 315.0625,
+            "y": 873.515625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 12,
+            "y": 964.890625,
+            "width": 366,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 295.453125,
+            "y": 1053.890625,
+            "width": 78.546875,
+            "height": 44,
+            "text": "Clear reading"
+          },
+          {
+            "x": 16,
+            "y": 1366.578125,
+            "width": 358,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 16,
+            "y": 1419.578125,
+            "width": 358,
+            "height": 44,
+            "text": "As C6"
+          },
+          {
+            "x": 16,
+            "y": 1464.578125,
+            "width": 358,
+            "height": 44,
+            "text": "As Am7"
+          },
+          {
+            "x": 16,
+            "y": 1509.578125,
+            "width": 358,
+            "height": 44,
+            "text": "As C"
+          },
+          {
+            "x": 16,
+            "y": 1554.578125,
+            "width": 358,
+            "height": 44,
+            "text": "As Am"
+          },
+          {
+            "x": 16,
+            "y": 1602.578125,
+            "width": 358,
+            "height": 44,
+            "text": "Formula details"
+          },
+          {
+            "x": 16,
+            "y": 1650.578125,
+            "width": 358,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 12,
+            "y": 2222.765625,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 334,
+            "y": 2222.765625,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 12,
+            "y": 2267.765625,
+            "width": 366,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "referenceReset": {
+        "width": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 778.328125,
+          "width": 366,
+          "height": 886.25,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 2 of 5\nNext point\n\nComplete at this point\n\n4 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 E \u00b7 G \u00b7 A\n\nScale reference \u00b7 C Ionian\n\nKey reference \u00b7 C minor\n\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 1\n\nScale degree \u00b7 3\n\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 2\n\nScale degree \u00b7 1\n\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 3\n\nScale degree \u00b7 5\n\nA3\nBar 1 \u00b7 Position 2 \u00b7 String 4\n\nScale degree \u00b7 6\n\nFormula alternatives\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 3 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 3 \u00b7 String 3\nG3\nPrevious\nPage 2 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 203.015625,
+            "y": 787.328125,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 334,
+            "y": 787.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 12,
+            "y": 873.515625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 315.0625,
+            "y": 873.515625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 12,
+            "y": 964.890625,
+            "width": 366,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 16,
+            "y": 1312.390625,
+            "width": 358,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 16,
+            "y": 1360.390625,
+            "width": 358,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 12,
+            "y": 1566.578125,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 334,
+            "y": 1566.578125,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 12,
+            "y": 1611.578125,
+            "width": 366,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "emptyPoint": {
+        "width": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 778.328125,
+          "width": 366,
+          "height": 509.9375,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 3 of 5\nNext point\n\nComplete at this point\n\nNo source notes at this point\n\nChord readings\n\nNo written notes at this point.\n\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 3 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 3 \u00b7 String 3\nG3\nPrevious\nPage 2 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 203.015625,
+            "y": 787.328125,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 334,
+            "y": 787.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 12,
+            "y": 873.515625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 315.0625,
+            "y": 873.515625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 12,
+            "y": 964.890625,
+            "width": 366,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 12,
+            "y": 1190.265625,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 334,
+            "y": 1190.265625,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 12,
+            "y": 1235.265625,
+            "width": 366,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "twoPCFacts": {
+        "width": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 778.328125,
+          "width": 366,
+          "height": 740.5,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n2 of 2 source notes timed\n\nPrevious point\nPoint 1 of 3\nNext point\n\nComplete at this point\n\n2 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 G\n\nInterval class \u00b7 5\n\nScale reference \u00b7 C Ionian\n\nKey reference \u00b7 C minor\n\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\n\nScale degree \u00b7 1\n\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\n\nScale degree \u00b7 5\n\nFormula alternatives\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nDetails"
+        },
+        "controls": [
+          {
+            "x": 203.015625,
+            "y": 787.328125,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 334,
+            "y": 787.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 12,
+            "y": 873.515625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 315.0625,
+            "y": 873.515625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 12,
+            "y": 964.890625,
+            "width": 366,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 16,
+            "y": 1211.640625,
+            "width": 358,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 16,
+            "y": 1259.640625,
+            "width": 358,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 12,
+            "y": 1465.828125,
+            "width": 366,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "twoPCFormula": {
+        "width": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 778.328125,
+          "width": 366,
+          "height": 1055.0625,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n2 of 2 source notes timed\n\nPrevious point\nPoint 1 of 3\nNext point\n\nComplete at this point\n\n2 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 G\n\nInterval class \u00b7 5\n\nScale reference \u00b7 C Ionian\n\nKey reference \u00b7 C minor\n\nIf Gsus4\nClear reading\n\nIf Gsus4 in C minor \u00b7 Vsus4\n\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\n\nScale degree \u00b7 1\n\n4 \u00b7 C4 \u00b7 Formula member\n\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\n\nScale degree \u00b7 5\n\n1 \u00b7 G3 \u00b7 Formula member\n\nFormula alternatives\nAs C5\nAs Gsus4\nFormula details\n\nOmitted formula degrees \u00b7 5\n\nOutside formula \u00b7 None\n\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nDetails"
+        },
+        "controls": [
+          {
+            "x": 203.015625,
+            "y": 787.328125,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 334,
+            "y": 787.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 12,
+            "y": 873.515625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 315.0625,
+            "y": 873.515625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 12,
+            "y": 964.890625,
+            "width": 366,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 295.453125,
+            "y": 1089.890625,
+            "width": 78.546875,
+            "height": 44,
+            "text": "Clear reading"
+          },
+          {
+            "x": 16,
+            "y": 1330.203125,
+            "width": 358,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 16,
+            "y": 1383.203125,
+            "width": 358,
+            "height": 44,
+            "text": "As C5"
+          },
+          {
+            "x": 16,
+            "y": 1428.203125,
+            "width": 358,
+            "height": 44,
+            "text": "As Gsus4"
+          },
+          {
+            "x": 16,
+            "y": 1476.203125,
+            "width": 358,
+            "height": 44,
+            "text": "Formula details"
+          },
+          {
+            "x": 16,
+            "y": 1574.203125,
+            "width": 358,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 12,
+            "y": 1780.390625,
+            "width": 366,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "noSources": {
+        "width": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 778.328125,
+          "width": 366,
+          "height": 126.1875,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nNo written notes\n\nDetails"
+        },
+        "controls": [
+          {
+            "x": 203.015625,
+            "y": 787.328125,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 334,
+            "y": 787.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 12,
+            "y": 851.515625,
+            "width": 366,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "am7Text": "Pitch classes \u00b7 C \u00b7 E \u00b7 G \u00b7 A\n\nKey reference \u00b7 C major\n\nIf Am7\nClear reading\n\nIf Am7 in C major \u00b7 vi7\n\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 1\n\n5 \u00b7 E4 \u00b7 Formula member\n\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 2\n\nb3 \u00b7 C4 \u00b7 Formula member\n\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 3\n\nb7 \u00b7 G3 \u00b7 Formula member\n\nA3\nBar 1 \u00b7 Position 2 \u00b7 String 4\n\n1 \u00b7 A3 \u00b7 Formula member\n\nFormula alternatives\nAs C6\nAs Am7\nAs C\nAs Am\nFormula details\nObservation details",
+      "omissionText": "Pitch classes \u00b7 C \u00b7 E \u00b7 G\n\nKey reference \u00b7 C major\n\nIf Em\nClear reading\n\nIf Em in C major \u00b7 iii\n\nE4\nBar 1 \u00b7 Position 1 \u00b7 String 1\n\n1 \u00b7 E4 \u00b7 Formula member\n\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\n\nOutside this formula\n\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\n\nb3 \u00b7 G3 \u00b7 Formula member\n\nFormula alternatives\nAs C\nAs C5\nAs Em\nAs Gsus4\nFormula details\n\nOmitted formula degrees \u00b7 5\n\nOutside formula \u00b7 C4\n\nObservation details",
+      "twoPCReadingText": "Pitch classes \u00b7 C \u00b7 G\n\nInterval class \u00b7 5\n\nScale reference \u00b7 C Ionian\n\nKey reference \u00b7 C minor\n\nIf Gsus4\nClear reading\n\nIf Gsus4 in C minor \u00b7 Vsus4\n\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\n\nScale degree \u00b7 1\n\n4 \u00b7 C4 \u00b7 Formula member\n\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\n\nScale degree \u00b7 5\n\n1 \u00b7 G3 \u00b7 Formula member\n\nFormula alternatives\nAs C5\nAs Gsus4\nFormula details\n\nOmitted formula degrees \u00b7 5\n\nOutside formula \u00b7 None\n\nObservation details",
+      "referenceParentState": {
+        "kind": "This bar\nAcross full bars \u00b7 4/4",
+        "point": "Point 2 of 5",
+        "page": "Page 2 of 2"
+      },
+      "errors": [],
+      "passed": [
+        "Across-only explicit opt-in",
+        "facts then optional formulas",
+        "C6/Am7 alternatives no auto choice",
+        "conditional selected formula with omissions metadata",
+        "source rows retained",
+        "point resets selected hypothesis",
+        "scale/key change child-only close preserves parent point/page/source",
+        "two-PC facts default/C5 optional",
+        "empty point vs no source notes without silence claim",
+        "44px reduced-motion no-overflow"
+      ]
+    },
+    {
+      "width": 768,
+      "local": {
+        "width": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 659.5625,
+          "width": 704,
+          "height": 743.375,
+          "text": "Bar 1\n\nWritten timing\n\nAbout written time\nClose\nPrevious point\nPoint 1 of 5\nNext point\n\n3 written notes at this point\n\n\u2248 0\nQuarter notes\n\u2248 4\nPosition 1 \u00b7 String 1\nE4\u25cf\n\u00b7 At this point\nPosition 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nPosition 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nPosition 2 \u00b7 String 1\nE4\nPosition 2 \u00b7 String 2\nC4\nPosition 2 \u00b7 String 3\nG3\nPosition 2 \u00b7 String 4\nA3\nPosition 3 \u00b7 String 1\nE4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 556.4375,
+            "y": 668.5625,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time"
+          },
+          {
+            "x": 692,
+            "y": 668.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 32,
+            "y": 717.5625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 673.0625,
+            "y": 717.5625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 32,
+            "y": 1304.9375,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 692,
+            "y": 1304.9375,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 32,
+            "y": 1349.9375,
+            "width": 704,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "closed": {
+        "width": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 659.5625,
+          "width": 704,
+          "height": 848.75,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 1 of 5\nNext point\n\nComplete at this point\n\n3 source notes at this point\n\nChord readings\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nE4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 1\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 3\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 4\nA3\nBar 1 \u00b7 Position 3 \u00b7 String 1\nE4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 561.015625,
+            "y": 668.5625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 692,
+            "y": 668.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 32,
+            "y": 754.75,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 673.0625,
+            "y": 754.75,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 32,
+            "y": 846.125,
+            "width": 704,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 32,
+            "y": 1410.3125,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 692,
+            "y": 1410.3125,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 32,
+            "y": 1455.3125,
+            "width": 704,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "facts": {
+        "width": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 659.5625,
+          "width": 704,
+          "height": 1105.3125,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 1 of 5\nNext point\n\nComplete at this point\n\n3 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 E \u00b7 G\n\nKey reference \u00b7 C major\n\nE4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\nFormula alternatives\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nE4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 1\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 3\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 4\nA3\nBar 1 \u00b7 Position 3 \u00b7 String 1\nE4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 561.015625,
+            "y": 668.5625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 692,
+            "y": 668.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 32,
+            "y": 754.75,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 673.0625,
+            "y": 754.75,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 32,
+            "y": 846.125,
+            "width": 704,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 36,
+            "y": 1046.6875,
+            "width": 696,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 36,
+            "y": 1094.6875,
+            "width": 696,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 32,
+            "y": 1666.875,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 692,
+            "y": 1666.875,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 32,
+            "y": 1711.875,
+            "width": 704,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "selectedC": {
+        "width": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 659.5625,
+          "width": 704,
+          "height": 1483.0625,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 1 of 5\nNext point\n\nComplete at this point\n\n3 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 E \u00b7 G\n\nKey reference \u00b7 C major\n\nIf C\nClear reading\n\nIf C in C major \u00b7 I\n\nE4\nBar 1 \u00b7 Position 1 \u00b7 String 1\n\n3 \u00b7 E4 \u00b7 Formula member\n\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\n\n1 \u00b7 C4 \u00b7 Formula member\n\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\n\n5 \u00b7 G3 \u00b7 Formula member\n\nFormula alternatives\nAs C\nAs C5\nAs Em\nAs Gsus4\nFormula details\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nE4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 1\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 3\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 4\nA3\nBar 1 \u00b7 Position 3 \u00b7 String 1\nE4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 561.015625,
+            "y": 668.5625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 692,
+            "y": 668.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 32,
+            "y": 754.75,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 673.0625,
+            "y": 754.75,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 32,
+            "y": 846.125,
+            "width": 704,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 653.453125,
+            "y": 935.125,
+            "width": 78.546875,
+            "height": 44,
+            "text": "Clear reading"
+          },
+          {
+            "x": 36,
+            "y": 1188.4375,
+            "width": 696,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 36,
+            "y": 1241.4375,
+            "width": 696,
+            "height": 44,
+            "text": "As C"
+          },
+          {
+            "x": 36,
+            "y": 1286.4375,
+            "width": 696,
+            "height": 44,
+            "text": "As C5"
+          },
+          {
+            "x": 36,
+            "y": 1331.4375,
+            "width": 696,
+            "height": 44,
+            "text": "As Em"
+          },
+          {
+            "x": 36,
+            "y": 1376.4375,
+            "width": 696,
+            "height": 44,
+            "text": "As Gsus4"
+          },
+          {
+            "x": 36,
+            "y": 1424.4375,
+            "width": 696,
+            "height": 44,
+            "text": "Formula details"
+          },
+          {
+            "x": 36,
+            "y": 1472.4375,
+            "width": 696,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 32,
+            "y": 2044.625,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 692,
+            "y": 2044.625,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 32,
+            "y": 2089.625,
+            "width": 704,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "omissions": {
+        "width": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 659.5625,
+          "width": 704,
+          "height": 1533.0625,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 1 of 5\nNext point\n\nComplete at this point\n\n3 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 E \u00b7 G\n\nKey reference \u00b7 C major\n\nIf Em\nClear reading\n\nIf Em in C major \u00b7 iii\n\nE4\nBar 1 \u00b7 Position 1 \u00b7 String 1\n\n1 \u00b7 E4 \u00b7 Formula member\n\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\n\nOutside this formula\n\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\n\nb3 \u00b7 G3 \u00b7 Formula member\n\nFormula alternatives\nAs C\nAs C5\nAs Em\nAs Gsus4\nFormula details\n\nOmitted formula degrees \u00b7 5\n\nOutside formula \u00b7 C4\n\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nE4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 1\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 3\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 4\nA3\nBar 1 \u00b7 Position 3 \u00b7 String 1\nE4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 561.015625,
+            "y": 668.5625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 692,
+            "y": 668.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 32,
+            "y": 754.75,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 673.0625,
+            "y": 754.75,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 32,
+            "y": 846.125,
+            "width": 704,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 653.453125,
+            "y": 935.125,
+            "width": 78.546875,
+            "height": 44,
+            "text": "Clear reading"
+          },
+          {
+            "x": 36,
+            "y": 1188.4375,
+            "width": 696,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 36,
+            "y": 1241.4375,
+            "width": 696,
+            "height": 44,
+            "text": "As C"
+          },
+          {
+            "x": 36,
+            "y": 1286.4375,
+            "width": 696,
+            "height": 44,
+            "text": "As C5"
+          },
+          {
+            "x": 36,
+            "y": 1331.4375,
+            "width": 696,
+            "height": 44,
+            "text": "As Em"
+          },
+          {
+            "x": 36,
+            "y": 1376.4375,
+            "width": 696,
+            "height": 44,
+            "text": "As Gsus4"
+          },
+          {
+            "x": 36,
+            "y": 1424.4375,
+            "width": 696,
+            "height": 44,
+            "text": "Formula details"
+          },
+          {
+            "x": 36,
+            "y": 1522.4375,
+            "width": 696,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 32,
+            "y": 2094.625,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 692,
+            "y": 2094.625,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 32,
+            "y": 2139.625,
+            "width": 704,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "selectedAm7": {
+        "width": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 659.5625,
+          "width": 704,
+          "height": 1542.4375,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 2 of 5\nNext point\n\nComplete at this point\n\n4 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 E \u00b7 G \u00b7 A\n\nKey reference \u00b7 C major\n\nIf Am7\nClear reading\n\nIf Am7 in C major \u00b7 vi7\n\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 1\n\n5 \u00b7 E4 \u00b7 Formula member\n\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 2\n\nb3 \u00b7 C4 \u00b7 Formula member\n\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 3\n\nb7 \u00b7 G3 \u00b7 Formula member\n\nA3\nBar 1 \u00b7 Position 2 \u00b7 String 4\n\n1 \u00b7 A3 \u00b7 Formula member\n\nFormula alternatives\nAs C6\nAs Am7\nAs C\nAs Am\nFormula details\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nE4\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 1\nE4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 4\nA3\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 3 \u00b7 String 1\nE4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 561.015625,
+            "y": 668.5625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 692,
+            "y": 668.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 32,
+            "y": 754.75,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 673.0625,
+            "y": 754.75,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 32,
+            "y": 846.125,
+            "width": 704,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 653.453125,
+            "y": 935.125,
+            "width": 78.546875,
+            "height": 44,
+            "text": "Clear reading"
+          },
+          {
+            "x": 36,
+            "y": 1247.8125,
+            "width": 696,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 36,
+            "y": 1300.8125,
+            "width": 696,
+            "height": 44,
+            "text": "As C6"
+          },
+          {
+            "x": 36,
+            "y": 1345.8125,
+            "width": 696,
+            "height": 44,
+            "text": "As Am7"
+          },
+          {
+            "x": 36,
+            "y": 1390.8125,
+            "width": 696,
+            "height": 44,
+            "text": "As C"
+          },
+          {
+            "x": 36,
+            "y": 1435.8125,
+            "width": 696,
+            "height": 44,
+            "text": "As Am"
+          },
+          {
+            "x": 36,
+            "y": 1483.8125,
+            "width": 696,
+            "height": 44,
+            "text": "Formula details"
+          },
+          {
+            "x": 36,
+            "y": 1531.8125,
+            "width": 696,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 32,
+            "y": 2104,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 692,
+            "y": 2104,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 32,
+            "y": 2149,
+            "width": 704,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "referenceReset": {
+        "width": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 659.5625,
+          "width": 704,
+          "height": 886.25,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 2 of 5\nNext point\n\nComplete at this point\n\n4 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 E \u00b7 G \u00b7 A\n\nScale reference \u00b7 C Ionian\n\nKey reference \u00b7 C minor\n\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 1\n\nScale degree \u00b7 3\n\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 2\n\nScale degree \u00b7 1\n\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 3\n\nScale degree \u00b7 5\n\nA3\nBar 1 \u00b7 Position 2 \u00b7 String 4\n\nScale degree \u00b7 6\n\nFormula alternatives\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 3 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 3 \u00b7 String 3\nG3\nPrevious\nPage 2 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 561.015625,
+            "y": 668.5625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 692,
+            "y": 668.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 32,
+            "y": 754.75,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 673.0625,
+            "y": 754.75,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 32,
+            "y": 846.125,
+            "width": 704,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 36,
+            "y": 1193.625,
+            "width": 696,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 36,
+            "y": 1241.625,
+            "width": 696,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 32,
+            "y": 1447.8125,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 692,
+            "y": 1447.8125,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 32,
+            "y": 1492.8125,
+            "width": 704,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "emptyPoint": {
+        "width": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 659.5625,
+          "width": 704,
+          "height": 509.9375,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 3 of 5\nNext point\n\nComplete at this point\n\nNo source notes at this point\n\nChord readings\n\nNo written notes at this point.\n\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 3 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 3 \u00b7 String 3\nG3\nPrevious\nPage 2 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 561.015625,
+            "y": 668.5625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 692,
+            "y": 668.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 32,
+            "y": 754.75,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 673.0625,
+            "y": 754.75,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 32,
+            "y": 846.125,
+            "width": 704,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 32,
+            "y": 1071.5,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 692,
+            "y": 1071.5,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 32,
+            "y": 1116.5,
+            "width": 704,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "twoPCFacts": {
+        "width": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 659.5625,
+          "width": 704,
+          "height": 740.5,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n2 of 2 source notes timed\n\nPrevious point\nPoint 1 of 3\nNext point\n\nComplete at this point\n\n2 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 G\n\nInterval class \u00b7 5\n\nScale reference \u00b7 C Ionian\n\nKey reference \u00b7 C minor\n\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\n\nScale degree \u00b7 1\n\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\n\nScale degree \u00b7 5\n\nFormula alternatives\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nDetails"
+        },
+        "controls": [
+          {
+            "x": 561.015625,
+            "y": 668.5625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 692,
+            "y": 668.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 32,
+            "y": 754.75,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 673.0625,
+            "y": 754.75,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 32,
+            "y": 846.125,
+            "width": 704,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 36,
+            "y": 1092.875,
+            "width": 696,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 36,
+            "y": 1140.875,
+            "width": 696,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 32,
+            "y": 1347.0625,
+            "width": 704,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "twoPCFormula": {
+        "width": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 659.5625,
+          "width": 704,
+          "height": 1055.0625,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n2 of 2 source notes timed\n\nPrevious point\nPoint 1 of 3\nNext point\n\nComplete at this point\n\n2 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 G\n\nInterval class \u00b7 5\n\nScale reference \u00b7 C Ionian\n\nKey reference \u00b7 C minor\n\nIf Gsus4\nClear reading\n\nIf Gsus4 in C minor \u00b7 Vsus4\n\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\n\nScale degree \u00b7 1\n\n4 \u00b7 C4 \u00b7 Formula member\n\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\n\nScale degree \u00b7 5\n\n1 \u00b7 G3 \u00b7 Formula member\n\nFormula alternatives\nAs C5\nAs Gsus4\nFormula details\n\nOmitted formula degrees \u00b7 5\n\nOutside formula \u00b7 None\n\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nDetails"
+        },
+        "controls": [
+          {
+            "x": 561.015625,
+            "y": 668.5625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 692,
+            "y": 668.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 32,
+            "y": 754.75,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 673.0625,
+            "y": 754.75,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 32,
+            "y": 846.125,
+            "width": 704,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 653.453125,
+            "y": 971.125,
+            "width": 78.546875,
+            "height": 44,
+            "text": "Clear reading"
+          },
+          {
+            "x": 36,
+            "y": 1211.4375,
+            "width": 696,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 36,
+            "y": 1264.4375,
+            "width": 696,
+            "height": 44,
+            "text": "As C5"
+          },
+          {
+            "x": 36,
+            "y": 1309.4375,
+            "width": 696,
+            "height": 44,
+            "text": "As Gsus4"
+          },
+          {
+            "x": 36,
+            "y": 1357.4375,
+            "width": 696,
+            "height": 44,
+            "text": "Formula details"
+          },
+          {
+            "x": 36,
+            "y": 1455.4375,
+            "width": 696,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 32,
+            "y": 1661.625,
+            "width": 704,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "noSources": {
+        "width": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 659.5625,
+          "width": 704,
+          "height": 126.1875,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nNo written notes\n\nDetails"
+        },
+        "controls": [
+          {
+            "x": 561.015625,
+            "y": 668.5625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 692,
+            "y": 668.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 32,
+            "y": 732.75,
+            "width": 704,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "am7Text": "Pitch classes \u00b7 C \u00b7 E \u00b7 G \u00b7 A\n\nKey reference \u00b7 C major\n\nIf Am7\nClear reading\n\nIf Am7 in C major \u00b7 vi7\n\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 1\n\n5 \u00b7 E4 \u00b7 Formula member\n\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 2\n\nb3 \u00b7 C4 \u00b7 Formula member\n\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 3\n\nb7 \u00b7 G3 \u00b7 Formula member\n\nA3\nBar 1 \u00b7 Position 2 \u00b7 String 4\n\n1 \u00b7 A3 \u00b7 Formula member\n\nFormula alternatives\nAs C6\nAs Am7\nAs C\nAs Am\nFormula details\nObservation details",
+      "omissionText": "Pitch classes \u00b7 C \u00b7 E \u00b7 G\n\nKey reference \u00b7 C major\n\nIf Em\nClear reading\n\nIf Em in C major \u00b7 iii\n\nE4\nBar 1 \u00b7 Position 1 \u00b7 String 1\n\n1 \u00b7 E4 \u00b7 Formula member\n\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\n\nOutside this formula\n\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\n\nb3 \u00b7 G3 \u00b7 Formula member\n\nFormula alternatives\nAs C\nAs C5\nAs Em\nAs Gsus4\nFormula details\n\nOmitted formula degrees \u00b7 5\n\nOutside formula \u00b7 C4\n\nObservation details",
+      "twoPCReadingText": "Pitch classes \u00b7 C \u00b7 G\n\nInterval class \u00b7 5\n\nScale reference \u00b7 C Ionian\n\nKey reference \u00b7 C minor\n\nIf Gsus4\nClear reading\n\nIf Gsus4 in C minor \u00b7 Vsus4\n\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\n\nScale degree \u00b7 1\n\n4 \u00b7 C4 \u00b7 Formula member\n\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\n\nScale degree \u00b7 5\n\n1 \u00b7 G3 \u00b7 Formula member\n\nFormula alternatives\nAs C5\nAs Gsus4\nFormula details\n\nOmitted formula degrees \u00b7 5\n\nOutside formula \u00b7 None\n\nObservation details",
+      "referenceParentState": {
+        "kind": "This bar\nAcross full bars \u00b7 4/4",
+        "point": "Point 2 of 5",
+        "page": "Page 2 of 2"
+      },
+      "errors": [],
+      "passed": [
+        "Across-only explicit opt-in",
+        "facts then optional formulas",
+        "C6/Am7 alternatives no auto choice",
+        "conditional selected formula with omissions metadata",
+        "source rows retained",
+        "point resets selected hypothesis",
+        "scale/key change child-only close preserves parent point/page/source",
+        "two-PC facts default/C5 optional",
+        "empty point vs no source notes without silence claim",
+        "44px reduced-motion no-overflow"
+      ]
+    },
+    {
+      "width": 1335,
+      "local": {
+        "width": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 669.15625,
+          "width": 1151.984375,
+          "height": 743.375,
+          "text": "Bar 1\n\nWritten timing\n\nAbout written time\nClose\nPrevious point\nPoint 1 of 5\nNext point\n\n3 written notes at this point\n\n\u2248 0\nQuarter notes\n\u2248 4\nPosition 1 \u00b7 String 1\nE4\u25cf\n\u00b7 At this point\nPosition 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nPosition 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nPosition 2 \u00b7 String 1\nE4\nPosition 2 \u00b7 String 2\nC4\nPosition 2 \u00b7 String 3\nG3\nPosition 2 \u00b7 String 4\nA3\nPosition 3 \u00b7 String 1\nE4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 1063.921875,
+            "y": 678.15625,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time"
+          },
+          {
+            "x": 1199.484375,
+            "y": 678.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 91.5,
+            "y": 727.15625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 1180.546875,
+            "y": 727.15625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 91.5,
+            "y": 1314.53125,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 1199.484375,
+            "y": 1314.53125,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 91.5,
+            "y": 1359.53125,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "closed": {
+        "width": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 669.15625,
+          "width": 1151.984375,
+          "height": 848.75,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 1 of 5\nNext point\n\nComplete at this point\n\n3 source notes at this point\n\nChord readings\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nE4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 1\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 3\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 4\nA3\nBar 1 \u00b7 Position 3 \u00b7 String 1\nE4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 1068.5,
+            "y": 678.15625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 1199.484375,
+            "y": 678.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 91.5,
+            "y": 764.34375,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 1180.546875,
+            "y": 764.34375,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 91.5,
+            "y": 855.71875,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 91.5,
+            "y": 1419.90625,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 1199.484375,
+            "y": 1419.90625,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 91.5,
+            "y": 1464.90625,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "facts": {
+        "width": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 669.15625,
+          "width": 1151.984375,
+          "height": 1105.3125,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 1 of 5\nNext point\n\nComplete at this point\n\n3 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 E \u00b7 G\n\nKey reference \u00b7 C major\n\nE4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\nFormula alternatives\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nE4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 1\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 3\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 4\nA3\nBar 1 \u00b7 Position 3 \u00b7 String 1\nE4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 1068.5,
+            "y": 678.15625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 1199.484375,
+            "y": 678.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 91.5,
+            "y": 764.34375,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 1180.546875,
+            "y": 764.34375,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 91.5,
+            "y": 855.71875,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 95.5,
+            "y": 1056.28125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 95.5,
+            "y": 1104.28125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 91.5,
+            "y": 1676.46875,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 1199.484375,
+            "y": 1676.46875,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 91.5,
+            "y": 1721.46875,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "selectedC": {
+        "width": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 669.15625,
+          "width": 1151.984375,
+          "height": 1483.0625,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 1 of 5\nNext point\n\nComplete at this point\n\n3 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 E \u00b7 G\n\nKey reference \u00b7 C major\n\nIf C\nClear reading\n\nIf C in C major \u00b7 I\n\nE4\nBar 1 \u00b7 Position 1 \u00b7 String 1\n\n3 \u00b7 E4 \u00b7 Formula member\n\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\n\n1 \u00b7 C4 \u00b7 Formula member\n\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\n\n5 \u00b7 G3 \u00b7 Formula member\n\nFormula alternatives\nAs C\nAs C5\nAs Em\nAs Gsus4\nFormula details\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nE4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 1\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 3\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 4\nA3\nBar 1 \u00b7 Position 3 \u00b7 String 1\nE4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 1068.5,
+            "y": 678.15625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 1199.484375,
+            "y": 678.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 91.5,
+            "y": 764.34375,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 1180.546875,
+            "y": 764.34375,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 91.5,
+            "y": 855.71875,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 1160.9375,
+            "y": 944.71875,
+            "width": 78.546875,
+            "height": 44,
+            "text": "Clear reading"
+          },
+          {
+            "x": 95.5,
+            "y": 1198.03125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 95.5,
+            "y": 1251.03125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "As C"
+          },
+          {
+            "x": 95.5,
+            "y": 1296.03125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "As C5"
+          },
+          {
+            "x": 95.5,
+            "y": 1341.03125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "As Em"
+          },
+          {
+            "x": 95.5,
+            "y": 1386.03125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "As Gsus4"
+          },
+          {
+            "x": 95.5,
+            "y": 1434.03125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "Formula details"
+          },
+          {
+            "x": 95.5,
+            "y": 1482.03125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 91.5,
+            "y": 2054.21875,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 1199.484375,
+            "y": 2054.21875,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 91.5,
+            "y": 2099.21875,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "omissions": {
+        "width": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 669.15625,
+          "width": 1151.984375,
+          "height": 1533.0625,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 1 of 5\nNext point\n\nComplete at this point\n\n3 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 E \u00b7 G\n\nKey reference \u00b7 C major\n\nIf Em\nClear reading\n\nIf Em in C major \u00b7 iii\n\nE4\nBar 1 \u00b7 Position 1 \u00b7 String 1\n\n1 \u00b7 E4 \u00b7 Formula member\n\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\n\nOutside this formula\n\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\n\nb3 \u00b7 G3 \u00b7 Formula member\n\nFormula alternatives\nAs C\nAs C5\nAs Em\nAs Gsus4\nFormula details\n\nOmitted formula degrees \u00b7 5\n\nOutside formula \u00b7 C4\n\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nE4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 1\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 3\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 4\nA3\nBar 1 \u00b7 Position 3 \u00b7 String 1\nE4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 1068.5,
+            "y": 678.15625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 1199.484375,
+            "y": 678.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 91.5,
+            "y": 764.34375,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 1180.546875,
+            "y": 764.34375,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 91.5,
+            "y": 855.71875,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 1160.9375,
+            "y": 944.71875,
+            "width": 78.546875,
+            "height": 44,
+            "text": "Clear reading"
+          },
+          {
+            "x": 95.5,
+            "y": 1198.03125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 95.5,
+            "y": 1251.03125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "As C"
+          },
+          {
+            "x": 95.5,
+            "y": 1296.03125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "As C5"
+          },
+          {
+            "x": 95.5,
+            "y": 1341.03125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "As Em"
+          },
+          {
+            "x": 95.5,
+            "y": 1386.03125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "As Gsus4"
+          },
+          {
+            "x": 95.5,
+            "y": 1434.03125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "Formula details"
+          },
+          {
+            "x": 95.5,
+            "y": 1532.03125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 91.5,
+            "y": 2104.21875,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 1199.484375,
+            "y": 2104.21875,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 91.5,
+            "y": 2149.21875,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "selectedAm7": {
+        "width": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 669.15625,
+          "width": 1151.984375,
+          "height": 1542.4375,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 2 of 5\nNext point\n\nComplete at this point\n\n4 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 E \u00b7 G \u00b7 A\n\nKey reference \u00b7 C major\n\nIf Am7\nClear reading\n\nIf Am7 in C major \u00b7 vi7\n\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 1\n\n5 \u00b7 E4 \u00b7 Formula member\n\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 2\n\nb3 \u00b7 C4 \u00b7 Formula member\n\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 3\n\nb7 \u00b7 G3 \u00b7 Formula member\n\nA3\nBar 1 \u00b7 Position 2 \u00b7 String 4\n\n1 \u00b7 A3 \u00b7 Formula member\n\nFormula alternatives\nAs C6\nAs Am7\nAs C\nAs Am\nFormula details\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nE4\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 1\nE4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 4\nA3\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 3 \u00b7 String 1\nE4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 1068.5,
+            "y": 678.15625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 1199.484375,
+            "y": 678.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 91.5,
+            "y": 764.34375,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 1180.546875,
+            "y": 764.34375,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 91.5,
+            "y": 855.71875,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 1160.9375,
+            "y": 944.71875,
+            "width": 78.546875,
+            "height": 44,
+            "text": "Clear reading"
+          },
+          {
+            "x": 95.5,
+            "y": 1257.40625,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 95.5,
+            "y": 1310.40625,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "As C6"
+          },
+          {
+            "x": 95.5,
+            "y": 1355.40625,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "As Am7"
+          },
+          {
+            "x": 95.5,
+            "y": 1400.40625,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "As C"
+          },
+          {
+            "x": 95.5,
+            "y": 1445.40625,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "As Am"
+          },
+          {
+            "x": 95.5,
+            "y": 1493.40625,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "Formula details"
+          },
+          {
+            "x": 95.5,
+            "y": 1541.40625,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 91.5,
+            "y": 2113.59375,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 1199.484375,
+            "y": 2113.59375,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 91.5,
+            "y": 2158.59375,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "referenceReset": {
+        "width": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 669.15625,
+          "width": 1151.984375,
+          "height": 886.25,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 2 of 5\nNext point\n\nComplete at this point\n\n4 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 E \u00b7 G \u00b7 A\n\nScale reference \u00b7 C Ionian\n\nKey reference \u00b7 C minor\n\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 1\n\nScale degree \u00b7 3\n\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 2\n\nScale degree \u00b7 1\n\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 3\n\nScale degree \u00b7 5\n\nA3\nBar 1 \u00b7 Position 2 \u00b7 String 4\n\nScale degree \u00b7 6\n\nFormula alternatives\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 3 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 3 \u00b7 String 3\nG3\nPrevious\nPage 2 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 1068.5,
+            "y": 678.15625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 1199.484375,
+            "y": 678.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 91.5,
+            "y": 764.34375,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 1180.546875,
+            "y": 764.34375,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 91.5,
+            "y": 855.71875,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 95.5,
+            "y": 1203.21875,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 95.5,
+            "y": 1251.21875,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 91.5,
+            "y": 1457.40625,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 1199.484375,
+            "y": 1457.40625,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 91.5,
+            "y": 1502.40625,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "emptyPoint": {
+        "width": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 669.15625,
+          "width": 1151.984375,
+          "height": 509.9375,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n10 of 10 source notes timed\n\nPrevious point\nPoint 3 of 5\nNext point\n\nComplete at this point\n\nNo source notes at this point\n\nChord readings\n\nNo written notes at this point.\n\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 3 \u00b7 String 2\nC4\nBar 1 \u00b7 Position 3 \u00b7 String 3\nG3\nPrevious\nPage 2 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 1068.5,
+            "y": 678.15625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 1199.484375,
+            "y": 678.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 91.5,
+            "y": 764.34375,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 1180.546875,
+            "y": 764.34375,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 91.5,
+            "y": 855.71875,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 91.5,
+            "y": 1081.09375,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 1199.484375,
+            "y": 1081.09375,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 91.5,
+            "y": 1126.09375,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "twoPCFacts": {
+        "width": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 669.15625,
+          "width": 1151.984375,
+          "height": 740.5,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n2 of 2 source notes timed\n\nPrevious point\nPoint 1 of 3\nNext point\n\nComplete at this point\n\n2 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 G\n\nInterval class \u00b7 5\n\nScale reference \u00b7 C Ionian\n\nKey reference \u00b7 C minor\n\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\n\nScale degree \u00b7 1\n\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\n\nScale degree \u00b7 5\n\nFormula alternatives\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nDetails"
+        },
+        "controls": [
+          {
+            "x": 1068.5,
+            "y": 678.15625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 1199.484375,
+            "y": 678.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 91.5,
+            "y": 764.34375,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 1180.546875,
+            "y": 764.34375,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 91.5,
+            "y": 855.71875,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 95.5,
+            "y": 1102.46875,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 95.5,
+            "y": 1150.46875,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 91.5,
+            "y": 1356.65625,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "twoPCFormula": {
+        "width": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 669.15625,
+          "width": 1151.984375,
+          "height": 1055.0625,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n2 of 2 source notes timed\n\nPrevious point\nPoint 1 of 3\nNext point\n\nComplete at this point\n\n2 source notes at this point\n\nChord readings\n\nPitch classes \u00b7 C \u00b7 G\n\nInterval class \u00b7 5\n\nScale reference \u00b7 C Ionian\n\nKey reference \u00b7 C minor\n\nIf Gsus4\nClear reading\n\nIf Gsus4 in C minor \u00b7 Vsus4\n\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\n\nScale degree \u00b7 1\n\n4 \u00b7 C4 \u00b7 Formula member\n\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\n\nScale degree \u00b7 5\n\n1 \u00b7 G3 \u00b7 Formula member\n\nFormula alternatives\nAs C5\nAs Gsus4\nFormula details\n\nOmitted formula degrees \u00b7 5\n\nOutside formula \u00b7 None\n\nObservation details\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 2\nC4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 3\nG3\u25cf\n\u00b7 At this point\nDetails"
+        },
+        "controls": [
+          {
+            "x": 1068.5,
+            "y": 678.15625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 1199.484375,
+            "y": 678.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 91.5,
+            "y": 764.34375,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 1180.546875,
+            "y": 764.34375,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 91.5,
+            "y": 855.71875,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Chord readings"
+          },
+          {
+            "x": 1160.9375,
+            "y": 980.71875,
+            "width": 78.546875,
+            "height": 44,
+            "text": "Clear reading"
+          },
+          {
+            "x": 95.5,
+            "y": 1221.03125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "Formula alternatives"
+          },
+          {
+            "x": 95.5,
+            "y": 1274.03125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "As C5"
+          },
+          {
+            "x": 95.5,
+            "y": 1319.03125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "As Gsus4"
+          },
+          {
+            "x": 95.5,
+            "y": 1367.03125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "Formula details"
+          },
+          {
+            "x": 95.5,
+            "y": 1465.03125,
+            "width": 1143.984375,
+            "height": 44,
+            "text": "Observation details"
+          },
+          {
+            "x": 91.5,
+            "y": 1671.21875,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "noSources": {
+        "width": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 669.15625,
+          "width": 1151.984375,
+          "height": 126.1875,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nNo written notes\n\nDetails"
+        },
+        "controls": [
+          {
+            "x": 1068.5,
+            "y": 678.15625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 1199.484375,
+            "y": 678.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 91.5,
+            "y": 742.34375,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details"
+          }
+        ]
+      },
+      "am7Text": "Pitch classes \u00b7 C \u00b7 E \u00b7 G \u00b7 A\n\nKey reference \u00b7 C major\n\nIf Am7\nClear reading\n\nIf Am7 in C major \u00b7 vi7\n\nE4\nBar 1 \u00b7 Position 2 \u00b7 String 1\n\n5 \u00b7 E4 \u00b7 Formula member\n\nC4\nBar 1 \u00b7 Position 2 \u00b7 String 2\n\nb3 \u00b7 C4 \u00b7 Formula member\n\nG3\nBar 1 \u00b7 Position 2 \u00b7 String 3\n\nb7 \u00b7 G3 \u00b7 Formula member\n\nA3\nBar 1 \u00b7 Position 2 \u00b7 String 4\n\n1 \u00b7 A3 \u00b7 Formula member\n\nFormula alternatives\nAs C6\nAs Am7\nAs C\nAs Am\nFormula details\nObservation details",
+      "omissionText": "Pitch classes \u00b7 C \u00b7 E \u00b7 G\n\nKey reference \u00b7 C major\n\nIf Em\nClear reading\n\nIf Em in C major \u00b7 iii\n\nE4\nBar 1 \u00b7 Position 1 \u00b7 String 1\n\n1 \u00b7 E4 \u00b7 Formula member\n\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\n\nOutside this formula\n\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\n\nb3 \u00b7 G3 \u00b7 Formula member\n\nFormula alternatives\nAs C\nAs C5\nAs Em\nAs Gsus4\nFormula details\n\nOmitted formula degrees \u00b7 5\n\nOutside formula \u00b7 C4\n\nObservation details",
+      "twoPCReadingText": "Pitch classes \u00b7 C \u00b7 G\n\nInterval class \u00b7 5\n\nScale reference \u00b7 C Ionian\n\nKey reference \u00b7 C minor\n\nIf Gsus4\nClear reading\n\nIf Gsus4 in C minor \u00b7 Vsus4\n\nC4\nBar 1 \u00b7 Position 1 \u00b7 String 2\n\nScale degree \u00b7 1\n\n4 \u00b7 C4 \u00b7 Formula member\n\nG3\nBar 1 \u00b7 Position 1 \u00b7 String 3\n\nScale degree \u00b7 5\n\n1 \u00b7 G3 \u00b7 Formula member\n\nFormula alternatives\nAs C5\nAs Gsus4\nFormula details\n\nOmitted formula degrees \u00b7 5\n\nOutside formula \u00b7 None\n\nObservation details",
+      "referenceParentState": {
+        "kind": "This bar\nAcross full bars \u00b7 4/4",
+        "point": "Point 2 of 5",
+        "page": "Page 2 of 2"
+      },
+      "errors": [],
+      "passed": [
+        "Across-only explicit opt-in",
+        "facts then optional formulas",
+        "C6/Am7 alternatives no auto choice",
+        "conditional selected formula with omissions metadata",
+        "source rows retained",
+        "point resets selected hypothesis",
+        "scale/key change child-only close preserves parent point/page/source",
+        "two-PC facts default/C5 optional",
+        "empty point vs no source notes without silence claim",
+        "44px reduced-motion no-overflow"
+      ]
+    }
+  ]
+}

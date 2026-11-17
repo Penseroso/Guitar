@@ -1,0 +1,50 @@
+{
+  "browser": "system Chromium; native CDP IME; physical device/OS IME not claimed",
+  "results": [
+    {
+      "width": 390,
+      "cleanEscape": {
+        "popupClosed": true,
+        "focusReturnedToEditBeforeDiagnostic": true
+      },
+      "dirtyFractionKeyboardPointer": "pass",
+      "dirtyNativeValidInvalid": "pass",
+      "nativeEscapePriority": "pass",
+      "nativeIMEDiagnosticAndCheckGuards": "pass",
+      "explicitSetStartAndTabCommit": "pass",
+      "snapshotInvalidationUndoRedo": "pass",
+      "pointerMode": "touch",
+      "errors": []
+    },
+    {
+      "width": 768,
+      "cleanEscape": {
+        "popupClosed": true,
+        "focusReturnedToEditBeforeDiagnostic": true
+      },
+      "dirtyFractionKeyboardPointer": "pass",
+      "dirtyNativeValidInvalid": "pass",
+      "nativeEscapePriority": "pass",
+      "nativeIMEDiagnosticAndCheckGuards": "pass",
+      "explicitSetStartAndTabCommit": "pass",
+      "snapshotInvalidationUndoRedo": "pass",
+      "pointerMode": "mouse",
+      "errors": []
+    },
+    {
+      "width": 1335,
+      "cleanEscape": {
+        "popupClosed": true,
+        "focusReturnedToEditBeforeDiagnostic": true
+      },
+      "dirtyFractionKeyboardPointer": "pass",
+      "dirtyNativeValidInvalid": "pass",
+      "nativeEscapePriority": "pass",
+      "nativeIMEDiagnosticAndCheckGuards": "pass",
+      "explicitSetStartAndTabCommit": "pass",
+      "snapshotInvalidationUndoRedo": "pass",
+      "pointerMode": "mouse",
+      "errors": []
+    }
+  ]
+}

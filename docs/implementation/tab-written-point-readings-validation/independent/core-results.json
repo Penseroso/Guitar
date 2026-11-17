@@ -1,0 +1,240 @@
+{
+  "sourceSha256": "153a1a6c81fe2b26cf44c1d5a2851103a7ced7fc44ed2cbd9fa7b06fbb9ef1be",
+  "counters": {
+    "manualFixtures": 11,
+    "metamorphicCases": 108,
+    "partialQueries": 42,
+    "completionWorlds": 90,
+    "invalidQueries": 7
+  },
+  "manual": [
+    {
+      "name": "major triad",
+      "observedMidi": [
+        60,
+        64,
+        67
+      ],
+      "requiredPresent": true,
+      "candidateCount": 4
+    },
+    {
+      "name": "same pitches, different roots",
+      "observedMidi": [
+        60,
+        64,
+        67,
+        69
+      ],
+      "requiredPresent": true,
+      "candidateCount": 4
+    },
+    {
+      "name": "rooted seventh shell",
+      "observedMidi": [
+        60,
+        64,
+        70
+      ],
+      "requiredPresent": true,
+      "candidateCount": 3
+    },
+    {
+      "name": "unobserved root not inserted",
+      "observedMidi": [
+        64,
+        70
+      ],
+      "requiredPresent": true,
+      "candidateCount": 0
+    },
+    {
+      "name": "power fifth",
+      "observedMidi": [
+        60,
+        67
+      ],
+      "requiredPresent": true,
+      "candidateCount": 2
+    },
+    {
+      "name": "one unexplained pitch",
+      "observedMidi": [
+        60,
+        64,
+        67,
+        73
+      ],
+      "requiredPresent": true,
+      "candidateCount": 4
+    },
+    {
+      "name": "two unexplained pitches",
+      "observedMidi": [
+        60,
+        64,
+        67,
+        73,
+        78
+      ],
+      "requiredPresent": true,
+      "candidateCount": 0
+    },
+    {
+      "name": "single PC, several occurrences",
+      "observedMidi": [
+        48,
+        60,
+        72
+      ],
+      "requiredPresent": true,
+      "candidateCount": 0
+    },
+    {
+      "name": "complete empty point inside known interval extent",
+      "observedMidi": [],
+      "requiredPresent": true,
+      "candidateCount": 0
+    },
+    {
+      "name": "B♭♭4",
+      "degree": "bb7"
+    },
+    {
+      "name": "hypothesis roles preserve only observed notes and outside-formula abstention",
+      "omitted": [
+        "5"
+      ],
+      "added": [
+        1
+      ]
+    }
+  ],
+  "completionEvidence": [
+    {
+      "mode": "missing-duration",
+      "sourceCoverage": "partial",
+      "knownIntervals": 3
+    },
+    {
+      "mode": "missing-start",
+      "sourceCoverage": "partial",
+      "knownIntervals": 3
+    },
+    {
+      "mode": "missing-both",
+      "sourceCoverage": "partial",
+      "knownIntervals": 3
+    },
+    {
+      "mode": "invalid-duration",
+      "sourceCoverage": "partial",
+      "knownIntervals": 3
+    },
+    {
+      "mode": "invalid-start",
+      "sourceCoverage": "partial",
+      "knownIntervals": 3
+    },
+    {
+      "mode": "invalid-id",
+      "sourceCoverage": "partial",
+      "knownIntervals": 3
+    },
+    {
+      "mode": "unknown-owner",
+      "sourceCoverage": "unreadable",
+      "knownIntervals": 3
+    }
+  ],
+  "bench": [
+    {
+      "name": "triad",
+      "activeOccurrences": 6144,
+      "distinctPC": 3,
+      "candidateCount": 4,
+      "analyzeSamplesMs": [
+        8.727780000000052,
+        6.522927999999979,
+        5.08363300000002,
+        5.525112999999976,
+        4.806026999999972,
+        5.304372999999998,
+        4.727038999999991
+      ],
+      "analyzeMedianMs": 5.304372999999998,
+      "selectedCandidateKey": "0:major",
+      "describeSamplesMs": [
+        3.0447389999999928,
+        3.9882619999999633,
+        3.6258300000000077,
+        3.8602410000000305,
+        3.6386190000000056,
+        4.5323530000000005,
+        6.2161989999999605
+      ],
+      "describeMedianMs": 3.8602410000000305,
+      "resultBytes": 2488101,
+      "noEagerAllCandidateRoleMatrix": true
+    },
+    {
+      "name": "ambiguous-sixth-seventh",
+      "activeOccurrences": 6144,
+      "distinctPC": 4,
+      "candidateCount": 4,
+      "analyzeSamplesMs": [
+        24.518676000000028,
+        11.636236000000054,
+        4.806398000000058,
+        4.941469999999981,
+        5.301138000000037,
+        6.075216999999952,
+        4.817103999999972
+      ],
+      "analyzeMedianMs": 5.301138000000037,
+      "selectedCandidateKey": "0:major-6",
+      "describeSamplesMs": [
+        3.4653899999999567,
+        3.46200500000009,
+        3.4864209999999503,
+        3.518579000000045,
+        3.5597910000000184,
+        3.422576000000049,
+        4.173569999999927
+      ],
+      "describeMedianMs": 3.4864209999999503,
+      "resultBytes": 2488096,
+      "noEagerAllCandidateRoleMatrix": true
+    },
+    {
+      "name": "six-PC",
+      "activeOccurrences": 6144,
+      "distinctPC": 6,
+      "candidateCount": 4,
+      "analyzeSamplesMs": [
+        5.102690999999936,
+        5.03950599999996,
+        5.250462999999968,
+        15.59290999999996,
+        25.112285999999926,
+        24.908881000000065,
+        24.90551700000003
+      ],
+      "analyzeMedianMs": 15.59290999999996,
+      "selectedCandidateKey": "0:dominant-7-flat-9",
+      "describeSamplesMs": [
+        12.092018000000053,
+        3.6077020000000175,
+        4.026719999999955,
+        3.5655700000000934,
+        3.586921000000075,
+        3.5548239999999396,
+        3.680450999999948
+      ],
+      "describeMedianMs": 3.6077020000000175,
+      "resultBytes": 2495425,
+      "noEagerAllCandidateRoleMatrix": true
+    }
+  ],
+  "limits": "Finite manual formula constraints and completion worlds/metamorphic properties; not exhaustive musical or rational proof. Seven samples per 6144-active host-Node point/selected-hypothesis cost; no UI/physical-device SLO or runtime ranking."
+}

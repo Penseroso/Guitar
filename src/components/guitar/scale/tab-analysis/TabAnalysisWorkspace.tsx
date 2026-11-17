@@ -56,6 +56,7 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
     const scoreHeading = useRef<HTMLHeadingElement>(null);
     const tuning = TAB_TUNINGS.find(item => item.id === state.tuningId) ?? TAB_TUNINGS[0];
     const scale = state.context.scale && resolveScaleRef(state.context.scale);
+    const readingReferences = useMemo(() => ({ scale: state.context.scale, frame: state.context.frame }), [state.context.scale, state.context.frame]);
     const annotations = useMemo(() => state.analysisStatus === 'fresh' && state.analysis
         ? buildTabScoreAnnotations(state.analysis.result, state.analysis.context) : [],
     [state.analysisStatus, state.analysis]);
@@ -194,6 +195,7 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
                     : state.analysisStatus === 'fresh' ? `Analyzed whole score. ${annotations.length ? 'Select a score annotation for its evidence.' : 'No supported pattern found in this score.'}`
                         : 'Ready to analyze. Notes stay editable on the score.'}</p>
                 <TabScoreView document={state.document} selection={state.selection} extend={false} focusedNoteId={null}
+                    readingReferences={readingReferences}
                     onEdit={action => { cancelRead(); dispatch(action); }}
                     onDraftStatusChange={setDraftStatus}
                     annotations={annotationsVisible ? annotations : []}

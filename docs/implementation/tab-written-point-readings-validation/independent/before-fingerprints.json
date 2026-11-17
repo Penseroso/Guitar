@@ -1,0 +1,13 @@
+{
+  "baseline": "af2fb44e5c9a9c1882bffbb594be46c4e481c25b",
+  "sourceFiles": {
+    "src/domain/tab/analysis.ts": "f9d64ed2756fcb23ee8798ef0094c02fe1449e7585000ccb2c7672d53715b559",
+    "src/domain/tab/written-time.ts": "204f6b2dc542e1f67c69fa217450c291b315f954da32f526fbdb6f32e4b09e2c",
+    "src/domain/tab/written-time-across-bars.ts": "b9f74ed88f9bcbb3d7ef27366790f173aab74458498c8bbc3cc01ed66c96f286",
+    "src/domain/tab/exact-time.ts": "03d85000b5e5e4942e46ecaf720517c03448f0f7ffdedf1e1309b84741ac129a",
+    "src/domain/tab/passage-analysis.ts": "64e3606495ed4719386c9054679f62a60fc19f56cf4c13f9c5058015c0a904a2",
+    "src/domain/tab/harmonic-spans.ts": "64543b31273d2cb512d1b9adbf4adb656d9d32ca482d89b8bc9886169463d025",
+    "src/components/guitar/scale/tab-analysis/TabScoreView.tsx": "353deb852b03d9b3efcd5f645a1ba236df1ae2e1eeb0cefd776a3f6960352d76",
+    "src/components/guitar/scale/tab-analysis/AcrossBarsWrittenTimePanel.tsx": "aa90609ff19122801c0edb53b65e08d1953d8af60c2cd811478052ea26335919"
+  }
+}

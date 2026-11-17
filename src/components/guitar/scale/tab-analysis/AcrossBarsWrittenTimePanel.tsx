@@ -4,6 +4,8 @@ import { useLayoutEffect, useMemo, useRef, useState, type MouseEvent } from 'rea
 import { getTabAcrossBarsWrittenInspectionPoints, inspectTabAcrossBarsWrittenNotesAt, type TabAcrossBarsWrittenTimeSnapshot } from '@/domain/tab/written-time-across-bars';
 import { compareExactTimes, parseExactTime, type TabExactFraction } from '@/domain/tab/exact-time';
 import { getNoteName } from '@/domain/shared/notes';
+import type { TabWrittenPointReferences } from '@/domain/tab/written-point-analysis';
+import { WrittenChordReadings } from './WrittenChordReadings';
 import styles from './written-time-panel.module.css';
 import acrossStyles from './across-bars-written-time.module.css';
 
@@ -12,13 +14,17 @@ const exactLabel = (time: TabExactFraction) => `${time.numerator}/${time.denomin
 const approximate = (time: TabExactFraction) => Number(time.numerator) / Number(time.denominator);
 const approximateLabel = (value: number) => `≈ ${Number(value.toFixed(2))}`;
 const pitchLabel = (midi: number) => `${getNoteName(midi % 12)}${Math.floor(midi / 12) - 1}`;
+const NO_REFERENCES: TabWrittenPointReferences = { scale: null, frame: null };
 
-export function AcrossBarsWrittenTimePanel({ snapshot, onClose, onAction }: {
+export function AcrossBarsWrittenTimePanel({ snapshot, onClose, onAction, readingReferences = NO_REFERENCES }: {
     snapshot: TabAcrossBarsWrittenTimeSnapshot;
     onClose: () => void;
     onAction: () => boolean;
+    readingReferences?: TabWrittenPointReferences;
 }) {
     const data = snapshot.data;
+    const referenceKey = JSON.stringify([readingReferences.scale?.group, readingReferences.scale?.scaleId, readingReferences.scale?.tonic,
+        readingReferences.frame?.tonic, readingReferences.frame?.mode, readingReferences.frame?.lens]);
     const points = useMemo(() => getTabAcrossBarsWrittenInspectionPoints({ data, sourceDocument: undefined }), [data]);
     const displayNotes = useMemo(() => {
         if (data.status !== 'ready' || !data.projectionWindow) return [];
@@ -106,6 +112,8 @@ export function AcrossBarsWrittenTimePanel({ snapshot, onClose, onAction }: {
                             : query?.status === 'outside-window' ? 'Outside selected bar'
                                 : query?.status === 'unavailable' ? 'Projection unavailable' : 'Outside observed range'}</p>
         </div>}
+        {query?.status === 'complete' && time && <WrittenChordReadings key={referenceKey} snapshot={snapshot} time={time}
+            references={readingReferences} onAction={onAction} />}
         {data.status === 'ready' && data.populationCoverage !== 'unreadable' && displayNotes.length > 0 && <>
             <div className={styles.axis} aria-hidden="true"><span>{approximateLabel(0)}</span><span>Quarter notes in bar</span><span>{approximateLabel(length)}</span></div>
             <ul className={styles.notes} aria-label="Across-bars written notes">

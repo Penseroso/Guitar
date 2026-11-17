@@ -415,3 +415,30 @@ bounded pages; source/query order and the default This bar remain unchanged. Exi
 pending-input and report/history invalidation behavior also covers scope changes.
 
 See [P3.3 contract and verification](../implementation/tab-written-time-across-bars.md).
+
+## P4 written-point readings
+
+The existing order-only Analyze projection above remains unchanged. Separately,
+the Across view offers an initially closed Chord readings inspector for the current
+complete nominal point. It consumes the existing cross-bar inspector's completeness
+proof, including valid onset-exclusion proofs in globally partial snapshots. It
+never interprets a known subset as the full point population.
+
+`analyzeTabWrittenPoint` derives PCs from validated interval MIDI while preserving
+each source occurrence. Two distinct PCs can expose optional shared registry
+formula alternatives; no candidate is adopted automatically. A selected hypothesis
+supplies only formula degrees/membership. Missing tones remain omission metadata;
+additional observed pitches do not acquire inferred melodic roles. Scale degrees
+and candidate Romans use explicitly supplied scale/key references, not a detected
+tonal center or selection-scoped chord. The lowest observed guitar note does not
+establish ensemble bass or inversion.
+
+Reference changes close only this inspector without discarding the written view's
+snapshot, cursor or page. Point changes refresh an open inspector and clear its
+hypothesis; uncertain points remove it. All new actions share the existing timing
+input/IME guard and add no score, selection, history or analysis mutations.
+
+This is one-point conditional exploration, not temporal harmonic segmentation,
+progression, sounding realization or automatic tonal inference. See the
+[P4-A equivalence gate](../implementation/tab-chord-candidates.md) and
+[P4-B contract and verification](../implementation/tab-written-point-readings.md).

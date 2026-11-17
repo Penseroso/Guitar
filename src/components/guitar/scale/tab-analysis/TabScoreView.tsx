@@ -13,6 +13,7 @@ import { WrittenTimePanel } from './WrittenTimePanel';
 import { isValidTabMeter } from '@/domain/tab/input-capabilities';
 import { observeTabAcrossBarsWrittenTime, type TabAcrossBarsWrittenTimeSnapshot } from '@/domain/tab/written-time-across-bars';
 import { AcrossBarsWrittenTimePanel } from './AcrossBarsWrittenTimePanel';
+import type { TabWrittenPointReferences } from '@/domain/tab/written-point-analysis';
 import acrossStyles from './across-bars-written-time.module.css';
 import timingStyles from './timing-inspection.module.css';
 import { getKeyName } from '@/domain/shared/keys';
@@ -39,7 +40,7 @@ function techniquePresentation(note: TabNote, notes: ReadonlyMap<string, TabNote
 
 export function TabScoreView({ document, selection, onSelect, extend, focusedNoteId,
     activeCell, onActiveCellChange, onSetFret, onUndo, onRedo,
-    annotations = [], onInsertMoment, onDeleteMoments, onDraftStatusChange, onSetMute, onEdit,
+    annotations = [], onInsertMoment, onDeleteMoments, onDraftStatusChange, onSetMute, onEdit, readingReferences,
 }: {
     document: TabDocument;
     selection: TabSelection;
@@ -57,6 +58,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     onDeleteMoments?: (momentIds: string[]) => void;
     onDraftStatusChange?: (status: TabDraftStatus) => void;
     onEdit?: (action: TabAnalysisAction) => void;
+    readingReferences?: TabWrittenPointReferences;
 }) {
     const buttons = useRef(new Map<string, HTMLButtonElement>());
     const headers = useRef(new Map<string, HTMLButtonElement>());
@@ -564,7 +566,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                     ? <WrittenTimePanel key={writtenReport.serial} snapshot={writtenReport.snapshot}
                         onAction={guardTiming} onClose={closeWrittenTime} />
                     : <AcrossBarsWrittenTimePanel key={writtenReport.serial} snapshot={writtenReport.snapshot}
-                        onAction={guardTiming} onClose={closeWrittenTime} />}
+                        readingReferences={readingReferences} onAction={guardTiming} onClose={closeWrittenTime} />}
             </>}
             {timingOpen && timingReport?.document === document && <TimingInspectionPanel key={timingReport.serial}
                 document={document} report={timingReport.result} onNavigate={navigateTiming}

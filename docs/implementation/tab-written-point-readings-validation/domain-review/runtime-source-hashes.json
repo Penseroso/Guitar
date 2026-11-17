@@ -1,0 +1,16 @@
+{
+  "protectedBaseline": "af2fb44e5c9a9c1882bffbb594be46c4e481c25b",
+  "protectedSourceFilesUnchanged": 129,
+  "AGatedRuntimeFilesUnchanged": {
+    "src/domain/tab/analysis.ts": "f9d64ed2756fcb23ee8798ef0094c02fe1449e7585000ccb2c7672d53715b559",
+    "src/domain/tab/chord-candidates.ts": "e190f183dc0df90225c4dbba2cd9af0b4fb0ccd792cc0084115fb8f5d01a96e6"
+  },
+  "reviewedBRuntimeFiles": {
+    "src/domain/tab/written-point-analysis.ts": "153a1a6c81fe2b26cf44c1d5a2851103a7ced7fc44ed2cbd9fa7b06fbb9ef1be",
+    "src/components/guitar/scale/tab-analysis/WrittenChordReadings.tsx": "253af1142127e5a92a08dd15d59f03924c179562e526d8ee409e043ceeb1c809",
+    "src/components/guitar/scale/tab-analysis/written-chord-readings.module.css": "12b807c679f048d56825f6e0dc31781f1fb1bc7d82664eb9131e8e5c2e3dd0bd",
+    "src/components/guitar/scale/tab-analysis/AcrossBarsWrittenTimePanel.tsx": "c9a4e2ec968974eb391362cdc397f3fcd0bb20aa6973421abab83d87da3bee30",
+    "src/components/guitar/scale/tab-analysis/TabScoreView.tsx": "9fb6d33faae54b72b08f03ed9587234def06a335afff48425ae88fe79f61b794",
+    "src/components/guitar/scale/tab-analysis/TabAnalysisWorkspace.tsx": "9a93991a7655d3c056f2f0cddd5b6f2f6ca4a51a3696fd8186d12dbaf75e88b8"
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "scope": "Independent manual formula constraints; required/prohibited alternatives are not an exhaustive list of the registry vocabulary. Nominal point membership must be established separately by the current Across inspector.",
+  "fixtures": [
+    {
+      "name": "major triad",
+      "midi": [
+        60,
+        64,
+        67
+      ],
+      "required": [
+        {
+          "key": "0:major",
+          "match": "exact",
+          "omitted": [],
+          "added": []
+        }
+      ]
+    },
+    {
+      "name": "same pitches, different roots",
+      "midi": [
+        60,
+        64,
+        67,
+        69
+      ],
+      "required": [
+        {
+          "key": "0:major-6",
+          "match": "exact"
+        },
+        {
+          "key": "9:minor-7",
+          "match": "exact"
+        }
+      ],
+      "prohibitedClaims": [
+        "unique root",
+        "automatic tonic"
+      ]
+    },
+    {
+      "name": "rooted seventh shell",
+      "midi": [
+        60,
+        64,
+        70
+      ],
+      "required": [
+        {
+          "key": "0:dominant-7",
+          "match": "incomplete",
+          "omitted": [
+            "5"
+          ],
+          "added": []
+        }
+      ],
+      "prohibitedObservedMidi": [
+        67
+      ]
+    },
+    {
+      "name": "unobserved root not inserted",
+      "midi": [
+        64,
+        70
+      ],
+      "prohibitedCandidateKeys": [
+        "0:dominant-7"
+      ]
+    },
+    {
+      "name": "power fifth",
+      "midi": [
+        60,
+        67
+      ],
+      "required": [
+        {
+          "key": "0:power-5",
+          "match": "exact",
+          "omitted": [],
+          "added": []
+        }
+      ],
+      "equivalentPcVoicings": [
+        [
+          60,
+          67,
+          72
+        ],
+        [
+          48,
+          55,
+          60,
+          67
+        ]
+      ]
+    },
+    {
+      "name": "one unexplained pitch",
+      "midi": [
+        60,
+        64,
+        67,
+        73
+      ],
+      "required": [
+        {
+          "key": "0:major",
+          "match": "added-tone",
+          "omitted": [],
+          "added": [
+            1
+          ]
+        }
+      ],
+      "prohibitedClaims": [
+        "passing note",
+        "required tension",
+        "automatic harmonic function"
+      ]
+    },
+    {
+      "name": "two unexplained pitches",
+      "midi": [
+        60,
+        64,
+        67,
+        73,
+        78
+      ],
+      "prohibitedCandidateKeys": [
+        "0:major"
+      ]
+    },
+    {
+      "name": "single PC, several occurrences",
+      "midi": [
+        48,
+        60,
+        72
+      ],
+      "expectedCandidateCount": 0
+    },
+    {
+      "name": "complete empty point inside known interval extent",
+      "midi": [],
+      "expectedCandidateCount": 0,
+      "prohibitedClaims": [
+        "actual silence",
+        "authored rest"
+      ],
+      "construction": "Known notes occupy [0,1) and [2,3); inspect q3/2. An entirely empty source instead remains outside-range and must not be forced complete."
+    }
+  ]
+}
