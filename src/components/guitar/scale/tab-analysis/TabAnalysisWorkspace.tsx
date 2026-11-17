@@ -196,6 +196,7 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
                         : 'Ready to analyze. Notes stay editable on the score.'}</p>
                 <TabScoreView document={state.document} selection={state.selection} extend={false} focusedNoteId={null}
                     readingReferences={readingReferences}
+                    harmony={state}
                     onEdit={action => { cancelRead(); dispatch(action); }}
                     onDraftStatusChange={setDraftStatus}
                     annotations={annotationsVisible ? annotations : []}

@@ -268,7 +268,11 @@ describe('editable tab session', () => {
         expect(state.context.scale).not.toBe(scale);
         expect(state.context.frame).toBeNull();
         expect(initial.context.scale).toBeNull();
-        expect(reduceTabAnalysis(analyzed(), { type: 'reset' })).toEqual(initial);
+        const beforeReset = analyzed();
+        const reset = reduceTabAnalysis(beforeReset, { type: 'reset' });
+        expect(reset).toEqual({
+            ...initial, scoreId: beforeReset.nextId, originsRevision: beforeReset.nextId, nextId: beforeReset.nextId + 1,
+        });
     });
 
     it('runs analysis explicitly and keeps all-score results stable during cursor and range changes', () => {

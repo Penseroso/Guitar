@@ -14,6 +14,9 @@ import { isValidTabMeter } from '@/domain/tab/input-capabilities';
 import { observeTabAcrossBarsWrittenTime, type TabAcrossBarsWrittenTimeSnapshot } from '@/domain/tab/written-time-across-bars';
 import { AcrossBarsWrittenTimePanel } from './AcrossBarsWrittenTimePanel';
 import type { TabWrittenPointReferences } from '@/domain/tab/written-point-analysis';
+import { resolveSuppliedHarmony, type SuppliedTabChord } from '@/domain/tab/supplied-harmony';
+import { SuppliedHarmonyPanel } from './SuppliedHarmonyPanel';
+import harmonyStyles from './supplied-harmony.module.css';
 import acrossStyles from './across-bars-written-time.module.css';
 import timingStyles from './timing-inspection.module.css';
 import { getKeyName } from '@/domain/shared/keys';
@@ -40,7 +43,7 @@ function techniquePresentation(note: TabNote, notes: ReadonlyMap<string, TabNote
 
 export function TabScoreView({ document, selection, onSelect, extend, focusedNoteId,
     activeCell, onActiveCellChange, onSetFret, onUndo, onRedo,
-    annotations = [], onInsertMoment, onDeleteMoments, onDraftStatusChange, onSetMute, onEdit, readingReferences,
+    annotations = [], onInsertMoment, onDeleteMoments, onDraftStatusChange, onSetMute, onEdit, readingReferences, harmony,
 }: {
     document: TabDocument;
     selection: TabSelection;
@@ -59,6 +62,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     onDraftStatusChange?: (status: TabDraftStatus) => void;
     onEdit?: (action: TabAnalysisAction) => void;
     readingReferences?: TabWrittenPointReferences;
+    harmony?: { scoreId: number; originsRevision: number; suppliedHarmony: readonly SuppliedTabChord[] };
 }) {
     const buttons = useRef(new Map<string, HTMLButtonElement>());
     const headers = useRef(new Map<string, HTMLButtonElement>());
@@ -118,6 +122,9 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     const insertionStop = document.moments.some(moment => moment.id === insertionCursor) ? insertionCursor : current?.momentId;
     const notesById = new Map(document.moments.flatMap(moment => moment.notes.map(note => [note.id, note] as const)));
     const sustainedAt = (moment: TabMoment, string: number) => moment.sustains?.find(sustain => notesById.get(sustain.noteId)?.string === string);
+    const suppliedRows = useMemo(() => harmony?.suppliedHarmony.length
+        ? resolveSuppliedHarmony(document, harmony.scoreId, harmony.originsRevision, harmony.suppliedHarmony) : [],
+    [document, harmony?.scoreId, harmony?.originsRevision, harmony?.suppliedHarmony]);
 
     useLayoutEffect(() => {
         if (timingReport && timingReport.document !== document) {
@@ -572,6 +579,15 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                 document={document} report={timingReport.result} onNavigate={navigateTiming}
                 onClose={() => { setTimingOpen(false); timingReturn.current = null; checkButton.current?.focus(); }} />}
         </div>
+        {harmony && onEdit && <div data-timing-controls className={timingStyles.controls}
+            onPointerDownCapture={event => { if (!guardTiming()) { event.preventDefault(); event.stopPropagation(); } }}
+            onKeyDownCapture={event => {
+                if (event.key !== 'Tab' && !guardTiming()) { event.preventDefault(); event.stopPropagation(); }
+            }}
+            onClickCapture={event => { if (!guardTiming()) { event.preventDefault(); event.stopPropagation(); } }}>
+            <SuppliedHarmonyPanel document={document} selection={selection} harmony={harmony} onEdit={onEdit}
+                rows={suppliedRows} references={readingReferences} />
+        </div>}
         {systems.map((system, systemIndex) => {
             const slots = system.flatMap<{ moment: TabMoment | null; index: number; measure: number }>(measure => measure.moments.length ? measure.moments.map(item => ({ ...item, measure: measure.number })) : [{ moment: null, index: -1, measure: measure.number }]);
             const template = `44px repeat(${slots.length}, minmax(44px, 1fr))`;
@@ -580,6 +596,12 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
             const lastIndex = slots.findLast(item => item.index >= 0)?.index ?? -1;
             const visibleAnnotations = annotations.filter(annotation => firstIndex >= 0 && annotation.start <= lastIndex && annotation.end >= firstIndex);
             const selectedAnnotation = visibleAnnotations.find(annotation => annotation.id === openAnnotation);
+            const visibleChords = suppliedRows.flatMap(({ entry, chord, placement }) => {
+                if (!chord || placement?.kind !== 'positions' || placement.first > lastIndex || placement.last < firstIndex) return [];
+                const start = slots.findIndex(item => item.index >= placement.first && item.index <= placement.last);
+                const end = slots.findLastIndex(item => item.index >= placement.first && item.index <= placement.last);
+                return start < 0 ? [] : [{ id: entry.id, name: chord.name, start, end }];
+            });
             const annotationRows = (placement: 'above' | 'below') => {
                 const placed: { annotation: TabScoreAnnotation; start: number; end: number; lane: number }[] = [];
                 const laneEnds: number[] = [];
@@ -617,6 +639,10 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                                 onClick={() => { if (commit()) setMeterBar(previous => previous === measure.number ? null : measure.number); }}>
                                 Bar {measure.number} <span>{document.meter ? `${document.meter.numerator}/${document.meter.denominator}` : 'Meter +'}</span>
                             </button>)}
+                        </div>}
+                        {visibleChords.length > 0 && <div className={harmonyStyles.scoreLabels} role="group" aria-label="Supplied chord labels">
+                            {visibleChords.map(chord => <span key={chord.id} className={harmonyStyles.scoreLabel} title={chord.name}
+                                style={{ gridColumn: `${chord.start + 2} / span ${chord.end - chord.start + 1}` }}>{chord.name}</span>)}
                         </div>}
                         {annotationRows('above')}
                         <div className={styles.headers}>
