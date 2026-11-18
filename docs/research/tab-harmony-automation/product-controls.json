@@ -1,0 +1,11 @@
+{
+  "completePopulation": "complete",
+  "partialPopulation": "partial",
+  "provedPointInsidePartial": "complete",
+  "fullPieceTimingAdmission": "withheld for partial population",
+  "untimedModelUnavailable": "missing-meter",
+  "sharedRegistryExactAlternatives": [
+    "0:major-6",
+    "9:minor-7"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "baselineProductRevision": "8079768b99e6ad045572ded2bb2f333cc2b364bc",
+  "productDiffEmpty": true,
+  "annotationSourceHashCount": 48,
+  "calibrationLockSha256": "acaa09bedefe1d13f42833ba8fd4552ac92a0ec8738c4f55d86e95c3d2a0a88a",
+  "mismatchedLockRejected": true,
+  "heldoutRepeatedMetricsIdentical": true,
+  "heldoutRunSeconds": [
+    37.771,
+    38.139
+  ],
+  "gates": {
+    "providedChordKeyFullScoreResearch": {
+      "forcedAccuracyGain": 0.3447,
+      "selectedCoverage": 0.5712,
+      "selectedPrecision": 0.8047,
+      "passed": true
+    },
+    "providedKeySegmentationBothViews": {
+      "fullScoreBoundaryF1Gain": 0.074,
+      "firstStaffBoundaryF1Gain": -0.0474,
+      "passed": false,
+      "fullScoreChordAccuracyGain": 0.1354,
+      "firstStaffChordAccuracyGain": 0.0509
+    },
+    "automaticPair": {
+      "firstStaffBoundaryF1": 0.477,
+      "fullScoreEstablishedChangeProxyPrecision": 0.463,
+      "fullScoreEstablishedChangeProxyRecall": 0.3125,
+      "passed": false
+    }
+  },
+  "productIntegration": "NO-GO"
+}

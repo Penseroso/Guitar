@@ -1,0 +1,78 @@
+{
+  "calibrations": {
+    "cascade/chord": {
+      "attained": false,
+      "calibration": null,
+      "margin": null
+    },
+    "cascade/key": {
+      "attained": true,
+      "calibration": {
+        "accuracy": 0.4621,
+        "coverage": 0.5652,
+        "eligibleQuarterNotes": 3314.0,
+        "issuedPrecision": 0.8176
+      },
+      "margin": 0
+    },
+    "fixed-bars/chord": {
+      "attained": true,
+      "calibration": {
+        "accuracy": 0.0602,
+        "coverage": 0.0743,
+        "eligibleQuarterNotes": 3270.0,
+        "issuedPrecision": 0.8107
+      },
+      "margin": 0.4
+    },
+    "joint/chord": {
+      "attained": false,
+      "calibration": null,
+      "margin": null
+    },
+    "joint/key": {
+      "attained": false,
+      "calibration": null,
+      "margin": null
+    },
+    "pc-change/chord": {
+      "attained": false,
+      "calibration": null,
+      "margin": null
+    },
+    "profile-key/key": {
+      "attained": false,
+      "calibration": null,
+      "margin": null
+    },
+    "provided-chord-key/key": {
+      "attained": true,
+      "calibration": {
+        "accuracy": 0.5013,
+        "coverage": 0.593,
+        "eligibleQuarterNotes": 3314.0,
+        "issuedPrecision": 0.8453
+      },
+      "margin": 0
+    },
+    "provided-key-segmentation/chord": {
+      "attained": false,
+      "calibration": null,
+      "margin": null
+    }
+  },
+  "config": {
+    "keyChangePenalty": 2.5,
+    "segmentPenalty": 1.05
+  },
+  "researchSha256": {
+    "benchmark.py": "2fe406970772ca8197f993f7c0971aba8679685d0c7784ea6a2b1cf1fc242bf8",
+    "catalog.json": "98e031af418a3507eb240cad1263fe56b6e757322df7a98653443dba4c56fb10",
+    "controls.py": "f43880d450d6c0022aa2abefaceb44924a4171471327a108e9fa841545f72e16",
+    "export_catalog.cjs": "ad19fcebd21b6397c21cb3e89e9efad3316e4878164e6e5c9dce5859cf919042",
+    "fetch_abc.py": "843b092fb57f6a7972a9923e2c93d877a28cfe273874b9c67d62c90cf2be3d45",
+    "product_controls.cjs": "8195fa456cfa0e5f71b1777ebd6e3599d308044f86f00711d9ebd4d1e098d4f5",
+    "protocol.json": "40dbdd12ba9024630bd3036a93f3837068c81748fddeced41c337ca7956c77bd"
+  },
+  "revision": "b6b7d38500bacb30c81db7e09d8790df1a2edd46"
+}

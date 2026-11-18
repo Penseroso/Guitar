@@ -1,0 +1,5048 @@
+{
+  "aggregate": {
+    "first-staff/cascade": {
+      "appliedArrivals": {
+        "f1": 0.0,
+        "matches": 0,
+        "precision": 0.0,
+        "predicted": 12,
+        "recall": 0.0,
+        "reference": 199
+      },
+      "boundaries": {
+        "f1": 0.4844,
+        "matches": 1179,
+        "precision": 0.6288,
+        "predicted": 1875,
+        "recall": 0.3939,
+        "reference": 2993
+      },
+      "duration": {
+        "chord": {
+          "forced": {
+            "accuracy": 0.1419,
+            "coverage": 0.9939,
+            "eligibleQuarterNotes": 6592.0,
+            "issuedPrecision": 0.1427
+          },
+          "selected": null
+        },
+        "key": {
+          "forced": {
+            "accuracy": 0.5738,
+            "coverage": 1.0,
+            "eligibleQuarterNotes": 6711.0,
+            "issuedPrecision": 0.5738
+          },
+          "selected": {
+            "accuracy": 0.2014,
+            "coverage": 0.3301,
+            "eligibleQuarterNotes": 6711.0,
+            "issuedPrecision": 0.61
+          }
+        },
+        "root": {
+          "forced": {
+            "accuracy": 0.3067,
+            "coverage": 0.994,
+            "eligibleQuarterNotes": 6665.5,
+            "issuedPrecision": 0.3086
+          },
+          "selected": null
+        }
+      },
+      "establishedChangeProxy": {
+        "f1": 0.098,
+        "matches": 5,
+        "precision": 0.2273,
+        "predicted": 22,
+        "recall": 0.0625,
+        "reference": 80
+      },
+      "localChanges": {
+        "f1": 0.1208,
+        "matches": 9,
+        "precision": 0.1607,
+        "predicted": 56,
+        "recall": 0.0968,
+        "reference": 93
+      },
+      "offlineHostMs": {
+        "max": 556.71,
+        "min": 330.28
+      },
+      "rawSegments": 1946
+    },
+    "first-staff/fixed-bars": {
+      "boundaries": {
+        "f1": 0.5328,
+        "matches": 1183,
+        "precision": 0.817,
+        "predicted": 1448,
+        "recall": 0.3953,
+        "reference": 2993
+      },
+      "duration": {
+        "chord": {
+          "forced": {
+            "accuracy": 0.1738,
+            "coverage": 0.9581,
+            "eligibleQuarterNotes": 6592.0,
+            "issuedPrecision": 0.1814
+          },
+          "selected": {
+            "accuracy": 0.0015,
+            "coverage": 0.0586,
+            "eligibleQuarterNotes": 6592.0,
+            "issuedPrecision": 0.0259
+          }
+        },
+        "root": {
+          "forced": {
+            "accuracy": 0.3256,
+            "coverage": 0.9586,
+            "eligibleQuarterNotes": 6665.5,
+            "issuedPrecision": 0.3397
+          },
+          "selected": null
+        }
+      },
+      "offlineHostMs": {
+        "max": 8.96,
+        "min": 7.23
+      },
+      "rawSegments": 1753
+    },
+    "first-staff/joint": {
+      "appliedArrivals": {
+        "f1": 0.0457,
+        "matches": 5,
+        "precision": 0.25,
+        "predicted": 20,
+        "recall": 0.0251,
+        "reference": 199
+      },
+      "boundaries": {
+        "f1": 0.477,
+        "matches": 1132,
+        "precision": 0.6458,
+        "predicted": 1753,
+        "recall": 0.3782,
+        "reference": 2993
+      },
+      "duration": {
+        "chord": {
+          "forced": {
+            "accuracy": 0.1977,
+            "coverage": 0.9939,
+            "eligibleQuarterNotes": 6592.0,
+            "issuedPrecision": 0.1989
+          },
+          "selected": null
+        },
+        "key": {
+          "forced": {
+            "accuracy": 0.5078,
+            "coverage": 1.0,
+            "eligibleQuarterNotes": 6711.0,
+            "issuedPrecision": 0.5078
+          },
+          "selected": null
+        },
+        "root": {
+          "forced": {
+            "accuracy": 0.3564,
+            "coverage": 0.994,
+            "eligibleQuarterNotes": 6665.5,
+            "issuedPrecision": 0.3586
+          },
+          "selected": null
+        }
+      },
+      "establishedChangeProxy": {
+        "f1": 0.1284,
+        "matches": 7,
+        "precision": 0.2414,
+        "predicted": 29,
+        "recall": 0.0875,
+        "reference": 80
+      },
+      "localChanges": {
+        "f1": 0.1333,
+        "matches": 12,
+        "precision": 0.1379,
+        "predicted": 87,
+        "recall": 0.129,
+        "reference": 93
+      },
+      "offlineHostMs": {
+        "max": 1028.08,
+        "min": 593.47
+      },
+      "rawSegments": 1849
+    },
+    "first-staff/pc-change": {
+      "boundaries": {
+        "f1": 0.4414,
+        "matches": 2096,
+        "precision": 0.3222,
+        "predicted": 6505,
+        "recall": 0.7003,
+        "reference": 2993
+      },
+      "duration": {
+        "chord": {
+          "forced": {
+            "accuracy": 0.118,
+            "coverage": 0.8425,
+            "eligibleQuarterNotes": 6592.0,
+            "issuedPrecision": 0.1401
+          },
+          "selected": null
+        },
+        "root": {
+          "forced": {
+            "accuracy": 0.2482,
+            "coverage": 0.8433,
+            "eligibleQuarterNotes": 6665.5,
+            "issuedPrecision": 0.2943
+          },
+          "selected": null
+        }
+      },
+      "offlineHostMs": {
+        "max": 41.07,
+        "min": 26.74
+      },
+      "rawSegments": 7648
+    },
+    "first-staff/profile-key": {
+      "duration": {
+        "key": {
+          "forced": {
+            "accuracy": 0.2362,
+            "coverage": 1.0,
+            "eligibleQuarterNotes": 6711.0,
+            "issuedPrecision": 0.2362
+          },
+          "selected": null
+        }
+      },
+      "localChanges": {
+        "f1": 0.036,
+        "matches": 22,
+        "precision": 0.0195,
+        "predicted": 1130,
+        "recall": 0.2366,
+        "reference": 93
+      },
+      "offlineHostMs": {
+        "max": 47.05,
+        "min": 33.1
+      },
+      "rawSegments": 9230
+    },
+    "first-staff/provided-chord-key": {
+      "appliedArrivals": {
+        "f1": 0.625,
+        "matches": 130,
+        "precision": 0.5991,
+        "predicted": 217,
+        "recall": 0.6533,
+        "reference": 199
+      },
+      "duration": {
+        "key": {
+          "forced": {
+            "accuracy": 0.7268,
+            "coverage": 1.0,
+            "eligibleQuarterNotes": 6711.0,
+            "issuedPrecision": 0.7268
+          },
+          "selected": {
+            "accuracy": 0.3855,
+            "coverage": 0.5071,
+            "eligibleQuarterNotes": 6711.0,
+            "issuedPrecision": 0.7602
+          }
+        }
+      },
+      "establishedChangeProxy": {
+        "f1": 0.3743,
+        "matches": 35,
+        "precision": 0.3271,
+        "predicted": 107,
+        "recall": 0.4375,
+        "reference": 80
+      },
+      "localChanges": {
+        "f1": 0.3486,
+        "matches": 38,
+        "precision": 0.304,
+        "predicted": 125,
+        "recall": 0.4086,
+        "reference": 93
+      },
+      "offlineHostMs": {
+        "max": 27.43,
+        "min": 14.11
+      },
+      "rawSegments": 3674
+    },
+    "first-staff/provided-key-segmentation": {
+      "boundaries": {
+        "f1": 0.4854,
+        "matches": 1185,
+        "precision": 0.627,
+        "predicted": 1890,
+        "recall": 0.3959,
+        "reference": 2993
+      },
+      "duration": {
+        "chord": {
+          "forced": {
+            "accuracy": 0.2247,
+            "coverage": 0.9939,
+            "eligibleQuarterNotes": 6592.0,
+            "issuedPrecision": 0.2261
+          },
+          "selected": null
+        },
+        "root": {
+          "forced": {
+            "accuracy": 0.3706,
+            "coverage": 0.994,
+            "eligibleQuarterNotes": 6665.5,
+            "issuedPrecision": 0.3728
+          },
+          "selected": null
+        }
+      },
+      "offlineHostMs": {
+        "max": 561.39,
+        "min": 317.27
+      },
+      "rawSegments": 1968
+    },
+    "full-score/cascade": {
+      "appliedArrivals": {
+        "f1": 0.2682,
+        "matches": 35,
+        "precision": 0.5645,
+        "predicted": 62,
+        "recall": 0.1759,
+        "reference": 199
+      },
+      "boundaries": {
+        "f1": 0.6248,
+        "matches": 1524,
+        "precision": 0.8085,
+        "predicted": 1885,
+        "recall": 0.5092,
+        "reference": 2993
+      },
+      "duration": {
+        "chord": {
+          "forced": {
+            "accuracy": 0.4505,
+            "coverage": 1.0,
+            "eligibleQuarterNotes": 6592.0,
+            "issuedPrecision": 0.4505
+          },
+          "selected": null
+        },
+        "key": {
+          "forced": {
+            "accuracy": 0.7456,
+            "coverage": 1.0,
+            "eligibleQuarterNotes": 6711.0,
+            "issuedPrecision": 0.7456
+          },
+          "selected": {
+            "accuracy": 0.4692,
+            "coverage": 0.5803,
+            "eligibleQuarterNotes": 6711.0,
+            "issuedPrecision": 0.8085
+          }
+        },
+        "root": {
+          "forced": {
+            "accuracy": 0.6231,
+            "coverage": 1.0,
+            "eligibleQuarterNotes": 6665.5,
+            "issuedPrecision": 0.6231
+          },
+          "selected": null
+        }
+      },
+      "establishedChangeProxy": {
+        "f1": 0.3852,
+        "matches": 26,
+        "precision": 0.4727,
+        "predicted": 55,
+        "recall": 0.325,
+        "reference": 80
+      },
+      "localChanges": {
+        "f1": 0.3636,
+        "matches": 30,
+        "precision": 0.4167,
+        "predicted": 72,
+        "recall": 0.3226,
+        "reference": 93
+      },
+      "offlineHostMs": {
+        "max": 1037.5,
+        "min": 561.23
+      },
+      "rawSegments": 1951
+    },
+    "full-score/fixed-bars": {
+      "boundaries": {
+        "f1": 0.5582,
+        "matches": 1263,
+        "precision": 0.8244,
+        "predicted": 1532,
+        "recall": 0.422,
+        "reference": 2993
+      },
+      "duration": {
+        "chord": {
+          "forced": {
+            "accuracy": 0.3845,
+            "coverage": 0.9995,
+            "eligibleQuarterNotes": 6592.0,
+            "issuedPrecision": 0.3847
+          },
+          "selected": {
+            "accuracy": 0.043,
+            "coverage": 0.0558,
+            "eligibleQuarterNotes": 6592.0,
+            "issuedPrecision": 0.7704
+          }
+        },
+        "root": {
+          "forced": {
+            "accuracy": 0.5605,
+            "coverage": 0.9995,
+            "eligibleQuarterNotes": 6665.5,
+            "issuedPrecision": 0.5608
+          },
+          "selected": null
+        }
+      },
+      "offlineHostMs": {
+        "max": 22.05,
+        "min": 7.68
+      },
+      "rawSegments": 1753
+    },
+    "full-score/joint": {
+      "appliedArrivals": {
+        "f1": 0.251,
+        "matches": 33,
+        "precision": 0.5156,
+        "predicted": 64,
+        "recall": 0.1658,
+        "reference": 199
+      },
+      "boundaries": {
+        "f1": 0.6138,
+        "matches": 1468,
+        "precision": 0.8201,
+        "predicted": 1790,
+        "recall": 0.4905,
+        "reference": 2993
+      },
+      "duration": {
+        "chord": {
+          "forced": {
+            "accuracy": 0.5069,
+            "coverage": 1.0,
+            "eligibleQuarterNotes": 6592.0,
+            "issuedPrecision": 0.5069
+          },
+          "selected": null
+        },
+        "key": {
+          "forced": {
+            "accuracy": 0.7529,
+            "coverage": 1.0,
+            "eligibleQuarterNotes": 6711.0,
+            "issuedPrecision": 0.7529
+          },
+          "selected": null
+        },
+        "root": {
+          "forced": {
+            "accuracy": 0.6419,
+            "coverage": 1.0,
+            "eligibleQuarterNotes": 6665.5,
+            "issuedPrecision": 0.6419
+          },
+          "selected": null
+        }
+      },
+      "establishedChangeProxy": {
+        "f1": 0.3731,
+        "matches": 25,
+        "precision": 0.463,
+        "predicted": 54,
+        "recall": 0.3125,
+        "reference": 80
+      },
+      "localChanges": {
+        "f1": 0.3614,
+        "matches": 30,
+        "precision": 0.411,
+        "predicted": 73,
+        "recall": 0.3226,
+        "reference": 93
+      },
+      "offlineHostMs": {
+        "max": 1921.75,
+        "min": 1038.89
+      },
+      "rawSegments": 1868
+    },
+    "full-score/pc-change": {
+      "boundaries": {
+        "f1": 0.4476,
+        "matches": 2865,
+        "precision": 0.292,
+        "predicted": 9810,
+        "recall": 0.9572,
+        "reference": 2993
+      },
+      "duration": {
+        "chord": {
+          "forced": {
+            "accuracy": 0.4594,
+            "coverage": 0.9676,
+            "eligibleQuarterNotes": 6592.0,
+            "issuedPrecision": 0.4748
+          },
+          "selected": null
+        },
+        "root": {
+          "forced": {
+            "accuracy": 0.5576,
+            "coverage": 0.9678,
+            "eligibleQuarterNotes": 6665.5,
+            "issuedPrecision": 0.5761
+          },
+          "selected": null
+        }
+      },
+      "offlineHostMs": {
+        "max": 71.13,
+        "min": 39.31
+      },
+      "rawSegments": 11648
+    },
+    "full-score/profile-key": {
+      "duration": {
+        "key": {
+          "forced": {
+            "accuracy": 0.4285,
+            "coverage": 1.0,
+            "eligibleQuarterNotes": 6711.0,
+            "issuedPrecision": 0.4285
+          },
+          "selected": null
+        }
+      },
+      "localChanges": {
+        "f1": 0.0633,
+        "matches": 28,
+        "precision": 0.0354,
+        "predicted": 792,
+        "recall": 0.3011,
+        "reference": 93
+      },
+      "offlineHostMs": {
+        "max": 77.34,
+        "min": 41.53
+      },
+      "rawSegments": 13924
+    },
+    "full-score/provided-chord-key": {
+      "appliedArrivals": {
+        "f1": 0.6618,
+        "matches": 137,
+        "precision": 0.6372,
+        "predicted": 215,
+        "recall": 0.6884,
+        "reference": 199
+      },
+      "duration": {
+        "key": {
+          "forced": {
+            "accuracy": 0.7732,
+            "coverage": 1.0,
+            "eligibleQuarterNotes": 6711.0,
+            "issuedPrecision": 0.7732
+          },
+          "selected": {
+            "accuracy": 0.4597,
+            "coverage": 0.5712,
+            "eligibleQuarterNotes": 6711.0,
+            "issuedPrecision": 0.8047
+          }
+        }
+      },
+      "establishedChangeProxy": {
+        "f1": 0.4333,
+        "matches": 39,
+        "precision": 0.39,
+        "predicted": 100,
+        "recall": 0.4875,
+        "reference": 80
+      },
+      "localChanges": {
+        "f1": 0.3842,
+        "matches": 39,
+        "precision": 0.3545,
+        "predicted": 110,
+        "recall": 0.4194,
+        "reference": 93
+      },
+      "offlineHostMs": {
+        "max": 29.14,
+        "min": 14.33
+      },
+      "rawSegments": 3674
+    },
+    "full-score/provided-key-segmentation": {
+      "boundaries": {
+        "f1": 0.6322,
+        "matches": 1543,
+        "precision": 0.8173,
+        "predicted": 1888,
+        "recall": 0.5155,
+        "reference": 2993
+      },
+      "duration": {
+        "chord": {
+          "forced": {
+            "accuracy": 0.5199,
+            "coverage": 1.0,
+            "eligibleQuarterNotes": 6592.0,
+            "issuedPrecision": 0.5199
+          },
+          "selected": null
+        },
+        "root": {
+          "forced": {
+            "accuracy": 0.6515,
+            "coverage": 1.0,
+            "eligibleQuarterNotes": 6665.5,
+            "issuedPrecision": 0.6515
+          },
+          "selected": null
+        }
+      },
+      "offlineHostMs": {
+        "max": 1030.76,
+        "min": 559.44
+      },
+      "rawSegments": 1968
+    }
+  },
+  "config": {
+    "keyChangePenalty": 2.5,
+    "segmentPenalty": 1.05
+  },
+  "hostElapsedSeconds": 37.771,
+  "ordinalFirstStaffProfile": [
+    {
+      "correctPositions": 377,
+      "eligiblePositions": 1067,
+      "piece": "n03op18-3_01"
+    },
+    {
+      "correctPositions": 231,
+      "eligiblePositions": 1027,
+      "piece": "n04op18-4_01"
+    },
+    {
+      "correctPositions": 654,
+      "eligiblePositions": 1009,
+      "piece": "n05op18-5_01"
+    },
+    {
+      "correctPositions": 240,
+      "eligiblePositions": 1323,
+      "piece": "n09op59-3_01"
+    },
+    {
+      "correctPositions": 316,
+      "eligiblePositions": 1269,
+      "piece": "n10op74_01"
+    },
+    {
+      "correctPositions": 498,
+      "eligiblePositions": 1321,
+      "piece": "n13op130_01"
+    },
+    {
+      "correctPositions": 456,
+      "eligiblePositions": 1490,
+      "piece": "n15op132_01"
+    }
+  ],
+  "perPiece": [
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        202,
+        241,
+        324
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.4991,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1059.0,
+          "issuedPrecision": 0.4991
+        },
+        "root": {
+          "accuracy": 0.6289,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1082.0,
+          "issuedPrecision": 0.6289
+        }
+      },
+      "elapsedMs": 9.1,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 383,
+        "appliedLabels": 47,
+        "atoms": 1626,
+        "droppedNotes": {
+          "grace": 5
+        },
+        "notes": 3274,
+        "quarterNotes": "1084",
+        "unsupportedChordLabels": 6
+      },
+      "localChanges": null,
+      "method": "fixed-bars",
+      "piece": "n03op18-3_01",
+      "rawSegments": 271,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        307,
+        1197,
+        324
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.47,
+          "coverage": 0.9627,
+          "eligibleQuarterNotes": 1059.0,
+          "issuedPrecision": 0.4882
+        },
+        "root": {
+          "accuracy": 0.5705,
+          "coverage": 0.9635,
+          "eligibleQuarterNotes": 1082.0,
+          "issuedPrecision": 0.5922
+        }
+      },
+      "elapsedMs": 48.83,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 383,
+        "appliedLabels": 47,
+        "atoms": 1626,
+        "droppedNotes": {
+          "grace": 5
+        },
+        "notes": 3274,
+        "quarterNotes": "1084",
+        "unsupportedChordLabels": 6
+      },
+      "localChanges": null,
+      "method": "pc-change",
+      "piece": "n03op18-3_01",
+      "rawSegments": 1461,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        226,
+        267,
+        324
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.6239,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1059.0,
+          "issuedPrecision": 0.6239
+        },
+        "root": {
+          "accuracy": 0.716,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1082.0,
+          "issuedPrecision": 0.716
+        }
+      },
+      "elapsedMs": 581.19,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 383,
+        "appliedLabels": 47,
+        "atoms": 1626,
+        "droppedNotes": {
+          "grace": 5
+        },
+        "notes": 3274,
+        "quarterNotes": "1084",
+        "unsupportedChordLabels": 6
+      },
+      "localChanges": null,
+      "method": "provided-key-segmentation",
+      "piece": "n03op18-3_01",
+      "rawSegments": 275,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.4573,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1084.0,
+          "issuedPrecision": 0.4573
+        }
+      },
+      "elapsedMs": 50.17,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 383,
+        "appliedLabels": 47,
+        "atoms": 1626,
+        "droppedNotes": {
+          "grace": 5
+        },
+        "notes": 3274,
+        "quarterNotes": "1084",
+        "unsupportedChordLabels": 6
+      },
+      "localChanges": [
+        5,
+        124,
+        21
+      ],
+      "method": "profile-key",
+      "piece": "n03op18-3_01",
+      "rawSegments": 1626,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        10,
+        16,
+        14
+      ],
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.8994,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1084.0,
+          "issuedPrecision": 0.8994
+        }
+      },
+      "elapsedMs": 14.33,
+      "establishedChangeProxy": [
+        10,
+        17,
+        18
+      ],
+      "input": {
+        "annotations": 383,
+        "appliedLabels": 47,
+        "atoms": 1626,
+        "droppedNotes": {
+          "grace": 5
+        },
+        "notes": 3274,
+        "quarterNotes": "1084",
+        "unsupportedChordLabels": 6
+      },
+      "localChanges": [
+        10,
+        17,
+        21
+      ],
+      "method": "provided-chord-key",
+      "piece": "n03op18-3_01",
+      "rawSegments": 383,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        7,
+        12,
+        14
+      ],
+      "boundaries": [
+        225,
+        267,
+        324
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.5387,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1059.0,
+          "issuedPrecision": 0.5387
+        },
+        "key": {
+          "accuracy": 0.819,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1084.0,
+          "issuedPrecision": 0.819
+        },
+        "root": {
+          "accuracy": 0.693,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1082.0,
+          "issuedPrecision": 0.693
+        }
+      },
+      "elapsedMs": 585.13,
+      "establishedChangeProxy": [
+        6,
+        14,
+        18
+      ],
+      "input": {
+        "annotations": 383,
+        "appliedLabels": 47,
+        "atoms": 1626,
+        "droppedNotes": {
+          "grace": 5
+        },
+        "notes": 3274,
+        "quarterNotes": "1084",
+        "unsupportedChordLabels": 6
+      },
+      "localChanges": [
+        7,
+        18,
+        21
+      ],
+      "method": "cascade",
+      "piece": "n03op18-3_01",
+      "rawSegments": 272,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        4,
+        14,
+        14
+      ],
+      "boundaries": [
+        216,
+        256,
+        324
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.6021,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1059.0,
+          "issuedPrecision": 0.6021
+        },
+        "key": {
+          "accuracy": 0.7302,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1084.0,
+          "issuedPrecision": 0.7302
+        },
+        "root": {
+          "accuracy": 0.7058,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1082.0,
+          "issuedPrecision": 0.7058
+        }
+      },
+      "elapsedMs": 1105.92,
+      "establishedChangeProxy": [
+        4,
+        13,
+        18
+      ],
+      "input": {
+        "annotations": 383,
+        "appliedLabels": 47,
+        "atoms": 1626,
+        "droppedNotes": {
+          "grace": 5
+        },
+        "notes": 3274,
+        "quarterNotes": "1084",
+        "unsupportedChordLabels": 6
+      },
+      "localChanges": [
+        6,
+        23,
+        21
+      ],
+      "method": "joint",
+      "piece": "n03op18-3_01",
+      "rawSegments": 262,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        180,
+        221,
+        324
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1856,
+          "coverage": 0.9245,
+          "eligibleQuarterNotes": 1059.0,
+          "issuedPrecision": 0.2007
+        },
+        "root": {
+          "accuracy": 0.3184,
+          "coverage": 0.9261,
+          "eligibleQuarterNotes": 1082.0,
+          "issuedPrecision": 0.3438
+        }
+      },
+      "elapsedMs": 8.53,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 383,
+        "appliedLabels": 47,
+        "atoms": 1158,
+        "droppedNotes": {
+          "grace": 5
+        },
+        "notes": 1073,
+        "quarterNotes": "1084",
+        "unsupportedChordLabels": 6
+      },
+      "localChanges": null,
+      "method": "fixed-bars",
+      "piece": "n03op18-3_01",
+      "rawSegments": 271,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        223,
+        885,
+        324
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.0919,
+          "coverage": 0.8163,
+          "eligibleQuarterNotes": 1059.0,
+          "issuedPrecision": 0.1126
+        },
+        "root": {
+          "accuracy": 0.2431,
+          "coverage": 0.8165,
+          "eligibleQuarterNotes": 1082.0,
+          "issuedPrecision": 0.2977
+        }
+      },
+      "elapsedMs": 33.18,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 383,
+        "appliedLabels": 47,
+        "atoms": 1158,
+        "droppedNotes": {
+          "grace": 5
+        },
+        "notes": 1073,
+        "quarterNotes": "1084",
+        "unsupportedChordLabels": 6
+      },
+      "localChanges": null,
+      "method": "pc-change",
+      "piece": "n03op18-3_01",
+      "rawSegments": 1011,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        159,
+        334,
+        324
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.2177,
+          "coverage": 0.9698,
+          "eligibleQuarterNotes": 1059.0,
+          "issuedPrecision": 0.2244
+        },
+        "root": {
+          "accuracy": 0.3624,
+          "coverage": 0.9704,
+          "eligibleQuarterNotes": 1082.0,
+          "issuedPrecision": 0.3735
+        }
+      },
+      "elapsedMs": 329.42,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 383,
+        "appliedLabels": 47,
+        "atoms": 1158,
+        "droppedNotes": {
+          "grace": 5
+        },
+        "notes": 1073,
+        "quarterNotes": "1084",
+        "unsupportedChordLabels": 6
+      },
+      "localChanges": null,
+      "method": "provided-key-segmentation",
+      "piece": "n03op18-3_01",
+      "rawSegments": 351,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.21,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1084.0,
+          "issuedPrecision": 0.21
+        }
+      },
+      "elapsedMs": 35.33,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 383,
+        "appliedLabels": 47,
+        "atoms": 1158,
+        "droppedNotes": {
+          "grace": 5
+        },
+        "notes": 1073,
+        "quarterNotes": "1084",
+        "unsupportedChordLabels": 6
+      },
+      "localChanges": [
+        3,
+        163,
+        21
+      ],
+      "method": "profile-key",
+      "piece": "n03op18-3_01",
+      "rawSegments": 1158,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        9,
+        20,
+        14
+      ],
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.8432,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1084.0,
+          "issuedPrecision": 0.8432
+        }
+      },
+      "elapsedMs": 14.11,
+      "establishedChangeProxy": [
+        10,
+        17,
+        18
+      ],
+      "input": {
+        "annotations": 383,
+        "appliedLabels": 47,
+        "atoms": 1158,
+        "droppedNotes": {
+          "grace": 5
+        },
+        "notes": 1073,
+        "quarterNotes": "1084",
+        "unsupportedChordLabels": 6
+      },
+      "localChanges": [
+        10,
+        19,
+        21
+      ],
+      "method": "provided-chord-key",
+      "piece": "n03op18-3_01",
+      "rawSegments": 383,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        0,
+        1,
+        14
+      ],
+      "boundaries": [
+        153,
+        324,
+        324
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1331,
+          "coverage": 0.9698,
+          "eligibleQuarterNotes": 1059.0,
+          "issuedPrecision": 0.1373
+        },
+        "key": {
+          "accuracy": 0.5696,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1084.0,
+          "issuedPrecision": 0.5696
+        },
+        "root": {
+          "accuracy": 0.2848,
+          "coverage": 0.9704,
+          "eligibleQuarterNotes": 1082.0,
+          "issuedPrecision": 0.2935
+        }
+      },
+      "elapsedMs": 340.5,
+      "establishedChangeProxy": [
+        0,
+        3,
+        18
+      ],
+      "input": {
+        "annotations": 383,
+        "appliedLabels": 47,
+        "atoms": 1158,
+        "droppedNotes": {
+          "grace": 5
+        },
+        "notes": 1073,
+        "quarterNotes": "1084",
+        "unsupportedChordLabels": 6
+      },
+      "localChanges": [
+        3,
+        14,
+        21
+      ],
+      "method": "cascade",
+      "piece": "n03op18-3_01",
+      "rawSegments": 342,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        2,
+        2,
+        14
+      ],
+      "boundaries": [
+        147,
+        292,
+        324
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.189,
+          "coverage": 0.9698,
+          "eligibleQuarterNotes": 1059.0,
+          "issuedPrecision": 0.1949
+        },
+        "key": {
+          "accuracy": 0.679,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1084.0,
+          "issuedPrecision": 0.679
+        },
+        "root": {
+          "accuracy": 0.3577,
+          "coverage": 0.9704,
+          "eligibleQuarterNotes": 1082.0,
+          "issuedPrecision": 0.3686
+        }
+      },
+      "elapsedMs": 606.88,
+      "establishedChangeProxy": [
+        5,
+        7,
+        18
+      ],
+      "input": {
+        "annotations": 383,
+        "appliedLabels": 47,
+        "atoms": 1158,
+        "droppedNotes": {
+          "grace": 5
+        },
+        "notes": 1073,
+        "quarterNotes": "1084",
+        "unsupportedChordLabels": 6
+      },
+      "localChanges": [
+        7,
+        19,
+        21
+      ],
+      "method": "joint",
+      "piece": "n03op18-3_01",
+      "rawSegments": 310,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        167,
+        196,
+        458
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.4161,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 867.5,
+          "issuedPrecision": 0.4161
+        },
+        "root": {
+          "accuracy": 0.5428,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 876.0,
+          "issuedPrecision": 0.5428
+        }
+      },
+      "elapsedMs": 7.71,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 554,
+        "appliedLabels": 74,
+        "atoms": 1627,
+        "droppedNotes": {
+          "grace": 93
+        },
+        "notes": 4490,
+        "quarterNotes": "880",
+        "unsupportedChordLabels": 8
+      },
+      "localChanges": null,
+      "method": "fixed-bars",
+      "piece": "n04op18-4_01",
+      "rawSegments": 221,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        436,
+        1050,
+        458
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.4945,
+          "coverage": 0.9689,
+          "eligibleQuarterNotes": 867.5,
+          "issuedPrecision": 0.5104
+        },
+        "root": {
+          "accuracy": 0.5893,
+          "coverage": 0.9692,
+          "eligibleQuarterNotes": 876.0,
+          "issuedPrecision": 0.6081
+        }
+      },
+      "elapsedMs": 40.21,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 554,
+        "appliedLabels": 74,
+        "atoms": 1627,
+        "droppedNotes": {
+          "grace": 93
+        },
+        "notes": 4490,
+        "quarterNotes": "880",
+        "unsupportedChordLabels": 8
+      },
+      "localChanges": null,
+      "method": "pc-change",
+      "piece": "n04op18-4_01",
+      "rawSegments": 1218,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        215,
+        265,
+        458
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.528,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 867.5,
+          "issuedPrecision": 0.528
+        },
+        "root": {
+          "accuracy": 0.6267,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 876.0,
+          "issuedPrecision": 0.6267
+        }
+      },
+      "elapsedMs": 640.13,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 554,
+        "appliedLabels": 74,
+        "atoms": 1627,
+        "droppedNotes": {
+          "grace": 93
+        },
+        "notes": 4490,
+        "quarterNotes": "880",
+        "unsupportedChordLabels": 8
+      },
+      "localChanges": null,
+      "method": "provided-key-segmentation",
+      "piece": "n04op18-4_01",
+      "rawSegments": 269,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.4639,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 880.0,
+          "issuedPrecision": 0.4639
+        }
+      },
+      "elapsedMs": 49.94,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 554,
+        "appliedLabels": 74,
+        "atoms": 1627,
+        "droppedNotes": {
+          "grace": 93
+        },
+        "notes": 4490,
+        "quarterNotes": "880",
+        "unsupportedChordLabels": 8
+      },
+      "localChanges": [
+        6,
+        135,
+        14
+      ],
+      "method": "profile-key",
+      "piece": "n04op18-4_01",
+      "rawSegments": 1627,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        16,
+        19,
+        31
+      ],
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.8165,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 880.0,
+          "issuedPrecision": 0.8165
+        }
+      },
+      "elapsedMs": 19.56,
+      "establishedChangeProxy": [
+        5,
+        17,
+        12
+      ],
+      "input": {
+        "annotations": 554,
+        "appliedLabels": 74,
+        "atoms": 1627,
+        "droppedNotes": {
+          "grace": 93
+        },
+        "notes": 4490,
+        "quarterNotes": "880",
+        "unsupportedChordLabels": 8
+      },
+      "localChanges": [
+        5,
+        20,
+        14
+      ],
+      "method": "provided-chord-key",
+      "piece": "n04op18-4_01",
+      "rawSegments": 554,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        5,
+        9,
+        31
+      ],
+      "boundaries": [
+        218,
+        267,
+        458
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.4856,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 867.5,
+          "issuedPrecision": 0.4856
+        },
+        "key": {
+          "accuracy": 0.8898,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 880.0,
+          "issuedPrecision": 0.8898
+        },
+        "root": {
+          "accuracy": 0.6056,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 876.0,
+          "issuedPrecision": 0.6056
+        }
+      },
+      "elapsedMs": 638.55,
+      "establishedChangeProxy": [
+        5,
+        8,
+        12
+      ],
+      "input": {
+        "annotations": 554,
+        "appliedLabels": 74,
+        "atoms": 1627,
+        "droppedNotes": {
+          "grace": 93
+        },
+        "notes": 4490,
+        "quarterNotes": "880",
+        "unsupportedChordLabels": 8
+      },
+      "localChanges": [
+        5,
+        8,
+        14
+      ],
+      "method": "cascade",
+      "piece": "n04op18-4_01",
+      "rawSegments": 271,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        4,
+        9,
+        31
+      ],
+      "boundaries": [
+        209,
+        255,
+        458
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.5294,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 867.5,
+          "issuedPrecision": 0.5294
+        },
+        "key": {
+          "accuracy": 0.9278,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 880.0,
+          "issuedPrecision": 0.9278
+        },
+        "root": {
+          "accuracy": 0.6236,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 876.0,
+          "issuedPrecision": 0.6236
+        }
+      },
+      "elapsedMs": 1194.71,
+      "establishedChangeProxy": [
+        6,
+        8,
+        12
+      ],
+      "input": {
+        "annotations": 554,
+        "appliedLabels": 74,
+        "atoms": 1627,
+        "droppedNotes": {
+          "grace": 93
+        },
+        "notes": 4490,
+        "quarterNotes": "880",
+        "unsupportedChordLabels": 8
+      },
+      "localChanges": [
+        7,
+        9,
+        14
+      ],
+      "method": "joint",
+      "piece": "n04op18-4_01",
+      "rawSegments": 259,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        169,
+        203,
+        458
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.2311,
+          "coverage": 0.9816,
+          "eligibleQuarterNotes": 867.5,
+          "issuedPrecision": 0.2355
+        },
+        "root": {
+          "accuracy": 0.4195,
+          "coverage": 0.9817,
+          "eligibleQuarterNotes": 876.0,
+          "issuedPrecision": 0.4273
+        }
+      },
+      "elapsedMs": 7.23,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 554,
+        "appliedLabels": 74,
+        "atoms": 1113,
+        "droppedNotes": {
+          "grace": 93
+        },
+        "notes": 1093,
+        "quarterNotes": "880",
+        "unsupportedChordLabels": 8
+      },
+      "localChanges": null,
+      "method": "fixed-bars",
+      "piece": "n04op18-4_01",
+      "rawSegments": 221,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        308,
+        719,
+        458
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1141,
+          "coverage": 0.849,
+          "eligibleQuarterNotes": 867.5,
+          "issuedPrecision": 0.1344
+        },
+        "root": {
+          "accuracy": 0.2979,
+          "coverage": 0.8493,
+          "eligibleQuarterNotes": 876.0,
+          "issuedPrecision": 0.3508
+        }
+      },
+      "elapsedMs": 26.74,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 554,
+        "appliedLabels": 74,
+        "atoms": 1113,
+        "droppedNotes": {
+          "grace": 93
+        },
+        "notes": 1093,
+        "quarterNotes": "880",
+        "unsupportedChordLabels": 8
+      },
+      "localChanges": null,
+      "method": "pc-change",
+      "piece": "n04op18-4_01",
+      "rawSegments": 866,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        145,
+        245,
+        458
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.2418,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 867.5,
+          "issuedPrecision": 0.2418
+        },
+        "root": {
+          "accuracy": 0.4104,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 876.0,
+          "issuedPrecision": 0.4104
+        }
+      },
+      "elapsedMs": 317.27,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 554,
+        "appliedLabels": 74,
+        "atoms": 1113,
+        "droppedNotes": {
+          "grace": 93
+        },
+        "notes": 1093,
+        "quarterNotes": "880",
+        "unsupportedChordLabels": 8
+      },
+      "localChanges": null,
+      "method": "provided-key-segmentation",
+      "piece": "n04op18-4_01",
+      "rawSegments": 249,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.2349,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 880.0,
+          "issuedPrecision": 0.2349
+        }
+      },
+      "elapsedMs": 33.1,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 554,
+        "appliedLabels": 74,
+        "atoms": 1113,
+        "droppedNotes": {
+          "grace": 93
+        },
+        "notes": 1093,
+        "quarterNotes": "880",
+        "unsupportedChordLabels": 8
+      },
+      "localChanges": [
+        3,
+        162,
+        14
+      ],
+      "method": "profile-key",
+      "piece": "n04op18-4_01",
+      "rawSegments": 1113,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        17,
+        23,
+        31
+      ],
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.8045,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 880.0,
+          "issuedPrecision": 0.8045
+        }
+      },
+      "elapsedMs": 20.07,
+      "establishedChangeProxy": [
+        6,
+        17,
+        12
+      ],
+      "input": {
+        "annotations": 554,
+        "appliedLabels": 74,
+        "atoms": 1113,
+        "droppedNotes": {
+          "grace": 93
+        },
+        "notes": 1093,
+        "quarterNotes": "880",
+        "unsupportedChordLabels": 8
+      },
+      "localChanges": [
+        6,
+        21,
+        14
+      ],
+      "method": "provided-chord-key",
+      "piece": "n04op18-4_01",
+      "rawSegments": 554,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        0,
+        1,
+        31
+      ],
+      "boundaries": [
+        157,
+        242,
+        458
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1899,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 867.5,
+          "issuedPrecision": 0.1899
+        },
+        "key": {
+          "accuracy": 0.7932,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 880.0,
+          "issuedPrecision": 0.7932
+        },
+        "root": {
+          "accuracy": 0.3741,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 876.0,
+          "issuedPrecision": 0.3741
+        }
+      },
+      "elapsedMs": 330.28,
+      "establishedChangeProxy": [
+        3,
+        5,
+        12
+      ],
+      "input": {
+        "annotations": 554,
+        "appliedLabels": 74,
+        "atoms": 1113,
+        "droppedNotes": {
+          "grace": 93
+        },
+        "notes": 1093,
+        "quarterNotes": "880",
+        "unsupportedChordLabels": 8
+      },
+      "localChanges": [
+        3,
+        7,
+        14
+      ],
+      "method": "cascade",
+      "piece": "n04op18-4_01",
+      "rawSegments": 246,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        0,
+        5,
+        31
+      ],
+      "boundaries": [
+        150,
+        238,
+        458
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1951,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 867.5,
+          "issuedPrecision": 0.1951
+        },
+        "key": {
+          "accuracy": 0.506,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 880.0,
+          "issuedPrecision": 0.506
+        },
+        "root": {
+          "accuracy": 0.379,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 876.0,
+          "issuedPrecision": 0.379
+        }
+      },
+      "elapsedMs": 593.47,
+      "establishedChangeProxy": [
+        1,
+        4,
+        12
+      ],
+      "input": {
+        "annotations": 554,
+        "appliedLabels": 74,
+        "atoms": 1113,
+        "droppedNotes": {
+          "grace": 93
+        },
+        "notes": 1093,
+        "quarterNotes": "880",
+        "unsupportedChordLabels": 8
+      },
+      "localChanges": [
+        1,
+        9,
+        14
+      ],
+      "method": "joint",
+      "piece": "n04op18-4_01",
+      "rawSegments": 243,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        182,
+        202,
+        358
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.4576,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.4576
+        },
+        "root": {
+          "accuracy": 0.6601,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.6601
+        }
+      },
+      "elapsedMs": 7.68,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 430,
+        "appliedLabels": 53,
+        "atoms": 1399,
+        "droppedNotes": {
+          "grace": 19
+        },
+        "notes": 3183,
+        "quarterNotes": "684",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": null,
+      "method": "fixed-bars",
+      "piece": "n05op18-5_01",
+      "rawSegments": 228,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        353,
+        1020,
+        358
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.4734,
+          "coverage": 0.9635,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.4914
+        },
+        "root": {
+          "accuracy": 0.5537,
+          "coverage": 0.9635,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.5747
+        }
+      },
+      "elapsedMs": 39.31,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 430,
+        "appliedLabels": 53,
+        "atoms": 1399,
+        "droppedNotes": {
+          "grace": 19
+        },
+        "notes": 3183,
+        "quarterNotes": "684",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": null,
+      "method": "pc-change",
+      "piece": "n05op18-5_01",
+      "rawSegments": 1184,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        181,
+        205,
+        358
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.5,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.5
+        },
+        "root": {
+          "accuracy": 0.6992,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.6992
+        }
+      },
+      "elapsedMs": 559.44,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 430,
+        "appliedLabels": 53,
+        "atoms": 1399,
+        "droppedNotes": {
+          "grace": 19
+        },
+        "notes": 3183,
+        "quarterNotes": "684",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": null,
+      "method": "provided-key-segmentation",
+      "piece": "n05op18-5_01",
+      "rawSegments": 211,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.6473,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.6473
+        }
+      },
+      "elapsedMs": 41.53,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 430,
+        "appliedLabels": 53,
+        "atoms": 1399,
+        "droppedNotes": {
+          "grace": 19
+        },
+        "notes": 3183,
+        "quarterNotes": "684",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": [
+        4,
+        53,
+        12
+      ],
+      "method": "profile-key",
+      "piece": "n05op18-5_01",
+      "rawSegments": 1399,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        22,
+        40,
+        28
+      ],
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.8523,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.8523
+        }
+      },
+      "elapsedMs": 15.84,
+      "establishedChangeProxy": [
+        7,
+        11,
+        10
+      ],
+      "input": {
+        "annotations": 430,
+        "appliedLabels": 53,
+        "atoms": 1399,
+        "droppedNotes": {
+          "grace": 19
+        },
+        "notes": 3183,
+        "quarterNotes": "684",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": [
+        7,
+        14,
+        12
+      ],
+      "method": "provided-chord-key",
+      "piece": "n05op18-5_01",
+      "rawSegments": 430,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        2,
+        4,
+        28
+      ],
+      "boundaries": [
+        181,
+        212,
+        358
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.418,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.418
+        },
+        "key": {
+          "accuracy": 0.8816,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.8816
+        },
+        "root": {
+          "accuracy": 0.6393,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.6393
+        }
+      },
+      "elapsedMs": 561.23,
+      "establishedChangeProxy": [
+        4,
+        6,
+        10
+      ],
+      "input": {
+        "annotations": 430,
+        "appliedLabels": 53,
+        "atoms": 1399,
+        "droppedNotes": {
+          "grace": 19
+        },
+        "notes": 3183,
+        "quarterNotes": "684",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": [
+        4,
+        8,
+        12
+      ],
+      "method": "cascade",
+      "piece": "n05op18-5_01",
+      "rawSegments": 213,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        2,
+        2,
+        28
+      ],
+      "boundaries": [
+        175,
+        192,
+        358
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.4825,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.4825
+        },
+        "key": {
+          "accuracy": 0.9039,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.9039
+        },
+        "root": {
+          "accuracy": 0.6791,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.6791
+        }
+      },
+      "elapsedMs": 1038.89,
+      "establishedChangeProxy": [
+        6,
+        8,
+        10
+      ],
+      "input": {
+        "annotations": 430,
+        "appliedLabels": 53,
+        "atoms": 1399,
+        "droppedNotes": {
+          "grace": 19
+        },
+        "notes": 3183,
+        "quarterNotes": "684",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": [
+        6,
+        8,
+        12
+      ],
+      "method": "joint",
+      "piece": "n05op18-5_01",
+      "rawSegments": 198,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        171,
+        193,
+        358
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.2727,
+          "coverage": 0.9693,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.2813
+        },
+        "root": {
+          "accuracy": 0.4883,
+          "coverage": 0.9693,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.5038
+        }
+      },
+      "elapsedMs": 7.61,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 430,
+        "appliedLabels": 53,
+        "atoms": 1126,
+        "droppedNotes": {
+          "grace": 19
+        },
+        "notes": 1027,
+        "quarterNotes": "684",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": null,
+      "method": "fixed-bars",
+      "piece": "n05op18-5_01",
+      "rawSegments": 228,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        280,
+        749,
+        358
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1831,
+          "coverage": 0.8056,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.2273
+        },
+        "root": {
+          "accuracy": 0.3175,
+          "coverage": 0.8056,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.3941
+        }
+      },
+      "elapsedMs": 29.2,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 430,
+        "appliedLabels": 53,
+        "atoms": 1126,
+        "droppedNotes": {
+          "grace": 19
+        },
+        "notes": 1027,
+        "quarterNotes": "684",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": null,
+      "method": "pc-change",
+      "piece": "n05op18-5_01",
+      "rawSegments": 935,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        168,
+        238,
+        358
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.2639,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.2639
+        },
+        "root": {
+          "accuracy": 0.4306,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.4306
+        }
+      },
+      "elapsedMs": 407.97,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 430,
+        "appliedLabels": 53,
+        "atoms": 1126,
+        "droppedNotes": {
+          "grace": 19
+        },
+        "notes": 1027,
+        "quarterNotes": "684",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": null,
+      "method": "provided-key-segmentation",
+      "piece": "n05op18-5_01",
+      "rawSegments": 240,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.462,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.462
+        }
+      },
+      "elapsedMs": 33.51,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 430,
+        "appliedLabels": 53,
+        "atoms": 1126,
+        "droppedNotes": {
+          "grace": 19
+        },
+        "notes": 1027,
+        "quarterNotes": "684",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": [
+        4,
+        110,
+        12
+      ],
+      "method": "profile-key",
+      "piece": "n05op18-5_01",
+      "rawSegments": 1126,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        17,
+        36,
+        28
+      ],
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.837,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.837
+        }
+      },
+      "elapsedMs": 17.28,
+      "establishedChangeProxy": [
+        8,
+        16,
+        10
+      ],
+      "input": {
+        "annotations": 430,
+        "appliedLabels": 53,
+        "atoms": 1126,
+        "droppedNotes": {
+          "grace": 19
+        },
+        "notes": 1027,
+        "quarterNotes": "684",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": [
+        8,
+        18,
+        12
+      ],
+      "method": "provided-chord-key",
+      "piece": "n05op18-5_01",
+      "rawSegments": 430,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        0,
+        1,
+        28
+      ],
+      "boundaries": [
+        163,
+        240,
+        358
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1213,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.1213
+        },
+        "key": {
+          "accuracy": 0.7602,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.7602
+        },
+        "root": {
+          "accuracy": 0.3735,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.3735
+        }
+      },
+      "elapsedMs": 403.59,
+      "establishedChangeProxy": [
+        0,
+        2,
+        10
+      ],
+      "input": {
+        "annotations": 430,
+        "appliedLabels": 53,
+        "atoms": 1126,
+        "droppedNotes": {
+          "grace": 19
+        },
+        "notes": 1027,
+        "quarterNotes": "684",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": [
+        0,
+        3,
+        12
+      ],
+      "method": "cascade",
+      "piece": "n05op18-5_01",
+      "rawSegments": 241,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        0,
+        1,
+        28
+      ],
+      "boundaries": [
+        167,
+        228,
+        358
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.2467,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.2467
+        },
+        "key": {
+          "accuracy": 0.7456,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.7456
+        },
+        "root": {
+          "accuracy": 0.4496,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 684.0,
+          "issuedPrecision": 0.4496
+        }
+      },
+      "elapsedMs": 731.53,
+      "establishedChangeProxy": [
+        0,
+        2,
+        10
+      ],
+      "input": {
+        "annotations": 430,
+        "appliedLabels": 53,
+        "atoms": 1126,
+        "droppedNotes": {
+          "grace": 19
+        },
+        "notes": 1027,
+        "quarterNotes": "684",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": [
+        1,
+        4,
+        12
+      ],
+      "method": "joint",
+      "piece": "n05op18-5_01",
+      "rawSegments": 230,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        172,
+        224,
+        408
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.416,
+          "coverage": 0.9971,
+          "eligibleQuarterNotes": 1017.5,
+          "issuedPrecision": 0.4172
+        },
+        "root": {
+          "accuracy": 0.5321,
+          "coverage": 0.9971,
+          "eligibleQuarterNotes": 1026.5,
+          "issuedPrecision": 0.5337
+        }
+      },
+      "elapsedMs": 9.48,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 516,
+        "appliedLabels": 57,
+        "atoms": 2302,
+        "droppedNotes": {
+          "grace": 13
+        },
+        "notes": 4484,
+        "quarterNotes": "1047",
+        "unsupportedChordLabels": 4
+      },
+      "localChanges": null,
+      "method": "fixed-bars",
+      "piece": "n09op59-3_01",
+      "rawSegments": 270,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        384,
+        1547,
+        408
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.4357,
+          "coverage": 0.9646,
+          "eligibleQuarterNotes": 1017.5,
+          "issuedPrecision": 0.4517
+        },
+        "root": {
+          "accuracy": 0.5332,
+          "coverage": 0.9649,
+          "eligibleQuarterNotes": 1026.5,
+          "issuedPrecision": 0.5526
+        }
+      },
+      "elapsedMs": 63.03,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 516,
+        "appliedLabels": 57,
+        "atoms": 2302,
+        "droppedNotes": {
+          "grace": 13
+        },
+        "notes": 4484,
+        "quarterNotes": "1047",
+        "unsupportedChordLabels": 4
+      },
+      "localChanges": null,
+      "method": "pc-change",
+      "piece": "n09op59-3_01",
+      "rawSegments": 1934,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        217,
+        293,
+        408
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.5453,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1017.5,
+          "issuedPrecision": 0.5453
+        },
+        "root": {
+          "accuracy": 0.646,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1026.5,
+          "issuedPrecision": 0.646
+        }
+      },
+      "elapsedMs": 978.5,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 516,
+        "appliedLabels": 57,
+        "atoms": 2302,
+        "droppedNotes": {
+          "grace": 13
+        },
+        "notes": 4484,
+        "quarterNotes": "1047",
+        "unsupportedChordLabels": 4
+      },
+      "localChanges": null,
+      "method": "provided-key-segmentation",
+      "piece": "n09op59-3_01",
+      "rawSegments": 313,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.1717,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1047.0,
+          "issuedPrecision": 0.1717
+        }
+      },
+      "elapsedMs": 70.59,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 516,
+        "appliedLabels": 57,
+        "atoms": 2302,
+        "droppedNotes": {
+          "grace": 13
+        },
+        "notes": 4484,
+        "quarterNotes": "1047",
+        "unsupportedChordLabels": 4
+      },
+      "localChanges": [
+        1,
+        132,
+        11
+      ],
+      "method": "profile-key",
+      "piece": "n09op59-3_01",
+      "rawSegments": 2302,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        18,
+        45,
+        25
+      ],
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.4336,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1047.0,
+          "issuedPrecision": 0.4336
+        }
+      },
+      "elapsedMs": 20.41,
+      "establishedChangeProxy": [
+        4,
+        14,
+        9
+      ],
+      "input": {
+        "annotations": 516,
+        "appliedLabels": 57,
+        "atoms": 2302,
+        "droppedNotes": {
+          "grace": 13
+        },
+        "notes": 4484,
+        "quarterNotes": "1047",
+        "unsupportedChordLabels": 4
+      },
+      "localChanges": [
+        4,
+        16,
+        11
+      ],
+      "method": "provided-chord-key",
+      "piece": "n09op59-3_01",
+      "rawSegments": 516,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        5,
+        13,
+        25
+      ],
+      "boundaries": [
+        204,
+        287,
+        408
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.4818,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1017.5,
+          "issuedPrecision": 0.4818
+        },
+        "key": {
+          "accuracy": 0.3543,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1047.0,
+          "issuedPrecision": 0.3543
+        },
+        "root": {
+          "accuracy": 0.5943,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1026.5,
+          "issuedPrecision": 0.5943
+        }
+      },
+      "elapsedMs": 1005.44,
+      "establishedChangeProxy": [
+        2,
+        7,
+        9
+      ],
+      "input": {
+        "annotations": 516,
+        "appliedLabels": 57,
+        "atoms": 2302,
+        "droppedNotes": {
+          "grace": 13
+        },
+        "notes": 4484,
+        "quarterNotes": "1047",
+        "unsupportedChordLabels": 4
+      },
+      "localChanges": [
+        3,
+        13,
+        11
+      ],
+      "method": "cascade",
+      "piece": "n09op59-3_01",
+      "rawSegments": 302,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        5,
+        12,
+        25
+      ],
+      "boundaries": [
+        194,
+        270,
+        408
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.5177,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1017.5,
+          "issuedPrecision": 0.5177
+        },
+        "key": {
+          "accuracy": 0.3997,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1047.0,
+          "issuedPrecision": 0.3997
+        },
+        "root": {
+          "accuracy": 0.612,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1026.5,
+          "issuedPrecision": 0.612
+        }
+      },
+      "elapsedMs": 1822.33,
+      "establishedChangeProxy": [
+        3,
+        7,
+        9
+      ],
+      "input": {
+        "annotations": 516,
+        "appliedLabels": 57,
+        "atoms": 2302,
+        "droppedNotes": {
+          "grace": 13
+        },
+        "notes": 4484,
+        "quarterNotes": "1047",
+        "unsupportedChordLabels": 4
+      },
+      "localChanges": [
+        4,
+        12,
+        11
+      ],
+      "method": "joint",
+      "piece": "n09op59-3_01",
+      "rawSegments": 289,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        165,
+        215,
+        408
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1799,
+          "coverage": 0.9853,
+          "eligibleQuarterNotes": 1017.5,
+          "issuedPrecision": 0.1825
+        },
+        "root": {
+          "accuracy": 0.3337,
+          "coverage": 0.9854,
+          "eligibleQuarterNotes": 1026.5,
+          "issuedPrecision": 0.3386
+        }
+      },
+      "elapsedMs": 8.96,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 516,
+        "appliedLabels": 57,
+        "atoms": 1465,
+        "droppedNotes": {
+          "grace": 13
+        },
+        "notes": 1340,
+        "quarterNotes": "1047",
+        "unsupportedChordLabels": 4
+      },
+      "localChanges": null,
+      "method": "fixed-bars",
+      "piece": "n09op59-3_01",
+      "rawSegments": 270,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        255,
+        1011,
+        408
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1079,
+          "coverage": 0.8779,
+          "eligibleQuarterNotes": 1017.5,
+          "issuedPrecision": 0.123
+        },
+        "root": {
+          "accuracy": 0.2357,
+          "coverage": 0.879,
+          "eligibleQuarterNotes": 1026.5,
+          "issuedPrecision": 0.2681
+        }
+      },
+      "elapsedMs": 40.34,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 516,
+        "appliedLabels": 57,
+        "atoms": 1465,
+        "droppedNotes": {
+          "grace": 13
+        },
+        "notes": 1340,
+        "quarterNotes": "1047",
+        "unsupportedChordLabels": 4
+      },
+      "localChanges": null,
+      "method": "pc-change",
+      "piece": "n09op59-3_01",
+      "rawSegments": 1257,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        159,
+        261,
+        408
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.218,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1017.5,
+          "issuedPrecision": 0.218
+        },
+        "root": {
+          "accuracy": 0.4,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1026.5,
+          "issuedPrecision": 0.4
+        }
+      },
+      "elapsedMs": 561.39,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 516,
+        "appliedLabels": 57,
+        "atoms": 1465,
+        "droppedNotes": {
+          "grace": 13
+        },
+        "notes": 1340,
+        "quarterNotes": "1047",
+        "unsupportedChordLabels": 4
+      },
+      "localChanges": null,
+      "method": "provided-key-segmentation",
+      "piece": "n09op59-3_01",
+      "rawSegments": 274,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.1416,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1047.0,
+          "issuedPrecision": 0.1416
+        }
+      },
+      "elapsedMs": 46.24,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 516,
+        "appliedLabels": 57,
+        "atoms": 1465,
+        "droppedNotes": {
+          "grace": 13
+        },
+        "notes": 1340,
+        "quarterNotes": "1047",
+        "unsupportedChordLabels": 4
+      },
+      "localChanges": [
+        2,
+        144,
+        11
+      ],
+      "method": "profile-key",
+      "piece": "n09op59-3_01",
+      "rawSegments": 1465,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        18,
+        40,
+        25
+      ],
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.4546,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1047.0,
+          "issuedPrecision": 0.4546
+        }
+      },
+      "elapsedMs": 20.21,
+      "establishedChangeProxy": [
+        5,
+        14,
+        9
+      ],
+      "input": {
+        "annotations": 516,
+        "appliedLabels": 57,
+        "atoms": 1465,
+        "droppedNotes": {
+          "grace": 13
+        },
+        "notes": 1340,
+        "quarterNotes": "1047",
+        "unsupportedChordLabels": 4
+      },
+      "localChanges": [
+        6,
+        17,
+        11
+      ],
+      "method": "provided-chord-key",
+      "piece": "n09op59-3_01",
+      "rawSegments": 516,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        0,
+        4,
+        25
+      ],
+      "boundaries": [
+        167,
+        263,
+        408
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1716,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1017.5,
+          "issuedPrecision": 0.1716
+        },
+        "key": {
+          "accuracy": 0.1748,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1047.0,
+          "issuedPrecision": 0.1748
+        },
+        "root": {
+          "accuracy": 0.3323,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1026.5,
+          "issuedPrecision": 0.3323
+        }
+      },
+      "elapsedMs": 532.84,
+      "establishedChangeProxy": [
+        0,
+        4,
+        9
+      ],
+      "input": {
+        "annotations": 516,
+        "appliedLabels": 57,
+        "atoms": 1465,
+        "droppedNotes": {
+          "grace": 13
+        },
+        "notes": 1340,
+        "quarterNotes": "1047",
+        "unsupportedChordLabels": 4
+      },
+      "localChanges": [
+        1,
+        11,
+        11
+      ],
+      "method": "cascade",
+      "piece": "n09op59-3_01",
+      "rawSegments": 276,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        0,
+        4,
+        25
+      ],
+      "boundaries": [
+        152,
+        243,
+        408
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.2406,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1017.5,
+          "issuedPrecision": 0.2406
+        },
+        "key": {
+          "accuracy": 0.2755,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1047.0,
+          "issuedPrecision": 0.2755
+        },
+        "root": {
+          "accuracy": 0.3807,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1026.5,
+          "issuedPrecision": 0.3807
+        }
+      },
+      "elapsedMs": 941.25,
+      "establishedChangeProxy": [
+        0,
+        5,
+        9
+      ],
+      "input": {
+        "annotations": 516,
+        "appliedLabels": 57,
+        "atoms": 1465,
+        "droppedNotes": {
+          "grace": 13
+        },
+        "notes": 1340,
+        "quarterNotes": "1047",
+        "unsupportedChordLabels": 4
+      },
+      "localChanges": [
+        2,
+        18,
+        11
+      ],
+      "method": "joint",
+      "piece": "n09op59-3_01",
+      "rawSegments": 262,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        176,
+        216,
+        367
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.438,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.438
+        },
+        "root": {
+          "accuracy": 0.6193,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.6193
+        }
+      },
+      "elapsedMs": 9.3,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 446,
+        "appliedLabels": 93,
+        "atoms": 2337,
+        "droppedNotes": {
+          "grace": 3
+        },
+        "notes": 5163,
+        "quarterNotes": "1048",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": null,
+      "method": "fixed-bars",
+      "piece": "n10op74_01",
+      "rawSegments": 262,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        354,
+        1442,
+        367
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.4917,
+          "coverage": 0.968,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.508
+        },
+        "root": {
+          "accuracy": 0.5936,
+          "coverage": 0.968,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.6132
+        }
+      },
+      "elapsedMs": 57.16,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 446,
+        "appliedLabels": 93,
+        "atoms": 2337,
+        "droppedNotes": {
+          "grace": 3
+        },
+        "notes": 5163,
+        "quarterNotes": "1048",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": null,
+      "method": "pc-change",
+      "piece": "n10op74_01",
+      "rawSegments": 1688,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        234,
+        273,
+        367
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.6062,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.6062
+        },
+        "root": {
+          "accuracy": 0.7228,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.7228
+        }
+      },
+      "elapsedMs": 1030.76,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 446,
+        "appliedLabels": 93,
+        "atoms": 2337,
+        "droppedNotes": {
+          "grace": 3
+        },
+        "notes": 5163,
+        "quarterNotes": "1048",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": null,
+      "method": "provided-key-segmentation",
+      "piece": "n10op74_01",
+      "rawSegments": 302,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.3692,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.3692
+        }
+      },
+      "elapsedMs": 75.51,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 446,
+        "appliedLabels": 93,
+        "atoms": 2337,
+        "droppedNotes": {
+          "grace": 3
+        },
+        "notes": 5163,
+        "quarterNotes": "1048",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": [
+        1,
+        120,
+        7
+      ],
+      "method": "profile-key",
+      "piece": "n10op74_01",
+      "rawSegments": 2337,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        20,
+        26,
+        34
+      ],
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.8125,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.8125
+        }
+      },
+      "elapsedMs": 16.75,
+      "establishedChangeProxy": [
+        2,
+        11,
+        6
+      ],
+      "input": {
+        "annotations": 446,
+        "appliedLabels": 93,
+        "atoms": 2337,
+        "droppedNotes": {
+          "grace": 3
+        },
+        "notes": 5163,
+        "quarterNotes": "1048",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": [
+        2,
+        11,
+        7
+      ],
+      "method": "provided-chord-key",
+      "piece": "n10op74_01",
+      "rawSegments": 446,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        12,
+        14,
+        34
+      ],
+      "boundaries": [
+        227,
+        276,
+        367
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.5326,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.5326
+        },
+        "key": {
+          "accuracy": 0.7888,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.7888
+        },
+        "root": {
+          "accuracy": 0.7029,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.7029
+        }
+      },
+      "elapsedMs": 992.13,
+      "establishedChangeProxy": [
+        1,
+        7,
+        6
+      ],
+      "input": {
+        "annotations": 446,
+        "appliedLabels": 93,
+        "atoms": 2337,
+        "droppedNotes": {
+          "grace": 3
+        },
+        "notes": 5163,
+        "quarterNotes": "1048",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": [
+        1,
+        10,
+        7
+      ],
+      "method": "cascade",
+      "piece": "n10op74_01",
+      "rawSegments": 301,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        15,
+        19,
+        34
+      ],
+      "boundaries": [
+        228,
+        261,
+        367
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.62,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.62
+        },
+        "key": {
+          "accuracy": 0.823,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.823
+        },
+        "root": {
+          "accuracy": 0.729,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.729
+        }
+      },
+      "elapsedMs": 1741.04,
+      "establishedChangeProxy": [
+        1,
+        5,
+        6
+      ],
+      "input": {
+        "annotations": 446,
+        "appliedLabels": 93,
+        "atoms": 2337,
+        "droppedNotes": {
+          "grace": 3
+        },
+        "notes": 5163,
+        "quarterNotes": "1048",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": [
+        1,
+        7,
+        7
+      ],
+      "method": "joint",
+      "piece": "n10op74_01",
+      "rawSegments": 289,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        170,
+        210,
+        367
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1622,
+          "coverage": 0.9924,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.1635
+        },
+        "root": {
+          "accuracy": 0.2968,
+          "coverage": 0.9924,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.299
+        }
+      },
+      "elapsedMs": 8.69,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 446,
+        "appliedLabels": 93,
+        "atoms": 1371,
+        "droppedNotes": {
+          "grace": 3
+        },
+        "notes": 1398,
+        "quarterNotes": "1048",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": null,
+      "method": "fixed-bars",
+      "piece": "n10op74_01",
+      "rawSegments": 262,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        260,
+        945,
+        367
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1112,
+          "coverage": 0.8497,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.1309
+        },
+        "root": {
+          "accuracy": 0.2248,
+          "coverage": 0.8497,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.2646
+        }
+      },
+      "elapsedMs": 35.48,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 446,
+        "appliedLabels": 93,
+        "atoms": 1371,
+        "droppedNotes": {
+          "grace": 3
+        },
+        "notes": 1398,
+        "quarterNotes": "1048",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": null,
+      "method": "pc-change",
+      "piece": "n10op74_01",
+      "rawSegments": 1128,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        168,
+        244,
+        367
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.3266,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.3266
+        },
+        "root": {
+          "accuracy": 0.4404,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.4404
+        }
+      },
+      "elapsedMs": 459.76,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 446,
+        "appliedLabels": 93,
+        "atoms": 1371,
+        "droppedNotes": {
+          "grace": 3
+        },
+        "notes": 1398,
+        "quarterNotes": "1048",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": null,
+      "method": "provided-key-segmentation",
+      "piece": "n10op74_01",
+      "rawSegments": 267,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.2092,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.2092
+        }
+      },
+      "elapsedMs": 43.15,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 446,
+        "appliedLabels": 93,
+        "atoms": 1371,
+        "droppedNotes": {
+          "grace": 3
+        },
+        "notes": 1398,
+        "quarterNotes": "1048",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": [
+        1,
+        186,
+        7
+      ],
+      "method": "profile-key",
+      "piece": "n10op74_01",
+      "rawSegments": 1371,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        18,
+        22,
+        34
+      ],
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.7581,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.7581
+        }
+      },
+      "elapsedMs": 17.95,
+      "establishedChangeProxy": [
+        1,
+        14,
+        6
+      ],
+      "input": {
+        "annotations": 446,
+        "appliedLabels": 93,
+        "atoms": 1371,
+        "droppedNotes": {
+          "grace": 3
+        },
+        "notes": 1398,
+        "quarterNotes": "1048",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": [
+        2,
+        15,
+        7
+      ],
+      "method": "provided-chord-key",
+      "piece": "n10op74_01",
+      "rawSegments": 446,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        0,
+        4,
+        34
+      ],
+      "boundaries": [
+        152,
+        240,
+        367
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1861,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.1861
+        },
+        "key": {
+          "accuracy": 0.4819,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.4819
+        },
+        "root": {
+          "accuracy": 0.317,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.317
+        }
+      },
+      "elapsedMs": 458.8,
+      "establishedChangeProxy": [
+        0,
+        1,
+        6
+      ],
+      "input": {
+        "annotations": 446,
+        "appliedLabels": 93,
+        "atoms": 1371,
+        "droppedNotes": {
+          "grace": 3
+        },
+        "notes": 1398,
+        "quarterNotes": "1048",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": [
+        0,
+        7,
+        7
+      ],
+      "method": "cascade",
+      "piece": "n10op74_01",
+      "rawSegments": 258,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        3,
+        4,
+        34
+      ],
+      "boundaries": [
+        157,
+        234,
+        367
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.2376,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.2376
+        },
+        "key": {
+          "accuracy": 0.4385,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.4385
+        },
+        "root": {
+          "accuracy": 0.3726,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1048.0,
+          "issuedPrecision": 0.3726
+        }
+      },
+      "elapsedMs": 799.88,
+      "establishedChangeProxy": [
+        0,
+        2,
+        6
+      ],
+      "input": {
+        "annotations": 446,
+        "appliedLabels": 93,
+        "atoms": 1371,
+        "droppedNotes": {
+          "grace": 3
+        },
+        "notes": 1398,
+        "quarterNotes": "1048",
+        "unsupportedChordLabels": 0
+      },
+      "localChanges": [
+        0,
+        17,
+        7
+      ],
+      "method": "joint",
+      "piece": "n10op74_01",
+      "rawSegments": 261,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        166,
+        207,
+        594
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.2391,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 892.0,
+          "issuedPrecision": 0.2391
+        },
+        "root": {
+          "accuracy": 0.486,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 893.0,
+          "issuedPrecision": 0.486
+        }
+      },
+      "elapsedMs": 8.66,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 723,
+        "appliedLabels": 116,
+        "atoms": 2286,
+        "droppedNotes": {
+          "grace": 10
+        },
+        "notes": 5537,
+        "quarterNotes": "912",
+        "unsupportedChordLabels": 1
+      },
+      "localChanges": null,
+      "method": "fixed-bars",
+      "piece": "n13op130_01",
+      "rawSegments": 237,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        568,
+        1825,
+        594
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.4543,
+          "coverage": 0.9658,
+          "eligibleQuarterNotes": 892.0,
+          "issuedPrecision": 0.4704
+        },
+        "root": {
+          "accuracy": 0.5552,
+          "coverage": 0.9653,
+          "eligibleQuarterNotes": 893.0,
+          "issuedPrecision": 0.5751
+        }
+      },
+      "elapsedMs": 71.13,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 723,
+        "appliedLabels": 116,
+        "atoms": 2286,
+        "droppedNotes": {
+          "grace": 10
+        },
+        "notes": 5537,
+        "quarterNotes": "912",
+        "unsupportedChordLabels": 1
+      },
+      "localChanges": null,
+      "method": "pc-change",
+      "piece": "n13op130_01",
+      "rawSegments": 2135,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        229,
+        267,
+        594
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.4437,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 892.0,
+          "issuedPrecision": 0.4437
+        },
+        "root": {
+          "accuracy": 0.6153,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 893.0,
+          "issuedPrecision": 0.6153
+        }
+      },
+      "elapsedMs": 1010.29,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 723,
+        "appliedLabels": 116,
+        "atoms": 2286,
+        "droppedNotes": {
+          "grace": 10
+        },
+        "notes": 5537,
+        "quarterNotes": "912",
+        "unsupportedChordLabels": 1
+      },
+      "localChanges": null,
+      "method": "provided-key-segmentation",
+      "piece": "n13op130_01",
+      "rawSegments": 277,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.4997,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 912.0,
+          "issuedPrecision": 0.4997
+        }
+      },
+      "elapsedMs": 73.49,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 723,
+        "appliedLabels": 116,
+        "atoms": 2286,
+        "droppedNotes": {
+          "grace": 10
+        },
+        "notes": 5537,
+        "quarterNotes": "912",
+        "unsupportedChordLabels": 1
+      },
+      "localChanges": [
+        4,
+        108,
+        14
+      ],
+      "method": "profile-key",
+      "piece": "n13op130_01",
+      "rawSegments": 2286,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        35,
+        42,
+        47
+      ],
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.8701,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 912.0,
+          "issuedPrecision": 0.8701
+        }
+      },
+      "elapsedMs": 29.14,
+      "establishedChangeProxy": [
+        6,
+        15,
+        12
+      ],
+      "input": {
+        "annotations": 723,
+        "appliedLabels": 116,
+        "atoms": 2286,
+        "droppedNotes": {
+          "grace": 10
+        },
+        "notes": 5537,
+        "quarterNotes": "912",
+        "unsupportedChordLabels": 1
+      },
+      "localChanges": [
+        6,
+        16,
+        14
+      ],
+      "method": "provided-chord-key",
+      "piece": "n13op130_01",
+      "rawSegments": 723,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        0,
+        2,
+        47
+      ],
+      "boundaries": [
+        221,
+        261,
+        594
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.3585,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 892.0,
+          "issuedPrecision": 0.3585
+        },
+        "key": {
+          "accuracy": 0.8284,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 912.0,
+          "issuedPrecision": 0.8284
+        },
+        "root": {
+          "accuracy": 0.5871,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 893.0,
+          "issuedPrecision": 0.5871
+        }
+      },
+      "elapsedMs": 1037.5,
+      "establishedChangeProxy": [
+        6,
+        7,
+        12
+      ],
+      "input": {
+        "annotations": 723,
+        "appliedLabels": 116,
+        "atoms": 2286,
+        "droppedNotes": {
+          "grace": 10
+        },
+        "notes": 5537,
+        "quarterNotes": "912",
+        "unsupportedChordLabels": 1
+      },
+      "localChanges": [
+        7,
+        8,
+        14
+      ],
+      "method": "cascade",
+      "piece": "n13op130_01",
+      "rawSegments": 272,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        2,
+        3,
+        47
+      ],
+      "boundaries": [
+        214,
+        252,
+        594
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.4154,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 892.0,
+          "issuedPrecision": 0.4154
+        },
+        "key": {
+          "accuracy": 0.8481,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 912.0,
+          "issuedPrecision": 0.8481
+        },
+        "root": {
+          "accuracy": 0.6022,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 893.0,
+          "issuedPrecision": 0.6022
+        }
+      },
+      "elapsedMs": 1921.75,
+      "establishedChangeProxy": [
+        4,
+        6,
+        12
+      ],
+      "input": {
+        "annotations": 723,
+        "appliedLabels": 116,
+        "atoms": 2286,
+        "droppedNotes": {
+          "grace": 10
+        },
+        "notes": 5537,
+        "quarterNotes": "912",
+        "unsupportedChordLabels": 1
+      },
+      "localChanges": [
+        5,
+        7,
+        14
+      ],
+      "method": "joint",
+      "piece": "n13op130_01",
+      "rawSegments": 263,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        153,
+        184,
+        594
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1401,
+          "coverage": 0.9058,
+          "eligibleQuarterNotes": 892.0,
+          "issuedPrecision": 0.1547
+        },
+        "root": {
+          "accuracy": 0.2674,
+          "coverage": 0.9059,
+          "eligibleQuarterNotes": 893.0,
+          "issuedPrecision": 0.2951
+        }
+      },
+      "elapsedMs": 7.86,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 723,
+        "appliedLabels": 116,
+        "atoms": 1445,
+        "droppedNotes": {
+          "grace": 10
+        },
+        "notes": 1325,
+        "quarterNotes": "912",
+        "unsupportedChordLabels": 1
+      },
+      "localChanges": null,
+      "method": "fixed-bars",
+      "piece": "n13op130_01",
+      "rawSegments": 237,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        386,
+        1053,
+        594
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1186,
+          "coverage": 0.7876,
+          "eligibleQuarterNotes": 892.0,
+          "issuedPrecision": 0.1505
+        },
+        "root": {
+          "accuracy": 0.2136,
+          "coverage": 0.7872,
+          "eligibleQuarterNotes": 893.0,
+          "issuedPrecision": 0.2713
+        }
+      },
+      "elapsedMs": 40.32,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 723,
+        "appliedLabels": 116,
+        "atoms": 1445,
+        "droppedNotes": {
+          "grace": 10
+        },
+        "notes": 1325,
+        "quarterNotes": "912",
+        "unsupportedChordLabels": 1
+      },
+      "localChanges": null,
+      "method": "pc-change",
+      "piece": "n13op130_01",
+      "rawSegments": 1221,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        195,
+        274,
+        594
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1774,
+          "coverage": 0.9955,
+          "eligibleQuarterNotes": 892.0,
+          "issuedPrecision": 0.1782
+        },
+        "root": {
+          "accuracy": 0.313,
+          "coverage": 0.9955,
+          "eligibleQuarterNotes": 893.0,
+          "issuedPrecision": 0.3144
+        }
+      },
+      "elapsedMs": 548.4,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 723,
+        "appliedLabels": 116,
+        "atoms": 1445,
+        "droppedNotes": {
+          "grace": 10
+        },
+        "notes": 1325,
+        "quarterNotes": "912",
+        "unsupportedChordLabels": 1
+      },
+      "localChanges": null,
+      "method": "provided-key-segmentation",
+      "piece": "n13op130_01",
+      "rawSegments": 286,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.2612,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 912.0,
+          "issuedPrecision": 0.2612
+        }
+      },
+      "elapsedMs": 47.05,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 723,
+        "appliedLabels": 116,
+        "atoms": 1445,
+        "droppedNotes": {
+          "grace": 10
+        },
+        "notes": 1325,
+        "quarterNotes": "912",
+        "unsupportedChordLabels": 1
+      },
+      "localChanges": [
+        4,
+        167,
+        14
+      ],
+      "method": "profile-key",
+      "piece": "n13op130_01",
+      "rawSegments": 1445,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        34,
+        45,
+        47
+      ],
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.8092,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 912.0,
+          "issuedPrecision": 0.8092
+        }
+      },
+      "elapsedMs": 27.43,
+      "establishedChangeProxy": [
+        3,
+        16,
+        12
+      ],
+      "input": {
+        "annotations": 723,
+        "appliedLabels": 116,
+        "atoms": 1445,
+        "droppedNotes": {
+          "grace": 10
+        },
+        "notes": 1325,
+        "quarterNotes": "912",
+        "unsupportedChordLabels": 1
+      },
+      "localChanges": [
+        3,
+        19,
+        14
+      ],
+      "method": "provided-chord-key",
+      "piece": "n13op130_01",
+      "rawSegments": 723,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        0,
+        0,
+        47
+      ],
+      "boundaries": [
+        200,
+        275,
+        594
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1107,
+          "coverage": 0.9955,
+          "eligibleQuarterNotes": 892.0,
+          "issuedPrecision": 0.1112
+        },
+        "key": {
+          "accuracy": 0.7346,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 912.0,
+          "issuedPrecision": 0.7346
+        },
+        "root": {
+          "accuracy": 0.2682,
+          "coverage": 0.9955,
+          "eligibleQuarterNotes": 893.0,
+          "issuedPrecision": 0.2694
+        }
+      },
+      "elapsedMs": 551.26,
+      "establishedChangeProxy": [
+        1,
+        4,
+        12
+      ],
+      "input": {
+        "annotations": 723,
+        "appliedLabels": 116,
+        "atoms": 1445,
+        "droppedNotes": {
+          "grace": 10
+        },
+        "notes": 1325,
+        "quarterNotes": "912",
+        "unsupportedChordLabels": 1
+      },
+      "localChanges": [
+        1,
+        7,
+        14
+      ],
+      "method": "cascade",
+      "piece": "n13op130_01",
+      "rawSegments": 285,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        0,
+        2,
+        47
+      ],
+      "boundaries": [
+        181,
+        245,
+        594
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1575,
+          "coverage": 0.9955,
+          "eligibleQuarterNotes": 892.0,
+          "issuedPrecision": 0.1582
+        },
+        "key": {
+          "accuracy": 0.6332,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 912.0,
+          "issuedPrecision": 0.6332
+        },
+        "root": {
+          "accuracy": 0.3208,
+          "coverage": 0.9955,
+          "eligibleQuarterNotes": 893.0,
+          "issuedPrecision": 0.3223
+        }
+      },
+      "elapsedMs": 994.6,
+      "establishedChangeProxy": [
+        1,
+        5,
+        12
+      ],
+      "input": {
+        "annotations": 723,
+        "appliedLabels": 116,
+        "atoms": 1445,
+        "droppedNotes": {
+          "grace": 10
+        },
+        "notes": 1325,
+        "quarterNotes": "912",
+        "unsupportedChordLabels": 1
+      },
+      "localChanges": [
+        1,
+        7,
+        14
+      ],
+      "method": "joint",
+      "piece": "n13op130_01",
+      "rawSegments": 258,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        198,
+        246,
+        484
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.2312,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1024.0,
+          "issuedPrecision": 0.2312
+        },
+        "root": {
+          "accuracy": 0.473,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1056.0,
+          "issuedPrecision": 0.473
+        }
+      },
+      "elapsedMs": 22.05,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 622,
+        "appliedLabels": 85,
+        "atoms": 2347,
+        "droppedNotes": {},
+        "notes": 5291,
+        "quarterNotes": "1056",
+        "unsupportedChordLabels": 12
+      },
+      "localChanges": null,
+      "method": "fixed-bars",
+      "piece": "n15op132_01",
+      "rawSegments": 264,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        463,
+        1729,
+        484
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.4041,
+          "coverage": 0.9787,
+          "eligibleQuarterNotes": 1024.0,
+          "issuedPrecision": 0.4129
+        },
+        "root": {
+          "accuracy": 0.5105,
+          "coverage": 0.9789,
+          "eligibleQuarterNotes": 1056.0,
+          "issuedPrecision": 0.5215
+        }
+      },
+      "elapsedMs": 69.98,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 622,
+        "appliedLabels": 85,
+        "atoms": 2347,
+        "droppedNotes": {},
+        "notes": 5291,
+        "quarterNotes": "1056",
+        "unsupportedChordLabels": 12
+      },
+      "localChanges": null,
+      "method": "pc-change",
+      "piece": "n15op132_01",
+      "rawSegments": 2028,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        241,
+        318,
+        484
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.3718,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1024.0,
+          "issuedPrecision": 0.3718
+        },
+        "root": {
+          "accuracy": 0.5403,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1056.0,
+          "issuedPrecision": 0.5403
+        }
+      },
+      "elapsedMs": 996.05,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 622,
+        "appliedLabels": 85,
+        "atoms": 2347,
+        "droppedNotes": {},
+        "notes": 5291,
+        "quarterNotes": "1056",
+        "unsupportedChordLabels": 12
+      },
+      "localChanges": null,
+      "method": "provided-key-segmentation",
+      "piece": "n15op132_01",
+      "rawSegments": 321,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.4799,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1056.0,
+          "issuedPrecision": 0.4799
+        }
+      },
+      "elapsedMs": 77.34,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 622,
+        "appliedLabels": 85,
+        "atoms": 2347,
+        "droppedNotes": {},
+        "notes": 5291,
+        "quarterNotes": "1056",
+        "unsupportedChordLabels": 12
+      },
+      "localChanges": [
+        7,
+        120,
+        14
+      ],
+      "method": "profile-key",
+      "piece": "n15op132_01",
+      "rawSegments": 2347,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        16,
+        27,
+        20
+      ],
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.7704,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1056.0,
+          "issuedPrecision": 0.7704
+        }
+      },
+      "elapsedMs": 22.82,
+      "establishedChangeProxy": [
+        5,
+        15,
+        13
+      ],
+      "input": {
+        "annotations": 622,
+        "appliedLabels": 85,
+        "atoms": 2347,
+        "droppedNotes": {},
+        "notes": 5291,
+        "quarterNotes": "1056",
+        "unsupportedChordLabels": 12
+      },
+      "localChanges": [
+        5,
+        16,
+        14
+      ],
+      "method": "provided-chord-key",
+      "piece": "n15op132_01",
+      "rawSegments": 622,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        4,
+        8,
+        20
+      ],
+      "boundaries": [
+        248,
+        315,
+        484
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.3163,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1024.0,
+          "issuedPrecision": 0.3163
+        },
+        "key": {
+          "accuracy": 0.7356,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1056.0,
+          "issuedPrecision": 0.7356
+        },
+        "root": {
+          "accuracy": 0.535,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1056.0,
+          "issuedPrecision": 0.535
+        }
+      },
+      "elapsedMs": 1020.76,
+      "establishedChangeProxy": [
+        2,
+        6,
+        13
+      ],
+      "input": {
+        "annotations": 622,
+        "appliedLabels": 85,
+        "atoms": 2347,
+        "droppedNotes": {},
+        "notes": 5291,
+        "quarterNotes": "1056",
+        "unsupportedChordLabels": 12
+      },
+      "localChanges": [
+        3,
+        7,
+        14
+      ],
+      "method": "cascade",
+      "piece": "n15op132_01",
+      "rawSegments": 320,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": [
+        1,
+        5,
+        20
+      ],
+      "boundaries": [
+        232,
+        304,
+        484
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.359,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1024.0,
+          "issuedPrecision": 0.359
+        },
+        "key": {
+          "accuracy": 0.7308,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1056.0,
+          "issuedPrecision": 0.7308
+        },
+        "root": {
+          "accuracy": 0.5435,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1056.0,
+          "issuedPrecision": 0.5435
+        }
+      },
+      "elapsedMs": 1819.02,
+      "establishedChangeProxy": [
+        1,
+        7,
+        13
+      ],
+      "input": {
+        "annotations": 622,
+        "appliedLabels": 85,
+        "atoms": 2347,
+        "droppedNotes": {},
+        "notes": 5291,
+        "quarterNotes": "1056",
+        "unsupportedChordLabels": 12
+      },
+      "localChanges": [
+        1,
+        7,
+        14
+      ],
+      "method": "joint",
+      "piece": "n15op132_01",
+      "rawSegments": 308,
+      "variant": "full-score"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        175,
+        222,
+        484
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.082,
+          "coverage": 0.9492,
+          "eligibleQuarterNotes": 1024.0,
+          "issuedPrecision": 0.0864
+        },
+        "root": {
+          "accuracy": 0.2199,
+          "coverage": 0.9508,
+          "eligibleQuarterNotes": 1056.0,
+          "issuedPrecision": 0.2313
+        }
+      },
+      "elapsedMs": 8.59,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 622,
+        "appliedLabels": 85,
+        "atoms": 1552,
+        "droppedNotes": {},
+        "notes": 1492,
+        "quarterNotes": "1056",
+        "unsupportedChordLabels": 12
+      },
+      "localChanges": null,
+      "method": "fixed-bars",
+      "piece": "n15op132_01",
+      "rawSegments": 264,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        384,
+        1143,
+        484
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1215,
+          "coverage": 0.894,
+          "eligibleQuarterNotes": 1024.0,
+          "issuedPrecision": 0.1359
+        },
+        "root": {
+          "accuracy": 0.2321,
+          "coverage": 0.8967,
+          "eligibleQuarterNotes": 1056.0,
+          "issuedPrecision": 0.2588
+        }
+      },
+      "elapsedMs": 41.07,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 622,
+        "appliedLabels": 85,
+        "atoms": 1552,
+        "droppedNotes": {},
+        "notes": 1492,
+        "quarterNotes": "1056",
+        "unsupportedChordLabels": 12
+      },
+      "localChanges": null,
+      "method": "pc-change",
+      "piece": "n15op132_01",
+      "rawSegments": 1230,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": [
+        191,
+        294,
+        484
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1348,
+          "coverage": 0.9961,
+          "eligibleQuarterNotes": 1024.0,
+          "issuedPrecision": 0.1353
+        },
+        "root": {
+          "accuracy": 0.258,
+          "coverage": 0.9962,
+          "eligibleQuarterNotes": 1056.0,
+          "issuedPrecision": 0.259
+        }
+      },
+      "elapsedMs": 539.72,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 622,
+        "appliedLabels": 85,
+        "atoms": 1552,
+        "droppedNotes": {},
+        "notes": 1492,
+        "quarterNotes": "1056",
+        "unsupportedChordLabels": 12
+      },
+      "localChanges": null,
+      "method": "provided-key-segmentation",
+      "piece": "n15op132_01",
+      "rawSegments": 301,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": null,
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.2171,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1056.0,
+          "issuedPrecision": 0.2171
+        }
+      },
+      "elapsedMs": 46.83,
+      "establishedChangeProxy": null,
+      "input": {
+        "annotations": 622,
+        "appliedLabels": 85,
+        "atoms": 1552,
+        "droppedNotes": {},
+        "notes": 1492,
+        "quarterNotes": "1056",
+        "unsupportedChordLabels": 12
+      },
+      "localChanges": [
+        5,
+        198,
+        14
+      ],
+      "method": "profile-key",
+      "piece": "n15op132_01",
+      "rawSegments": 1552,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        17,
+        31,
+        20
+      ],
+      "boundaries": null,
+      "durations": {
+        "key": {
+          "accuracy": 0.6385,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1056.0,
+          "issuedPrecision": 0.6385
+        }
+      },
+      "elapsedMs": 23.63,
+      "establishedChangeProxy": [
+        2,
+        13,
+        13
+      ],
+      "input": {
+        "annotations": 622,
+        "appliedLabels": 85,
+        "atoms": 1552,
+        "droppedNotes": {},
+        "notes": 1492,
+        "quarterNotes": "1056",
+        "unsupportedChordLabels": 12
+      },
+      "localChanges": [
+        3,
+        16,
+        14
+      ],
+      "method": "provided-chord-key",
+      "piece": "n15op132_01",
+      "rawSegments": 622,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        0,
+        1,
+        20
+      ],
+      "boundaries": [
+        187,
+        291,
+        484
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.0762,
+          "coverage": 0.9961,
+          "eligibleQuarterNotes": 1024.0,
+          "issuedPrecision": 0.0765
+        },
+        "key": {
+          "accuracy": 0.6224,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1056.0,
+          "issuedPrecision": 0.6224
+        },
+        "root": {
+          "accuracy": 0.2275,
+          "coverage": 0.9962,
+          "eligibleQuarterNotes": 1056.0,
+          "issuedPrecision": 0.2284
+        }
+      },
+      "elapsedMs": 556.71,
+      "establishedChangeProxy": [
+        1,
+        3,
+        13
+      ],
+      "input": {
+        "annotations": 622,
+        "appliedLabels": 85,
+        "atoms": 1552,
+        "droppedNotes": {},
+        "notes": 1492,
+        "quarterNotes": "1056",
+        "unsupportedChordLabels": 12
+      },
+      "localChanges": [
+        1,
+        7,
+        14
+      ],
+      "method": "cascade",
+      "piece": "n15op132_01",
+      "rawSegments": 298,
+      "variant": "first-staff"
+    },
+    {
+      "appliedArrivals": [
+        0,
+        2,
+        20
+      ],
+      "boundaries": [
+        178,
+        273,
+        484
+      ],
+      "durations": {
+        "chord": {
+          "accuracy": 0.1277,
+          "coverage": 0.9961,
+          "eligibleQuarterNotes": 1024.0,
+          "issuedPrecision": 0.1282
+        },
+        "key": {
+          "accuracy": 0.3703,
+          "coverage": 1.0,
+          "eligibleQuarterNotes": 1056.0,
+          "issuedPrecision": 0.3703
+        },
+        "root": {
+          "accuracy": 0.2666,
+          "coverage": 0.9962,
+          "eligibleQuarterNotes": 1056.0,
+          "issuedPrecision": 0.2676
+        }
+      },
+      "elapsedMs": 1028.08,
+      "establishedChangeProxy": [
+        0,
+        4,
+        13
+      ],
+      "input": {
+        "annotations": 622,
+        "appliedLabels": 85,
+        "atoms": 1552,
+        "droppedNotes": {},
+        "notes": 1492,
+        "quarterNotes": "1056",
+        "unsupportedChordLabels": 12
+      },
+      "localChanges": [
+        0,
+        13,
+        14
+      ],
+      "method": "joint",
+      "piece": "n15op132_01",
+      "rawSegments": 285,
+      "variant": "first-staff"
+    }
+  ],
+  "researchSha256": {
+    "benchmark.py": "2fe406970772ca8197f993f7c0971aba8679685d0c7784ea6a2b1cf1fc242bf8",
+    "catalog.json": "98e031af418a3507eb240cad1263fe56b6e757322df7a98653443dba4c56fb10",
+    "controls.py": "f43880d450d6c0022aa2abefaceb44924a4171471327a108e9fa841545f72e16",
+    "export_catalog.cjs": "ad19fcebd21b6397c21cb3e89e9efad3316e4878164e6e5c9dce5859cf919042",
+    "fetch_abc.py": "843b092fb57f6a7972a9923e2c93d877a28cfe273874b9c67d62c90cf2be3d45",
+    "product_controls.cjs": "8195fa456cfa0e5f71b1777ebd6e3599d308044f86f00711d9ebd4d1e098d4f5",
+    "protocol.json": "40dbdd12ba9024630bd3036a93f3837068c81748fddeced41c337ca7956c77bd"
+  },
+  "revision": "b6b7d38500bacb30c81db7e09d8790df1a2edd46",
+  "sourcePieces": 7,
+  "split": "test"
+}
