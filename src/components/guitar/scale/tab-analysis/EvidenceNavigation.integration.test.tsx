@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import React, { useReducer } from 'react';
 import { afterEach, describe, expect, it } from 'vitest';
-import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createScaleRef } from '@/domain/scale/scale-ref';
 import { createEmptyTabDocument, setTabBeatOffset, setTabDuration, setTabFret, setTabMeter } from '@/domain/tab/editing';
@@ -302,5 +302,110 @@ describe('P5.2 task entry and optional key completion', () => {
         within(draft).getByRole('button', { name: 'Cancel key reference' }).focus(); await user.keyboard('{Escape}');
         expect(screen.queryByRole('region', { name: 'Key reference draft' })).toBeNull();
         expect(document.activeElement).toBe(setKey); expect(state()).toEqual(before); expect(movementRow()).toBe(movement);
+    });
+});
+
+describe('P5.3 score entry', () => {
+    it('captures the current range for a positional chord and records one undoable save', async () => {
+        const user = userEvent.setup(); render(<Harness withHarmony={false} initial={carryInFixture()}/>);
+        await user.click(screen.getByRole('button', { name: /^Read with my chords/ }));
+        await user.click(screen.getByRole('button', { name: 'By written time' }));
+        await user.click(screen.getByRole('button', { name: /^Onset 2,/ }));
+        await user.keyboard('{Shift>}{ArrowLeft}{/Shift}');
+        const shortcut = screen.getByRole('button', { name: 'Add chord to selection' });
+        const before = state();
+        await user.click(shortcut);
+        expect(screen.getByRole('heading', { name: 'Add supplied chord' })).toBeTruthy();
+        expect(screen.queryByRole('textbox', { name: 'Chord start' })).toBeNull();
+        expect(state()).toEqual(before);
+        await user.click(screen.getByRole('button', { name: /^Onset 2,/ }));
+        choosePicker('Chord root', 'G'); choosePicker('Chord quality', '7');
+        await user.click(screen.getByRole('button', { name: 'Apply chord' }));
+        expect(state().suppliedHarmony[0].binding).toEqual({
+            kind: 'positions', firstId: before.document.moments[0].id, lastId: before.document.moments[1].id,
+        });
+        expect(state().past).toHaveLength(before.past.length + 1);
+        expect(state().document).toEqual(before.document);
+        expect(screen.getByRole('button', { name: 'By written time' }).getAttribute('aria-pressed')).toBe('true');
+        expect(document.activeElement).toBe(shortcut);
+        await user.click(screen.getByRole('button', { name: 'Undo' }));
+        expect(state().suppliedHarmony).toHaveLength(0);
+        await user.click(screen.getByRole('button', { name: 'Redo' }));
+        expect(state().suppliedHarmony).toHaveLength(1);
+    });
+
+    it('opens the supplied reading from an untimed single-note range and preserves its source links', async () => {
+        const user = userEvent.setup(); render(<Harness/>);
+        const before = state();
+        await user.click(screen.getByRole('button', { name: 'Read selected melody' }));
+        expect(state()).toEqual(before);
+        await waitFor(() => expect(document.activeElement).toBe(screen.getByRole('heading', { name: 'Progression reading' })));
+        expect(screen.getByRole('list', { name: 'Chord relationships' }).textContent).toContain('Dominant motion');
+        await user.click(revealIn(movementRow()));
+        expect(evidenceCells()).toEqual([cell(1, 2).closest('[role="gridcell"]'), cell(2, 2).closest('[role="gridcell"]')]);
+        expect(state()).toEqual(before);
+    });
+
+    it('picks existing notes by position with an independent cursor and restores fret editing on exit', async () => {
+        const user = userEvent.setup();
+        const initial = repeatedPitchFixture();
+        render(<Harness initial={setTabFret(initial, initial.moments[0].id, 2, 4, 'same-B-other-string')}/>);
+        const before = state();
+        const origin = screen.getByRole('button', { name: 'Choose melody notes' });
+        expect(screen.queryByRole('button', { name: 'Read selected melody' })).toBeNull();
+        await user.click(origin);
+        expect(document.activeElement).toBe(cell(1, 2));
+        expect(cell(1, 2).tabIndex).toBe(0);
+        expect(cell(1, 3).tabIndex).toBe(-1);
+        expect((cell(3, 3) as HTMLButtonElement).disabled).toBe(true);
+        await user.keyboard('{Enter}{ArrowDown} ');
+        expect(cell(1, 2).getAttribute('aria-pressed')).toBe('false');
+        expect(cell(1, 3).getAttribute('aria-pressed')).toBe('true');
+        await user.keyboard('{ArrowRight}{Enter}');
+        expect(document.activeElement).toBe(cell(2, 2));
+        await user.keyboard('7{Delete}{Backspace}{Insert}{F2}');
+        expect(screen.queryByRole('textbox', { name: /^Fret for/ })).toBeNull();
+        expect(state()).toEqual(before);
+        await user.click(screen.getByRole('button', { name: 'Read melody' }));
+        const selected = screen.getByRole('list', { name: 'Selected melody notes' });
+        expect(selected.textContent).toContain('B3 · Position 1 · String 3');
+        expect(selected.textContent).toContain('C4 · Position 2 · String 2');
+        expect(state()).toEqual(before);
+        await user.click(origin);
+        await user.click(cell(1, 2));
+        await user.keyboard('{Escape}');
+        expect(document.activeElement).toBe(origin);
+        expect(screen.getByRole('list', { name: 'Selected melody notes' }).textContent).toContain('B3 · Position 1 · String 3');
+        await user.click(cell(1, 2));
+        expect(screen.getByRole('textbox', { name: 'Fret for string 2, onset 1' })).toBeTruthy();
+    });
+
+    it('leaves the grid intact while an unapplied fret blocks score shortcuts', async () => {
+        const user = userEvent.setup(); render(<Harness/>);
+        await user.click(cell(2, 2));
+        const input = screen.getByRole('textbox', { name: 'Fret for string 2, onset 2' }) as HTMLInputElement;
+        await user.clear(input); await user.type(input, '12');
+        const before = state();
+        for (const name of ['Add chord to selection', 'Read selected melody']) {
+            await user.click(screen.getByRole('button', { name }));
+            expect(document.activeElement).toBe(input);
+            expect(input.value).toBe('12');
+            expect(state()).toEqual(before);
+        }
+        expect(screen.queryByRole('region', { name: 'Supplied chord progression' })).toBeNull();
+    });
+
+    it('expires the picker after source deletion and does not resurrect it after Undo', async () => {
+        const user = userEvent.setup();
+        const initial = repeatedPitchFixture();
+        render(<Harness initial={setTabFret(initial, initial.moments[0].id, 2, 4, 'same-B-other-string')}/>);
+        await user.click(screen.getByRole('button', { name: 'Choose melody notes' }));
+        await user.click(cell(1, 3));
+        await user.click(screen.getByRole('button', { name: 'Delete evidence source' }));
+        expect(screen.queryByRole('group', { name: 'Melody selection' })).toBeNull();
+        expect(screen.getByText('Score changed. Select the melody again.')).toBeTruthy();
+        await user.click(screen.getByRole('button', { name: 'Undo fixture' }));
+        expect(screen.queryByRole('group', { name: 'Melody selection' })).toBeNull();
+        expect(screen.queryByRole('list', { name: 'Selected melody notes' })).toBeNull();
     });
 });

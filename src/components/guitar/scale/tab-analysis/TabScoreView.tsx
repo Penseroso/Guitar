@@ -17,6 +17,7 @@ import type { TabWrittenPointReferences } from '@/domain/tab/written-point-analy
 import { resolveSuppliedHarmony, type SuppliedTabChord } from '@/domain/tab/supplied-harmony';
 import { SuppliedHarmonyPanel } from './SuppliedHarmonyPanel';
 import { resolveTabEvidence, type TabEvidenceTarget } from './tab-evidence';
+import { adjacentMelodyCell, type MelodyCell } from './tab-melody-selection';
 import harmonyStyles from './supplied-harmony.module.css';
 import acrossStyles from './across-bars-written-time.module.css';
 import timingStyles from './timing-inspection.module.css';
@@ -26,6 +27,16 @@ import styles from './tab-score-editor.module.css';
 export interface TabActiveCell { momentId: string; string: number }
 export type TabDraftStatus = 'note' | 'mute' | 'empty' | 'invalid' | null;
 interface Draft { cell: TabActiveCell; text: string; revision: number }
+interface MelodyPicker {
+    document: TabDocument;
+    chords: readonly SuppliedTabChord[];
+    origin: HTMLButtonElement;
+    read: (ids: string[]) => void;
+    cells: readonly MelodyCell[];
+    byCell: ReadonlyMap<string, MelodyCell>;
+    cursor: MelodyCell;
+    picked: ReadonlyMap<string, string>;
+}
 const cellKey = (cell: TabActiveCell) => `${cell.momentId}:${cell.string}`;
 const durationDetail = (duration?: TabFraction) => duration ? `duration ${duration.numerator}/${duration.denominator} quarter notes` : '';
 
@@ -135,6 +146,8 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         target: NonNullable<ReturnType<typeof resolveTabEvidence>>; origin: HTMLElement;
     } | null>(null);
     const [evidenceNotice, setEvidenceNotice] = useState<string | null>(null);
+    const [melodyPicker, setMelodyPicker] = useState<MelodyPicker | null>(null);
+    const melodyReturn = useRef<HTMLButtonElement | null>(null);
     const errorId = useId();
     const current = useMemo(() => activeCell && document.moments.some(moment => moment.id === activeCell.momentId)
         && activeCell.string >= 0 && activeCell.string < 6 ? activeCell
@@ -142,6 +155,8 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     const writtenMeasure = document.moments.find(moment => moment.id === current?.momentId)?.measure ?? document.moments[0]?.measure ?? 1;
     const writtenCurrent = writtenReport?.snapshot.sourceDocument === document && writtenReport.snapshot.data.scope.measure === writtenMeasure;
     const lower = Math.min(selection.start, selection.end), upper = Math.max(selection.start, selection.end);
+    const choosingMelody = melodyPicker?.document === document && melodyPicker.chords === harmony?.suppliedHarmony ? melodyPicker : null;
+    const melodyCursor = choosingMelody?.cursor;
     const insertionStop = document.moments.some(moment => moment.id === insertionCursor) ? insertionCursor : current?.momentId;
     const notesById = useMemo(() =>
         new Map(document.moments.flatMap(moment => moment.notes.map(note => [note.id, note] as const))), [document]);
@@ -154,6 +169,20 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         ? evidence : null;
     const currentChordRequest = chordRequest?.document === document && chordRequest.rows === suppliedRows ? chordRequest : undefined;
 
+    useLayoutEffect(() => {
+        if (melodyPicker && (melodyPicker.document !== document || melodyPicker.chords !== harmony?.suppliedHarmony)) {
+            melodyReturn.current = melodyPicker.origin;
+            setMelodyPicker(null);
+            setEvidenceNotice('Score changed. Select the melody again.');
+        } else if (!melodyPicker && melodyReturn.current) {
+            const origin = melodyReturn.current;
+            melodyReturn.current = null;
+            focusEvidenceElement(origin.isConnected ? origin : harmonyControls.current?.querySelector('button'));
+        }
+    }, [document, harmony?.suppliedHarmony, melodyPicker]);
+    useLayoutEffect(() => {
+        if (melodyCursor) focusEvidenceElement(buttons.current.get(cellKey(melodyCursor)));
+    }, [melodyCursor]);
     useLayoutEffect(() => {
         if (chordRequest && !currentChordRequest) setChordRequest(null);
     }, [chordRequest, currentChordRequest]);
@@ -196,6 +225,53 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         if (!timingBlocked()) return true;
         setTimingNotice('Finish or cancel this input first.');
         return false;
+    };
+    const chooseMelodyOnScore = (origin: HTMLButtonElement, read: MelodyPicker['read']) => {
+        if (!harmony || !guardTiming()) return;
+        const cells = document.moments.slice(lower, upper + 1).flatMap((moment, index) => moment.rest ? [] : moment.notes
+            .map(note => ({ momentId: moment.id, position: lower + index, noteId: note.id, string: note.string })));
+        if (!cells.length) return;
+        const byCell = new Map(cells.map(cell => [cellKey(cell), cell]));
+        if (draftRef.current) setDraft(null);
+        cancelHold(); drag.current = null; skipHeaderClick.current = false;
+        setTouchActions(null); setPositionPopup(null); setMeterBar(null);
+        setEvidence(null); setEvidenceNotice(null); setTimingNotice(null); timingReturn.current = null;
+        setMelodyPicker({
+            document, chords: harmony.suppliedHarmony, origin, read, cells, byCell,
+            cursor: cells[0], picked: new Map(),
+        });
+    };
+    const cancelMelody = () => {
+        if (!choosingMelody) return;
+        melodyReturn.current = choosingMelody.origin;
+        setMelodyPicker(null);
+    };
+    const submitMelody = () => {
+        if (!choosingMelody?.picked.size) return;
+        setMelodyPicker(null);
+        choosingMelody.read([...choosingMelody.picked.values()]);
+    };
+    const toggleMelodyCell = (choice: MelodyCell) => setMelodyPicker(picker => {
+        if (!picker) return picker;
+        const picked = new Map(picker.picked);
+        if (picked.get(choice.momentId) === choice.noteId) picked.delete(choice.momentId);
+        else picked.set(choice.momentId, choice.noteId);
+        return { ...picker, cursor: choice, picked };
+    });
+    const onMelodyCellKey = (event: React.KeyboardEvent, choice: MelodyCell) => {
+        if (!choosingMelody || event.nativeEvent.isComposing) return;
+        if (event.ctrlKey || event.metaKey) {
+            const key = event.key.toLowerCase();
+            if (key === 'z' || key === 'y') {
+                event.preventDefault();
+                if (event.shiftKey || key === 'y') onRedo(); else onUndo();
+            }
+            return;
+        }
+        if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
+        event.preventDefault();
+        const next = adjacentMelodyCell(choosingMelody.cells, choice, event.key);
+        if (next) setMelodyPicker(picker => picker && { ...picker, cursor: next });
     };
     const revealEvidence = (from: 'harmony' | 'written', target: TabEvidenceTarget, origin: HTMLElement) => {
         if (!guardTiming()) return;
@@ -466,7 +542,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         onDeleteMoments(document.moments.slice(lower, upper + 1).map(moment => moment.id));
     };
     const onHeaderKey = (event: React.KeyboardEvent<HTMLButtonElement>, momentId: string) => {
-        if (event.nativeEvent.isComposing || composing.current) return;
+        if (choosingMelody || event.nativeEvent.isComposing || composing.current) return;
         if (event.ctrlKey || event.metaKey) {
             if (event.key.toLowerCase() === 'z' || event.key.toLowerCase() === 'y') {
                 event.preventDefault();
@@ -496,7 +572,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         if (nextIndex !== null) { event.preventDefault(); chooseHeader(document.moments[nextIndex].id, event.shiftKey); }
     };
     const startHeaderDrag = (event: React.PointerEvent<HTMLButtonElement>, momentId: string) => {
-        if (event.button !== 0 || composing.current) return;
+        if (choosingMelody || event.button !== 0 || composing.current) return;
         if (!commit()) { input.current?.focus(); return; }
         const index = document.moments.findIndex(moment => moment.id === momentId);
         // A long press inside a touch-selected range offers deletion of that whole range.
@@ -692,6 +768,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                 }
                 return placed.length > 0 && <div className={styles.annotations} data-placement={placement}>
                     {placed.map(({ annotation, start, end, lane }) => <button key={annotation.id} type="button"
+                        disabled={!!choosingMelody}
                         className={styles.annotation} style={{ gridColumn: `${start + 2} / span ${end - start + 1}`, gridRow: lane + 1 }}
                         data-span={end > start} data-source={annotation.source} data-kind={annotation.kind}
                         aria-label={`${annotation.label}, ${annotation.kind} annotation`} title={annotation.label} aria-expanded={openAnnotation === annotation.id}
@@ -701,11 +778,12 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                 </div>;
             };
             return <section className={styles.system} key={system[0].number} aria-label={`Bars ${system[0].number}–${system.at(-1)!.number}`}>
-                <div className={styles.viewport} role="region" tabIndex={onEdit ? 0 : undefined} aria-label={`Tab score — bars ${system[0].number}–${system.at(-1)!.number}`}>
+                <div className={styles.viewport} role="region" tabIndex={onEdit && !choosingMelody ? 0 : undefined} aria-label={`Tab score — bars ${system[0].number}–${system.at(-1)!.number}`}>
                     <div className={styles.sheet} style={sheetStyle}>
                         {onEdit && <div className={styles.measureLane}>
                             <span aria-hidden="true" />
                             {system.map(measure => <button key={measure.number} type="button" className={styles.measureControl}
+                                disabled={!!choosingMelody}
                                 style={{ gridColumn: `span ${Math.max(1, measure.moments.length)}` }}
                                 aria-label={`Bar ${measure.number} meter: ${document.meter ? `${document.meter.numerator}/${document.meter.denominator}` : 'unspecified'}`}
                                 aria-expanded={meterBar === measure.number}
@@ -721,6 +799,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                                 if ((event.key === 'Enter' || event.key === ' ') && !guardTiming()) { event.preventDefault(); event.stopPropagation(); }
                             }}>
                             {visibleChords.map(chord => <button type="button" key={chord.id} className={`${harmonyStyles.scoreLabel} ${styles.suppliedLabel}`}
+                                disabled={!!choosingMelody}
                                 aria-label={`${chord.name}, supplied chord`} title={chord.name}
                                 style={{ gridColumn: `${chord.start + 2} / span ${chord.end - chord.start + 1}` }}
                                 onClick={event => {
@@ -745,6 +824,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                                     ].filter(Boolean).join('; ') || 'empty';
                                     return <button key={moment.id} ref={element => { if (element) headers.current.set(moment.id, element); else headers.current.delete(moment.id); }}
                                         type="button" tabIndex={columnMode && current?.momentId === moment.id ? 0 : -1} className={styles.header}
+                                        disabled={!!choosingMelody}
                                         data-column-header="true"
                                         data-evidence={currentEvidence?.target.momentIds.has(moment.id) || undefined}
                                         aria-label={`Onset ${index + 1}, bar ${moment.measure}: ${description}`} aria-pressed={index >= lower && index <= upper}
@@ -770,6 +850,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                             <span aria-hidden="true" />
                             {slots.map(({ moment, index }, slotIndex) => <div key={moment?.id ?? `position-${slotIndex}`}>
                                 {moment && current?.momentId === moment.id && <button type="button" className={styles.positionTrigger}
+                                    disabled={!!choosingMelody}
                                     ref={element => { const key = cellKey(current); if (element) positionTriggers.current.set(key, element); else positionTriggers.current.delete(key); }}
                                     data-position-trigger="true" aria-label={`Edit position ${index + 1}, bar ${moment.measure}, string ${current.string + 1}`}
                                     aria-controls={`${errorId}-position-editor`}
@@ -786,7 +867,8 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                             </div>)}
                         </div>}
                         <div className={styles.scoreBody}>
-                        <div role="grid" aria-label={systemIndex === 0 ? 'Editable tab' : `Editable tab, bars ${system[0].number}–${system.at(-1)!.number}`} aria-rowcount={6} aria-colcount={slots.length + 1} className={styles.grid}>
+                        <div role="grid" aria-label={`${choosingMelody ? 'Choose melody notes on tab' : 'Editable tab'}${systemIndex === 0 ? '' : `, bars ${system[0].number}–${system.at(-1)!.number}`}`}
+                            aria-rowcount={6} aria-colcount={slots.length + 1} className={styles.grid}>
                             <div className={styles.barlines} aria-hidden="true">
                                 <span />
                                 {system.map(measure => <span key={measure.number} className={styles.measureRule}
@@ -800,6 +882,8 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                                         aria-label={`Empty bar ${measure}`} className={styles.cell} data-bar-start={startsBar} />;
                             const cell = { momentId: moment.id, string }, key = cellKey(cell);
                             const note = moment.notes.find(item => item.string === string);
+                            const melodyChoice = choosingMelody?.byCell.get(key);
+                            const isMelodyNote = !!melodyChoice && choosingMelody?.picked.get(moment.id) === melodyChoice.noteId;
                             const mute = moment.mutes?.some(item => item.string === string);
                             const sustain = sustainedAt(moment, string);
                             const tiedNote = sustain && notesById.get(sustain.noteId);
@@ -812,16 +896,30 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                             const label = `String ${string + 1}, onset ${index + 1}, ${valueLabel}${detail ? `; ${detail}` : ''}`;
                             return <div role="gridcell" aria-colindex={slotIndex + 2} aria-selected={isActive} className={styles.cell} key={key}
                                 data-active={isActive} data-selected={index >= lower && index <= upper} data-bar-start={startsBar}
+                                data-melody-picked={isMelodyNote || undefined}
                                 data-evidence={Boolean(note && currentEvidence?.target.noteIds.has(note.id)) || undefined}>
                                 <button ref={element => { if (element) buttons.current.set(key, element); else buttons.current.delete(key); }} type="button"
-                                    className={styles.cellButton} tabIndex={isActive && !isEditing && !columnMode ? 0 : -1} aria-label={label} title={detail || undefined}
+                                    className={styles.cellButton}
+                                    tabIndex={(choosingMelody ? melodyChoice === melodyCursor : isActive && !isEditing && !columnMode) ? 0 : -1}
+                                    disabled={!!choosingMelody && !melodyChoice} aria-pressed={melodyChoice ? isMelodyNote : undefined}
+                                    aria-label={label} title={detail || undefined}
                                     aria-hidden={isEditing || undefined} data-editing={isEditing}
                                     onClick={event => {
+                                        if (choosingMelody) {
+                                            if (melodyChoice) toggleMelodyCell(melodyChoice);
+                                            return;
+                                        }
                                         if (!commit()) { input.current?.focus(); return; }
                                         choose(cell, event.shiftKey || extend);
                                         begin(cell, textAt(cell), 'all');
-                                    }} onKeyDown={event => onCellKey(event, cell)}
-                                    onPaste={event => { event.preventDefault(); begin(cell, event.clipboardData.getData('text/plain'), 'all'); }}>
+                                    }} onKeyDown={event => {
+                                        if (melodyChoice) onMelodyCellKey(event, melodyChoice);
+                                        else if (!choosingMelody) onCellKey(event, cell);
+                                    }}
+                                    onPaste={event => {
+                                        event.preventDefault();
+                                        if (!choosingMelody) begin(cell, event.clipboardData.getData('text/plain'), 'all');
+                                    }}>
                                     {note ? <span className={styles.fret} data-focused={note.id === focusedNoteId}>{note.fret}
                                         {techniques.length > 0 && <sup className={styles.technique} aria-hidden="true">{techniques.map(technique => technique.mark).join('')}</sup>}</span>
                                         : mute ? <span className={styles.fret}>x</span>
@@ -852,7 +950,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                                     ref={element => { if (element) insertionButtons.current.set(moment.id, element); else insertionButtons.current.delete(moment.id); }}
                                     aria-label={`Insert position after onset ${index + 1}`} title={`Insert position in bar ${moment.measure}`}
                                     aria-describedby={`${errorId}-insert-bar-${moment.measure}`}
-                                    disabled={document.moments.length >= 1024}
+                                    disabled={!!choosingMelody || document.moments.length >= 1024}
                                     onFocus={() => setInsertionCursor(moment.id)} onKeyDown={event => onInsertionKey(event, moment.id)}
                                     onClick={() => insertAt({ momentId: moment.id, string: current?.string ?? 0 })}><span aria-hidden="true">+</span></button>}
                             </div>)}
@@ -877,7 +975,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                         <TabNotationEditor document={document} cell={current} dispatch={onEdit} onClose={closePositionEditor} onDraftStateChange={reportNotationDraft} />
                     </div>}
                 {onEdit && systemIndex === systems.length - 1 && <button type="button" className={styles.addBar}
-                    disabled={document.moments.length >= 1024 || document.measureCount >= 1024}
+                    disabled={!!choosingMelody || document.moments.length >= 1024 || document.measureCount >= 1024}
                     onClick={() => { if (commit()) { setColumnMode(false); pendingBar.current = document; onEdit({ type: 'add-measures', count: 1 }); } }}>+ Add bar</button>}
                 {selectedAnnotation && <div className={styles.annotationDetail} role="note" aria-label="Annotation detail">
                     <div><strong>{selectedAnnotation.label}</strong><p>{selectedAnnotation.detail}</p></div>
@@ -885,12 +983,19 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                 </div>}
             </section>;
         });
-    const layout = (chordTrigger?: React.ReactNode, chordBody?: React.ReactNode) => <>
-        <div className={timingStyles.readingTools} role="group" aria-label="TAB analysis tools">
+    const layout = (chordTrigger?: React.ReactNode, chordBody?: React.ReactNode, selectionActions?: React.ReactNode) => <>
+        <div className={timingStyles.readingTools} role="group" aria-label="TAB analysis tools" inert={!!choosingMelody}>
             {patternActions}
             {chordTrigger && <div ref={harmonyControls} {...readControls('harmony')}>{chordTrigger}</div>}
             {timingTools}
         </div>
+        {selectionActions && <div className={timingStyles.selectionTools} hidden={!!choosingMelody} {...readControls('harmony')}>{selectionActions}</div>}
+        {choosingMelody && <div className={timingStyles.melodyTools} role="group" aria-label="Melody selection">
+            <span>One note per position</span>
+            <span role="status">{choosingMelody.picked.size} selected</span>
+            <button type="button" className={timingStyles.action} aria-label="Cancel melody selection" onClick={cancelMelody}>Cancel</button>
+            <button type="button" className={timingStyles.action} disabled={!choosingMelody.picked.size} onClick={submitMelody}>Read melody</button>
+        </div>}
         {(timingNotice || evidenceNotice || timingStale || writtenStale) && <div className={timingStyles.notices}>
             {timingNotice && <p role="status">{timingNotice}</p>}
             {evidenceNotice && <p role="status">{evidenceNotice}</p>}
@@ -899,12 +1004,18 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         </div>}
         {scoreSystems}
         {scoreFooter}
-        {chordBody && <div {...readControls('harmony')}>{chordBody}</div>}
-        {timeReadings}
+        <div inert={!!choosingMelody}>
+            {chordBody && <div {...readControls('harmony')}>{chordBody}</div>}
+            {timeReadings}
+        </div>
     </>;
-    return <div className={styles.score} role="region" aria-label="Tab score — onsets in order"
+    return <div className={styles.score} role="region" aria-label="Tab score — onsets in order" data-melody-mode={!!choosingMelody || undefined}
         onKeyDownCapture={event => {
             if (event.key !== 'Escape' || event.nativeEvent.isComposing || draftRef.current || timingBlocked()) return;
+            if (choosingMelody) {
+                event.preventDefault(); event.stopPropagation(); cancelMelody();
+                return;
+            }
             // Editors and contextual controls retain their own Escape behavior.
             if (!(event.target instanceof Element) || !event.target.closest('[role="gridcell"] button, [data-column-header], [data-position-trigger]')) return;
             if (currentEvidence) {
@@ -924,6 +1035,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         {harmony && onEdit
             ? <SuppliedHarmonyPanel document={document} selection={selection} harmony={harmony} onEdit={onEdit}
                 rows={suppliedRows} references={readingReferences} requestedChord={currentChordRequest} renderLayout={layout}
+                onChooseMelody={chooseMelodyOnScore}
                 onSetKeyReference={frame => onEdit({ type: 'set-frame', frame })}
                 onRevealEvidence={(target, origin) => revealEvidence('harmony', target, origin)} />
             : layout()}

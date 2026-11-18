@@ -1,5 +1,23 @@
 .toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 0 16px; }
 .readingTools { display: flex; align-items: center; flex-wrap: wrap; gap: 0 16px; margin-bottom: 12px; font-size: 12px; }
+.selectionTools { border-top: 1px solid var(--workspace-border); color: var(--workspace-muted); font-size: 12px; }
+.melodyTools {
+    position: fixed;
+    inset: env(safe-area-inset-top, 0px) 0 auto;
+    z-index: 8;
+    width: min(36rem, calc(100% - 24px));
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0 12px;
+    padding-inline: 4px;
+    background: var(--workspace-panel);
+    border-block: 1px solid var(--workspace-border);
+    font-size: 12px;
+}
+.melodyTools [role="status"] { color: var(--workspace-muted); }
 .notices { color: var(--workspace-muted); font-size: 12px; margin-bottom: 12px; }
 .detailsShelf { display: grid; gap: 16px; margin: 16px 0 12px; color: var(--workspace-muted); font-size: 12px; min-width: 0; }
 .detailsShelf:empty { display: none; }

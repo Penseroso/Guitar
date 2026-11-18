@@ -28,6 +28,7 @@ type Draft = {
     id: string;
     scoreId: number;
     document: TabDocument;
+    mode: Mode;
     positions: PositionChordBinding | null;
     chord: ChordRef;
     start: string;
@@ -70,7 +71,7 @@ function compareRows(a: SuppliedChordRow, b: SuppliedChordRow) {
     return Number(!!right) - Number(!!left);
 }
 
-export function SuppliedHarmonyPanel({ document, selection, harmony, rows, references, onEdit, onRevealEvidence, requestedChord, renderLayout, onSetKeyReference }: {
+export function SuppliedHarmonyPanel({ document, selection, harmony, rows, references, onEdit, onRevealEvidence, requestedChord, renderLayout, onSetKeyReference, onChooseMelody }: {
     document: TabDocument;
     selection: TabSelection;
     harmony: HarmonyState;
@@ -79,8 +80,9 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
     onEdit: (action: TabAnalysisAction) => void;
     onRevealEvidence?: (target: TabEvidenceTarget, origin: HTMLElement) => void;
     requestedChord?: { id: string; request: number; origin?: HTMLButtonElement };
-    renderLayout?: (trigger: ReactNode, body: ReactNode) => ReactNode;
+    renderLayout?: (trigger: ReactNode, body: ReactNode, selectionActions: ReactNode) => ReactNode;
     onSetKeyReference?: (frame: TonalFrame) => void;
+    onChooseMelody?: (origin: HTMLButtonElement, read: (ids: string[]) => void) => void;
 }) {
     const [open, setOpen] = useState(false);
     const [mode, setMode] = useState<Mode>('positions');
@@ -99,6 +101,7 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
     const composing = useRef(false);
     const toggle = useRef<HTMLButtonElement>(null);
     const add = useRef<HTMLButtonElement>(null);
+    const draftOrigin = useRef<HTMLButtonElement | null>(null);
     const editorHeading = useRef<HTMLHeadingElement>(null);
     const analysisButton = useRef<HTMLButtonElement>(null);
     const analysisHeading = useRef<HTMLHeadingElement>(null);
@@ -124,8 +127,10 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
     const currentNotePage = Math.max(0, Math.min(notePage, notePages - 1));
     const selectedRange = selection.start === selection.end
         ? `Position ${selection.start + 1}` : `Positions ${Math.min(selection.start, selection.end) + 1}–${Math.max(selection.start, selection.end) + 1}`;
-    const selectedMoments = document.moments.slice(Math.min(selection.start, selection.end), Math.max(selection.start, selection.end) + 1);
-    const canSelectRange = selectedMoments.length > 0 && selectedMoments.every(moment => moment.notes.length === 1 && !moment.rest);
+    const selectedMoments = useMemo(() => document.moments.slice(Math.min(selection.start, selection.end), Math.max(selection.start, selection.end) + 1),
+        [document, selection.start, selection.end]);
+    const singleNoteRange = useMemo(() => selectedMoments.length > 0 && selectedMoments.every(moment => moment.notes.length === 1 && !moment.rest)
+        ? selectedMoments.map(moment => moment.notes[0].id) : null, [selectedMoments]);
     const selectedNoteIds = useMemo(() => new Set(currentMelody.ids), [currentMelody.ids]);
     const toggleMelodyNote = (id: string) => setMelody({
         document, ids: selectedNoteIds.has(id) ? currentMelody.ids.filter(noteId => noteId !== id) : [...currentMelody.ids, id],
@@ -135,6 +140,17 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
         if (!readingOpen) requestAnimationFrame(() => {
             analysisHeading.current?.focus({ preventScroll: true });
             analysisHeading.current?.scrollIntoView?.({ block: 'nearest' });
+        });
+    };
+    const readSelectedMelody = (ids: string[]) => {
+        setMelody({ document, ids });
+        setOpen(true);
+        setOpeningSource('trigger');
+        setReadingOpen(true);
+        requestAnimationFrame(() => {
+            const destination = analysisHeading.current ?? bodyHeading.current;
+            destination?.focus({ preventScroll: true });
+            destination?.scrollIntoView?.({ block: 'nearest', behavior: 'instant' });
         });
     };
     if (requestedChord && (requestedChord.id !== handledRequest?.id || requestedChord.request !== handledRequest?.request)) {
@@ -171,25 +187,34 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
         ? { momentIds: document.moments.slice(chosen.placement.first, chosen.placement.last + 1).map(moment => moment.id) }
         : { noteIds: detailNotes.map(note => note.noteId) };
 
-    const edit = (row?: SuppliedChordRow) => {
+    const edit = (row?: SuppliedChordRow, origin?: HTMLButtonElement) => {
         const binding = row?.entry.binding;
+        draftOrigin.current = origin ?? null;
         setError(null);
         setDraft({
             id: row?.entry.id ?? '',
             scoreId: harmony.scoreId,
             document,
+            mode: origin ? 'positions' : mode,
             positions: binding?.kind === 'positions' && row?.placement ? binding : selectedPositions,
             chord: row?.entry.chord ?? { root: '', chordId: '' },
             start: binding?.kind === 'written-time' ? exactLabel(binding.start) : '',
             end: binding?.kind === 'written-time' ? exactLabel(binding.end) : '',
         });
-        requestAnimationFrame(() => editorHeading.current?.focus({ preventScroll: true }));
+        requestAnimationFrame(() => {
+            editorHeading.current?.focus({ preventScroll: true });
+            if (origin) editorHeading.current?.scrollIntoView?.({ block: 'nearest', behavior: 'instant' });
+        });
     };
     const cancel = () => {
         if (composing.current) return;
         setDraft(null);
         setError(null);
-        add.current?.focus({ preventScroll: true });
+        const origin = draftOrigin.current;
+        draftOrigin.current = null;
+        const destination = origin?.isConnected ? origin : add.current;
+        destination?.focus({ preventScroll: true });
+        if (origin) destination?.scrollIntoView?.({ block: 'nearest', behavior: 'instant' });
     };
     const update = (patch: Partial<Draft>) => {
         if (!draft) return;
@@ -197,7 +222,7 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
         setDraft({ ...draft, ...patch });
     };
     const expired = !!draft && (draft.scoreId !== harmony.scoreId
-        || (!!draft.id && !entries.some(row => row.entry.id === draft.id)));
+        || (!!draft.id && !rows.some(row => row.entry.id === draft.id && row.entry.binding.kind === draft.mode)));
     let draftChord;
     if (draft?.chord.root && draft.chord.chordId) {
         try { draftChord = resolveChord({ root: draft.chord.root, chordId: draft.chord.chordId }); }
@@ -209,9 +234,9 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
             setError('The score changed. Recheck the range before applying.');
             return;
         }
-        const start = mode === 'written-time' ? parseChordBoundary(draft.start) : null;
-        const end = mode === 'written-time' ? parseChordBoundary(draft.end) : null;
-        const binding = mode === 'positions' ? draft.positions : start && end
+        const start = draft.mode === 'written-time' ? parseChordBoundary(draft.start) : null;
+        const end = draft.mode === 'written-time' ? parseChordBoundary(draft.end) : null;
+        const binding = draft.mode === 'positions' ? draft.positions : start && end
             ? { kind: 'written-time' as const, start, end, originsRevision: harmony.originsRevision } : null;
         if (!binding) {
             setError('Enter a start and an end in quarter notes, for example 0 and 3/2.');
@@ -240,6 +265,21 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
             if (open) closePanel();
             else { setOpen(true); setOpeningSource('trigger'); setBodyFocusRequest(previous => previous + 1); }
         }}>Read with my chords{rows.length > 0 ? ` · ${rows.length}` : ''}</button>;
+    const selectionActions = selectedPositions && <div className={styles.actions} role="group" aria-label="Selected TAB range"
+        onPointerDownCapture={event => { if (draft) event.preventDefault(); }}>
+        <span>{selectedRange}</span>
+        <button type="button" className={shared.action} aria-disabled={!!draft} onClick={event => {
+            if (draft) return;
+            setOpen(true);
+            setOpeningSource('trigger');
+            edit(undefined, event.currentTarget);
+        }}>Add chord to selection</button>
+        {singleNoteRange && <button type="button" className={shared.action} aria-disabled={!!draft}
+            onClick={() => { if (!draft) readSelectedMelody(singleNoteRange); }}>Read selected melody</button>}
+        {!singleNoteRange && onChooseMelody && selectedMoments.some(moment => !moment.rest && moment.notes.length > 0)
+            && <button type="button" className={shared.action} aria-disabled={!!draft}
+                onClick={event => { if (!draft) onChooseMelody(event.currentTarget, readSelectedMelody); }}>Choose melody notes</button>}
+    </div>;
     const body = <>
         {requestNotice && <p role="status">{requestNotice}</p>}
         {open && <section aria-label="Supplied chord progression" className={styles.body} onKeyDown={event => {
@@ -281,17 +321,17 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
             }} onCompositionStart={() => { composing.current = true; }}
                 onCompositionEnd={() => { composing.current = false; }}>
                 <h3 ref={editorHeading} tabIndex={-1}>{draft.id ? 'Edit supplied chord' : 'Add supplied chord'}</h3>
-                {mode === 'positions' && draft.positions && <p>{positionLabel(draft.positions, document)}</p>}
-                {mode === 'written-time' && <div className={styles.actions}>
+                {draft.mode === 'positions' && draft.positions && <p>{positionLabel(draft.positions, document)}</p>}
+                {draft.mode === 'written-time' && <div className={styles.actions}>
                     <label>Start <input aria-label="Chord start" value={draft.start} placeholder="0" onChange={event => update({ start: event.target.value })} /></label>
                     <label>End <input aria-label="Chord end" value={draft.end} placeholder="3/2" onChange={event => update({ end: event.target.value })} /></label>
                     <span>Quarter notes from score start</span>
                 </div>}
                 {expired ? <p role="status">This chord draft belongs to an earlier score or edit. Cancel to continue.</p>
                     : draft.document !== document && <p role="status">Score changed while editing.</p>}
-                {!expired && ((mode === 'positions' && draft.id) || draft.document !== document) && <button type="button" className={shared.action}
+                {!expired && ((draft.mode === 'positions' && draft.id) || draft.document !== document) && <button type="button" className={shared.action}
                     onClick={() => { if (!composing.current) update({ document, positions: selectedPositions }); }}>
-                    {mode === 'positions' ? 'Use selected positions' : 'Review with current meter'}
+                    {draft.mode === 'positions' ? 'Use selected positions' : 'Review with current meter'}
                 </button>}
                 <div className={styles.pickers}>
                     <SwipePicker label="Chord root" value={draft.chord.root} options={ROOT_OPTIONS}
@@ -360,6 +400,7 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
                 </ul>}
                 <PageControls page={currentNotePage} count={notePages} name="Relationship pages" onChange={setNotePage} />
             </div>}
+            {readingOpen && !draft && !entries.length && currentMelody.ids.length > 0 && <p role="status">Add a chord to read roles for the selected melody.</p>}
             {readingOpen && !draft && entries.length > 0 && <section className={styles.detail} aria-label="Progression reading"
                 onKeyDown={event => {
                     if (event.key !== 'Escape' || event.nativeEvent.isComposing) return;
@@ -370,8 +411,8 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
                 }}>
                 <h3 ref={analysisHeading} tabIndex={-1} className={styles.analysisTitle}>Progression reading</h3>
                 <div className={styles.actions}>
-                    <button type="button" className={shared.action} disabled={!canSelectRange}
-                        onClick={() => setMelody({ document, ids: selectedMoments.map(moment => moment.notes[0].id) })}>Use single-note range</button>
+                    <button type="button" className={shared.action} disabled={!singleNoteRange}
+                        onClick={() => { if (singleNoteRange) setMelody({ document, ids: singleNoteRange }); }}>Use single-note range</button>
                     {currentMelody.ids.length > 0 && <button type="button" className={shared.action}
                         onClick={() => { setMelody({ document, ids: [] }); analysisHeading.current?.focus({ preventScroll: true }); }}>Clear melody</button>}
                 </div>
@@ -385,5 +426,5 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
             </section>}
         </section>}
     </>;
-    return renderLayout ? renderLayout(trigger, body) : <div className={styles.progression}>{trigger}{body}</div>;
+    return renderLayout ? renderLayout(trigger, body, selectionActions) : <div className={styles.progression}>{trigger}{body}</div>;
 }
