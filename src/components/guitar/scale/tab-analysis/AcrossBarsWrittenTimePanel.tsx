@@ -6,6 +6,7 @@ import { compareExactTimes, parseExactTime, type TabExactFraction } from '@/doma
 import { getNoteName } from '@/domain/shared/notes';
 import type { TabWrittenPointReferences } from '@/domain/tab/written-point-analysis';
 import { WrittenChordReadings } from './WrittenChordReadings';
+import type { TabEvidenceTarget } from './tab-evidence';
 import styles from './written-time-panel.module.css';
 import acrossStyles from './across-bars-written-time.module.css';
 
@@ -16,11 +17,12 @@ const approximateLabel = (value: number) => `≈ ${Number(value.toFixed(2))}`;
 const pitchLabel = (midi: number) => `${getNoteName(midi % 12)}${Math.floor(midi / 12) - 1}`;
 const NO_REFERENCES: TabWrittenPointReferences = { scale: null, frame: null };
 
-export function AcrossBarsWrittenTimePanel({ snapshot, onClose, onAction, readingReferences = NO_REFERENCES }: {
+export function AcrossBarsWrittenTimePanel({ snapshot, onClose, onAction, readingReferences = NO_REFERENCES, onRevealEvidence }: {
     snapshot: TabAcrossBarsWrittenTimeSnapshot;
     onClose: () => void;
     onAction: () => boolean;
     readingReferences?: TabWrittenPointReferences;
+    onRevealEvidence?: (target: TabEvidenceTarget, origin: HTMLElement) => void;
 }) {
     const data = snapshot.data;
     const referenceKey = JSON.stringify([readingReferences.scale?.group, readingReferences.scale?.scaleId, readingReferences.scale?.tonic,
@@ -111,15 +113,20 @@ export function AcrossBarsWrittenTimePanel({ snapshot, onClose, onAction, readin
                         : query?.status === 'invalid-query' ? 'Invalid time point'
                             : query?.status === 'outside-window' ? 'Outside selected bar'
                                 : query?.status === 'unavailable' ? 'Projection unavailable' : 'Outside observed range'}</p>
+            {onRevealEvidence && query?.status === 'complete' && query.notes.length > 0 && <button type="button" className={styles.action} data-evidence-action
+                onClick={event => { if (onAction()) onRevealEvidence({ noteIds: query.notes.map(note => note.noteId) }, event.currentTarget); }}>Show point on tab</button>}
         </div>}
         {query?.status === 'complete' && time && <WrittenChordReadings key={referenceKey} snapshot={snapshot} time={time}
-            references={readingReferences} onAction={onAction} />}
+            references={readingReferences} onAction={onAction} onRevealEvidence={onRevealEvidence} />}
         {data.status === 'ready' && data.populationCoverage !== 'unreadable' && displayNotes.length > 0 && <>
             <div className={styles.axis} aria-hidden="true"><span>{approximateLabel(0)}</span><span>Quarter notes in bar</span><span>{approximateLabel(length)}</span></div>
             <ul className={styles.notes} aria-label="Across-bars written notes">
                 {visible.map(note => <li key={`${note.momentIndex}:${note.noteIndex}`} data-active={active?.has(note.noteId) || undefined}>
                     <div className={styles.noteLabel}><span>Bar {note.sourceMeasure} · Position {note.momentIndex + 1} · String {note.string + 1}</span>
-                        <span>{pitchLabel(note.midi)}{active?.has(note.noteId) && <><span className={styles.activeDot} aria-hidden="true">●</span><span className={styles.srOnly}> · At this point</span></>}</span></div>
+                        <span>{pitchLabel(note.midi)}{active?.has(note.noteId) && <><span className={styles.activeDot} aria-hidden="true">●</span><span className={styles.srOnly}> · At this point</span></>}</span>
+                        {onRevealEvidence && <button type="button" className={styles.action} data-evidence-action
+                            aria-label={`Show on tab · ${pitchLabel(note.midi)} · Bar ${note.sourceMeasure} · Position ${note.momentIndex + 1} · String ${note.string + 1}`}
+                            onClick={event => { if (onAction()) onRevealEvidence({ noteIds: [note.noteId] }, event.currentTarget); }}>Show on tab</button>}</div>
                     <div className={`${styles.rail} ${acrossStyles.window}`} aria-hidden="true">
                         <span className={styles.interval} style={{ left: `${position(note.start)}%`, width: `${Math.max(0, position(note.end) - position(note.start))}%` }} />
                         {time && <span className={styles.timeCursor} style={{ left: `${position(time)}%` }} />}

@@ -6,16 +6,18 @@ import type { TabAcrossBarsWrittenTimeSnapshot } from '@/domain/tab/written-time
 import type { TabExactFraction } from '@/domain/tab/exact-time';
 import { resolveScaleRef } from '@/domain/scale/scale-ref';
 import { getNoteName } from '@/domain/shared/notes';
+import type { TabEvidenceTarget } from './tab-evidence';
 import shared from './written-time-panel.module.css';
 import styles from './written-chord-readings.module.css';
 
 const PAGE_SIZE = 8;
 
-export function WrittenChordReadings({ snapshot, time, references, onAction }: {
+export function WrittenChordReadings({ snapshot, time, references, onAction, onRevealEvidence }: {
     snapshot: TabAcrossBarsWrittenTimeSnapshot;
     time: TabExactFraction;
     references: TabWrittenPointReferences;
     onAction: () => boolean;
+    onRevealEvidence?: (target: TabEvidenceTarget, origin: HTMLElement) => void;
 }) {
     const point = `${time.numerator}/${time.denominator}`;
     const [open, setOpen] = useState(false);
@@ -101,7 +103,10 @@ export function WrittenChordReadings({ snapshot, time, references, onAction }: {
                     <ul className={styles.notes} aria-label="Written point notes">{notes.map(note => {
                         const role = roles?.get(note.interval.noteId);
                         return <li key={note.interval.noteId} data-note-id={note.interval.noteId}>
-                            <div className={styles.rowHeading}><strong>{note.name}</strong><span>Bar {note.interval.sourceMeasure} · Position {note.interval.momentIndex + 1} · String {note.interval.string + 1}</span></div>
+                            <div className={styles.rowHeading}><strong>{note.name}</strong><span>Bar {note.interval.sourceMeasure} · Position {note.interval.momentIndex + 1} · String {note.interval.string + 1}</span>
+                                {onRevealEvidence && <button type="button" className={shared.action} data-evidence-action
+                                    aria-label={`Show on tab · ${note.name} · Bar ${note.interval.sourceMeasure} · Position ${note.interval.momentIndex + 1} · String ${note.interval.string + 1}`}
+                                    onClick={event => { if (onAction()) onRevealEvidence({ noteIds: [note.interval.noteId] }, event.currentTarget); }}>Show on tab</button>}</div>
                             {note.inScale !== null && <p>{note.scaleDegree ? `Scale degree · ${note.scaleDegree}` : 'Outside reference scale'}</p>}
                             {role && <p>{role.chordMember ? [role.chordDegree, role.chordNoteName, 'Formula member'].filter(Boolean).join(' · ') : 'Outside this formula'}</p>}
                         </li>;

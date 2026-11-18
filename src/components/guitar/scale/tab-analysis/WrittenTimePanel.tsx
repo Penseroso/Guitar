@@ -4,6 +4,7 @@ import { useLayoutEffect, useMemo, useRef, useState, type MouseEvent } from 'rea
 import { getTabWrittenInspectionPoints, inspectTabWrittenNotesAt, type TabWrittenTimeSnapshot } from '@/domain/tab/written-time';
 import type { TabExactFraction } from '@/domain/tab/exact-time';
 import { getNoteName } from '@/domain/shared/notes';
+import type { TabEvidenceTarget } from './tab-evidence';
 import styles from './written-time-panel.module.css';
 
 const PAGE_SIZE = 8;
@@ -13,10 +14,11 @@ const approximate = (time: TabExactFraction) => Number(time.numerator) / Number(
 const approximateLabel = (time: TabExactFraction) => `≈ ${Number(approximate(time).toFixed(2)).toString()}`;
 const pitchLabel = (midi: number) => `${getNoteName(midi % 12)}${Math.floor(midi / 12) - 1}`;
 
-export function WrittenTimePanel({ snapshot, onClose, onAction }: {
+export function WrittenTimePanel({ snapshot, onClose, onAction, onRevealEvidence }: {
     snapshot: TabWrittenTimeSnapshot;
     onClose: () => void;
     onAction: () => boolean;
+    onRevealEvidence?: (target: TabEvidenceTarget, origin: HTMLElement) => void;
 }) {
     const data = snapshot.data;
     // Candidate positions depend on the frozen data, never the caller's document token.
@@ -90,12 +92,17 @@ export function WrittenTimePanel({ snapshot, onClose, onAction }: {
                     : query?.status === 'partial' ? 'More timing needed at this point'
                         : query?.status === 'unreadable' ? 'Timing unreadable at this point'
                             : query?.status === 'invalid-query' ? 'Invalid time point' : 'Outside observed range'}</p>
+                {onRevealEvidence && query?.status === 'complete' && query.notes.length > 0 && <button type="button" className={styles.action} data-evidence-action
+                    onClick={event => { if (onAction()) onRevealEvidence({ noteIds: query.notes.map(note => note.noteId) }, event.currentTarget); }}>Show point on tab</button>}
             </div>}
             <div className={styles.axis} aria-hidden="true"><span>{range && approximateLabel(range.start)}</span><span>Quarter notes</span><span>{range && approximateLabel(range.end)}</span></div>
             <ul className={styles.notes} aria-label="Written notes">
                 {visible.map(note => <li key={`${note.momentIndex}:${note.noteIndex}`} data-active={active?.has(note.noteId) || undefined}>
                     <div className={styles.noteLabel}><span>Position {note.momentIndex + 1} · String {note.string + 1}</span><span>{pitchLabel(note.midi)}
-                        {active?.has(note.noteId) && <><span className={styles.activeDot} aria-hidden="true">●</span><span className={styles.srOnly}> · At this point</span></>}</span></div>
+                        {active?.has(note.noteId) && <><span className={styles.activeDot} aria-hidden="true">●</span><span className={styles.srOnly}> · At this point</span></>}</span>
+                        {onRevealEvidence && <button type="button" className={styles.action} data-evidence-action
+                            aria-label={`Show on tab · ${pitchLabel(note.midi)} · Bar ${data.scope.measure} · Position ${note.momentIndex + 1} · String ${note.string + 1}`}
+                            onClick={event => { if (onAction()) onRevealEvidence({ noteIds: [note.noteId] }, event.currentTarget); }}>Show on tab</button>}</div>
                     <div className={styles.rail} aria-hidden="true">
                         <span className={styles.interval} style={{ left: `${position(note.start)}%`, width: `${Math.max(0, position(note.end) - position(note.start))}%` }} />
                         {time && <span className={styles.timeCursor} style={{ left: `${position(time)}%` }} />}

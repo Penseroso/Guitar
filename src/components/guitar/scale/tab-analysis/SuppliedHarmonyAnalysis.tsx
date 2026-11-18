@@ -7,10 +7,11 @@ import { formatAccidentals } from '@/domain/shared/spelling';
 import { serializeExactTime } from '@/domain/tab/exact-time';
 import { observeSuppliedProgression, type ChordPlacementMode } from '@/domain/tab/progression-observation';
 import { analyzeSuppliedMelody } from '@/domain/tab/supplied-melody';
-import type { SuppliedChordRow } from '@/domain/tab/supplied-harmony';
+import { describeSuppliedChord, type SuppliedChordRow } from '@/domain/tab/supplied-harmony';
 import type { TabDocument } from '@/domain/tab/types';
 import type { TabAcrossBarsWrittenTimeSnapshot } from '@/domain/tab/written-time-across-bars';
 import { PageControls } from './PageControls';
+import type { TabEvidenceTarget } from './tab-evidence';
 import shared from './written-time-panel.module.css';
 import styles from './supplied-harmony.module.css';
 
@@ -19,7 +20,7 @@ const pageFor = (page: number, count: number) => Math.max(0, Math.min(page, Math
 const formattedDegree = (degree: string | null) => degree ? formatAccidentals(degree) : 'Outside formula';
 const timeLabel = (time: ReturnType<typeof serializeExactTime>) => time.denominator === '1' ? time.numerator : `${time.numerator}/${time.denominator}`;
 
-export function SuppliedHarmonyAnalysis({ document, rows, mode, frame, written, selected, onToggleNote }: {
+export function SuppliedHarmonyAnalysis({ document, rows, mode, frame, written, selected, onToggleNote, onRevealEvidence }: {
     document: TabDocument;
     rows: readonly SuppliedChordRow[];
     mode: ChordPlacementMode;
@@ -27,6 +28,7 @@ export function SuppliedHarmonyAnalysis({ document, rows, mode, frame, written, 
     written?: TabAcrossBarsWrittenTimeSnapshot;
     selected: readonly string[];
     onToggleNote: (id: string) => void;
+    onRevealEvidence?: (target: TabEvidenceTarget, origin: HTMLElement) => void;
 }) {
     const [progressionPage, setProgressionPage] = useState(0);
     const [selectionPage, setSelectionPage] = useState(0);
@@ -42,21 +44,37 @@ export function SuppliedHarmonyAnalysis({ document, rows, mode, frame, written, 
             key: `shape-${shape.middle.id}`,
             title: shape.kind === 'passing' ? 'Possible passing motion' : 'Possible neighbor motion',
             evidence: `${shape.before.name} → ${shape.middle.name} → ${shape.after.name} · ${shape.middle.chord!.chord.name} · Positions ${shape.before.position + 1}–${shape.after.position + 1}`,
+            target: { noteIds: [shape.before.id, shape.middle.id, shape.after.id] },
         })),
         ...melody.held.map(change => ({
             key: `held-${change.note.id}-${change.to.entry.id}`,
             title: `${change.note.name} across ${change.from.chord.name} → ${change.to.chord.name}`,
             evidence: `${formattedDegree(change.fromDegree)} → ${formattedDegree(change.toDegree)} · Written boundary ${timeLabel(serializeExactTime(change.boundary))} · Position ${change.note.position + 1}`,
+            target: { noteIds: [change.note.id] },
         })),
         ...melody.suspensions.map(pattern => ({
             key: `suspension-${pattern.note.id}-${pattern.to.entry.id}`,
             title: 'Possible written 4–3 suspension',
             evidence: `${pattern.note.name} prepared in ${pattern.from.chord.name}, written across ${pattern.to.chord.name}, then ${pattern.next.name} · Positions ${pattern.note.position + 1} → ${pattern.next.position + 1}`,
+            target: { noteIds: [pattern.note.id, pattern.next.id] },
         })),
     ];
     const resultCount = movementCount + patterns.length;
     const melodyPageIndex = pageFor(melodyPage, resultCount);
     const start = melodyPageIndex * PAGE_SIZE, end = start + PAGE_SIZE;
+    const chordEvidence = (chords: readonly SuppliedChordRow[]): TabEvidenceTarget => {
+        const momentIds: string[] = [], noteIds: string[] = [];
+        for (const chord of chords) {
+            if (chord.placement?.kind === 'positions') {
+                momentIds.push(...document.moments.slice(chord.placement.first, chord.placement.last + 1).map(moment => moment.id));
+            } else if (written?.sourceDocument === document) {
+                const details = describeSuppliedChord(document, chord, { scale: null, frame: null }, written);
+                noteIds.push(...details?.notes.map(note => note.noteId) ?? []);
+            }
+        }
+        return { ...(momentIds.length ? { momentIds: [...new Set(momentIds)] } : {}),
+            ...(noteIds.length ? { noteIds: [...new Set(noteIds)] } : {}) };
+    };
 
     return <>
         <h4 className={styles.analysisTitle}>Chord relationships</h4>
@@ -75,6 +93,9 @@ export function SuppliedHarmonyAnalysis({ document, rows, mode, frame, written, 
                     {reading?.kind === 'tonic' && reading.endingEvidence.length > 0 && <p>Cadence needs {reading.endingEvidence.join(', ').toLowerCase()}</p>}
                     {reading?.kind === 'tonic' && reading.endingUnsupported && <p>Chord pair outside the supported cadence vocabulary</p>}
                     {facts && <p>Shared chord tones · {facts.shared.map(pitch => getNoteName(pitch)).join(', ') || 'None'}</p>}
+                    {onRevealEvidence && <button type="button" className={shared.action} data-evidence-action="true"
+                        aria-label={`Show on tab: ${prefix ? `${prefix.chord.name} to ` : ''}${from.chord.name} to ${to.chord.name}`}
+                        onClick={event => onRevealEvidence(chordEvidence(prefix ? [prefix, from, to] : [from, to]), event.currentTarget)}>Show on tab</button>}
                 </li>
             ))}
         </ul>}
@@ -95,6 +116,9 @@ export function SuppliedHarmonyAnalysis({ document, rows, mode, frame, written, 
                         <strong>{note.name} · Position {note.position + 1} · String {note.string + 1}</strong>
                         <span>{note.chord ? `${note.chord.chord.name} · ${formattedDegree(note.degree)}` : 'No chord at onset'}</span>
                     </button>
+                    {onRevealEvidence && <button type="button" className={shared.action} data-evidence-action="true"
+                        aria-label={`Show on tab: ${note.name}, position ${note.position + 1}, string ${note.string + 1}`}
+                        onClick={event => onRevealEvidence({ noteIds: [note.id] }, event.currentTarget)}>Show on tab</button>}
                 </li>)}
             </ul>
             <PageControls page={selectionPageIndex} count={Math.ceil(melody.notes.length / PAGE_SIZE)}
@@ -106,10 +130,17 @@ export function SuppliedHarmonyAnalysis({ document, rows, mode, frame, written, 
                         <p>Positions {from.position + 1} → {to.position + 1}
                             {from.chord && to.chord && ` · ${from.chord.chord.name} ${formattedDegree(from.degree)} → ${to.chord.chord.name} ${formattedDegree(to.degree)}`}</p>
                         {(guide || commonChordTone) && <p>{guide ? 'Guide-tone motion in the selected melody' : 'Shared chord tone in the selected melody'}</p>}
+                        {onRevealEvidence && <button type="button" className={shared.action} data-evidence-action="true"
+                            aria-label={`Show on tab: ${from.name} to ${to.name}`}
+                            onClick={event => onRevealEvidence({ noteIds: [from.id, to.id] }, event.currentTarget)}>Show on tab</button>}
                     </li>
                 ))}
                 {patterns.slice(Math.max(0, start - movementCount), Math.max(0, end - movementCount)).map(pattern => (
-                    <li className={styles.readingRow} key={pattern.key}><p><strong>{pattern.title}</strong></p><p>{pattern.evidence}</p></li>
+                    <li className={styles.readingRow} key={pattern.key}><p><strong>{pattern.title}</strong></p><p>{pattern.evidence}</p>
+                        {onRevealEvidence && <button type="button" className={shared.action} data-evidence-action="true"
+                            aria-label={`Show on tab: ${pattern.title}`}
+                            onClick={event => onRevealEvidence(pattern.target, event.currentTarget)}>Show on tab</button>}
+                    </li>
                 ))}
             </ul>}
             <PageControls page={melodyPageIndex} count={Math.ceil(resultCount / PAGE_SIZE)}

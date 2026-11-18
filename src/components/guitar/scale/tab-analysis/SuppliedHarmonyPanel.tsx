@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from 'react';
+import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { CHORD_REGISTRY_LIST } from '@/domain/chord/registry';
 import { resolveChord } from '@/domain/harmony/roman';
 import type { ChordRef } from '@/domain/harmony/types';
@@ -18,6 +18,7 @@ import type { TabWrittenPointReferences } from '@/domain/tab/written-point-analy
 import type { TabAnalysisAction } from '@/features/tab-analysis/state';
 import { PageControls } from './PageControls';
 import { SuppliedHarmonyAnalysis } from './SuppliedHarmonyAnalysis';
+import type { TabEvidenceTarget } from './tab-evidence';
 import shared from './written-time-panel.module.css';
 import styles from './supplied-harmony.module.css';
 
@@ -62,14 +63,22 @@ function positionLabel(binding: PositionChordBinding, document: TabDocument) {
     if (first >= 0 && last >= first) return first === last ? `Position ${first + 1}` : `Positions ${first + 1}–${last + 1}`;
     return 'Position range unavailable';
 }
+function compareRows(a: SuppliedChordRow, b: SuppliedChordRow) {
+    const left = a.placement, right = b.placement;
+    if (left?.kind === 'positions' && right?.kind === 'positions') return left.first - right.first;
+    if (left?.kind === 'written-time' && right?.kind === 'written-time') return compareExactTimes(left.start, right.start);
+    return Number(!!right) - Number(!!left);
+}
 
-export function SuppliedHarmonyPanel({ document, selection, harmony, rows, references, onEdit }: {
+export function SuppliedHarmonyPanel({ document, selection, harmony, rows, references, onEdit, onRevealEvidence, requestedChord }: {
     document: TabDocument;
     selection: TabSelection;
     harmony: HarmonyState;
     rows: readonly SuppliedChordRow[];
     references?: TabWrittenPointReferences;
     onEdit: (action: TabAnalysisAction) => void;
+    onRevealEvidence?: (target: TabEvidenceTarget, origin: HTMLElement) => void;
+    requestedChord?: { id: string; request: number; origin?: HTMLButtonElement };
 }) {
     const [open, setOpen] = useState(false);
     const [mode, setMode] = useState<Mode>('positions');
@@ -79,6 +88,8 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
     const [notePage, setNotePage] = useState(0);
     const [error, setError] = useState<string | null>(null);
     const [readingOpen, setReadingOpen] = useState(false);
+    const [handledRequest, setHandledRequest] = useState<{ id: string; request: number; accepted: boolean } | null>(null);
+    const [requestNotice, setRequestNotice] = useState<string | null>(null);
     const [melody, setMelody] = useState<{ document: TabDocument; ids: string[] }>({ document, ids: [] });
     const currentMelody = melody.document === document ? melody : { document, ids: [] };
     if (melody !== currentMelody) setMelody(currentMelody);
@@ -88,17 +99,11 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
     const editorHeading = useRef<HTMLHeadingElement>(null);
     const analysisButton = useRef<HTMLButtonElement>(null);
     const analysisHeading = useRef<HTMLHeadingElement>(null);
+    const detailHeading = useRef<HTMLHeadingElement>(null);
     const meter = document.meter;
     const hasMeter = !!meter && isValidTabMeter(meter);
     const selectedPositions = selectedChordPositions(document, selection);
-    const entries = rows.filter(row => row.entry.binding.kind === mode).sort((a, b) => {
-        const left = a.placement, right = b.placement;
-        if (left?.kind === 'positions' && right?.kind === 'positions') return left.first - right.first;
-        if (left?.kind === 'written-time' && right?.kind === 'written-time') {
-            return compareExactTimes(left.start, right.start);
-        }
-        return Number(!!right) - Number(!!left);
-    });
+    const entries = rows.filter(row => row.entry.binding.kind === mode).sort(compareRows);
     const chosen = rows.find(row => row.entry.id === chosenId && row.entry.binding.kind === mode);
     const listPages = Math.ceil(entries.length / PAGE_SIZE);
     const currentListPage = Math.max(0, Math.min(listPage, listPages - 1));
@@ -127,6 +132,26 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
             analysisHeading.current?.scrollIntoView?.({ block: 'nearest' });
         });
     };
+    if (requestedChord && (requestedChord.id !== handledRequest?.id || requestedChord.request !== handledRequest?.request)) {
+        const row = rows.find(row => row.entry.id === requestedChord.id && row.entry.binding.kind === 'positions' && row.placement?.kind === 'positions');
+        const accepted = !draft && !!row;
+        setHandledRequest({ id: requestedChord.id, request: requestedChord.request, accepted });
+        if (accepted) {
+            const positions = rows.filter(row => row.entry.binding.kind === 'positions').sort(compareRows);
+            setOpen(true); setMode('positions'); setChosenId(requestedChord.id);
+            if (mode !== 'positions') { setMelody({ document, ids: [] }); setReadingOpen(false); }
+            setListPage(Math.floor(positions.findIndex(row => row.entry.id === requestedChord.id) / PAGE_SIZE));
+            setNotePage(0); setRequestNotice(null);
+        } else setRequestNotice(draft ? 'Finish or cancel chord input first.' : 'This chord position is no longer available.');
+    }
+    useLayoutEffect(() => {
+        if (!handledRequest?.accepted) return;
+        detailHeading.current?.focus({ preventScroll: true });
+        detailHeading.current?.scrollIntoView?.({ block: 'nearest' });
+    }, [handledRequest]);
+    const chosenEvidence = (): TabEvidenceTarget => chosen?.placement?.kind === 'positions'
+        ? { momentIds: document.moments.slice(chosen.placement.first, chosen.placement.last + 1).map(moment => moment.id) }
+        : { noteIds: detailNotes.map(note => note.noteId) };
 
     const edit = (row?: SuppliedChordRow) => {
         const binding = row?.entry.binding;
@@ -195,6 +220,7 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
     return <div className={styles.progression}>
         <button type="button" ref={toggle} className={shared.action} aria-expanded={open} disabled={draft !== null}
             onClick={() => setOpen(!open)}>Chord progression{rows.length > 0 ? ` · ${rows.length}` : ''}</button>
+        {requestNotice && <p role="status">{requestNotice}</p>}
         {open && <section aria-label="Supplied chord progression" className={styles.body} onKeyDown={event => {
             if (event.key !== 'Escape' || event.nativeEvent.isComposing || composing.current) return;
             event.preventDefault();
@@ -202,7 +228,10 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
             if (draft) cancel();
             else {
                 setOpen(false);
-                toggle.current?.focus({ preventScroll: true });
+                const origin = requestedChord?.id === chosenId && requestedChord.request === handledRequest?.request ? requestedChord.origin : null;
+                const destination = origin?.isConnected ? origin : toggle.current;
+                destination?.focus({ preventScroll: true });
+                destination?.scrollIntoView?.({ block: 'nearest' });
             }
         }}>
             <div className={styles.actions} role="group" aria-label="Chord placement">
@@ -272,7 +301,11 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
             </ul>}
             {!draft && <PageControls page={currentListPage} count={listPages} name="Chord pages" onChange={setListPage} />}
             {chosen && !draft && <div className={styles.detail}>
+                <h3 ref={detailHeading} tabIndex={-1} className={styles.analysisTitle}>{chosen.chord?.name ?? chosen.entry.chord.root} · Chord detail</h3>
                 <div className={styles.actions}>
+                    {onRevealEvidence && (chosen.placement?.kind === 'positions' || detailNotes.length > 0) && <button type="button" className={shared.action} data-evidence-action="true"
+                        aria-label={`Show on tab: ${chosen.chord?.name ?? chosen.entry.chord.root}`}
+                        onClick={event => onRevealEvidence(chosenEvidence(), event.currentTarget)}>Show on tab</button>}
                     <button type="button" className={shared.action} onClick={() => edit(chosen)}>Edit chord</button>
                     <button type="button" className={shared.action}
                         onClick={() => {
@@ -300,6 +333,9 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
                             </span>
                             <span>{selectedNoteIds.has(note.noteId) ? 'Selected' : 'Select for melody'}</span>
                         </button>
+                        {onRevealEvidence && <button type="button" className={shared.action} data-evidence-action="true"
+                            aria-label={`Show on tab: ${note.name}, position ${note.position}, string ${note.string + 1}`}
+                            onClick={event => onRevealEvidence({ noteIds: [note.noteId] }, event.currentTarget)}>Show on tab</button>}
                     </li>)}
                 </ul>}
                 <PageControls page={currentNotePage} count={notePages} name="Relationship pages" onChange={setNotePage} />
@@ -320,6 +356,7 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
                         onClick={() => { setMelody({ document, ids: [] }); analysisHeading.current?.focus({ preventScroll: true }); }}>Clear melody</button>}
                 </div>
                 <SuppliedHarmonyAnalysis key={mode} document={document} rows={rows} mode={mode} frame={references?.frame ?? null}
+                    onRevealEvidence={onRevealEvidence}
                     written={written} selected={currentMelody.ids} onToggleNote={id => {
                         toggleMelodyNote(id);
                         analysisHeading.current?.focus({ preventScroll: true });

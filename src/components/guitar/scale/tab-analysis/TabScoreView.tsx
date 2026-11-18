@@ -16,6 +16,7 @@ import { AcrossBarsWrittenTimePanel } from './AcrossBarsWrittenTimePanel';
 import type { TabWrittenPointReferences } from '@/domain/tab/written-point-analysis';
 import { resolveSuppliedHarmony, type SuppliedTabChord } from '@/domain/tab/supplied-harmony';
 import { SuppliedHarmonyPanel } from './SuppliedHarmonyPanel';
+import { resolveTabEvidence, type TabEvidenceTarget } from './tab-evidence';
 import harmonyStyles from './supplied-harmony.module.css';
 import acrossStyles from './across-bars-written-time.module.css';
 import timingStyles from './timing-inspection.module.css';
@@ -27,6 +28,11 @@ export type TabDraftStatus = 'note' | 'mute' | 'empty' | 'invalid' | null;
 interface Draft { cell: TabActiveCell; text: string; revision: number }
 const cellKey = (cell: TabActiveCell) => `${cell.momentId}:${cell.string}`;
 const durationDetail = (duration?: TabFraction) => duration ? `duration ${duration.numerator}/${duration.denominator} quarter notes` : '';
+
+function focusEvidenceElement(element?: HTMLElement | null) {
+    element?.focus({ preventScroll: true });
+    element?.scrollIntoView?.({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
+}
 
 function techniquePresentation(note: TabNote, notes: ReadonlyMap<string, TabNote>) {
     return (note.techniques ?? []).map(technique => {
@@ -112,6 +118,18 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     const [touchActions, setTouchActions] = useState<string | null>(null);
     const [meterBar, setMeterBar] = useState<number | null>(null);
     const [positionPopup, setPositionPopup] = useState<{ key: string; left: number; top: number } | null>(null);
+    const harmonyControls = useRef<HTMLDivElement>(null);
+    const chordRequestSerial = useRef(0);
+    const [chordRequest, setChordRequest] = useState<{
+        document: TabDocument; rows: ReturnType<typeof resolveSuppliedHarmony>;
+        id: string; request: number; origin: HTMLButtonElement;
+    } | null>(null);
+    const [evidence, setEvidence] = useState<{
+        document: TabDocument; from: 'harmony' | 'written';
+        source: object | null; references: TabWrittenPointReferences | undefined;
+        target: NonNullable<ReturnType<typeof resolveTabEvidence>>; origin: HTMLElement;
+    } | null>(null);
+    const [evidenceNotice, setEvidenceNotice] = useState<string | null>(null);
     const errorId = useId();
     const current = useMemo(() => activeCell && document.moments.some(moment => moment.id === activeCell.momentId)
         && activeCell.string >= 0 && activeCell.string < 6 ? activeCell
@@ -120,11 +138,30 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     const writtenCurrent = writtenReport?.snapshot.sourceDocument === document && writtenReport.snapshot.data.scope.measure === writtenMeasure;
     const lower = Math.min(selection.start, selection.end), upper = Math.max(selection.start, selection.end);
     const insertionStop = document.moments.some(moment => moment.id === insertionCursor) ? insertionCursor : current?.momentId;
-    const notesById = new Map(document.moments.flatMap(moment => moment.notes.map(note => [note.id, note] as const)));
+    const notesById = useMemo(() =>
+        new Map(document.moments.flatMap(moment => moment.notes.map(note => [note.id, note] as const))), [document]);
     const sustainedAt = (moment: TabMoment, string: number) => moment.sustains?.find(sustain => notesById.get(sustain.noteId)?.string === string);
     const suppliedRows = useMemo(() => harmony?.suppliedHarmony.length
         ? resolveSuppliedHarmony(document, harmony.scoreId, harmony.originsRevision, harmony.suppliedHarmony) : [],
     [document, harmony?.scoreId, harmony?.originsRevision, harmony?.suppliedHarmony]);
+    const currentEvidence = evidence?.document === document && evidence.references === readingReferences
+        && (evidence.from === 'harmony' ? evidence.source === suppliedRows : writtenCurrent && evidence.source === writtenReport)
+        ? evidence : null;
+    const currentChordRequest = chordRequest?.document === document && chordRequest.rows === suppliedRows ? chordRequest : undefined;
+
+    useLayoutEffect(() => {
+        if (chordRequest && !currentChordRequest) setChordRequest(null);
+    }, [chordRequest, currentChordRequest]);
+    useLayoutEffect(() => {
+        if (!evidence) return;
+        if (!currentEvidence) {
+            setEvidence(null);
+            return;
+        }
+        const first = currentEvidence.target.notes[0];
+        const firstMomentId = currentEvidence.target.firstMomentId;
+        focusEvidenceElement(first ? buttons.current.get(cellKey(first)) : firstMomentId ? headers.current.get(firstMomentId) : undefined);
+    }, [currentEvidence, evidence]);
 
     useLayoutEffect(() => {
         if (timingReport && timingReport.document !== document) {
@@ -149,6 +186,30 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         setTimingNotice('Finish or cancel this input first.');
         return false;
     };
+    const revealEvidence = (from: 'harmony' | 'written', target: TabEvidenceTarget, origin: HTMLElement) => {
+        if (!guardTiming()) return;
+        if (!origin.isConnected || (from === 'written' && !writtenCurrent)) return;
+        const resolved = resolveTabEvidence(document, target);
+        if (!resolved) {
+            setEvidence(null);
+            setEvidenceNotice('Source unavailable. Check the current score.');
+            return;
+        }
+        if (draftRef.current) setDraft(null);
+        setTimingNotice(null); setEvidenceNotice(null); timingReturn.current = null;
+        setEvidence({
+            document, from, source: from === 'harmony' ? suppliedRows : writtenReport,
+            references: readingReferences, target: resolved, origin,
+        });
+    };
+    const guardReadClick = (event: React.MouseEvent, from: 'harmony' | 'written') => {
+        if (!guardTiming()) {
+            event.preventDefault(); event.stopPropagation();
+            return;
+        }
+        const control = event.target instanceof Element ? event.target.closest('button, summary') : null;
+        if (control && !control.hasAttribute('data-evidence-action') && currentEvidence?.from === from) setEvidence(null);
+    };
     const hasProjectionMeter = Boolean(document.meter && isValidTabMeter(document.meter));
     const showWrittenTime = (kind: 'local' | 'across') => {
         if (!guardTiming() || (kind === 'across' && !hasProjectionMeter)) return;
@@ -172,6 +233,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         const cell = { momentId: target.momentId, string: target.string ?? 0 };
         // A clean, unchanged fret input may be closed without writing the score.
         if (draftRef.current) setDraft(null);
+        setEvidence(null); setEvidenceNotice(null);
         choose(cell, false, target.string === undefined);
         timingReturn.current = { document, origin };
         if (target.string === undefined) pendingHeader.current = target.momentId;
@@ -521,11 +583,14 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         begin(cell, '', 'end');
     });
 
-    const measures = Array.from({ length: Math.max(1, document.measureCount) }, (_, index) => ({
-        number: index + 1,
-        moments: document.moments.map((moment, position) => ({ moment, index: position })).filter(item => item.moment.measure === index + 1),
-    }));
-    const systems = Array.from({ length: Math.ceil(measures.length / 4) }, (_, index) => measures.slice(index * 4, index * 4 + 4));
+    const systems = useMemo(() => {
+        const moments = document.moments.map((moment, index) => ({ moment, index }));
+        const measures = Array.from({ length: Math.max(1, document.measureCount) }, (_, index) => ({
+            number: index + 1,
+            moments: moments.filter(item => item.moment.measure === index + 1),
+        }));
+        return Array.from({ length: Math.ceil(measures.length / 4) }, (_, index) => measures.slice(index * 4, index * 4 + 4));
+    }, [document]);
 
     return <div className={styles.score} role="region" aria-label="Tab score — onsets in order"
         onKeyDownCapture={event => {
@@ -533,6 +598,14 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
             // Editors and contextual controls retain their own Escape behavior.
             // Diagnostic return belongs to the score's cell/header navigation surface.
             if (!(event.target instanceof Element) || !event.target.closest('[role="gridcell"] button, [data-column-header], [data-position-trigger]')) return;
+            if (currentEvidence) {
+                event.preventDefault(); event.stopPropagation();
+                const origin = currentEvidence.origin;
+                focusEvidenceElement(origin.isConnected ? origin : currentEvidence.from === 'written'
+                    ? writtenButton.current : harmonyControls.current?.querySelector('button'));
+                setEvidence(null);
+                return;
+            }
             const destination = timingReturn.current;
             if (destination?.document !== document || !destination.origin.isConnected) return;
             event.preventDefault(); event.stopPropagation(); destination.origin.focus({ preventScroll: true });
@@ -544,7 +617,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
             onKeyDownCapture={event => {
                 if ((event.key === 'Enter' || event.key === ' ') && !guardTiming()) { event.preventDefault(); event.stopPropagation(); }
             }}
-            onClickCapture={event => { if (!guardTiming()) { event.preventDefault(); event.stopPropagation(); } }}>
+            onClickCapture={event => guardReadClick(event, 'written')}>
             <div className={timingStyles.toolbar}>
             <button type="button" ref={checkButton} className={timingStyles.action} aria-expanded={timingOpen && timingReport?.document === document}
                 onClick={() => {
@@ -557,6 +630,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                 onClick={() => showWrittenTime('local')}>View written time</button>
             </div>
             {timingNotice && <p role="status">{timingNotice}</p>}
+            {evidenceNotice && <p role="status">{evidenceNotice}</p>}
             {timingStale && <p role="status">Score changed · Check again</p>}
             {writtenStale && <p role="status">{writtenStale === 'score' ? 'Score changed · View again' : 'Bar changed · View again'}</p>}
             {writtenCurrent && writtenReport && <>
@@ -571,22 +645,25 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                 </div>
                 {writtenReport.kind === 'local'
                     ? <WrittenTimePanel key={writtenReport.serial} snapshot={writtenReport.snapshot}
-                        onAction={guardTiming} onClose={closeWrittenTime} />
+                        onAction={guardTiming} onClose={closeWrittenTime}
+                        onRevealEvidence={(target, origin) => revealEvidence('written', target, origin)} />
                     : <AcrossBarsWrittenTimePanel key={writtenReport.serial} snapshot={writtenReport.snapshot}
-                        readingReferences={readingReferences} onAction={guardTiming} onClose={closeWrittenTime} />}
+                        readingReferences={readingReferences} onAction={guardTiming} onClose={closeWrittenTime}
+                        onRevealEvidence={(target, origin) => revealEvidence('written', target, origin)} />}
             </>}
             {timingOpen && timingReport?.document === document && <TimingInspectionPanel key={timingReport.serial}
                 document={document} report={timingReport.result} onNavigate={navigateTiming}
                 onClose={() => { setTimingOpen(false); timingReturn.current = null; checkButton.current?.focus(); }} />}
         </div>
-        {harmony && onEdit && <div data-timing-controls className={timingStyles.controls}
+        {harmony && onEdit && <div ref={harmonyControls} data-timing-controls className={timingStyles.controls}
             onPointerDownCapture={event => { if (!guardTiming()) { event.preventDefault(); event.stopPropagation(); } }}
             onKeyDownCapture={event => {
                 if (event.key !== 'Tab' && !guardTiming()) { event.preventDefault(); event.stopPropagation(); }
             }}
-            onClickCapture={event => { if (!guardTiming()) { event.preventDefault(); event.stopPropagation(); } }}>
+            onClickCapture={event => guardReadClick(event, 'harmony')}>
             <SuppliedHarmonyPanel document={document} selection={selection} harmony={harmony} onEdit={onEdit}
-                rows={suppliedRows} references={readingReferences} />
+                rows={suppliedRows} references={readingReferences} requestedChord={currentChordRequest}
+                onRevealEvidence={(target, origin) => revealEvidence('harmony', target, origin)} />
         </div>}
         {systems.map((system, systemIndex) => {
             const slots = system.flatMap<{ moment: TabMoment | null; index: number; measure: number }>(measure => measure.moments.length ? measure.moments.map(item => ({ ...item, measure: measure.number })) : [{ moment: null, index: -1, measure: measure.number }]);
@@ -640,9 +717,22 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                                 Bar {measure.number} <span>{document.meter ? `${document.meter.numerator}/${document.meter.denominator}` : 'Meter +'}</span>
                             </button>)}
                         </div>}
-                        {visibleChords.length > 0 && <div className={harmonyStyles.scoreLabels} role="group" aria-label="Supplied chord labels">
-                            {visibleChords.map(chord => <span key={chord.id} className={harmonyStyles.scoreLabel} title={chord.name}
-                                style={{ gridColumn: `${chord.start + 2} / span ${chord.end - chord.start + 1}` }}>{chord.name}</span>)}
+                        {visibleChords.length > 0 && <div className={harmonyStyles.scoreLabels} role="group" aria-label="Supplied chord labels"
+                            data-timing-controls onPointerDownCapture={event => {
+                                if (event.target instanceof Element && event.target.closest('button') && !guardTiming()) event.preventDefault();
+                            }}
+                            onKeyDownCapture={event => {
+                                if ((event.key === 'Enter' || event.key === ' ') && !guardTiming()) { event.preventDefault(); event.stopPropagation(); }
+                            }}>
+                            {visibleChords.map(chord => <button type="button" key={chord.id} className={`${harmonyStyles.scoreLabel} ${styles.suppliedLabel}`}
+                                aria-label={`${chord.name}, supplied chord`} title={chord.name}
+                                style={{ gridColumn: `${chord.start + 2} / span ${chord.end - chord.start + 1}` }}
+                                onClick={event => {
+                                    if (!guardTiming()) return;
+                                    setEvidence(null); setEvidenceNotice(null);
+                                    setChordRequest({ document, rows: suppliedRows, id: chord.id,
+                                        request: ++chordRequestSerial.current, origin: event.currentTarget });
+                                }}>{chord.name}</button>)}
                         </div>}
                         {annotationRows('above')}
                         <div className={styles.headers}>
@@ -660,6 +750,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                                     return <button key={moment.id} ref={element => { if (element) headers.current.set(moment.id, element); else headers.current.delete(moment.id); }}
                                         type="button" tabIndex={columnMode && current?.momentId === moment.id ? 0 : -1} className={styles.header}
                                         data-column-header="true"
+                                        data-evidence={currentEvidence?.target.momentIds.has(moment.id) || undefined}
                                         aria-label={`Onset ${index + 1}, bar ${moment.measure}: ${description}`} aria-pressed={index >= lower && index <= upper}
                                         title="Select column · drag to select · Delete to remove"
                                         onPointerDown={event => startHeaderDrag(event, moment.id)} onPointerMove={moveHeaderDrag}
@@ -724,7 +815,8 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                             const valueLabel = note ? `fret ${note.fret}` : mute ? 'muted x' : tiedNote ? `tied fret ${tiedNote.fret}` : moment.rest ? 'rest' : 'empty';
                             const label = `String ${string + 1}, onset ${index + 1}, ${valueLabel}${detail ? `; ${detail}` : ''}`;
                             return <div role="gridcell" aria-colindex={slotIndex + 2} aria-selected={isActive} className={styles.cell} key={key}
-                                data-active={isActive} data-selected={index >= lower && index <= upper} data-bar-start={startsBar}>
+                                data-active={isActive} data-selected={index >= lower && index <= upper} data-bar-start={startsBar}
+                                data-evidence={Boolean(note && currentEvidence?.target.noteIds.has(note.id)) || undefined}>
                                 <button ref={element => { if (element) buttons.current.set(key, element); else buttons.current.delete(key); }} type="button"
                                     className={styles.cellButton} tabIndex={isActive && !isEditing && !columnMode ? 0 : -1} aria-label={label} title={detail || undefined}
                                     aria-hidden={isEditing || undefined} data-editing={isEditing}
