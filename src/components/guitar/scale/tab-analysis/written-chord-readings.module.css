@@ -17,4 +17,6 @@
 .choice { width: 100%; }
 .choice[aria-pressed="true"] { color: #f4f4f5; text-decoration: underline; text-underline-offset: 4px; }
 .alternatives, .formulaDetails, .observation { margin-top: 4px; }
+.alternatives h4 { margin: 12px 0 4px; color: #f4f4f5; font-size: 13px; font-weight: 500; }
+.alternatives h4:focus { outline: 2px solid var(--workspace-focus); outline-offset: 2px; }
 .formulaDetails p, .observation p { margin: 6px 0; line-height: 1.5; overflow-wrap: anywhere; }

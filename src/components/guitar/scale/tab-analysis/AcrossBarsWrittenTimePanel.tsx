@@ -113,6 +113,7 @@ export function AcrossBarsWrittenTimePanel({ snapshot, onClose, onAction, readin
                         : query?.status === 'invalid-query' ? 'Invalid time point'
                             : query?.status === 'outside-window' ? 'Outside selected bar'
                                 : query?.status === 'unavailable' ? 'Projection unavailable' : 'Outside observed range'}</p>
+            {query?.status === 'partial' && displayNotes.length > 0 && <p className={styles.pointStatus}>Known written intervals shown below · Complete note set unavailable</p>}
             {onRevealEvidence && query?.status === 'complete' && query.notes.length > 0 && <button type="button" className={styles.action} data-evidence-action
                 onClick={event => { if (onAction()) onRevealEvidence({ noteIds: query.notes.map(note => note.noteId) }, event.currentTarget); }}>Show point on tab</button>}
         </div>}

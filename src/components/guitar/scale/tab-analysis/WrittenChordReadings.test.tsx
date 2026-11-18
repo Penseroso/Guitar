@@ -24,7 +24,6 @@ function mount(midis?: number[], onAction = vi.fn(() => true)) {
     return { ...render(<WrittenChordReadings snapshot={snapshot} time={time(0)} references={refs} onAction={onAction}/>), snapshot, onAction };
 }
 const summary = () => screen.getByText('Chord readings');
-const formula = () => screen.getByText('Formula alternatives', { selector: 'summary' });
 const noteRows = () => within(screen.getByRole('list', { name: 'Written point notes' })).getAllByRole('listitem');
 const choices = () => within(screen.getByRole('list', { name: 'Formula alternatives' })).getAllByRole('button');
 const choose = (key: string) => {
@@ -34,14 +33,16 @@ const choose = (key: string) => {
 };
 
 describe('written point chord readings', () => {
-    it('does no analysis while folded and exposes facts before optional unselected alternatives', async () => {
+    it('does no analysis while folded and exposes unselected alternatives after one open', async () => {
         const analyze = vi.spyOn(pointAnalysis, 'analyzeTabWrittenPoint'); const describe = vi.spyOn(pointAnalysis, 'describeTabWrittenPointCandidate');
         const user = userEvent.setup(); const { snapshot } = mount();
         expect(analyze).not.toHaveBeenCalled(); expect(screen.queryByRole('region', { name: 'Written chord readings' })).toBeNull();
         await user.click(summary()); expect(analyze).toHaveBeenCalledOnce();
         expect(screen.getByText('Pitch classes · C · E · G · A')).toBeTruthy();
-        expect(screen.queryByRole('list', { name: 'Formula alternatives' })).toBeNull();
-        expect(describe).not.toHaveBeenCalled(); await user.click(formula());
+        expect(screen.getByRole('heading', { name: 'Formula alternatives' })).toBeTruthy();
+        expect(screen.queryByText('Formula alternatives', { selector: 'summary' })).toBeNull();
+        expect(screen.getByRole('list', { name: 'Formula alternatives' }).compareDocumentPosition(screen.getByRole('list', { name: 'Written point notes' })) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+        expect(describe).not.toHaveBeenCalled();
         const expected = pointAnalysis.analyzeTabWrittenPoint(snapshot, time(0), refs);
         if (expected.status !== 'complete') throw Error('fixture');
         expect(choices().map(button => button.getAttribute('data-candidate-key'))).toEqual(expected.candidates.slice(0, 8).map(candidate => candidate.key));
@@ -50,10 +51,10 @@ describe('written point chord readings', () => {
     });
 
     it('preserves occurrence identity while dyad facts and power formulas ignore octave doubling', () => {
-        const { unmount } = mount([60, 67]); fireEvent.click(summary()); fireEvent.click(formula());
+        const { unmount } = mount([60, 67]); fireEvent.click(summary());
         const keys = choices().map(button => button.getAttribute('data-candidate-key'));
         expect(keys).toContain('0:power-5'); expect(screen.getByText('Interval class · 5')).toBeTruthy(); unmount();
-        mount([60, 67, 72]); fireEvent.click(summary()); fireEvent.click(formula());
+        mount([60, 67, 72]); fireEvent.click(summary());
         expect(choices().map(button => button.getAttribute('data-candidate-key'))).toEqual(keys);
         expect(noteRows().map(row => row.getAttribute('data-note-id'))).toEqual(['n0', 'n1', 'n2']);
     });
@@ -67,14 +68,14 @@ describe('written point chord readings', () => {
     it('keeps a formula degree when its theoretical note spelling is unavailable', () => {
         const snapshot = observe([65, 69, 72, 75, 68]);
         render(<WrittenChordReadings snapshot={snapshot} time={time(0)} references={{ scale: null, frame: { tonic: 'F#', mode: 'major', lens: 'jazz-pop' } }} onAction={() => true}/>);
-        fireEvent.click(summary()); fireEvent.click(formula()); choose('5:hendrix-7-sharp-9');
+        fireEvent.click(summary()); choose('5:hendrix-7-sharp-9');
         expect(screen.getByText('#9 · Formula member')).toBeTruthy();
         expect(screen.queryByText(/null|undefined/)).toBeNull();
     });
 
     it('computes only the selected hypothetical roles and clears without changing source', () => {
         const describe = vi.spyOn(pointAnalysis, 'describeTabWrittenPointCandidate'); const { snapshot } = mount();
-        const before = JSON.stringify(snapshot.data); fireEvent.click(summary()); fireEvent.click(formula()); choose('0:major');
+        const before = JSON.stringify(snapshot.data); fireEvent.click(summary()); choose('0:major');
         expect(describe).toHaveBeenCalledOnce(); expect(screen.getByRole('heading', { name: 'If C' })).toBeTruthy();
         expect(screen.getByText('Outside this formula')).toBeTruthy(); expect(screen.getAllByText(/Formula member/)).toHaveLength(3);
         fireEvent.click(screen.getByText('Formula details')); expect(screen.getByText('Outside formula · A4')).toBeTruthy();
@@ -91,10 +92,12 @@ describe('written point chord readings', () => {
         vi.spyOn(pointAnalysis, 'analyzeTabWrittenPoint').mockReturnValue({ ...original, candidates,
             candidatePresentations: candidates.map(candidate => ({ ...original.candidatePresentations[0], key: candidate.key })) });
         const { snapshot, rerender, onAction } = mount(midis);
-        fireEvent.click(summary()); fireEvent.click(formula());
+        fireEvent.click(summary());
         choose('0:major'); fireEvent.click(screen.getByRole('button', { name: 'Next written point notes page' }));
         fireEvent.click(screen.getByRole('button', { name: 'Next formula alternatives page' }));
         expect(choices()[0].getAttribute('data-candidate-key')).not.toBe(original.candidates[0].key);
+        fireEvent.click(screen.getByRole('button', { name: 'Clear hypothetical chord' }));
+        expect(document.activeElement).toBe(screen.getByRole('heading', { name: 'Formula alternatives' }));
         rerender(<WrittenChordReadings snapshot={snapshot} time={time(1)} references={refs} onAction={onAction}/>);
         expect(screen.getByRole('region', { name: 'Written chord readings' })).toBeTruthy();
         expect(screen.queryByLabelText('Hypothetical chord')).toBeNull(); expect(noteRows()[0].getAttribute('data-note-id')).toBe('n0');
@@ -104,12 +107,12 @@ describe('written point chord readings', () => {
         expect(choices()[0].getAttribute('data-candidate-key')).toBe(original.candidates[0].key);
     });
 
-    it('guards main, formula, selection, clear, pages and native detail actions', () => {
+    it('guards main, selection, clear, pages and native detail actions', () => {
         const allow = vi.fn(() => false); mount(Array.from({ length: 10 }, (_, i) => [60, 64, 67, 69][i % 4]), allow);
         fireEvent.click(summary()); expect(screen.queryByRole('region', { name: 'Written chord readings' })).toBeNull();
-        allow.mockReturnValue(true); fireEvent.click(summary()); allow.mockReturnValue(false); fireEvent.click(formula());
-        expect(screen.queryByRole('list', { name: 'Formula alternatives' })).toBeNull();
-        allow.mockReturnValue(true); fireEvent.click(formula()); allow.mockReturnValue(false); choose('0:major');
+        allow.mockReturnValue(true); fireEvent.click(summary()); allow.mockReturnValue(false);
+        expect(screen.getByRole('list', { name: 'Formula alternatives' })).toBeTruthy();
+        choose('0:major');
         expect(screen.queryByLabelText('Hypothetical chord')).toBeNull();
         fireEvent.click(screen.getByRole('button', { name: 'Next written point notes page' })); expect(noteRows()[0].getAttribute('data-note-id')).toBe('n0');
         expect(fireEvent.click(screen.getByText('Observation details'))).toBe(false);
@@ -119,20 +122,22 @@ describe('written point chord readings', () => {
     });
 
     it('closes the inspector first with Escape, returns focus and ignores composing Escape', () => {
-        mount(); fireEvent.click(summary()); fireEvent.click(formula()); choose('0:major');
+        mount(); fireEvent.click(summary()); choose('0:major');
         fireEvent.keyDown(screen.getByRole('button', { name: 'Clear hypothetical chord' }), { key: 'Escape', isComposing: true });
         expect(screen.getByRole('region', { name: 'Written chord readings' })).toBeTruthy();
         fireEvent.keyDown(screen.getByRole('button', { name: 'Clear hypothetical chord' }), { key: 'Escape' });
         expect(screen.queryByRole('region', { name: 'Written chord readings' })).toBeNull(); expect(document.activeElement).toBe(summary());
-        fireEvent.click(summary()); fireEvent.click(formula()); expect(choices().every(button => button.getAttribute('aria-pressed') === 'false')).toBe(true);
+        fireEvent.click(summary()); expect(choices().every(button => button.getAttribute('aria-pressed') === 'false')).toBe(true);
     });
 
     it('bounds a maximum-size source to eight note and eight alternative rows without a role matrix', () => {
+        const analyze = vi.spyOn(pointAnalysis, 'analyzeTabWrittenPoint');
         const describe = vi.spyOn(pointAnalysis, 'describeTabWrittenPointCandidate'); const { container } = mount(Array.from({ length: 6144 }, (_, i) => [60, 64, 67, 69][i % 4]));
-        fireEvent.click(summary()); fireEvent.click(formula()); expect(noteRows()).toHaveLength(8); expect(choices().length).toBeLessThanOrEqual(8);
+        fireEvent.click(summary()); expect(noteRows()).toHaveLength(8); expect(choices().length).toBeLessThanOrEqual(8);
         expect(container.querySelectorAll('li').length).toBeLessThanOrEqual(16); expect(describe).not.toHaveBeenCalled();
         fireEvent.click(screen.getByRole('button', { name: 'Next written point notes page' })); expect(noteRows()[0].getAttribute('data-note-id')).toBe('n8');
         expect(screen.getByText('Page 2 of 768')).toBeTruthy(); expect(describe).not.toHaveBeenCalled();
+        expect(analyze).toHaveBeenCalledOnce();
     });
 
     it('queries a snapshot without reading its source document and presents an empty gap neutrally', () => {

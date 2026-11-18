@@ -1,5 +1,9 @@
-.controls { margin: 8px 0 12px; color: var(--workspace-muted); font-size: 12px; min-width: 0; }
 .toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 0 16px; }
+.readingTools { display: flex; align-items: center; flex-wrap: wrap; gap: 0 16px; margin-bottom: 12px; font-size: 12px; }
+.notices { color: var(--workspace-muted); font-size: 12px; margin-bottom: 12px; }
+.detailsShelf { display: grid; gap: 16px; margin: 16px 0 12px; color: var(--workspace-muted); font-size: 12px; min-width: 0; }
+.detailsShelf:empty { display: none; }
+.focusTarget:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: 2px; }
 .action { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; padding: 8px 4px; border: 0; background: transparent; color: var(--workspace-muted); font: inherit; cursor: pointer; text-align: left; overflow-wrap: anywhere; }
 .action:hover { color: #fff; }
 .action:focus-visible, .panel summary:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: 2px; }

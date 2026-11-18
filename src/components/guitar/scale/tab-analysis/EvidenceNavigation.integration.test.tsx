@@ -45,8 +45,13 @@ function initialState(document: TabDocument, withHarmony: boolean): TabAnalysisS
         activeCell: { momentId: document.moments.at(-1)!.id, string: 2 },
         context: { scale: null, chord: null, frame: { tonic: 'C', mode: 'major', lens: 'jazz-pop' } } };
 }
-function Harness({ initial = repeatedPitchFixture(), withHarmony = true }: { initial?: TabDocument; withHarmony?: boolean }) {
-    const [state, dispatch] = useReducer(reduceTabAnalysis, undefined, () => initialState(initial, withHarmony));
+function Harness({ initial = repeatedPitchFixture(), withHarmony = true, fresh = false, withoutFrame = false }: {
+    initial?: TabDocument; withHarmony?: boolean; fresh?: boolean; withoutFrame?: boolean;
+}) {
+    const [state, dispatch] = useReducer(reduceTabAnalysis, undefined, () => {
+        const state = fresh ? createTabAnalysisState() : initialState(initial, withHarmony);
+        return withoutFrame ? { ...state, context: { ...state.context, frame: null } } : state;
+    });
     return <>
         <TabAnalysisWorkspace state={state} dispatch={dispatch} exploredScale={scale}/>
         <button onClick={() => dispatch({ type: 'delete-moment', momentId: initial.moments[0].id })}>Delete evidence source</button>
@@ -67,9 +72,17 @@ const movementRow = () => within(screen.getByRole('list', { name: 'Melody moveme
 const start = () => screen.getByRole('textbox', { name: 'Start numerator' }) as HTMLInputElement;
 const edit = () => screen.getByRole('button', { name: /^Edit position 4,/ });
 async function openMelody(user: ReturnType<typeof userEvent.setup>) {
-    await user.click(screen.getByRole('button', { name: /^Chord progression/ }));
+    await user.click(screen.getByRole('button', { name: /^Read with my chords/ }));
     await user.click(screen.getByRole('button', { name: /^Read progression/ }));
     await user.click(screen.getByRole('button', { name: 'Use single-note range' }));
+}
+function choosePicker(label: string, value: string) {
+    const picker = screen.getByRole('spinbutton', { name: label });
+    fireEvent.keyDown(picker, { key: 'Home' });
+    for (let index = 0; index < 80 && picker.getAttribute('aria-valuetext') !== value; index++) {
+        fireEvent.keyDown(picker, { key: 'ArrowRight' });
+    }
+    expect(picker.getAttribute('aria-valuetext')).toBe(value);
 }
 
 describe('reading evidence navigation through the canonical TAB workspace', () => {
@@ -206,5 +219,88 @@ describe('reading evidence navigation through the canonical TAB workspace', () =
         expect(evidenceCells()).toHaveLength(0); expect(evidenceHeaders()).toHaveLength(0);
         await user.click(screen.getByRole('button', { name: 'Redo fixture' }));
         expect(evidenceCells()).toHaveLength(0); expect(evidenceHeaders()).toHaveLength(0);
+    });
+});
+
+describe('P5.2 task entry and optional key completion', () => {
+    it('reads a freshly imported free-timing melody with supplied chords without visiting timing menus', async () => {
+        const user = userEvent.setup(); render(<Harness fresh/>);
+        await user.click(screen.getByRole('button', { name: 'Import text' }));
+        fireEvent.change(screen.getByRole('textbox', { name: 'Paste or write a six-string tab' }), { target: {
+            value: ['e|---|', 'B|0-1|', 'G|---|', 'D|---|', 'A|---|', 'E|---|'].join('\n'),
+        } });
+        await user.click(screen.getByRole('button', { name: 'Import tab' }));
+        await user.click(screen.getByRole('button', { name: /^Read with my chords/ }));
+        const panel = screen.getByRole('region', { name: 'Supplied chord progression' });
+        expect(document.activeElement).toBe(within(panel).getByRole('heading', { name: 'My chords' }));
+        for (const [position, root, quality] of [[1, 'G', '7'], [2, 'C', 'Major']] as const) {
+            if (position === 2) await user.click(screen.getByRole('button', { name: /^Onset 2,/ }));
+            await user.click(screen.getByRole('button', { name: 'Add chord' }));
+            choosePicker('Chord root', root); choosePicker('Chord quality', quality);
+            await user.click(screen.getByRole('button', { name: 'Apply chord' }));
+        }
+        await user.click(screen.getByRole('button', { name: /^Onset 1,/ }));
+        await user.keyboard('{Shift>}{ArrowRight}{/Shift}');
+        await user.click(screen.getByRole('button', { name: /^Read progression/ }));
+        await user.click(screen.getByRole('button', { name: 'Use single-note range' }));
+        expect(movementRow()).toBeTruthy();
+        expect(state().document.meter).toBeUndefined();
+        expect(state().document.moments.every((moment: TabDocument['moments'][number]) => !moment.beatOffset
+            && moment.notes.every(note => !note.duration))).toBe(true);
+        expect(screen.queryByRole('region', { name: 'Written time' })).toBeNull();
+        expect(screen.queryByRole('region', { name: 'Timing inspection' })).toBeNull();
+        const before = state(); const notes = screen.getByRole('list', { name: 'Selected melody notes' }).textContent;
+        const setKey = screen.getByRole('button', { name: 'Set key reference' });
+        await user.click(setKey);
+        const draft = screen.getByRole('region', { name: 'Key reference draft' });
+        expect(within(draft).getByRole('button', { name: 'Key tonic C' })).toBeTruthy();
+        expect(within(draft).getByRole('spinbutton', { name: 'Key mode' }).getAttribute('aria-valuetext')).toBe('Major');
+        expect(state()).toEqual(before);
+        await user.click(within(draft).getByRole('button', { name: 'Cancel key reference' }));
+        expect(screen.queryByRole('region', { name: 'Key reference draft' })).toBeNull();
+        expect(document.activeElement).toBe(setKey); expect(state()).toEqual(before);
+        expect(screen.getByRole('list', { name: 'Selected melody notes' }).textContent).toBe(notes);
+        await user.click(setKey);
+        await user.click(screen.getByRole('button', { name: 'Apply key reference' }));
+        const after = state();
+        expect(after.context.frame).toEqual({ tonic: 'C', mode: 'major', lens: 'jazz-pop' });
+        expect({ ...after, context: before.context }).toEqual(before);
+        expect(document.activeElement).toBe(setKey);
+        expect(screen.getByRole('button', { name: 'Change key reference' })).toBe(setKey);
+        expect(screen.getByRole('list', { name: 'Selected melody notes' }).textContent).toBe(notes);
+        expect(screen.getByRole('list', { name: 'Chord relationships' }).textContent).toContain('Dominant motion');
+    });
+
+    it('keeps reading actions before the score and their expanded details after its first grid', async () => {
+        const user = userEvent.setup(); render(<Harness/>);
+        const grid = screen.getByRole('grid', { name: 'Editable tab' });
+        for (const name of ['Read TAB patterns', 'View written time', 'Check timing']) {
+            expect(screen.getByRole('button', { name }).compareDocumentPosition(grid) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+        }
+        const entry = screen.getByRole('button', { name: /^Read with my chords/ });
+        expect(entry.compareDocumentPosition(grid) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+        await user.click(entry);
+        const panel = screen.getByRole('region', { name: 'Supplied chord progression' });
+        expect(grid.compareDocumentPosition(panel) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+        expect(document.activeElement).toBe(within(panel).getByRole('heading', { name: 'My chords' }));
+        await user.click(screen.getByRole('button', { name: 'View written time' }));
+        const written = screen.getByRole('region', { name: 'Written time' });
+        expect(grid.compareDocumentPosition(written) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+        expect(document.activeElement).toBe(written.closest('[aria-label="Written time details"]'));
+        await user.tab(); expect(document.activeElement).toBe(screen.getByRole('button', { name: 'This bar' }));
+        await user.keyboard('{Escape}');
+        expect(screen.queryByRole('region', { name: 'Written time' })).toBeNull();
+        expect(document.activeElement).toBe(screen.getByRole('button', { name: 'View written time' }));
+    });
+
+    it('cancels optional key entry with Escape while preserving its result and selected melody', async () => {
+        const user = userEvent.setup(); render(<Harness withoutFrame/>); await openMelody(user);
+        const before = state(); const movement = movementRow();
+        const setKey = screen.getByRole('button', { name: 'Set key reference' });
+        await user.click(setKey);
+        const draft = screen.getByRole('region', { name: 'Key reference draft' });
+        within(draft).getByRole('button', { name: 'Cancel key reference' }).focus(); await user.keyboard('{Escape}');
+        expect(screen.queryByRole('region', { name: 'Key reference draft' })).toBeNull();
+        expect(document.activeElement).toBe(setKey); expect(state()).toEqual(before); expect(movementRow()).toBe(movement);
     });
 });

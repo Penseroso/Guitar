@@ -25,7 +25,7 @@ function Harness({ initial = fixture() }: { initial?: TabDocument }) {
         <button onClick={() => dispatch({ type: 'set-active-cell', cell: { ...state.activeCell!, string: 0 } })}>First string</button>
         <button onClick={() => dispatch({ type: 'set-active-cell', cell: { ...state.activeCell!, string: 1 } })}>Second string</button>
         <button onClick={() => dispatch({ type: 'undo' })}>Undo</button><button onClick={() => dispatch({ type: 'redo' })}>Redo</button>
-        <button onClick={() => dispatch({ type: 'analyze' })}>Analyze</button>
+        <button onClick={() => dispatch({ type: 'analyze' })}>Read TAB patterns</button>
         <output data-testid="document">{JSON.stringify(state.document)}</output>
         <output data-testid="analysis-status">{state.analysisStatus}</output>
     </>;
@@ -149,11 +149,11 @@ describe('optional TAB notation input through the real reducer', () => {
 
     it('marks prior analysis stale on optional input changes while preserving the order-only document', async () => {
         const user = userEvent.setup(); render(<Harness />);
-        await user.click(screen.getByRole('button', { name: 'Analyze' }));
+        await user.click(screen.getByRole('button', { name: 'Read TAB patterns' }));
         expect(screen.getByTestId('analysis-status').textContent).toBe('fresh');
         choose('Duration', 5);
         expect(screen.getByTestId('analysis-status').textContent).toBe('stale');
-        await user.click(screen.getByRole('button', { name: 'Analyze' }));
+        await user.click(screen.getByRole('button', { name: 'Read TAB patterns' }));
         expect(screen.getByTestId('analysis-status').textContent).toBe('fresh');
         expect(documentState().timing).toBe('order-only');
     });

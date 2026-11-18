@@ -19,3 +19,9 @@
 .readingRow { padding: 6px 4px; }
 .noteSource { display: block; }
 .melodyChoice > span:first-child { min-width: 0; overflow-wrap: anywhere; }
+.bodyHeading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.evidenceRow { display: flex; align-items: flex-start; gap: 4px 12px; }
+.evidenceCopy { flex: 1; min-width: 0; }
+.rows .evidenceAction { width: auto; flex: 0 0 auto; margin-left: auto; }
+.rows .sourceChoice { width: auto; min-width: 0; flex: 1; }
+.keyDraft { border-top: 1px solid var(--workspace-border); padding: 4px 0 8px; }

@@ -42,11 +42,10 @@ const state = () => JSON.parse(screen.getByTestId('written-reading-state').textC
 const view = () => screen.getByRole('button', { name: 'View written time' });
 const region = () => screen.getByRole('region', { name: 'Written time' });
 const readings = () => screen.getByText('Chord readings');
-const formulas = () => screen.getByText('Formula alternatives', { selector: 'summary' });
 const choices = () => within(screen.getByRole('list', { name: 'Formula alternatives' })).getAllByRole('button');
 const nextPoint = () => screen.getByRole('button', { name: 'Next across-bars time point' });
 function open() {
-    fireEvent.click(view()); fireEvent.click(screen.getByRole('button', { name: /^Across full bars/ })); fireEvent.click(readings()); fireEvent.click(formulas());
+    fireEvent.click(view()); fireEvent.click(screen.getByRole('button', { name: /^Across full bars/ })); fireEvent.click(readings());
 }
 
 describe('Across-only written chord readings lifecycle', () => {
@@ -55,10 +54,10 @@ describe('Across-only written chord readings lifecycle', () => {
         fireEvent.click(view()); expect(screen.queryByText('Chord readings')).toBeNull(); expect(analyze).not.toHaveBeenCalled();
         fireEvent.click(screen.getByRole('button', { name: /^Across full bars/ })); expect(analyze).not.toHaveBeenCalled();
         fireEvent.click(readings()); expect(analyze).toHaveBeenCalledOnce(); expect(screen.getByText('Scale reference · C Ionian')).toBeTruthy();
-        expect(screen.getByText('Key reference · C major')).toBeTruthy(); fireEvent.click(formulas());
+        expect(screen.getByText('Key reference · C major')).toBeTruthy();
         fireEvent.click(choices()[0]); expect(screen.getByLabelText('Hypothetical chord')).toBeTruthy(); expect(state()).toEqual(before);
         fireEvent.click(screen.getByRole('button', { name: 'This bar' })); expect(screen.queryByText('Chord readings')).toBeNull(); expect(state()).toEqual(before);
-        expect(screen.getByRole('button', { name: 'Analyze' })).toBeTruthy();
+        expect(screen.getByRole('button', { name: 'Read TAB patterns' })).toBeTruthy();
     });
 
     it.each(['Change reference key', 'Change reference scale'])('closes only readings on %s while preserving report, cursor and page', label => {
@@ -89,7 +88,7 @@ describe('Across-only written chord readings lifecycle', () => {
         fireEvent.click(choices()[0]); fireEvent.click(nextPoint()); expect(screen.getByText('More timing needed at this point')).toBeTruthy();
         expect(screen.queryByText('Chord readings')).toBeNull(); expect(screen.queryByLabelText('Hypothetical chord')).toBeNull();
         fireEvent.click(screen.getByRole('button', { name: 'Previous across-bars time point' }));
-        expect(screen.queryByRole('region', { name: 'Written chord readings' })).toBeNull(); fireEvent.click(readings()); fireEvent.click(formulas());
+        expect(screen.queryByRole('region', { name: 'Written chord readings' })).toBeNull(); fireEvent.click(readings());
         expect(choices().every(button => button.getAttribute('aria-pressed') === 'false')).toBe(true);
     });
 
@@ -104,7 +103,7 @@ describe('Across-only written chord readings lifecycle', () => {
         const user = userEvent.setup(); render(<Harness/>); open(); fireEvent.click(choices()[0]);
         await user.click(screen.getByRole('button', { name: /^String 1, onset 1,/ })); await user.keyboard(draft);
         const input = screen.getByRole('textbox', { name: 'Fret for string 1, onset 1' }) as HTMLInputElement; const before = state();
-        await user.click(readings()); await user.click(formulas()); await user.click(choices()[1]);
+        await user.click(readings()); await user.click(choices()[1]);
         await user.click(screen.getByRole('button', { name: 'Clear hypothetical chord' })); await user.click(screen.getByText('Observation details'));
         await user.click(screen.getByRole('button', { name: 'Next written point notes page' }));
         fireEvent.keyDown(choices()[1], { key: 'Enter' }); fireEvent.click(choices()[1]);
@@ -118,7 +117,7 @@ describe('Across-only written chord readings lifecycle', () => {
         const user = userEvent.setup(); render(<Harness/>); open(); await user.click(screen.getByRole('button', { name: /^Edit position 1,/ }));
         const input = screen.getByRole('textbox', { name: 'Start numerator' }) as HTMLInputElement;
         fireEvent.compositionStart(input); fireEvent.change(input, { target: { value: '2' } }); const before = state();
-        await user.click(formulas()); await user.click(choices()[0]); await user.click(readings());
+        await user.click(choices()[0]); await user.click(readings());
         expect(input.value).toBe('2'); expect(state()).toEqual(before); expect(screen.queryByLabelText('Hypothetical chord')).toBeNull();
         fireEvent.compositionEnd(input); expect(state()).toEqual(before); expect(screen.queryByLabelText('Hypothetical chord')).toBeNull();
         await user.click(screen.getByRole('button', { name: 'Cancel start input' })); await user.click(choices()[0]);

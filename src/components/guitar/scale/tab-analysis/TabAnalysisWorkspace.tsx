@@ -64,6 +64,8 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
     const hasUnpitchedEvents = !!state.document?.moments.some(moment => moment.rest || moment.mutes?.length || moment.sustains?.length);
     const hasNotation = !!state.document?.meter || !!state.document?.moments.some(moment => moment.beatOffset || moment.rest || moment.mutes?.length || moment.sustains?.length
         || moment.notes.some(note => note.duration || note.techniques?.length));
+    const activeMomentId = state.activeCell?.momentId;
+    const activePosition = activeMomentId && state.document ? state.document.moments.findIndex(moment => moment.id === activeMomentId) + 1 : 1;
     const keyTitle = state.context.frame ? `${state.context.frame.tonic} ${state.context.frame.mode}` : 'No key supplied';
     const openKeyContext = () => {
         setContextOpen(true);
@@ -179,24 +181,35 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
         {state.document && state.selection && <div className={styles.resultLayout}>
             <div className={styles.scoreSection}>
                 <div className={styles.sectionHeading}><h2 ref={scoreHeading} tabIndex={-1}>Your tab</h2><span className={styles.meta}>{state.documentName || 'Untitled'} · {state.document.measureCount} bars · {state.document.moments.length} positions</span></div>
-                <p className={styles.meta}>{hasNotation ? 'Order-only analysis · Timing, ties and pitch gestures are preserved, not interpreted.' : 'Free timing · Positions are not beats.'}</p>
+                <p className={styles.meta}>{hasNotation ? 'TAB patterns follow score order. View written time to inspect notation.' : 'Free timing · Positions are not beats.'}</p>
                 <div className={styles.analysisToolbar}>
                     <button type="button" className={styles.textAction} onClick={openKeyContext} aria-expanded={contextOpen}>
                         {state.context.frame ? `Key: ${keyTitle}` : 'Add key for Roman / progression'}
                     </button>
-                    <div className={styles.actions}>
-                        {state.analysisStatus === 'fresh' && <button className={styles.textAction} type="button" aria-pressed={annotationsVisible} onClick={() => setAnnotationsVisible(visible => !visible)}>Annotations <span aria-hidden="true">{annotationsVisible ? '●' : '○'}</span></button>}
-                        <button className={styles.primary} type="button" disabled={draftStatus === 'invalid' || (!hasNotes && draftStatus !== 'note')} onClick={() => { cancelRead(); dispatch({ type: 'analyze', scope: 'all' }); setAnnotationsVisible(true); }}>Analyze</button>
-                    </div>
+                    <p className={styles.meta} role="status" aria-label="Analysis status">{!hasNotes
+                        ? hasUnpitchedEvents ? 'No pitched notes to analyze. Notation stays editable.' : 'Click a string and type a fret to begin.'
+                        : state.analysisStatus === 'stale' ? 'Score or context changed. Read TAB patterns again to update annotations.'
+                        : state.analysisStatus === 'fresh' ? `Analyzed whole score. ${annotations.length ? 'Select a score annotation for its evidence.' : 'No supported pattern found in this score.'}`
+                            : 'Ready to read TAB patterns across the score.'}</p>
                 </div>
-                <p className={styles.meta} role="status" aria-label="Analysis status">{!hasNotes
-                    ? hasUnpitchedEvents ? 'No pitched notes to analyze. Notation stays editable.' : 'Click a string and type a fret to begin.'
-                    : state.analysisStatus === 'stale' ? 'Score or context changed. Analyze again to update annotations.'
-                    : state.analysisStatus === 'fresh' ? `Analyzed whole score. ${annotations.length ? 'Select a score annotation for its evidence.' : 'No supported pattern found in this score.'}`
-                        : 'Ready to analyze. Notes stay editable on the score.'}</p>
                 <TabScoreView document={state.document} selection={state.selection} extend={false} focusedNoteId={null}
                     readingReferences={readingReferences}
                     harmony={state}
+                    patternActions={<div className={styles.actions}>
+                        <button className={styles.primary} type="button" disabled={draftStatus === 'invalid' || (!hasNotes && draftStatus !== 'note')}
+                            onClick={() => { cancelRead(); dispatch({ type: 'analyze', scope: 'all' }); setAnnotationsVisible(true); }}>Read TAB patterns</button>
+                        {state.analysisStatus === 'fresh' && <button className={styles.textAction} type="button" aria-pressed={annotationsVisible}
+                            onClick={() => setAnnotationsVisible(visible => !visible)}>Annotations <span aria-hidden="true">{annotationsVisible ? '●' : '○'}</span></button>}
+                    </div>}
+                    scoreFooter={<>
+                        <div className={styles.scoreTools}>
+                            <button className={styles.textAction} type="button" disabled={state.past.length === 0} onClick={() => dispatch({ type: 'undo' })}>Undo</button>
+                            <button className={styles.textAction} type="button" disabled={state.future.length === 0} onClick={() => dispatch({ type: 'redo' })}>Redo</button>
+                            <span className={styles.meta}>Position {activePosition}</span>
+                        </div>
+                        <p className={`${styles.meta} ${styles.desktopHint}`}>Click a string to type · Insert adds a position · Drag column headers, then Delete · Arrow keys move.</p>
+                        <p className={`${styles.meta} ${styles.touchHint}`}>Tap a string to type · Tap + to add · Hold a column header dot to delete.</p>
+                    </>}
                     onEdit={action => { cancelRead(); dispatch(action); }}
                     onDraftStatusChange={setDraftStatus}
                     annotations={annotationsVisible ? annotations : []}
@@ -208,13 +221,6 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
                     onInsertMoment={afterId => dispatch({ type: 'insert-moment', afterId })}
                     onDeleteMoments={momentIds => dispatch({ type: 'delete-moments', momentIds })}
                     onSelect={selection => dispatch({ type: 'select', selection })} />
-                <div className={styles.scoreTools}>
-                    <button className={styles.textAction} type="button" disabled={state.past.length === 0} onClick={() => dispatch({ type: 'undo' })}>Undo</button>
-                    <button className={styles.textAction} type="button" disabled={state.future.length === 0} onClick={() => dispatch({ type: 'redo' })}>Redo</button>
-                    <span className={styles.meta}>Position {state.activeCell ? state.document.moments.findIndex(moment => moment.id === state.activeCell!.momentId) + 1 : 1}</span>
-                </div>
-                <p className={`${styles.meta} ${styles.desktopHint}`}>Click a string to type · Insert adds a position · Drag column headers, then Delete · Arrow keys move.</p>
-                <p className={`${styles.meta} ${styles.touchHint}`}>Tap a string to type · Tap + to add · Hold a column header dot to delete.</p>
             </div>
         </div>}
     </section>;
