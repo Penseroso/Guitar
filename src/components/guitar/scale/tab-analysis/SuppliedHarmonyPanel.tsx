@@ -16,6 +16,8 @@ import type { TabDocument, TabSelection } from '@/domain/tab/types';
 import { SwipePicker } from '../../harmony/SwipePicker';
 import type { TabWrittenPointReferences } from '@/domain/tab/written-point-analysis';
 import type { TabAnalysisAction } from '@/features/tab-analysis/state';
+import { PageControls } from './PageControls';
+import { SuppliedHarmonyAnalysis } from './SuppliedHarmonyAnalysis';
 import shared from './written-time-panel.module.css';
 import styles from './supplied-harmony.module.css';
 
@@ -61,25 +63,6 @@ function positionLabel(binding: PositionChordBinding, document: TabDocument) {
     return 'Position range unavailable';
 }
 
-function PageControls({ page, count, name, onChange }: {
-    page: number; count: number; name: string; onChange: (page: number) => void;
-}) {
-    const previous = useRef<HTMLButtonElement>(null);
-    const next = useRef<HTMLButtonElement>(null);
-    if (count <= 1) return null;
-    const move = (to: number) => {
-        onChange(to);
-        // On the end pages the opposite control remains available.
-        if (to === 0) next.current?.focus({ preventScroll: true });
-        if (to === count - 1) previous.current?.focus({ preventScroll: true });
-    };
-    return <div className={shared.paging} role="group" aria-label={name}>
-        <button type="button" ref={previous} className={shared.action} disabled={!page} onClick={() => move(page - 1)}>Previous</button>
-        <span>Page {page + 1} of {count}</span>
-        <button type="button" ref={next} className={shared.action} disabled={page >= count - 1} onClick={() => move(page + 1)}>Next</button>
-    </div>;
-}
-
 export function SuppliedHarmonyPanel({ document, selection, harmony, rows, references, onEdit }: {
     document: TabDocument;
     selection: TabSelection;
@@ -95,10 +78,16 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
     const [listPage, setListPage] = useState(0);
     const [notePage, setNotePage] = useState(0);
     const [error, setError] = useState<string | null>(null);
+    const [readingOpen, setReadingOpen] = useState(false);
+    const [melody, setMelody] = useState<{ document: TabDocument; ids: string[] }>({ document, ids: [] });
+    const currentMelody = melody.document === document ? melody : { document, ids: [] };
+    if (melody !== currentMelody) setMelody(currentMelody);
     const composing = useRef(false);
     const toggle = useRef<HTMLButtonElement>(null);
     const add = useRef<HTMLButtonElement>(null);
     const editorHeading = useRef<HTMLHeadingElement>(null);
+    const analysisButton = useRef<HTMLButtonElement>(null);
+    const analysisHeading = useRef<HTMLHeadingElement>(null);
     const meter = document.meter;
     const hasMeter = !!meter && isValidTabMeter(meter);
     const selectedPositions = selectedChordPositions(document, selection);
@@ -113,7 +102,8 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
     const chosen = rows.find(row => row.entry.id === chosenId && row.entry.binding.kind === mode);
     const listPages = Math.ceil(entries.length / PAGE_SIZE);
     const currentListPage = Math.max(0, Math.min(listPage, listPages - 1));
-    const observeWritten = open && mode === 'written-time' && !!chosen?.placement;
+    const observeWritten = open && mode === 'written-time'
+        && (!!chosen?.placement || (readingOpen && currentMelody.ids.length > 0));
     const written = useMemo(() => observeWritten
         ? observeTabAcrossBarsWrittenTime(document, 1, { model: 'regular-bar-origins' }) : undefined, [document, observeWritten]);
     const details = useMemo(() => open && chosen
@@ -124,6 +114,19 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
     const currentNotePage = Math.max(0, Math.min(notePage, notePages - 1));
     const selectedRange = selection.start === selection.end
         ? `Position ${selection.start + 1}` : `Positions ${Math.min(selection.start, selection.end) + 1}–${Math.max(selection.start, selection.end) + 1}`;
+    const selectedMoments = document.moments.slice(Math.min(selection.start, selection.end), Math.max(selection.start, selection.end) + 1);
+    const canSelectRange = selectedMoments.length > 0 && selectedMoments.every(moment => moment.notes.length === 1 && !moment.rest);
+    const selectedNoteIds = useMemo(() => new Set(currentMelody.ids), [currentMelody.ids]);
+    const toggleMelodyNote = (id: string) => setMelody({
+        document, ids: selectedNoteIds.has(id) ? currentMelody.ids.filter(noteId => noteId !== id) : [...currentMelody.ids, id],
+    });
+    const toggleReadings = () => {
+        setReadingOpen(!readingOpen);
+        if (!readingOpen) requestAnimationFrame(() => {
+            analysisHeading.current?.focus({ preventScroll: true });
+            analysisHeading.current?.scrollIntoView?.({ block: 'nearest' });
+        });
+    };
 
     const edit = (row?: SuppliedChordRow) => {
         const binding = row?.entry.binding;
@@ -181,10 +184,12 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
         cancel();
     };
     const switchMode = (value: Mode) => {
+        if (value === mode) return;
         setMode(value);
         setChosenId(null);
         setListPage(0);
         setNotePage(0);
+        setMelody({ document, ids: [] });
     };
 
     return <div className={styles.progression}>
@@ -211,6 +216,8 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
                 <button type="button" ref={add} className={shared.action} aria-disabled={!!draft || (mode === 'written-time' && !hasMeter)}
                     onClick={() => { if (!draft && (mode === 'positions' || hasMeter)) edit(); }}>Add chord</button>
                 {mode === 'positions' && !draft && <span>{selectedRange} selected</span>}
+                {!draft && entries.length > 0 && <button type="button" ref={analysisButton} className={shared.action}
+                    aria-expanded={readingOpen} onClick={toggleReadings}>Read progression{currentMelody.ids.length ? ` · ${currentMelody.ids.length} notes` : ''}</button>}
             </div>
             {draft && <div className={styles.editor} onPointerDownCapture={event => {
                 if (composing.current && event.target !== event.currentTarget.ownerDocument.activeElement) {
@@ -281,14 +288,43 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
                 {details && !detailNotes.length && <p>{mode === 'positions' ? 'No pitched notes in this range.' : 'No known written overlaps in this range.'}</p>}
                 {detailNotes.length > 0 && <ul className={styles.rows} aria-label="Notes against supplied chord">
                     {detailNotes.slice(currentNotePage * PAGE_SIZE, (currentNotePage + 1) * PAGE_SIZE).map((note, index) => <li key={`${note.noteId}:${index}`}>
-                        <p><strong>{note.name}</strong> · {note.chordDegree ? `Degree ${formatAccidentals(note.chordDegree)}` : 'Outside chord formula'}</p>
-                        <p>Bar {note.bar} · Position {note.position} · String {note.string + 1}
-                            {note.inScale !== null && (note.scaleDegree ? ` · Scale ${formatAccidentals(note.scaleDegree)}${note.scaleNoteName !== note.name ? ` (${note.scaleNoteName})` : ''}` : ' · Outside reference scale')}
-                            {note.written && ` · ${exactLabel(note.written.overlap.start)}–${exactLabel(note.written.overlap.end)} quarter notes`}</p>
+                        <button type="button" className={`${shared.action} ${styles.melodyChoice}`} aria-pressed={selectedNoteIds.has(note.noteId)}
+                            aria-label={`${note.name}, position ${note.position}, string ${note.string + 1}, select for melody`}
+                            onClick={() => toggleMelodyNote(note.noteId)}>
+                            <span>
+                                <strong>{note.name}</strong> · {note.chordDegree ? `Degree ${formatAccidentals(note.chordDegree)}` : 'Outside chord formula'}
+                                <span className={styles.noteSource}>Bar {note.bar} · Position {note.position} · String {note.string + 1}
+                                    {note.inScale !== null && (note.scaleDegree ? ` · Scale ${formatAccidentals(note.scaleDegree)}${note.scaleNoteName !== note.name ? ` (${note.scaleNoteName})` : ''}` : ' · Outside reference scale')}
+                                    {note.written && ` · ${exactLabel(note.written.overlap.start)}–${exactLabel(note.written.overlap.end)} quarter notes`}
+                                </span>
+                            </span>
+                            <span>{selectedNoteIds.has(note.noteId) ? 'Selected' : 'Select for melody'}</span>
+                        </button>
                     </li>)}
                 </ul>}
                 <PageControls page={currentNotePage} count={notePages} name="Relationship pages" onChange={setNotePage} />
             </div>}
+            {readingOpen && !draft && entries.length > 0 && <section className={styles.detail} aria-label="Progression reading"
+                onKeyDown={event => {
+                    if (event.key !== 'Escape' || event.nativeEvent.isComposing) return;
+                    event.preventDefault();
+                    event.stopPropagation();
+                    setReadingOpen(false);
+                    analysisButton.current?.focus({ preventScroll: true });
+                }}>
+                <h3 ref={analysisHeading} tabIndex={-1} className={styles.analysisTitle}>Progression reading</h3>
+                <div className={styles.actions}>
+                    <button type="button" className={shared.action} disabled={!canSelectRange}
+                        onClick={() => setMelody({ document, ids: selectedMoments.map(moment => moment.notes[0].id) })}>Use single-note range</button>
+                    {currentMelody.ids.length > 0 && <button type="button" className={shared.action}
+                        onClick={() => { setMelody({ document, ids: [] }); analysisHeading.current?.focus({ preventScroll: true }); }}>Clear melody</button>}
+                </div>
+                <SuppliedHarmonyAnalysis key={mode} document={document} rows={rows} mode={mode} frame={references?.frame ?? null}
+                    written={written} selected={currentMelody.ids} onToggleNote={id => {
+                        toggleMelodyNote(id);
+                        analysisHeading.current?.focus({ preventScroll: true });
+                    }} />
+            </section>}
         </section>}
     </div>;
 }

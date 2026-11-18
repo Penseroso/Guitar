@@ -15,3 +15,7 @@
 .rows button { width: 100%; justify-content: space-between; gap: 4px 12px; flex-wrap: wrap; }
 .scoreLabels { display: grid; grid-template-columns: var(--score-columns); }
 .scoreLabel { color: #f4f4f5; font-size: 12px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 4px; border-bottom: 1px solid var(--workspace-border); }
+.analysisTitle { margin: 8px 0 4px; color: #f4f4f5; font: inherit; font-weight: 500; }
+.readingRow { padding: 6px 4px; }
+.noteSource { display: block; }
+.melodyChoice > span:first-child { min-width: 0; overflow-wrap: anywhere; }
