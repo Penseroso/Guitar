@@ -1,0 +1,4 @@
+{
+  "width": 390,
+  "error": "Locator.press: Timeout 15000ms exceeded.\nCall log:\n  - waiting for get_by_role(\"textbox\", name=\"Fret for string 2, onset 1\")\n"
+}

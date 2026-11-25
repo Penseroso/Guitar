@@ -1,0 +1,162 @@
+{
+  "README.md": {
+    "bytes": 10393,
+    "sha256": "5312d84ba5c5f9b5ebcc7f7c745eed7c991c3ee9ddb5f39a50a7288cb41f3643"
+  },
+  "archive-paths.json": {
+    "bytes": 1386,
+    "sha256": "e72017d45bbce5c1ebc412d5d0576cf8608a097d501d153793caa8b1a6aa7224"
+  },
+  "artifact-compatibility.json": {
+    "bytes": 817,
+    "sha256": "2b59a53dfad2ea05ba8f9049ed69983bcf67a71654fd18d0c934a4535fc5a97a"
+  },
+  "baseline-manifest.json": {
+    "bytes": 33751,
+    "sha256": "f8f7f1cb6c294e1748e134e6dd211c4fe9ab631d5a1da7607d87e4954c0cab7f"
+  },
+  "challenge/adversarial-results.json": {
+    "bytes": 1302,
+    "sha256": "c2a130d34ee63148b4237cc1e3162608963b771771f5430a786830be629e0dad"
+  },
+  "challenge/adversarial.py": {
+    "bytes": 2468,
+    "sha256": "01921a3dfc355e3d83a8b7162b56dbe36be69f65359c831e4b39c02d744192cd"
+  },
+  "challenge/check-final-comparator.py": {
+    "bytes": 3225,
+    "sha256": "ec14766ee83d2764034d12aef2defccc0f20eb5c1c6256f359e3a8f313d02316"
+  },
+  "challenge/check-world-arithmetic.py": {
+    "bytes": 2640,
+    "sha256": "c324161dd8c3b55c092f9ff237037859160d4f8e26e68e2e8be10cce1e9adee3"
+  },
+  "challenge/coverage-worlds.json": {
+    "bytes": 2683,
+    "sha256": "efdd58894f89312f561b68e68fd13d0f4e401233b1e5d6a695337aa55eaf5eb5"
+  },
+  "challenge/coverage-worlds.ts.txt": {
+    "bytes": 2622,
+    "sha256": "ef8c8a6445161914bedad20f8305eb7b81c59156f73c8202d37a775c73b5c5ec"
+  },
+  "challenge/final-comparator-crosscheck.json": {
+    "bytes": 33227,
+    "sha256": "c18a65108c6da395ddbbf8f4944eb45d1918f04460888f1c501d7642344ae044"
+  },
+  "challenge/large-offset-collision.json": {
+    "bytes": 554,
+    "sha256": "4d32d8e56085d0a0d4df2540b3080cd50b5d90b127a9aae7aae4970d919fc2af"
+  },
+  "challenge/report.md": {
+    "bytes": 6583,
+    "sha256": "7fe7908b00cccce7350986814f8925ecbaf020877af44014355545d6c72a5734"
+  },
+  "challenge/tree-only-admission-counterexample.json": {
+    "bytes": 2035,
+    "sha256": "7b85308a4a67214f8b23b08c3cc5ad4e1c86b984b4e3d02d3a1fdaff23d0ce87"
+  },
+  "challenge/world-arithmetic.json": {
+    "bytes": 5879,
+    "sha256": "81797bb7654f3a6377fd8d3f7f3153373d6f9e00555709d5f1b03b37bc94a488"
+  },
+  "comparator/admission_probe.py": {
+    "bytes": 12649,
+    "sha256": "0bf3aae3604d6b47aafbd31531a118c95ea08da2c844bd5704947e614d7f47e1"
+  },
+  "comparator/report.md": {
+    "bytes": 10376,
+    "sha256": "29c882776c0295af3dbecd74391041791036b94d50c6c35efd7238c5f772d090"
+  },
+  "comparator/results-before-tree-query-fix.json": {
+    "bytes": 80129,
+    "sha256": "ecbcbd6bf404fb5cca90ff7e98964e17cd062988bc5bb85f13394f175c73573e"
+  },
+  "comparator/results.json": {
+    "bytes": 84277,
+    "sha256": "a1f69fa073700ed6918d22d1fa449f33c7ae423fe9d62b534e285893f24732ec"
+  },
+  "comparator/tree-query-counterexample-before.json": {
+    "bytes": 2035,
+    "sha256": "7b85308a4a67214f8b23b08c3cc5ad4e1c86b984b4e3d02d3a1fdaff23d0ce87"
+  },
+  "contracts/evidence.json": {
+    "bytes": 1973,
+    "sha256": "ab0389f38399dc5d9550ad36eb196c5dc482f71b5de1aa5c9e615a88c87e0639"
+  },
+  "contracts/fixtures.json": {
+    "bytes": 30617,
+    "sha256": "d7bfa5d2adea8c067eded423ec4d5007ada17c03f60467f531c47e9abc5ec108"
+  },
+  "contracts/probes.ts.txt": {
+    "bytes": 4179,
+    "sha256": "eeb456610c1d80fba4704c39964275b995e6e0bd313ee6a2474fc816ac72ec0e"
+  },
+  "contracts/report.md": {
+    "bytes": 7322,
+    "sha256": "c92048c59f2fc730dc4623c3057dd36ed675f6784d51b2305873c1c38d39d90c"
+  },
+  "contracts/results.json": {
+    "bytes": 26814,
+    "sha256": "a6d9e2e1e738bcb91ac701f3c4cd18ab0e96538fd3d043b51c7ef9efa3dd74e8"
+  },
+  "evaluation.json": {
+    "bytes": 3627,
+    "sha256": "3dc2ac0016277424e486c026400d7278f686d015c969aa032a2520c807183c13"
+  },
+  "integrity.json": {
+    "bytes": 2221,
+    "sha256": "4d55b59fd5de9888fb737ebf59be92fe040bd0bead1341472b734b903973c874"
+  },
+  "provenance/fraction-probes.ts.txt": {
+    "bytes": 5982,
+    "sha256": "26aac80f04df7445c716e995ea1bb9184315645d837d806f2fd4dedc4b7af8e7"
+  },
+  "provenance/fraction-results.json": {
+    "bytes": 9479,
+    "sha256": "3f8440a2387a52c8632bc92e8b2fa6da5bbd21bee70c11b5d61f12ffde2b9597"
+  },
+  "provenance/provenance-probes.ts.txt": {
+    "bytes": 15253,
+    "sha256": "b111d9ac35fe7f970e9591f6fa1318a3704c4985c53b9b6760b68e30ea246c4b"
+  },
+  "provenance/provenance-results.json": {
+    "bytes": 34001,
+    "sha256": "d537b9b7856233c1c767f66f84e31fde85b313132a0e06ba5cc644069cd6d860"
+  },
+  "provenance/report.md": {
+    "bytes": 11466,
+    "sha256": "b1581d1c79e9bd105e96c435f56b5f9f33fdaeaa602c6eca1c5e9c236e1cd417"
+  },
+  "provenance/results.json": {
+    "bytes": 47560,
+    "sha256": "08bc06e71cb154932f8ec67fca9621947e2518884518e584836d8fe29f2598d8"
+  },
+  "provenance/timing-test-before.txt": {
+    "bytes": 14392,
+    "sha256": "3961f86dc22216a005ff1ac3137a6fc700cb237e36e749c3a24c9da34fdc2f58"
+  },
+  "scope.json": {
+    "bytes": 1061,
+    "sha256": "32234389cae510dd3a2ab9b7a9bae1b81231597931a2ac056edbd726c4dd9582"
+  },
+  "separation/manifest.json": {
+    "bytes": 1619,
+    "sha256": "cc0c68aa300762dbb592e4ced49aa9df5d43c63d2f32f114718f481945487678"
+  },
+  "separation/probes.ts.txt": {
+    "bytes": 9290,
+    "sha256": "648ff27339fb3345ac1089f7f544f31f14b5ce2d94e1f09834817d3320a4ce48"
+  },
+  "separation/report.md": {
+    "bytes": 10563,
+    "sha256": "85b38f5295683c148aef0df89d0219876cc4194079b82ec75de12446ee53439c"
+  },
+  "separation/results.json": {
+    "bytes": 60639,
+    "sha256": "a9f7597028ae12602bf4b1ea94f39031f27aa8cdb2b033216797fc329bd638b0"
+  },
+  "separation/tsconfig.json": {
+    "bytes": 675,
+    "sha256": "14e349a69f8f85baf768fea09678aeea3b97bc5faa4a33daa81880520f4281a9"
+  }
+}

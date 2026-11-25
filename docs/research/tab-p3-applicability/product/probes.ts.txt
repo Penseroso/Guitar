@@ -1,0 +1,75 @@
+import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { inspectTabTiming } from '/workspace/Guitar-p2/src/domain/tab/timing-inspection';
+import { analyzeTabSelection } from '/workspace/Guitar-p2/src/domain/tab/analysis';
+import { retuneTabDocument } from '/workspace/Guitar-p2/src/domain/tab/editing';
+import { createTabAnalysisState, reduceTabAnalysis } from '/workspace/Guitar-p2/src/features/tab-analysis/state';
+import { createScaleRef } from '/workspace/Guitar-p2/src/domain/scale/scale-ref';
+import type { TabAnalysisContext, TabDocument, TabMoment, TabNote } from '/workspace/Guitar-p2/src/domain/tab/types';
+
+const out='/workspace/modus-p3-current/product';
+const f=(numerator:number,denominator=1)=>({numerator,denominator});
+const n=(id:string,midi:number,string=0,duration?:ReturnType<typeof f>):TabNote=>({id,midi,pitchClass:midi%12,string,fret:midi-[64,59,55,50,45,40][string],source:null,...(duration?{duration}:{})});
+const m=(id:string,index:number,notes:TabNote[],offset?:ReturnType<typeof f>,measure=1):TabMoment=>({id,index,measure,column:index+1,notes,...(offset?{beatOffset:offset}:{})});
+const doc=(moments:TabMoment[],meter?:ReturnType<typeof f>):TabDocument=>({format:'authored',timing:'order-only',source:'',tuningMidi:[64,59,55,50,45,40],capo:0,measureCount:Math.max(1,...moments.map(x=>x.measure)),moments,...(meter?{meter}:{})});
+const context={scale:null,chord:null,frame:null};
+const musical=(d:TabDocument, ctx:TabAnalysisContext=context)=>{
+ const a=analyzeTabSelection(d,{start:0,end:d.moments.length-1},ctx);
+ return {pitchClasses:a.pitchClasses,noteIDs:a.notes.map(x=>x.id),midis:a.notes.map(x=>x.midi),strings:a.notes.map(x=>x.string),kind:a.selectionKind,
+   candidates:a.candidates.map(x=>({key:x.key,match:x.match})),moments:a.moments.map(x=>({id:x.id,kind:x.kind,noteIDs:x.notes.map(n=>n.id),candidates:x.candidates.map(c=>c.key)})),
+   arpeggios:a.arpeggios,harmonicSpans:a.harmonicSpans,progressionReadings:a.progressionReadings,roman:a.roman,diagnostics:a.diagnostics};
+};
+const freeze=(v:unknown)=>{if(v&&typeof v==='object'){Object.values(v).forEach(freeze);Object.freeze(v)}};
+const cases:any[]=[];
+const check=(name:string,d:TabDocument,expectedCodes:string[],note:string)=>{
+ const before=JSON.stringify(d);freeze(d);const inspection=inspectTabTiming(d),analysis=musical(d);
+ assert.deepEqual(inspection.issues.map(x=>x.code),expectedCodes,name);assert.equal(JSON.stringify(d),before);
+ cases.push({name,input:d,inspection,analysis,meaning:note});return analysis;
+};
+const order=doc([m('p0',0,[n('a',64)]),m('p1',1,[n('b',67)])]);
+const orderAnalysis=check('free-order-only',order,[],'Order and authored MIDI observations only. No timing support is implied by a clean notation check.');
+const local=doc([m('p0',0,[n('a',64,0,f(1))],f(0)),m('p1',1,[n('b',67,0,f(1))],f(1))]);
+const localAnalysis=check('no-meter-local-onset-length',local,['missing-meter'],'Bar-local relative starts/lengths are authored; document-global bar placement lacks a bar-length contract. Missing meter is completeness, not invalidity.');
+assert.deepEqual(localAnalysis,orderAnalysis);
+check('duration-only-no-start',doc([m('p0',0,[n('a',64,0,f(2))]),m('p1',1,[n('b',67,0,f(1))])]),['missing-start','missing-start','missing-meter'],'Lengths alone cannot place attacks.');
+check('meter-only',doc([m('p0',0,[n('a',64)]),m('p1',1,[n('b',67)])],f(4,4)),['missing-start','missing-duration','missing-start','missing-duration'],'Meter does not supply any note onset or duration.');
+check('mixed-known-and-unknown',doc([m('p0',0,[n('a',64,0,f(2))],f(0)),m('p1',1,[n('b',67)])]),['missing-start','missing-duration','missing-meter'],'Incomplete later input must not erase the already-authored local observation, nor become automatic silence.');
+check('cross-bar-written-length',doc([m('p0',0,[n('a',64,0,f(2))],f(3)),m('p1',1,[n('b',67,0,f(1))],f(0),2)],f(4,4)),[],'P2 accepts authored duration crossing a barline; it does not decide how a sounding event is clipped, tied or globally positioned.');
+const independent=doc([m('p0',0,[n('c',60,5,f(2)),n('e',64,3,f(1)),n('g',67,2,f(1,2))],f(0))],f(4,4));
+check('same-onset-independent-note-lengths',independent,[],'Each note retains a distinct length; a Moment-level scalar duration would lose authored facts.');
+const repeated=check('repeated-pitch-is-two-attacks',doc([m('p0',0,[n('a',64,0,f(1))],f(0)),m('p1',1,[n('b',64,0,f(1))],f(1))],f(4,4)),[],'Equal MIDI is not an explicit continuation.');assert.deepEqual(repeated.noteIDs,['a','b']);
+const unison=check('different-string-unison-identity',doc([m('p0',0,[n('a',64,0,f(1)),n('b',64,1,f(1))],f(0))],f(4,4)),[],'Two note/string identities survive; PC deduplication is only the recognition view.');assert.equal(unison.noteIDs.length,2);assert.equal(unison.pitchClasses.length,1);
+const sustained=doc([m('p0',0,[n('a',64,0,f(1))],f(0)),{...m('p1',1,[],f(1)),sustains:[{noteId:'a',duration:f(1)}]}],f(4,4));
+const sustainAnalysis=check('authored-continuation-has-no-new-attack',sustained,[],'Current analyzer returns one pitch observation and labels the continuation position empty. Temporal adjacency/merge is not resolved.');assert.equal(sustainAnalysis.noteIDs.length,1);assert.equal(sustainAnalysis.moments[1].kind,'empty');
+const rested=doc([m('p0',0,[n('a',64,0,f(1))],f(0)),{...m('p1',1,[],f(1)),rest:{duration:f(1)}},m('p2',2,[n('b',67,0,f(1))],f(3))],f(4,4));
+check('explicit-rest-vs-unknown-gap',rested,[],'Rest declaration is known; the unnotated interval between rest end and next attack is not thereby an authored rest.');
+const blanked=structuredClone(rested);delete blanked.moments[1].rest;
+const blankAnalysis=check('blank-is-not-rest',blanked,[],'A timed empty placeholder has no rest/duration; P2 does not create one.');assert.deepEqual(blankAnalysis,musical(rested));
+const bend=doc([m('p0',0,[{...n('a',69,0,f(2)),techniques:[{kind:'bend',targetFret:7,notation:'5b7'},{kind:'release',targetFret:5,notation:'r5'}]}],f(0))],f(4,4));
+const bendAnalysis=check('bend-trajectory-not-authored',bend,[],'Base MIDI and fret-equivalent target are facts; attack times/curve/target dwell and perceived harmonic role are not supplied.');assert.deepEqual(bendAnalysis.pitchClasses,[9]);
+const link=doc([m('p0',0,[{...n('a',69,0,f(1)),techniques:[{kind:'hammer-on',toNoteId:'b'}]}],f(0)),m('p1',1,[n('b',71,0,f(1))],f(1))],f(4,4));
+check('hammer-endpoints-not-playback-policy',link,[],'Both note-event endpoints are authored; current analysis ignores articulation/performance realization. A note onset is not proof of a separately picked attack.');
+const arpeggio=doc([m('p0',0,[n('c',60,5,f(3))],f(0)),m('p1',1,[n('e',64,3,f(2))],f(1)),m('p2',2,[n('g',67,2,f(1))],f(2))],f(4,4));
+const arp=check('arpeggio-collection-not-sounding-verticality',arpeggio,[],'Current whole-bar collection and arpeggio are order-based hypotheses; new verticality observation cannot silently relabel these as harmonic segmentation.');assert(arp.harmonicSpans.some(x=>x.basis==='whole-bar-collection'));
+const ambiguous=doc([m('p0',0,[n('c',60,5,f(1)),n('e',64,3,f(1)),n('g',67,2,f(1)),n('a',69,0,f(1))],f(0))],f(4,4));
+const alternatives=check('C6-Am7-ambiguity-retained',ambiguous,[],'Exact C6/Am7 readings remain alternatives, not an inferred tonic or best chord.');assert(alternatives.candidates.some(x=>x.key==='0:major-6'));assert(alternatives.candidates.some(x=>x.key==='9:minor-7'));
+const retuned=retuneTabDocument(order,[64,59,55,50,45,38],2);
+check('midi-already-includes-tuning-and-capo',retuned,[],'MIDI is recomputed as tuning[string]+capo+fret; an external adapter must not transpose it a second time.');assert.deepEqual(retuned.moments.flatMap(x=>x.notes.map(n=>n.midi)),[66,69]);
+const invalid=doc([m('p0',0,[n('a',64,0,f(1,0))],f(0))],f(4,4));
+check('invalid-vs-unsupported-vs-incomplete',invalid,['duration-value'],'Invalid duration is different from missing fields and from unsupported performed bend interpretation.');
+check('clean-inspection-not-tie-continuity',doc([m('p0',0,[n('a',64,0,f(1))],f(0)),{...m('p1',1,[],f(3)),sustains:[{noteId:'a',duration:f(1)}]}],f(4,4)),[],'Explicit continuation across an unnotated time gap is structurally valid; P2 does not verify actual endpoint continuity or fill the gap.');
+check('clean-inspection-not-same-string-overlap-policy',doc([m('p0',0,[n('a',64,0,f(3))],f(0)),m('p1',1,[n('b',67,0,f(1))],f(1))],f(4,4)),[],'P2 does not decide whether a new same-string note truncates an earlier written duration; realization needs an explicit policy.');
+check('clean-inspection-not-temporal-order',doc([m('p0',0,[n('a',64,0,f(1))],f(3)),m('p1',1,[n('b',67,0,f(1))],f(1))],f(4,4)),[],'Position order can disagree with supplied starts while all field formats are valid; inspection is not projection readiness.');
+check('exact-sevenths-preserved',doc([m('p0',0,[n('a',64,0,f(1,7))],f(0,7)),m('p1',1,[n('b',67,0,f(1,7))],f(1,7))],f(4,4)),[],'Product stores exact rational inputs; integer tick rounding must not become the authoritative rational observation.');
+const modalScale=createScaleRef('Diatonic Modes','Dorian',2);
+const modal=analyzeTabSelection(order,{start:0,end:1},{scale:modalScale,chord:null,frame:null});assert(modal.notes.every(x=>x.inScale===true));
+const unsupportedFrame=musical(order,{scale:modalScale,chord:null,frame:{tonic:'D',mode:'dorian',lens:'jazz-pop'} as any});
+assert(unsupportedFrame.diagnostics.some(x=>x.includes('major or minor')));
+let s={...createTabAnalysisState(),document:structuredClone(order),selection:{start:0,end:1}};
+s=reduceTabAnalysis(s,{type:'analyze'});assert.equal(s.analysisStatus,'fresh');
+const changes:any[]=[];
+for(const action of [{type:'set-meter',meter:f(4,4)},{type:'set-frame',frame:{tonic:'C',mode:'major',lens:'jazz-pop'}},{type:'undo'},{type:'redo'}] as any[]){s=reduceTabAnalysis(s,action);changes.push({action,status:s.analysisStatus,history:s.past.length});assert.equal(s.analysisStatus,'stale');}
+const sourceFiles=['src/domain/tab/types.ts','src/domain/tab/analysis.ts','src/domain/tab/passage-analysis.ts','src/domain/tab/harmonic-spans.ts','src/domain/tab/timing-inspection.ts','src/domain/tab/input-capabilities.ts','src/domain/tab/editing.ts','src/domain/chord/chordRecognition.ts','src/domain/harmony/types.ts','src/domain/harmony/roman.ts','src/domain/scale/scale-ref.ts','src/features/tab-analysis/state.ts'];
+const result={baseline:'/workspace/Guitar-p2 current revalidated P2, not earlier unmerged explicit-timeline module',caseCount:cases.length,mutations:0,cases,modalContextProbe:{scale:modalScale,scaleAccepted:true,modalFrameDiagnostics:unsupportedFrame.diagnostics},freeOrderAnalyzeAccepted:true,stateChanges:changes,sourceSha256:Object.fromEntries(sourceFiles.map(p=>[p,createHash('sha256').update(readFileSync('/workspace/Guitar-p2/'+p)).digest('hex')]))};
+writeFileSync(out+'/results.json',JSON.stringify(result,null,2));console.log(JSON.stringify({cases:cases.length,mutations:0,stateChanges:changes}));

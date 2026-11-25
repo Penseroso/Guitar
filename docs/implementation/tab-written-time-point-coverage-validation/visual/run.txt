@@ -1,0 +1,1 @@
+[{"width": 390, "completeHeight": 332.375, "partialHeight": 289.375, "denseHeight": 743.375, "errors": []}, {"width": 768, "completeHeight": 332.375, "partialHeight": 289.375, "denseHeight": 743.375, "errors": []}, {"width": 1335, "completeHeight": 332.375, "partialHeight": 289.375, "denseHeight": 743.375, "errors": []}]

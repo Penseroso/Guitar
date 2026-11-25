@@ -1,0 +1,21 @@
+{
+  "headBeforeRootCommit": "72d7c0fdefaa346f8e540e1384732243731c9f22",
+  "branch": "feat/tab-timing-inspection",
+  "sourceSha256": {
+    "src/domain/tab/written-time.ts": "204f6b2dc542e1f67c69fa217450c291b315f954da32f526fbdb6f32e4b09e2c",
+    "src/domain/tab/exact-time.ts": "03d85000b5e5e4942e46ecaf720517c03448f0f7ffdedf1e1309b84741ac129a",
+    "src/components/guitar/scale/tab-analysis/TabScoreView.tsx": "5fae657d122de7723af368f475da4cda6fbeab3e8eaf2b077c7929cc03624fd7",
+    "src/components/guitar/scale/tab-analysis/WrittenTimePanel.tsx": "441bf0af9efd5eaf961f5a57943889328266a41d71a01f46c5bbaf60b127814b",
+    "src/components/guitar/scale/tab-analysis/written-time-panel.module.css": "54540eb23a596f1f2b48f446e4d06ac93bf54bb4022f6166383c1ab89a75253e",
+    "package.json": "be9c381ef703c1dec01e79bc887ddbcc21430278e7a39ba392d7078b4d3050c0",
+    "package-lock.json": "c0bf00d9a0f3100f5d5ee84504b7685e470c18f8a1e33ad0a7f34f71d863a478"
+  },
+  "buildId": "sb2qtTnIvX1KUp6CbtGrG",
+  "driverSha256": {
+    "core-oracle.ts": "bc351adcb7c403f9ae107b002feafaf1ad11a8437b5d83b247ba8be6f1ff8b28",
+    "partial-browser.py": "3a1e4c1eed0889c6d30791575b072a78c3225f59af20ce040c5783384c18690f",
+    "p2-regression.py": "70658ff3041b51ab21b67033c273a55a39a71e32afd6cdc0a28e512cfaadf4f4"
+  },
+  "initialRecord": "before-fingerprints.json",
+  "coreOracleMatchesFinalRuntime": true
+}

@@ -1,0 +1,102 @@
+{
+  "README.md": {
+    "bytes": 8408,
+    "sha256": "0388ff7cbf07c699c3f9a9d79c1072d80367fd0950a2cfd5ff2a1b8edba037ff"
+  },
+  "alpha/manifest.json": {
+    "bytes": 12773,
+    "sha256": "c9ee8495fa88b3b4a0aa8509826c45bd190c5b4d7bb5f704bf99ff0e5bf60761"
+  },
+  "alpha/probes.ts.txt": {
+    "bytes": 8919,
+    "sha256": "fde1fa2d12502dcc989b8ec203e7654d4e5df63fa239c7254bc809fb6d034d86"
+  },
+  "alpha/report.md": {
+    "bytes": 10879,
+    "sha256": "bfba9b2c44b92b11bed88b324c898fc7ff2aa0a912a02bf775b827ea4520e8d5"
+  },
+  "alpha/results.json": {
+    "bytes": 31722,
+    "sha256": "4a3dd30144485d9c2575a9d4b028052baa1d72f09bf5106b883c45ddf967016d"
+  },
+  "alpha/tsconfig.json": {
+    "bytes": 607,
+    "sha256": "a35864ad849b5efce719853560fad2541d5c422ef91397f85ebdcad90cabea13"
+  },
+  "alpha/upstream-tests.json": {
+    "bytes": 16757,
+    "sha256": "90cf0d7917d58f3540bc14a3c449fc1aca4e1d9f936a728c53bba4dbd6a8651e"
+  },
+  "alpha/vitest.config.mjs.txt": {
+    "bytes": 468,
+    "sha256": "c28a50d759e19ff7dc460b7fcc3c8ed72f75de5174af28f572c277dad436a9c9"
+  },
+  "archive-paths.json": {
+    "bytes": 815,
+    "sha256": "0bcdf0fc2ae4691b1e2b238bf0bbcd47a74d916a0d8af490679b9c31b3925444"
+  },
+  "baseline-manifest.json": {
+    "bytes": 35170,
+    "sha256": "4d5d1ff74eb2ce2871119b50394ec2b10559087a180943c5af4b1294349a056e"
+  },
+  "challenge/bounds.json": {
+    "bytes": 358,
+    "sha256": "902a661e645647236c88c0cf05e321e34c01ffffe3ea154ac1ae9221a3b6dda3"
+  },
+  "challenge/library-boundaries.json": {
+    "bytes": 677,
+    "sha256": "64686494a170699d0bf3ef10ac1e46f70757187477f8ac78bea84c8436797c63"
+  },
+  "challenge/report.md": {
+    "bytes": 7113,
+    "sha256": "56b2f900405152e0b78ea1e5d72e76ca467c1b8db307571049cbb9459256edb8"
+  },
+  "evaluation.json": {
+    "bytes": 3195,
+    "sha256": "82a9b36600fdf48b248a2860c3384af7620c58d15807b3195cabe98bffb6c206"
+  },
+  "integration/acceptance-matrix.json": {
+    "bytes": 5049,
+    "sha256": "91cc04b1a57bfaf05e2bc1ef7dea0f19d2c1cd20aa118692db3d0ab5d280ebb0"
+  },
+  "integration/evidence.json": {
+    "bytes": 15419,
+    "sha256": "4545183f29fc4829bdc1479e8c3363ecf08e14a1354209b43807cbec35481f72"
+  },
+  "integration/report.md": {
+    "bytes": 9079,
+    "sha256": "3e32b44b64768be98602ccaee13afeea8cbb08c382522b4aecfc9da940c2b262"
+  },
+  "integrity.json": {
+    "bytes": 671,
+    "sha256": "788f6fbc55ec12df4d245d8c2f5fbdddc940421430bb2105583fe214007000cb"
+  },
+  "music21/probes.py": {
+    "bytes": 12103,
+    "sha256": "267b040c4451d97e5ac142deebd2da9afd3bb3712f29c4427fc4b694d685ef29"
+  },
+  "music21/report.md": {
+    "bytes": 10315,
+    "sha256": "562179b65726041b37d9e9e2c2260c52bbf36a30243d04dcdb957bcf47a9ede0"
+  },
+  "music21/results.json": {
+    "bytes": 11711,
+    "sha256": "ac3c6648adc6b911e6c0ef7d3606e15eaded1bd1c45cc6811c91819de2361130"
+  },
+  "product/probes.ts.txt": {
+    "bytes": 11027,
+    "sha256": "eebf8f6a05edc4e40405469e39ee633017581c6bf81f7cb32b5e5fa57744b3ce"
+  },
+  "product/report.md": {
+    "bytes": 9126,
+    "sha256": "f27185249c795916b040e2a2507f835ce09f34f0e3f592784efa967e3cbdce6e"
+  },
+  "product/results.json": {
+    "bytes": 68508,
+    "sha256": "ce94ea0fb15df9955524995d458da0d4fa5fdc26c3e05653574a484466cbe6d5"
+  },
+  "scope.json": {
+    "bytes": 1955,
+    "sha256": "df2b880da48e1ff6465abf4e2e0d92d1ec19a4253fb2faebd1eb86ac72809cf3"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "baselineCommit": "72d7c0fdefaa346f8e540e1384732243731c9f22",
+  "branch": "feat/tab-timing-inspection",
+  "protectedSha256": {
+    "src/domain/tab/exact-time.ts": "03d85000b5e5e4942e46ecaf720517c03448f0f7ffdedf1e1309b84741ac129a",
+    "src/domain/tab/types.ts": "a9a9f3ffca87c555d5bc7f9c9b2044344ae867f173f1f0f9833c7e4847ce9977",
+    "src/domain/tab/analysis.ts": "ce5771ef4203ae247f6139ad690490c2d19e9d42d69c9d494641af6185bd811e",
+    "src/domain/tab/input-capabilities.ts": "2f8f8949234a605bae0506ccfa861054e85295769560ce5c4d56baf40e34325a",
+    "src/domain/tab/timing-inspection.ts": "254fcb82e8332ef3024915878f203397e81297a4b1c28b790557fc7e10423a69",
+    "src/features/tab-analysis/state.ts": "9039f9240fc3d137fd45ea7136e5babe5a56db1778f7cf6341cbdfa072b6452f",
+    "src/components/guitar/scale/tab-analysis/TabScoreView.tsx": "5fae657d122de7723af368f475da4cda6fbeab3e8eaf2b077c7929cc03624fd7",
+    "src/components/guitar/scale/tab-analysis/TabNotationEditor.tsx": "a79b10f7c4f25443e131c96da3cd87915014b73a860195f9ea3b02431f1d6b35",
+    "package.json": "be9c381ef703c1dec01e79bc887ddbcc21430278e7a39ba392d7078b4d3050c0",
+    "package-lock.json": "c0bf00d9a0f3100f5d5ee84504b7685e470c18f8a1e33ad0a7f34f71d863a478"
+  },
+  "scope": "P3.2 query-local onset exclusion for duration-only missing notes and read-only UI connection"
+}

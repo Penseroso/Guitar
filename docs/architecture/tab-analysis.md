@@ -291,3 +291,154 @@ Insertion targets are 44×44px with 0px boundary drift. New controls are indepen
 hover/coarse-pointer visibility and add no motion. Touch pointer events pass; physical
 device coverage is not claimed. See the P1 audit for screenshots, measurements and
 deferred items. P1 acceptance: GO; no P2 analysis or sounding-timeline work started.
+
+## P2 notation inspection
+
+`inspectTabTiming` is a read-only notation/structure check, independent of Analyze.
+Check timing is opt-in above the score. No meter, offset, length, rest or performance
+is inferred, and missing timing never disables the existing order-only analyzer.
+
+The inspection separates `none` (free timing), `some` (one or more numerical timing
+fields supplied) and `unreadable` input. Rest, mute, continuation and technique markers
+alone do not establish numerical timing. Free timing still receives structural checks,
+but no missing-value list. With partial timing, only event-bearing positions require
+start completeness; notes, rests and continuations contribute duration completeness.
+Mutes and blank placeholders do not require durations. Missing fields are information,
+not invalid notation. Numeric fields use the existing fraction/meter bounds without
+normalizing or repairing the document.
+
+Structural checks include unique position/note IDs, rest exclusivity, one event per
+string, and source references. A continuation must reference an earlier note; technique
+endpoints for h/p/slide must refer forward on the same string. Their time, performed
+pitch and expressive realization remain unassessed. Written durations crossing a
+barline, overlaps and offset order are deliberately outside this inspection.
+Explicit rests, same-string mutes and new attacks between relation endpoints are
+structural interruptions. Blanks, other-string events and continuations do not
+establish an interruption. The check reports the contradiction without removing links.
+
+Timing results are local UI snapshots, separate from ASCII line/column diagnostics and
+harmonic annotations. Document/instrument/history changes invalidate their targets;
+cursor, selection, draft import text and tonal-reference changes do not. Navigation
+requires a current snapshot and unique target, recomputes bar/position labels and moves
+actual keyboard focus with contained scrolling. Escape returns to the originating
+diagnostic. Check/open/close/navigation create no score edit or history entry.
+The current position editor handles Escape before diagnostic return. Its first Escape
+closes the editor and focuses Edit; a subsequent Escape can return to the diagnostic.
+The expanded accessibility state follows the actual current report; explicit draft
+resolution clears blocked guidance. Technical scope is disclosed in About this check.
+
+Timing pointer, click and keyboard activation share a draft guard. Dirty fret input,
+unapplied fractional text and IME composition block these actions without a pending
+automatic retry. Pointer-down is intercepted before blur can commit; timing controls
+are excluded from outside-dismiss. Dirty/composing fractional editors remain mounted
+when keyboard focus passes outside them, including native viewport scrolling. Existing
+fret Enter/Tab/Escape semantics remain; Set start commits fractions and Cancel start
+input restores their committed value. No new action auto-saves a draft.
+
+See [P2 implementation and verification](../implementation/tab-timing-inspection.md).
+
+## P3 measure-owned written-time core
+
+`observeTabWrittenTime` and `getTabWrittenNotesAt` provide opt-in, read-only domain
+observations of explicitly authored note intervals owned by one measure. The source
+document remains order-only; Analyze, editing and P2 checks do not invoke
+this core or change behavior. It introduces no global anchor, sounding realization,
+harmonic interpretation, external runtime, cache or worker.
+
+The population and coordinate frame are explicit: source note occurrences in the
+selected measure, in bar-relative quarter-note units. Written durations are not clipped
+at barlines or merged with continuations. Notes keep their IDs, string and already
+computed MIDI; non-note markers remain source facts. Exact BigInt rationals are
+serialized as integer-string fractions in separately copied JSON-safe snapshot data.
+
+Coverage is independently validated, never derived from P2 timingInput or issue totals.
+A confidently empty note population can be complete with no observed range; querying
+it is outside-range, not proof of silence. Partial observations retain known intervals
+but never return a complete note set. Complete queries apply only inside their finite
+half-open extent, and a gap is empty only relative to the declared written-note
+population. Existing report invalidation and input protection contracts are unchanged.
+
+See [P3 contract and implementation verification](../implementation/tab-written-time.md).
+
+## P3.1 written-time view
+
+`View written time` explicitly observes the active position's bar, independently of
+`Check timing`. The read-only panel draws known nominal intervals, eight per page.
+Only complete, nonempty note coverage offers exact endpoint queries; partial views
+show known intervals without a complete active-note set. Empty ownership says
+`No written notes`; an interior gap and the final outside-range endpoint remain
+distinct. Neither means performed silence. Approximate drawing geometry never feeds
+the exact query or edits source values.
+
+The panel shares P2's pending-input guard, including pointer-down before blur,
+keyboard activation and composition. A document or active-bar change immediately
+hides the snapshot and requires an explicit new view; Undo cannot resurrect it.
+Tonal-reference changes retain the same document and view. Opening, querying, paging
+and closing dispatch no score, selection or history action. Close/Escape returns
+focus to View after the shared guard allows the action.
+
+See [P3.1 UI contract and verification](../implementation/tab-written-time-ui.md).
+
+## P3.2 point-local written-note coverage
+
+`inspectTabWrittenNotesAt` can prove a point complete within a partial snapshot only
+when every nonprojected note is otherwise valid, has only a missing duration, and
+starts strictly after the query. The observer records these exclusion facts during
+its existing validation pass. All other unresolved entries block promotion, and an
+unreadable population never becomes complete. Overall `noteCoverage` and the legacy
+`getTabWrittenNotesAt` remain conservative and unchanged.
+
+The panel retains uncertain points in navigation, removes active-set emphasis there,
+and distinguishes proof at the current point from completeness of the whole bar.
+Added candidate times are exact eligible starts inside the known interval extent;
+the known extent itself is never a completeness proof or bar length. Snapshot
+lifetime, pending input, score editing and P2 are unchanged.
+
+See [P3.2 contract and verification](../implementation/tab-written-time-point-coverage.md).
+
+## P3.3 cross-bar written-time observation
+
+An explicitly selected regular-origin model places bars by the existing score-wide
+meter, with first origin zero. This model is an interpretation, not measured bar
+timing or performance. New cross-bar APIs enumerate all source note occurrences and
+keep the selected bar's query window separate from the extent of known intervals.
+They preserve original ownership and authored values, including offsets beyond one
+modeled bar, with a nonblocking projection diagnostic rather than correction.
+
+Otherwise valid missing starts can use their known bar origin only as an exclusion
+lower bound under the declared nonnegative authored-offset domain. No onset or note
+endpoint is invented. Complete means nominal source-note completeness at a point,
+not sounding, silence, sustain realization or harmonic completeness.
+
+The opt-in Across view displays an exact-time-sorted copy with source labels and
+bounded pages; source/query order and the default This bar remain unchanged. Existing
+pending-input and report/history invalidation behavior also covers scope changes.
+
+See [P3.3 contract and verification](../implementation/tab-written-time-across-bars.md).
+
+## P4 written-point readings
+
+The existing order-only Analyze projection above remains unchanged. Separately,
+the Across view offers an initially closed Chord readings inspector for the current
+complete nominal point. It consumes the existing cross-bar inspector's completeness
+proof, including valid onset-exclusion proofs in globally partial snapshots. It
+never interprets a known subset as the full point population.
+
+`analyzeTabWrittenPoint` derives PCs from validated interval MIDI while preserving
+each source occurrence. Two distinct PCs can expose optional shared registry
+formula alternatives; no candidate is adopted automatically. A selected hypothesis
+supplies only formula degrees/membership. Missing tones remain omission metadata;
+additional observed pitches do not acquire inferred melodic roles. Scale degrees
+and candidate Romans use explicitly supplied scale/key references, not a detected
+tonal center or selection-scoped chord. The lowest observed guitar note does not
+establish ensemble bass or inversion.
+
+Reference changes close only this inspector without discarding the written view's
+snapshot, cursor or page. Point changes refresh an open inspector and clear its
+hypothesis; uncertain points remove it. All new actions share the existing timing
+input/IME guard and add no score, selection, history or analysis mutations.
+
+This is one-point conditional exploration, not temporal harmonic segmentation,
+progression, sounding realization or automatic tonal inference. See the
+[P4-A equivalence gate](../implementation/tab-chord-candidates.md) and
+[P4-B contract and verification](../implementation/tab-written-point-readings.md).

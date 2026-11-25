@@ -1,0 +1,109 @@
+{
+  "baselineCommit": "9375293b72e4d3ecccc00da0e3104b934579e860",
+  "branch": "feat/tab-timing-inspection",
+  "protectedSha256": {
+    "src/domain/tab/written-time.ts": "204f6b2dc542e1f67c69fa217450c291b315f954da32f526fbdb6f32e4b09e2c",
+    "src/domain/tab/exact-time.ts": "03d85000b5e5e4942e46ecaf720517c03448f0f7ffdedf1e1309b84741ac129a",
+    "src/domain/tab/types.ts": "a9a9f3ffca87c555d5bc7f9c9b2044344ae867f173f1f0f9833c7e4847ce9977",
+    "src/domain/tab/analysis.ts": "ce5771ef4203ae247f6139ad690490c2d19e9d42d69c9d494641af6185bd811e",
+    "src/domain/tab/input-capabilities.ts": "2f8f8949234a605bae0506ccfa861054e85295769560ce5c4d56baf40e34325a",
+    "src/domain/tab/editing.ts": "9ce5bf2f1e63ae4c94f3cc1e776dca649cc1b6e7633787f977feb87bd1f16a5a",
+    "src/domain/tab/timing-inspection.ts": "254fcb82e8332ef3024915878f203397e81297a4b1c28b790557fc7e10423a69",
+    "src/features/tab-analysis/state.ts": "9039f9240fc3d137fd45ea7136e5babe5a56db1778f7cf6341cbdfa072b6452f",
+    "src/components/guitar/scale/tab-analysis/TabNotationEditor.tsx": "a79b10f7c4f25443e131c96da3cd87915014b73a860195f9ea3b02431f1d6b35",
+    "src/components/guitar/scale/tab-analysis/WrittenTimePanel.tsx": "441bf0af9efd5eaf961f5a57943889328266a41d71a01f46c5bbaf60b127814b",
+    "src/components/guitar/scale/tab-analysis/written-time-panel.module.css": "54540eb23a596f1f2b48f446e4d06ac93bf54bb4022f6166383c1ab89a75253e",
+    "package.json": "be9c381ef703c1dec01e79bc887ddbcc21430278e7a39ba392d7078b4d3050c0",
+    "package-lock.json": "c0bf00d9a0f3100f5d5ee84504b7685e470c18f8a1e33ad0a7f34f71d863a478"
+  },
+  "historicalWorktreeStatus": " M docs/architecture/tab-analysis.md\n A docs/architecture/tab-explicit-timeline.md\n A docs/implementation/tab-p2-progress.md\n A src/domain/tab/explicit-timeline.test.ts\n A src/domain/tab/explicit-timeline.ts\n",
+  "scope": "P3.3 explicit regular-origin cross-bar nominal written-time observation; no sounding/harmony",
+  "buildId": "ARH4t5eI9f-GvF7s435At",
+  "sourceSha256": {
+    "src/domain/tab/written-time-across-bars.ts": "b9f74ed88f9bcbb3d7ef27366790f173aab74458498c8bbc3cc01ed66c96f286",
+    "src/domain/tab/written-time-across-bars.test.ts": "4e299034b4f3b734cb233a169faf2bc985db09f50da4c9426ca4deea450dc061",
+    "src/components/guitar/scale/tab-analysis/TabScoreView.tsx": "353deb852b03d9b3efcd5f645a1ba236df1ae2e1eeb0cefd776a3f6960352d76",
+    "src/components/guitar/scale/tab-analysis/AcrossBarsWrittenTimePanel.tsx": "aa90609ff19122801c0edb53b65e08d1953d8af60c2cd811478052ea26335919",
+    "src/components/guitar/scale/tab-analysis/AcrossBarsWrittenTimePanel.test.tsx": "523f5dd24deebc77b082d611b20cb8504ee380622f7b85f5915791bfe3f206ea",
+    "src/components/guitar/scale/tab-analysis/AcrossBarsWrittenTimeIntegration.test.tsx": "d6923998671e50f4c2fbfb1472d18837a51f5de19af3136d6a35890f7c7bfd9d",
+    "src/components/guitar/scale/tab-analysis/across-bars-written-time.module.css": "76aebac54ed31d51810cac88595b69caa58da2f61c7eba8e8cb468d177e41cbe"
+  },
+  "checks": {
+    "relatedSuite": {
+      "status": "pass",
+      "files": 27,
+      "tests": 688,
+      "newTests": 61,
+      "coreTests": 33,
+      "panelTests": 13,
+      "parentIntegrationTests": 15,
+      "command": "npx vitest run src/domain/tab src/features/tab-analysis src/components/guitar/scale/tab-analysis src/components/guitar/ClientApp.tab-analysis.test.tsx --maxWorkers 2"
+    },
+    "scopedESLint": {
+      "status": "pass",
+      "warnings": 0,
+      "paths": [
+        "src/domain/tab/written-time-across-bars.ts",
+        "src/domain/tab/written-time-across-bars.test.ts",
+        "src/components/guitar/scale/tab-analysis/TabScoreView.tsx",
+        "src/components/guitar/scale/tab-analysis/AcrossBarsWrittenTimePanel.tsx",
+        "src/components/guitar/scale/tab-analysis/AcrossBarsWrittenTimePanel.test.tsx",
+        "src/components/guitar/scale/tab-analysis/AcrossBarsWrittenTimeIntegration.test.tsx"
+      ]
+    },
+    "finalTypeScript": {
+      "status": "pass",
+      "command": "npx tsc --noEmit --incremental false"
+    },
+    "productionBuild": {
+      "status": "pass",
+      "command": "npm run build",
+      "runtimeMatchesAllBrowserBuildFingerprints": true,
+      "warning": "Existing Tailwind MODULE_TYPELESS_PACKAGE_JSON warning"
+    },
+    "independentCore": {
+      "status": "pass",
+      "manualCases": 10,
+      "randomSources": 2400,
+      "randomQueries": 14400,
+      "completionWorlds": 114,
+      "invalidQueries": 2400,
+      "maximumNotes": 6144,
+      "maximumBars": 1024
+    },
+    "rootProductionBrowser": {
+      "status": "pass",
+      "widths": [
+        390,
+        768,
+        1335
+      ],
+      "visualGroupsPerWidth": 14,
+      "scopeEscapeChecksPerWidth": 4,
+      "pageAndConsoleErrors": 0
+    },
+    "independentNativeBrowser": {
+      "status": "pass",
+      "widths": [
+        390,
+        768,
+        1335
+      ],
+      "groupsPerWidth": 6,
+      "nativeCDPIME": true,
+      "pageAndConsoleErrors": 0
+    },
+    "p2BrowserRegression": {
+      "status": "pass",
+      "widths": [
+        390,
+        768,
+        1335
+      ],
+      "executedDriverAndRelocatedOutputDocumented": true
+    },
+    "physicalDeviceOSIMEAndParticipantStudy": "not-measured",
+    "protectedRuntimeAndHistoricalWorktree": "unchanged"
+  },
+  "acceptance": "GO for explicit regular-origin all-source nominal written-time observation and guarded Across view"
+}

@@ -1,0 +1,346 @@
+{
+  "scope": "Independent exact arithmetic of 13 finite declared nominal fixture worlds; not a product observer or coverage classifier",
+  "checkedWorlds": 13,
+  "mismatches": 0,
+  "checks": [
+    {
+      "case": "C01",
+      "world": "A",
+      "query": "3/2",
+      "intervalArithmetic": [
+        {
+          "id": "a",
+          "start": "0",
+          "end": "1/2",
+          "active": false
+        },
+        {
+          "id": "b",
+          "start": "1",
+          "end": "2",
+          "active": true
+        }
+      ],
+      "expected": [
+        "b"
+      ],
+      "checked": [
+        "b"
+      ]
+    },
+    {
+      "case": "C01",
+      "world": "B",
+      "query": "3/2",
+      "intervalArithmetic": [
+        {
+          "id": "a",
+          "start": "0",
+          "end": "2",
+          "active": true
+        },
+        {
+          "id": "b",
+          "start": "1",
+          "end": "2",
+          "active": true
+        }
+      ],
+      "expected": [
+        "a",
+        "b"
+      ],
+      "checked": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "case": "C02",
+      "world": "A",
+      "query": "5/4",
+      "intervalArithmetic": [
+        {
+          "id": "a",
+          "start": "0",
+          "end": "2",
+          "active": true
+        },
+        {
+          "id": "b",
+          "start": "1/4",
+          "end": "3/4",
+          "active": false
+        }
+      ],
+      "expected": [
+        "a"
+      ],
+      "checked": [
+        "a"
+      ]
+    },
+    {
+      "case": "C02",
+      "world": "B",
+      "query": "5/4",
+      "intervalArithmetic": [
+        {
+          "id": "a",
+          "start": "0",
+          "end": "2",
+          "active": true
+        },
+        {
+          "id": "b",
+          "start": "1",
+          "end": "3/2",
+          "active": true
+        }
+      ],
+      "expected": [
+        "a",
+        "b"
+      ],
+      "checked": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "case": "C03",
+      "world": "A",
+      "query": "11/2",
+      "intervalArithmetic": [
+        {
+          "id": "a",
+          "start": "3",
+          "end": "4",
+          "active": false
+        },
+        {
+          "id": "b",
+          "start": "5",
+          "end": "6",
+          "active": true
+        }
+      ],
+      "expected": [
+        "b"
+      ],
+      "checked": [
+        "b"
+      ]
+    },
+    {
+      "case": "C03",
+      "world": "B",
+      "query": "11/2",
+      "intervalArithmetic": [
+        {
+          "id": "a",
+          "start": "3",
+          "end": "6",
+          "active": true
+        },
+        {
+          "id": "b",
+          "start": "5",
+          "end": "6",
+          "active": true
+        }
+      ],
+      "expected": [
+        "a",
+        "b"
+      ],
+      "checked": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "case": "C04",
+      "world": "A",
+      "query": "21/4",
+      "intervalArithmetic": [
+        {
+          "id": "a",
+          "start": "3",
+          "end": "6",
+          "active": true
+        },
+        {
+          "id": "b",
+          "start": "6",
+          "end": "13/2",
+          "active": false
+        }
+      ],
+      "expected": [
+        "a"
+      ],
+      "checked": [
+        "a"
+      ]
+    },
+    {
+      "case": "C04",
+      "world": "B",
+      "query": "21/4",
+      "intervalArithmetic": [
+        {
+          "id": "a",
+          "start": "3",
+          "end": "6",
+          "active": true
+        },
+        {
+          "id": "b",
+          "start": "5",
+          "end": "11/2",
+          "active": true
+        }
+      ],
+      "expected": [
+        "a",
+        "b"
+      ],
+      "checked": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "case": "C05",
+      "world": "A",
+      "query": "5/2",
+      "intervalArithmetic": [
+        {
+          "id": "a",
+          "start": "0",
+          "end": "3",
+          "active": true
+        },
+        {
+          "id": "b",
+          "start": "2",
+          "end": "3",
+          "active": true
+        }
+      ],
+      "expected": [
+        "a",
+        "b"
+      ],
+      "checked": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "case": "C05",
+      "world": "B",
+      "query": "5/2",
+      "intervalArithmetic": [
+        {
+          "id": "a",
+          "start": "0",
+          "end": "3",
+          "active": true
+        },
+        {
+          "id": "b",
+          "start": "4",
+          "end": "5",
+          "active": false
+        }
+      ],
+      "expected": [
+        "a"
+      ],
+      "checked": [
+        "a"
+      ]
+    },
+    {
+      "case": "C06",
+      "world": "A",
+      "query": "3/2",
+      "intervalArithmetic": [
+        {
+          "id": "a",
+          "start": "0",
+          "end": "2",
+          "active": true
+        },
+        {
+          "id": "b",
+          "start": "3",
+          "end": "4",
+          "active": false
+        }
+      ],
+      "expected": [
+        "a"
+      ],
+      "checked": [
+        "a"
+      ]
+    },
+    {
+      "case": "C06",
+      "world": "B",
+      "query": "3/2",
+      "intervalArithmetic": [
+        {
+          "id": "a",
+          "start": "0",
+          "end": "2",
+          "active": true
+        },
+        {
+          "id": "b",
+          "start": "1",
+          "end": "2",
+          "active": true
+        }
+      ],
+      "expected": [
+        "a",
+        "b"
+      ],
+      "checked": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "case": "C07",
+      "world": "explicit-positive",
+      "query": "3/2",
+      "intervalArithmetic": [
+        {
+          "id": "a",
+          "start": "0",
+          "end": "2",
+          "active": true
+        },
+        {
+          "id": "b",
+          "start": "1",
+          "end": "2",
+          "active": true
+        }
+      ],
+      "expected": [
+        "a",
+        "b"
+      ],
+      "checked": [
+        "a",
+        "b"
+      ]
+    }
+  ]
+}

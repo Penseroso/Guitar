@@ -1,0 +1,90 @@
+{
+  "date": "2026-11-15",
+  "stage": "P3 applicability after revalidated P2",
+  "overall": "CONDITIONAL_GO_FOR_DECLARED_WRITTEN_TIME_OBSERVATION_SUBSET",
+  "meaning": "Applicability only; no production timeline, UI, harmonic inference or runtime dependency is implemented or chosen.",
+  "baseline": {
+    "remoteMasterVerified": "3ef63568353ee395eb3a46e02f27541bfdca8adf",
+    "includesUncommittedRevalidatedP2": true,
+    "productFilesUnchanged": 281
+  },
+  "decisions": [
+    {
+      "candidate": "source IDs, strings, register, repeated events and exact written fractions",
+      "decision": "ADOPT",
+      "gate": "GO"
+    },
+    {
+      "candidate": "notation/playback/technique realization separation and own fixtures",
+      "decision": "ADAPT",
+      "gate": "GO_FOR_PRINCIPLES_AND_VALIDATION"
+    },
+    {
+      "candidate": "explicit written-time intervals",
+      "decision": "ADAPT",
+      "gate": "CONDITIONAL_GO",
+      "conditions": [
+        "declare supported temporal semantics",
+        "separate bar-local and global coordinates",
+        "preserve known intervals without claiming complete verticality",
+        "resolve continuation/rest/mute/reattack conflicts before implementation"
+      ]
+    },
+    {
+      "candidate": "music21 offline comparisons",
+      "decision": "ADAPT",
+      "gate": "CONDITIONAL_GO",
+      "conditions": [
+        "exact source/provenance sidecar",
+        "audited library coordinate mapping",
+        "detect and exclude precision-limited regions",
+        "manual expectations primary; neither Tree nor chordify is sole authority"
+      ]
+    },
+    {
+      "candidate": "raw MIDI/default values/repairs/generated rests as source facts",
+      "decision": "REJECT",
+      "gate": "NO_GO"
+    },
+    {
+      "candidate": "alphaTab model migration or runtime renderer/synth/Python",
+      "decision": "DEFER",
+      "gate": "NO_GO_NOW"
+    },
+    {
+      "candidate": "time-based harmonic segmentation, inferred progression or automatic local/modal center/tonicization/modulation",
+      "decision": "DEFER",
+      "gate": "NO_GO_FOR_IMPLEMENTATION_IN_THIS_STAGE"
+    }
+  ],
+  "freshExecutedEvidence": {
+    "productDocumentCases": 22,
+    "productFrozenMutations": 0,
+    "alphaModelMidiCases": 18,
+    "alphaPrecisionGroups": 5,
+    "alphaSelectedUpstreamTestsPassed": 28,
+    "alphaUpstreamTestsSkipped": 46,
+    "music21SemanticCases": 11,
+    "music21SelectedUpstreamTestsPassed": 4,
+    "knownExternalDivergencesAsserted": true,
+    "newTimelineAccuracyClaimed": false
+  },
+  "proposedNotExecutedNewEngineAcceptanceCases": 16,
+  "sourcePins": {
+    "alphaTab": "5f50046a0e76229af5509f5a28e9567d5af634f0",
+    "music21": "86a7dc8a5fb3b1996ac0202d6bb9b4d4b9d19197"
+  },
+  "reports": [
+    "product/report.md",
+    "alpha/report.md",
+    "music21/report.md",
+    "integration/report.md",
+    "challenge/report.md"
+  ],
+  "limitations": [
+    "synthetic source-level probes, not user-corpus accuracy",
+    "descriptive host measurements, not cross-tool ranking or latency SLO",
+    "no new browser/UI implementation or validation",
+    "code licenses confirmed; deployment compatibility and corpus/assets rights not blanket-approved"
+  ]
+}

@@ -1,0 +1,27 @@
+
+> the-modus@0.9.0 build
+> next build
+
+▲ Next.js 16.1.6 (Turbopack)
+
+  Creating an optimized production build ...
+(node:2133) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/Guitar-p2/tailwind.config.ts?id=1794896008211 is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/Guitar-p2/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✓ Compiled successfully in 6.0s
+  Running TypeScript ...
+  Collecting page data using 4 workers ...
+  Generating static pages using 4 workers (0/4) ...
+  Generating static pages using 4 workers (1/4)
+  Generating static pages using 4 workers (2/4)
+  Generating static pages using 4 workers (3/4)
+✓ Generating static pages using 4 workers (4/4) in 177.1ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+└ ○ /_not-found
+
+
+○  (Static)  prerendered as static content

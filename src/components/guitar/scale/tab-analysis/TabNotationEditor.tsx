@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import type { TabDocument, TabFraction, TabMoment } from '@/domain/tab/types';
 import type { TabActiveCell, TabAnalysisAction } from '@/features/tab-analysis/state';
-import { canSustainFromPrevious } from '@/domain/tab/input-capabilities';
+import { canSustainFromPrevious, normalizeTabFraction } from '@/domain/tab/input-capabilities';
 import { hasTabJoinTimingConflict, hasTabSplitTimingConflict } from '@/domain/tab/editing';
 import { SwipePicker } from '../../harmony/SwipePicker';
 import styles from './tab-analysis.module.css';
@@ -33,25 +33,48 @@ export function TabMeasureEditor({ document, measure, dispatch }: { document: Ta
     </div>;
 }
 
-function PositionOffset({ moment, dispatch }: { moment: TabMoment; dispatch: (action: TabAnalysisAction) => void }) {
+export interface TabNotationDraftState { dirty: boolean; composing: boolean }
+function PositionOffset({ moment, dispatch, onDraftStateChange }: { moment: TabMoment; dispatch: (action: TabAnalysisAction) => void; onDraftStateChange?: (state: TabNotationDraftState) => void }) {
     const [numerator, setNumerator] = useState(moment.beatOffset?.numerator.toString() ?? '');
     const [denominator, setDenominator] = useState(moment.beatOffset?.denominator.toString() ?? '1');
+    const composing = useRef(false);
+    const report = (n: string, d: string, ime = composing.current) => onDraftStateChange?.({
+        dirty: n !== (moment.beatOffset?.numerator.toString() ?? '') || d !== (moment.beatOffset?.denominator.toString() ?? '1'), composing: ime,
+    });
+    useLayoutEffect(() => {
+        onDraftStateChange?.({ dirty: false, composing: false });
+        return () => onDraftStateChange?.({ dirty: false, composing: false });
+    }, [moment.id, onDraftStateChange]);
     const valid = /^\d{1,4}$/.test(numerator) && /^\d{1,4}$/.test(denominator)
         && Number(numerator) <= 1024 && Number(denominator) >= 1 && Number(denominator) <= 1024;
-    return <div className={styles.notationRow}>
+    return <div className={styles.notationRow} onCompositionStart={() => { composing.current = true; report(numerator, denominator, true); }}
+        onCompositionEnd={() => { composing.current = false; report(numerator, denominator, false); }}
+        onKeyDown={event => { if (event.nativeEvent.isComposing || composing.current) event.stopPropagation(); }}>
         <span>Start · quarter notes from bar start</span>
         <div className={styles.notationFraction}>
-            <input type="text" inputMode="numeric" aria-label="Start numerator" placeholder="Unknown" value={numerator} onChange={event => setNumerator(event.target.value)} />
+            <input type="text" inputMode="numeric" aria-label="Start numerator" placeholder="Unknown" value={numerator} onChange={event => { setNumerator(event.target.value); report(event.target.value, denominator); }} />
             <span aria-hidden="true">/</span>
-            <input type="text" inputMode="numeric" aria-label="Start denominator" value={denominator} onChange={event => setDenominator(event.target.value)} />
-            <button type="button" className={styles.textAction} disabled={!valid} onClick={() => dispatch({ type: 'set-beat-offset', momentId: moment.id, offset: { numerator: Number(numerator), denominator: Number(denominator) } })}>Set start</button>
-            {moment.beatOffset && <button type="button" className={styles.textAction} onClick={() => dispatch({ type: 'set-beat-offset', momentId: moment.id, offset: undefined })}>Clear start</button>}
+            <input type="text" inputMode="numeric" aria-label="Start denominator" value={denominator} onChange={event => { setDenominator(event.target.value); report(numerator, event.target.value); }} />
+            <button type="button" className={styles.textAction} disabled={!valid} onClick={() => {
+                if (composing.current) return;
+                const offset = normalizeTabFraction({ numerator: Number(numerator), denominator: Number(denominator) }, true);
+                if (!offset) return;
+                setNumerator(String(offset.numerator)); setDenominator(String(offset.denominator));
+                onDraftStateChange?.({ dirty: false, composing: false });
+                dispatch({ type: 'set-beat-offset', momentId: moment.id, offset });
+            }}>Set start</button>
+            <button type="button" className={styles.textAction} onClick={() => {
+                if (composing.current) return;
+                setNumerator(moment.beatOffset?.numerator.toString() ?? ''); setDenominator(moment.beatOffset?.denominator.toString() ?? '1');
+                onDraftStateChange?.({ dirty: false, composing: false });
+            }}>Cancel start input</button>
+            {moment.beatOffset && <button type="button" className={styles.textAction} onClick={() => { if (!composing.current) dispatch({ type: 'set-beat-offset', momentId: moment.id, offset: undefined }); }}>Clear start</button>}
         </div>
     </div>;
 }
 
 /** Optional written information; no placement, duration or sounding pitch is auto-filled. */
-export function TabNotationEditor({ document, cell, dispatch, onClose }: { document: TabDocument; cell: TabActiveCell; dispatch: (action: TabAnalysisAction) => void; onClose?: () => void }) {
+export function TabNotationEditor({ document, cell, dispatch, onClose, onDraftStateChange }: { document: TabDocument; cell: TabActiveCell; dispatch: (action: TabAnalysisAction) => void; onClose?: () => void; onDraftStateChange?: (state: TabNotationDraftState) => void }) {
     const moment = document.moments.find(item => item.id === cell.momentId);
     if (!moment) return null;
     const note = moment.notes.find(item => item.string === cell.string);
@@ -79,7 +102,7 @@ export function TabNotationEditor({ document, cell, dispatch, onClose }: { docum
         {(note || sustain || moment.rest) && <div className={styles.notationRow}>
             <SwipePicker label="Duration" value={durationValue} options={availableDurations} onChange={value => dispatch({ type: 'set-duration', ...cell, duration: fractionFromValue(value) })} />
         </div>}
-        <PositionOffset key={`${moment.id}:${fractionValue(moment.beatOffset)}`} moment={moment} dispatch={dispatch} />
+        <PositionOffset key={`${moment.id}:${fractionValue(moment.beatOffset)}`} moment={moment} dispatch={dispatch} onDraftStateChange={onDraftStateChange} />
         <div className={styles.notationRow}>
             <button type="button" className={styles.textAction} aria-pressed={hasBarline}
                 disabled={conflict || (!hasBarline && (document.measureCount >= 1024 || (!next && document.moments.length >= 1024)))}

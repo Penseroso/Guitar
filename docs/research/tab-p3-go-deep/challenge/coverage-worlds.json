@@ -1,0 +1,126 @@
+{
+  "scope": "Written-interval countermodels only; no sounding or production timeline is implemented.",
+  "source": {
+    "format": "authored",
+    "timing": "order-only",
+    "source": "",
+    "tuningMidi": [
+      64,
+      59,
+      55,
+      50,
+      45,
+      40
+    ],
+    "capo": 0,
+    "measureCount": 1,
+    "moments": [
+      {
+        "id": "edit-moment-0",
+        "index": 0,
+        "measure": 1,
+        "column": 1,
+        "notes": [
+          {
+            "id": "a",
+            "string": 0,
+            "fret": 0,
+            "midi": 64,
+            "pitchClass": 4,
+            "source": null,
+            "duration": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ],
+        "beatOffset": {
+          "numerator": 0,
+          "denominator": 1
+        }
+      },
+      {
+        "id": "edit-moment-1",
+        "index": 1,
+        "measure": 1,
+        "column": 2,
+        "notes": [
+          {
+            "id": "b",
+            "string": 1,
+            "fret": 8,
+            "midi": 67,
+            "pitchClass": 7,
+            "source": null
+          }
+        ],
+        "beatOffset": {
+          "numerator": 1,
+          "denominator": 4
+        }
+      }
+    ],
+    "meter": {
+      "numerator": 4,
+      "denominator": 4
+    }
+  },
+  "inspection": {
+    "timingInput": "some",
+    "issues": [
+      {
+        "code": "missing-duration",
+        "message": "Duration is not supplied.",
+        "target": {
+          "momentId": "edit-moment-1",
+          "noteId": "b",
+          "string": 1
+        },
+        "kind": "missing"
+      }
+    ],
+    "summary": {
+      "missing": 1,
+      "invalid": 0
+    }
+  },
+  "completions": [
+    {
+      "name": "short-b",
+      "bDuration": "1/8",
+      "bEnd": "3/8",
+      "activeAt1_8": [
+        "a"
+      ],
+      "activeAt1_2": [
+        "a"
+      ]
+    },
+    {
+      "name": "long-b",
+      "bDuration": "3/4",
+      "bEnd": "1",
+      "activeAt1_8": [
+        "a"
+      ],
+      "activeAt1_2": [
+        "a",
+        "b"
+      ]
+    }
+  ],
+  "knownInterval": {
+    "noteId": "a",
+    "range": "[0,1)"
+  },
+  "unknownEndB": {
+    "knownStart": "1/4",
+    "knownMIDI": 67,
+    "string": 1
+  },
+  "interpretation": {
+    "beforeKnownStartB": "For this closed two-event scope, b cannot contaminate [0,1/4) under declared half-open written intervals.",
+    "afterKnownStartB": "Known a interval survives, but complete verticality at1/2 is undecidable from the source; absence of b cannot be claimed.",
+    "caution": "Adding another unknown-start event can invalidate even the bounded complete region; coverage depends on all relevant source records."
+  }
+}

@@ -151,6 +151,10 @@ describe('editable tab score', () => {
         await user.tab();
         expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Before score' }));
         await user.tab();
+        expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Check timing' }));
+        await user.tab();
+        expect(document.activeElement).toBe(screen.getByRole('button', { name: 'View written time' }));
+        await user.tab();
         expect(document.activeElement).toBe(cell(1, 1));
         await user.keyboard('{ArrowRight}{ArrowDown}');
         expect(document.activeElement).toBe(cell(2, 2));
@@ -247,6 +251,10 @@ describe('editable tab score', () => {
         await user.tab({ shift: true });
         expect(document.activeElement).toBe(cell(2, 2));
         await user.keyboard('7');
+        await user.tab({ shift: true });
+        expect(document.activeElement).toBe(screen.getByRole('button', { name: 'View written time' }));
+        await user.tab({ shift: true });
+        expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Check timing' }));
         await user.tab({ shift: true });
         expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Before score' }));
     });

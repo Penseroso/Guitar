@@ -1,0 +1,2520 @@
+{
+  "scope": "GO2 notation/realization separation only; existing source APIs, no new timeline engine",
+  "source": "alphaTab@5f50046a0e76229af5509f5a28e9567d5af634f0 and current revalidated P2 worktree",
+  "alpha": {
+    "ordinary": {
+      "before": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 0,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 0,
+          "playbackStart": 0,
+          "playbackDuration": 0,
+          "notes": [
+            {
+              "id": 0,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 1,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 0,
+          "playbackStart": 0,
+          "playbackDuration": 0,
+          "notes": [
+            {
+              "id": 1,
+              "string": 6,
+              "fret": 7,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "afterFinish": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 0,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 960,
+          "playbackStart": 0,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 0,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 1,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 960,
+          "displayDuration": 960,
+          "playbackStart": 960,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 1,
+              "string": 6,
+              "fret": 7,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "afterGenerate": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 0,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 960,
+          "playbackStart": 0,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 0,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 1,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 960,
+          "displayDuration": 960,
+          "playbackStart": 960,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 1,
+              "string": 6,
+              "fret": 7,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "events": [
+        {
+          "start": 0,
+          "length": 960,
+          "midi": 69,
+          "velocity": 95,
+          "channel": 0
+        },
+        {
+          "start": 960,
+          "length": 960,
+          "midi": 71,
+          "velocity": 95,
+          "channel": 0
+        }
+      ],
+      "restTicks": [],
+      "noteBendCount": 2,
+      "authoredSnapshotUnchanged": true
+    },
+    "contradictoryTieFret": {
+      "before": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 2,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 0,
+          "playbackStart": 0,
+          "playbackDuration": 0,
+          "notes": [
+            {
+              "id": 2,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 3,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 0,
+          "playbackStart": 0,
+          "playbackDuration": 0,
+          "notes": [
+            {
+              "id": 3,
+              "string": 6,
+              "fret": 9,
+              "tie": true,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "afterFinish": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 2,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 960,
+          "playbackStart": 0,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 2,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 3,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 960,
+          "displayDuration": 960,
+          "playbackStart": 960,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 3,
+              "string": 6,
+              "fret": 5,
+              "tie": true,
+              "tieOriginId": 2,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "afterGenerate": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 2,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 960,
+          "playbackStart": 0,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 2,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 3,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 960,
+          "displayDuration": 960,
+          "playbackStart": 960,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 3,
+              "string": 6,
+              "fret": 5,
+              "tie": true,
+              "tieOriginId": 2,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "events": [
+        {
+          "start": 0,
+          "length": 1920,
+          "midi": 69,
+          "velocity": 95,
+          "channel": 0
+        }
+      ],
+      "restTicks": [],
+      "noteBendCount": 1,
+      "authoredSnapshotUnchanged": true
+    },
+    "tieAcrossExplicitRest": {
+      "before": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 4,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 0,
+          "playbackStart": 0,
+          "playbackDuration": 0,
+          "notes": [
+            {
+              "id": 4,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 5,
+          "duration": 4,
+          "grace": 0,
+          "isRest": true,
+          "displayStart": 0,
+          "displayDuration": 0,
+          "playbackStart": 0,
+          "playbackDuration": 0,
+          "notes": []
+        },
+        {
+          "sourceOrdinal": 2,
+          "beatId": 6,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 0,
+          "playbackStart": 0,
+          "playbackDuration": 0,
+          "notes": [
+            {
+              "id": 5,
+              "string": 6,
+              "fret": 5,
+              "tie": true,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "afterFinish": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 4,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 960,
+          "playbackStart": 0,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 4,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 5,
+          "duration": 4,
+          "grace": 0,
+          "isRest": true,
+          "displayStart": 960,
+          "displayDuration": 960,
+          "playbackStart": 960,
+          "playbackDuration": 960,
+          "notes": []
+        },
+        {
+          "sourceOrdinal": 2,
+          "beatId": 6,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 1920,
+          "displayDuration": 960,
+          "playbackStart": 1920,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 5,
+              "string": 6,
+              "fret": 5,
+              "tie": true,
+              "tieOriginId": 4,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "afterGenerate": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 4,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 960,
+          "playbackStart": 0,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 4,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 5,
+          "duration": 4,
+          "grace": 0,
+          "isRest": true,
+          "displayStart": 960,
+          "displayDuration": 960,
+          "playbackStart": 960,
+          "playbackDuration": 960,
+          "notes": []
+        },
+        {
+          "sourceOrdinal": 2,
+          "beatId": 6,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 1920,
+          "displayDuration": 960,
+          "playbackStart": 1920,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 5,
+              "string": 6,
+              "fret": 5,
+              "tie": true,
+              "tieOriginId": 4,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "events": [
+        {
+          "start": 0,
+          "length": 2880,
+          "midi": 69,
+          "velocity": 95,
+          "channel": 0
+        }
+      ],
+      "restTicks": [
+        960
+      ],
+      "noteBendCount": 1,
+      "authoredSnapshotUnchanged": true
+    },
+    "hammer": {
+      "before": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 7,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 0,
+          "playbackStart": 0,
+          "playbackDuration": 0,
+          "notes": [
+            {
+              "id": 6,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": true,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 8,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 0,
+          "playbackStart": 0,
+          "playbackDuration": 0,
+          "notes": [
+            {
+              "id": 7,
+              "string": 6,
+              "fret": 7,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "afterFinish": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 7,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 960,
+          "playbackStart": 0,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 6,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": true,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 8,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 960,
+          "displayDuration": 960,
+          "playbackStart": 960,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 7,
+              "string": 6,
+              "fret": 7,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": 6,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "afterGenerate": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 7,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 960,
+          "playbackStart": 0,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 6,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": true,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 8,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 960,
+          "displayDuration": 960,
+          "playbackStart": 960,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 7,
+              "string": 6,
+              "fret": 7,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": 6,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "events": [
+        {
+          "start": 0,
+          "length": 960,
+          "midi": 69,
+          "velocity": 95,
+          "channel": 0
+        },
+        {
+          "start": 960,
+          "length": 960,
+          "midi": 71,
+          "velocity": 79,
+          "channel": 0
+        }
+      ],
+      "restTicks": [],
+      "noteBendCount": 2,
+      "authoredSnapshotUnchanged": true
+    },
+    "legatoSlide": {
+      "before": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 9,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 0,
+          "playbackStart": 0,
+          "playbackDuration": 0,
+          "notes": [
+            {
+              "id": 8,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 2,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 10,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 0,
+          "playbackStart": 0,
+          "playbackDuration": 0,
+          "notes": [
+            {
+              "id": 9,
+              "string": 6,
+              "fret": 7,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "afterFinish": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 9,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 960,
+          "playbackStart": 0,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 8,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 2,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 10,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 960,
+          "displayDuration": 960,
+          "playbackStart": 960,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 9,
+              "string": 6,
+              "fret": 7,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": 8
+            }
+          ]
+        }
+      ],
+      "afterGenerate": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 9,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 960,
+          "playbackStart": 0,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 8,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 2,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 10,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 960,
+          "displayDuration": 960,
+          "playbackStart": 960,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 9,
+              "string": 6,
+              "fret": 7,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": 8
+            }
+          ]
+        }
+      ],
+      "events": [
+        {
+          "start": 0,
+          "length": 1920,
+          "midi": 69,
+          "velocity": 95,
+          "channel": 0
+        }
+      ],
+      "restTicks": [],
+      "noteBendCount": 14,
+      "authoredSnapshotUnchanged": true
+    },
+    "staccato": {
+      "before": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 11,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 0,
+          "playbackStart": 0,
+          "playbackDuration": 0,
+          "notes": [
+            {
+              "id": 10,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": true,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "afterFinish": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 11,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 960,
+          "playbackStart": 0,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 10,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": true,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "afterGenerate": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 11,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 960,
+          "playbackStart": 0,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 10,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": true,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "events": [
+        {
+          "start": 0,
+          "length": 480,
+          "midi": 69,
+          "velocity": 95,
+          "channel": 0
+        }
+      ],
+      "restTicks": [],
+      "noteBendCount": 1,
+      "authoredSnapshotUnchanged": true
+    },
+    "deadNote": {
+      "before": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 12,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 0,
+          "playbackStart": 0,
+          "playbackDuration": 0,
+          "notes": [
+            {
+              "id": 11,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": true,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "afterFinish": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 12,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 960,
+          "playbackStart": 0,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 11,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": true,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "afterGenerate": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 12,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 960,
+          "playbackStart": 0,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 11,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": true,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "events": [
+        {
+          "start": 0,
+          "length": 60,
+          "midi": 69,
+          "velocity": 95,
+          "channel": 0
+        }
+      ],
+      "restTicks": [],
+      "noteBendCount": 1,
+      "authoredSnapshotUnchanged": true
+    },
+    "grace": {
+      "before": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 13,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 0,
+          "playbackStart": 0,
+          "playbackDuration": 0,
+          "notes": [
+            {
+              "id": 12,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 14,
+          "duration": 16,
+          "grace": 2,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 0,
+          "playbackStart": 0,
+          "playbackDuration": 0,
+          "notes": [
+            {
+              "id": 13,
+              "string": 6,
+              "fret": 7,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 2,
+          "beatId": 15,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 0,
+          "playbackStart": 0,
+          "playbackDuration": 0,
+          "notes": [
+            {
+              "id": 14,
+              "string": 6,
+              "fret": 9,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "afterFinish": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 13,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 960,
+          "playbackStart": 0,
+          "playbackDuration": 840,
+          "notes": [
+            {
+              "id": 12,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 14,
+          "duration": 8,
+          "grace": 2,
+          "isRest": false,
+          "displayStart": 960,
+          "displayDuration": 0,
+          "playbackStart": 840,
+          "playbackDuration": 120,
+          "notes": [
+            {
+              "id": 13,
+              "string": 6,
+              "fret": 7,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 2,
+          "beatId": 15,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 960,
+          "displayDuration": 960,
+          "playbackStart": 960,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 14,
+              "string": 6,
+              "fret": 9,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "afterGenerate": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 13,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 960,
+          "playbackStart": 0,
+          "playbackDuration": 840,
+          "notes": [
+            {
+              "id": 12,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 14,
+          "duration": 8,
+          "grace": 2,
+          "isRest": false,
+          "displayStart": 960,
+          "displayDuration": 0,
+          "playbackStart": 840,
+          "playbackDuration": 120,
+          "notes": [
+            {
+              "id": 13,
+              "string": 6,
+              "fret": 7,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 2,
+          "beatId": 15,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 960,
+          "displayDuration": 960,
+          "playbackStart": 960,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 14,
+              "string": 6,
+              "fret": 9,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "events": [
+        {
+          "start": 0,
+          "length": 840,
+          "midi": 69,
+          "velocity": 95,
+          "channel": 0
+        },
+        {
+          "start": 840,
+          "length": 120,
+          "midi": 71,
+          "velocity": 95,
+          "channel": 0
+        },
+        {
+          "start": 960,
+          "length": 960,
+          "midi": 73,
+          "velocity": 95,
+          "channel": 0
+        }
+      ],
+      "restTicks": [],
+      "noteBendCount": 3,
+      "authoredSnapshotUnchanged": true
+    },
+    "ringStoppedByNewAttack": {
+      "before": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 16,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 0,
+          "playbackStart": 0,
+          "playbackDuration": 0,
+          "notes": [
+            {
+              "id": 15,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": true,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 17,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 0,
+          "playbackStart": 0,
+          "playbackDuration": 0,
+          "notes": [
+            {
+              "id": 16,
+              "string": 6,
+              "fret": 7,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 2,
+          "beatId": 18,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 0,
+          "playbackStart": 0,
+          "playbackDuration": 0,
+          "notes": [
+            {
+              "id": 17,
+              "string": 6,
+              "fret": 9,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "afterFinish": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 16,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 960,
+          "playbackStart": 0,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 15,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": true,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 17,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 960,
+          "displayDuration": 960,
+          "playbackStart": 960,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 16,
+              "string": 6,
+              "fret": 7,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 2,
+          "beatId": 18,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 1920,
+          "displayDuration": 960,
+          "playbackStart": 1920,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 17,
+              "string": 6,
+              "fret": 9,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "afterGenerate": [
+        {
+          "sourceOrdinal": 0,
+          "beatId": 16,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 0,
+          "displayDuration": 960,
+          "playbackStart": 0,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 15,
+              "string": 6,
+              "fret": 5,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": true,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 1,
+          "beatId": 17,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 960,
+          "displayDuration": 960,
+          "playbackStart": 960,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 16,
+              "string": 6,
+              "fret": 7,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        },
+        {
+          "sourceOrdinal": 2,
+          "beatId": 18,
+          "duration": 4,
+          "grace": 0,
+          "isRest": false,
+          "displayStart": 1920,
+          "displayDuration": 960,
+          "playbackStart": 1920,
+          "playbackDuration": 960,
+          "notes": [
+            {
+              "id": 17,
+              "string": 6,
+              "fret": 9,
+              "tie": false,
+              "tieOriginId": null,
+              "ring": false,
+              "dead": false,
+              "staccato": false,
+              "hammer": false,
+              "hammerOriginId": null,
+              "slide": 0,
+              "slideOriginId": null
+            }
+          ]
+        }
+      ],
+      "events": [
+        {
+          "start": 0,
+          "length": 960,
+          "midi": 69,
+          "velocity": 95,
+          "channel": 0
+        },
+        {
+          "start": 960,
+          "length": 960,
+          "midi": 71,
+          "velocity": 95,
+          "channel": 0
+        },
+        {
+          "start": 1920,
+          "length": 960,
+          "midi": 73,
+          "velocity": 95,
+          "channel": 0
+        }
+      ],
+      "restTicks": [],
+      "noteBendCount": 3,
+      "authoredSnapshotUnchanged": true
+    }
+  },
+  "product": {
+    "restCrossingWrittenLength": {
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "edit-moment-0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null,
+                "duration": {
+                  "numerator": 4,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "edit-moment-1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 1
+            },
+            "rest": {
+              "duration": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            }
+          },
+          {
+            "id": "edit-moment-2",
+            "index": 2,
+            "measure": 1,
+            "column": 3,
+            "notes": [],
+            "beatOffset": {
+              "numerator": 2,
+              "denominator": 1
+            }
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysisNotes": [
+        {
+          "id": "a",
+          "midi": 69,
+          "fret": 5,
+          "duration": {
+            "numerator": 4,
+            "denominator": 1
+          }
+        }
+      ],
+      "analyzedKinds": [
+        "single-note",
+        "empty",
+        "empty"
+      ],
+      "writtenSourceDuration": {
+        "numerator": 4,
+        "denominator": 1
+      }
+    },
+    "muteCrossingWrittenLength": {
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "edit-moment-0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null,
+                "duration": {
+                  "numerator": 4,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "edit-moment-1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 1
+            },
+            "mutes": [
+              {
+                "string": 0
+              }
+            ]
+          },
+          {
+            "id": "edit-moment-2",
+            "index": 2,
+            "measure": 1,
+            "column": 3,
+            "notes": [],
+            "beatOffset": {
+              "numerator": 2,
+              "denominator": 1
+            }
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysisNotes": [
+        {
+          "id": "a",
+          "midi": 69,
+          "fret": 5,
+          "duration": {
+            "numerator": 4,
+            "denominator": 1
+          }
+        }
+      ],
+      "analyzedKinds": [
+        "single-note",
+        "empty",
+        "empty"
+      ],
+      "writtenSourceDuration": {
+        "numerator": 4,
+        "denominator": 1
+      }
+    },
+    "reattackCrossingWrittenLength": {
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "edit-moment-0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null,
+                "duration": {
+                  "numerator": 4,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "edit-moment-1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "edit-moment-2",
+            "index": 2,
+            "measure": 1,
+            "column": 3,
+            "notes": [],
+            "beatOffset": {
+              "numerator": 2,
+              "denominator": 1
+            }
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysisNotes": [
+        {
+          "id": "a",
+          "midi": 69,
+          "fret": 5,
+          "duration": {
+            "numerator": 4,
+            "denominator": 1
+          }
+        },
+        {
+          "id": "b",
+          "midi": 69,
+          "fret": 5,
+          "duration": {
+            "numerator": 1,
+            "denominator": 1
+          }
+        }
+      ],
+      "analyzedKinds": [
+        "single-note",
+        "single-note",
+        "empty"
+      ],
+      "writtenSourceDuration": {
+        "numerator": 4,
+        "denominator": 1
+      }
+    },
+    "sustainWithOverlappingWrittenLength": {
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "edit-moment-0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null,
+                "duration": {
+                  "numerator": 4,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "edit-moment-1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 1
+            },
+            "sustains": [
+              {
+                "noteId": "a",
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "edit-moment-2",
+            "index": 2,
+            "measure": 1,
+            "column": 3,
+            "notes": [],
+            "beatOffset": {
+              "numerator": 2,
+              "denominator": 1
+            }
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysisNotes": [
+        {
+          "id": "a",
+          "midi": 69,
+          "fret": 5,
+          "duration": {
+            "numerator": 4,
+            "denominator": 1
+          }
+        }
+      ],
+      "analyzedKinds": [
+        "single-note",
+        "empty",
+        "empty"
+      ],
+      "writtenSourceDuration": {
+        "numerator": 4,
+        "denominator": 1
+      }
+    },
+    "hammerEndpointObservations": {
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "edit-moment-0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null,
+                "duration": {
+                  "numerator": 4,
+                  "denominator": 1
+                },
+                "techniques": [
+                  {
+                    "kind": "hammer-on",
+                    "toNoteId": "b"
+                  }
+                ]
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "edit-moment-1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "b",
+                "string": 0,
+                "fret": 7,
+                "midi": 71,
+                "pitchClass": 11,
+                "source": null,
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "edit-moment-2",
+            "index": 2,
+            "measure": 1,
+            "column": 3,
+            "notes": [],
+            "beatOffset": {
+              "numerator": 2,
+              "denominator": 1
+            }
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysisNotes": [
+        {
+          "id": "a",
+          "midi": 69,
+          "fret": 5,
+          "duration": {
+            "numerator": 4,
+            "denominator": 1
+          },
+          "techniques": [
+            {
+              "kind": "hammer-on",
+              "toNoteId": "b"
+            }
+          ]
+        },
+        {
+          "id": "b",
+          "midi": 71,
+          "fret": 7,
+          "duration": {
+            "numerator": 1,
+            "denominator": 1
+          }
+        }
+      ],
+      "analyzedKinds": [
+        "single-note",
+        "single-note",
+        "empty"
+      ],
+      "writtenSourceDuration": {
+        "numerator": 4,
+        "denominator": 1
+      }
+    },
+    "bendBasePitchObservation": {
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "edit-moment-0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null,
+                "duration": {
+                  "numerator": 4,
+                  "denominator": 1
+                },
+                "techniques": [
+                  {
+                    "kind": "bend",
+                    "targetFret": 12,
+                    "notation": "b12"
+                  }
+                ]
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "edit-moment-1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "edit-moment-2",
+            "index": 2,
+            "measure": 1,
+            "column": 3,
+            "notes": [],
+            "beatOffset": {
+              "numerator": 2,
+              "denominator": 1
+            }
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [],
+        "summary": {
+          "missing": 0,
+          "invalid": 0
+        }
+      },
+      "analysisNotes": [
+        {
+          "id": "a",
+          "midi": 69,
+          "fret": 5,
+          "duration": {
+            "numerator": 4,
+            "denominator": 1
+          },
+          "techniques": [
+            {
+              "kind": "bend",
+              "targetFret": 12,
+              "notation": "b12"
+            }
+          ]
+        }
+      ],
+      "analyzedKinds": [
+        "single-note",
+        "empty",
+        "empty"
+      ],
+      "writtenSourceDuration": {
+        "numerator": 4,
+        "denominator": 1
+      }
+    },
+    "interruptedSustainReference": {
+      "input": {
+        "format": "authored",
+        "timing": "order-only",
+        "source": "",
+        "tuningMidi": [
+          64,
+          59,
+          55,
+          50,
+          45,
+          40
+        ],
+        "capo": 0,
+        "measureCount": 1,
+        "moments": [
+          {
+            "id": "edit-moment-0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null,
+                "duration": {
+                  "numerator": 4,
+                  "denominator": 1
+                }
+              }
+            ],
+            "beatOffset": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "id": "edit-moment-1",
+            "index": 1,
+            "measure": 1,
+            "column": 2,
+            "notes": [],
+            "beatOffset": {
+              "numerator": 1,
+              "denominator": 1
+            },
+            "rest": {
+              "duration": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            }
+          },
+          {
+            "id": "edit-moment-2",
+            "index": 2,
+            "measure": 1,
+            "column": 3,
+            "notes": [],
+            "beatOffset": {
+              "numerator": 2,
+              "denominator": 1
+            },
+            "sustains": [
+              {
+                "noteId": "a",
+                "duration": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ]
+          }
+        ],
+        "meter": {
+          "numerator": 4,
+          "denominator": 4
+        }
+      },
+      "inspection": {
+        "timingInput": "some",
+        "issues": [
+          {
+            "code": "sustain-interrupted",
+            "message": "An explicit rest, mute or new note interrupts this continuation.",
+            "target": {
+              "momentId": "edit-moment-2",
+              "string": 0
+            },
+            "kind": "invalid"
+          }
+        ],
+        "summary": {
+          "missing": 0,
+          "invalid": 1
+        }
+      },
+      "analysisNotes": [
+        {
+          "id": "a",
+          "midi": 69,
+          "fret": 5,
+          "duration": {
+            "numerator": 4,
+            "denominator": 1
+          }
+        }
+      ],
+      "analyzedKinds": [
+        "single-note",
+        "empty",
+        "empty"
+      ],
+      "writtenSourceDuration": {
+        "numerator": 4,
+        "denominator": 1
+      }
+    }
+  }
+}

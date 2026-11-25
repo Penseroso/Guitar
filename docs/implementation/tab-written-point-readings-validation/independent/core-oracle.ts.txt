@@ -1,0 +1,108 @@
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {readFileSync,writeFileSync} from 'node:fs';
+import {performance} from 'node:perf_hooks';
+import {analyzeTabWrittenPoint as analyze,describeTabWrittenPointCandidate as describe} from '/workspace/Guitar-p2/src/domain/tab/written-point-analysis';
+import {observeTabAcrossBarsWrittenTime as observe} from '/workspace/Guitar-p2/src/domain/tab/written-time-across-bars';
+import {createScaleRef} from '/workspace/Guitar-p2/src/domain/scale/scale-ref';
+const OUT='/workspace/p4-validation/b/independent',FILE='/workspace/Guitar-p2/src/domain/tab/written-point-analysis.ts';
+const hash=()=>createHash('sha256').update(readFileSync(FILE)).digest('hex'),beforeHash=hash();
+const f=(numerator:number,denominator=1)=>({numerator,denominator});const q=(numerator:number|string,denominator:number|string=1)=>({numerator:String(numerator),denominator:String(denominator)});
+const none={scale:null,frame:null},frame={tonic:'C',mode:'major',lens:'jazz-pop'}as const;
+const note=(id:string,midi:number,duration:unknown=f(1),string=0)=>({id,string,midi,pitchClass:midi%12,fret:0,source:null,duration});
+const pos=(id:string,measure:unknown,start:unknown,notes:unknown)=>({id,index:0,column:1,measure,beatOffset:start,notes});
+const doc=(moments:unknown[],measureCount=3,meter:unknown={numerator:4,denominator:4})=>({format:'authored',timing:'order-only',source:'original ASCII',tuningMidi:[64,59,55,50,45,40],capo:0,measureCount,meter,moments});
+const snapshot=(source:unknown,measure=1)=>observe(source,measure,{model:'regular-bar-origins'});
+const at=(midis:number[],refs:any=none)=>analyze(snapshot(doc([pos('p',1,f(0),midis.map((m,i)=>note(`n${i}`,m,f(1),i%6)))])),q(0),refs);
+function complete(result:ReturnType<typeof analyze>){assert.equal(result.status,'complete');if(result.status!=='complete')throw Error(result.status);return result}
+const freeze=(x:any):void=>{if(x&&typeof x==='object'){Object.values(x).forEach(freeze);Object.freeze(x)}};
+const constraints=JSON.parse(readFileSync(`${OUT}/manual-fixtures.json`,'utf8')).fixtures;
+const counters={manualFixtures:0,metamorphicCases:0,partialQueries:0,completionWorlds:0,invalidQueries:0};
+const manual:any[]=[];
+for(const fixture of constraints){
+ const result=complete(fixture.midi.length?at(fixture.midi):analyze(snapshot(doc([pos('a',1,f(0),[note('a',60)]),pos('b',1,f(2),[note('b',64)])])),q(3,2),none));
+ assert.deepEqual(result.pitchClasses,[...new Set(fixture.midi.map((m:number)=>m%12))].sort((a:any,b:any)=>a-b));assert.equal(result.notes.length,fixture.midi.length);
+ for(const expected of fixture.required??[]){const actual=result.candidates.find(x=>x.key===expected.key);assert.ok(actual,`${fixture.name}: ${expected.key}`);for(const [key,value]of Object.entries(expected))assert.deepEqual((actual as any)[key],value)}
+ for(const key of fixture.prohibitedCandidateKeys??[])assert.ok(!result.candidates.some(x=>x.key===key));
+ if(fixture.expectedCandidateCount!==undefined)assert.equal(result.candidates.length,fixture.expectedCandidateCount);
+ for(const m of fixture.prohibitedObservedMidi??[])assert.ok(!result.notes.some(x=>x.midi===m));
+ assert.equal(result.lowestNote?.midi??null,fixture.midi.length?Math.min(...fixture.midi):null);
+ assert.equal(describe(result,'nonexistent'),null);
+ manual.push({name:fixture.name,observedMidi:result.notes.map(n=>n.midi),requiredPresent:true,candidateCount:result.candidates.length});counters.manualFixtures++;
+}
+// Non-circular canonical diminished-seventh spelling: C Eb Gb Bbb, not C Eb Gb A.
+{
+ const r=complete(at([60,63,66,69])),d=describe(r,'0:diminished-7');assert.ok(d);
+ assert.deepEqual(d.notes.map(n=>n.chordDegree),['1','b3','b5','bb7']);assert.equal(d.notes[3].chordNoteName,'B♭♭4');
+ manual.push({name:'canonical diminished-seventh degree/spelling',degree:d.notes[3].chordDegree,name:d.notes[3].chordNoteName});counters.manualFixtures++;
+}
+// Formula-relative membership never invents omitted pitches or musical roles.
+{
+ const shell=complete(at([60,64,70])),d=describe(shell,'0:dominant-7');assert.ok(d);assert.deepEqual(d.omitted,['5']);assert.deepEqual(d.notes.map(n=>n.midi),[60,64,70]);assert.deepEqual(d.notes.map(n=>n.chordDegree),['1','3','b7']);
+ const extra=complete(at([60,64,67,73])),e=describe(extra,'0:major');assert.ok(e);assert.deepEqual(e.added,[1]);assert.equal(e.notes[3].chordMember,false);assert.equal(e.notes[3].chordDegree,null);assert.equal(e.notes[3].chordNoteName,null);
+ for(const x of e.notes)for(const forbidden of ['passing','function','tension','melodyRole','cadence'])assert.ok(!(forbidden in x));
+ const frozen=JSON.stringify(extra);assert.equal(Object.isFrozen(extra),true);assert.equal(Object.isFrozen(extra.candidates),true);assert.throws(()=>extra.candidates.push({}as any));assert.equal(JSON.stringify(extra),frozen);
+ manual.push({name:'hypothesis roles preserve only observed notes and outside-formula abstention',omitted:d.omitted,added:e.added});counters.manualFixtures++;
+}
+// Transposition is checked as a candidate multiset, not equal tie-break order
+// around the absolute-PC wrap. Context/permutation/doubling below must preserve order.
+const signature=(r:ReturnType<typeof complete>,shift=0)=>r.candidates.map(c=>({key:`${(Number(c.key.split(':')[0])+shift)%12}:${c.chord.chordId}`,match:c.match,omitted:[...c.omitted],added:c.added.map(p=>(p+shift)%12).sort((a,b)=>a-b)})).sort((a,b)=>a.key.localeCompare(b.key));
+for(const midis of [[60,64,67],[60,64,67,69],[60,64,70],[60,67],[60,64,67,73]]){
+ const base=complete(at(midis));
+ for(let shift=0;shift<12;shift++){const transposed=complete(at(midis.map(m=>m+shift)));assert.deepEqual(signature(transposed),signature(base,shift));counters.metamorphicCases++}
+ for(const changed of [[...midis].reverse(),[...midis,...midis.map(m=>m+12)]]){const r=complete(at(changed));assert.deepEqual(r.candidates,base.candidates);assert.deepEqual(r.pitchClasses,base.pitchClasses);assert.equal(r.notes.length,changed.length);counters.metamorphicCases++}
+ for(const refs of [none,{scale:createScaleRef('Diatonic Modes','Ionian',0),frame:null},{scale:createScaleRef('Diatonic Modes','Dorian',2),frame},{scale:null,frame:{tonic:'G',mode:'major',lens:'classical'}},{scale:{group:'bogus',scaleId:'bogus',tonic:0},frame:{tonic:'C',mode:'dorian',lens:'jazz-pop'}},{...none,chord:{root:'F#',chordId:'major'}}]){
+  const r=complete(at(midis,refs));assert.deepEqual(r.candidates,base.candidates);assert.deepEqual(r.pitchClasses,base.pitchClasses);assert.deepEqual(r.notes.map(n=>n.midi),base.notes.map(n=>n.midi));counters.metamorphicCases++;
+ }
+}
+{
+ const source:any=doc([pos('p',1,f(1,2),[note('a',60,f(1,2)),note('b',64,f(1,2),1),note('c',67,f(1,2),2)])]);
+ const s=snapshot(source),base=complete(analyze(s,q(1,2),none));
+ source.moments[0].beatOffset=f(2,4);source.moments[0].notes.forEach((n:any,i:number)=>{n.id=`new${i}`;n.duration=f(2,4);n.pitchClass=11});
+ const changed=complete(analyze(snapshot(source),q(2,4),none));assert.deepEqual(changed.candidates,base.candidates);assert.deepEqual(changed.notes.map(n=>n.pitchClass),[0,4,7]);assert.deepEqual(changed.notes.map(n=>n.interval.noteId),['new0','new1','new2']);
+ const token={data:s.data,get sourceDocument(){throw Error('analyzer read source association')}};assert.deepEqual(complete(analyze(token,q(1,2),none)).candidates,base.candidates);
+ const refs:any={scale:createScaleRef('Diatonic Modes','Ionian',0),frame:{...frame}};const r=complete(analyze(s,q(1,2),refs));refs.scale.tonic=1;refs.frame.tonic='F#';assert.equal(r.references.scale?.tonic,0);assert.equal(r.references.frame?.tonic,'C');assert.equal(Object.isFrozen(refs),false);
+ assert.deepEqual(r.notes.map(n=>[n.scaleDegree,n.inScale]),[['1',true],['3',true],['5',true]]);assert.equal(r.candidatePresentations.find(c=>c.key==='0:major')?.roman,'I');
+ const g=complete(at([60,64,67],{scale:null,frame:{tonic:'G',mode:'major',lens:'jazz-pop'}}));assert.equal(g.candidatePresentations.find(c=>c.key==='0:major')?.roman,'IV');
+ const bad=complete(at([60,64,67],{scale:{group:'bad',scaleId:'bad',tonic:0},frame:{tonic:'C',mode:'dorian',lens:'jazz-pop'}}));assert.equal(bad.diagnostics.length,2);assert.ok(bad.notes.every(n=>n.inScale===null&&n.scaleDegree===null));assert.ok(bad.candidatePresentations.every(c=>c.roman===null));
+ const off=complete(at([60,66],{scale:createScaleRef('Diatonic Modes','Ionian',0),frame:null}));assert.deepEqual(off.notes.map(n=>[n.scaleDegree,n.inScale]),[['1',true],[null,false]]);
+ counters.metamorphicCases+=8;
+}
+// Finite independently assigned missing-field worlds. Known C E G + unknown A
+// can be C major at one point and C6/Am7 at another; no known-subset candidates.
+const completionEvidence:any[]=[];
+for(const mode of ['missing-duration','missing-start','missing-both','invalid-duration','invalid-start','invalid-id','unknown-owner']){
+ const unknown:any=note('u',69,f(1),3),atStart:any=f(1,4),moment:any=pos('unknown',mode==='missing-start'||mode==='missing-both'?2:1,atStart,[unknown]);
+ if(mode==='missing-duration')delete unknown.duration;if(mode==='missing-start')delete moment.beatOffset;if(mode==='missing-both'){delete moment.beatOffset;delete unknown.duration}if(mode==='invalid-duration')unknown.duration=null;if(mode==='invalid-start')moment.beatOffset=null;if(mode==='invalid-id')unknown.id='';if(mode==='unknown-owner')moment.measure=null;
+ const source=doc([pos('known',1,f(0),[note('c',60,f(4)),note('e',64,f(4),1),note('g',67,f(4),2)]),moment]);const before=JSON.stringify(source);freeze(source);const s=snapshot(source);
+ for(const tick of [0,128,256,512,4095,4096]){
+  const beforeBoundary=mode==='missing-duration'?tick<256:mode==='missing-start'||mode==='missing-both'?tick<4096:false;
+  const expected=tick>=4096?'outside-window':mode==='unknown-owner'?'unreadable':beforeBoundary?'complete':'partial';
+  const r=analyze(s,q(tick,1024),none);assert.equal(r.status,expected);counters.partialQueries++;
+  if(r.status!=='complete'){assert.deepEqual(Object.keys(r).sort(),['reason','status']);assert.equal(describe(r,'0:major'),null)}
+  else{assert.deepEqual(r.notes.map(n=>n.midi),[60,64,67]);assert.ok(r.candidates.some(c=>c.key==='0:major'));assert.equal(r.proof.basis,'onset-exclusion')}
+  if(['missing-duration','missing-start','missing-both'].includes(mode))for(const missingStart of mode==='missing-duration'?[256]:[0,128,1024])for(const missingLength of mode==='missing-start'?[1024]:[1,128,1024]){
+   const worldStart=mode==='missing-duration'?missingStart:4096+missingStart;
+   const actualMidi=[60,64,67];if(worldStart<=tick&&tick<worldStart+missingLength)actualMidi.push(69);
+   if(r.status==='complete')assert.deepEqual(r.notes.map(n=>n.midi),actualMidi);counters.completionWorlds++;
+  }
+ }
+ assert.equal(analyze(s,q('bad'),none).status,'invalid-query');counters.invalidQueries++;assert.equal(JSON.stringify(source),before);
+ completionEvidence.push({mode,sourceCoverage:s.data.populationCoverage,knownIntervals:s.data.intervals.length});
+}
+{
+ const empty=analyze(snapshot(doc([])),q(0),none);assert.equal(empty.status,'outside-range');assert.ok(!('candidates'in empty));
+ const noMeter:any=doc([]);delete noMeter.meter;const unavailable=analyze(snapshot(noMeter),q(0),none);assert.equal(unavailable.status,'unavailable');
+ const bad=analyze(snapshot(doc([])),q('1.5'),none);assert.equal(bad.status,'invalid-query');
+}
+const bench:any[]=[],median=(xs:number[])=>[...xs].sort((a,b)=>a-b)[Math.floor(xs.length/2)];
+for(const [name,pitches]of [['triad',[60,64,67]],['ambiguous-sixth-seventh',[60,64,67,69]],['six-PC',[60,64,67,69,70,73]]]as const){
+ const source=doc(Array.from({length:1024},(_,i)=>pos(`p${i}`,1,f(0),Array.from({length:6},(_,j)=>note(`n${i}:${j}`,pitches[(i*6+j)%pitches.length],f(4),j)))));freeze(source);const s=snapshot(source);let r=complete(analyze(s,q(0),none));const analyzeMs:number[]=[],describeMs:number[]=[];
+ for(let i=0;i<7;i++){const t=performance.now();r=complete(analyze(s,q(0),none));analyzeMs.push(performance.now()-t);assert.equal(r.notes.length,6144)}
+ const key=r.candidates[0]?.key??null;
+ if(key)for(let i=0;i<7;i++){const t=performance.now();const d=describe(r,key);describeMs.push(performance.now()-t);assert.equal(d?.notes.length,6144)}
+ bench.push({name,activeOccurrences:6144,distinctPC:pitches.length,candidateCount:r.candidates.length,analyzeSamplesMs:analyzeMs,analyzeMedianMs:median(analyzeMs),selectedCandidateKey:key,describeSamplesMs:describeMs,describeMedianMs:describeMs.length?median(describeMs):null,resultBytes:Buffer.byteLength(JSON.stringify(r)),noEagerAllCandidateRoleMatrix:!r.candidates.some((c:any)=>'notes'in c)});
+}
+assert.equal(hash(),beforeHash,'B core changed during execution');
+const result={sourceSha256:beforeHash,counters,manual,completionEvidence,bench,limits:'Finite manual formula constraints and completion worlds/metamorphic properties; not exhaustive musical or rational proof. Seven samples per 6144-active host-Node point/selected-hypothesis cost; no UI/physical-device SLO or runtime ranking.'};
+writeFileSync(`${OUT}/core-results.json`,JSON.stringify(result,null,2));console.log(JSON.stringify({sourceSha256:beforeHash,counters,bench:bench.map(({name,candidateCount,analyzeMedianMs,describeMedianMs,resultBytes})=>({name,candidateCount,analyzeMedianMs,describeMedianMs,resultBytes}))}));

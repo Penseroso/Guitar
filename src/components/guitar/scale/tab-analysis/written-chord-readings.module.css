@@ -1,0 +1,22 @@
+.readings { border-top: 1px solid var(--workspace-border); }
+.readings summary { min-height: 44px; padding: 12px 4px; cursor: pointer; }
+.readings summary:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: 2px; }
+.body { padding: 0 4px 8px; }
+.facts, .reference { margin: 6px 0; line-height: 1.5; }
+.reference { color: var(--workspace-muted); }
+.notes, .choices { list-style: none; margin: 8px 0 0; padding: 0; }
+.notes li, .choices li { border-top: 1px solid var(--workspace-border); }
+.notes li { padding: 8px 0; }
+.notes li p { margin: 4px 0 0; }
+.rowHeading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; }
+.rowHeading strong { color: #f4f4f5; font-weight: 500; }
+.rowHeading span { overflow-wrap: anywhere; }
+.hypothesis { margin-top: 8px; border-top: 1px solid var(--workspace-border); }
+.hypothesis h4 { color: #f4f4f5; font-size: 13px; font-weight: 500; margin: 0; }
+.hypothesis p { margin: 0 0 8px; }
+.choice { width: 100%; }
+.choice[aria-pressed="true"] { color: #f4f4f5; text-decoration: underline; text-underline-offset: 4px; }
+.alternatives, .formulaDetails, .observation { margin-top: 4px; }
+.alternatives h4 { margin: 12px 0 4px; color: #f4f4f5; font-size: 13px; font-weight: 500; }
+.alternatives h4:focus { outline: 2px solid var(--workspace-focus); outline-offset: 2px; }
+.formulaDetails p, .observation p { margin: 6px 0; line-height: 1.5; overflow-wrap: anywhere; }

@@ -1,0 +1,42 @@
+{
+  "baselineCommit": "af2fb44e5c9a9c1882bffbb594be46c4e481c25b",
+  "phaseAGateCommit": "5c5c2197d2884e58d7f9b7631d21d083ee64212e",
+  "sourceFiles": {
+    "src/components/guitar/scale/tab-analysis/AcrossBarsWrittenTimePanel.tsx": "c9a4e2ec968974eb391362cdc397f3fcd0bb20aa6973421abab83d87da3bee30",
+    "src/components/guitar/scale/tab-analysis/TabAnalysisWorkspace.tsx": "9a93991a7655d3c056f2f0cddd5b6f2f6ca4a51a3696fd8186d12dbaf75e88b8",
+    "src/components/guitar/scale/tab-analysis/TabScoreView.tsx": "9fb6d33faae54b72b08f03ed9587234def06a335afff48425ae88fe79f61b794",
+    "src/components/guitar/scale/tab-analysis/WrittenChordReadings.tsx": "253af1142127e5a92a08dd15d59f03924c179562e526d8ee409e043ceeb1c809",
+    "src/components/guitar/scale/tab-analysis/written-chord-readings.module.css": "12b807c679f048d56825f6e0dc31781f1fb1bc7d82664eb9131e8e5c2e3dd0bd",
+    "src/domain/tab/analysis.ts": "f9d64ed2756fcb23ee8798ef0094c02fe1449e7585000ccb2c7672d53715b559",
+    "src/domain/tab/chord-candidates.ts": "e190f183dc0df90225c4dbba2cd9af0b4fb0ccd792cc0084115fb8f5d01a96e6",
+    "src/domain/tab/written-point-analysis.ts": "153a1a6c81fe2b26cf44c1d5a2851103a7ced7fc44ed2cbd9fa7b06fbb9ef1be",
+    "src/domain/tab/written-time.ts": "204f6b2dc542e1f67c69fa217450c291b315f954da32f526fbdb6f32e4b09e2c",
+    "src/domain/tab/written-time-across-bars.ts": "b9f74ed88f9bcbb3d7ef27366790f173aab74458498c8bbc3cc01ed66c96f286",
+    "src/domain/tab/exact-time.ts": "03d85000b5e5e4942e46ecaf720517c03448f0f7ffdedf1e1309b84741ac129a"
+  },
+  "drivers": {
+    "core-oracle.ts": "54bf04d59e2baa5584c89dbf5f445e5396769bcf6f41b9fae97b5a9bc78cf354",
+    "manual-fixtures.json": "efea8d7c798b79ddd4fc05269a30a73032b45391bc5c8c296239ef7d95206e7f",
+    "browser.py": "91a4f385d25a5a9ffd72dd0970bba7ccbe3ff2c46cea16d4f6399a03b4b4965e",
+    "p2-regression.py": "321245d50e587067f98f786e81462190e4ac96aa9ce4b723717359769e3dc3d0"
+  },
+  "results": {
+    "core-results.json": "d5b765a8ed68d50649457d1b6e0b7512fccfae867c9db1296c023125f1fbf59d",
+    "browser-results.json": "8f94fd5c9f7533c9ca890e87da82a27eafee857dd485850563c46aca5c1d5a65",
+    "p2-regression/results.json": "1fca6ea91395232747e075160ba751b630262a461171abf2e2b6b449f505595f"
+  },
+  "build": {
+    ".next/BUILD_ID": "a839d2bc85f7f05393fe354ab02d01345a9e4c9a0b44824d18ab053a50d1f76a",
+    ".next/build-manifest.json": "631833f3f2d8c6f0ac471f7294f7175c730fc7fd0fd4150630f6ba51faf6cc48",
+    ".next/prerender-manifest.json": "04505c8f03b4c94f48d13f1988604f808231932278f53290e78f29bd4114b027",
+    ".next/server/app/page.js": "db4739d7e9b9819dbee921d5e86e214ce459329e957bd739c549a310b834f317"
+  },
+  "chromium": "Chromium 156.0.8078.79 built on Debian GNU/Linux 13 (trixie)",
+  "protectedSourcesVerifiedCount": 23,
+  "buildID": "aGxq0JQ61iHdPBf_UeD8a",
+  "resultModificationTimesUTC": {
+    "core-results.json": "2026-11-17T07:27:51.539618+00:00",
+    "browser-results.json": "2026-11-17T07:33:49.758020+00:00",
+    "p2-regression/results.json": "2026-11-17T07:33:17.404434+00:00"
+  }
+}

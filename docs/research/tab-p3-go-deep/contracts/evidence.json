@@ -1,0 +1,41 @@
+{
+  "stage": "GO-only contract deepening",
+  "sourceSha256": {
+    "src/domain/tab/types.ts": "a9a9f3ffca87c555d5bc7f9c9b2044344ae867f173f1f0f9833c7e4847ce9977",
+    "src/domain/tab/analysis.ts": "ce5771ef4203ae247f6139ad690490c2d19e9d42d69c9d494641af6185bd811e",
+    "src/domain/tab/input-capabilities.ts": "2f8f8949234a605bae0506ccfa861054e85295769560ce5c4d56baf40e34325a",
+    "src/domain/tab/timing-inspection.ts": "254fcb82e8332ef3024915878f203397e81297a4b1c28b790557fc7e10423a69",
+    "src/domain/tab/editing.ts": "9ce5bf2f1e63ae4c94f3cc1e776dca649cc1b6e7633787f977feb87bd1f16a5a",
+    "src/domain/tab/ascii.ts": "2acc657618d6b5d34a8db55c47f46072b54434a081af296ad9350814c28b07bb",
+    "src/features/tab-analysis/state.ts": "9039f9240fc3d137fd45ea7136e5babe5a56db1778f7cf6341cbdfa072b6452f"
+  },
+  "existingApiEvidence": {
+    "originalFixtures": 13,
+    "documentsIncludingMissingFieldCompletions": 25,
+    "missingFieldCompletionPairs": 6,
+    "inputMutations": 0,
+    "temporalEngineInvoked": false
+  },
+  "logicalEvidence": {
+    "counterfactualNominalActiveSets": "manually specified under explicit half-open nominal interpretation; not outputs of a new engine",
+    "counterfactualPhysicalWorlds": "unmodeled performer behavior, not approved common execution semantics",
+    "restMuteReattackAndSustainCases": "policy/consistency questions, not claimed mutually admissible performances"
+  },
+  "claimOptions": [
+    "current snapshot authored facts",
+    "derived local nominal interval",
+    "known members relative to declared population",
+    "complete nominal active set only with all-contributor classification or no-influence proof"
+  ],
+  "claimAxes": [
+    "coordinate scope",
+    "population scope",
+    "written vs realized semantic mode"
+  ],
+  "firmGO": [
+    "snapshot-scoped fact preservation",
+    "written versus realized claim separation"
+  ],
+  "conditionalGO": "supported subset/coverage contract validation only",
+  "noProductChanges": true
+}

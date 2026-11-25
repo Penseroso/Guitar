@@ -1,0 +1,1802 @@
+{
+  "date": "2026-11-15",
+  "verdict": "GO for preservation acceptance contract; implementation alternatives remain unsettled",
+  "productCodeModified": false,
+  "provenance": {
+    "date": "2026-11-15",
+    "scope": "GO1 fact/provenance deep evaluation; existing API only; no product engine",
+    "cases": 20,
+    "inputMutations": 0,
+    "details": [
+      {
+        "name": "parsed-location-and-distinct-repeated-note-IDs",
+        "result": {
+          "format": "ascii",
+          "nextId": 1,
+          "analyzedSource": "e|5h7-7--|\nB|-------|\nG|-------|\nD|-------|\nA|-------|\nE|-------|",
+          "source": "e|5h7-7--|\nB|-------|\nG|-------|\nD|-------|\nA|-------|\nE|-------|",
+          "moments": [
+            {
+              "id": "moment-0",
+              "index": 0,
+              "measure": 1,
+              "column": 2,
+              "notes": [
+                {
+                  "id": "note-0-0",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": {
+                    "line": 1,
+                    "column": 3
+                  },
+                  "techniques": [
+                    {
+                      "kind": "hammer-on",
+                      "toNoteId": "note-1-0",
+                      "notation": "h",
+                      "source": {
+                        "line": 1,
+                        "column": 4
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "moment-1",
+              "index": 1,
+              "measure": 1,
+              "column": 4,
+              "notes": [
+                {
+                  "id": "note-1-0",
+                  "string": 0,
+                  "fret": 7,
+                  "midi": 71,
+                  "pitchClass": 11,
+                  "source": {
+                    "line": 1,
+                    "column": 5
+                  }
+                }
+              ]
+            },
+            {
+              "id": "moment-2",
+              "index": 2,
+              "measure": 1,
+              "column": 6,
+              "notes": [
+                {
+                  "id": "note-2-0",
+                  "string": 0,
+                  "fret": 7,
+                  "midi": 71,
+                  "pitchClass": 11,
+                  "source": {
+                    "line": 1,
+                    "column": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "selection": {
+            "start": 0,
+            "end": 0
+          },
+          "activeCell": {
+            "momentId": "moment-0",
+            "string": 0
+          }
+        }
+      },
+      {
+        "name": "timing-edit-preserves-import-fret-provenance",
+        "result": {
+          "note": {
+            "id": "note-0-0",
+            "string": 0,
+            "fret": 5,
+            "midi": 69,
+            "pitchClass": 9,
+            "source": {
+              "line": 1,
+              "column": 3
+            },
+            "techniques": [
+              {
+                "kind": "hammer-on",
+                "toNoteId": "note-1-0",
+                "notation": "h",
+                "source": {
+                  "line": 1,
+                  "column": 4
+                }
+              }
+            ],
+            "duration": {
+              "numerator": 3,
+              "denominator": 4
+            }
+          },
+          "start": {
+            "numerator": 0,
+            "denominator": 1
+          },
+          "meaning": "source tracks original played-fret token; newly authored duration has no separate source/revision field"
+        }
+      },
+      {
+        "name": "fret-noop-preserves-document-and-history",
+        "result": {
+          "sameState": true,
+          "sameDocument": true,
+          "past": 1,
+          "nextId": 1
+        }
+      },
+      {
+        "name": "fret-change-retains-ID-replaces-fact-and-null-source",
+        "result": {
+          "before": {
+            "id": "note-0-0",
+            "string": 0,
+            "fret": 5,
+            "midi": 69,
+            "pitchClass": 9,
+            "source": {
+              "line": 1,
+              "column": 3
+            },
+            "techniques": [
+              {
+                "kind": "hammer-on",
+                "toNoteId": "note-1-0",
+                "notation": "h",
+                "source": {
+                  "line": 1,
+                  "column": 4
+                }
+              }
+            ],
+            "duration": {
+              "numerator": 3,
+              "denominator": 2
+            }
+          },
+          "after": {
+            "id": "note-0-0",
+            "string": 0,
+            "fret": 6,
+            "midi": 70,
+            "pitchClass": 10,
+            "source": null,
+            "duration": {
+              "numerator": 3,
+              "denominator": 2
+            }
+          },
+          "sameID": true,
+          "documentSourceStillOriginal": true,
+          "format": "authored",
+          "meaning": "stable ID identifies editable note identity, not immutable content or source-text equality"
+        }
+      },
+      {
+        "name": "mute-replaces-note-with-authored-unpitched-event",
+        "result": {
+          "before": {
+            "id": "moment-0",
+            "index": 0,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "note-0-0",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": {
+                  "line": 1,
+                  "column": 3
+                },
+                "techniques": [
+                  {
+                    "kind": "hammer-on",
+                    "toNoteId": "note-1-0",
+                    "notation": "h",
+                    "source": {
+                      "line": 1,
+                      "column": 4
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "id": "moment-0",
+            "index": 0,
+            "measure": 1,
+            "column": 2,
+            "notes": [],
+            "mutes": [
+              {
+                "string": 0
+              }
+            ]
+          },
+          "meaning": "mute has no independent ID; position+string are current-snapshot address, not original note ID"
+        }
+      },
+      {
+        "name": "rest-replaces-whole-position-events",
+        "result": {
+          "before": {
+            "id": "moment-0",
+            "index": 0,
+            "measure": 1,
+            "column": 2,
+            "notes": [
+              {
+                "id": "note-0-0",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": {
+                  "line": 1,
+                  "column": 3
+                }
+              }
+            ]
+          },
+          "after": {
+            "id": "moment-0",
+            "index": 0,
+            "measure": 1,
+            "column": 2,
+            "notes": [],
+            "rest": {}
+          },
+          "undoRestoresOriginalDocument": true
+        }
+      },
+      {
+        "name": "sustain-conversion-removes-repeated-note-ID-and-keeps-origin",
+        "result": {
+          "before": {
+            "format": "authored",
+            "nextId": 1,
+            "analyzedSource": null,
+            "source": "e|5-5-5|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+            "moments": [
+              {
+                "id": "moment-0",
+                "index": 0,
+                "measure": 1,
+                "column": 2,
+                "notes": [
+                  {
+                    "id": "note-0-0",
+                    "string": 0,
+                    "fret": 5,
+                    "midi": 69,
+                    "pitchClass": 9,
+                    "source": {
+                      "line": 1,
+                      "column": 3
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "moment-1",
+                "index": 1,
+                "measure": 1,
+                "column": 4,
+                "notes": [
+                  {
+                    "id": "note-1-0",
+                    "string": 0,
+                    "fret": 5,
+                    "midi": 69,
+                    "pitchClass": 9,
+                    "source": {
+                      "line": 1,
+                      "column": 5
+                    },
+                    "duration": {
+                      "numerator": 2,
+                      "denominator": 1
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "moment-2",
+                "index": 2,
+                "measure": 1,
+                "column": 6,
+                "notes": [
+                  {
+                    "id": "note-2-0",
+                    "string": 0,
+                    "fret": 5,
+                    "midi": 69,
+                    "pitchClass": 9,
+                    "source": {
+                      "line": 1,
+                      "column": 7
+                    }
+                  }
+                ]
+              }
+            ],
+            "selection": {
+              "start": 0,
+              "end": 0
+            },
+            "activeCell": {
+              "momentId": "moment-0",
+              "string": 0
+            }
+          },
+          "after": {
+            "format": "authored",
+            "nextId": 1,
+            "analyzedSource": null,
+            "source": "e|5-5-5|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+            "moments": [
+              {
+                "id": "moment-0",
+                "index": 0,
+                "measure": 1,
+                "column": 2,
+                "notes": [
+                  {
+                    "id": "note-0-0",
+                    "string": 0,
+                    "fret": 5,
+                    "midi": 69,
+                    "pitchClass": 9,
+                    "source": {
+                      "line": 1,
+                      "column": 3
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "moment-1",
+                "index": 1,
+                "measure": 1,
+                "column": 4,
+                "notes": [],
+                "sustains": [
+                  {
+                    "noteId": "note-0-0",
+                    "duration": {
+                      "numerator": 2,
+                      "denominator": 1
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "moment-2",
+                "index": 2,
+                "measure": 1,
+                "column": 6,
+                "notes": [],
+                "sustains": [
+                  {
+                    "noteId": "note-0-0"
+                  }
+                ]
+              }
+            ],
+            "selection": {
+              "start": 0,
+              "end": 0
+            },
+            "activeCell": {
+              "momentId": "moment-0",
+              "string": 0
+            }
+          },
+          "afterInterruption": {
+            "format": "authored",
+            "nextId": 1,
+            "analyzedSource": null,
+            "source": "e|5-5-5|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+            "moments": [
+              {
+                "id": "moment-0",
+                "index": 0,
+                "measure": 1,
+                "column": 2,
+                "notes": [
+                  {
+                    "id": "note-0-0",
+                    "string": 0,
+                    "fret": 5,
+                    "midi": 69,
+                    "pitchClass": 9,
+                    "source": {
+                      "line": 1,
+                      "column": 3
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "moment-1",
+                "index": 1,
+                "measure": 1,
+                "column": 4,
+                "notes": [],
+                "mutes": [
+                  {
+                    "string": 0
+                  }
+                ]
+              },
+              {
+                "id": "moment-2",
+                "index": 2,
+                "measure": 1,
+                "column": 6,
+                "notes": []
+              }
+            ],
+            "selection": {
+              "start": 0,
+              "end": 0
+            },
+            "activeCell": {
+              "momentId": "moment-0",
+              "string": 0
+            }
+          },
+          "meaning": "explicit conversion changes event kind; no synthetic attack should resurrect removed note ID"
+        }
+      },
+      {
+        "name": "origin-fret-change-invalidates-sustain-links-with-same-origin-ID",
+        "result": {
+          "originID": "note-0-0",
+          "originMIDIBefore": 69,
+          "originMIDIAfter": 70,
+          "continuationRemoved": true
+        }
+      },
+      {
+        "name": "split-join-preserve-IDs-but-change-address-coordinates",
+        "result": {
+          "before": {
+            "format": "ascii",
+            "nextId": 1,
+            "analyzedSource": "e|5h7-7|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+            "source": "e|5h7-7|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+            "moments": [
+              {
+                "id": "moment-0",
+                "index": 0,
+                "measure": 1,
+                "column": 2,
+                "notes": [
+                  {
+                    "id": "note-0-0",
+                    "string": 0,
+                    "fret": 5,
+                    "midi": 69,
+                    "pitchClass": 9,
+                    "source": {
+                      "line": 1,
+                      "column": 3
+                    },
+                    "techniques": [
+                      {
+                        "kind": "hammer-on",
+                        "toNoteId": "note-1-0",
+                        "notation": "h",
+                        "source": {
+                          "line": 1,
+                          "column": 4
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "moment-1",
+                "index": 1,
+                "measure": 1,
+                "column": 4,
+                "notes": [
+                  {
+                    "id": "note-1-0",
+                    "string": 0,
+                    "fret": 7,
+                    "midi": 71,
+                    "pitchClass": 11,
+                    "source": {
+                      "line": 1,
+                      "column": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "moment-2",
+                "index": 2,
+                "measure": 1,
+                "column": 6,
+                "notes": [
+                  {
+                    "id": "note-2-0",
+                    "string": 0,
+                    "fret": 7,
+                    "midi": 71,
+                    "pitchClass": 11,
+                    "source": {
+                      "line": 1,
+                      "column": 7
+                    }
+                  }
+                ]
+              }
+            ],
+            "selection": {
+              "start": 0,
+              "end": 0
+            },
+            "activeCell": {
+              "momentId": "moment-0",
+              "string": 0
+            }
+          },
+          "split": {
+            "format": "authored",
+            "nextId": 2,
+            "analyzedSource": null,
+            "source": "e|5h7-7|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+            "moments": [
+              {
+                "id": "moment-0",
+                "index": 0,
+                "measure": 1,
+                "column": 2,
+                "notes": [
+                  {
+                    "id": "note-0-0",
+                    "string": 0,
+                    "fret": 5,
+                    "midi": 69,
+                    "pitchClass": 9,
+                    "source": {
+                      "line": 1,
+                      "column": 3
+                    },
+                    "techniques": [
+                      {
+                        "kind": "hammer-on",
+                        "toNoteId": "note-1-0",
+                        "notation": "h",
+                        "source": {
+                          "line": 1,
+                          "column": 4
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "moment-1",
+                "index": 1,
+                "measure": 2,
+                "column": 4,
+                "notes": [
+                  {
+                    "id": "note-1-0",
+                    "string": 0,
+                    "fret": 7,
+                    "midi": 71,
+                    "pitchClass": 11,
+                    "source": {
+                      "line": 1,
+                      "column": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "moment-2",
+                "index": 2,
+                "measure": 2,
+                "column": 6,
+                "notes": [
+                  {
+                    "id": "note-2-0",
+                    "string": 0,
+                    "fret": 7,
+                    "midi": 71,
+                    "pitchClass": 11,
+                    "source": {
+                      "line": 1,
+                      "column": 7
+                    }
+                  }
+                ]
+              }
+            ],
+            "selection": {
+              "start": 0,
+              "end": 0
+            },
+            "activeCell": {
+              "momentId": "moment-0",
+              "string": 0
+            }
+          },
+          "joined": {
+            "format": "authored",
+            "nextId": 3,
+            "analyzedSource": null,
+            "source": "e|5h7-7|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+            "moments": [
+              {
+                "id": "moment-0",
+                "index": 0,
+                "measure": 1,
+                "column": 1,
+                "notes": [
+                  {
+                    "id": "note-0-0",
+                    "string": 0,
+                    "fret": 5,
+                    "midi": 69,
+                    "pitchClass": 9,
+                    "source": {
+                      "line": 1,
+                      "column": 3
+                    },
+                    "techniques": [
+                      {
+                        "kind": "hammer-on",
+                        "toNoteId": "note-1-0",
+                        "notation": "h",
+                        "source": {
+                          "line": 1,
+                          "column": 4
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "moment-1",
+                "index": 1,
+                "measure": 1,
+                "column": 2,
+                "notes": [
+                  {
+                    "id": "note-1-0",
+                    "string": 0,
+                    "fret": 7,
+                    "midi": 71,
+                    "pitchClass": 11,
+                    "source": {
+                      "line": 1,
+                      "column": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "moment-2",
+                "index": 2,
+                "measure": 1,
+                "column": 3,
+                "notes": [
+                  {
+                    "id": "note-2-0",
+                    "string": 0,
+                    "fret": 7,
+                    "midi": 71,
+                    "pitchClass": 11,
+                    "source": {
+                      "line": 1,
+                      "column": 7
+                    }
+                  }
+                ]
+              }
+            ],
+            "selection": {
+              "start": 0,
+              "end": 0
+            },
+            "activeCell": {
+              "momentId": "moment-0",
+              "string": 0
+            }
+          },
+          "meaning": "source.line/column still refer to imported text; measure/index are current score coordinates and may change"
+        }
+      },
+      {
+        "name": "split-and-join-refuse-unresolved-rebasing",
+        "result": {
+          "timedSplitBlocked": true,
+          "timedJoinBlocked": true,
+          "meaning": "preservation does not mean inventing a replacement time origin"
+        }
+      },
+      {
+        "name": "insert-delete-preserve-survivor-IDs-and-selection-membership",
+        "result": {
+          "before": {
+            "format": "ascii",
+            "nextId": 1,
+            "analyzedSource": "e|5-7-7|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+            "source": "e|5-7-7|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+            "moments": [
+              {
+                "id": "moment-0",
+                "index": 0,
+                "measure": 1,
+                "column": 2,
+                "notes": [
+                  {
+                    "id": "note-0-0",
+                    "string": 0,
+                    "fret": 5,
+                    "midi": 69,
+                    "pitchClass": 9,
+                    "source": {
+                      "line": 1,
+                      "column": 3
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "moment-1",
+                "index": 1,
+                "measure": 1,
+                "column": 4,
+                "notes": [
+                  {
+                    "id": "note-1-0",
+                    "string": 0,
+                    "fret": 7,
+                    "midi": 71,
+                    "pitchClass": 11,
+                    "source": {
+                      "line": 1,
+                      "column": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "moment-2",
+                "index": 2,
+                "measure": 1,
+                "column": 6,
+                "notes": [
+                  {
+                    "id": "note-2-0",
+                    "string": 0,
+                    "fret": 7,
+                    "midi": 71,
+                    "pitchClass": 11,
+                    "source": {
+                      "line": 1,
+                      "column": 7
+                    }
+                  }
+                ]
+              }
+            ],
+            "selection": {
+              "start": 1,
+              "end": 2
+            },
+            "activeCell": {
+              "momentId": "moment-0",
+              "string": 0
+            }
+          },
+          "inserted": {
+            "format": "authored",
+            "nextId": 2,
+            "analyzedSource": null,
+            "source": "e|5-7-7|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+            "moments": [
+              {
+                "id": "moment-0",
+                "index": 0,
+                "measure": 1,
+                "column": 2,
+                "notes": [
+                  {
+                    "id": "note-0-0",
+                    "string": 0,
+                    "fret": 5,
+                    "midi": 69,
+                    "pitchClass": 9,
+                    "source": {
+                      "line": 1,
+                      "column": 3
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "edit-moment-1",
+                "index": 1,
+                "measure": 1,
+                "column": 2,
+                "notes": []
+              },
+              {
+                "id": "moment-1",
+                "index": 2,
+                "measure": 1,
+                "column": 4,
+                "notes": [
+                  {
+                    "id": "note-1-0",
+                    "string": 0,
+                    "fret": 7,
+                    "midi": 71,
+                    "pitchClass": 11,
+                    "source": {
+                      "line": 1,
+                      "column": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "moment-2",
+                "index": 3,
+                "measure": 1,
+                "column": 6,
+                "notes": [
+                  {
+                    "id": "note-2-0",
+                    "string": 0,
+                    "fret": 7,
+                    "midi": 71,
+                    "pitchClass": 11,
+                    "source": {
+                      "line": 1,
+                      "column": 7
+                    }
+                  }
+                ]
+              }
+            ],
+            "selection": {
+              "start": 2,
+              "end": 3
+            },
+            "activeCell": {
+              "momentId": "moment-0",
+              "string": 0
+            }
+          },
+          "deleted": {
+            "format": "authored",
+            "nextId": 2,
+            "analyzedSource": null,
+            "source": "e|5-7-7|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-----|",
+            "moments": [
+              {
+                "id": "moment-0",
+                "index": 0,
+                "measure": 1,
+                "column": 2,
+                "notes": [
+                  {
+                    "id": "note-0-0",
+                    "string": 0,
+                    "fret": 5,
+                    "midi": 69,
+                    "pitchClass": 9,
+                    "source": {
+                      "line": 1,
+                      "column": 3
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "edit-moment-1",
+                "index": 1,
+                "measure": 1,
+                "column": 2,
+                "notes": []
+              },
+              {
+                "id": "moment-2",
+                "index": 2,
+                "measure": 1,
+                "column": 6,
+                "notes": [
+                  {
+                    "id": "note-2-0",
+                    "string": 0,
+                    "fret": 7,
+                    "midi": 71,
+                    "pitchClass": 11,
+                    "source": {
+                      "line": 1,
+                      "column": 7
+                    }
+                  }
+                ]
+              }
+            ],
+            "selection": {
+              "start": 2,
+              "end": 2
+            },
+            "activeCell": {
+              "momentId": "moment-0",
+              "string": 0
+            }
+          },
+          "insertedID": "edit-moment-1"
+        }
+      },
+      {
+        "name": "last-position-deletion-clears-content-without-removing-position-ID",
+        "result": {
+          "positionID": "moment-0",
+          "beforeNoteID": "note-0-0",
+          "afterNotes": []
+        }
+      },
+      {
+        "name": "remove-readd-note-allocates-new-ID",
+        "result": {
+          "old": {
+            "id": "note-0-0",
+            "string": 0,
+            "fret": 5,
+            "midi": 69,
+            "pitchClass": 9,
+            "source": {
+              "line": 1,
+              "column": 3
+            }
+          },
+          "new": {
+            "id": "edit-note-2",
+            "string": 0,
+            "fret": 5,
+            "midi": 69,
+            "pitchClass": 9,
+            "source": null
+          }
+        }
+      },
+      {
+        "name": "retune-and-capo-keep-identity-and-import-location-but-recompute-MIDI",
+        "result": {
+          "before": [
+            {
+              "id": "note-0-0",
+              "string": 0,
+              "fret": 5,
+              "midi": 69,
+              "pitchClass": 9,
+              "source": {
+                "line": 1,
+                "column": 3
+              }
+            },
+            {
+              "id": "note-1-0",
+              "string": 0,
+              "fret": 7,
+              "midi": 71,
+              "pitchClass": 11,
+              "source": {
+                "line": 1,
+                "column": 5
+              }
+            }
+          ],
+          "capo": [
+            {
+              "id": "note-0-0",
+              "string": 0,
+              "fret": 5,
+              "midi": 71,
+              "pitchClass": 11,
+              "source": {
+                "line": 1,
+                "column": 3
+              }
+            },
+            {
+              "id": "note-1-0",
+              "string": 0,
+              "fret": 7,
+              "midi": 73,
+              "pitchClass": 1,
+              "source": {
+                "line": 1,
+                "column": 5
+              }
+            }
+          ],
+          "retuned": [
+            {
+              "id": "note-0-0",
+              "string": 0,
+              "fret": 5,
+              "midi": 69,
+              "pitchClass": 9,
+              "source": {
+                "line": 1,
+                "column": 3
+              }
+            },
+            {
+              "id": "note-1-0",
+              "string": 0,
+              "fret": 7,
+              "midi": 71,
+              "pitchClass": 11,
+              "source": {
+                "line": 1,
+                "column": 5
+              }
+            }
+          ],
+          "doubleCapoWouldBeWrong": [
+            71,
+            73
+          ],
+          "meaning": "MIDI is actual product coordinate, source identifies written fret token, not immutable acoustic pitch"
+        }
+      },
+      {
+        "name": "import-replacement-reuses-local-IDs-with-different-content",
+        "result": {
+          "before": {
+            "format": "ascii",
+            "nextId": 1,
+            "analyzedSource": "e|5-7|\nB|---|\nG|---|\nD|---|\nA|---|\nE|---|",
+            "source": "e|5-7|\nB|---|\nG|---|\nD|---|\nA|---|\nE|---|",
+            "moments": [
+              {
+                "id": "moment-0",
+                "index": 0,
+                "measure": 1,
+                "column": 2,
+                "notes": [
+                  {
+                    "id": "note-0-0",
+                    "string": 0,
+                    "fret": 5,
+                    "midi": 69,
+                    "pitchClass": 9,
+                    "source": {
+                      "line": 1,
+                      "column": 3
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "moment-1",
+                "index": 1,
+                "measure": 1,
+                "column": 4,
+                "notes": [
+                  {
+                    "id": "note-1-0",
+                    "string": 0,
+                    "fret": 7,
+                    "midi": 71,
+                    "pitchClass": 11,
+                    "source": {
+                      "line": 1,
+                      "column": 5
+                    }
+                  }
+                ]
+              }
+            ],
+            "selection": {
+              "start": 0,
+              "end": 0
+            },
+            "activeCell": {
+              "momentId": "moment-0",
+              "string": 0
+            }
+          },
+          "replacement": {
+            "format": "ascii",
+            "nextId": 1,
+            "analyzedSource": "e|9-11|\nB|----|\nG|----|\nD|----|\nA|----|\nE|----|",
+            "source": "e|9-11|\nB|----|\nG|----|\nD|----|\nA|----|\nE|----|",
+            "moments": [
+              {
+                "id": "moment-0",
+                "index": 0,
+                "measure": 1,
+                "column": 2,
+                "notes": [
+                  {
+                    "id": "note-0-0",
+                    "string": 0,
+                    "fret": 9,
+                    "midi": 73,
+                    "pitchClass": 1,
+                    "source": {
+                      "line": 1,
+                      "column": 3
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "moment-1",
+                "index": 1,
+                "measure": 1,
+                "column": 4,
+                "notes": [
+                  {
+                    "id": "note-1-0",
+                    "string": 0,
+                    "fret": 11,
+                    "midi": 75,
+                    "pitchClass": 3,
+                    "source": {
+                      "line": 1,
+                      "column": 5
+                    }
+                  }
+                ]
+              }
+            ],
+            "selection": {
+              "start": 0,
+              "end": 0
+            },
+            "activeCell": {
+              "momentId": "moment-0",
+              "string": 0
+            }
+          },
+          "documentReferenceChanges": true,
+          "undoResurrectsPriorSnapshot": true,
+          "meaning": "ID-only cross-document cache aliases distinct notes"
+        }
+      },
+      {
+        "name": "same-content-reimport-new-snapshot-same-local-IDs",
+        "result": {
+          "sameValue": true,
+          "sameDocumentReference": false,
+          "sameLocalIDs": true,
+          "meaning": "value equality and document-instance identity are distinct"
+        }
+      },
+      {
+        "name": "nextId-not-rewound-on-undo-branch-and-reset-has-new-session-scope",
+        "result": {
+          "oldBranchID": "edit-moment-1",
+          "newBranchID": "edit-moment-2",
+          "nextIdNotRewound": true,
+          "resetNextId": 1,
+          "meaning": "allocator is session-local, and not part of edit snapshots"
+        }
+      },
+      {
+        "name": "selection-excludes-continuation-origin-so-selected-note-list-is-not-full-context",
+        "result": {
+          "selection": {
+            "start": 1,
+            "end": 1
+          },
+          "selectedNotes": [],
+          "selectedKind": "empty",
+          "originOutsideSelection": "note-0-0",
+          "fullDocumentNoteIDs": [
+            "note-0-0",
+            "note-2-0"
+          ],
+          "meaning": "future observer must define source-context/clip boundaries; current selected note list loses outside continuation context"
+        }
+      },
+      {
+        "name": "partial-selection-cannot-promote-whole-bar-collection",
+        "result": {
+          "fullSpan": [
+            {
+              "start": 0,
+              "end": 2,
+              "measure": 1,
+              "basis": "whole-bar-collection",
+              "candidates": [
+                {
+                  "key": "0:major",
+                  "chord": {
+                    "root": "C",
+                    "chordId": "major"
+                  },
+                  "name": "C",
+                  "omitted": [],
+                  "added": [],
+                  "match": "exact"
+                }
+              ]
+            }
+          ],
+          "partialSpan": []
+        }
+      },
+      {
+        "name": "equal-MIDI-on-different-strings-is-not-event-equality",
+        "result": {
+          "notes": [
+            {
+              "id": "edit-note-1",
+              "string": 0,
+              "midi": 64,
+              "source": null
+            },
+            {
+              "id": "edit-note-2",
+              "string": 1,
+              "midi": 64,
+              "source": null
+            }
+          ],
+          "recognitionPCs": [
+            4
+          ]
+        }
+      }
+    ],
+    "sourceSha256": {
+      "src/domain/tab/ascii.ts": "2acc657618d6b5d34a8db55c47f46072b54434a081af296ad9350814c28b07bb",
+      "src/domain/tab/types.ts": "a9a9f3ffca87c555d5bc7f9c9b2044344ae867f173f1f0f9833c7e4847ce9977",
+      "src/domain/tab/editing.ts": "9ce5bf2f1e63ae4c94f3cc1e776dca649cc1b6e7633787f977feb87bd1f16a5a",
+      "src/domain/tab/input-capabilities.ts": "2f8f8949234a605bae0506ccfa861054e85295769560ce5c4d56baf40e34325a",
+      "src/features/tab-analysis/state.ts": "9039f9240fc3d137fd45ea7136e5babe5a56db1778f7cf6341cbdfa072b6452f",
+      "src/domain/tab/analysis.ts": "ce5771ef4203ae247f6139ad690490c2d19e9d42d69c9d494641af6185bd811e",
+      "src/components/guitar/scale/tab-analysis/TabScoreView.tsx": "3dbc8526bdccdc811fd3951d5376bed7e628e6656f6fe184c1342eabef2941fd"
+    }
+  },
+  "fractionArithmetic": {
+    "date": "2026-11-15",
+    "scope": "standalone rational arithmetic experiments, not a product timeline or chosen integration",
+    "sourceBounds": {
+      "numerator": "1..1024 duration / 0..1024 start",
+      "denominator": "1..1024",
+      "meterNumerator": "1..32",
+      "meterDenominators": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32
+      ],
+      "editablePositions": 1024
+    },
+    "cases": [
+      {
+        "name": "equal-exact-endpoints-float-unequal",
+        "source": [
+          {
+            "numerator": 1,
+            "denominator": 10
+          },
+          {
+            "numerator": 1,
+            "denominator": 5
+          },
+          {
+            "numerator": 3,
+            "denominator": 10
+          }
+        ],
+        "exactDifference": {
+          "numerator": "0",
+          "denominator": "1"
+        },
+        "numberLeft": 0.30000000000000004,
+        "numberRight": 0.3,
+        "meaning": "endpoint equality can fail even with simple valid inputs; no timeline computation is performed by current P2"
+      },
+      {
+        "name": "repeat-7-legal-fractions",
+        "source": {
+          "numerator": 1,
+          "denominator": 7
+        },
+        "count": 7,
+        "expected": {
+          "numerator": "1",
+          "denominator": "1"
+        },
+        "numberSum": 0.9999999999999998,
+        "meaning": "standalone arithmetic stress; product does not currently infer serial starts by accumulating durations"
+      },
+      {
+        "name": "repeat-10-legal-fractions",
+        "source": {
+          "numerator": 1,
+          "denominator": 10
+        },
+        "count": 10,
+        "expected": {
+          "numerator": "1",
+          "denominator": "1"
+        },
+        "numberSum": 0.9999999999999999,
+        "meaning": "standalone arithmetic stress; product does not currently infer serial starts by accumulating durations"
+      },
+      {
+        "name": "distinct-legal-large-anchor-endpoints-collapse",
+        "meter": {
+          "numerator": 32,
+          "denominator": 1
+        },
+        "measure": 1024,
+        "anchor": 130944,
+        "source": {
+          "offsetA": {
+            "numerator": 1,
+            "denominator": 506
+          },
+          "durationA": {
+            "numerator": 1,
+            "denominator": 1015
+          },
+          "offsetB": {
+            "numerator": 1,
+            "denominator": 507
+          },
+          "durationB": {
+            "numerator": 1,
+            "denominator": 1011
+          }
+        },
+        "exactEndA": {
+          "numerator": "67251530481",
+          "denominator": "513590"
+        },
+        "exactEndB": {
+          "numerator": "22372961402",
+          "denominator": "170859"
+        },
+        "exactDifference": {
+          "numerator": "-1",
+          "denominator": "87751473810"
+        },
+        "floatEndA": 130944.00296150627,
+        "floatEndB": 130944.00296150627,
+        "normalizedCrossProducts": {
+          "a": "11490529246453179",
+          "b": "11490529246453180",
+          "numberA": 11490529246453180,
+          "numberB": 11490529246453180,
+          "safe": false
+        },
+        "meaning": "all authored fields and measure count are within current limits; anchor arithmetic assumes full bars as a future contract, not current P2 behavior"
+      },
+      {
+        "name": "legal-denominator-aggregate-components-outgrow-Number",
+        "sourceNumerators": 1,
+        "sourceDenominators": [
+          2,
+          3,
+          5,
+          7,
+          11,
+          13,
+          17,
+          19,
+          23,
+          29,
+          31,
+          37,
+          41,
+          43,
+          47,
+          53,
+          59,
+          61,
+          67,
+          71,
+          73,
+          79,
+          83,
+          89,
+          97,
+          101,
+          103,
+          107,
+          109,
+          113,
+          127,
+          131,
+          137,
+          139,
+          149,
+          151,
+          157,
+          163,
+          167,
+          173,
+          179,
+          181,
+          191,
+          193,
+          197,
+          199,
+          211,
+          223,
+          227,
+          229,
+          233,
+          239,
+          241,
+          251,
+          257,
+          263,
+          269,
+          271,
+          277,
+          281,
+          283,
+          293,
+          307,
+          311,
+          313,
+          317,
+          331,
+          337,
+          347,
+          349,
+          353,
+          359,
+          367,
+          373,
+          379,
+          383,
+          389,
+          397,
+          401,
+          409,
+          419,
+          421,
+          431,
+          433,
+          439,
+          443,
+          449,
+          457,
+          461,
+          463,
+          467,
+          479,
+          487,
+          491,
+          499,
+          503,
+          509,
+          521,
+          523,
+          541,
+          547,
+          557,
+          563,
+          569,
+          571,
+          577,
+          587,
+          593,
+          599,
+          601,
+          607,
+          613,
+          617,
+          619,
+          631,
+          641,
+          643,
+          647,
+          653,
+          659,
+          661,
+          673,
+          677,
+          683,
+          691,
+          701,
+          709,
+          719,
+          727,
+          733,
+          739,
+          743,
+          751,
+          757,
+          761,
+          769,
+          773,
+          787,
+          797,
+          809,
+          811,
+          821,
+          823,
+          827,
+          829,
+          839,
+          853,
+          857,
+          859,
+          863,
+          877,
+          881,
+          883,
+          887,
+          907,
+          911,
+          919,
+          929,
+          937,
+          941,
+          947,
+          953,
+          967,
+          971,
+          977,
+          983,
+          991,
+          997,
+          1009,
+          1013,
+          1019,
+          1021
+        ],
+        "sourceCount": 172,
+        "firstUnsafe": {
+          "count": 14,
+          "denominators": [
+            2,
+            3,
+            5,
+            7,
+            11,
+            13,
+            17,
+            19,
+            23,
+            29,
+            31,
+            37,
+            41,
+            43
+          ],
+          "exact": {
+            "numerator": "21460568175640361",
+            "denominator": "13082761331670030"
+          },
+          "numeratorSafe": false,
+          "denominatorSafe": false
+        },
+        "firstNonfinite": {
+          "count": 132,
+          "denominators": [
+            2,
+            3,
+            5,
+            7,
+            11,
+            13,
+            17,
+            19,
+            23,
+            29,
+            31,
+            37,
+            41,
+            43,
+            47,
+            53,
+            59,
+            61,
+            67,
+            71,
+            73,
+            79,
+            83,
+            89,
+            97,
+            101,
+            103,
+            107,
+            109,
+            113,
+            127,
+            131,
+            137,
+            139,
+            149,
+            151,
+            157,
+            163,
+            167,
+            173,
+            179,
+            181,
+            191,
+            193,
+            197,
+            199,
+            211,
+            223,
+            227,
+            229,
+            233,
+            239,
+            241,
+            251,
+            257,
+            263,
+            269,
+            271,
+            277,
+            281,
+            283,
+            293,
+            307,
+            311,
+            313,
+            317,
+            331,
+            337,
+            347,
+            349,
+            353,
+            359,
+            367,
+            373,
+            379,
+            383,
+            389,
+            397,
+            401,
+            409,
+            419,
+            421,
+            431,
+            433,
+            439,
+            443,
+            449,
+            457,
+            461,
+            463,
+            467,
+            479,
+            487,
+            491,
+            499,
+            503,
+            509,
+            521,
+            523,
+            541,
+            547,
+            557,
+            563,
+            569,
+            571,
+            577,
+            587,
+            593,
+            599,
+            601,
+            607,
+            613,
+            617,
+            619,
+            631,
+            641,
+            643,
+            647,
+            653,
+            659,
+            661,
+            673,
+            677,
+            683,
+            691,
+            701,
+            709,
+            719,
+            727,
+            733,
+            739,
+            743
+          ],
+          "numeratorDigits": 310,
+          "denominatorDigits": 310
+        },
+        "finalBits": {
+          "numerator": 1421,
+          "denominator": 1420
+        },
+        "meaning": "arithmetic alternative stress only, not a claim that current product accumulates arbitrary duration sequences"
+      },
+      {
+        "name": "fixed-960-grid-cannot-exactly-cover-legal-1over7",
+        "source": {
+          "numerator": 1,
+          "denominator": 7
+        },
+        "grid": 960,
+        "ticks": 137.14285714285714,
+        "roundedTicks": 137,
+        "meaning": "a narrower exact tick subset requires explicit supported-denominator restrictions; display/playback quantization cannot replace source facts"
+      }
+    ],
+    "timings": [
+      {
+        "terms": 1024,
+        "repetitions": 7,
+        "medianMs": 92.775624,
+        "minMs": 90.98918700000002,
+        "maxMs": 106.77865600000001,
+        "numeratorBits": 1421,
+        "denominatorBits": 1417
+      },
+      {
+        "terms": 6144,
+        "repetitions": 7,
+        "medianMs": 585.7618130000001,
+        "minMs": 568.4605630000005,
+        "maxMs": 598.5679399999999,
+        "numeratorBits": 1424,
+        "denominatorBits": 1417
+      }
+    ],
+    "limitations": [
+      "host Node warm repeated samples; no browser/worker/serialization or physical mobile cost",
+      "BigInt reference chosen only as independent exact arithmetic oracle; not an implementation decision",
+      "aggregate sum stress is arithmetic-only; does not authorize inferring starts from note durations"
+    ]
+  },
+  "artifacts": {
+    "provenance-probes.ts": "b111d9ac35fe7f970e9591f6fa1318a3704c4985c53b9b6760b68e30ea246c4b",
+    "fraction-probes.ts": "26aac80f04df7445c716e995ea1bb9184315645d837d806f2fd4dedc4b7af8e7",
+    "report.md": "6e8ab3688a28ad69e7ae8719267c1f75548cedde5686f21149790d548dc67155"
+  }
+}

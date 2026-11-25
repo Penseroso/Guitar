@@ -1,0 +1,26 @@
+{
+  "baselineProductCommit": "1339c6c4af10e7c2b8fc87593cc85ccbddfdc862",
+  "branch": "feat/tab-timing-inspection",
+  "planOnly": true,
+  "trackedProductDependencyChanges": false,
+  "newTestExecution": false,
+  "newProductionBuild": false,
+  "independentAreas": [
+    "data/history/UI contract",
+    "Chord/Scale/Harmony reuse",
+    "inference counterexamples and automation evaluation"
+  ],
+  "draftReviewCorrections": "applied; see review-notes.md",
+  "planningAssumptions": [
+    "untimed TAB supported by source-position spans",
+    "concert-pitch supplied chords"
+  ],
+  "userPreferenceRepliesReceived": false,
+  "reportLinksResolve": true,
+  "sha256": {
+    "docs/implementation/tab-harmonic-progression-plan.md": "3249e9769cdd7f91a56c039414d525ec986ef2c2897a7b8592d836bab7d8cff1",
+    "docs/implementation/tab-harmonic-progression-plan-review/conditional-reuse-review.md": "13bf5d6315a2e6b2e05a485eefd7e93db63ed847bb20e17aaf71f7b603780755",
+    "docs/implementation/tab-harmonic-progression-plan-review/review-notes.md": "edede2e965c48090c10a66f9a309317bf1ff732c65fe174ddfaa8b858aa150e0",
+    "docs/implementation/tab-harmonic-progression-plan-review/product-contract-review.md": "6f8c169eb270e2e50d8e3cbdea9b2e42f64e4414670b007f15fa547a4786c0ff"
+  }
+}

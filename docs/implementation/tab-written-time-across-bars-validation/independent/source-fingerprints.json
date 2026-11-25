@@ -1,0 +1,50 @@
+{
+  "baseline": "9375293b72e4d3ecccc00da0e3104b934579e860",
+  "sourceFiles": {
+    "src/domain/tab/written-time-across-bars.ts": "b9f74ed88f9bcbb3d7ef27366790f173aab74458498c8bbc3cc01ed66c96f286",
+    "src/domain/tab/written-time.ts": "204f6b2dc542e1f67c69fa217450c291b315f954da32f526fbdb6f32e4b09e2c",
+    "src/domain/tab/exact-time.ts": "03d85000b5e5e4942e46ecaf720517c03448f0f7ffdedf1e1309b84741ac129a",
+    "src/domain/tab/input-capabilities.ts": "2f8f8949234a605bae0506ccfa861054e85295769560ce5c4d56baf40e34325a",
+    "src/components/guitar/scale/tab-analysis/TabScoreView.tsx": "353deb852b03d9b3efcd5f645a1ba236df1ae2e1eeb0cefd776a3f6960352d76",
+    "src/components/guitar/scale/tab-analysis/AcrossBarsWrittenTimePanel.tsx": "aa90609ff19122801c0edb53b65e08d1953d8af60c2cd811478052ea26335919",
+    "src/components/guitar/scale/tab-analysis/WrittenTimePanel.tsx": "441bf0af9efd5eaf961f5a57943889328266a41d71a01f46c5bbaf60b127814b",
+    "src/components/guitar/scale/tab-analysis/across-bars-written-time.module.css": "76aebac54ed31d51810cac88595b69caa58da2f61c7eba8e8cb468d177e41cbe",
+    "src/components/guitar/scale/tab-analysis/written-time-panel.module.css": "54540eb23a596f1f2b48f446e4d06ac93bf54bb4022f6166383c1ab89a75253e",
+    "src/components/guitar/scale/tab-analysis/timing-inspection.module.css": "82fc2b6dc02b2ecad0ba1c579c083e23ab972b00c3ff9d3d887447f74115d57a"
+  },
+  "build": {
+    ".next/BUILD_ID": {
+      "sha256": "79daca03e28e2dc444d4be33b227df11a75ec4f3ae078a938068c8c767e2127e"
+    },
+    ".next/build-manifest.json": {
+      "sha256": "07dcd17c4a4dee037ec5a41f1e3995cd47ac137d19d04cfdfe8fe24812448289"
+    },
+    ".next/prerender-manifest.json": {
+      "sha256": "04505c8f03b4c94f48d13f1988604f808231932278f53290e78f29bd4114b027"
+    },
+    ".next/server/app/page.js": {
+      "sha256": "db4739d7e9b9819dbee921d5e86e214ce459329e957bd739c549a310b834f317"
+    }
+  },
+  "drivers": {
+    "core-oracle.ts": "b06829c067bf6b6688cae30acfc29aa18ccbfdffbd1214c6487acbd0b4ca8a4b",
+    "browser.py": "865aded697e2ce627b9391c83cd1dc58a7d3ada96736f4c39885930fc8015aa5",
+    "p2-regression.executed.py": "986123806e6590fd3f4ee6599ed0e5b5182bd9827a9c99149f43cb9ad2a81d95",
+    "p2-regression.py": "0b373c79ba3cd94787e7decd96f877bc26b1dfaa0f6c9c445fed8de76cedbaf0"
+  },
+  "results": {
+    "core-results.json": "73d3c5263b901b4a7c9066e87d758c0f5e9a2c0485a239bc41f1dc5688e63ff0",
+    "browser-results.json": "141d1d4af650445e419382b89985c1d707594d6c4bd320d37148b5eff4e4966f",
+    "p2-regression/results.json": "1fca6ea91395232747e075160ba751b630262a461171abf2e2b6b449f505595f"
+  },
+  "chromium": "Chromium 156.0.8078.79 built on Debian GNU/Linux 13 (trixie)",
+  "buildID": "ARH4t5eI9f-GvF7s435At",
+  "resultModificationTimesUTC": {
+    "core-results.json": "2026-11-17T06:14:01.964808+00:00",
+    "browser-results.json": "2026-11-17T06:15:09.575614+00:00",
+    "p2-regression/results.json": "2026-11-17T06:15:22.945992+00:00"
+  },
+  "p2ExecutedOutputDirectory": "/workspace/p32-validation/independent/p2-regression",
+  "p2RelocatedOutputDirectory": "/workspace/p33-validation/independent/p2-regression",
+  "p2TargetURL": "http://127.0.0.1:3002"
+}

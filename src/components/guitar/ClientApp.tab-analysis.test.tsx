@@ -67,7 +67,7 @@ describe('ClientApp tab analysis ownership boundary', () => {
         enterSource(source);
         fireEvent.click(tab().getByRole('button', { name: /^Onset 2, bar 1:/ }));
         click('Set a key');
-        click('Analyze');
+        click('Read TAB patterns');
         const beforeSummary = contextSummary().textContent;
         const beforeStatus = tab().getByRole('status', { name: 'Analysis status' }).textContent;
 
@@ -103,7 +103,7 @@ describe('ClientApp tab analysis ownership boundary', () => {
         await openContext();
         click(`Use explored C ${getScalePresentationName('Ionian')}`);
         enterSource();
-        click('Analyze');
+        click('Read TAB patterns');
         const adoptedSummary = contextSummary().textContent;
         const adoptedStatus = tab().getByRole('status', { name: 'Analysis status' }).textContent;
         workflow('Explore scales');

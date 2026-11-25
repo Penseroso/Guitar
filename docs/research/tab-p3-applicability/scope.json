@@ -1,0 +1,39 @@
+{
+  "stage": "P3 applicability after revalidated P2",
+  "date": "2026-11-15",
+  "baseline": {
+    "remoteMaster": "3ef63568353ee395eb3a46e02f27541bfdca8adf",
+    "verifiedVia": "https://api.github.com/repos/Penseroso/Guitar/branches/master",
+    "worktree": "/workspace/Guitar-p2",
+    "includes": "revalidated uncommitted P2; fingerprints in baseline-manifest.json",
+    "excludes": "/workspace/Guitar earlier explicit-timeline candidate as current implementation"
+  },
+  "goDerivedCandidates": [
+    "authored event identity, exact written time and explicit continuation observations",
+    "notation/playback policy separation derived from alphaTab",
+    "music21 offline comparison on explicitly comparable inputs"
+  ],
+  "outOfScope": [
+    "product engine or UI implementation",
+    "P2 reimplementation",
+    "automatic harmonic segmentation or progression grammar",
+    "automatic local/modal key, tonicization or modulation",
+    "new product dependency installation or publication"
+  ],
+  "roles": {
+    "root": "orchestration, evidence reconciliation and final gate",
+    "product": "current model/pipeline and source-driven probes",
+    "alpha": "upstream models/playback/source-level probes and license",
+    "music21": "offline comparison and precision/provenance validation",
+    "integration": "existing engines/contracts/UI and staged gates",
+    "challenge": "independent counterreview"
+  },
+  "decisionMeaning": {
+    "ADOPT": "retain demonstrated compatible contract/principle; not an authorization to embed an entire library",
+    "ADAPT": "usable idea with explicit product adapter/policy requirements",
+    "DEFER": "candidate requires later evidence/contract, not current implementation",
+    "REJECT": "specific proposed use conflicts with confirmed contract",
+    "GO": "applicability to a stated subset; not release readiness or architecture selection",
+    "NO-GO": "the specified use fails current applicability criteria"
+  }
+}

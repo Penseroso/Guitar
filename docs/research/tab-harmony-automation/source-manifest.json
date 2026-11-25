@@ -1,0 +1,70 @@
+{
+  "calibration": {
+    "revision": "b6b7d38500bacb30c81db7e09d8790df1a2edd46",
+    "sha256": {
+      "harmonies/n02op18-2_01.harmonies.tsv": "b3bb58ba0f6373f24e2b5f0a1a0da3faf36e2d8fc7959164b7cfae9a610d390f",
+      "harmonies/n07op59-1_01.harmonies.tsv": "0175d9717bad900233b11d0c6049bb4fc17ac5b57ecff61e88783d25cc72f934",
+      "harmonies/n12op127_01.harmonies.tsv": "084e40b85b216fb2d32a0267059bef3d659b855511ea4f80fecc24e2b03dc1c4",
+      "harmonies/n16op135_01.harmonies.tsv": "bff2d269fb361bd88bab5d7da5847b0e7f35315cdae98f28381b72ba392dfda9",
+      "measures/n02op18-2_01.measures.tsv": "b905606c9d367f6a31f43002907ad50a6564d29d17b3785d7cbc5c50d9be360d",
+      "measures/n07op59-1_01.measures.tsv": "0b7fa67a87a9472d401439afdbdfedbe6391fd4bda42f6dc34276b7ae8e0780f",
+      "measures/n12op127_01.measures.tsv": "7a211966d22195aa844dab3bfb1050cf5dee8923093116d0a65b55394d1b818a",
+      "measures/n16op135_01.measures.tsv": "e3bee18715d2ee8c9c39ca89c81a1317a2e366df7fff2d87fdfe44ca51f22649",
+      "notes/n02op18-2_01.notes.tsv": "e3335b2d355526f641506315f71e384b18760a27cf1645ed92f0d23f0e9ee85d",
+      "notes/n07op59-1_01.notes.tsv": "7b16cd14f2b363e0cd1ec2fbc640bc33ca98a368fd3f5af15ca43d7a84d72a3c",
+      "notes/n12op127_01.notes.tsv": "4f454867d260302c1095652c4afeeaa6c6ecd9e3814001408a6fd5dfe81dc072",
+      "notes/n16op135_01.notes.tsv": "964aaa31ac3b7cb8068b81965b809cafabf794f3da7777a32af21f68264bc782"
+    },
+    "split": "calibration"
+  },
+  "dev": {
+    "revision": "b6b7d38500bacb30c81db7e09d8790df1a2edd46",
+    "sha256": {
+      "harmonies/n01op18-1_01.harmonies.tsv": "b7c17c63df65c0f7d53bfe93db4a04ece2b9e858ec39defe42fbc64b4a832361",
+      "harmonies/n06op18-6_01.harmonies.tsv": "f448370edd98f14661defd3002328a168d17369f8ca9b628b724c1869dbb0a71",
+      "harmonies/n08op59-2_01.harmonies.tsv": "f8bbcca3b4668da61d4c2dd7cd34ed0b27e055f3758d180067289c65bae0eb4e",
+      "harmonies/n11op95_01.harmonies.tsv": "1116c4106641da6b49194835f87539adf04f4604a640016d46edc19fe8bd026a",
+      "harmonies/n14op131_01.harmonies.tsv": "4c52ce048307043135f059c9382c3ac9b20b8bc2dc1928221e06fccd4cce73dc",
+      "measures/n01op18-1_01.measures.tsv": "dd60e48b50f1ca190a4ff296fb7dfe3629b459d84051cbe9ff352bc3814b078f",
+      "measures/n06op18-6_01.measures.tsv": "b5093680325af7e43a86017b87b9676f01f64f09faec0583d3d65026ca204244",
+      "measures/n08op59-2_01.measures.tsv": "de9c995332f28f3eff5672b1e725a6901b463e9d8dd8035e205ed9ace4e0e068",
+      "measures/n11op95_01.measures.tsv": "96f3806e2cb154dcefb95dff11f9dca221b29b9ff799df6db4e2fb288d64512f",
+      "measures/n14op131_01.measures.tsv": "e8e20b6c28b8a32e1679d252fbec5253f8b03b305f82d90097f58c655acf19f1",
+      "notes/n01op18-1_01.notes.tsv": "15aa6aee9ed0a86e19668cd24c198bd6ae2b8d440ac8e3cf3b4dcc14d2fb6e6d",
+      "notes/n06op18-6_01.notes.tsv": "38df0ce4ba87635bb0b1b8827ba9e0ac0538ac79b11dfbc1dd0fe26f810d4827",
+      "notes/n08op59-2_01.notes.tsv": "d496dd2695e7034f6b56108298f554a5e9df8c0fcb06e66f9fa58ebb8a3b6443",
+      "notes/n11op95_01.notes.tsv": "227488f7a8f243912896539cb409b581adbaffb827d10d3431dac893250e4551",
+      "notes/n14op131_01.notes.tsv": "e0897f9b9eb2634c00e2d12919eae4c1bc7acad5af2786f52390ebfc7195dc07"
+    },
+    "split": "dev"
+  },
+  "heldoutFilesAcquiredAfterLock": true,
+  "holdoutUnit": "one first movement per distinct quartet",
+  "test": {
+    "revision": "b6b7d38500bacb30c81db7e09d8790df1a2edd46",
+    "sha256": {
+      "harmonies/n03op18-3_01.harmonies.tsv": "ca8ee220e33d1584fe155a9fc58ac26a45fadba3cd36edfde29e7f52495f1e0f",
+      "harmonies/n04op18-4_01.harmonies.tsv": "051425b6930713405e61ea2bfd038512beca7539cfed2b38d19d86b36eee1c64",
+      "harmonies/n05op18-5_01.harmonies.tsv": "ff7f08c2244c9073c079f15efd28f5301016ff0e4f4c425e76e6ee5a4b20852a",
+      "harmonies/n09op59-3_01.harmonies.tsv": "3219c686c4018a3c104c9400ae0f92c2fcb736ad5bef95b1ee914e055849ce50",
+      "harmonies/n10op74_01.harmonies.tsv": "28c22164f34b801753f49d2003a2da1e16790cb322e4a80ce5e64aee82e919d0",
+      "harmonies/n13op130_01.harmonies.tsv": "5aa9e293684b2b46b150b0da44ddcd8f47572176887a907a4479bdbe54cae06a",
+      "harmonies/n15op132_01.harmonies.tsv": "1b97b40deaf0e9472ae56d2ba39cac4a9bee63b5b9b77f27a05368aaaf4bacfa",
+      "measures/n03op18-3_01.measures.tsv": "c372b80a20a6af78a661b4f8ce267a15f76e9d4a2954cd8b7446a078e71cc45b",
+      "measures/n04op18-4_01.measures.tsv": "8b12ebe5a251a037bbbdaff50be66f1eb4f998f58718e2c2759176b1b07e693b",
+      "measures/n05op18-5_01.measures.tsv": "ecf7e6e66e816d3517db11bfc53985247d3db3069fd7f48aecd35af1e9a87e21",
+      "measures/n09op59-3_01.measures.tsv": "9e4491f4e11c1e3082d8c4c94e9acb140e916ff4ffc90e9df7106562e02e2c1a",
+      "measures/n10op74_01.measures.tsv": "dd44f01dbf0f0eb7cd63d65e6034e0530e834c17978f7ca5db1086d9a90aa023",
+      "measures/n13op130_01.measures.tsv": "254ffefd372641784753336575691411e95f2f79eb5f9ebad7c48d675eb4923f",
+      "measures/n15op132_01.measures.tsv": "fd3c9c65dec46978c71f8c9b846887ae17832f5dae3bb0f7b6c96d027ab63f58",
+      "notes/n03op18-3_01.notes.tsv": "9fc6f755b853e021a858bc7ae9db01d69eb1a0b4fdcd601fdb75d0cfd4ac469b",
+      "notes/n04op18-4_01.notes.tsv": "09a6d4696d79de586a87178280059bf00d74b4053942b5e5c19fe48d3377f56d",
+      "notes/n05op18-5_01.notes.tsv": "0e0f20c5ae241f99f9270debbcdb543522d108bd51cea2aa9a12fcdd24427eea",
+      "notes/n09op59-3_01.notes.tsv": "82516eca7df4d863193b5d5cb908dfe630284800ee96d99d8c311a7153a2e7c3",
+      "notes/n10op74_01.notes.tsv": "207ca40745bbe4b70607cf80dfc6fa5f11cbb8bf1587582669eb3f8a4555d3c7",
+      "notes/n13op130_01.notes.tsv": "ae5ac40194ba4c69cc2568b0502828d1226d9f6cedd9812ea48f6e5b262f72e6",
+      "notes/n15op132_01.notes.tsv": "ba16e10203687dd54910a77dad2165d3a26801b695c10696794132b01fc0e79e"
+    },
+    "split": "test"
+  }
+}

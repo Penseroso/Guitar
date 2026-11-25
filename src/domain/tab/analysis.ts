@@ -1,15 +1,13 @@
-import { identifyChordsForPitchClasses } from '@/domain/chord/chordRecognition';
-import { canonicalTone } from '@/domain/chord/engine/catalog';
-import { getChordTypeSuffix } from '@/domain/chord/helpers';
 import { CHORD_REGISTRY } from '@/domain/chord/registry';
 import { resolveChord, romanLabel, validateFrame } from '@/domain/harmony/roman';
-import type { ChordRef, ResolvedHarmonyChord } from '@/domain/harmony/types';
+import type { ResolvedHarmonyChord } from '@/domain/harmony/types';
 import { getScaleStructuralTones, type ScaleStructuralTone } from '@/domain/scale/scale-tones';
-import { getKeyName } from '@/domain/shared/keys';
 import { getNoteName } from '@/domain/shared/notes';
 import { formatAccidentals, parseNoteName } from '@/domain/shared/spelling';
 import type { TabAnalysisContext, TabDocument, TabNote, TabSelection } from './types';
 import { analyzeTabPassage, describeTabInterval, type TabAnalyzedMoment, type TabPassageAnalysis } from './passage-analysis';
+import { buildTabChordCandidates, type TabChordCandidate } from './chord-candidates';
+export type { TabChordCandidate } from './chord-candidates';
 export type { TabAnalyzedMoment, TabInterval, TabMelodicStep, TabMelodicRun, TabPassageAnalysis, TabProgressionReading } from './passage-analysis';
 
 export interface TabAnalyzedNote extends TabNote {
@@ -21,16 +19,6 @@ export interface TabAnalyzedNote extends TabNote {
     /** Chord-relative spelling with written octave, independent of the scale spelling. */
     chordNoteName: string | null;
     chordMember: boolean | null;
-}
-
-export interface TabChordCandidate {
-    key: string;
-    chord: ChordRef;
-    name: string;
-    /** Formula degrees absent from the observed notes, never inserted into them. */
-    omitted: string[];
-    added: number[];
-    match: 'exact' | 'incomplete' | 'added-tone';
 }
 
 export interface TabSelectionAnalysis extends TabPassageAnalysis {
@@ -51,30 +39,6 @@ function octaveName(midi: number, spelling: string): string {
     return `${formatAccidentals(spelling)}${octave}`;
 }
 
-function chordCandidates(pitchClasses: number[]): TabChordCandidate[] {
-    const candidates: TabChordCandidate[] = identifyChordsForPitchClasses(pitchClasses)
-        .filter(candidate => candidate.extraPitchClasses.length <= 1)
-        .map(candidate => {
-            const { definition } = candidate;
-            const root = getKeyName(definition.rootPitchClass);
-            const omitted = candidate.tones.tones
-                .filter(tone => !pitchClasses.includes(tone.pitchClass))
-                .map(tone => canonicalTone(definition.id, tone.degree));
-            const added = [...candidate.extraPitchClasses];
-            return {
-                key: `${definition.rootPitchClass}:${definition.id}`,
-                chord: { root, chordId: definition.id },
-                name: formatAccidentals(root + getChordTypeSuffix(definition.id)),
-                omitted,
-                added,
-                match: added.length ? 'added-tone' : omitted.length ? 'incomplete' : 'exact',
-            };
-        });
-    const priority = { exact: 0, incomplete: 1, 'added-tone': 2 };
-    // Stable ordering retains equally matching interpretations; none is adopted.
-    return candidates.sort((left, right) => priority[left.match] - priority[right.match]);
-}
-
 /** Analyze inclusive moment indices; any harmonic grouping stays an explicit hypothesis. */
 export function analyzeTabSelection(
     document: TabDocument,
@@ -85,7 +49,7 @@ export function analyzeTabSelection(
     const candidatesFor = (pitchClasses: number[]) => {
         const key = [...new Set(pitchClasses)].sort((a, b) => a - b).join(',');
         let result = candidateCache.get(key);
-        if (!result) { result = chordCandidates(pitchClasses); candidateCache.set(key, result); }
+        if (!result) { result = buildTabChordCandidates(pitchClasses); candidateCache.set(key, result); }
         return result;
     };
     const diagnostics: string[] = [];

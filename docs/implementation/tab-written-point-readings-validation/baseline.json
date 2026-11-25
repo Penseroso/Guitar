@@ -1,0 +1,31 @@
+{
+  "baselineCommit": "af2fb44e5c9a9c1882bffbb594be46c4e481c25b",
+  "branch": "feat/tab-timing-inspection",
+  "protectedSha256": {
+    "src/domain/chord/chordRecognition.ts": "5bef5698d6a619fdfc3a6799dc919c0e48acbf06e4c27eb9b8bfab77d15f92a5",
+    "src/domain/chord/registry.ts": "d916c4dc986dc93c99c5a72581794cf32540765b244287a338997084ee16670d",
+    "src/domain/chord/semantics.ts": "33df9b044601be0511f0818f47fa59e874119b7a9014fbab96def3a262e106c2",
+    "src/domain/harmony/roman.ts": "5284342dfe214f7cc23c657b02ab1845b48f70f914b9b7245f3b77da6e84de3e",
+    "src/domain/harmony/relations.ts": "db0b0dd38e4ea37625fc2b1f38efb34dda56ce8dcd16abf48f9978abd17568a2",
+    "src/domain/chord/functional-interpretation.ts": "e803950dda887d92772aedb7001c830c2e15e0c7bc1e19137c9a554a61188c4d",
+    "src/domain/scale/scale-tones.ts": "ba65219a1e1ce172f812962b65fc591ac1700787ea47545b3e8e27b1e60d3710",
+    "src/domain/tab/written-time.ts": "204f6b2dc542e1f67c69fa217450c291b315f954da32f526fbdb6f32e4b09e2c",
+    "src/domain/tab/written-time-across-bars.ts": "b9f74ed88f9bcbb3d7ef27366790f173aab74458498c8bbc3cc01ed66c96f286",
+    "src/domain/tab/exact-time.ts": "03d85000b5e5e4942e46ecaf720517c03448f0f7ffdedf1e1309b84741ac129a",
+    "src/domain/tab/types.ts": "a9a9f3ffca87c555d5bc7f9c9b2044344ae867f173f1f0f9833c7e4847ce9977",
+    "src/domain/tab/passage-analysis.ts": "64e3606495ed4719386c9054679f62a60fc19f56cf4c13f9c5058015c0a904a2",
+    "src/domain/tab/harmonic-spans.ts": "64543b31273d2cb512d1b9adbf4adb656d9d32ca482d89b8bc9886169463d025",
+    "src/domain/tab/annotations.ts": "6f5d10122a55cca7a95ddcd8bfcc1fa90350daebc978ca1f44be7db887aa517b",
+    "src/domain/tab/contextual-spelling.ts": "d2daafb03568c68f00fcfd67f6de0debafb3d76379f451a131854d554d2e9e22",
+    "src/domain/tab/editing.ts": "9ce5bf2f1e63ae4c94f3cc1e776dca649cc1b6e7633787f977feb87bd1f16a5a",
+    "src/domain/tab/input-capabilities.ts": "2f8f8949234a605bae0506ccfa861054e85295769560ce5c4d56baf40e34325a",
+    "src/domain/tab/timing-inspection.ts": "254fcb82e8332ef3024915878f203397e81297a4b1c28b790557fc7e10423a69",
+    "src/features/tab-analysis/state.ts": "9039f9240fc3d137fd45ea7136e5babe5a56db1778f7cf6341cbdfa072b6452f",
+    "src/components/guitar/scale/tab-analysis/TabNotationEditor.tsx": "a79b10f7c4f25443e131c96da3cd87915014b73a860195f9ea3b02431f1d6b35",
+    "src/components/guitar/scale/tab-analysis/WrittenTimePanel.tsx": "441bf0af9efd5eaf961f5a57943889328266a41d71a01f46c5bbaf60b127814b",
+    "package.json": "be9c381ef703c1dec01e79bc887ddbcc21430278e7a39ba392d7078b4d3050c0",
+    "package-lock.json": "c0bf00d9a0f3100f5d5ee84504b7685e470c18f8a1e33ad0a7f34f71d863a478"
+  },
+  "historicalWorktreeStatus": " M docs/architecture/tab-analysis.md\n A docs/architecture/tab-explicit-timeline.md\n A docs/implementation/tab-p2-progress.md\n A src/domain/tab/explicit-timeline.test.ts\n A src/domain/tab/explicit-timeline.ts\n",
+  "scope": "P4-A candidate extraction then P4-B complete nominal point readings; P4-C applicability assessment only"
+}

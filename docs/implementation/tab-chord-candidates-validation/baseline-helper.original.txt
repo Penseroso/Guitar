@@ -1,0 +1,23 @@
+function chordCandidates(pitchClasses: number[]): TabChordCandidate[] {
+    const candidates: TabChordCandidate[] = identifyChordsForPitchClasses(pitchClasses)
+        .filter(candidate => candidate.extraPitchClasses.length <= 1)
+        .map(candidate => {
+            const { definition } = candidate;
+            const root = getKeyName(definition.rootPitchClass);
+            const omitted = candidate.tones.tones
+                .filter(tone => !pitchClasses.includes(tone.pitchClass))
+                .map(tone => canonicalTone(definition.id, tone.degree));
+            const added = [...candidate.extraPitchClasses];
+            return {
+                key: `${definition.rootPitchClass}:${definition.id}`,
+                chord: { root, chordId: definition.id },
+                name: formatAccidentals(root + getChordTypeSuffix(definition.id)),
+                omitted,
+                added,
+                match: added.length ? 'added-tone' : omitted.length ? 'incomplete' : 'exact',
+            };
+        });
+    const priority = { exact: 0, incomplete: 1, 'added-tone': 2 };
+    // Stable ordering retains equally matching interpretations; none is adopted.
+    return candidates.sort((left, right) => priority[left.match] - priority[right.match]);
+}

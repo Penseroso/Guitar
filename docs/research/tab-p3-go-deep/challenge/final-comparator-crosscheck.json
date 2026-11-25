@@ -1,0 +1,2078 @@
+{
+  "scope": "Finite authored endpoints+selected exact midpoint queries only; not all possible rational query inputs or a production exporter",
+  "caseCount": 22,
+  "combinedAdmitted": 12,
+  "casesWithAnyAdmittedOperation": 14,
+  "queryChecks": 92,
+  "treeQueries": 92,
+  "chordifyQueries": 78,
+  "idOrMidiMismatches": 0,
+  "treeOnlyCounterexampleAfterFix": {
+    "status": "REFUSED",
+    "reasons": [
+      "chordify-close-point-skip",
+      "chordify-fraction-reconstruction-loss",
+      "no-canonical-strict-interior-query"
+    ],
+    "operations": {
+      "tree": {
+        "status": "REFUSED",
+        "reasons": [
+          "no-canonical-strict-interior-query"
+        ]
+      },
+      "chordify": {
+        "status": "REFUSED",
+        "reasons": [
+          "chordify-close-point-skip",
+          "chordify-fraction-reconstruction-loss",
+          "no-canonical-strict-interior-query"
+        ]
+      }
+    },
+    "boundaryCount": 4,
+    "coordinateFrame": {
+      "kind": "declared-relative",
+      "origin": "0"
+    }
+  },
+  "moduleSha256": "0bf3aae3604d6b47aafbd31531a118c95ea08da2c844bd5704947e614d7f47e1",
+  "checks": [
+    {
+      "case": "dyadic-half-open-unison-repeat",
+      "query": "0",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:u",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:u",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:u",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "dyadic-half-open-unison-repeat",
+      "query": "1/2",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:u",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:u",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:u",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "dyadic-half-open-unison-repeat",
+      "query": "1",
+      "expected": [
+        [
+          "artifact:e",
+          64
+        ],
+        [
+          "artifact:repeat",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:e",
+          64
+        ],
+        [
+          "artifact:repeat",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:e",
+          64
+        ],
+        [
+          "artifact:repeat",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "dyadic-half-open-unison-repeat",
+      "query": "5/4",
+      "expected": [
+        [
+          "artifact:e",
+          64
+        ],
+        [
+          "artifact:repeat",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:e",
+          64
+        ],
+        [
+          "artifact:repeat",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:e",
+          64
+        ],
+        [
+          "artifact:repeat",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "dyadic-half-open-unison-repeat",
+      "query": "3/2",
+      "expected": [
+        [
+          "artifact:repeat",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:repeat",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:repeat",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "dyadic-half-open-unison-repeat",
+      "query": "7/4",
+      "expected": [
+        [
+          "artifact:repeat",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:repeat",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:repeat",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "dyadic-half-open-unison-repeat",
+      "query": "2",
+      "expected": [],
+      "tree": [],
+      "chordify": []
+    },
+    {
+      "case": "nonbinary-triplet-boundary",
+      "query": "0",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-triplet-boundary",
+      "query": "1/6",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-triplet-boundary",
+      "query": "1/3",
+      "expected": [
+        [
+          "artifact:b",
+          64
+        ],
+        [
+          "artifact:unison",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:b",
+          64
+        ],
+        [
+          "artifact:unison",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:b",
+          64
+        ],
+        [
+          "artifact:unison",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-triplet-boundary",
+      "query": "1/2",
+      "expected": [
+        [
+          "artifact:b",
+          64
+        ],
+        [
+          "artifact:unison",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:b",
+          64
+        ],
+        [
+          "artifact:unison",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:b",
+          64
+        ],
+        [
+          "artifact:unison",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-triplet-boundary",
+      "query": "2/3",
+      "expected": [],
+      "tree": [],
+      "chordify": []
+    },
+    {
+      "case": "nonbinary-multiple-simultaneous-ends-starts",
+      "query": "0",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-multiple-simultaneous-ends-starts",
+      "query": "1/6",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-multiple-simultaneous-ends-starts",
+      "query": "1/3",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-multiple-simultaneous-ends-starts",
+      "query": "1/2",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-multiple-simultaneous-ends-starts",
+      "query": "2/3",
+      "expected": [
+        [
+          "artifact:new",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:new",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:new",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-multiple-simultaneous-ends-starts",
+      "query": "5/6",
+      "expected": [
+        [
+          "artifact:new",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:new",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:new",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-multiple-simultaneous-ends-starts",
+      "query": "1",
+      "expected": [],
+      "tree": [],
+      "chordify": []
+    },
+    {
+      "case": "repeated-attack-kind-sidecar",
+      "query": "0",
+      "expected": [
+        [
+          "artifact:first",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:first",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:first",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "repeated-attack-kind-sidecar",
+      "query": "1/2",
+      "expected": [
+        [
+          "artifact:first",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:first",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:first",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "repeated-attack-kind-sidecar",
+      "query": "1",
+      "expected": [
+        [
+          "artifact:second",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:second",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:second",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "repeated-attack-kind-sidecar",
+      "query": "3/2",
+      "expected": [
+        [
+          "artifact:second",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:second",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:second",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "repeated-attack-kind-sidecar",
+      "query": "2",
+      "expected": [],
+      "tree": [],
+      "chordify": []
+    },
+    {
+      "case": "explicit-continuation-kind-sidecar",
+      "query": "0",
+      "expected": [
+        [
+          "artifact:first",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:first",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:first",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "explicit-continuation-kind-sidecar",
+      "query": "1/2",
+      "expected": [
+        [
+          "artifact:first",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:first",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:first",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "explicit-continuation-kind-sidecar",
+      "query": "1",
+      "expected": [
+        [
+          "artifact:second",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:second",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:second",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "explicit-continuation-kind-sidecar",
+      "query": "3/2",
+      "expected": [
+        [
+          "artifact:second",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:second",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:second",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "explicit-continuation-kind-sidecar",
+      "query": "2",
+      "expected": [],
+      "tree": [],
+      "chordify": []
+    },
+    {
+      "case": "nonbinary-overlap-scale-1",
+      "query": "0",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-overlap-scale-1",
+      "query": "1/202",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-overlap-scale-1",
+      "query": "1/101",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-overlap-scale-1",
+      "query": "201/20200",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-overlap-scale-1",
+      "query": "1/100",
+      "expected": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-overlap-scale-1",
+      "query": "5251/20200",
+      "expected": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-overlap-scale-1",
+      "query": "103/202",
+      "expected": [],
+      "tree": [],
+      "chordify": []
+    },
+    {
+      "case": "nonbinary-overlap-scale-1/2",
+      "query": "0",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-overlap-scale-1/2",
+      "query": "1/404",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-overlap-scale-1/2",
+      "query": "1/202",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-overlap-scale-1/2",
+      "query": "201/40400",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-overlap-scale-1/2",
+      "query": "1/200",
+      "expected": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-overlap-scale-1/2",
+      "query": "5251/40400",
+      "expected": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-overlap-scale-1/2",
+      "query": "103/404",
+      "expected": [],
+      "tree": [],
+      "chordify": []
+    },
+    {
+      "case": "nonbinary-overlap-scale-1/4",
+      "query": "0",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-overlap-scale-1/4",
+      "query": "1/808",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-overlap-scale-1/4",
+      "query": "1/404",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-overlap-scale-1/4",
+      "query": "201/80800",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-overlap-scale-1/4",
+      "query": "1/400",
+      "expected": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-overlap-scale-1/4",
+      "query": "5251/80800",
+      "expected": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-overlap-scale-1/4",
+      "query": "103/808",
+      "expected": [],
+      "tree": [],
+      "chordify": []
+    },
+    {
+      "case": "nonbinary-scale-1_8-duration-reconstruction",
+      "query": "0",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-scale-1_8-duration-reconstruction",
+      "query": "1/1616",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-scale-1_8-duration-reconstruction",
+      "query": "1/808",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-scale-1_8-duration-reconstruction",
+      "query": "201/161600",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-scale-1_8-duration-reconstruction",
+      "query": "1/800",
+      "expected": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-scale-1_8-duration-reconstruction",
+      "query": "5251/161600",
+      "expected": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-scale-1_8-duration-reconstruction",
+      "query": "103/1616",
+      "expected": [],
+      "tree": []
+    },
+    {
+      "case": "nonbinary-translated-1",
+      "query": "1",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-translated-1",
+      "query": "203/202",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-translated-1",
+      "query": "102/101",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-translated-1",
+      "query": "20401/20200",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-translated-1",
+      "query": "101/100",
+      "expected": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-translated-1",
+      "query": "25451/20200",
+      "expected": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-translated-1",
+      "query": "305/202",
+      "expected": [],
+      "tree": [],
+      "chordify": []
+    },
+    {
+      "case": "nonbinary-translated-32",
+      "query": "32",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-translated-32",
+      "query": "6465/202",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-translated-32",
+      "query": "3233/101",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-translated-32",
+      "query": "646601/20200",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-translated-32",
+      "query": "3201/100",
+      "expected": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-translated-32",
+      "query": "651651/20200",
+      "expected": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-translated-32",
+      "query": "6567/202",
+      "expected": [],
+      "tree": [],
+      "chordify": []
+    },
+    {
+      "case": "nonbinary-translated-1024",
+      "query": "1024",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-translated-1024",
+      "query": "206849/202",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-translated-1024",
+      "query": "103425/101",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-translated-1024",
+      "query": "20685001/20200",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-translated-1024",
+      "query": "102401/100",
+      "expected": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-translated-1024",
+      "query": "20690051/20200",
+      "expected": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-translated-1024",
+      "query": "206951/202",
+      "expected": [],
+      "tree": [],
+      "chordify": []
+    },
+    {
+      "case": "nonbinary-high-global-offset-relative-close",
+      "query": "130944",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-high-global-offset-relative-close",
+      "query": "26450689/202",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-high-global-offset-relative-close",
+      "query": "13225345/101",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-high-global-offset-relative-close",
+      "query": "2645069001/20200",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-high-global-offset-relative-close",
+      "query": "13094401/100",
+      "expected": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-high-global-offset-relative-close",
+      "query": "2645074051/20200",
+      "expected": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "nonbinary-high-global-offset-relative-close",
+      "query": "26450791/202",
+      "expected": [],
+      "tree": []
+    },
+    {
+      "case": "same-high-offset-events-explicitly-rebased-local",
+      "query": "0",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "same-high-offset-events-explicitly-rebased-local",
+      "query": "1/202",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ]
+      ]
+    },
+    {
+      "case": "same-high-offset-events-explicitly-rebased-local",
+      "query": "1/101",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "same-high-offset-events-explicitly-rebased-local",
+      "query": "201/20200",
+      "expected": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:a",
+          60
+        ],
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "same-high-offset-events-explicitly-rebased-local",
+      "query": "1/100",
+      "expected": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "same-high-offset-events-explicitly-rebased-local",
+      "query": "5251/20200",
+      "expected": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "tree": [
+        [
+          "artifact:b",
+          64
+        ]
+      ],
+      "chordify": [
+        [
+          "artifact:b",
+          64
+        ]
+      ]
+    },
+    {
+      "case": "same-high-offset-events-explicitly-rebased-local",
+      "query": "103/202",
+      "expected": [],
+      "tree": [],
+      "chordify": []
+    }
+  ]
+}

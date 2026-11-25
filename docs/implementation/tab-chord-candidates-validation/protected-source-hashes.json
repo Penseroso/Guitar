@@ -1,0 +1,647 @@
+[
+  {
+    "file": "docs/architecture/engine-specification.md",
+    "baseline": "b3896509ec99059370691c0afc16808578613345e2a409a224a068203fc6de30",
+    "working": "b3896509ec99059370691c0afc16808578613345e2a409a224a068203fc6de30"
+  },
+  {
+    "file": "docs/architecture/product-policy-v2.md",
+    "baseline": "d2f8fcf43c1e3e48cd105d86e94da35df083105d76ab2d9ba441cc758993cc13",
+    "working": "d2f8fcf43c1e3e48cd105d86e94da35df083105d76ab2d9ba441cc758993cc13"
+  },
+  {
+    "file": "src/domain/chord/canonical-chord-scales.test.ts",
+    "baseline": "6fabb4fc38584cfc018c6fab9840d20bb5a74d578ccf31c4d237fedbf2178e0b",
+    "working": "6fabb4fc38584cfc018c6fab9840d20bb5a74d578ccf31c4d237fedbf2178e0b"
+  },
+  {
+    "file": "src/domain/chord/canonical-chord-scales.ts",
+    "baseline": "83e85bfe8cbd2d68f9a375298d50dae3ce1b66ab6463732ed646b47bfa883d14",
+    "working": "83e85bfe8cbd2d68f9a375298d50dae3ce1b66ab6463732ed646b47bfa883d14"
+  },
+  {
+    "file": "src/domain/chord/chord-scale-compatibility.test.ts",
+    "baseline": "4fb3eb8bf374a0f4b48dd0816584aab7647edfa476c97a9299f9d9756f5c5b19",
+    "working": "4fb3eb8bf374a0f4b48dd0816584aab7647edfa476c97a9299f9d9756f5c5b19"
+  },
+  {
+    "file": "src/domain/chord/chord-scale-compatibility.ts",
+    "baseline": "c2aae59736e159bf9599b7b4968836ee726eddc86af29b39217fc1053bebfec6",
+    "working": "c2aae59736e159bf9599b7b4968836ee726eddc86af29b39217fc1053bebfec6"
+  },
+  {
+    "file": "src/domain/chord/chordRecognition.test.ts",
+    "baseline": "7b204f6382c44370a02bd16341b26f1cf071aa3a4a7a237e0d434265d262a908",
+    "working": "7b204f6382c44370a02bd16341b26f1cf071aa3a4a7a237e0d434265d262a908"
+  },
+  {
+    "file": "src/domain/chord/chordRecognition.ts",
+    "baseline": "5bef5698d6a619fdfc3a6799dc919c0e48acbf06e4c27eb9b8bfab77d15f92a5",
+    "working": "5bef5698d6a619fdfc3a6799dc919c0e48acbf06e4c27eb9b8bfab77d15f92a5"
+  },
+  {
+    "file": "src/domain/chord/degreeRequirements.test.ts",
+    "baseline": "9469c26ff2697a87897a3e0ce85010ff1202694c82a2e937086dd629d6cb9902",
+    "working": "9469c26ff2697a87897a3e0ce85010ff1202694c82a2e937086dd629d6cb9902"
+  },
+  {
+    "file": "src/domain/chord/degreeRequirements.ts",
+    "baseline": "bd1b2a6d629f210b04f247aa1f67592c60907730075bfc8125c4b95dea959153",
+    "working": "bd1b2a6d629f210b04f247aa1f67592c60907730075bfc8125c4b95dea959153"
+  },
+  {
+    "file": "src/domain/chord/engine/catalog.ts",
+    "baseline": "d761d8e938bc792a7acd3f3f61aaaeeb993fcff55cd97cbe16be8812bc8e338d",
+    "working": "d761d8e938bc792a7acd3f3f61aaaeeb993fcff55cd97cbe16be8812bc8e338d"
+  },
+  {
+    "file": "src/domain/chord/engine/classicFeatures.test.ts",
+    "baseline": "15a6c3c49e815a82d12b4f5be08325646fbdae78597de751f855849faffac2c3",
+    "working": "15a6c3c49e815a82d12b4f5be08325646fbdae78597de751f855849faffac2c3"
+  },
+  {
+    "file": "src/domain/chord/engine/classicFeatures.ts",
+    "baseline": "e14bc57e03687df60880e206103d245b4eba8314d5ed3c8b34164801eab635a4",
+    "working": "e14bc57e03687df60880e206103d245b4eba8314d5ed3c8b34164801eab635a4"
+  },
+  {
+    "file": "src/domain/chord/engine/contactHypotheses.ts",
+    "baseline": "08ef612e1096a73326c0680fc400889122e3555027425b9a314ff39aeb5423d7",
+    "working": "08ef612e1096a73326c0680fc400889122e3555027425b9a314ff39aeb5423d7"
+  },
+  {
+    "file": "src/domain/chord/engine/contracts.test.ts",
+    "baseline": "46f3e2f1dd231e7dc52f83c454b84c723ec2c1458d9ec4ec17b349a2437af473",
+    "working": "46f3e2f1dd231e7dc52f83c454b84c723ec2c1458d9ec4ec17b349a2437af473"
+  },
+  {
+    "file": "src/domain/chord/engine/demandContract.ts",
+    "baseline": "4bb4d88042be090ebd018f3e6aef3d6ed9a9e91546fe32461cd9b9b59eeb5657",
+    "working": "4bb4d88042be090ebd018f3e6aef3d6ed9a9e91546fe32461cd9b9b59eeb5657"
+  },
+  {
+    "file": "src/domain/chord/engine/deterministicRanking.test.ts",
+    "baseline": "f0bd991df8633f481dae2fe53309ac5da32b28a3bffb2ab54c8fae28966066f0",
+    "working": "f0bd991df8633f481dae2fe53309ac5da32b28a3bffb2ab54c8fae28966066f0"
+  },
+  {
+    "file": "src/domain/chord/engine/deterministicRanking.ts",
+    "baseline": "38245e8a3a77b397569d5275697118219e2c3d6abf5adf9e2cd8ef66413f941d",
+    "working": "38245e8a3a77b397569d5275697118219e2c3d6abf5adf9e2cd8ef66413f941d"
+  },
+  {
+    "file": "src/domain/chord/engine/errors.ts",
+    "baseline": "42c941f1e7deaa7b05dbe983276076ac3ae07e8978ba722c62865034f6f63fbe",
+    "working": "42c941f1e7deaa7b05dbe983276076ac3ae07e8978ba722c62865034f6f63fbe"
+  },
+  {
+    "file": "src/domain/chord/engine/extendedVocabulary.test.ts",
+    "baseline": "38bd8834be7e3b243f8b2fa8b43762b64b78dd9edfc492073b8064d90c77146d",
+    "working": "38bd8834be7e3b243f8b2fa8b43762b64b78dd9edfc492073b8064d90c77146d"
+  },
+  {
+    "file": "src/domain/chord/engine/facts.test.ts",
+    "baseline": "9d352cb19b494c230e25fc9d60213ba14c01ed70ddc844eaefc2b2bdc75a1fdc",
+    "working": "9d352cb19b494c230e25fc9d60213ba14c01ed70ddc844eaefc2b2bdc75a1fdc"
+  },
+  {
+    "file": "src/domain/chord/engine/facts.ts",
+    "baseline": "80ab55737942d53208ebb44cf2659e954045d5fb1b3770a01c08e0f7a59ce1d1",
+    "working": "80ab55737942d53208ebb44cf2659e954045d5fb1b3770a01c08e0f7a59ce1d1"
+  },
+  {
+    "file": "src/domain/chord/engine/geometry.ts",
+    "baseline": "1228d782b38ea29d56e75cbf6d15753a0c75a42972576d727b81d7f94755b038",
+    "working": "1228d782b38ea29d56e75cbf6d15753a0c75a42972576d727b81d7f94755b038"
+  },
+  {
+    "file": "src/domain/chord/engine/geometryTable.ts",
+    "baseline": "fdcac13d445c0b0d80c041e05154de9baf4e324698c79a5494b817a4da845af1",
+    "working": "fdcac13d445c0b0d80c041e05154de9baf4e324698c79a5494b817a4da845af1"
+  },
+  {
+    "file": "src/domain/chord/engine/identity.ts",
+    "baseline": "5d0430164f43a1e40ee166d1627e13d7a825e935c535d61d2357f97ee5cf5a0f",
+    "working": "5d0430164f43a1e40ee166d1627e13d7a825e935c535d61d2357f97ee5cf5a0f"
+  },
+  {
+    "file": "src/domain/chord/engine/packedStore.test.ts",
+    "baseline": "2e2aaaa9e5fbbd056e7125aed3247d118a4d731c4a691aa7d5b3c1a8adf91f37",
+    "working": "2e2aaaa9e5fbbd056e7125aed3247d118a4d731c4a691aa7d5b3c1a8adf91f37"
+  },
+  {
+    "file": "src/domain/chord/engine/packedStore.ts",
+    "baseline": "55b8f979c6c1f920b62a763a0471f0d30c1ffc54639a77d625c67dcc85e6fc2a",
+    "working": "55b8f979c6c1f920b62a763a0471f0d30c1ffc54639a77d625c67dcc85e6fc2a"
+  },
+  {
+    "file": "src/domain/chord/engine/pageHeap.ts",
+    "baseline": "5b0af7c93578202abf19d9b206f570a3e84868592b38d51685f4d6618cfd66d0",
+    "working": "5b0af7c93578202abf19d9b206f570a3e84868592b38d51685f4d6618cfd66d0"
+  },
+  {
+    "file": "src/domain/chord/engine/physical.test.ts",
+    "baseline": "ccffc005947a1e79fa6e9dffe1d8a9df8c4e648b0c61d7cc13e65c769890c822",
+    "working": "ccffc005947a1e79fa6e9dffe1d8a9df8c4e648b0c61d7cc13e65c769890c822"
+  },
+  {
+    "file": "src/domain/chord/engine/physical.ts",
+    "baseline": "057612ea89fcf8f72a720b2f227359da4b3c724537838396ed3a574013604e33",
+    "working": "057612ea89fcf8f72a720b2f227359da4b3c724537838396ed3a574013604e33"
+  },
+  {
+    "file": "src/domain/chord/engine/physicalDemand.ts",
+    "baseline": "b54a6d2b4ec9b29370d8680c4ec488d2f94a92e6ce6d6a1d40b6b7a566839df0",
+    "working": "b54a6d2b4ec9b29370d8680c4ec488d2f94a92e6ce6d6a1d40b6b7a566839df0"
+  },
+  {
+    "file": "src/domain/chord/engine/practicalVocabulary.ts",
+    "baseline": "ce350ef041e65a8210aded8617ac339c446302ab27c9d2a08695b9543101ae57",
+    "working": "ce350ef041e65a8210aded8617ac339c446302ab27c9d2a08695b9543101ae57"
+  },
+  {
+    "file": "src/domain/chord/engine/practicalVocabularyData.json",
+    "baseline": "8bd2baa9ca00afa7aacecd6fcc3c36dabaaa385c8ed9e5a5ab1172d1da2329ee",
+    "working": "8bd2baa9ca00afa7aacecd6fcc3c36dabaaa385c8ed9e5a5ab1172d1da2329ee"
+  },
+  {
+    "file": "src/domain/chord/engine/presentation.test.ts",
+    "baseline": "961d9babdfd9755737244037df6f821c706d3ae11f009a1d3c81f97dd8a74103",
+    "working": "961d9babdfd9755737244037df6f821c706d3ae11f009a1d3c81f97dd8a74103"
+  },
+  {
+    "file": "src/domain/chord/engine/presentation.ts",
+    "baseline": "9f54728d9e7170d65f1d3d38328c6bd092ef6e8b37a0462307dcf1961772bca9",
+    "working": "9f54728d9e7170d65f1d3d38328c6bd092ef6e8b37a0462307dcf1961772bca9"
+  },
+  {
+    "file": "src/domain/chord/engine/productBoundary.test.ts",
+    "baseline": "afc89f34281a84630e1a1c6406f25df52327a6366b2553288421fd94480d7383",
+    "working": "afc89f34281a84630e1a1c6406f25df52327a6366b2553288421fd94480d7383"
+  },
+  {
+    "file": "src/domain/chord/engine/productPolicy.test.ts",
+    "baseline": "b575f19f8f955ad418d4d1210aa9cc23bf0d3de3698b4f360062f4bfe3fa9dd3",
+    "working": "b575f19f8f955ad418d4d1210aa9cc23bf0d3de3698b4f360062f4bfe3fa9dd3"
+  },
+  {
+    "file": "src/domain/chord/engine/rankingConservation.test.ts",
+    "baseline": "9b9284710dc5f6104abcfd26656b3dd76b109670228ca701278fdeda1ac8a730",
+    "working": "9b9284710dc5f6104abcfd26656b3dd76b109670228ca701278fdeda1ac8a730"
+  },
+  {
+    "file": "src/domain/chord/engine/recommendedSurface.ts",
+    "baseline": "3e87260eca8c9cdd89a0e5086123d2d8795b4b99080fb85833626558dd8d9096",
+    "working": "3e87260eca8c9cdd89a0e5086123d2d8795b4b99080fb85833626558dd8d9096"
+  },
+  {
+    "file": "src/domain/chord/engine/requestPolicy.test.ts",
+    "baseline": "9963ff7acd39482ef89a100464eff8448dcec07552b2071547ff1705cc123060",
+    "working": "9963ff7acd39482ef89a100464eff8448dcec07552b2071547ff1705cc123060"
+  },
+  {
+    "file": "src/domain/chord/engine/requestPolicy.ts",
+    "baseline": "a8dc7698279f821499dc24a91090e9b4bac6b773501dc6e3b05399017967f28a",
+    "working": "a8dc7698279f821499dc24a91090e9b4bac6b773501dc6e3b05399017967f28a"
+  },
+  {
+    "file": "src/domain/chord/engine/requestSchema.ts",
+    "baseline": "e6aa29c9523b3ca57be93ba4d73240ed44906ad7bc1ec707b76812192639fd5c",
+    "working": "e6aa29c9523b3ca57be93ba4d73240ed44906ad7bc1ec707b76812192639fd5c"
+  },
+  {
+    "file": "src/domain/chord/engine/session.test.ts",
+    "baseline": "a47a81328dc3d368756882ac706e13318ee13871c807aa443909baf0df048f35",
+    "working": "a47a81328dc3d368756882ac706e13318ee13871c807aa443909baf0df048f35"
+  },
+  {
+    "file": "src/domain/chord/engine/session.ts",
+    "baseline": "534ea5641eb5f09baa251598185c6b59e60f2219365016221c9bfdbbfc0fdc75",
+    "working": "534ea5641eb5f09baa251598185c6b59e60f2219365016221c9bfdbbfc0fdc75"
+  },
+  {
+    "file": "src/domain/chord/engine/structuralGenerator.test.ts",
+    "baseline": "1c6a5f542b32697de46a717aa33a58d625559489bb0b2b8fc5ab66d099a8696c",
+    "working": "1c6a5f542b32697de46a717aa33a58d625559489bb0b2b8fc5ab66d099a8696c"
+  },
+  {
+    "file": "src/domain/chord/engine/structuralGenerator.ts",
+    "baseline": "3833e672d9ea4e84c24d67eeeb8f5bf9c3a7b9f3d2b0868d1526689e30da2897",
+    "working": "3833e672d9ea4e84c24d67eeeb8f5bf9c3a7b9f3d2b0868d1526689e30da2897"
+  },
+  {
+    "file": "src/domain/chord/engine/subsets.test.ts",
+    "baseline": "e588de32eafd3b922fdefd41e66b5c8572da55e7a480dba8388e8d788fd75086",
+    "working": "e588de32eafd3b922fdefd41e66b5c8572da55e7a480dba8388e8d788fd75086"
+  },
+  {
+    "file": "src/domain/chord/engine/subsets.ts",
+    "baseline": "9eabbd84a9a5b8d95122f40bd0ce6851d65ca91552ea9b46b7e8f47209f470ed",
+    "working": "9eabbd84a9a5b8d95122f40bd0ce6851d65ca91552ea9b46b7e8f47209f470ed"
+  },
+  {
+    "file": "src/domain/chord/engine/surfaceRequest.ts",
+    "baseline": "bb65b3d46a0659a56af1ef347d6e04a9fa3220a771258054e10d895dc755d4f7",
+    "working": "bb65b3d46a0659a56af1ef347d6e04a9fa3220a771258054e10d895dc755d4f7"
+  },
+  {
+    "file": "src/domain/chord/engine/surfaceSession.test.ts",
+    "baseline": "3f02cc30a3a6bf496a65b7e79c5c4e044c52d943235630c786ccafaf19bd76b1",
+    "working": "3f02cc30a3a6bf496a65b7e79c5c4e044c52d943235630c786ccafaf19bd76b1"
+  },
+  {
+    "file": "src/domain/chord/engine/types.ts",
+    "baseline": "7bf9029b6c43d6615d0e8681a4668040d723a853a8a46393c6a1ba19d8784993",
+    "working": "7bf9029b6c43d6615d0e8681a4668040d723a853a8a46393c6a1ba19d8784993"
+  },
+  {
+    "file": "src/domain/chord/engine/validation.ts",
+    "baseline": "18139f56c6a927647fdfbe0768f46d54c637903748f9f27b3d394e12f5a7b8b2",
+    "working": "18139f56c6a927647fdfbe0768f46d54c637903748f9f27b3d394e12f5a7b8b2"
+  },
+  {
+    "file": "src/domain/chord/engine/versions.ts",
+    "baseline": "8d241444c2db3a1025c7dcc80495cf98a294e546469cfb897505f3fb7da08d03",
+    "working": "8d241444c2db3a1025c7dcc80495cf98a294e546469cfb897505f3fb7da08d03"
+  },
+  {
+    "file": "src/domain/chord/engine/view.test.ts",
+    "baseline": "929ab30f951294ffeb24606a832d7657fd594f4a027c13f065462039beea29bb",
+    "working": "929ab30f951294ffeb24606a832d7657fd594f4a027c13f065462039beea29bb"
+  },
+  {
+    "file": "src/domain/chord/engine/view.ts",
+    "baseline": "7c2d2cadd2500b75f45e7060655e2c18506156f8efd4b2943ba9e058034ed9eb",
+    "working": "7c2d2cadd2500b75f45e7060655e2c18506156f8efd4b2943ba9e058034ed9eb"
+  },
+  {
+    "file": "src/domain/chord/engine/vocabularyContract.ts",
+    "baseline": "b48a927a51f5d6da568a1ceb28f306c4348a7779af2bb73b8e5b505aa581c0c9",
+    "working": "b48a927a51f5d6da568a1ceb28f306c4348a7779af2bb73b8e5b505aa581c0c9"
+  },
+  {
+    "file": "src/domain/chord/engine/workerProtocol.test.ts",
+    "baseline": "5652950d6c9dfd313547c5a337210075d20f174e9f2479b3fd0e09e5b18c8fbf",
+    "working": "5652950d6c9dfd313547c5a337210075d20f174e9f2479b3fd0e09e5b18c8fbf"
+  },
+  {
+    "file": "src/domain/chord/engine/workerProtocol.ts",
+    "baseline": "c5a30c6756b29c07e67336df362e14c782840584bd6a25b77043d53ebe23c264",
+    "working": "c5a30c6756b29c07e67336df362e14c782840584bd6a25b77043d53ebe23c264"
+  },
+  {
+    "file": "src/domain/chord/engine/workerService.test.ts",
+    "baseline": "184b834a85c1d90a74451f2ce5275a989bffc36b769218ec837fd132549d03af",
+    "working": "184b834a85c1d90a74451f2ce5275a989bffc36b769218ec837fd132549d03af"
+  },
+  {
+    "file": "src/domain/chord/engine/workerService.ts",
+    "baseline": "32027c0936d917b04366d79391ce7dcc9d4a709a40991ee25fec924e57fb8cf0",
+    "working": "32027c0936d917b04366d79391ce7dcc9d4a709a40991ee25fec924e57fb8cf0"
+  },
+  {
+    "file": "src/domain/chord/functional-interpretation.test.ts",
+    "baseline": "35486e733eaccc28f4a4c8506c6ec24b6b8b7e6f4bdc1f19512aef921ad8a6aa",
+    "working": "35486e733eaccc28f4a4c8506c6ec24b6b8b7e6f4bdc1f19512aef921ad8a6aa"
+  },
+  {
+    "file": "src/domain/chord/functional-interpretation.ts",
+    "baseline": "e803950dda887d92772aedb7001c830c2e15e0c7bc1e19137c9a554a61188c4d",
+    "working": "e803950dda887d92772aedb7001c830c2e15e0c7bc1e19137c9a554a61188c4d"
+  },
+  {
+    "file": "src/domain/chord/helpers.ts",
+    "baseline": "261d63e06cbd7f3b6d6d89305aa89ac76ca5a24dbcce5beb1f6a118b7b23b46a",
+    "working": "261d63e06cbd7f3b6d6d89305aa89ac76ca5a24dbcce5beb1f6a118b7b23b46a"
+  },
+  {
+    "file": "src/domain/chord/index.ts",
+    "baseline": "b872d1ca7ada505547004bb4e77b056c2241f339d4aedac72baab7d0f60ed8a1",
+    "working": "b872d1ca7ada505547004bb4e77b056c2241f339d4aedac72baab7d0f60ed8a1"
+  },
+  {
+    "file": "src/domain/chord/registry.ts",
+    "baseline": "d916c4dc986dc93c99c5a72581794cf32540765b244287a338997084ee16670d",
+    "working": "d916c4dc986dc93c99c5a72581794cf32540765b244287a338997084ee16670d"
+  },
+  {
+    "file": "src/domain/chord/related-scales.test.ts",
+    "baseline": "aa90b3374952c82ea6b22ac1ccf154efbb04bd695f1773fcdaf399f11d71afd8",
+    "working": "aa90b3374952c82ea6b22ac1ccf154efbb04bd695f1773fcdaf399f11d71afd8"
+  },
+  {
+    "file": "src/domain/chord/related-scales.ts",
+    "baseline": "328b62377b99e275c4588c58854b13e37aa451925a397031f46df9696de50ce9",
+    "working": "328b62377b99e275c4588c58854b13e37aa451925a397031f46df9696de50ce9"
+  },
+  {
+    "file": "src/domain/chord/reverse/enteredShape.test.ts",
+    "baseline": "33895ffea26626fec80eaed5769f216731dddbf4c28c2852057f6f4279f1a362",
+    "working": "33895ffea26626fec80eaed5769f216731dddbf4c28c2852057f6f4279f1a362"
+  },
+  {
+    "file": "src/domain/chord/reverse/enteredShape.ts",
+    "baseline": "0885860622a3caf897b14eb614ddac4a1125ff7bde041a283c9758c7878e51b5",
+    "working": "0885860622a3caf897b14eb614ddac4a1125ff7bde041a283c9758c7878e51b5"
+  },
+  {
+    "file": "src/domain/chord/reverse/readings.registry.test.ts",
+    "baseline": "c7486f269abddf3b3dfa2441cfcc1c4b715625be61430c760901884346335755",
+    "working": "c7486f269abddf3b3dfa2441cfcc1c4b715625be61430c760901884346335755"
+  },
+  {
+    "file": "src/domain/chord/reverse/readings.test.ts",
+    "baseline": "3d66f9c2afc0839810b55a30829c3477023f3db1fa3c54ba043d10276c6b3ced",
+    "working": "3d66f9c2afc0839810b55a30829c3477023f3db1fa3c54ba043d10276c6b3ced"
+  },
+  {
+    "file": "src/domain/chord/reverse/readings.ts",
+    "baseline": "35d077cc65be658d5c68d674d008632357b4901d395b9fc120a47d5adeb5784c",
+    "working": "35d077cc65be658d5c68d674d008632357b4901d395b9fc120a47d5adeb5784c"
+  },
+  {
+    "file": "src/domain/chord/scale-chord-context.test.ts",
+    "baseline": "3f5eeebabe87115e7362e83f7782399d05d8ec66d26db23b6811170d6988efcd",
+    "working": "3f5eeebabe87115e7362e83f7782399d05d8ec66d26db23b6811170d6988efcd"
+  },
+  {
+    "file": "src/domain/chord/scale-chord-context.ts",
+    "baseline": "ba797296a0c0e925831688f1bf68d614d8a8898b9e5bcca7c532825a977a953f",
+    "working": "ba797296a0c0e925831688f1bf68d614d8a8898b9e5bcca7c532825a977a953f"
+  },
+  {
+    "file": "src/domain/chord/scale-harmonization.test.ts",
+    "baseline": "bbc1faec3faccf6bedbdaadf88f2911ab5fff39ee79cdedf539450ac35348b23",
+    "working": "bbc1faec3faccf6bedbdaadf88f2911ab5fff39ee79cdedf539450ac35348b23"
+  },
+  {
+    "file": "src/domain/chord/scale-harmonization.ts",
+    "baseline": "1f1bdce266d4fd5484bb4521dbe139b8cdbcd9ab9c28ff5c27a73071e5be8ec2",
+    "working": "1f1bdce266d4fd5484bb4521dbe139b8cdbcd9ab9c28ff5c27a73071e5be8ec2"
+  },
+  {
+    "file": "src/domain/chord/scale-tone-analysis.test.ts",
+    "baseline": "892a73e25ee79dbf5c1ddefa3c412a72332de895bd99a8b198743b6a79de2f81",
+    "working": "892a73e25ee79dbf5c1ddefa3c412a72332de895bd99a8b198743b6a79de2f81"
+  },
+  {
+    "file": "src/domain/chord/scale-tone-analysis.ts",
+    "baseline": "4123a0d64c3897c120bb1c5a26d1374f32ce871ef8b09109d04e86b579e3881c",
+    "working": "4123a0d64c3897c120bb1c5a26d1374f32ce871ef8b09109d04e86b579e3881c"
+  },
+  {
+    "file": "src/domain/chord/semantics.test.ts",
+    "baseline": "fe3318899060da490b819d7f55cf84e9f735dca9381fbf75d5835c2c0183a9d7",
+    "working": "fe3318899060da490b819d7f55cf84e9f735dca9381fbf75d5835c2c0183a9d7"
+  },
+  {
+    "file": "src/domain/chord/semantics.ts",
+    "baseline": "33df9b044601be0511f0818f47fa59e874119b7a9014fbab96def3a262e106c2",
+    "working": "33df9b044601be0511f0818f47fa59e874119b7a9014fbab96def3a262e106c2"
+  },
+  {
+    "file": "src/domain/chord/types.ts",
+    "baseline": "a65c9260f3b9267821465c33af470718067478261b21e20eabd46ff7b53e1d2c",
+    "working": "a65c9260f3b9267821465c33af470718067478261b21e20eabd46ff7b53e1d2c"
+  },
+  {
+    "file": "src/domain/harmony/audition.test.ts",
+    "baseline": "8b6bcf849533413bf6091fdb22fcb6849b086ec402313e4d18a9ddaef27d2ea3",
+    "working": "8b6bcf849533413bf6091fdb22fcb6849b086ec402313e4d18a9ddaef27d2ea3"
+  },
+  {
+    "file": "src/domain/harmony/audition.ts",
+    "baseline": "9cfa16e75bad7a7ea144e28a3b4cff34205e311c6e51bc656373447f956d351e",
+    "working": "9cfa16e75bad7a7ea144e28a3b4cff34205e311c6e51bc656373447f956d351e"
+  },
+  {
+    "file": "src/domain/harmony/connections.test.ts",
+    "baseline": "6e49e5e80cb8926d96421e4d9ff5da16c26e12629778d954f5f201591573d915",
+    "working": "6e49e5e80cb8926d96421e4d9ff5da16c26e12629778d954f5f201591573d915"
+  },
+  {
+    "file": "src/domain/harmony/connections.ts",
+    "baseline": "28336384847c3ce435a0f55b4f5ecee0e3dbb5b8efc33d54ae9e618db39d3923",
+    "working": "28336384847c3ce435a0f55b4f5ecee0e3dbb5b8efc33d54ae9e618db39d3923"
+  },
+  {
+    "file": "src/domain/harmony/ending-observation.ts",
+    "baseline": "8c0d4b32a972b3036028d7bf76ff7a7999b81d3dcd8c1abe6a99704b5b4bea8c",
+    "working": "8c0d4b32a972b3036028d7bf76ff7a7999b81d3dcd8c1abe6a99704b5b4bea8c"
+  },
+  {
+    "file": "src/domain/harmony/expansion.test.ts",
+    "baseline": "2092128455009a783e1cb2d99acfd1572dec929d5209fd1002965127b4a9c14a",
+    "working": "2092128455009a783e1cb2d99acfd1572dec929d5209fd1002965127b4a9c14a"
+  },
+  {
+    "file": "src/domain/harmony/facts.test.ts",
+    "baseline": "4cc966c5e9cccba7a131584bcf1df118d62d74e3340cc1fd22f7d9be77484428",
+    "working": "4cc966c5e9cccba7a131584bcf1df118d62d74e3340cc1fd22f7d9be77484428"
+  },
+  {
+    "file": "src/domain/harmony/facts.ts",
+    "baseline": "a34a8b3a39a9ced7a631d64a883710ffa1cfb35dd0394d72eb22e02c77124d1a",
+    "working": "a34a8b3a39a9ced7a631d64a883710ffa1cfb35dd0394d72eb22e02c77124d1a"
+  },
+  {
+    "file": "src/domain/harmony/interchange-colour.test.ts",
+    "baseline": "22f6125d9fc84f800b779f775e3b2b5bd6b036b70035ee643d5ab502b05ccc81",
+    "working": "22f6125d9fc84f800b779f775e3b2b5bd6b036b70035ee643d5ab502b05ccc81"
+  },
+  {
+    "file": "src/domain/harmony/knowledge.ts",
+    "baseline": "74c33d3184104a81ebf91a3c76b2e69647539c1f00b01391ef135dcc7a32256a",
+    "working": "74c33d3184104a81ebf91a3c76b2e69647539c1f00b01391ef135dcc7a32256a"
+  },
+  {
+    "file": "src/domain/harmony/relations.test.ts",
+    "baseline": "dd1fdb76a142885f8caa3b40003636332a5b68af0978a1362ce6f9f0941d379a",
+    "working": "dd1fdb76a142885f8caa3b40003636332a5b68af0978a1362ce6f9f0941d379a"
+  },
+  {
+    "file": "src/domain/harmony/relations.ts",
+    "baseline": "db0b0dd38e4ea37625fc2b1f38efb34dda56ce8dcd16abf48f9978abd17568a2",
+    "working": "db0b0dd38e4ea37625fc2b1f38efb34dda56ce8dcd16abf48f9978abd17568a2"
+  },
+  {
+    "file": "src/domain/harmony/roman.test.ts",
+    "baseline": "63a7051656b59b343f7837deefcc3e43d994ed3c638a64c410167074022023b3",
+    "working": "63a7051656b59b343f7837deefcc3e43d994ed3c638a64c410167074022023b3"
+  },
+  {
+    "file": "src/domain/harmony/roman.ts",
+    "baseline": "5284342dfe214f7cc23c657b02ab1845b48f70f914b9b7245f3b77da6e84de3e",
+    "working": "5284342dfe214f7cc23c657b02ab1845b48f70f914b9b7245f3b77da6e84de3e"
+  },
+  {
+    "file": "src/domain/harmony/target-policy.ts",
+    "baseline": "593b6c7981d05fea186d81a028753771eb226363a7fc2ac885f47a97c770cc3c",
+    "working": "593b6c7981d05fea186d81a028753771eb226363a7fc2ac885f47a97c770cc3c"
+  },
+  {
+    "file": "src/domain/harmony/types.ts",
+    "baseline": "1e51dd4f657bb39f9077b7ba8a34870b2003d447eabf1c258722baf5af4d52f7",
+    "working": "1e51dd4f657bb39f9077b7ba8a34870b2003d447eabf1c258722baf5af4d52f7"
+  },
+  {
+    "file": "src/domain/harmony/voice-leading.test.ts",
+    "baseline": "eee753c71c588878d3fc11fccec057895a12cf29b5256dd2d7f31af02eeff7a5",
+    "working": "eee753c71c588878d3fc11fccec057895a12cf29b5256dd2d7f31af02eeff7a5"
+  },
+  {
+    "file": "src/domain/scale/doubleStops.ts",
+    "baseline": "c4e29facb59ba09da496009dbbe4d0f04d84fcccb96691e47d6a66e761fafea3",
+    "working": "c4e29facb59ba09da496009dbbe4d0f04d84fcccb96691e47d6a66e761fafea3"
+  },
+  {
+    "file": "src/domain/scale/getScaleDerivedData.test.ts",
+    "baseline": "b5a3f2b7d826a41e0fd639d69dacdd424e754fae066526e2bf05d6745620a3e7",
+    "working": "b5a3f2b7d826a41e0fd639d69dacdd424e754fae066526e2bf05d6745620a3e7"
+  },
+  {
+    "file": "src/domain/scale/getScaleDerivedData.ts",
+    "baseline": "cd2ec21ae20710bf5e4b35e08c9755cadfa381ef05466a6e697b93c73c0d417c",
+    "working": "cd2ec21ae20710bf5e4b35e08c9755cadfa381ef05466a6e697b93c73c0d417c"
+  },
+  {
+    "file": "src/domain/scale/index.ts",
+    "baseline": "faacdbe128c4b06926b8c23a36a1b2affdd45ade44352730cc0bdb6b46f773d3",
+    "working": "faacdbe128c4b06926b8c23a36a1b2affdd45ade44352730cc0bdb6b46f773d3"
+  },
+  {
+    "file": "src/domain/scale/scale-identity.test.ts",
+    "baseline": "f85bd779f17392fc0c9f13a2f47e03f289643fec91b910a018eba7816a3ed2ad",
+    "working": "f85bd779f17392fc0c9f13a2f47e03f289643fec91b910a018eba7816a3ed2ad"
+  },
+  {
+    "file": "src/domain/scale/scale-identity.ts",
+    "baseline": "c24227d207a8aaceb2d6d6e2fc8985fb8b2e6c699ac35e1cc3e6e3e5174f0113",
+    "working": "c24227d207a8aaceb2d6d6e2fc8985fb8b2e6c699ac35e1cc3e6e3e5174f0113"
+  },
+  {
+    "file": "src/domain/scale/scale-ref.ts",
+    "baseline": "f94d7e6a9634af818a5f77565c081c440e71ee636e162208195b1073edb301b5",
+    "working": "f94d7e6a9634af818a5f77565c081c440e71ee636e162208195b1073edb301b5"
+  },
+  {
+    "file": "src/domain/scale/scale-relations.test.ts",
+    "baseline": "c001db06b00277b67335d2708f1dca4a18be1fccaa304a0ce2875cec7bc4421c",
+    "working": "c001db06b00277b67335d2708f1dca4a18be1fccaa304a0ce2875cec7bc4421c"
+  },
+  {
+    "file": "src/domain/scale/scale-relations.ts",
+    "baseline": "2651847ba584f2c0869fb7d74eeb35e2575508fea0213123b8de1727cbdac24f",
+    "working": "2651847ba584f2c0869fb7d74eeb35e2575508fea0213123b8de1727cbdac24f"
+  },
+  {
+    "file": "src/domain/scale/scale-spelling.test.ts",
+    "baseline": "6da19584ab5fff221b1f3ad5186a2226c024f79276598cb0c21bbe455d85aeae",
+    "working": "6da19584ab5fff221b1f3ad5186a2226c024f79276598cb0c21bbe455d85aeae"
+  },
+  {
+    "file": "src/domain/scale/scale-spelling.ts",
+    "baseline": "3e1d6cd0ec6ec3b79bc48e32877f40301b91d37d6f4e40d7fb17cd89fd7193eb",
+    "working": "3e1d6cd0ec6ec3b79bc48e32877f40301b91d37d6f4e40d7fb17cd89fd7193eb"
+  },
+  {
+    "file": "src/domain/scale/scale-tones.test.ts",
+    "baseline": "a51e8dd872c075168024e892b4e8ae28179867c6c418652eb209b6d74bf219a4",
+    "working": "a51e8dd872c075168024e892b4e8ae28179867c6c418652eb209b6d74bf219a4"
+  },
+  {
+    "file": "src/domain/scale/scale-tones.ts",
+    "baseline": "ba65219a1e1ce172f812962b65fc591ac1700787ea47545b3e8e27b1e60d3710",
+    "working": "ba65219a1e1ce172f812962b65fc591ac1700787ea47545b3e8e27b1e60d3710"
+  },
+  {
+    "file": "src/domain/scale/scaleSelector.test.ts",
+    "baseline": "75e8879bd082908f5ed20a9b37787d88a409960f1442466c9cee8b5eee9464b0",
+    "working": "75e8879bd082908f5ed20a9b37787d88a409960f1442466c9cee8b5eee9464b0"
+  },
+  {
+    "file": "src/domain/scale/scaleSelector.ts",
+    "baseline": "0381accb7c71caaeb1ffa1b53b13f6eb079f04b48806e7350b10ac5624407d10",
+    "working": "0381accb7c71caaeb1ffa1b53b13f6eb079f04b48806e7350b10ac5624407d10"
+  },
+  {
+    "file": "src/domain/scale/scales.test.ts",
+    "baseline": "618579c6511cc3cfd02ed220df8d46a05e49fc235d93e99205fe8e58a925cd94",
+    "working": "618579c6511cc3cfd02ed220df8d46a05e49fc235d93e99205fe8e58a925cd94"
+  },
+  {
+    "file": "src/domain/scale/scales.ts",
+    "baseline": "e3f40cf25fe2f74ce744be040cdba38c3bf396be7eb7008b7528fbcbf56b53b1",
+    "working": "e3f40cf25fe2f74ce744be040cdba38c3bf396be7eb7008b7528fbcbf56b53b1"
+  },
+  {
+    "file": "src/domain/scale/types.ts",
+    "baseline": "9f47bbeb5e1edb7d02293be5905b72262b767a2a521b79d62a990990e9258888",
+    "working": "9f47bbeb5e1edb7d02293be5905b72262b767a2a521b79d62a990990e9258888"
+  },
+  {
+    "file": "src/domain/shared/index.ts",
+    "baseline": "a51c020fbe9d2bb43f9e851f643f11948dc638fbae9e159801eac37cc80d6b15",
+    "working": "a51c020fbe9d2bb43f9e851f643f11948dc638fbae9e159801eac37cc80d6b15"
+  },
+  {
+    "file": "src/domain/shared/keys.test.ts",
+    "baseline": "afc444416cc63f9d26cdde45dd588749b1b2c1af74e0ce9f75bb2dea60fca42f",
+    "working": "afc444416cc63f9d26cdde45dd588749b1b2c1af74e0ce9f75bb2dea60fca42f"
+  },
+  {
+    "file": "src/domain/shared/keys.ts",
+    "baseline": "625b908d880c363bb2bbcfaf4c094641031914b65d4fb77f6369a811cccfb0ad",
+    "working": "625b908d880c363bb2bbcfaf4c094641031914b65d4fb77f6369a811cccfb0ad"
+  },
+  {
+    "file": "src/domain/shared/notes.ts",
+    "baseline": "4437be64253dc809e291291f18c454ab76dd6c68919deb92a64622e1e0e7d026",
+    "working": "4437be64253dc809e291291f18c454ab76dd6c68919deb92a64622e1e0e7d026"
+  },
+  {
+    "file": "src/domain/shared/spelling.test.ts",
+    "baseline": "ca9b997973fd6002acc832607a2c5a96470c1034ddd7e32d550fe74a6e561966",
+    "working": "ca9b997973fd6002acc832607a2c5a96470c1034ddd7e32d550fe74a6e561966"
+  },
+  {
+    "file": "src/domain/shared/spelling.ts",
+    "baseline": "3b0e7190cd3b05f230b0f4965080910f076acf94f6b6eb9a9b7d3d258695e72d",
+    "working": "3b0e7190cd3b05f230b0f4965080910f076acf94f6b6eb9a9b7d3d258695e72d"
+  },
+  {
+    "file": "src/domain/shared/tuning.ts",
+    "baseline": "ec174ceb9aaf22689c3f2e6c740775f98e7ce7c7c0ac82307c961bdfd92cc49f",
+    "working": "ec174ceb9aaf22689c3f2e6c740775f98e7ce7c7c0ac82307c961bdfd92cc49f"
+  },
+  {
+    "file": "src/domain/shared/types.ts",
+    "baseline": "ca78946820ab048f14ae932c52bb21a98688ec5fad9dd136c55c7c34dc8b4b2d",
+    "working": "ca78946820ab048f14ae932c52bb21a98688ec5fad9dd136c55c7c34dc8b4b2d"
+  },
+  {
+    "file": "src/domain/tab/passage-analysis.ts",
+    "baseline": "64e3606495ed4719386c9054679f62a60fc19f56cf4c13f9c5058015c0a904a2",
+    "working": "64e3606495ed4719386c9054679f62a60fc19f56cf4c13f9c5058015c0a904a2"
+  },
+  {
+    "file": "src/domain/tab/harmonic-spans.ts",
+    "baseline": "64543b31273d2cb512d1b9adbf4adb656d9d32ca482d89b8bc9886169463d025",
+    "working": "64543b31273d2cb512d1b9adbf4adb656d9d32ca482d89b8bc9886169463d025"
+  },
+  {
+    "file": "src/domain/tab/contextual-spelling.ts",
+    "baseline": "d2daafb03568c68f00fcfd67f6de0debafb3d76379f451a131854d554d2e9e22",
+    "working": "d2daafb03568c68f00fcfd67f6de0debafb3d76379f451a131854d554d2e9e22"
+  },
+  {
+    "file": "src/domain/tab/ascii.ts",
+    "baseline": "2acc657618d6b5d34a8db55c47f46072b54434a081af296ad9350814c28b07bb",
+    "working": "2acc657618d6b5d34a8db55c47f46072b54434a081af296ad9350814c28b07bb"
+  },
+  {
+    "file": "src/domain/tab/types.ts",
+    "baseline": "a9a9f3ffca87c555d5bc7f9c9b2044344ae867f173f1f0f9833c7e4847ce9977",
+    "working": "a9a9f3ffca87c555d5bc7f9c9b2044344ae867f173f1f0f9833c7e4847ce9977"
+  }
+]

@@ -1,0 +1,480 @@
+{
+  "source": "cuthbertLab/music21",
+  "commit": "86a7dc8a5fb3b1996ac0202d6bb9b4d4b9d19197",
+  "python": "3.12.14",
+  "scope": "isolated synthetic offline comparison; not product timeaxis/runtime or harmonic analysis",
+  "results": [
+    {
+      "id": "source-unison-identity",
+      "expectedActiveIds": [
+        "string1:C4",
+        "string2:C4"
+      ],
+      "treeActiveIds": [
+        "string1:C4",
+        "string2:C4"
+      ],
+      "treeElementIsSource": true,
+      "default": [
+        {
+          "start": "0.0",
+          "duration": "2.0",
+          "midis": [
+            60
+          ],
+          "kind": "chord",
+          "noteIds": [
+            "string1:C4"
+          ],
+          "ties": [
+            null
+          ]
+        }
+      ],
+      "duplicatesPreserved": [
+        {
+          "start": "0.0",
+          "duration": "2.0",
+          "midis": [
+            60,
+            60
+          ],
+          "kind": "chord",
+          "noteIds": [
+            "string1:C4",
+            "string2:C4"
+          ],
+          "ties": [
+            null,
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "id": "adjacent-repeat-is-two-attacks",
+      "expectedAt1": [
+        "attack-b"
+      ],
+      "actualAt1": [
+        "attack-b"
+      ],
+      "slices": [
+        {
+          "start": "0.0",
+          "duration": "1.0",
+          "midis": [
+            60
+          ],
+          "kind": "chord",
+          "noteIds": [
+            "attack-a"
+          ],
+          "ties": [
+            null
+          ]
+        },
+        {
+          "start": "1.0",
+          "duration": "1.0",
+          "midis": [
+            60
+          ],
+          "kind": "chord",
+          "noteIds": [
+            "attack-b"
+          ],
+          "ties": [
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "id": "explicit-tie-and-stripTies",
+      "chordifyPreservesSegments": [
+        {
+          "start": "0.0",
+          "duration": "1.0",
+          "midis": [
+            60
+          ],
+          "kind": "chord",
+          "noteIds": [
+            "attack"
+          ],
+          "ties": [
+            "start"
+          ]
+        },
+        {
+          "start": "1.0",
+          "duration": "1.0",
+          "midis": [
+            60
+          ],
+          "kind": "chord",
+          "noteIds": [
+            "continuation-position:origin-attack"
+          ],
+          "ties": [
+            "stop"
+          ]
+        }
+      ],
+      "stripTies": [
+        {
+          "id": "attack",
+          "duration": "2.0"
+        }
+      ],
+      "sourceNotesUnchanged": true,
+      "hazard": "stripTies removes continuation event identity; preserve authored relation sidecar before invoking"
+    },
+    {
+      "id": "slice-generated-ties-and-reused-id",
+      "pieces": [
+        {
+          "id": "long",
+          "start": "0.0",
+          "duration": "1.0",
+          "tie": "start"
+        },
+        {
+          "id": "long",
+          "start": "1.0",
+          "duration": "1.0",
+          "tie": "stop"
+        }
+      ],
+      "sourceStillUntied": true,
+      "hazard": "library-generated split ties are not authored facts; note.id is not a unique slice identity"
+    },
+    {
+      "id": "unknown-gap-vs-authored-rest",
+      "unknownGapOutput": [
+        {
+          "start": "0.0",
+          "duration": "1.0",
+          "midis": [
+            60
+          ],
+          "kind": "chord",
+          "noteIds": [
+            "a"
+          ],
+          "ties": [
+            null
+          ]
+        },
+        {
+          "start": "1.0",
+          "duration": "1.0",
+          "midis": [],
+          "kind": "rest",
+          "noteIds": [],
+          "ties": []
+        },
+        {
+          "start": "2.0",
+          "duration": "1.0",
+          "midis": [
+            64
+          ],
+          "kind": "chord",
+          "noteIds": [
+            "b"
+          ],
+          "ties": [
+            null
+          ]
+        }
+      ],
+      "authoredRestOutput": [
+        {
+          "start": "0.0",
+          "duration": "1.0",
+          "midis": [
+            60
+          ],
+          "kind": "chord",
+          "noteIds": [
+            "a"
+          ],
+          "ties": [
+            null
+          ]
+        },
+        {
+          "start": "1.0",
+          "duration": "1.0",
+          "midis": [],
+          "kind": "rest",
+          "noteIds": [],
+          "ties": []
+        },
+        {
+          "start": "2.0",
+          "duration": "1.0",
+          "midis": [
+            64
+          ],
+          "kind": "chord",
+          "noteIds": [
+            "b"
+          ],
+          "ties": [
+            null
+          ]
+        }
+      ],
+      "sameProjection": true,
+      "hazard": "empty verticality creates a rest; output cannot establish authored silence without input sidecar"
+    },
+    {
+      "id": "half-open-dyadic-boundary",
+      "expectedAtHalf": [
+        "b"
+      ],
+      "actualAtHalf": [
+        "b"
+      ],
+      "stoppedAtHalf": [
+        "a"
+      ],
+      "activeAtEnd": []
+    },
+    {
+      "id": "fraction-query-vs-float-tree-boundary",
+      "allSourceFractionsWithinProductBounds": true,
+      "manualExpectedAt1_10": [
+        "b"
+      ],
+      "directFractionQuery": [
+        "a"
+      ],
+      "libraryCoordinateQuery": [
+        "b"
+      ],
+      "sourceOnset": {
+        "type": "Fraction",
+        "value": "1/10"
+      },
+      "treeOnset": {
+        "type": "float",
+        "value": "0.1"
+      },
+      "hazard": "tree stores floats; Fraction query is not guaranteed same-coordinate lookup"
+    },
+    {
+      "id": "exact-duration-does-not-imply-exact-tree",
+      "sourceDuration": {
+        "type": "Fraction",
+        "value": "1/3"
+      },
+      "storedTreeEnd": {
+        "type": "float",
+        "value": "0.3333333333333333"
+      },
+      "fractionQueryStarts": [],
+      "fractionQueryOverlaps": [
+        "b"
+      ],
+      "libraryQueryStarts": [
+        "b"
+      ]
+    },
+    {
+      "id": "product-valid-narrow-overlap-lost-in-chordify",
+      "allSourceFractionsWithinProductBounds": true,
+      "authored": {
+        "a": {
+          "start": "167/1001",
+          "duration": "601/1002"
+        },
+        "b": {
+          "start": "772/1007",
+          "duration": "1/4"
+        }
+      },
+      "expectedOverlapStart": "772/1007",
+      "expectedOverlapDuration": "1/1010023014",
+      "expectedActive": [
+        "a",
+        "b"
+      ],
+      "treeActualAtOverlapStart": [
+        "a",
+        "b"
+      ],
+      "chordifyOutput": [
+        {
+          "start": "0.0",
+          "duration": "167/1001",
+          "midis": [],
+          "kind": "rest",
+          "noteIds": [],
+          "ties": []
+        },
+        {
+          "start": "167/1001",
+          "duration": "601/1002",
+          "midis": [
+            60
+          ],
+          "kind": "chord",
+          "noteIds": [
+            "a"
+          ],
+          "ties": [
+            null
+          ]
+        },
+        {
+          "start": "772/1007",
+          "duration": "0.25",
+          "midis": [
+            64
+          ],
+          "kind": "chord",
+          "noteIds": [
+            "b"
+          ],
+          "ties": [
+            null
+          ]
+        }
+      ],
+      "overlapSlicePresent": false,
+      "hazard": "chordify isclose(abs_tol=1e-7) skips this nonzero exact interval"
+    },
+    {
+      "id": "float-opFrac-denominator-limit",
+      "directInputOutsideCurrentProductBounds": true,
+      "exactFractionInputResult": {
+        "type": "float",
+        "value": "1.52587890625e-05"
+      },
+      "floatInputResult": {
+        "type": "Fraction",
+        "value": "1/65535"
+      },
+      "float1_100000000Result": {
+        "type": "float",
+        "value": "0.0"
+      },
+      "hazard": "limitOffsetDenominator=65535 applies to float rational reconstruction; do not coerce exact inputs to float and reconstruct as ground truth"
+    },
+    {
+      "id": "missing-duration-default-refused",
+      "notInvokedForUnknownInput": true,
+      "defaultDurationOfUnspecifiedMusic21Note": "1.0",
+      "reason": "fixture export must refuse missing onset/length, not instantiate library defaults"
+    }
+  ],
+  "refusalContract": [
+    {
+      "input": "unknown onset or length",
+      "action": "exclude/mark incomplete; never call music21 with missing value"
+    },
+    {
+      "input": "global position requires unknown preceding bar lengths",
+      "action": "refuse global comparison; explicitly local same-bar comparison may remain valid"
+    },
+    {
+      "input": "dangling/ambiguous/noncontiguous sustain chain",
+      "action": "do not invent tie repair; record unsupported or invalid relation"
+    },
+    {
+      "input": "bend/release trajectory, let-ring, grace realization not declared",
+      "action": "base-pitch authored observation only, not performed sounding comparison"
+    },
+    {
+      "input": "collapsed/narrow/unmapped library coordinates",
+      "action": "precision-limited exclusion, never count a match or musical error"
+    },
+    {
+      "input": "unknown gap",
+      "action": "generated Rest is projection only; do not add authored rest to expected input"
+    }
+  ],
+  "benchmarks": [
+    {
+      "positions": 32,
+      "notes": 192,
+      "samples": 3,
+      "treeBuildMs": [
+        5.3262639994500205,
+        6.196389998876839,
+        5.793024000013247
+      ],
+      "treeBuildMedianMs": 5.793024000013247,
+      "chordifyMs": [
+        63.10005100021954,
+        37.81129000162764,
+        37.06419899936009
+      ],
+      "chordifyMedianMs": 37.81129000162764,
+      "spans": 192,
+      "slices": 35
+    },
+    {
+      "positions": 128,
+      "notes": 768,
+      "samples": 3,
+      "treeBuildMs": [
+        70.05616599963105,
+        70.43315199916833,
+        71.36252700001933
+      ],
+      "treeBuildMedianMs": 70.43315199916833,
+      "chordifyMs": [
+        265.67647800038685,
+        213.52380299867946,
+        231.89493600148126
+      ],
+      "chordifyMedianMs": 231.89493600148126,
+      "spans": 768,
+      "slices": 131
+    },
+    {
+      "positions": 1024,
+      "notes": 6144,
+      "samples": 2,
+      "treeBuildMs": [
+        4361.256866000986,
+        4221.8663249987
+      ],
+      "treeBuildMedianMs": 4291.561595499843,
+      "chordifyMs": [
+        7866.247231000671,
+        3369.4741780000186
+      ],
+      "chordifyMedianMs": 5617.860704500345,
+      "spans": 6144,
+      "slices": 1027
+    }
+  ],
+  "upstreamTests": {
+    "names": [
+      "music21.tree.fromStream.Test.testTripletEndsWhereTheNextNoteStarts",
+      "music21.stream.tests.Test.testSliceAtOffsetsSimple",
+      "music21.stream.tests.Test.testSliceAtOffsetsBuilt",
+      "music21.stream.tests.Test.testChordifyRests"
+    ],
+    "run": 4,
+    "failures": 0,
+    "errors": 0
+  },
+  "sourceSha256": {
+    "LICENSE": "425c3fc0701ab4f07e9520bbc52d596a92c0ae81f5603ef7a44e93d567f2ffb2",
+    "music21/stream/base.py": "d234a4eb984fdec4586e484718b1167a25369410c20810bf4ee33e7c6b0d73fb",
+    "music21/tree/fromStream.py": "49463ab574008d61d1eb892ab6fb79859e18fa394d5631056abe41aa7519d26a",
+    "music21/tree/spans.py": "d7fcc82a2b61ef094317754107fcd78b2d221bdfd119c8f94331dcbbf2073441",
+    "music21/tree/trees.py": "f0860cd0617d12eb22ca34a3b5e2e11002d5fd13aa22be38bc26d865226a403c",
+    "music21/tree/verticality.py": "821bef8675bec56462c14d1cb230c6954f943c67513a2ed8a058bc94e098adfc",
+    "music21/common/numberTools.py": "69a1616f6c28f70a2f8ae46ad94bffa048e2f6df484dc0221206f4ab8bab941a",
+    "music21/stream/tests.py": "f71a5297e088472912f5ed33471f0e740a64cd3589fcd7d4b0de4269d3a85784"
+  },
+  "probeSha256": "267b040c4451d97e5ac142deebd2da9afd3bb3712f29c4427fc4b694d685ef29"
+}

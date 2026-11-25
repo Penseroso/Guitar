@@ -1,0 +1,142 @@
+import assert from 'node:assert/strict';
+import { readFileSync,writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { performance } from 'node:perf_hooks';
+import { observeTabWrittenTime, getTabWrittenNotesAt } from '/workspace/Guitar-p2/src/domain/tab/written-time';
+import { rational, plus, compare, midpoint, key, active, finiteQueries, type Rational, type ExpectedEvent } from './oracle';
+import { malformed, queryUnknown, freeze, verifyJson } from './fuzz-inputs';
+
+const OUT='/workspace/p3-core-validation';
+const f=(numerator:number,denominator=1)=>({numerator,denominator});
+const exact=(value:Rational)=>({numerator:value.n.toString(),denominator:value.d.toString()});
+const parse=(value:{numerator:string;denominator:string})=>rational(BigInt(value.numerator),BigInt(value.denominator));
+const tuning=[64,59,55,50,45,40];
+function docOf(entries:{start:{numerator:number;denominator:number};lengths:{numerator:number;denominator:number}[];midis?:number[]}[]){
+    const expected:ExpectedEvent[]=[];
+    const document={format:'authored',timing:'order-only',source:'',tuningMidi:[...tuning],capo:0,measureCount:1,
+        moments:entries.map((entry,i)=>({id:`p${i}`,index:i,measure:1,column:i,beatOffset:entry.start,
+            notes:entry.lengths.map((length,string)=>{
+                const midi=entry.midis?.[string]??64+(i%5),noteId=`n${i}:${string}`;
+                const start=rational(entry.start.numerator,entry.start.denominator),end=plus(start,rational(length.numerator,length.denominator));
+                expected.push({id:noteId,momentId:`p${i}`,noteId,midi,string,start,end});
+                return{id:noteId,string,midi,fret:midi-tuning[string],pitchClass:midi%12,source:null,duration:length};
+            })}))};
+    return{document,expected};
+}
+
+const report:any={scope:'standalone validation against read-only product APIs; no music21; ordinary finite JSON only',
+    fuzz:{cases:50000,exceptions:0,mutations:0,nonJsonOutputs:0,firstFailures:[]},oracle:{randomScores:1000,finiteQueries:0,mismatches:0},manual:[],benchmarks:[]};
+let random=0x52c3a;
+const rand=(max:number)=>{random^=random<<13;random^=random>>>17;random^=random<<5;return(random>>>0)%max;};
+
+const fuzzStart=performance.now();
+for(let i=0;i<report.fuzz.cases;i++){
+    const input=malformed(),before=JSON.stringify(input);freeze(input);
+    const measure=([1,2,0,-1,1025,1.5,null,'1',{},1e308] as unknown[])[i%10] as number;
+    try{
+        const snapshot=observeTabWrittenTime(input,measure);
+        verifyJson(snapshot.data);
+        assert.equal(Object.isFrozen(snapshot.data),true);
+        for(const q of [exact(rational(0)),queryUnknown()])verifyJson(getTabWrittenNotesAt(snapshot,q));
+    }catch(error){report.fuzz.exceptions++;if(report.fuzz.firstFailures.length<3)report.fuzz.firstFailures.push({input,measure,error:String(error)});}
+    if(JSON.stringify(input)!==before)report.fuzz.mutations++;
+}
+report.fuzz.elapsedMs=performance.now()-fuzzStart;
+
+function crosscheck(label:string,document:any,events:ExpectedEvent[],capture=false){
+    const before=JSON.stringify(document);freeze(document);
+    const snapshot=observeTabWrittenTime(document,1);
+    assert.equal(snapshot.data.noteCoverage,'complete',label);
+    assert.equal(snapshot.data.intervals.length,events.length,label);
+    assert.equal(snapshot.data.ownedNoteCount,events.length,label);
+    let refCount=0;for(const d of snapshot.data.endpointDeltas)refCount+=d.starts.length+d.ends.length;
+    assert.equal(refCount,events.length*2,label);
+    const gotIntervals=snapshot.data.intervals.map(n=>({noteId:n.noteId,momentId:n.momentId,midi:n.midi,string:n.string,start:key(parse(n.start)),end:key(parse(n.end))}));
+    const wantIntervals=events.map(n=>({noteId:n.noteId,momentId:n.momentId,midi:n.midi,string:n.string,start:key(n.start),end:key(n.end)}));
+    assert.deepEqual(gotIntervals,wantIntervals,label);
+    const queries=finiteQueries(events),checks:any[]=[];
+    if(events.length)queries.unshift(plus(events.reduce((a,b)=>compare(a.start,b.start)<0?a:b).start,rational(-1)));
+    for(const query of queries){
+        const got=getTabWrittenNotesAt(snapshot,exact(query));
+        const want=active(events,query);
+        const first=events.length?events.reduce((a,b)=>compare(a.start,b.start)<0?a:b).start:null;
+        const last=events.length?events.reduce((a,b)=>compare(a.end,b.end)>0?a:b).end:null;
+        const outside=!first||!last||compare(query,first)<0||compare(query,last)>=0;
+        if(outside){assert.equal(got.status,'outside-range',label+' '+key(query));assert.equal('notes'in got,false);}
+        else{
+            assert.equal(got.status,'complete',label+' '+key(query));
+            if(got.status==='complete')assert.deepEqual(got.notes.map(n=>[n.noteId,n.momentId,n.string,n.midi]),want.map(n=>[n.noteId,n.momentId,n.string,n.midi]),label+' '+key(query));
+        }
+        report.oracle.finiteQueries++;
+        if(capture)checks.push({at:key(query),status:got.status,expectedNoteIds:want.map(n=>n.noteId),actualNoteIds:got.status==='complete'?got.notes.map(n=>n.noteId):undefined});
+    }
+    verifyJson(snapshot.data);assert.equal(JSON.stringify(document),before,label+' source mutation');
+    if(capture)report.manual.push({id:label,checks,intervalCount:events.length,endpointReferences:refCount});
+}
+
+const narrow=docOf([{start:f(167,1001),lengths:[f(601,1002)]},{start:f(772,1007),lengths:[f(1,4)]}]);
+crosscheck('current-valid-narrow-overlap',narrow.document,narrow.expected,true);
+const farey=docOf([{start:f(1,501),lengths:[f(1,999)]},{start:f(1,500),lengths:[f(1,1003)]}]);
+crosscheck('close-exact-local-ends',farey.document,farey.expected,true);
+const unisons=docOf([{start:f(1,2),lengths:[f(1,2),f(1),f(1,3)],midis:[64,64,64]},{start:f(0),lengths:[f(1,2)],midis:[64]},{start:f(1),lengths:[f(1,2)],midis:[64]}]);
+crosscheck('source-order-unisons-simultaneous-end-start-repeat',unisons.document,unisons.expected,true);
+const gap=docOf([{start:f(0),lengths:[f(1)]},{start:f(2),lengths:[f(1)]}]);
+crosscheck('interior-unknown-gap-is-complete-empty-owned-population',gap.document,gap.expected,true);
+
+for(let run=0;run<report.oracle.randomScores;run++){
+    const fixture=docOf(Array.from({length:1+rand(7)},()=>({start:f(rand(8),1+rand(16)),lengths:Array.from({length:1+rand(6)},()=>f(1+rand(4),1+rand(16)))})));
+    crosscheck('random-'+run,fixture.document,fixture.expected);
+}
+
+const partial=structuredClone(gap.document);delete(partial.moments[1].notes[0] as any).duration;
+let snapshot=observeTabWrittenTime(partial,1);
+assert.equal(snapshot.data.noteCoverage,'partial');assert.equal(snapshot.data.ownedNoteCount,2);assert.equal(snapshot.data.intervals.length,1);
+const partialResult=getTabWrittenNotesAt(snapshot,exact(rational(0)));assert.equal(partialResult.status,'partial');assert.equal('notes'in partialResult,false);
+report.manual.push({id:'partial-does-not-publish-known-note-subset',coverage:snapshot.data.noteCoverage,query:partialResult});
+const unreadable=structuredClone(gap.document);(unreadable.moments[1] as any).measure='unknown';
+snapshot=observeTabWrittenTime(unreadable,1);const unreadableResult=getTabWrittenNotesAt(snapshot,exact(rational(0)));
+assert.equal(snapshot.data.noteCoverage,'unreadable');assert.equal(unreadableResult.status,'unreadable');assert.equal('notes'in unreadableResult,false);
+report.manual.push({id:'unknown-source-ownership-prevents-complete-population',coverage:snapshot.data.noteCoverage,query:unreadableResult});
+const metadata=structuredClone(gap.document);(metadata.moments[0] as any).sustains=[{noteId:null,duration:{numerator:1,denominator:0}}];(metadata.moments[0] as any).rest=null;
+snapshot=observeTabWrittenTime(metadata,1);const markerResult=getTabWrittenNotesAt(snapshot,exact(rational(0)));
+assert.equal(snapshot.data.noteCoverage,'complete');assert.equal(markerResult.status,'complete');
+assert.ok(snapshot.data.issues.some(i=>i.scope==='metadata'));assert.equal(snapshot.data.markerFacts.length,2);
+report.manual.push({id:'non-note-marker-shape-is-metadata-not-note-coverage',coverage:snapshot.data.noteCoverage,issues:snapshot.data.issues});
+
+for(const positions of [128,1024]){
+    const fixture=docOf(Array.from({length:positions},(_,i)=>({start:f(i,1024),lengths:Array.from({length:6},()=>f(1))})));
+    freeze(fixture.document);
+    const buildTimes:number[]=[],queryTimes:number[]=[],heapDeltas:number[]=[],jsonSizes:number[]=[],endpointRefs:number[]=[];
+    for(let run=0;run<7;run++){
+        global.gc?.();const beforeHeap=process.memoryUsage().heapUsed,then=performance.now();
+        const value=observeTabWrittenTime(fixture.document,1);buildTimes.push(performance.now()-then);
+        heapDeltas.push(process.memoryUsage().heapUsed-beforeHeap);jsonSizes.push(Buffer.byteLength(JSON.stringify(value.data)));
+        const refs=value.data.endpointDeltas.reduce((n,e)=>n+e.starts.length+e.ends.length,0);endpointRefs.push(refs);
+        assert.equal(refs,fixture.expected.length*2);assert.ok(value.data.endpointDeltas.length<=fixture.expected.length*2);
+        assert.equal(value.data.noteCoverage,'complete');assert.equal(value.data.ownedNoteCount,positions*6);
+        const points=[rational(0),rational(1,2048),rational(1,2),rational(1023,1024),rational(1),rational(3,2),rational(2047,1024)];
+        const qt=performance.now();
+        for(const q of points){
+            const got=getTabWrittenNotesAt(value,exact(q)),want=active(fixture.expected,q);
+            const last=fixture.expected.at(-1)!.end;
+            if(compare(q,last)>=0){assert.equal(got.status,'outside-range');continue;}
+            assert.equal(got.status,'complete');
+            if(got.status==='complete')assert.deepEqual(got.notes.map(n=>n.noteId),want.map(n=>n.noteId));
+        }
+        queryTimes.push((performance.now()-qt)/points.length);
+    }
+    const median=(a:number[])=>[...a].sort((a,b)=>a-b)[Math.floor(a.length/2)];
+    report.benchmarks.push({positions,notes:positions*6,pattern:'one bar; all notes duration1, starts i/1024; dense growing overlap',samples:7,
+        buildMs:buildTimes,buildMedianMs:median(buildTimes),queryWithOraclePerPointMs:queryTimes,queryWithOraclePerPointMedianMs:median(queryTimes),
+        heapDeltaBytes:heapDeltas,heapDeltaMedianBytes:median(heapDeltas),jsonBytes:jsonSizes,endpointReferences:endpointRefs,
+        noStoredActiveSetPerEndpoint:Object.keys(observeTabWrittenTime(fixture.document,1).data).every(k=>!['segments','verticalities','activeSets'].includes(k))});
+}
+assert.equal(report.fuzz.exceptions,0);assert.equal(report.fuzz.mutations,0);
+const small=report.benchmarks[0],large=report.benchmarks[1];
+report.storage={noteScale:large.notes/small.notes,jsonByteScale:large.jsonBytes[0]/small.jsonBytes[0],endpointReferenceScale:large.endpointReferences[0]/small.endpointReferences[0],
+    scope:'structural refs2N and actual serialized-size growth; not a heap-growth proof on arbitrary source metadata'};
+assert.ok(report.storage.jsonByteScale<12,'unexpected superlinear full-set storage');
+report.sourceHashes=Object.fromEntries(['written-time.ts','exact-time.ts'].map(n=>[n,createHash('sha256').update(readFileSync('/workspace/Guitar-p2/src/domain/tab/'+n)).digest('hex')]));
+report.limits=['finite ordinary JSON only; no proxies/accessors/cycles','typed query snapshot is a real opaque observer result, not arbitrary forged snapshot','benchmarks host Node with optional explicitGC; no UI/device/SLO claim','query timing includes independent oracle and assertions','maximum-case full output does not store active ID sets per endpoint'];
+writeFileSync(OUT+'/results.json',JSON.stringify(report,null,2));
+console.log(JSON.stringify({fuzz:report.fuzz,oracle:report.oracle,storage:report.storage,benchmarks:report.benchmarks.map((b:any)=>({positions:b.positions,notes:b.notes,buildMedianMs:b.buildMedianMs,heapDeltaMedianBytes:b.heapDeltaMedianBytes,queryWithOraclePerPointMedianMs:b.queryWithOraclePerPointMedianMs,bytes:b.jsonBytes[0],refs:b.endpointReferences[0]}))}));

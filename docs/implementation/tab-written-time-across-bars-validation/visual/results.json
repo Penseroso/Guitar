@@ -1,0 +1,1374 @@
+{
+  "reviewer": "Root production-browser visual/read-only flow review",
+  "buildId": "ARH4t5eI9f-GvF7s435At",
+  "sourceSha256": {
+    "src/domain/tab/written-time-across-bars.ts": "b9f74ed88f9bcbb3d7ef27366790f173aab74458498c8bbc3cc01ed66c96f286",
+    "src/components/guitar/scale/tab-analysis/TabScoreView.tsx": "353deb852b03d9b3efcd5f645a1ba236df1ae2e1eeb0cefd776a3f6960352d76",
+    "src/components/guitar/scale/tab-analysis/AcrossBarsWrittenTimePanel.tsx": "aa90609ff19122801c0edb53b65e08d1953d8af60c2cd811478052ea26335919",
+    "src/components/guitar/scale/tab-analysis/across-bars-written-time.module.css": "76aebac54ed31d51810cac88595b69caa58da2f61c7eba8e8cb468d177e41cbe"
+  },
+  "results": [
+    {
+      "width": 390,
+      "disabledModel": {
+        "viewport": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 759.140625,
+          "width": 366,
+          "height": 62,
+          "text": "Bar 1\n\nNo written notes\n\nAbout written time\nClose"
+        },
+        "controls": [
+          {
+            "x": 198.4375,
+            "y": 768.140625,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time"
+          },
+          {
+            "x": 334,
+            "y": 768.140625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 12,
+            "y": 707.140625,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 77.921875,
+            "y": 707.140625,
+            "width": 87.296875,
+            "height": 44,
+            "text": "Across full bars"
+          }
+        ]
+      },
+      "chronological": {
+        "viewport": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 778.328125,
+          "width": 366,
+          "height": 453.75,
+          "text": "Bar 3\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n3 of 3 source notes timed\n\nPrevious point\nPoint 1 of 5\nNext point\n\nComplete at this point\n\n2 source notes at this point\n\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 2 \u00b7 Position 2 \u00b7 String 1\nB4\u25cf\n\u00b7 At this point\nBar 3 \u00b7 Position 3 \u00b7 String 1\nC5\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 1\nA4\nDetails"
+        },
+        "controls": [
+          {
+            "x": 203.015625,
+            "y": 787.328125,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 334,
+            "y": 787.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 12,
+            "y": 873.515625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 315.0625,
+            "y": 873.515625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 12,
+            "y": 1179.078125,
+            "width": 366,
+            "height": 44,
+            "text": "Details"
+          },
+          {
+            "x": 12,
+            "y": 726.328125,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 77.921875,
+            "y": 726.328125,
+            "width": 112.546875,
+            "height": 44,
+            "text": "Across full bars \u00b7 4/4"
+          }
+        ]
+      },
+      "details": {
+        "viewport": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 778.328125,
+          "width": 366,
+          "height": 1158,
+          "text": "Bar 3\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n3 of 3 source notes timed\n\nPrevious point\nPoint 2 of 5\nNext point\n\nComplete at this point\n\n2 source notes at this point\n\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 2 \u00b7 Position 2 \u00b7 String 1\nB4\u25cf\n\u00b7 At this point\nBar 3 \u00b7 Position 3 \u00b7 String 1\nC5\nBar 1 \u00b7 Position 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nDetails\n\nNominal source-note intervals under regular full-bar origins. This model does not establish performed sound.\n\nModel \u00b7 Regular full-bar origins \u00b7 4/4 \u00b7 Bar length 4/1\n\nGlobal window \u00b7 8/1 to 12/1\n\nCurrent global point \u00b7 9/1\n\nProof \u00b7 All source notes timed\n\nExcluded source notes \u00b7 0\n\nBar 2 \u00b7 Position 2 \u00b7 String 1 \u00b7 B4\n\nNote ID\nnote-1-0\nPosition ID\nmoment-1\nOriginal local start\n3/1\nGlobal start\n7/1\nWritten length\n4/1\nGlobal end\n11/1\n\nBar 3 \u00b7 Position 3 \u00b7 String 1 \u00b7 C5\n\nNote ID\nnote-2-0\nPosition ID\nmoment-2\nOriginal local start\n0/1\nGlobal start\n8/1\nWritten length\n1/1\nGlobal end\n9/1\n\nBar 1 \u00b7 Position 1 \u00b7 String 1 \u00b7 A4\n\nNote ID\nnote-0-0\nPosition ID\nmoment-0\nOriginal local start\n9/1\nGlobal start\n9/1\nWritten length\n1/1\nGlobal end\n10/1\n\nOutside-bar offsets \u00b7 1\n\nBar 1 \u00b7 Position 1 \u00b7 Original offset 9/1"
+        },
+        "controls": [
+          {
+            "x": 203.015625,
+            "y": 787.328125,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 334,
+            "y": 787.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 12,
+            "y": 873.515625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 315.0625,
+            "y": 873.515625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 12,
+            "y": 1179.078125,
+            "width": 366,
+            "height": 44,
+            "text": "Details"
+          },
+          {
+            "x": 12,
+            "y": 726.328125,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 77.921875,
+            "y": 726.328125,
+            "width": 112.546875,
+            "height": 44,
+            "text": "Across full bars \u00b7 4/4"
+          }
+        ]
+      },
+      "emptyCarry": {
+        "viewport": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 778.328125,
+          "width": 366,
+          "height": 331.75,
+          "text": "Bar 2\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n1 of 1 source notes timed\n\nPrevious point\nPoint 1 of 3\nNext point\n\nComplete at this point\n\n1 source note at this point\n\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nDetails"
+        },
+        "controls": [
+          {
+            "x": 203.015625,
+            "y": 787.328125,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 334,
+            "y": 787.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 12,
+            "y": 873.515625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 315.0625,
+            "y": 873.515625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 12,
+            "y": 1057.078125,
+            "width": 366,
+            "height": 44,
+            "text": "Details"
+          },
+          {
+            "x": 12,
+            "y": 726.328125,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 77.921875,
+            "y": 726.328125,
+            "width": 112.546875,
+            "height": 44,
+            "text": "Across full bars \u00b7 4/4"
+          }
+        ]
+      },
+      "futureProven": {
+        "viewport": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 778.328125,
+          "width": 366,
+          "height": 331.75,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nTiming incomplete across score\n\n1 of 2 source notes timed\n\nPrevious point\nPoint 1 of 2\nNext point\n\nComplete at this point\n\n1 source note at this point\n\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nDetails"
+        },
+        "controls": [
+          {
+            "x": 203.015625,
+            "y": 787.328125,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 334,
+            "y": 787.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 12,
+            "y": 873.515625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 315.0625,
+            "y": 873.515625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 12,
+            "y": 1057.078125,
+            "width": 366,
+            "height": 44,
+            "text": "Details"
+          },
+          {
+            "x": 12,
+            "y": 726.328125,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 77.921875,
+            "y": 726.328125,
+            "width": 112.546875,
+            "height": 44,
+            "text": "Across full bars \u00b7 4/4"
+          }
+        ]
+      },
+      "futureAnchorEqual": {
+        "viewport": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 778.328125,
+          "width": 366,
+          "height": 234.375,
+          "text": "Bar 2\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nTiming incomplete across score\n\n1 of 2 source notes timed\n\nPrevious point\nPoint 1 of 2\nNext point\n\nMore timing needed at this point\n\nNo known intervals in this window\n\nDetails"
+        },
+        "controls": [
+          {
+            "x": 203.015625,
+            "y": 787.328125,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 334,
+            "y": 787.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 12,
+            "y": 873.515625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 315.0625,
+            "y": 873.515625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 12,
+            "y": 959.703125,
+            "width": 366,
+            "height": 44,
+            "text": "Details"
+          },
+          {
+            "x": 12,
+            "y": 726.328125,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 77.921875,
+            "y": 726.328125,
+            "width": 112.546875,
+            "height": 44,
+            "text": "Across full bars \u00b7 4/4"
+          }
+        ]
+      },
+      "dense": {
+        "viewport": 390,
+        "pageWidth": 390,
+        "reducedMotion": true,
+        "panel": {
+          "x": 12,
+          "y": 778.328125,
+          "width": 366,
+          "height": 803.75,
+          "text": "Bar 2\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n9 of 9 source notes timed\n\nPrevious point\nPoint 1 of 14\nNext point\n\nComplete at this point\n\n1 source note at this point\n\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 1\nA4\nBar 1 \u00b7 Position 3 \u00b7 String 1\nA4\nBar 1 \u00b7 Position 4 \u00b7 String 1\nA4\nBar 1 \u00b7 Position 5 \u00b7 String 1\nA4\nBar 1 \u00b7 Position 6 \u00b7 String 1\nA4\nBar 1 \u00b7 Position 7 \u00b7 String 1\nA4\nBar 1 \u00b7 Position 8 \u00b7 String 1\nA4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 203.015625,
+            "y": 787.328125,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 334,
+            "y": 787.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 12,
+            "y": 873.515625,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 315.0625,
+            "y": 873.515625,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 12,
+            "y": 1484.078125,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 334,
+            "y": 1484.078125,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 12,
+            "y": 1529.078125,
+            "width": 366,
+            "height": 44,
+            "text": "Details"
+          },
+          {
+            "x": 12,
+            "y": 726.328125,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 77.921875,
+            "y": 726.328125,
+            "width": 112.546875,
+            "height": 44,
+            "text": "Across full bars \u00b7 4/4"
+          }
+        ]
+      },
+      "errors": [],
+      "passed": [
+        "explicit model",
+        "no-meter disabled/local available",
+        "chronological source labels",
+        "half-open active membership",
+        "nonblocking overrun details",
+        "scope focus",
+        "empty bar carry-in",
+        "future missing-start bound",
+        "anchor equality partial",
+        "window-end no active set",
+        "eight-plus-one paging",
+        "view actions preserve source/history",
+        "fresh View defaults This bar",
+        "44px reduced-motion no-overflow"
+      ]
+    },
+    {
+      "width": 768,
+      "disabledModel": {
+        "viewport": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 659.5625,
+          "width": 704,
+          "height": 62,
+          "text": "Bar 1\n\nNo written notes\n\nAbout written time\nClose"
+        },
+        "controls": [
+          {
+            "x": 556.4375,
+            "y": 668.5625,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time"
+          },
+          {
+            "x": 692,
+            "y": 668.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 32,
+            "y": 607.5625,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 97.921875,
+            "y": 607.5625,
+            "width": 87.296875,
+            "height": 44,
+            "text": "Across full bars"
+          }
+        ]
+      },
+      "chronological": {
+        "viewport": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 659.5625,
+          "width": 704,
+          "height": 453.75,
+          "text": "Bar 3\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n3 of 3 source notes timed\n\nPrevious point\nPoint 1 of 5\nNext point\n\nComplete at this point\n\n2 source notes at this point\n\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 2 \u00b7 Position 2 \u00b7 String 1\nB4\u25cf\n\u00b7 At this point\nBar 3 \u00b7 Position 3 \u00b7 String 1\nC5\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 1\nA4\nDetails"
+        },
+        "controls": [
+          {
+            "x": 561.015625,
+            "y": 668.5625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 692,
+            "y": 668.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 32,
+            "y": 754.75,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 673.0625,
+            "y": 754.75,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 32,
+            "y": 1060.3125,
+            "width": 704,
+            "height": 44,
+            "text": "Details"
+          },
+          {
+            "x": 32,
+            "y": 607.5625,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 97.921875,
+            "y": 607.5625,
+            "width": 112.546875,
+            "height": 44,
+            "text": "Across full bars \u00b7 4/4"
+          }
+        ]
+      },
+      "details": {
+        "viewport": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 659.5625,
+          "width": 704,
+          "height": 1140,
+          "text": "Bar 3\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n3 of 3 source notes timed\n\nPrevious point\nPoint 2 of 5\nNext point\n\nComplete at this point\n\n2 source notes at this point\n\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 2 \u00b7 Position 2 \u00b7 String 1\nB4\u25cf\n\u00b7 At this point\nBar 3 \u00b7 Position 3 \u00b7 String 1\nC5\nBar 1 \u00b7 Position 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nDetails\n\nNominal source-note intervals under regular full-bar origins. This model does not establish performed sound.\n\nModel \u00b7 Regular full-bar origins \u00b7 4/4 \u00b7 Bar length 4/1\n\nGlobal window \u00b7 8/1 to 12/1\n\nCurrent global point \u00b7 9/1\n\nProof \u00b7 All source notes timed\n\nExcluded source notes \u00b7 0\n\nBar 2 \u00b7 Position 2 \u00b7 String 1 \u00b7 B4\n\nNote ID\nnote-1-0\nPosition ID\nmoment-1\nOriginal local start\n3/1\nGlobal start\n7/1\nWritten length\n4/1\nGlobal end\n11/1\n\nBar 3 \u00b7 Position 3 \u00b7 String 1 \u00b7 C5\n\nNote ID\nnote-2-0\nPosition ID\nmoment-2\nOriginal local start\n0/1\nGlobal start\n8/1\nWritten length\n1/1\nGlobal end\n9/1\n\nBar 1 \u00b7 Position 1 \u00b7 String 1 \u00b7 A4\n\nNote ID\nnote-0-0\nPosition ID\nmoment-0\nOriginal local start\n9/1\nGlobal start\n9/1\nWritten length\n1/1\nGlobal end\n10/1\n\nOutside-bar offsets \u00b7 1\n\nBar 1 \u00b7 Position 1 \u00b7 Original offset 9/1"
+        },
+        "controls": [
+          {
+            "x": 561.015625,
+            "y": 668.5625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 692,
+            "y": 668.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 32,
+            "y": 754.75,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 673.0625,
+            "y": 754.75,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 32,
+            "y": 1060.3125,
+            "width": 704,
+            "height": 44,
+            "text": "Details"
+          },
+          {
+            "x": 32,
+            "y": 607.5625,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 97.921875,
+            "y": 607.5625,
+            "width": 112.546875,
+            "height": 44,
+            "text": "Across full bars \u00b7 4/4"
+          }
+        ]
+      },
+      "emptyCarry": {
+        "viewport": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 659.5625,
+          "width": 704,
+          "height": 331.75,
+          "text": "Bar 2\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n1 of 1 source notes timed\n\nPrevious point\nPoint 1 of 3\nNext point\n\nComplete at this point\n\n1 source note at this point\n\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nDetails"
+        },
+        "controls": [
+          {
+            "x": 561.015625,
+            "y": 668.5625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 692,
+            "y": 668.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 32,
+            "y": 754.75,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 673.0625,
+            "y": 754.75,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 32,
+            "y": 938.3125,
+            "width": 704,
+            "height": 44,
+            "text": "Details"
+          },
+          {
+            "x": 32,
+            "y": 607.5625,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 97.921875,
+            "y": 607.5625,
+            "width": 112.546875,
+            "height": 44,
+            "text": "Across full bars \u00b7 4/4"
+          }
+        ]
+      },
+      "futureProven": {
+        "viewport": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 659.5625,
+          "width": 704,
+          "height": 331.75,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nTiming incomplete across score\n\n1 of 2 source notes timed\n\nPrevious point\nPoint 1 of 2\nNext point\n\nComplete at this point\n\n1 source note at this point\n\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nDetails"
+        },
+        "controls": [
+          {
+            "x": 561.015625,
+            "y": 668.5625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 692,
+            "y": 668.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 32,
+            "y": 754.75,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 673.0625,
+            "y": 754.75,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 32,
+            "y": 938.3125,
+            "width": 704,
+            "height": 44,
+            "text": "Details"
+          },
+          {
+            "x": 32,
+            "y": 607.5625,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 97.921875,
+            "y": 607.5625,
+            "width": 112.546875,
+            "height": 44,
+            "text": "Across full bars \u00b7 4/4"
+          }
+        ]
+      },
+      "futureAnchorEqual": {
+        "viewport": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 659.5625,
+          "width": 704,
+          "height": 234.375,
+          "text": "Bar 2\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nTiming incomplete across score\n\n1 of 2 source notes timed\n\nPrevious point\nPoint 1 of 2\nNext point\n\nMore timing needed at this point\n\nNo known intervals in this window\n\nDetails"
+        },
+        "controls": [
+          {
+            "x": 561.015625,
+            "y": 668.5625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 692,
+            "y": 668.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 32,
+            "y": 754.75,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 673.0625,
+            "y": 754.75,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 32,
+            "y": 840.9375,
+            "width": 704,
+            "height": 44,
+            "text": "Details"
+          },
+          {
+            "x": 32,
+            "y": 607.5625,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 97.921875,
+            "y": 607.5625,
+            "width": 112.546875,
+            "height": 44,
+            "text": "Across full bars \u00b7 4/4"
+          }
+        ]
+      },
+      "dense": {
+        "viewport": 768,
+        "pageWidth": 768,
+        "reducedMotion": true,
+        "panel": {
+          "x": 32,
+          "y": 659.5625,
+          "width": 704,
+          "height": 803.75,
+          "text": "Bar 2\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n9 of 9 source notes timed\n\nPrevious point\nPoint 1 of 14\nNext point\n\nComplete at this point\n\n1 source note at this point\n\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 1\nA4\nBar 1 \u00b7 Position 3 \u00b7 String 1\nA4\nBar 1 \u00b7 Position 4 \u00b7 String 1\nA4\nBar 1 \u00b7 Position 5 \u00b7 String 1\nA4\nBar 1 \u00b7 Position 6 \u00b7 String 1\nA4\nBar 1 \u00b7 Position 7 \u00b7 String 1\nA4\nBar 1 \u00b7 Position 8 \u00b7 String 1\nA4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 561.015625,
+            "y": 668.5625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 692,
+            "y": 668.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 32,
+            "y": 754.75,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 673.0625,
+            "y": 754.75,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 32,
+            "y": 1365.3125,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 692,
+            "y": 1365.3125,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 32,
+            "y": 1410.3125,
+            "width": 704,
+            "height": 44,
+            "text": "Details"
+          },
+          {
+            "x": 32,
+            "y": 607.5625,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 97.921875,
+            "y": 607.5625,
+            "width": 112.546875,
+            "height": 44,
+            "text": "Across full bars \u00b7 4/4"
+          }
+        ]
+      },
+      "errors": [],
+      "passed": [
+        "explicit model",
+        "no-meter disabled/local available",
+        "chronological source labels",
+        "half-open active membership",
+        "nonblocking overrun details",
+        "scope focus",
+        "empty bar carry-in",
+        "future missing-start bound",
+        "anchor equality partial",
+        "window-end no active set",
+        "eight-plus-one paging",
+        "view actions preserve source/history",
+        "fresh View defaults This bar",
+        "44px reduced-motion no-overflow"
+      ]
+    },
+    {
+      "width": 1335,
+      "disabledModel": {
+        "viewport": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 669.15625,
+          "width": 1151.984375,
+          "height": 62,
+          "text": "Bar 1\n\nNo written notes\n\nAbout written time\nClose"
+        },
+        "controls": [
+          {
+            "x": 1063.921875,
+            "y": 678.15625,
+            "width": 119.5625,
+            "height": 44,
+            "text": "About written time"
+          },
+          {
+            "x": 1199.484375,
+            "y": 678.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 91.5,
+            "y": 617.15625,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 157.421875,
+            "y": 617.15625,
+            "width": 87.296875,
+            "height": 44,
+            "text": "Across full bars"
+          }
+        ]
+      },
+      "chronological": {
+        "viewport": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 669.15625,
+          "width": 1151.984375,
+          "height": 453.75,
+          "text": "Bar 3\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n3 of 3 source notes timed\n\nPrevious point\nPoint 1 of 5\nNext point\n\nComplete at this point\n\n2 source notes at this point\n\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 2 \u00b7 Position 2 \u00b7 String 1\nB4\u25cf\n\u00b7 At this point\nBar 3 \u00b7 Position 3 \u00b7 String 1\nC5\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 1 \u00b7 String 1\nA4\nDetails"
+        },
+        "controls": [
+          {
+            "x": 1068.5,
+            "y": 678.15625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 1199.484375,
+            "y": 678.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 91.5,
+            "y": 764.34375,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 1180.546875,
+            "y": 764.34375,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 91.5,
+            "y": 1069.90625,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details"
+          },
+          {
+            "x": 91.5,
+            "y": 617.15625,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 157.421875,
+            "y": 617.15625,
+            "width": 112.546875,
+            "height": 44,
+            "text": "Across full bars \u00b7 4/4"
+          }
+        ]
+      },
+      "details": {
+        "viewport": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 669.15625,
+          "width": 1151.984375,
+          "height": 1140,
+          "text": "Bar 3\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n3 of 3 source notes timed\n\nPrevious point\nPoint 2 of 5\nNext point\n\nComplete at this point\n\n2 source notes at this point\n\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 2 \u00b7 Position 2 \u00b7 String 1\nB4\u25cf\n\u00b7 At this point\nBar 3 \u00b7 Position 3 \u00b7 String 1\nC5\nBar 1 \u00b7 Position 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nDetails\n\nNominal source-note intervals under regular full-bar origins. This model does not establish performed sound.\n\nModel \u00b7 Regular full-bar origins \u00b7 4/4 \u00b7 Bar length 4/1\n\nGlobal window \u00b7 8/1 to 12/1\n\nCurrent global point \u00b7 9/1\n\nProof \u00b7 All source notes timed\n\nExcluded source notes \u00b7 0\n\nBar 2 \u00b7 Position 2 \u00b7 String 1 \u00b7 B4\n\nNote ID\nnote-1-0\nPosition ID\nmoment-1\nOriginal local start\n3/1\nGlobal start\n7/1\nWritten length\n4/1\nGlobal end\n11/1\n\nBar 3 \u00b7 Position 3 \u00b7 String 1 \u00b7 C5\n\nNote ID\nnote-2-0\nPosition ID\nmoment-2\nOriginal local start\n0/1\nGlobal start\n8/1\nWritten length\n1/1\nGlobal end\n9/1\n\nBar 1 \u00b7 Position 1 \u00b7 String 1 \u00b7 A4\n\nNote ID\nnote-0-0\nPosition ID\nmoment-0\nOriginal local start\n9/1\nGlobal start\n9/1\nWritten length\n1/1\nGlobal end\n10/1\n\nOutside-bar offsets \u00b7 1\n\nBar 1 \u00b7 Position 1 \u00b7 Original offset 9/1"
+        },
+        "controls": [
+          {
+            "x": 1068.5,
+            "y": 678.15625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 1199.484375,
+            "y": 678.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 91.5,
+            "y": 764.34375,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 1180.546875,
+            "y": 764.34375,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 91.5,
+            "y": 1069.90625,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details"
+          },
+          {
+            "x": 91.5,
+            "y": 617.15625,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 157.421875,
+            "y": 617.15625,
+            "width": 112.546875,
+            "height": 44,
+            "text": "Across full bars \u00b7 4/4"
+          }
+        ]
+      },
+      "emptyCarry": {
+        "viewport": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 669.15625,
+          "width": 1151.984375,
+          "height": 331.75,
+          "text": "Bar 2\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n1 of 1 source notes timed\n\nPrevious point\nPoint 1 of 3\nNext point\n\nComplete at this point\n\n1 source note at this point\n\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nDetails"
+        },
+        "controls": [
+          {
+            "x": 1068.5,
+            "y": 678.15625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 1199.484375,
+            "y": 678.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 91.5,
+            "y": 764.34375,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 1180.546875,
+            "y": 764.34375,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 91.5,
+            "y": 947.90625,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details"
+          },
+          {
+            "x": 91.5,
+            "y": 617.15625,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 157.421875,
+            "y": 617.15625,
+            "width": 112.546875,
+            "height": 44,
+            "text": "Across full bars \u00b7 4/4"
+          }
+        ]
+      },
+      "futureProven": {
+        "viewport": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 669.15625,
+          "width": 1151.984375,
+          "height": 331.75,
+          "text": "Bar 1\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nTiming incomplete across score\n\n1 of 2 source notes timed\n\nPrevious point\nPoint 1 of 2\nNext point\n\nComplete at this point\n\n1 source note at this point\n\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nDetails"
+        },
+        "controls": [
+          {
+            "x": 1068.5,
+            "y": 678.15625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 1199.484375,
+            "y": 678.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 91.5,
+            "y": 764.34375,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 1180.546875,
+            "y": 764.34375,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 91.5,
+            "y": 947.90625,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details"
+          },
+          {
+            "x": 91.5,
+            "y": 617.15625,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 157.421875,
+            "y": 617.15625,
+            "width": 112.546875,
+            "height": 44,
+            "text": "Across full bars \u00b7 4/4"
+          }
+        ]
+      },
+      "futureAnchorEqual": {
+        "viewport": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 669.15625,
+          "width": 1151.984375,
+          "height": 234.375,
+          "text": "Bar 2\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nTiming incomplete across score\n\n1 of 2 source notes timed\n\nPrevious point\nPoint 1 of 2\nNext point\n\nMore timing needed at this point\n\nNo known intervals in this window\n\nDetails"
+        },
+        "controls": [
+          {
+            "x": 1068.5,
+            "y": 678.15625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 1199.484375,
+            "y": 678.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 91.5,
+            "y": 764.34375,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 1180.546875,
+            "y": 764.34375,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 91.5,
+            "y": 850.53125,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details"
+          },
+          {
+            "x": 91.5,
+            "y": 617.15625,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 157.421875,
+            "y": 617.15625,
+            "width": 112.546875,
+            "height": 44,
+            "text": "Across full bars \u00b7 4/4"
+          }
+        ]
+      },
+      "dense": {
+        "viewport": 1335,
+        "pageWidth": 1335,
+        "reducedMotion": true,
+        "panel": {
+          "x": 91.5,
+          "y": 669.15625,
+          "width": 1151.984375,
+          "height": 803.75,
+          "text": "Bar 2\n\nAcross full bars \u00b7 4/4\n\nAbout across bars\nClose\n\nSource notes across score\n\n9 of 9 source notes timed\n\nPrevious point\nPoint 1 of 14\nNext point\n\nComplete at this point\n\n1 source note at this point\n\n\u2248 0\nQuarter notes in bar\n\u2248 4\nBar 1 \u00b7 Position 1 \u00b7 String 1\nA4\u25cf\n\u00b7 At this point\nBar 1 \u00b7 Position 2 \u00b7 String 1\nA4\nBar 1 \u00b7 Position 3 \u00b7 String 1\nA4\nBar 1 \u00b7 Position 4 \u00b7 String 1\nA4\nBar 1 \u00b7 Position 5 \u00b7 String 1\nA4\nBar 1 \u00b7 Position 6 \u00b7 String 1\nA4\nBar 1 \u00b7 Position 7 \u00b7 String 1\nA4\nBar 1 \u00b7 Position 8 \u00b7 String 1\nA4\nPrevious\nPage 1 of 2\nNext\nDetails"
+        },
+        "controls": [
+          {
+            "x": 1068.5,
+            "y": 678.15625,
+            "width": 114.984375,
+            "height": 44,
+            "text": "About across bars"
+          },
+          {
+            "x": 1199.484375,
+            "y": 678.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 91.5,
+            "y": 764.34375,
+            "width": 83.125,
+            "height": 44,
+            "text": "Previous point"
+          },
+          {
+            "x": 1180.546875,
+            "y": 764.34375,
+            "width": 62.9375,
+            "height": 44,
+            "text": "Next point"
+          },
+          {
+            "x": 91.5,
+            "y": 1374.90625,
+            "width": 52.921875,
+            "height": 44,
+            "text": "Previous"
+          },
+          {
+            "x": 1199.484375,
+            "y": 1374.90625,
+            "width": 44,
+            "height": 44,
+            "text": "Next"
+          },
+          {
+            "x": 91.5,
+            "y": 1419.90625,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Details"
+          },
+          {
+            "x": 91.5,
+            "y": 617.15625,
+            "width": 49.921875,
+            "height": 44,
+            "text": "This bar"
+          },
+          {
+            "x": 157.421875,
+            "y": 617.15625,
+            "width": 112.546875,
+            "height": 44,
+            "text": "Across full bars \u00b7 4/4"
+          }
+        ]
+      },
+      "errors": [],
+      "passed": [
+        "explicit model",
+        "no-meter disabled/local available",
+        "chronological source labels",
+        "half-open active membership",
+        "nonblocking overrun details",
+        "scope focus",
+        "empty bar carry-in",
+        "future missing-start bound",
+        "anchor equality partial",
+        "window-end no active set",
+        "eight-plus-one paging",
+        "view actions preserve source/history",
+        "fresh View defaults This bar",
+        "44px reduced-motion no-overflow"
+      ]
+    }
+  ]
+}

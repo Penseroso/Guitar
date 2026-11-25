@@ -1,0 +1,939 @@
+{
+  "browser": "system Chromium",
+  "mode": "headless real browser; CDP native IME composition; no physical keyboard/device claim",
+  "results": [
+    {
+      "width": 390,
+      "geometry": {
+        "viewport": 390,
+        "page": 390,
+        "check": {
+          "width": 76.796875,
+          "height": 44
+        },
+        "insertion": [
+          {
+            "width": 44,
+            "height": 44
+          }
+        ]
+      },
+      "fretPointerEvents": [
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "pointerType": "touch",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "pointerType": "touch",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        }
+      ],
+      "fractionPointerEvents": [
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "pointerType": "touch",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "pointerType": "touch",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        }
+      ],
+      "nativeIMEEvents": [
+        {
+          "type": "compositionstart",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "7",
+          "composing": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "7"
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "12",
+          "composing": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "7"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "12",
+          "composing": true,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "12",
+          "composing": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "12",
+          "composing": true,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "compositionend",
+          "trusted": false,
+          "pointerType": null,
+          "key": null,
+          "data": "12",
+          "composing": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        }
+      ],
+      "fractionIMEEvents": [
+        {
+          "type": "compositionstart",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "0",
+          "composing": null,
+          "label": "Start numerator",
+          "value": "0"
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": null,
+          "label": "Start numerator",
+          "value": "0"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": true,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "keydown",
+          "trusted": true,
+          "pointerType": null,
+          "key": "Escape",
+          "data": null,
+          "composing": true,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "mousedown",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "keydown",
+          "trusted": true,
+          "pointerType": null,
+          "key": "Control",
+          "data": null,
+          "composing": true,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "keydown",
+          "trusted": true,
+          "pointerType": null,
+          "key": "A",
+          "data": null,
+          "composing": true,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": null,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": true,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": null,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": true,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "compositionend",
+          "trusted": false,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": null,
+          "label": "Start numerator",
+          "value": "3"
+        }
+      ],
+      "denseGeometry": {
+        "viewport": 390,
+        "page": 390,
+        "scroll": 734
+      },
+      "pageErrors": []
+    },
+    {
+      "width": 768,
+      "geometry": {
+        "viewport": 768,
+        "page": 768,
+        "check": {
+          "width": 76.796875,
+          "height": 44
+        },
+        "insertion": [
+          {
+            "width": 44,
+            "height": 44
+          }
+        ]
+      },
+      "fretPointerEvents": [
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        }
+      ],
+      "fractionPointerEvents": [
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        }
+      ],
+      "nativeIMEEvents": [
+        {
+          "type": "compositionstart",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "7",
+          "composing": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "7"
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "12",
+          "composing": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "7"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "12",
+          "composing": true,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "12",
+          "composing": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "12",
+          "composing": true,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "compositionend",
+          "trusted": false,
+          "pointerType": null,
+          "key": null,
+          "data": "12",
+          "composing": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        }
+      ],
+      "fractionIMEEvents": [
+        {
+          "type": "compositionstart",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "0",
+          "composing": null,
+          "label": "Start numerator",
+          "value": "0"
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": null,
+          "label": "Start numerator",
+          "value": "0"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": true,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "keydown",
+          "trusted": true,
+          "pointerType": null,
+          "key": "Escape",
+          "data": null,
+          "composing": true,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "mousedown",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "keydown",
+          "trusted": true,
+          "pointerType": null,
+          "key": "Control",
+          "data": null,
+          "composing": true,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "keydown",
+          "trusted": true,
+          "pointerType": null,
+          "key": "A",
+          "data": null,
+          "composing": true,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": null,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": true,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": null,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": true,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "compositionend",
+          "trusted": false,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": null,
+          "label": "Start numerator",
+          "value": "3"
+        }
+      ],
+      "denseGeometry": {
+        "viewport": 768,
+        "page": 768,
+        "scroll": 396
+      },
+      "pageErrors": []
+    },
+    {
+      "width": 1335,
+      "geometry": {
+        "viewport": 1335,
+        "page": 1335,
+        "check": {
+          "width": 76.796875,
+          "height": 44
+        },
+        "insertion": [
+          {
+            "width": 44,
+            "height": 44
+          }
+        ]
+      },
+      "fretPointerEvents": [
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        }
+      ],
+      "fractionPointerEvents": [
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        }
+      ],
+      "nativeIMEEvents": [
+        {
+          "type": "compositionstart",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "7",
+          "composing": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "7"
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "12",
+          "composing": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "7"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "12",
+          "composing": true,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "12",
+          "composing": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "12",
+          "composing": true,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        },
+        {
+          "type": "compositionend",
+          "trusted": false,
+          "pointerType": null,
+          "key": null,
+          "data": "12",
+          "composing": null,
+          "label": "Fret for string 1, onset 1",
+          "value": "12"
+        }
+      ],
+      "fractionIMEEvents": [
+        {
+          "type": "compositionstart",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "0",
+          "composing": null,
+          "label": "Start numerator",
+          "value": "0"
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": null,
+          "label": "Start numerator",
+          "value": "0"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": true,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "keydown",
+          "trusted": true,
+          "pointerType": null,
+          "key": "Escape",
+          "data": null,
+          "composing": true,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "mousedown",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "keydown",
+          "trusted": true,
+          "pointerType": null,
+          "key": "Control",
+          "data": null,
+          "composing": true,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "keydown",
+          "trusted": true,
+          "pointerType": null,
+          "key": "A",
+          "data": null,
+          "composing": true,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": null,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": true,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "pointerdown",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        },
+        {
+          "type": "click",
+          "trusted": true,
+          "pointerType": "mouse",
+          "key": null,
+          "data": null,
+          "composing": null,
+          "label": "Check timing",
+          "value": ""
+        },
+        {
+          "type": "compositionupdate",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": null,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "input",
+          "trusted": true,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": true,
+          "label": "Start numerator",
+          "value": "3"
+        },
+        {
+          "type": "compositionend",
+          "trusted": false,
+          "pointerType": null,
+          "key": null,
+          "data": "3",
+          "composing": null,
+          "label": "Start numerator",
+          "value": "3"
+        }
+      ],
+      "denseGeometry": {
+        "viewport": 1335,
+        "page": 1335,
+        "scroll": 0
+      },
+      "pageErrors": []
+    }
+  ]
+}

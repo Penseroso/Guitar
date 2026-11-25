@@ -1,0 +1,48 @@
+{
+  "cases": [
+    {
+      "case": "identical C6/Am7 observation",
+      "labelsCompatibleWithSameInput": true,
+      "sourceBoundaryRecoverable": false,
+      "top1": [
+        0,
+        "major-6"
+      ],
+      "allowedReferenceBoundaries": [
+        [],
+        [
+          "4/3"
+        ]
+      ]
+    },
+    {
+      "case": "arpeggiated C",
+      "referenceBoundaries": 0,
+      "pitchSetChangeBoundaries": 5,
+      "sequenceBoundaries": 0
+    },
+    {
+      "case": "A7\u2013Dm common prefix",
+      "confirmedByPrefix": false,
+      "transientAppliedArrival": 1,
+      "longerChangeProxy": 1
+    },
+    {
+      "case": "same melody, two possible accompaniments",
+      "compatibleContexts": 2
+    },
+    {
+      "case": "C-major and D-Dorian pitch-set equivalence",
+      "forcedMajorMinorProfileIndex": 0,
+      "modalLabelSupported": false
+    }
+  ],
+  "stress": {
+    "positions": 1024,
+    "occurrences": 6144,
+    "atoms": 1024,
+    "returnedSegments": 64,
+    "elapsedMs": 923.91,
+    "hostPeakRssKiB": 34672
+  }
+}

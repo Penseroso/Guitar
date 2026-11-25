@@ -1,0 +1,39 @@
+{
+  "gate": "P4-A refactor equivalence only, not a musical-truth oracle",
+  "baseline": "af2fb44e5c9a9c1882bffbb594be46c4e481c25b",
+  "helper": {
+    "masks": 4096,
+    "additionalInputOrderAndDoublingCases": 9,
+    "candidateTotal": 6552,
+    "counts": {
+      "exact": 372,
+      "incomplete": 420,
+      "added-tone": 5760
+    },
+    "baselineFingerprint": "6fba16ff944d38c582b59164a9f4cec27c493e07b9423c55141d004d0d5d3b7f",
+    "newFingerprint": "6fba16ff944d38c582b59164a9f4cec27c493e07b9423c55141d004d0d5d3b7f",
+    "mismatches": 0,
+    "inputMutations": 0
+  },
+  "analysis": {
+    "fixtures": 26,
+    "timingVariants": 2,
+    "contexts": 7,
+    "selections": 6,
+    "cases": 2184,
+    "baselineFingerprint": "6eac2831767cdee5e5ec977941812d424a81ace90a4576bdfbb6d008664c650a",
+    "newFingerprint": "6eac2831767cdee5e5ec977941812d424a81ace90a4576bdfbb6d008664c650a",
+    "mismatches": 0,
+    "inputMutations": 0
+  },
+  "source": {
+    "baselineAnalysisHash": "ce5771ef4203ae247f6139ad690490c2d19e9d42d69c9d494641af6185bd811e",
+    "baselineHelperHash": "d747b8f427b16d378cfb84d69a0a73d1afd05b8fe2cb240a3f427afe5c756458",
+    "preservedSourceFiles": 129,
+    "runtimeFiles": {
+      "src/domain/tab/analysis.ts": "f9d64ed2756fcb23ee8798ef0094c02fe1449e7585000ccb2c7672d53715b559",
+      "src/domain/tab/chord-candidates.ts": "e190f183dc0df90225c4dbba2cd9af0b4fb0ccd792cc0084115fb8f5d01a96e6"
+    }
+  },
+  "verdict": "GO"
+}

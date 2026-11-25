@@ -1,0 +1,216 @@
+{
+  "scope": "Independent finite 1/1024-grid completion oracle, randomized source faults and max editing-size host costs. No interval inference or production arithmetic helpers in expected-value construction.",
+  "seed": "0x32decaf",
+  "sourceSha256": "204f6b2dc542e1f67c69fa217450c291b315f954da32f526fbdb6f32e4b09e2c",
+  "counters": {
+    "randomSources": 2000,
+    "queries": 10000,
+    "complete": 475,
+    "partial": 6453,
+    "unreadable": 2615,
+    "outside": 457,
+    "invalidQuery": 2000,
+    "completionWorlds": 360,
+    "mutation": 0
+  },
+  "faultCounts": {
+    "eligible": 921,
+    "midi-invalid": 299,
+    "notes-list": 260,
+    "start-missing": 296,
+    "other-bar": 308,
+    "start-invalid": 278,
+    "duration-null": 297,
+    "id-missing": 299,
+    "shape": 294,
+    "ownership": 310,
+    "duration-zero": 293,
+    "marker-only": 285,
+    "string-invalid": 296
+  },
+  "queryStatuses": {
+    "unreadable": 2615,
+    "partial": 6453,
+    "outside-range": 457,
+    "complete": 475
+  },
+  "completionFixtures": [
+    {
+      "startsInTicks": [
+        256
+      ],
+      "sourceCoverage": "partial",
+      "projectedIntervals": 1,
+      "proofNeverAddsIntervals": true
+    },
+    {
+      "startsInTicks": [
+        512,
+        768
+      ],
+      "sourceCoverage": "partial",
+      "projectedIntervals": 1,
+      "proofNeverAddsIntervals": true
+    },
+    {
+      "startsInTicks": [
+        1,
+        1023
+      ],
+      "sourceCoverage": "partial",
+      "projectedIntervals": 1,
+      "proofNeverAddsIntervals": true
+    },
+    {
+      "startsInTicks": [
+        1024,
+        1024
+      ],
+      "sourceCoverage": "partial",
+      "projectedIntervals": 1,
+      "proofNeverAddsIntervals": true
+    }
+  ],
+  "optionalLedgerFailClosed": true,
+  "exactEligiblePointBoundary": true,
+  "bench": [
+    {
+      "pattern": "complete",
+      "notes": 6144,
+      "projected": 6144,
+      "coverageFacts": 0,
+      "observeSamplesMs": [
+        57.341387,
+        94.58443899999997,
+        65.44689599999992,
+        65.06135300000005,
+        87.12829099999999
+      ],
+      "observeMedianMs": 65.44689599999992,
+      "inspectAtZeroSamplesMs": [
+        2.69843800000001,
+        2.4661069999999654,
+        1.6386959999999817,
+        1.092802000000006,
+        1.0562260000000379,
+        1.0413939999999684,
+        1.039621000000011
+      ],
+      "inspectAtZeroMedianMs": 1.092802000000006,
+      "inspectLaterSamplesMs": [
+        4.455343000000084,
+        3.478868000000034,
+        3.2492500000000746,
+        1.94409799999994,
+        1.9187999999999192,
+        1.9198220000000674,
+        1.921273000000042
+      ],
+      "inspectLaterMedianMs": 1.94409799999994,
+      "pointSamplesMs": [
+        1.1641290000000026,
+        0.9134699999999611,
+        8.21085800000003,
+        0.6615100000000211,
+        0.6611189999999851,
+        0.6677290000000085,
+        0.9423240000000987
+      ],
+      "pointsMedianMs": 0.9134699999999611,
+      "dataBytes": 2436353,
+      "limits": "Host Node synthetic source/inspection cost; no browser or physical-mobile SLO claim; no product algorithm recommendation"
+    },
+    {
+      "pattern": "one-future-missing",
+      "notes": 6144,
+      "projected": 6143,
+      "coverageFacts": 1,
+      "observeSamplesMs": [
+        100.64066100000002,
+        46.50186499999995,
+        42.52723900000001,
+        46.008550000000014,
+        45.287710999999945
+      ],
+      "observeMedianMs": 46.008550000000014,
+      "inspectAtZeroSamplesMs": [
+        1.8145019999999477,
+        1.7641159999998308,
+        6.936431999999968,
+        1.6014299999999366,
+        1.0719799999999395,
+        1.09451399999989,
+        1.1990820000000895
+      ],
+      "inspectAtZeroMedianMs": 1.6014299999999366,
+      "inspectLaterSamplesMs": [
+        0.004176000000143176,
+        0.0035649999999805004,
+        0.00987499999996544,
+        0.0032850000000053114,
+        0.0022939999998925487,
+        0.00218300000005911,
+        0.003054000000020096
+      ],
+      "inspectLaterMedianMs": 0.0032850000000053114,
+      "pointSamplesMs": [
+        0.675181000000066,
+        0.7225720000001274,
+        0.6631729999999152,
+        0.6765430000000379,
+        0.6085299999999734,
+        0.6278789999998935,
+        0.6340779999998176
+      ],
+      "pointsMedianMs": 0.6631729999999152,
+      "dataBytes": 2436261,
+      "limits": "Host Node synthetic source/inspection cost; no browser or physical-mobile SLO claim; no product algorithm recommendation"
+    },
+    {
+      "pattern": "half-future-missing",
+      "notes": 6144,
+      "projected": 3072,
+      "coverageFacts": 3072,
+      "observeSamplesMs": [
+        41.700758999999834,
+        44.07318499999997,
+        51.32260099999985,
+        50.288667999999916,
+        45.16731800000002
+      ],
+      "observeMedianMs": 45.16731800000002,
+      "inspectAtZeroSamplesMs": [
+        2.283050000000003,
+        2.0544750000001386,
+        2.0616849999998976,
+        2.080074000000195,
+        2.111611000000039,
+        2.3634709999998904,
+        2.1020860000000994
+      ],
+      "inspectAtZeroMedianMs": 2.1020860000000994,
+      "inspectLaterSamplesMs": [
+        0.018808000000035463,
+        0.0020640000000184955,
+        0.00187299999993229,
+        0.00218300000005911,
+        0.0023439999999936845,
+        0.004265999999915948,
+        0.002384000000120068
+      ],
+      "inspectLaterMedianMs": 0.0023439999999936845,
+      "pointSamplesMs": [
+        1.426005000000032,
+        1.4302119999999832,
+        1.4035910000000058,
+        0.8712169999998878,
+        0.8506660000000466,
+        0.8071789999999055,
+        0.8688730000001215
+      ],
+      "pointsMedianMs": 0.8712169999998878,
+      "dataBytes": 2140318,
+      "limits": "Host Node synthetic source/inspection cost; no browser or physical-mobile SLO claim; no product algorithm recommendation"
+    }
+  ]
+}

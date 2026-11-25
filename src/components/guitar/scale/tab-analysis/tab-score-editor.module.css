@@ -1,4 +1,6 @@
 .score { max-width: 100%; min-width: 0; margin-top: 16px; }
+.score[data-melody-mode="true"] [inert] { opacity: .45; }
+.score[data-melody-mode="true"] [data-tab-edit-hint] { visibility: hidden; }
 .system { max-width: 100%; min-width: 0; margin-bottom: 24px; }
 .viewport { max-width: 100%; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; scroll-padding-inline-start: 44px; border-block: 1px solid var(--workspace-border); background: var(--workspace-panel); }
 .sheet { width: 100%; padding-block: 8px 16px; box-sizing: border-box; }
@@ -9,6 +11,11 @@
 .header, .cell { min-width: 44px; box-sizing: border-box; }
 .header { position: relative; flex: 1; height: 44px; min-height: 44px; border: 0; padding: 24px 0 8px; background: transparent; color: var(--workspace-muted); cursor: col-resize; display: flex; align-items: center; justify-content: center; font: inherit; touch-action: pan-y; user-select: none; }
 .header[aria-pressed="true"]::after { content: ''; position: absolute; height: 1px; bottom: 0; left: 6px; right: 6px; background: #eee; }
+.header[data-evidence="true"], .cell[data-evidence="true"] {
+    outline: 1px dashed var(--workspace-muted);
+    outline-offset: -4px;
+    background-color: rgba(255,255,255,.10);
+}
 .scoreBody { position: relative; user-select: none; }
 .insertions { min-height: 44px; user-select: none; }
 .insertionLabel { position: sticky; left: 0; z-index: 3; display: flex; align-items: center; justify-content: center; background: var(--workspace-panel); color: var(--workspace-muted); font-size: 10px; }
@@ -35,6 +42,10 @@
 .cell { position: relative; height: 44px; min-height: 44px; }
 .cell[data-selected="true"] { background-color: rgba(255,255,255,.025); }
 .cellButton { position: relative; z-index: 1; width: 100%; height: 44px; min-width: 44px; min-height: 44px; padding: 0; display: flex; align-items: center; justify-content: center; border: 0; border-radius: 0; background: transparent; color: #f4f4f5; cursor: text; }
+.score[data-melody-mode="true"] .cellButton { scroll-margin-block-start: 92px; cursor: default; }
+.score[data-melody-mode="true"] .cellButton[aria-pressed] { cursor: pointer; }
+.score[data-melody-mode="true"] .cellButton:disabled { opacity: .48; }
+.cell[data-melody-picked="true"] .fret { border-radius: 4px; background: #eee; color: #0a0a0a; font-weight: 700; }
 .cell:hover { background-color: rgba(255,255,255,.035); }
 .cellButton[data-editing="true"] { visibility: hidden; }
 .cell[data-active="true"]::after { content: ''; position: absolute; pointer-events: none; height: 2px; width: 20px; left: calc(50% - 10px); bottom: 7px; background: #eee; }
@@ -48,6 +59,20 @@
 .editor { position: absolute; z-index: 2; inset: 0; width: 100%; height: 44px; min-width: 44px; min-height: 44px; padding: 0 3px; border: 0; border-radius: 0; outline-offset: -2px !important; background: linear-gradient(var(--workspace-panel), var(--workspace-panel)) center / 32px 24px no-repeat; color: #fff; text-align: center; font: 16px/24px ui-monospace, Consolas, monospace; caret-color: #fff; user-select: text; }
 .editor[data-empty="true"] { background: transparent; }
 .cellButton:focus-visible, .header:focus-visible, .editor:focus { outline: 2px solid var(--workspace-focus); outline-offset: -2px; }
+.cell[data-evidence="true"] .fret { font-weight: 800; }
+.suppliedLabel {
+    min-height: 44px;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--workspace-border);
+    color: #f4f4f5;
+    cursor: pointer;
+    text-align: left;
+    font: inherit;
+    font-size: 12px;
+}
+.suppliedLabel:hover { text-decoration: underline; text-underline-offset: 4px; }
+.suppliedLabel:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: -2px; }
 .annotations { grid-auto-rows: minmax(44px, auto); gap: 0; }
 .annotation { position: relative; min-width: 44px; min-height: 44px; display: flex; align-items: center; gap: 5px; padding: 0 8px; border: 0; color: #f4f4f5; background: transparent; text-align: left; font: inherit; font-size: 12px; cursor: pointer; }
 .annotation > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

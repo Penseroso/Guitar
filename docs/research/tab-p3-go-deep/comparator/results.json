@@ -1,0 +1,3463 @@
+{
+  "stage": "conditional-GO condition study only; no product comparator implemented",
+  "source": "cuthbertLab/music21@86a7dc8a5fb3b1996ac0202d6bb9b4d4b9d19197",
+  "predicateUsesResultIdentityMatches": false,
+  "cases": [
+    {
+      "id": "dyadic-half-open-unison-repeat",
+      "scope": "current-authored-fractions",
+      "manualExpectedDisposition": "ADMITTED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "declared-relative",
+          "origin": "0"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "a",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "0",
+            "duration": "1"
+          },
+          {
+            "artifactId": "artifact:u",
+            "sourceNoteId": "u",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "attack",
+            "midi": 60,
+            "start": "0",
+            "duration": "1"
+          },
+          {
+            "artifactId": "artifact:repeat",
+            "sourceNoteId": "repeat",
+            "sourcePositionId": "position:2",
+            "string": 2,
+            "kind": "attack",
+            "midi": 60,
+            "start": "1",
+            "duration": "1"
+          },
+          {
+            "artifactId": "artifact:e",
+            "sourceNoteId": "e",
+            "sourcePositionId": "position:3",
+            "string": 3,
+            "kind": "attack",
+            "midi": 64,
+            "start": "1",
+            "duration": "1/2"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "ADMITTED",
+        "reasons": [],
+        "operations": {
+          "tree": {
+            "status": "ADMITTED",
+            "reasons": []
+          },
+          "chordify": {
+            "status": "ADMITTED",
+            "reasons": []
+          }
+        },
+        "boundaryCount": 4,
+        "coordinateFrame": {
+          "kind": "declared-relative",
+          "origin": "0"
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "0",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:u"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:u"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:u"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/2",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:u"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:u"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:u"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1",
+          "expectedIds": [
+            "artifact:e",
+            "artifact:repeat"
+          ],
+          "treeIds": [
+            "artifact:e",
+            "artifact:repeat"
+          ],
+          "chordifyIds": [
+            "artifact:e",
+            "artifact:repeat"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "5/4",
+          "expectedIds": [
+            "artifact:e",
+            "artifact:repeat"
+          ],
+          "treeIds": [
+            "artifact:e",
+            "artifact:repeat"
+          ],
+          "chordifyIds": [
+            "artifact:e",
+            "artifact:repeat"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "3/2",
+          "expectedIds": [
+            "artifact:repeat"
+          ],
+          "treeIds": [
+            "artifact:repeat"
+          ],
+          "chordifyIds": [
+            "artifact:repeat"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "7/4",
+          "expectedIds": [
+            "artifact:repeat"
+          ],
+          "treeIds": [
+            "artifact:repeat"
+          ],
+          "chordifyIds": [
+            "artifact:repeat"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "2",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": true
+    },
+    {
+      "id": "nonbinary-triplet-boundary",
+      "scope": "current-authored-fractions",
+      "manualExpectedDisposition": "ADMITTED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "declared-relative",
+          "origin": "0"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "a",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "0",
+            "duration": "1/3"
+          },
+          {
+            "artifactId": "artifact:b",
+            "sourceNoteId": "b",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "attack",
+            "midi": 64,
+            "start": "1/3",
+            "duration": "1/3"
+          },
+          {
+            "artifactId": "artifact:unison",
+            "sourceNoteId": "unison",
+            "sourcePositionId": "position:2",
+            "string": 2,
+            "kind": "attack",
+            "midi": 64,
+            "start": "1/3",
+            "duration": "1/3"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "ADMITTED",
+        "reasons": [],
+        "operations": {
+          "tree": {
+            "status": "ADMITTED",
+            "reasons": []
+          },
+          "chordify": {
+            "status": "ADMITTED",
+            "reasons": []
+          }
+        },
+        "boundaryCount": 3,
+        "coordinateFrame": {
+          "kind": "declared-relative",
+          "origin": "0"
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "0",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/6",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/3",
+          "expectedIds": [
+            "artifact:b",
+            "artifact:unison"
+          ],
+          "treeIds": [
+            "artifact:b",
+            "artifact:unison"
+          ],
+          "chordifyIds": [
+            "artifact:b",
+            "artifact:unison"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/2",
+          "expectedIds": [
+            "artifact:b",
+            "artifact:unison"
+          ],
+          "treeIds": [
+            "artifact:b",
+            "artifact:unison"
+          ],
+          "chordifyIds": [
+            "artifact:b",
+            "artifact:unison"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "2/3",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": true
+    },
+    {
+      "id": "nonbinary-multiple-simultaneous-ends-starts",
+      "scope": "current-authored-fractions",
+      "manualExpectedDisposition": "ADMITTED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "declared-relative",
+          "origin": "0"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "a",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "0",
+            "duration": "2/3"
+          },
+          {
+            "artifactId": "artifact:b",
+            "sourceNoteId": "b",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "attack",
+            "midi": 64,
+            "start": "1/3",
+            "duration": "1/3"
+          },
+          {
+            "artifactId": "artifact:new",
+            "sourceNoteId": "new",
+            "sourcePositionId": "position:2",
+            "string": 2,
+            "kind": "attack",
+            "midi": 60,
+            "start": "2/3",
+            "duration": "1/3"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "ADMITTED",
+        "reasons": [],
+        "operations": {
+          "tree": {
+            "status": "ADMITTED",
+            "reasons": []
+          },
+          "chordify": {
+            "status": "ADMITTED",
+            "reasons": []
+          }
+        },
+        "boundaryCount": 4,
+        "coordinateFrame": {
+          "kind": "declared-relative",
+          "origin": "0"
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "0",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/6",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/3",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/2",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "2/3",
+          "expectedIds": [
+            "artifact:new"
+          ],
+          "treeIds": [
+            "artifact:new"
+          ],
+          "chordifyIds": [
+            "artifact:new"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "5/6",
+          "expectedIds": [
+            "artifact:new"
+          ],
+          "treeIds": [
+            "artifact:new"
+          ],
+          "chordifyIds": [
+            "artifact:new"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": true
+    },
+    {
+      "id": "repeated-attack-kind-sidecar",
+      "scope": "current-authored-fractions",
+      "manualExpectedDisposition": "ADMITTED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "declared-relative",
+          "origin": "0"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:first",
+            "sourceNoteId": "first",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "0",
+            "duration": "1"
+          },
+          {
+            "artifactId": "artifact:second",
+            "sourceNoteId": "second",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "attack",
+            "midi": 60,
+            "start": "1",
+            "duration": "1"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "ADMITTED",
+        "reasons": [],
+        "operations": {
+          "tree": {
+            "status": "ADMITTED",
+            "reasons": []
+          },
+          "chordify": {
+            "status": "ADMITTED",
+            "reasons": []
+          }
+        },
+        "boundaryCount": 3,
+        "coordinateFrame": {
+          "kind": "declared-relative",
+          "origin": "0"
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "0",
+          "expectedIds": [
+            "artifact:first"
+          ],
+          "treeIds": [
+            "artifact:first"
+          ],
+          "chordifyIds": [
+            "artifact:first"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/2",
+          "expectedIds": [
+            "artifact:first"
+          ],
+          "treeIds": [
+            "artifact:first"
+          ],
+          "chordifyIds": [
+            "artifact:first"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1",
+          "expectedIds": [
+            "artifact:second"
+          ],
+          "treeIds": [
+            "artifact:second"
+          ],
+          "chordifyIds": [
+            "artifact:second"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "3/2",
+          "expectedIds": [
+            "artifact:second"
+          ],
+          "treeIds": [
+            "artifact:second"
+          ],
+          "chordifyIds": [
+            "artifact:second"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "2",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": true
+    },
+    {
+      "id": "explicit-continuation-kind-sidecar",
+      "scope": "current-authored-fractions",
+      "manualExpectedDisposition": "ADMITTED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "declared-relative",
+          "origin": "0"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:first",
+            "sourceNoteId": "first",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "0",
+            "duration": "1"
+          },
+          {
+            "artifactId": "artifact:second",
+            "sourceNoteId": "first",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "continuation",
+            "midi": 60,
+            "start": "1",
+            "duration": "1",
+            "originArtifactId": "artifact:first"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "ADMITTED",
+        "reasons": [],
+        "operations": {
+          "tree": {
+            "status": "ADMITTED",
+            "reasons": []
+          },
+          "chordify": {
+            "status": "ADMITTED",
+            "reasons": []
+          }
+        },
+        "boundaryCount": 3,
+        "coordinateFrame": {
+          "kind": "declared-relative",
+          "origin": "0"
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "0",
+          "expectedIds": [
+            "artifact:first"
+          ],
+          "treeIds": [
+            "artifact:first"
+          ],
+          "chordifyIds": [
+            "artifact:first"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/2",
+          "expectedIds": [
+            "artifact:first"
+          ],
+          "treeIds": [
+            "artifact:first"
+          ],
+          "chordifyIds": [
+            "artifact:first"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1",
+          "expectedIds": [
+            "artifact:second"
+          ],
+          "treeIds": [
+            "artifact:second"
+          ],
+          "chordifyIds": [
+            "artifact:second"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "3/2",
+          "expectedIds": [
+            "artifact:second"
+          ],
+          "treeIds": [
+            "artifact:second"
+          ],
+          "chordifyIds": [
+            "artifact:second"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "2",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": true
+    },
+    {
+      "id": "nonbinary-overlap-scale-1",
+      "scope": "current-authored-fractions",
+      "manualExpectedDisposition": "ADMITTED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "explicit-research-transform",
+          "scale": "1",
+          "origin": "0"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "a",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "0",
+            "duration": "1/100"
+          },
+          {
+            "artifactId": "artifact:b",
+            "sourceNoteId": "b",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "attack",
+            "midi": 64,
+            "start": "1/101",
+            "duration": "1/2"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "ADMITTED",
+        "reasons": [],
+        "operations": {
+          "tree": {
+            "status": "ADMITTED",
+            "reasons": []
+          },
+          "chordify": {
+            "status": "ADMITTED",
+            "reasons": []
+          }
+        },
+        "boundaryCount": 4,
+        "coordinateFrame": {
+          "kind": "explicit-research-transform",
+          "scale": "1",
+          "origin": "0"
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "0",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/202",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/101",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "201/20200",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/100",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "5251/20200",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "103/202",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": true
+    },
+    {
+      "id": "nonbinary-overlap-scale-1/2",
+      "scope": "current-authored-fractions",
+      "manualExpectedDisposition": "ADMITTED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "explicit-research-transform",
+          "scale": "1/2",
+          "origin": "0"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "a",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "0",
+            "duration": "1/200"
+          },
+          {
+            "artifactId": "artifact:b",
+            "sourceNoteId": "b",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "attack",
+            "midi": 64,
+            "start": "1/202",
+            "duration": "1/4"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "ADMITTED",
+        "reasons": [],
+        "operations": {
+          "tree": {
+            "status": "ADMITTED",
+            "reasons": []
+          },
+          "chordify": {
+            "status": "ADMITTED",
+            "reasons": []
+          }
+        },
+        "boundaryCount": 4,
+        "coordinateFrame": {
+          "kind": "explicit-research-transform",
+          "scale": "1/2",
+          "origin": "0"
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "0",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/404",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/202",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "201/40400",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/200",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "5251/40400",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "103/404",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": true
+    },
+    {
+      "id": "nonbinary-overlap-scale-1/4",
+      "scope": "current-authored-fractions",
+      "manualExpectedDisposition": "ADMITTED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "explicit-research-transform",
+          "scale": "1/4",
+          "origin": "0"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "a",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "0",
+            "duration": "1/400"
+          },
+          {
+            "artifactId": "artifact:b",
+            "sourceNoteId": "b",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "attack",
+            "midi": 64,
+            "start": "1/404",
+            "duration": "1/8"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "ADMITTED",
+        "reasons": [],
+        "operations": {
+          "tree": {
+            "status": "ADMITTED",
+            "reasons": []
+          },
+          "chordify": {
+            "status": "ADMITTED",
+            "reasons": []
+          }
+        },
+        "boundaryCount": 4,
+        "coordinateFrame": {
+          "kind": "explicit-research-transform",
+          "scale": "1/4",
+          "origin": "0"
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "0",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/808",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/404",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "201/80800",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/400",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "5251/80800",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "103/808",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": true
+    },
+    {
+      "id": "nonbinary-scale-1_8-duration-reconstruction",
+      "scope": "current-authored-fractions",
+      "manualExpectedDisposition": "REFUSED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "explicit-research-transform",
+          "scale": "1/8",
+          "origin": "0"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "a",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "0",
+            "duration": "1/800"
+          },
+          {
+            "artifactId": "artifact:b",
+            "sourceNoteId": "b",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "attack",
+            "midi": 64,
+            "start": "1/808",
+            "duration": "1/16"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "REFUSED",
+        "reasons": [
+          "chordify-fraction-reconstruction-loss"
+        ],
+        "operations": {
+          "tree": {
+            "status": "ADMITTED",
+            "reasons": []
+          },
+          "chordify": {
+            "status": "REFUSED",
+            "reasons": [
+              "chordify-fraction-reconstruction-loss"
+            ]
+          }
+        },
+        "boundaryCount": 4,
+        "coordinateFrame": {
+          "kind": "explicit-research-transform",
+          "scale": "1/8",
+          "origin": "0"
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "0",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/1616",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/808",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "201/161600",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/800",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": false
+        },
+        {
+          "at": "5251/161600",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "103/1616",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": false
+    },
+    {
+      "id": "nonbinary-translated-1",
+      "scope": "declared-coordinate-transform-not-direct-bar-offset",
+      "manualExpectedDisposition": "ADMITTED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "explicit-research-transform",
+          "scale": "1",
+          "origin": "1"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "a",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "1",
+            "duration": "1/100"
+          },
+          {
+            "artifactId": "artifact:b",
+            "sourceNoteId": "b",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "attack",
+            "midi": 64,
+            "start": "102/101",
+            "duration": "1/2"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "ADMITTED",
+        "reasons": [],
+        "operations": {
+          "tree": {
+            "status": "ADMITTED",
+            "reasons": []
+          },
+          "chordify": {
+            "status": "ADMITTED",
+            "reasons": []
+          }
+        },
+        "boundaryCount": 4,
+        "coordinateFrame": {
+          "kind": "explicit-research-transform",
+          "scale": "1",
+          "origin": "1"
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "1",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "203/202",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "102/101",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "20401/20200",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "101/100",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "25451/20200",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "305/202",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": true
+    },
+    {
+      "id": "nonbinary-translated-32",
+      "scope": "declared-coordinate-transform-not-direct-bar-offset",
+      "manualExpectedDisposition": "ADMITTED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "explicit-research-transform",
+          "scale": "1",
+          "origin": "32"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "a",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "32",
+            "duration": "1/100"
+          },
+          {
+            "artifactId": "artifact:b",
+            "sourceNoteId": "b",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "attack",
+            "midi": 64,
+            "start": "3233/101",
+            "duration": "1/2"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "ADMITTED",
+        "reasons": [],
+        "operations": {
+          "tree": {
+            "status": "ADMITTED",
+            "reasons": []
+          },
+          "chordify": {
+            "status": "ADMITTED",
+            "reasons": []
+          }
+        },
+        "boundaryCount": 4,
+        "coordinateFrame": {
+          "kind": "explicit-research-transform",
+          "scale": "1",
+          "origin": "32"
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "32",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "6465/202",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "3233/101",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "646601/20200",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "3201/100",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "651651/20200",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "6567/202",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": true
+    },
+    {
+      "id": "nonbinary-translated-1024",
+      "scope": "declared-coordinate-transform-not-direct-bar-offset",
+      "manualExpectedDisposition": "ADMITTED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "explicit-research-transform",
+          "scale": "1",
+          "origin": "1024"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "a",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "1024",
+            "duration": "1/100"
+          },
+          {
+            "artifactId": "artifact:b",
+            "sourceNoteId": "b",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "attack",
+            "midi": 64,
+            "start": "103425/101",
+            "duration": "1/2"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "ADMITTED",
+        "reasons": [],
+        "operations": {
+          "tree": {
+            "status": "ADMITTED",
+            "reasons": []
+          },
+          "chordify": {
+            "status": "ADMITTED",
+            "reasons": []
+          }
+        },
+        "boundaryCount": 4,
+        "coordinateFrame": {
+          "kind": "explicit-research-transform",
+          "scale": "1",
+          "origin": "1024"
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "1024",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "206849/202",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "103425/101",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "20685001/20200",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "102401/100",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "20690051/20200",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "206951/202",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": true
+    },
+    {
+      "id": "nonbinary-high-global-offset-relative-close",
+      "scope": "complete-32_1-meter-1024-bar-assumption-only",
+      "manualExpectedDisposition": "REFUSED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "explicit-research-transform",
+          "scale": "1",
+          "origin": "130944"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "a",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "130944",
+            "duration": "1/100"
+          },
+          {
+            "artifactId": "artifact:b",
+            "sourceNoteId": "b",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "attack",
+            "midi": 64,
+            "start": "13225345/101",
+            "duration": "1/2"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "REFUSED",
+        "reasons": [
+          "chordify-close-point-skip"
+        ],
+        "operations": {
+          "tree": {
+            "status": "ADMITTED",
+            "reasons": []
+          },
+          "chordify": {
+            "status": "REFUSED",
+            "reasons": [
+              "chordify-close-point-skip"
+            ]
+          }
+        },
+        "boundaryCount": 4,
+        "coordinateFrame": {
+          "kind": "explicit-research-transform",
+          "scale": "1",
+          "origin": "130944"
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "130944",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "26450689/202",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "13225345/101",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": false
+        },
+        {
+          "at": "2645069001/20200",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": false
+        },
+        {
+          "at": "13094401/100",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "2645074051/20200",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "26450791/202",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": false
+    },
+    {
+      "id": "same-high-offset-events-explicitly-rebased-local",
+      "scope": "explicit-reference-coordinate-normalization-option",
+      "manualExpectedDisposition": "ADMITTED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "explicit-research-transform",
+          "scale": "1",
+          "origin": "-130944"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "a",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "0",
+            "duration": "1/100"
+          },
+          {
+            "artifactId": "artifact:b",
+            "sourceNoteId": "b",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "attack",
+            "midi": 64,
+            "start": "1/101",
+            "duration": "1/2"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "ADMITTED",
+        "reasons": [],
+        "operations": {
+          "tree": {
+            "status": "ADMITTED",
+            "reasons": []
+          },
+          "chordify": {
+            "status": "ADMITTED",
+            "reasons": []
+          }
+        },
+        "boundaryCount": 4,
+        "coordinateFrame": {
+          "kind": "explicit-research-transform",
+          "scale": "1",
+          "origin": "-130944"
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "0",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/202",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/101",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "201/20200",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/100",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "5251/20200",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "103/202",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": true
+    },
+    {
+      "id": "current-valid-local-fractions-global-endpoint-collision",
+      "scope": "complete-32_1-meter-1024-bar-assumption-only",
+      "manualExpectedDisposition": "REFUSED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "declared-relative",
+          "origin": "0"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "a",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "66257665/506",
+            "duration": "1/1015"
+          },
+          {
+            "artifactId": "artifact:b",
+            "sourceNoteId": "b",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "attack",
+            "midi": 64,
+            "start": "66388609/507",
+            "duration": "1/1011"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "REFUSED",
+        "reasons": [
+          "canonical-endpoint-coalescence-or-order-loss"
+        ],
+        "operations": {
+          "tree": {
+            "status": "REFUSED",
+            "reasons": [
+              "canonical-endpoint-coalescence-or-order-loss"
+            ]
+          },
+          "chordify": {
+            "status": "REFUSED",
+            "reasons": [
+              "canonical-endpoint-coalescence-or-order-loss"
+            ]
+          }
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "66388609/507",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": false
+        },
+        {
+          "at": "67185272309/513084",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": false
+        },
+        {
+          "at": "66257665/506",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "33625765114/256795",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "67251530481/513590",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": false,
+          "chordifyMatch": false
+        },
+        {
+          "at": "22981058492906359/175502947620",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": false,
+          "chordifyMatch": false
+        },
+        {
+          "at": "22372961402/170859",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": false
+    },
+    {
+      "id": "distinct-endpoints-without-a-canonical-interior-query",
+      "scope": "complete-32_1-meter-1024-bar-assumption-only",
+      "manualExpectedDisposition": "REFUSED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "declared-relative",
+          "origin": "0"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "a",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "65602945/501",
+            "duration": "1/999"
+          },
+          {
+            "artifactId": "artifact:b",
+            "sourceNoteId": "b",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "attack",
+            "midi": 64,
+            "start": "65472001/500",
+            "duration": "1/1003"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "REFUSED",
+        "reasons": [
+          "chordify-close-point-skip",
+          "chordify-fraction-reconstruction-loss",
+          "no-canonical-strict-interior-query"
+        ],
+        "operations": {
+          "tree": {
+            "status": "REFUSED",
+            "reasons": [
+              "no-canonical-strict-interior-query"
+            ]
+          },
+          "chordify": {
+            "status": "REFUSED",
+            "reasons": [
+              "chordify-close-point-skip",
+              "chordify-fraction-reconstruction-loss",
+              "no-canonical-strict-interior-query"
+            ]
+          }
+        },
+        "boundaryCount": 4,
+        "coordinateFrame": {
+          "kind": "declared-relative",
+          "origin": "0"
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "65602945/501",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": false
+        },
+        {
+          "at": "65602945001/501000",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": false
+        },
+        {
+          "at": "65472001/500",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "65668417253/501500",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "65668417503/501500",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": false
+        },
+        {
+          "at": "21911318194555999/167333499000",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": false,
+          "chordifyMatch": false
+        },
+        {
+          "at": "21845780852/166833",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": false
+    },
+    {
+      "id": "missing-onset",
+      "scope": "current-authored-fractions",
+      "manualExpectedDisposition": "REFUSED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "declared-relative",
+          "origin": "0"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "a",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": null,
+            "duration": "1"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "REFUSED",
+        "reasons": [
+          "missing-source-field",
+          "exact-coordinates-unavailable"
+        ],
+        "operations": {
+          "tree": {
+            "status": "REFUSED",
+            "reasons": [
+              "missing-source-field",
+              "exact-coordinates-unavailable"
+            ]
+          },
+          "chordify": {
+            "status": "REFUSED",
+            "reasons": [
+              "missing-source-field",
+              "exact-coordinates-unavailable"
+            ]
+          }
+        }
+      },
+      "unsafeProjectionQueries": null,
+      "countedAsReferenceMatch": false
+    },
+    {
+      "id": "missing-scope-coverage",
+      "scope": "current-authored-fractions",
+      "manualExpectedDisposition": "REFUSED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "declared-relative",
+          "origin": "0"
+        },
+        "coverageComplete": false,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "a",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "0",
+            "duration": "1/100"
+          },
+          {
+            "artifactId": "artifact:b",
+            "sourceNoteId": "b",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "attack",
+            "midi": 64,
+            "start": "1/101",
+            "duration": "1/2"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "REFUSED",
+        "reasons": [
+          "coverageComplete"
+        ],
+        "operations": {
+          "tree": {
+            "status": "REFUSED",
+            "reasons": [
+              "coverageComplete"
+            ]
+          },
+          "chordify": {
+            "status": "REFUSED",
+            "reasons": [
+              "coverageComplete"
+            ]
+          }
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "0",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/202",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/101",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "201/20200",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/100",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "5251/20200",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "103/202",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": false
+    },
+    {
+      "id": "missing-source-provenance",
+      "scope": "current-authored-fractions",
+      "manualExpectedDisposition": "REFUSED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "declared-relative",
+          "origin": "0"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": false,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "a",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "0",
+            "duration": "1/100"
+          },
+          {
+            "artifactId": "artifact:b",
+            "sourceNoteId": "b",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "attack",
+            "midi": 64,
+            "start": "1/101",
+            "duration": "1/2"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "REFUSED",
+        "reasons": [
+          "provenanceComplete"
+        ],
+        "operations": {
+          "tree": {
+            "status": "REFUSED",
+            "reasons": [
+              "provenanceComplete"
+            ]
+          },
+          "chordify": {
+            "status": "REFUSED",
+            "reasons": [
+              "provenanceComplete"
+            ]
+          }
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "0",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/202",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/101",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "201/20200",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/100",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "5251/20200",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "103/202",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": false
+    },
+    {
+      "id": "unresolved-performed-trajectory",
+      "scope": "current-authored-fractions",
+      "manualExpectedDisposition": "REFUSED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "declared-relative",
+          "origin": "0"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": false,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "a",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "0",
+            "duration": "1/100"
+          },
+          {
+            "artifactId": "artifact:b",
+            "sourceNoteId": "b",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "attack",
+            "midi": 64,
+            "start": "1/101",
+            "duration": "1/2"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "REFUSED",
+        "reasons": [
+          "fixedPitchIntervalsDeclared"
+        ],
+        "operations": {
+          "tree": {
+            "status": "REFUSED",
+            "reasons": [
+              "fixedPitchIntervalsDeclared"
+            ]
+          },
+          "chordify": {
+            "status": "REFUSED",
+            "reasons": [
+              "fixedPitchIntervalsDeclared"
+            ]
+          }
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "0",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/202",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/101",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "201/20200",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/100",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "5251/20200",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "103/202",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": false
+    },
+    {
+      "id": "unresolved-authored-relations",
+      "scope": "current-authored-fractions",
+      "manualExpectedDisposition": "REFUSED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "declared-relative",
+          "origin": "0"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": false,
+        "events": [
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "a",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "0",
+            "duration": "1/100"
+          },
+          {
+            "artifactId": "artifact:b",
+            "sourceNoteId": "b",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "attack",
+            "midi": 64,
+            "start": "1/101",
+            "duration": "1/2"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "REFUSED",
+        "reasons": [
+          "authoredRelationsResolved"
+        ],
+        "operations": {
+          "tree": {
+            "status": "REFUSED",
+            "reasons": [
+              "authoredRelationsResolved"
+            ]
+          },
+          "chordify": {
+            "status": "REFUSED",
+            "reasons": [
+              "authoredRelationsResolved"
+            ]
+          }
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "0",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/202",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/101",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "201/20200",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/100",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "5251/20200",
+          "expectedIds": [
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:b"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "103/202",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": false
+    },
+    {
+      "id": "ambiguous-artifact-id",
+      "scope": "current-authored-fractions",
+      "manualExpectedDisposition": "REFUSED",
+      "manifest": {
+        "scopeId": "research-fixture",
+        "coordinateFrame": {
+          "kind": "declared-relative",
+          "origin": "0"
+        },
+        "coverageComplete": true,
+        "provenanceComplete": true,
+        "fixedPitchIntervalsDeclared": true,
+        "authoredRelationsResolved": true,
+        "events": [
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "a",
+            "sourcePositionId": "position:0",
+            "string": 0,
+            "kind": "attack",
+            "midi": 60,
+            "start": "0",
+            "duration": "1/100"
+          },
+          {
+            "artifactId": "artifact:a",
+            "sourceNoteId": "b",
+            "sourcePositionId": "position:1",
+            "string": 1,
+            "kind": "attack",
+            "midi": 64,
+            "start": "1/101",
+            "duration": "1/2"
+          }
+        ],
+        "authoredRests": [],
+        "unknownGapsAreAuthoredRests": false
+      },
+      "admission": {
+        "status": "REFUSED",
+        "reasons": [
+          "ambiguous-artifact-id"
+        ],
+        "operations": {
+          "tree": {
+            "status": "REFUSED",
+            "reasons": [
+              "ambiguous-artifact-id"
+            ]
+          },
+          "chordify": {
+            "status": "REFUSED",
+            "reasons": [
+              "ambiguous-artifact-id"
+            ]
+          }
+        }
+      },
+      "unsafeProjectionQueries": [
+        {
+          "at": "0",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/202",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/101",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "201/20200",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a",
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "1/100",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "5251/20200",
+          "expectedIds": [
+            "artifact:a"
+          ],
+          "treeIds": [
+            "artifact:a"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": true
+        },
+        {
+          "at": "103/202",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ],
+      "countedAsReferenceMatch": false
+    }
+  ],
+  "negativeControls": {
+    "defaultUnisonDedup": {
+      "pitchClassSetMatch": true,
+      "eventIdentityMultisetMatch": false,
+      "queries": [
+        {
+          "at": "0",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": false
+        },
+        {
+          "at": "1/2",
+          "expectedIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "treeIds": [
+            "artifact:a",
+            "artifact:b"
+          ],
+          "chordifyIds": [
+            "artifact:a"
+          ],
+          "treeMatch": true,
+          "chordifyMatch": false
+        },
+        {
+          "at": "1",
+          "expectedIds": [],
+          "treeIds": [],
+          "chordifyIds": [],
+          "treeMatch": true,
+          "chordifyMatch": true
+        }
+      ]
+    },
+    "repeatAttackIdentity": {
+      "sourceIds": [
+        "a",
+        "repeat"
+      ],
+      "pitchClassSetAloneInsufficient": true
+    },
+    "attackVsContinuation": {
+      "sameLibraryObservation": true,
+      "authoredAttackCounts": {
+        "repeat": 2,
+        "continuation": 1
+      },
+      "truthLocation": "manifest.events[].kind and originArtifactId, not library-generated ties"
+    },
+    "restProvenance": {
+      "generatedEmptySlicesAreAuthored": false,
+      "truthLocation": "manifest.authoredRests only"
+    }
+  },
+  "summary": {
+    "cases": 22,
+    "admitted": 12,
+    "refused": 10,
+    "falseMatchesCounted": 0
+  },
+  "scriptSha256": "0bf3aae3604d6b47aafbd31531a118c95ea08da2c844bd5704947e614d7f47e1"
+}

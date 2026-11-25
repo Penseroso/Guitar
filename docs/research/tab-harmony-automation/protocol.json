@@ -1,0 +1,19 @@
+{
+  "coordinates": "Exact written quarter-note fractions, all written endings visited once in score order; no repeat traversal",
+  "boundaryTolerance": "1/2 quarter note, one-to-one events, internal boundaries only",
+  "localKeyMetric": "Quarter-note duration correct / eligible, with separate coverage and issued-only precision",
+  "chordMetric": "Expert root and named quality, evaluated by nominal duration; unsupported quality separate",
+  "localKeyChangeTolerance": "4 quarter notes, one-to-one with destination major/minor tonic equality",
+  "appliedArrivalMetric": "ABC applied-root labels restricted to V(7)-major/minor arrival within a shared local key, matched within 1/2 quarter note and target root",
+  "establishedChangeProxy": "Changed local key with at least 8 quarter notes of support, three chord spans, and a V(7)-tonic pair within the run. This is an operational proxy on expert local-key and chord labels.",
+  "evidence": "ABC first movement per quartet (5 development, 4 calibration, 7 test), full score and first-staff ablation, plus hand-authored ambiguity and missing-data controls",
+  "ordinal": "First-staff note-head counts in windows of at most 25 source positions, evaluated by position against the original annotation; no duration score or automatic temporal boundary",
+  "decision": {
+    "providedKeySegmentation": "At least 0.05 absolute boundary F1 gain over fixed bars and no decline in root+quality duration accuracy, full score and first staff separately",
+    "providedChordKey": "At least 0.05 absolute duration-accuracy gain over profile-only with forced predictions, plus selective precision >= 0.80 at coverage >= 0.50 on the full-score subset",
+    "automaticPair": "At least 0.50 boundary F1, at least 0.65 duration coverage and 0.80 issued-only precision for both key and chord on first staff, and change-event precision >= 0.80 at recall >= 0.50 on the full-score proxy",
+    "externalValidity": "A held-out corpus of target guitar TAB with expert role, boundary and key interpretations is necessary for product integration"
+  },
+  "calibration": "Choose smallest score margin attaining >= 0.80 issued-only precision on full-score calibration; record when a margin is unattainable. No probability strings.",
+  "runtime": "Measure the offline host pipeline once per piece/variant; report range and worst case, not a device SLO."
+}

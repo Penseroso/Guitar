@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-15",
+  "baselineCommit": "c35b405a7d2f23a1ac019b2478fdacfa92eaa836",
+  "branch": "feat/tab-timing-inspection",
+  "gate": "GO_FOR_MEASURE_OWNED_NOMINAL_WRITTEN_NOTES_ONLY",
+  "sourceSha256": {
+    "src/domain/tab/exact-time.ts": "03d85000b5e5e4942e46ecaf720517c03448f0f7ffdedf1e1309b84741ac129a",
+    "src/domain/tab/exact-time.test.ts": "7a418f6d40ce8ec052de780a330de58c21c066b7351c9326978f34c6580b43f7",
+    "src/domain/tab/written-time.ts": "a8193829a7f832e77c63fde5c47b3df88fdc002450861536ef2299f7c97e9ee8",
+    "src/domain/tab/written-time.test.ts": "8c0c14a63b055438ea67bf534cec78d403a6262805d7282c3d3820da7982a0f0",
+    "src/domain/tab/written-time.contract.test.ts": "271c27af342c16155c0159a68e51019e6590d7d6f14f39a8206b49af9cbb5266",
+    "src/domain/tab/written-time.lifecycle.test.ts": "af3e7624b1ed83f1337806fbc882028bbac2593e8ed244bf82c8d5c64236a90a"
+  },
+  "checks": {
+    "relatedTabSuite": {
+      "files": 21,
+      "tests": 562,
+      "passed": 562
+    },
+    "newTests": {
+      "exactArithmetic": 66,
+      "observer": 18,
+      "independentContract": 19,
+      "lifecycle": 14
+    },
+    "scopedEslint": "PASS, zero warnings",
+    "productionBuild": "PASS, including TypeScript and static pages",
+    "diffCheck": "PASS",
+    "optionalMusic21": "not-run, optional and no product dependency"
+  },
+  "scopeLimits": [
+    "not sounding, physical picking, silence, full-source verticality or global time",
+    "conservative whole-population coverage; no per-time completeness proof",
+    "only immutable copied snapshot.data is queried; sourceDocument reference is not a freshness proof",
+    "ordinary JSON-like source; hostile getters/proxies not supported",
+    "host synthetic measurements do not establish mobile performance or latency SLO"
+  ],
+  "integration": {
+    "existingAnalyzeAndP2Unchanged": true,
+    "newUi": false,
+    "newDependencies": false,
+    "newCacheOrWorker": false
+  }
+}

@@ -5,6 +5,7 @@ import {
 import { setTabBeatOffset, setTabDuration, setTabMeter, setTabMute, setTabRest, setTabSustain } from '@/domain/tab/input-capabilities';
 import { appendTabMeasures, createEmptyTabDocument, deleteTabMoment, deleteTabMoments, insertTabMoment, joinTabMeasure, retuneTabDocument, setTabFret, splitTabMeasure } from '@/domain/tab/editing';
 import { analyzeTabSelection, type TabSelectionAnalysis } from '@/domain/tab/analysis';
+import { prepareSuppliedChord, type SuppliedTabChord } from '@/domain/tab/supplied-harmony';
 
 export interface TabAnalysisSnapshot {
     document: TabDocument;
@@ -17,6 +18,9 @@ export interface TabAnalysisSnapshot {
 export interface TabActiveCell { momentId: string; string: number }
 export interface TabEditSnapshot {
     document: TabDocument | null;
+    scoreId: number;
+    originsRevision: number;
+    suppliedHarmony: readonly SuppliedTabChord[];
     documentName: string;
     tuningId: string;
     capo: number;
@@ -57,6 +61,8 @@ export type TabAnalysisAction =
     | { type: 'add-measures'; count: number }
     | { type: 'split-measure'; afterId: string }
     | { type: 'join-measure'; afterId: string }
+    | { type: 'save-supplied-chord'; entry: SuppliedTabChord; document: TabDocument }
+    | { type: 'remove-supplied-chord'; id: string; scoreId: number }
     | { type: 'analyze'; scope?: 'all' | 'selection' }
     | { type: 'undo' | 'redo' }
     | { type: 'set-scale'; scale: TabAnalysisContext['scale'] }
@@ -65,20 +71,22 @@ export type TabAnalysisAction =
     | { type: 'set-editor-open'; open: boolean }
     | { type: 'reset' };
 
-export function createTabAnalysisState(): TabAnalysisState {
+export function createTabAnalysisState(scoreId = 0): TabAnalysisState {
     const document = createEmptyTabDocument();
     return {
         source: '', sourceName: '', documentName: '', tuningId: 'standard', capo: 0,
         document, diagnostics: [], selection: { start: 0, end: 0 },
+        scoreId, originsRevision: scoreId, suppliedHarmony: [],
         activeCell: { momentId: document.moments[0].id, string: 0 },
         context: { scale: null, chord: null, frame: null },
-        analyzedSource: null, editorOpen: false, nextId: 1, past: [], future: [], analysis: null, analysisStatus: 'idle',
+        analyzedSource: null, editorOpen: false, nextId: scoreId + 1, past: [], future: [], analysis: null, analysisStatus: 'idle',
     };
 }
 
 function snapshot(state: TabAnalysisState): TabEditSnapshot {
     const { document, documentName, tuningId, capo, selection, activeCell, analyzedSource } = state;
-    return { document, documentName, tuningId, capo, selection, activeCell, analyzedSource };
+    const { scoreId, originsRevision, suppliedHarmony } = state;
+    return { document, documentName, tuningId, capo, selection, activeCell, analyzedSource, scoreId, originsRevision, suppliedHarmony };
 }
 
 function commit(state: TabAnalysisState, patch: Partial<TabAnalysisState>): TabAnalysisState {
@@ -87,6 +95,10 @@ function commit(state: TabAnalysisState, patch: Partial<TabAnalysisState>): TabA
         past: [...state.past, snapshot(state)].slice(-100), future: [],
         analysisStatus: state.analysis ? 'stale' : 'idle',
     };
+}
+
+function commitHarmony(state: TabAnalysisState, suppliedHarmony: readonly SuppliedTabChord[], nextId = state.nextId): TabAnalysisState {
+    return { ...state, suppliedHarmony, nextId, past: [...state.past, snapshot(state)].slice(-100), future: [] };
 }
 
 /** Keep surviving selected events; deleting an endpoint must not select a previously unselected neighbor. */
@@ -166,8 +178,9 @@ export function reduceTabAnalysis(state: TabAnalysisState, action: TabAnalysisAc
             const first = document.moments[0];
             return {
                 ...commit(state, { document, documentName: state.sourceName,
+                    scoreId: nextId, originsRevision: nextId, suppliedHarmony: [],
                     selection: { start: 0, end: 0 }, activeCell: { momentId: first.id, string: 0 },
-                    analyzedSource: state.source, editorOpen: false, nextId }), diagnostics,
+                    analyzedSource: state.source, editorOpen: false, nextId: nextId + 1 }), diagnostics,
             };
         }
         case 'set-fret': {
@@ -188,7 +201,9 @@ export function reduceTabAnalysis(state: TabAnalysisState, action: TabAnalysisAc
                         : action.type === 'set-rest' ? setTabRest(state.document, action.momentId, action.enabled)
                             : action.type === 'set-mute' ? setTabMute(state.document, action.momentId, action.string, action.enabled)
                                 : setTabSustain(state.document, action.momentId, action.string, action.enabled);
-            return document === state.document ? state : commit(state, { document, analyzedSource: null });
+            if (document === state.document) return state;
+            return commit(state, { document, analyzedSource: null, ...(action.type === 'set-meter'
+                ? { originsRevision: state.nextId, nextId: state.nextId + 1 } : {}) });
         }
         case 'insert-moment': {
             if (!state.document) return state;
@@ -233,8 +248,23 @@ export function reduceTabAnalysis(state: TabAnalysisState, action: TabAnalysisAc
                 : splitTabMeasure(state.document, action.afterId, `edit-moment-${state.nextId}`);
             return document === state.document ? state : commit(state, {
                 document, selection: mapSelection(state, document), activeCell: mapCell(state, document),
-                analyzedSource: null, nextId: state.nextId + 1,
+                analyzedSource: null, originsRevision: state.nextId, nextId: state.nextId + 1,
             });
+        }
+        case 'save-supplied-chord': {
+            if (!state.document || action.document !== state.document || action.entry.scoreId !== state.scoreId) return state;
+            const existing = state.suppliedHarmony.find(entry => entry.id === action.entry.id);
+            if (action.entry.id && !existing) return state;
+            const id = existing?.id ?? `supplied-chord-${state.nextId}`;
+            const result = prepareSuppliedChord(state.document, state.scoreId, state.originsRevision, state.suppliedHarmony, { ...action.entry, id });
+            if ('error' in result || (existing && JSON.stringify(existing) === JSON.stringify(result.entry))) return state;
+            const suppliedHarmony = existing ? state.suppliedHarmony.map(entry => entry.id === id ? result.entry : entry)
+                : [...state.suppliedHarmony, result.entry];
+            return commitHarmony(state, suppliedHarmony, state.nextId + (existing ? 0 : 1));
+        }
+        case 'remove-supplied-chord': {
+            if (action.scoreId !== state.scoreId || !state.suppliedHarmony.some(entry => entry.id === action.id)) return state;
+            return commitHarmony(state, state.suppliedHarmony.filter(entry => entry.id !== action.id));
         }
         case 'analyze': {
             if (!state.document) return state;
@@ -285,6 +315,6 @@ export function reduceTabAnalysis(state: TabAnalysisState, action: TabAnalysisAc
         case 'set-editor-open':
             return { ...state, editorOpen: action.open };
         case 'reset':
-            return createTabAnalysisState();
+            return createTabAnalysisState(state.nextId);
     }
 }

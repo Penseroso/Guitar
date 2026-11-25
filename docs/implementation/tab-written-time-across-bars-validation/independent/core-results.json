@@ -1,0 +1,279 @@
+{
+  "sourceSha256": "b9f74ed88f9bcbb3d7ef27366790f173aab74458498c8bbc3cc01ed66c96f286",
+  "seed": "0x33decaf",
+  "scope": "Finite independently assigned 1/1024 tick oracle + finite missing-field completion worlds + manual nonbinary/max-anchor exact counterexample. Not exhaustive rational proof or browser/physical-mobile latency certification.",
+  "counters": {
+    "manualCases": 10,
+    "randomSources": 2400,
+    "randomQueries": 14400,
+    "completionWorlds": 114,
+    "invalidQueries": 2400
+  },
+  "manual": [
+    {
+      "name": "late offset / carry-in / exact boundary / source-query order",
+      "actual": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "name": "carry-in crosses more than one bar and an empty-owned target",
+      "actual": [
+        "long"
+      ]
+    },
+    {
+      "name": "same q8, W2 outside but W3 missing-start/duration origin equality partial",
+      "actual": true
+    },
+    {
+      "name": "present invalid start/duration never earns future-anchor exclusion",
+      "actual": true
+    },
+    {
+      "name": "identity/shape/MIDI/string failures fail closed; domain priority wins only outside",
+      "actual": true
+    },
+    {
+      "name": "empty/no-known-range never becomes complete empty, even with an excluded future note",
+      "actual": true
+    },
+    {
+      "name": "valid max-anchor float-colliding endpoints remain distinct at a.end",
+      "actual": [
+        "b"
+      ]
+    },
+    {
+      "name": "literal metadata only, no aliases/source reread/original freeze",
+      "actual": true
+    },
+    {
+      "name": "explicit-model/meter/count/query prerequisites and priority",
+      "actual": true
+    },
+    {
+      "name": "last-bar overflow remains literal; interior complete gap differs from known/window endpoints",
+      "actual": true
+    }
+  ],
+  "faultCounts": {
+    "bad-start": 436,
+    "valid": 492,
+    "bad-midi": 470,
+    "metadata": 471,
+    "missing-start": 470,
+    "bad-length": 482,
+    "eligible-length": 460,
+    "bad-note": 428,
+    "missing-both": 496,
+    "bad-string": 426,
+    "unknown-owner": 443,
+    "bad-id": 482,
+    "bad-notes": 456
+  },
+  "statuses": {
+    "outside-window": 7200,
+    "partial": 4290,
+    "complete": 591,
+    "unreadable": 2319
+  },
+  "completions": [
+    {
+      "mode": "missing-start",
+      "intervals": 1,
+      "coverageFact": {
+        "momentIndex": 1,
+        "noteIndex": 0,
+        "sourceMeasure": 3,
+        "kind": "bar-origin-lower-bound",
+        "lowerBound": {
+          "numerator": "8",
+          "denominator": "1"
+        }
+      },
+      "noFakeEndpoints": true
+    },
+    {
+      "mode": "missing-duration",
+      "intervals": 1,
+      "coverageFact": {
+        "momentIndex": 1,
+        "noteIndex": 0,
+        "sourceMeasure": 3,
+        "kind": "known-global-start",
+        "start": {
+          "numerator": "8",
+          "denominator": "1"
+        }
+      },
+      "noFakeEndpoints": true
+    },
+    {
+      "mode": "missing-both",
+      "intervals": 1,
+      "coverageFact": {
+        "momentIndex": 1,
+        "noteIndex": 0,
+        "sourceMeasure": 3,
+        "kind": "bar-origin-lower-bound",
+        "lowerBound": {
+          "numerator": "8",
+          "denominator": "1"
+        }
+      },
+      "noFakeEndpoints": true
+    }
+  ],
+  "bench": [
+    {
+      "layout": "spread",
+      "arithmetic": "simple",
+      "bars": 1024,
+      "positions": 1024,
+      "notes": 6144,
+      "observeSamplesMs": [
+        63.41363200000001,
+        63.366893000000005,
+        125.12014699999997,
+        140.49586899999997,
+        63.18994900000007
+      ],
+      "observeMedianMs": 63.41363200000001,
+      "querySamplesMs": [
+        2.1012829999999667,
+        2.213019000000031,
+        2.09323100000006,
+        2.1416229999999814,
+        2.138549000000012,
+        1.8846810000000005,
+        2.165819000000056
+      ],
+      "queryMedianMs": 2.138549000000012,
+      "pointSamplesMs": [
+        1.085352999999941,
+        0.6816029999999955,
+        0.612369999999828,
+        0.5470440000001418,
+        0.6136920000001282,
+        0.5939720000001216,
+        0.6642880000001696
+      ],
+      "pointMedianMs": 0.6136920000001282,
+      "dataBytes": 2948459,
+      "oneGlobalSnapshot": true
+    },
+    {
+      "layout": "spread",
+      "arithmetic": "source-limit-fractions",
+      "bars": 1024,
+      "positions": 1024,
+      "notes": 6144,
+      "observeSamplesMs": [
+        49.549357999999984,
+        46.10650099999998,
+        47.62855300000001,
+        48.773885000000064,
+        61.07863199999997
+      ],
+      "observeMedianMs": 48.773885000000064,
+      "querySamplesMs": [
+        2.2731280000000424,
+        2.2412709999998697,
+        2.242221999999856,
+        2.4679469999998673,
+        2.4853639999998904,
+        2.2720160000001215,
+        2.3613490000000183
+      ],
+      "queryMedianMs": 2.2731280000000424,
+      "pointSamplesMs": [
+        0.6236269999999422,
+        0.5865119999998569,
+        0.5873329999999441,
+        0.6875509999999849,
+        0.5789700000000266,
+        0.5665520000000015,
+        0.6169469999999819
+      ],
+      "pointMedianMs": 0.5873329999999441,
+      "dataBytes": 3186351,
+      "oneGlobalSnapshot": true
+    },
+    {
+      "layout": "concentrated",
+      "arithmetic": "simple",
+      "bars": 1024,
+      "positions": 1024,
+      "notes": 6144,
+      "observeSamplesMs": [
+        48.35653599999978,
+        51.29476199999999,
+        51.75749900000005,
+        51.95103700000004,
+        52.04038999999989
+      ],
+      "observeMedianMs": 51.75749900000005,
+      "querySamplesMs": [
+        1.3214940000000297,
+        1.3184400000000096,
+        1.2664319999998952,
+        1.2743239999999787,
+        1.2440189999999802,
+        1.2872330000000147,
+        1.2437190000000555
+      ],
+      "queryMedianMs": 1.2743239999999787,
+      "pointSamplesMs": [
+        0.2244940000000497,
+        0.20469499999990148,
+        0.21776400000021567,
+        0.2012689999999111,
+        0.20592599999986305,
+        0.2223309999999401,
+        0.2078989999999976
+      ],
+      "pointMedianMs": 0.2078989999999976,
+      "dataBytes": 3058845,
+      "oneGlobalSnapshot": true
+    },
+    {
+      "layout": "concentrated",
+      "arithmetic": "source-limit-fractions",
+      "bars": 1024,
+      "positions": 1024,
+      "notes": 6144,
+      "observeSamplesMs": [
+        60.50368800000024,
+        72.22856300000012,
+        45.545116999999664,
+        49.222522000000026,
+        46.86871399999973
+      ],
+      "observeMedianMs": 49.222522000000026,
+      "querySamplesMs": [
+        1.8074259999998503,
+        1.9039600000000974,
+        1.8937639999999192,
+        1.867905999999948,
+        1.8041910000001735,
+        1.5856770000000324,
+        1.3977169999998296
+      ],
+      "queryMedianMs": 1.8074259999998503,
+      "pointSamplesMs": [
+        1.6503830000001471,
+        1.689951999999721,
+        1.6554799999998977,
+        4.104870000000119,
+        1.6989049999997405,
+        1.7903510000001006,
+        1.6254949999997734
+      ],
+      "pointMedianMs": 1.689951999999721,
+      "dataBytes": 3125608,
+      "oneGlobalSnapshot": true
+    }
+  ]
+}

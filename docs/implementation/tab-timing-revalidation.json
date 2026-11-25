@@ -1,0 +1,1379 @@
+{
+  "date": "2026-11-15",
+  "scope": "P2 notation inspection only",
+  "verdict": "GO",
+  "sourceSha256": {
+    "src/domain/tab/timing-inspection.ts": "254fcb82e8332ef3024915878f203397e81297a4b1c28b790557fc7e10423a69",
+    "src/domain/tab/timing-inspection.test.ts": "afd390b068130835f8bea8207c6be38609a090cd75826926e0de4e3b574558a4",
+    "src/components/guitar/scale/tab-analysis/TabScoreView.tsx": "3dbc8526bdccdc811fd3951d5376bed7e628e6656f6fe184c1342eabef2941fd",
+    "src/components/guitar/scale/tab-analysis/TabNotationEditor.tsx": "a79b10f7c4f25443e131c96da3cd87915014b73a860195f9ea3b02431f1d6b35",
+    "src/components/guitar/scale/tab-analysis/TimingInspectionPanel.tsx": "633965a3934e27a2c26037c6eed97dee3cfae05358fe88961fb06fcbf09893f1",
+    "src/components/guitar/scale/tab-analysis/TimingInspection.test.tsx": "3961f86dc22216a005ff1ac3137a6fc700cb237e36e749c3a24c9da34fdc2f58",
+    "src/components/guitar/scale/tab-analysis/timing-inspection.module.css": "f303346463b93a2f7be8d62e8a8d0a1b6a69ed686874ee0e2ec8e19bb7862fdb"
+  },
+  "suite": {
+    "files": 17,
+    "tests": 445,
+    "passed": true,
+    "scopedLint": "pass, zero warnings",
+    "productionBuild": "pass"
+  },
+  "domain": {
+    "fuzz": {
+      "cases": 50000,
+      "throws": 0,
+      "mutations": 0,
+      "badSummary": 0,
+      "elapsedMs": 1159.246777
+    },
+    "benchmarks": [
+      {
+        "positions": 128,
+        "notes": 768,
+        "issues": 896,
+        "medianMs": 0.6405389999999898,
+        "p95Ms": 1.0695029999999406,
+        "maxMs": 2.1397569999999178
+      },
+      {
+        "positions": 1024,
+        "notes": 6144,
+        "issues": 7168,
+        "medianMs": 5.8696480000000975,
+        "p95Ms": 18.391397000000097,
+        "maxMs": 20.14566099999979
+      },
+      {
+        "positions": 10000,
+        "notes": 60000,
+        "issues": 70000,
+        "medianMs": 78.121713,
+        "p95Ms": 128.96006199999988,
+        "maxMs": 151.29221899999993
+      }
+    ],
+    "contradictions": [
+      {
+        "kind": "sustain-rest",
+        "input": {
+          "moments": [
+            {
+              "id": "p0",
+              "index": 0,
+              "measure": 1,
+              "column": 1,
+              "notes": [
+                {
+                  "id": "a",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": null
+                }
+              ]
+            },
+            {
+              "id": "p1",
+              "index": 0,
+              "measure": 1,
+              "column": 1,
+              "notes": [],
+              "rest": {}
+            },
+            {
+              "id": "p2",
+              "index": 0,
+              "measure": 1,
+              "column": 1,
+              "notes": [],
+              "sustains": [
+                {
+                  "noteId": "a"
+                }
+              ]
+            }
+          ]
+        },
+        "inspection": {
+          "timingInput": "none",
+          "issues": [
+            {
+              "code": "sustain-interrupted",
+              "message": "An explicit rest, mute or new note interrupts this continuation.",
+              "target": {
+                "momentId": "p2",
+                "string": 0
+              },
+              "kind": "invalid"
+            }
+          ],
+          "summary": {
+            "missing": 0,
+            "invalid": 1
+          }
+        },
+        "sanitized": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null
+              }
+            ]
+          },
+          {
+            "id": "p1",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [],
+            "rest": {}
+          },
+          {
+            "id": "p2",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": []
+          }
+        ]
+      },
+      {
+        "kind": "technique-rest",
+        "input": {
+          "moments": [
+            {
+              "id": "p0",
+              "index": 0,
+              "measure": 1,
+              "column": 1,
+              "notes": [
+                {
+                  "id": "a",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": null,
+                  "techniques": [
+                    {
+                      "kind": "slide",
+                      "toNoteId": "c"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "p1",
+              "index": 0,
+              "measure": 1,
+              "column": 1,
+              "notes": [],
+              "rest": {}
+            },
+            {
+              "id": "p2",
+              "index": 0,
+              "measure": 1,
+              "column": 1,
+              "notes": [
+                {
+                  "id": "c",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": null
+                }
+              ]
+            }
+          ]
+        },
+        "inspection": {
+          "timingInput": "none",
+          "issues": [
+            {
+              "code": "technique-interrupted",
+              "message": "An explicit rest, mute or new note interrupts this technique.",
+              "target": {
+                "momentId": "p0",
+                "noteId": "a",
+                "string": 0
+              },
+              "kind": "invalid"
+            }
+          ],
+          "summary": {
+            "missing": 0,
+            "invalid": 1
+          }
+        },
+        "sanitized": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null
+              }
+            ]
+          },
+          {
+            "id": "p1",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [],
+            "rest": {}
+          },
+          {
+            "id": "p2",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "c",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "sustain-mute",
+        "input": {
+          "moments": [
+            {
+              "id": "p0",
+              "index": 0,
+              "measure": 1,
+              "column": 1,
+              "notes": [
+                {
+                  "id": "a",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": null
+                }
+              ]
+            },
+            {
+              "id": "p1",
+              "index": 0,
+              "measure": 1,
+              "column": 1,
+              "notes": [],
+              "mutes": [
+                {
+                  "string": 0
+                }
+              ]
+            },
+            {
+              "id": "p2",
+              "index": 0,
+              "measure": 1,
+              "column": 1,
+              "notes": [],
+              "sustains": [
+                {
+                  "noteId": "a"
+                }
+              ]
+            }
+          ]
+        },
+        "inspection": {
+          "timingInput": "none",
+          "issues": [
+            {
+              "code": "sustain-interrupted",
+              "message": "An explicit rest, mute or new note interrupts this continuation.",
+              "target": {
+                "momentId": "p2",
+                "string": 0
+              },
+              "kind": "invalid"
+            }
+          ],
+          "summary": {
+            "missing": 0,
+            "invalid": 1
+          }
+        },
+        "sanitized": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null
+              }
+            ]
+          },
+          {
+            "id": "p1",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [],
+            "mutes": [
+              {
+                "string": 0
+              }
+            ]
+          },
+          {
+            "id": "p2",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": []
+          }
+        ]
+      },
+      {
+        "kind": "technique-mute",
+        "input": {
+          "moments": [
+            {
+              "id": "p0",
+              "index": 0,
+              "measure": 1,
+              "column": 1,
+              "notes": [
+                {
+                  "id": "a",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": null,
+                  "techniques": [
+                    {
+                      "kind": "slide",
+                      "toNoteId": "c"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "p1",
+              "index": 0,
+              "measure": 1,
+              "column": 1,
+              "notes": [],
+              "mutes": [
+                {
+                  "string": 0
+                }
+              ]
+            },
+            {
+              "id": "p2",
+              "index": 0,
+              "measure": 1,
+              "column": 1,
+              "notes": [
+                {
+                  "id": "c",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": null
+                }
+              ]
+            }
+          ]
+        },
+        "inspection": {
+          "timingInput": "none",
+          "issues": [
+            {
+              "code": "technique-interrupted",
+              "message": "An explicit rest, mute or new note interrupts this technique.",
+              "target": {
+                "momentId": "p0",
+                "noteId": "a",
+                "string": 0
+              },
+              "kind": "invalid"
+            }
+          ],
+          "summary": {
+            "missing": 0,
+            "invalid": 1
+          }
+        },
+        "sanitized": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null
+              }
+            ]
+          },
+          {
+            "id": "p1",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [],
+            "mutes": [
+              {
+                "string": 0
+              }
+            ]
+          },
+          {
+            "id": "p2",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "c",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "sustain-attack",
+        "input": {
+          "moments": [
+            {
+              "id": "p0",
+              "index": 0,
+              "measure": 1,
+              "column": 1,
+              "notes": [
+                {
+                  "id": "a",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": null
+                }
+              ]
+            },
+            {
+              "id": "p1",
+              "index": 0,
+              "measure": 1,
+              "column": 1,
+              "notes": [
+                {
+                  "id": "b",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": null
+                }
+              ]
+            },
+            {
+              "id": "p2",
+              "index": 0,
+              "measure": 1,
+              "column": 1,
+              "notes": [],
+              "sustains": [
+                {
+                  "noteId": "a"
+                }
+              ]
+            }
+          ]
+        },
+        "inspection": {
+          "timingInput": "none",
+          "issues": [
+            {
+              "code": "sustain-interrupted",
+              "message": "An explicit rest, mute or new note interrupts this continuation.",
+              "target": {
+                "momentId": "p2",
+                "string": 0
+              },
+              "kind": "invalid"
+            }
+          ],
+          "summary": {
+            "missing": 0,
+            "invalid": 1
+          }
+        },
+        "sanitized": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null
+              }
+            ]
+          },
+          {
+            "id": "p1",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "b",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null
+              }
+            ]
+          },
+          {
+            "id": "p2",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": []
+          }
+        ]
+      },
+      {
+        "kind": "technique-attack",
+        "input": {
+          "moments": [
+            {
+              "id": "p0",
+              "index": 0,
+              "measure": 1,
+              "column": 1,
+              "notes": [
+                {
+                  "id": "a",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": null,
+                  "techniques": [
+                    {
+                      "kind": "slide",
+                      "toNoteId": "c"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "p1",
+              "index": 0,
+              "measure": 1,
+              "column": 1,
+              "notes": [
+                {
+                  "id": "b",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": null
+                }
+              ]
+            },
+            {
+              "id": "p2",
+              "index": 0,
+              "measure": 1,
+              "column": 1,
+              "notes": [
+                {
+                  "id": "c",
+                  "string": 0,
+                  "fret": 5,
+                  "midi": 69,
+                  "pitchClass": 9,
+                  "source": null
+                }
+              ]
+            }
+          ]
+        },
+        "inspection": {
+          "timingInput": "none",
+          "issues": [
+            {
+              "code": "technique-interrupted",
+              "message": "An explicit rest, mute or new note interrupts this technique.",
+              "target": {
+                "momentId": "p0",
+                "noteId": "a",
+                "string": 0
+              },
+              "kind": "invalid"
+            }
+          ],
+          "summary": {
+            "missing": 0,
+            "invalid": 1
+          }
+        },
+        "sanitized": [
+          {
+            "id": "p0",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "a",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null
+              }
+            ]
+          },
+          {
+            "id": "p1",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "b",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null
+              }
+            ]
+          },
+          {
+            "id": "p2",
+            "index": 0,
+            "measure": 1,
+            "column": 1,
+            "notes": [
+              {
+                "id": "c",
+                "string": 0,
+                "fret": 5,
+                "midi": 69,
+                "pitchClass": 9,
+                "source": null
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "longLinks": {
+    "scope": "host Node inspector-only; many long-range references across blank positions; 12 repeats; not mobile or UI cost",
+    "results": [
+      {
+        "positions": 1024,
+        "techniques": 1024,
+        "medianMs": 0.9532839999999965,
+        "maxMs": 4.323190000000011
+      },
+      {
+        "positions": 10000,
+        "techniques": 10000,
+        "medianMs": 9.613155000000006,
+        "maxMs": 33.34562199999999
+      },
+      {
+        "positions": 50000,
+        "techniques": 50000,
+        "medianMs": 45.44928099999993,
+        "maxMs": 111.100912
+      }
+    ]
+  },
+  "independentRelationOracle": {
+    "seed": "0x58319a",
+    "randomizedScores": 10000,
+    "relationsChecked": 40000,
+    "mismatches": 0,
+    "mutations": 0,
+    "method": "independent naive open-interval expectation plus existing sanitizeTabLinks comparison, frozen input; valid authored structure only"
+  },
+  "interaction": {
+    "browser": "system Chromium; native CDP IME; physical device/OS IME not claimed",
+    "results": [
+      {
+        "width": 390,
+        "cleanEscape": {
+          "popupClosed": true,
+          "focusReturnedToEditBeforeDiagnostic": true
+        },
+        "dirtyFractionKeyboardPointer": "pass",
+        "dirtyNativeValidInvalid": "pass",
+        "nativeEscapePriority": "pass",
+        "nativeIMEDiagnosticAndCheckGuards": "pass",
+        "explicitSetStartAndTabCommit": "pass",
+        "snapshotInvalidationUndoRedo": "pass",
+        "pointerMode": "touch",
+        "errors": []
+      },
+      {
+        "width": 768,
+        "cleanEscape": {
+          "popupClosed": true,
+          "focusReturnedToEditBeforeDiagnostic": true
+        },
+        "dirtyFractionKeyboardPointer": "pass",
+        "dirtyNativeValidInvalid": "pass",
+        "nativeEscapePriority": "pass",
+        "nativeIMEDiagnosticAndCheckGuards": "pass",
+        "explicitSetStartAndTabCommit": "pass",
+        "snapshotInvalidationUndoRedo": "pass",
+        "pointerMode": "mouse",
+        "errors": []
+      },
+      {
+        "width": 1335,
+        "cleanEscape": {
+          "popupClosed": true,
+          "focusReturnedToEditBeforeDiagnostic": true
+        },
+        "dirtyFractionKeyboardPointer": "pass",
+        "dirtyNativeValidInvalid": "pass",
+        "nativeEscapePriority": "pass",
+        "nativeIMEDiagnosticAndCheckGuards": "pass",
+        "explicitSetStartAndTabCommit": "pass",
+        "snapshotInvalidationUndoRedo": "pass",
+        "pointerMode": "mouse",
+        "errors": []
+      }
+    ]
+  },
+  "ui": [
+    {
+      "width": 390,
+      "default": {
+        "score": {
+          "x": 12,
+          "y": 719.140625,
+          "width": 366,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n\u00b7\nB\n\u00b7\nG\n\u00b7\nD\n\u00b7\nA\n\u00b7\nE\n\u00b7\nPosition\n+"
+        },
+        "panel": null,
+        "pageWidth": 390,
+        "targets": [
+          {
+            "x": 12,
+            "y": 663.140625,
+            "width": 76.796875,
+            "height": 44,
+            "text": "Check timing"
+          }
+        ]
+      },
+      "free": {
+        "score": {
+          "x": 12,
+          "y": 781.140625,
+          "width": 366,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n\u00b7\nB\n\u00b7\nG\n\u00b7\nD\n\u00b7\nA\n\u00b7\nE\n\u00b7\nPosition\n+"
+        },
+        "panel": {
+          "x": 12,
+          "y": 707.140625,
+          "width": 366,
+          "height": 62,
+          "text": "Free timing \u00b7 No notation issues\n\nAbout this check\nClose"
+        },
+        "pageWidth": 390,
+        "targets": [
+          {
+            "x": 12,
+            "y": 663.140625,
+            "width": 76.796875,
+            "height": 44,
+            "text": "Check timing"
+          },
+          {
+            "x": 210.6875,
+            "y": 716.140625,
+            "width": 107.3125,
+            "height": 44,
+            "text": "About this check"
+          },
+          {
+            "x": 334,
+            "y": 716.140625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          }
+        ]
+      },
+      "partial": {
+        "score": {
+          "x": 12,
+          "y": 844.328125,
+          "width": 366,
+          "height": 466,
+          "text": "Bar 1\n4/4\nEdit\nE\n5\nB\n\u00b7\nG\n\u00b7\nD\n\u00b7\nA\n\u00b7\nE\n\u00b7\nPosition\n+"
+        },
+        "panel": {
+          "x": 12,
+          "y": 726.328125,
+          "width": 366,
+          "height": 106,
+          "text": "Timing incomplete \u00b7 No notation issues\n\nAbout this check\nClose\nNot supplied \u00b7 2"
+        },
+        "pageWidth": 390,
+        "targets": [
+          {
+            "x": 12,
+            "y": 682.328125,
+            "width": 76.796875,
+            "height": 44,
+            "text": "Check timing"
+          },
+          {
+            "x": 210.6875,
+            "y": 735.328125,
+            "width": 107.3125,
+            "height": 44,
+            "text": "About this check"
+          },
+          {
+            "x": 334,
+            "y": 735.328125,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 12,
+            "y": 779.328125,
+            "width": 366,
+            "height": 44,
+            "text": "Not supplied \u00b7 2"
+          }
+        ]
+      },
+      "scopeOpen": {
+        "score": {
+          "x": 12,
+          "y": 890.703125,
+          "width": 366,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n\u00b7\nB\n\u00b7\nG\n\u00b7\nD\n\u00b7\nA\n\u00b7\nE\n\u00b7\nPosition\n+"
+        },
+        "panel": {
+          "x": 12,
+          "y": 707.140625,
+          "width": 366,
+          "height": 171.5625,
+          "text": "Free timing \u00b7 No notation issues\n\nAbout this check\n\nWritten timing and structure only. Missing values are optional information. Sounding overlap, ties in time and durations across barlines are not assessed.\n\nClose"
+        },
+        "pageWidth": 390,
+        "targets": [
+          {
+            "x": 12,
+            "y": 663.140625,
+            "width": 76.796875,
+            "height": 44,
+            "text": "Check timing"
+          },
+          {
+            "x": 12,
+            "y": 768.140625,
+            "width": 366,
+            "height": 44,
+            "text": "About this check"
+          },
+          {
+            "x": 334,
+            "y": 716.140625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          }
+        ]
+      },
+      "stale": {
+        "ariaExpanded": "false",
+        "panelCount": 0
+      },
+      "keyboardReverseTabs": 14,
+      "errors": [],
+      "passed": [
+        "closed/open/stale aria",
+        "short state-first labels",
+        "scope disclosure",
+        "fraction pointer cancellation clears notice",
+        "fraction native keyboard Set start clears notice",
+        "fret Enter clears notice",
+        "fret Escape clears notice",
+        "focus navigation and Escape return",
+        "visible44px targets",
+        "no page overflow"
+      ]
+    },
+    {
+      "width": 768,
+      "default": {
+        "score": {
+          "x": 32,
+          "y": 619.5625,
+          "width": 704,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n\u00b7\nB\n\u00b7\nG\n\u00b7\nD\n\u00b7\nA\n\u00b7\nE\n\u00b7\nPosition\n+"
+        },
+        "panel": null,
+        "pageWidth": 768,
+        "targets": [
+          {
+            "x": 32,
+            "y": 563.5625,
+            "width": 76.796875,
+            "height": 44,
+            "text": "Check timing"
+          }
+        ]
+      },
+      "free": {
+        "score": {
+          "x": 32,
+          "y": 681.5625,
+          "width": 704,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n\u00b7\nB\n\u00b7\nG\n\u00b7\nD\n\u00b7\nA\n\u00b7\nE\n\u00b7\nPosition\n+"
+        },
+        "panel": {
+          "x": 32,
+          "y": 607.5625,
+          "width": 704,
+          "height": 62,
+          "text": "Free timing \u00b7 No notation issues\n\nAbout this check\nClose"
+        },
+        "pageWidth": 768,
+        "targets": [
+          {
+            "x": 32,
+            "y": 563.5625,
+            "width": 76.796875,
+            "height": 44,
+            "text": "Check timing"
+          },
+          {
+            "x": 568.6875,
+            "y": 616.5625,
+            "width": 107.3125,
+            "height": 44,
+            "text": "About this check"
+          },
+          {
+            "x": 692,
+            "y": 616.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          }
+        ]
+      },
+      "partial": {
+        "score": {
+          "x": 32,
+          "y": 725.5625,
+          "width": 704,
+          "height": 466,
+          "text": "Bar 1\n4/4\nEdit\nE\n5\nB\n\u00b7\nG\n\u00b7\nD\n\u00b7\nA\n\u00b7\nE\n\u00b7\nPosition\n+"
+        },
+        "panel": {
+          "x": 32,
+          "y": 607.5625,
+          "width": 704,
+          "height": 106,
+          "text": "Timing incomplete \u00b7 No notation issues\n\nAbout this check\nClose\nNot supplied \u00b7 2"
+        },
+        "pageWidth": 768,
+        "targets": [
+          {
+            "x": 32,
+            "y": 563.5625,
+            "width": 76.796875,
+            "height": 44,
+            "text": "Check timing"
+          },
+          {
+            "x": 568.6875,
+            "y": 616.5625,
+            "width": 107.3125,
+            "height": 44,
+            "text": "About this check"
+          },
+          {
+            "x": 692,
+            "y": 616.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 32,
+            "y": 660.5625,
+            "width": 704,
+            "height": 44,
+            "text": "Not supplied \u00b7 2"
+          }
+        ]
+      },
+      "scopeOpen": {
+        "score": {
+          "x": 32,
+          "y": 771.9375,
+          "width": 704,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n\u00b7\nB\n\u00b7\nG\n\u00b7\nD\n\u00b7\nA\n\u00b7\nE\n\u00b7\nPosition\n+"
+        },
+        "panel": {
+          "x": 32,
+          "y": 607.5625,
+          "width": 704,
+          "height": 152.375,
+          "text": "Free timing \u00b7 No notation issues\n\nAbout this check\n\nWritten timing and structure only. Missing values are optional information. Sounding overlap, ties in time and durations across barlines are not assessed.\n\nClose"
+        },
+        "pageWidth": 768,
+        "targets": [
+          {
+            "x": 32,
+            "y": 563.5625,
+            "width": 76.796875,
+            "height": 44,
+            "text": "Check timing"
+          },
+          {
+            "x": 32,
+            "y": 668.5625,
+            "width": 704,
+            "height": 44,
+            "text": "About this check"
+          },
+          {
+            "x": 692,
+            "y": 616.5625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          }
+        ]
+      },
+      "stale": {
+        "ariaExpanded": "false",
+        "panelCount": 0
+      },
+      "keyboardReverseTabs": 14,
+      "errors": [],
+      "passed": [
+        "closed/open/stale aria",
+        "short state-first labels",
+        "scope disclosure",
+        "fraction pointer cancellation clears notice",
+        "fraction native keyboard Set start clears notice",
+        "fret Enter clears notice",
+        "fret Escape clears notice",
+        "focus navigation and Escape return",
+        "visible44px targets",
+        "no page overflow"
+      ]
+    },
+    {
+      "width": 1335,
+      "default": {
+        "score": {
+          "x": 91.5,
+          "y": 629.15625,
+          "width": 1151.984375,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n\u00b7\nB\n\u00b7\nG\n\u00b7\nD\n\u00b7\nA\n\u00b7\nE\n\u00b7\nPosition\n+"
+        },
+        "panel": null,
+        "pageWidth": 1335,
+        "targets": [
+          {
+            "x": 91.5,
+            "y": 573.15625,
+            "width": 76.796875,
+            "height": 44,
+            "text": "Check timing"
+          }
+        ]
+      },
+      "free": {
+        "score": {
+          "x": 91.5,
+          "y": 691.15625,
+          "width": 1151.984375,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n\u00b7\nB\n\u00b7\nG\n\u00b7\nD\n\u00b7\nA\n\u00b7\nE\n\u00b7\nPosition\n+"
+        },
+        "panel": {
+          "x": 91.5,
+          "y": 617.15625,
+          "width": 1151.984375,
+          "height": 62,
+          "text": "Free timing \u00b7 No notation issues\n\nAbout this check\nClose"
+        },
+        "pageWidth": 1335,
+        "targets": [
+          {
+            "x": 91.5,
+            "y": 573.15625,
+            "width": 76.796875,
+            "height": 44,
+            "text": "Check timing"
+          },
+          {
+            "x": 1076.171875,
+            "y": 626.15625,
+            "width": 107.3125,
+            "height": 44,
+            "text": "About this check"
+          },
+          {
+            "x": 1199.484375,
+            "y": 626.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          }
+        ]
+      },
+      "partial": {
+        "score": {
+          "x": 91.5,
+          "y": 735.15625,
+          "width": 1151.984375,
+          "height": 466,
+          "text": "Bar 1\n4/4\nEdit\nE\n5\nB\n\u00b7\nG\n\u00b7\nD\n\u00b7\nA\n\u00b7\nE\n\u00b7\nPosition\n+"
+        },
+        "panel": {
+          "x": 91.5,
+          "y": 617.15625,
+          "width": 1151.984375,
+          "height": 106,
+          "text": "Timing incomplete \u00b7 No notation issues\n\nAbout this check\nClose\nNot supplied \u00b7 2"
+        },
+        "pageWidth": 1335,
+        "targets": [
+          {
+            "x": 91.5,
+            "y": 573.15625,
+            "width": 76.796875,
+            "height": 44,
+            "text": "Check timing"
+          },
+          {
+            "x": 1076.171875,
+            "y": 626.15625,
+            "width": 107.3125,
+            "height": 44,
+            "text": "About this check"
+          },
+          {
+            "x": 1199.484375,
+            "y": 626.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          },
+          {
+            "x": 91.5,
+            "y": 670.15625,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "Not supplied \u00b7 2"
+          }
+        ]
+      },
+      "scopeOpen": {
+        "score": {
+          "x": 91.5,
+          "y": 762.34375,
+          "width": 1151.984375,
+          "height": 466,
+          "text": "Bar 1\nMeter +\nEdit\nE\n\u00b7\nB\n\u00b7\nG\n\u00b7\nD\n\u00b7\nA\n\u00b7\nE\n\u00b7\nPosition\n+"
+        },
+        "panel": {
+          "x": 91.5,
+          "y": 617.15625,
+          "width": 1151.984375,
+          "height": 133.1875,
+          "text": "Free timing \u00b7 No notation issues\n\nAbout this check\n\nWritten timing and structure only. Missing values are optional information. Sounding overlap, ties in time and durations across barlines are not assessed.\n\nClose"
+        },
+        "pageWidth": 1335,
+        "targets": [
+          {
+            "x": 91.5,
+            "y": 573.15625,
+            "width": 76.796875,
+            "height": 44,
+            "text": "Check timing"
+          },
+          {
+            "x": 91.5,
+            "y": 678.15625,
+            "width": 1151.984375,
+            "height": 44,
+            "text": "About this check"
+          },
+          {
+            "x": 1199.484375,
+            "y": 626.15625,
+            "width": 44,
+            "height": 44,
+            "text": "Close"
+          }
+        ]
+      },
+      "stale": {
+        "ariaExpanded": "false",
+        "panelCount": 0
+      },
+      "keyboardReverseTabs": 14,
+      "errors": [],
+      "passed": [
+        "closed/open/stale aria",
+        "short state-first labels",
+        "scope disclosure",
+        "fraction pointer cancellation clears notice",
+        "fraction native keyboard Set start clears notice",
+        "fret Enter clears notice",
+        "fret Escape clears notice",
+        "focus navigation and Escape return",
+        "visible44px targets",
+        "no page overflow"
+      ]
+    }
+  ],
+  "browserStress": {
+    "measurement": "Headless system Chromium on this host; in-page click to two animation frames; not physical device or UX latency certification",
+    "results": [
+      {
+        "width": 390,
+        "positions": 128,
+        "notes": 768,
+        "issues": 896,
+        "checkFreeMs": 28.09999999962747,
+        "checkPartialMs": 19.90000000037253,
+        "expand25Ms": 9.299999998882413,
+        "expand50Ms": 11.300000000745058,
+        "navigateMs": 21.40000000037253,
+        "initialRowsInDOM": 25,
+        "initialRowsVisible": 0,
+        "geometry": {
+          "viewport": 390,
+          "page": 390,
+          "nodes": 3386
+        },
+        "consoleErrors": []
+      },
+      {
+        "width": 390,
+        "positions": 1024,
+        "notes": 6144,
+        "issues": 7168,
+        "checkFreeMs": 106.5,
+        "checkPartialMs": 131,
+        "expand25Ms": 45.5,
+        "expand50Ms": 34.80000000074506,
+        "navigateMs": 63.5,
+        "initialRowsInDOM": 25,
+        "initialRowsVisible": 0,
+        "geometry": {
+          "viewport": 390,
+          "page": 390,
+          "nodes": 24890
+        },
+        "consoleErrors": []
+      },
+      {
+        "width": 1335,
+        "positions": 1024,
+        "notes": 6144,
+        "issues": 7168,
+        "checkFreeMs": 100.40000000037253,
+        "checkPartialMs": 130.30000000074506,
+        "expand25Ms": 36.90000000037253,
+        "expand50Ms": 33.80000000074506,
+        "navigateMs": 63.40000000037253,
+        "initialRowsInDOM": 25,
+        "initialRowsVisible": 0,
+        "geometry": {
+          "viewport": 1335,
+          "page": 1335,
+          "nodes": 24890
+        },
+        "consoleErrors": []
+      }
+    ]
+  }
+}

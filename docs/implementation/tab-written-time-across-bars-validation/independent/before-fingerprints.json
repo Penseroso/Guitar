@@ -1,0 +1,9 @@
+{
+  "baseline": "9375293b72e4d3ecccc00da0e3104b934579e860",
+  "files": {
+    "src/domain/tab/written-time.ts": "204f6b2dc542e1f67c69fa217450c291b315f954da32f526fbdb6f32e4b09e2c",
+    "src/domain/tab/exact-time.ts": "03d85000b5e5e4942e46ecaf720517c03448f0f7ffdedf1e1309b84741ac129a",
+    "src/components/guitar/scale/tab-analysis/WrittenTimePanel.tsx": "441bf0af9efd5eaf961f5a57943889328266a41d71a01f46c5bbaf60b127814b",
+    "src/components/guitar/scale/tab-analysis/TabScoreView.tsx": "5fae657d122de7723af368f475da4cda6fbeab3e8eaf2b077c7929cc03624fd7"
+  }
+}

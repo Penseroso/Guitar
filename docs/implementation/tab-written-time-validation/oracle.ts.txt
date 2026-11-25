@@ -1,0 +1,23 @@
+/** Independent validation-only exact arithmetic; never imports product math. */
+export type Rational = { n: bigint; d: bigint };
+export function rational(n: bigint | number, d: bigint | number = 1): Rational {
+    let a=BigInt(n), b=BigInt(d);
+    if(b===0n)throw new Error('oracle zero denominator');
+    if(b<0n){a=-a;b=-b;}
+    let x=a<0n?-a:a,y=b;
+    while(y!==0n){const z=x%y;x=y;y=z;}
+    return {n:a/x,d:b/x};
+}
+export const plus=(a:Rational,b:Rational)=>rational(a.n*b.d+b.n*a.d,a.d*b.d);
+export const compare=(a:Rational,b:Rational)=>a.n*b.d<b.n*a.d?-1:a.n*b.d>b.n*a.d?1:0;
+export const midpoint=(a:Rational,b:Rational)=>rational(a.n*b.d+b.n*a.d,2n*a.d*b.d);
+export const key=(a:Rational)=>`${a.n}/${a.d}`;
+export type ExpectedEvent={id:string;momentId:string;noteId:string;midi:number;string:number;start:Rational;end:Rational;kind?:string};
+export const active=(events:ExpectedEvent[],q:Rational)=>events.filter(e=>compare(e.start,q)<=0&&compare(q,e.end)<0);
+export function finiteQueries(events:ExpectedEvent[]):Rational[]{
+    const byKey=new Map<string,Rational>();
+    for(const e of events)for(const p of [e.start,e.end])byKey.set(key(p),p);
+    const boundaries=[...byKey.values()].sort(compare),queries=[...boundaries];
+    for(let i=1;i<boundaries.length;i++)queries.push(midpoint(boundaries[i-1],boundaries[i]));
+    return queries.sort(compare);
+}
