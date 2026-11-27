@@ -24,6 +24,27 @@ describe('Harmony musical diagrams', () => {
         expect(within(list).getAllByRole('listitem').map(item => item.textContent).sort()).toEqual([...spoken].sort());
     });
 
+    it.each([
+        ['ii-v', 'ii-v', 'C → B ↓½', 'C to B, ½ step down'],
+        ['predominant', 'iv-v', 'E → D ↓1', 'E to D, whole step down'],
+        ['minor-sub', 'mixture', 'A ↔ A♭', 'A compared with A♭'],
+        ['tonic-sub', 'iii', 'E = E', 'E held as E'],
+    ] as const)('previews a supported connection in %s without selecting a tone', (kind, id, caption, spoken) => {
+        const example = examples(kind).find(item => item.id === id)!;
+        render(<RelationExampleView example={example} onOpenChord={vi.fn()} activeStep={null} />);
+        expect(screen.getByText(caption)).toBeTruthy();
+        expect(screen.getByRole('status').textContent).toBe(spoken);
+        expect(screen.queryByRole('button', { pressed: true })).toBeNull();
+    });
+
+    it('leaves the preview empty when the example supplies no connections', () => {
+        const example = { ...examples('dominant')[0], transitions: [] };
+        render(<RelationExampleView example={example} onOpenChord={vi.fn()} activeStep={null} />);
+        expect(screen.getByRole('status').textContent).toBe('');
+        expect(screen.getByRole('list', { name: 'Tone correspondence' }).children).toHaveLength(0);
+        expect(screen.queryByText('No link')).toBeNull();
+    });
+
     it('keeps numerical diagnostics collapsed and exposes them on demand', async () => {
         const user = userEvent.setup();
         render(<RelationExampleView example={examples('dominant')[0]} onOpenChord={vi.fn()} activeStep={null} />);

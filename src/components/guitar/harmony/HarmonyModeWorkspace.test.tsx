@@ -81,7 +81,7 @@ describe('HarmonyModeWorkspace', () => {
         await user.click(screen.getByText('Cadence evidence'));
         expect(screen.getByLabelText('Phrase ending: unknown')).toBeTruthy();
         expect(screen.getByLabelText('Bass / inversion observed: unknown')).toBeTruthy();
-        await user.click(screen.getByRole('checkbox', { name: 'Phrase ending' }));
+        await user.selectOptions(screen.getByRole('combobox', { name: 'Phrase ending' }), 'true');
         await user.click(screen.getByRole('checkbox', { name: 'Bass / inversions verified' }));
         await user.type(screen.getByRole('textbox', { name: 'Soprano note' }), 'C');
         await user.tab();

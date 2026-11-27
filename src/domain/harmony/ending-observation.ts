@@ -91,6 +91,7 @@ export function observeEnding(frame: TonalFrame, before: ResolvedHarmonyChord, t
         if (!context.soprano) output.missing.push('Final soprano note');
     }
     if (context.soprano && !target.tones.some(tone => tone.pitchClass === note(context.soprano!).pitchClass)) {
+        checks.push({ id: 'soprano-resolution', label: 'Final soprano resolution observed', state: 'unknown' });
         output.missing.push('Final non-chord tone: supply its resolution before classifying');
     }
     if (output.missing.length) {

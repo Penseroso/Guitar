@@ -1,14 +1,19 @@
 "use client";
 
-import { useState } from 'react';
-import type { ChordRef, ObservationContext, RelationQuery } from '@/domain/harmony/types';
+import { useRef, useState } from 'react';
+import type { ChordRef, ObservationContext, RelationCheck, RelationQuery } from '@/domain/harmony/types';
 import { resolveChord } from '@/domain/harmony/roman';
 import { parseNoteName } from '@/domain/shared/spelling';
 import { HarmonyChordFields } from './HarmonyChordFields';
 import styles from './harmony-workspace.module.css';
 
-export function ContextWindow({ query, onQueryChange }: { query: RelationQuery; onQueryChange: (query: RelationQuery) => void }) {
-    const [sopranoDraft, setSopranoDraft] = useState(query.context?.soprano ?? '');
+export function ContextWindow({ query, checks, onQueryChange }: { query: RelationQuery; checks?: RelationCheck[]; onQueryChange: (query: RelationQuery) => void }) {
+    const [sopranoDraft, setSopranoDraft] = useState<string | null>(null);
+    const composing = useRef(false);
+    const phrase = checks?.find(check => check.id === 'phrase-ending');
+    const bass = checks?.find(check => check.id === 'bass-observed');
+    const soprano = checks?.find(check => check.id === 'soprano-observed');
+    const needsResolution = checks?.some(check => check.id === 'soprano-resolution' && check.state === 'unknown');
     const [sopranoError, setSopranoError] = useState(false);
     const chordName = (chord?: ChordRef) => {
         if (!chord) return '—';
@@ -17,10 +22,12 @@ export function ContextWindow({ query, onQueryChange }: { query: RelationQuery; 
     };
     const updateContext = (patch: Partial<ObservationContext>) => onQueryChange({ ...query, context: { ...query.context, ...patch } });
     const commitSoprano = () => {
+        if (sopranoDraft === null || composing.current) return;
         const value = sopranoDraft.trim();
         if (value && !parseNoteName(value)) { setSopranoError(true); return; }
         setSopranoError(false);
-        updateContext({ soprano: value || undefined });
+        setSopranoDraft(null);
+        if (value !== (query.context?.soprano ?? '')) updateContext({ soprano: value || undefined });
     };
 
     return <section className={styles.observationSection} aria-label="Observed chords and phrase context">
@@ -31,10 +38,34 @@ export function ContextWindow({ query, onQueryChange }: { query: RelationQuery; 
             {query.kind === 'passing' && <HarmonyChordFields label="Middle" optional allowBass defaultQuality="diminished-7" value={query.context?.middle} onChange={middle => updateContext({ middle })} />}
         </div>
         {query.kind === 'cadence' && <div className={styles.cadenceFields}>
-            <label className={styles.checkField}><input type="checkbox" aria-label="Phrase ending" ref={input => { if (input) input.indeterminate = query.context?.phraseEnding === undefined; }} checked={query.context?.phraseEnding === true} onChange={event => updateContext({ phraseEnding: event.target.checked })} /><span className={styles.stateDot} aria-hidden="true" />Phrase ending{query.context?.phraseEnding === undefined && <span className={styles.contextHint}>Unknown</span>}</label>
-            <label className={styles.checkField}><input type="checkbox" checked={!!query.context?.bassConfirmed} onChange={event => updateContext({ bassConfirmed: event.target.checked })} /><span className={styles.stateDot} aria-hidden="true" />Bass / inversions verified</label>
-            <label className={styles.sopranoField}><span>Soprano note</span><input value={sopranoDraft} onChange={event => { setSopranoDraft(event.target.value); setSopranoError(false); }} onBlur={commitSoprano} onKeyDown={event => { if (event.key === 'Enter') event.currentTarget.blur(); }} aria-invalid={sopranoError} aria-describedby={sopranoError ? 'harmony-soprano-error' : undefined} placeholder="e.g. C" /></label>
-            {sopranoError && <span id="harmony-soprano-error" className={styles.error}>Enter a note name such as C, F♯, or B♭.</span>}
+            {(phrase || query.context?.phraseEnding !== undefined) && <label className={styles.sopranoField}>Phrase ending
+                <select value={query.context?.phraseEnding === undefined ? 'unknown' : String(query.context.phraseEnding)}
+                    onChange={event => updateContext({ phraseEnding: event.target.value === 'unknown' ? undefined : event.target.value === 'true' })}>
+                    <option value="unknown">Unknown</option><option value="true">Yes</option><option value="false">No</option>
+                </select>
+            </label>}
+            {(bass || query.context?.bassConfirmed) && <label className={styles.checkField}>
+                <input type="checkbox" aria-label="Bass / inversions verified" checked={!!query.context?.bassConfirmed}
+                    onChange={event => updateContext({ bassConfirmed: event.target.checked })} />
+                <span className={styles.stateDot} aria-hidden="true" />Bass / inversions verified
+            </label>}
+            {(soprano || needsResolution || query.context?.soprano || sopranoDraft !== null) && <div>
+                <label className={styles.sopranoField}>Soprano note
+                    <input value={sopranoDraft ?? query.context?.soprano ?? ''} placeholder="Final note"
+                        onChange={event => { setSopranoDraft(event.target.value); setSopranoError(false); }}
+                        onCompositionStart={() => { composing.current = true; }}
+                        onCompositionEnd={() => { composing.current = false; }}
+                        onBlur={commitSoprano} onKeyDown={event => {
+                            if (composing.current || event.nativeEvent.isComposing) return;
+                            if (event.key === 'Enter') { event.preventDefault(); event.currentTarget.blur(); }
+                            if (event.key === 'Escape') { setSopranoDraft(null); setSopranoError(false); }
+                        }}
+                        aria-invalid={sopranoError} aria-describedby={sopranoError || needsResolution ? 'harmony-soprano-hint' : undefined} />
+                </label>
+                {(sopranoError || needsResolution) && <span id="harmony-soprano-hint" className={sopranoError ? styles.error : styles.contextHint}>
+                    {sopranoError ? 'Enter a note name such as C, F♯, or B♭.' : 'Outside the chord · enter its observed resolution.'}
+                </span>}
+            </div>}
         </div>}
         {query.kind === 'passing' && <div className={styles.cadenceFields}>
             <label className={styles.checkField}><input type="checkbox" checked={query.context?.bassConfirmed === true} onChange={event => updateContext({ bassConfirmed: event.target.checked })} /><span className={styles.stateDot} aria-hidden="true" />Bass / inversions verified</label>

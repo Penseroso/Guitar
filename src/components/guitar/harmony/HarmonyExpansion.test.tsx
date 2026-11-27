@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import React, { useState } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, render, screen, within } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { exploreRelation } from '@/domain/harmony/relations';
 import type { RelationQuery } from '@/domain/harmony/types';
@@ -43,21 +43,45 @@ describe('Harmony expansion interactions', () => {
         const changed = vi.fn();
         render(<Harness initial={{ ...DEFAULT_HARMONY_QUERY, kind: 'cadence', context: { before: { root: 'F', chordId: 'minor' } } }} changed={changed} />);
         await user.click(screen.getByRole('button', { name: /^Edit harmony/ }));
-        const phrase = screen.getByRole('checkbox', { name: 'Phrase ending' }) as HTMLInputElement;
-        expect(phrase.indeterminate).toBe(true);
-        expect(screen.getByText('Unknown')).toBeTruthy();
-        await user.click(phrase);
-        expect(phrase.checked).toBe(true);
+        const phrase = screen.getByRole('combobox', { name: 'Phrase ending' }) as HTMLSelectElement;
+        expect(phrase.value).toBe('unknown');
+        expect(screen.queryByRole('checkbox', { name: 'Bass / inversions verified' })).toBeNull();
+        expect(screen.queryByRole('textbox', { name: 'Soprano note' })).toBeNull();
+        expect(screen.queryByText(/^Needed:/)).toBeNull();
+        await user.selectOptions(phrase, 'true');
         expect(changed.mock.lastCall?.[0].context.phraseEnding).toBe(true);
-        await user.click(phrase);
-        expect(phrase.checked).toBe(false);
-        expect(phrase.indeterminate).toBe(false);
+        await user.selectOptions(phrase, 'false');
         expect(changed.mock.lastCall?.[0].context.phraseEnding).toBe(false);
-        expect(screen.queryByText('Unknown')).toBeNull();
         expect(screen.getByRole('heading', { name: 'iv–I motion' })).toBeTruthy();
         await user.click(screen.getByText('Cadence evidence'));
         expect(screen.getByLabelText('Phrase ending: not met')).toBeTruthy();
         expect(screen.getByText('Supplied chords in C major', { exact: true })).toBeTruthy();
+        await user.selectOptions(phrase, 'unknown');
+        expect(changed.mock.lastCall?.[0].context.phraseEnding).toBeUndefined();
+    });
+
+    it('places a supplied non-chord soprano resolution at the editable note and preserves IME drafts', async () => {
+        const user = userEvent.setup();
+        const changed = vi.fn();
+        render(<Harness initial={{ ...DEFAULT_HARMONY_QUERY, kind: 'cadence', context: {
+            before: { root: 'G', chordId: 'dominant-7' }, phraseEnding: true, bassConfirmed: true, soprano: 'D',
+        } }} changed={changed} />);
+        expect(screen.getByRole('heading', { name: 'V–I motion' })).toBeTruthy();
+        const input = screen.getByRole('textbox', { name: 'Soprano note' }) as HTMLInputElement;
+        expect(input.getAttribute('aria-describedby')).toBe(screen.getByText(/enter its observed resolution/).id);
+        expect(screen.queryByText(/^Needed:/)).toBeNull();
+        await user.clear(input);
+        fireEvent.compositionStart(input);
+        await user.type(input, 'C{Enter}');
+        expect(document.activeElement).toBe(input);
+        expect(changed).not.toHaveBeenCalled();
+        fireEvent.compositionEnd(input);
+        await user.keyboard('{Escape}');
+        expect(input.value).toBe('D');
+        await user.clear(input);
+        await user.type(input, 'C{Enter}');
+        expect(screen.getByRole('heading', { name: 'Perfect authentic cadence' })).toBeTruthy();
+        expect(screen.queryByText(/enter its observed resolution/)).toBeNull();
     });
 
     it('keeps actual bass and passing rhythm as independent observations', async () => {

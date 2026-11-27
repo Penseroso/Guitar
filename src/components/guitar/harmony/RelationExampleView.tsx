@@ -8,9 +8,9 @@ import { pitchMotion, rootMotionLabel, voiceMap } from './voice-map';
 import styles from './relation-diagram.module.css';
 
 const degreeName = (degree: string) => ({ '1': 'root', '3': '3rd', b3: '♭3rd', '7': '7th', b7: '♭7', '5': '5th' }[degree] ?? accidental(degree));
-type Props = { example: RelationExample; onOpenChord: (chord: ChordRef) => void; activeStep: number | null; previewGuide?: boolean };
+type Props = { example: RelationExample; onOpenChord: (chord: ChordRef) => void; activeStep: number | null };
 
-function VoiceDiagram({ example, onOpenChord, activeStep, previewGuide, label }: Props & { label?: string }) {
+function VoiceDiagram({ example, onOpenChord, activeStep, label }: Props & { label?: string }) {
     const [focused, setFocused] = useState<{ step: number; degree: string } | null>(null);
     const { edges, lanes, rows } = voiceMap(example), count = example.steps.length;
     const surface = useRef<HTMLDivElement>(null);
@@ -37,7 +37,11 @@ function VoiceDiagram({ example, onOpenChord, activeStep, previewGuide, label }:
         if (selected(e.from, e.fromDegree)) linked.add(`${e.to}:${e.toDegree}`);
         if (selected(e.to, e.toDegree)) linked.add(`${e.from}:${e.fromDegree}`);
     });
-    const preview = previewGuide && !focused ? edges.find(edge => edge.guide && !edge.held) ?? edges.find(edge => edge.guide) : undefined;
+    // In a three-chord view, preview the first connected pair in reading order.
+    const firstConnection = Math.min(...edges.map(edge => edge.from));
+    const firstPair = edges.filter(edge => edge.from === firstConnection);
+    const preview = focused ? undefined : firstPair.find(edge => edge.guide && !edge.held)
+        ?? firstPair.find(edge => !edge.held) ?? firstPair[0];
     const captions = edges.map(edge => {
         if (edge !== preview && !selected(edge.from, edge.fromDegree) && !selected(edge.to, edge.toDegree)) return null;
         const from = toneLabel(example.steps[edge.from], edge.fromDegree);
@@ -93,7 +97,7 @@ function VoiceDiagram({ example, onOpenChord, activeStep, previewGuide, label }:
         </div>
         <div className={styles.motionLabels}>{example.facts.map((fact, i) => <p key={i}>{accidental(example.steps[i].chord.root)} {example.kind === 'comparison' ? '↔' : '→'} {accidental(example.steps[i + 1].chord.root)}<span>{rootMotionLabel(example.steps[i].chord.root, example.steps[i + 1].chord.root, fact.rootMotion)}</span></p>)}</div>
         <ul className={styles.srOnly} aria-label="Tone correspondence">{edges.map((edge, i) => <li key={i}>{toneLabel(example.steps[edge.from], edge.fromDegree).name} {edge.held ? 'held as' : example.kind === 'comparison' ? 'compared with' : 'to'} {toneLabel(example.steps[edge.to], edge.toDegree).name}</li>)}</ul>
-        <div className={styles.srOnly} role="status">{!focused ? '' : unlinked ? 'No linked tone' : captions.flatMap(caption => caption ? [caption.spoken] : []).join('. ')}</div>
+        <div className={styles.srOnly} role="status">{unlinked ? 'No linked tone' : captions.flatMap(caption => caption ? [caption.spoken] : []).join('. ')}</div>
         <details className={styles.details}><summary>Common and changed tones</summary>
             <p>Rows · chord roles, root at bottom</p>
             <p>{example.kind === 'comparison' ? 'Pitch comparison' : nearest ? 'Nearest agreed pitch-class motion' : 'Illustrative voice leading'}</p>
@@ -136,7 +140,7 @@ function TritoneComparison({ original, substitute, selectedId }: {
     </table>;
 }
 
-export function RelationExampleView({ example, alternative, onOpenChord, activeStep, previewGuide }: Props & { alternative?: RelationExample }) {
+export function RelationExampleView({ example, alternative, onOpenChord, activeStep }: Props & { alternative?: RelationExample }) {
     if (alternative) {
         const original = example.id === 'original' ? example : alternative;
         const substitute = example.id === 'original' ? alternative : example;
@@ -151,5 +155,5 @@ export function RelationExampleView({ example, alternative, onOpenChord, activeS
             </details>
         </>;
     }
-    return <VoiceDiagram example={example} onOpenChord={onOpenChord} activeStep={activeStep} previewGuide={previewGuide} />;
+    return <VoiceDiagram example={example} onOpenChord={onOpenChord} activeStep={activeStep} />;
 }

@@ -82,9 +82,8 @@ export function HarmonyModeWorkspace({ query, result, onQueryChange, onOpenChord
     // Line playback exists only for motion; a comparison is not a progression.
     const hasGuideTones = !!lines && lines.transitions.some(transition => transition.voices.length > 0);
     const linesLabel = !lines || lines.guide ? 'Hear guide tones' : 'Hear voice lines';
-    const needsPrecedingChord = query.kind === 'cadence' && !query.context?.before
-        && result.checks?.some(check => check.id === 'preceding-chord' && check.state === 'unknown');
-    const missingAtResult = needsPrecedingChord ? [] : result.missing;
+    const cadenceNeedsInput = query.kind === 'cadence' && result.status === 'insufficient-context';
+    const missingAtResult = cadenceNeedsInput ? [] : result.missing;
     const cadenceReading = query.kind === 'cadence' ? result.interpretations?.[0] : undefined;
     const resultTitle = cadenceReading && query.context?.before ? copyParts(cadenceReading.label)[0]
         : query.kind === 'predominant' ? `${preparationLabel} preparation` : query.kind === 'ii-v' ? `${predominantLabel} preparation`
@@ -110,7 +109,6 @@ export function HarmonyModeWorkspace({ query, result, onQueryChange, onOpenChord
     const evidenceTitle = query.kind === 'tritone' ? 'Substitution evidence'
         : query.kind === 'cadence' ? 'Cadence evidence' : query.kind === 'passing' ? 'Passing chord evidence'
             : example?.kind === 'comparison' ? 'Chord relationship evidence' : 'Harmonic function evidence';
-    const showExampleLabel = query.kind === 'cadence' && examples.length === 1 && example && !result.observations.includes(example.label) && !readingLabels.has(example.label);
     const isContextual = query.kind === 'passing' || query.kind === 'cadence';
     const sourceScale = sourceScaleRef ? resolveScaleRef(sourceScaleRef) : null;
     const canAdoptSource = !!onUseScaleFrame && (sourceScale?.name === 'Ionian' || sourceScale?.name === 'Aeolian');
@@ -166,7 +164,7 @@ export function HarmonyModeWorkspace({ query, result, onQueryChange, onOpenChord
             </div>
         </div>
 
-        {isContextual && <ContextWindow key={`${query.kind}:${query.context?.soprano ?? ''}`} query={query} onQueryChange={onQueryChange} />}
+        {isContextual && <ContextWindow key={query.kind} query={query} checks={result.checks} onQueryChange={onQueryChange} />}
 
         <section className={styles.resultSection} aria-live="polite">
             <div className={styles.resultHeading}>
@@ -176,7 +174,7 @@ export function HarmonyModeWorkspace({ query, result, onQueryChange, onOpenChord
                         <span>{example.steps.map(step => step.chord.name).join(example.kind === 'motion' ? ' → ' : ' ↔ ')}</span>
                     </p>}
                     <h3>{resultTitle}</h3>
-                    {!needsPrecedingChord && <span className={styles.status} data-status={result.status}>{STATUS_LABELS[result.status]}</span>}
+                    {!cadenceNeedsInput && <span className={styles.status} data-status={result.status}>{STATUS_LABELS[result.status]}</span>}
                 </div>
                 {example && <div className={styles.playActions}>
                     {/* Each button is its own play/stop toggle; there is no separate Stop control. */}
@@ -191,8 +189,7 @@ export function HarmonyModeWorkspace({ query, result, onQueryChange, onOpenChord
             {exampleTabs}
             {audioError && <p className={styles.error} role="alert">{audioError}</p>}
             {playing && activeStep !== null && example && <p className={styles.nowPlaying}>Playing {example.steps[activeStep]?.chord.name}</p>}
-            {showExampleLabel && <p className={styles.exampleLabel}>{copyLines(example.label)}</p>}
-            {example && <RelationExampleView key={`${query.kind === 'tritone' ? 'pair' : example.id}:${JSON.stringify(query)}`} example={example} alternative={query.kind === 'tritone' ? result.examples.find(item => item.id !== example.id) : undefined} onOpenChord={onOpenChord} activeStep={activeStep} previewGuide={query.kind === 'dominant'} />}
+            {example && <RelationExampleView key={`${query.kind === 'tritone' ? 'pair' : example.id}:${JSON.stringify(query)}`} example={example} alternative={query.kind === 'tritone' ? result.examples.find(item => item.id !== example.id) : undefined} onOpenChord={onOpenChord} activeStep={activeStep} />}
             {(applicability || missingAtResult.length > 0 || !!example?.notes?.length) && <div className={styles.findings}>
                 {example?.notes?.map((note, index) => <p key={`note-${index}`}>{copyLines(note)}</p>)}
                 {applicability && <p>{copyLines(applicability.label)}</p>}
