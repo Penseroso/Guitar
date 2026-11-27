@@ -149,7 +149,14 @@ export function HarmonyModeWorkspace({ query, result, onQueryChange, onOpenChord
 
         <section className={styles.resultSection} aria-live="polite">
             <div className={styles.resultHeading}>
-                <div><span className={styles.status} data-status={result.status}>{STATUS_LABELS[result.status]}</span><h3>{resultTitle}</h3></div>
+                <div>
+                    {example && <p className={styles.exampleLabel}>
+                        <span className={styles.provenance}>{example.provenance === 'observation' ? 'Supplied chords' : 'Example'} in {formatAccidentals(query.frame.tonic)} {query.frame.mode}</span>
+                        <span>{example.steps.map(step => step.chord.name).join(example.kind === 'motion' ? ' → ' : ' ↔ ')}</span>
+                    </p>}
+                    <h3>{resultTitle}</h3>
+                    <span className={styles.status} data-status={result.status}>{STATUS_LABELS[result.status]}</span>
+                </div>
                 {example && <div className={styles.playActions}>
                     {/* Each button is its own play/stop toggle; there is no separate Stop control. */}
                     <button type="button" className={styles.playButton} disabled={audioMode !== 'relation' && loading} aria-busy={audioMode === 'relation' && loading} aria-pressed={audioMode === 'relation' && playing} onClick={audioMode === 'relation' && (loading || playing) ? cancel : () => play(example, false)}>
@@ -163,7 +170,7 @@ export function HarmonyModeWorkspace({ query, result, onQueryChange, onOpenChord
             {exampleTabs}
             {audioError && <p className={styles.error} role="alert">{audioError}</p>}
             {playing && activeStep !== null && example && <p className={styles.nowPlaying}>Playing {example.steps[activeStep]?.chord.name}</p>}
-            {example && <p className={styles.exampleLabel}><span className={styles.provenance}>{example.provenance === 'observation' ? 'Observed' : 'Example'}</span>{showExampleLabel && <span>{copyLines(example.label)}</span>}</p>}
+            {showExampleLabel && <p className={styles.exampleLabel}>{copyLines(example.label)}</p>}
             {example && <RelationExampleView key={`${example.id}:${JSON.stringify(query)}`} example={example} alternative={query.kind === 'tritone' ? result.examples.find(item => item.id !== example.id) : undefined} onOpenChord={onOpenChord} activeStep={activeStep} />}
             {(mainObservations.length > 0 || result.missing.length > 0 || !!example?.notes?.length) && <div className={styles.findings}>
                 {example?.notes?.map((note, index) => <p key={`note-${index}`}>{copyLines(note)}</p>)}

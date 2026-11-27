@@ -34,7 +34,7 @@ describe('Harmony expansion interactions', () => {
         expect(screen.getByRole('button', { name: 'Destination root C' })).toBeTruthy();
         expect(screen.getByRole('button', { name: 'Key C' })).toBeTruthy();
         expect(changed.mock.lastCall?.[0]).toMatchObject({ target: DEFAULT_HARMONY_QUERY.target, frame: DEFAULT_HARMONY_QUERY.frame, kind: 'backdoor' });
-        expect(screen.getByText('Example')).toBeTruthy();
+        expect(screen.getByText('Example in C major')).toBeTruthy();
     });
 
     it('distinguishes an unknown phrase ending from an explicit non-ending and retains the observed motion', async () => {
@@ -55,7 +55,7 @@ describe('Harmony expansion interactions', () => {
         expect(screen.getByRole('heading', { name: /IV\/iv–I motion/ })).toBeTruthy();
         await user.click(screen.getByLabelText('Relationship details'));
         expect(screen.getByLabelText('Phrase ending: not met')).toBeTruthy();
-        expect(screen.getByText('Observed', { exact: true })).toBeTruthy();
+        expect(screen.getByText('Supplied chords in C major', { exact: true })).toBeTruthy();
     });
 
     it('keeps actual bass and passing rhythm as independent observations', async () => {
