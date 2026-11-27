@@ -29,12 +29,16 @@ const runs = fixtures.flatMap(intent => (['recommended', 'all'] as const).map(su
     if (firstDigest !== digest(replay.rows) || stable(first.summary) !== stable(replay.summary)) throw new Error('nondeterministic smoke result');
     return { intent, surface, outcome: first.outcome, matching: first.summary.matching, rows: first.rows.length, digest: firstDigest };
 }));
+// Keep the full-range C11 census independent of the worker lifecycle test's time budget.
+const fullAccompaniment = page({ chordId: 'dominant-11', rootPitchClass: 0, context: 'accompaniment' }, 'all');
+if (fullAccompaniment.summary.structural !== 267524) throw new Error('Unexpected full-range C11 census');
 const conservation = productConformance();
 
 console.log(JSON.stringify({
     status: 'PASS',
     versions: ENGINE_VERSIONS,
     runs,
+    fullRangeC11: fullAccompaniment.summary.structural,
     conservation: {
         geometryCases: conservation.geometry.length,
         boundaryCases: conservation.boundaries.length,

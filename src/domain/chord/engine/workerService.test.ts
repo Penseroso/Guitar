@@ -39,17 +39,22 @@ it('acknowledges before running, yields tasks, and returns exact bounded pages w
     h.service.dispose();expect(h.service.diagnostics().retainedBufferBytes).toBe(0);
 });
 it('pauses without exact-empty claims and continues the same accumulator to the identical page',async()=>{
-    const h=harness(1);h.send('START',{intent:wide});
+    // Enough slices to pause after real progress, with bounded work for the replay.
+    const intent = { ...wide, instrument: { maxModeledFret: 6 } };
+    const h=harness(1);h.send('START',{intent});
     await h.pump(()=>h.messages.some(m=>m.kind==='PAUSED'));
     const paused=h.messages.find(m=>m.kind==='PAUSED')!;
     expect(paused.payload).toMatchObject({summary:{completeness:'partial',hasMore:'unknown'},resume:'live-checkpoint'});
+    if (paused.kind !== 'PAUSED') throw new Error('Expected a paused scan');
+    expect(paused.payload.summary.structural).toBeGreaterThan(0);
+    expect(paused.payload.summary.structural).toBeLessThan(3600);
     expect(h.service.diagnostics().paused).toBe(true);
     h.send('CONTINUE',{uninterrupted:true},2);
     await h.pump(()=>h.messages.some(m=>m.kind==='EXACT_PAGE'&&m.operationId===2));
     const exact=h.messages.find(m=>m.kind==='EXACT_PAGE'&&m.operationId===2)!;
     if(exact.kind!=='EXACT_PAGE')throw new Error('test');
-    expect(exact.payload.page.summary.structural).toBe(267524);
-    const reference=new EngineSession(wide,{cacheBudgetBytes:0}).begin();while(!reference.step()){}
+    expect(exact.payload.page.summary.structural).toBe(3600);
+    const reference=new EngineSession(intent,{cacheBudgetBytes:0}).begin();while(!reference.step()){}
     expect(exact.payload.page.rows).toEqual(reference.finish().rows);
     h.service.dispose();
 });

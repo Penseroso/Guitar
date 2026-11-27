@@ -1,6 +1,6 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 @import "tailwindcss";
-@config "../../tailwind.config.ts";
+@config "../../tailwind.config.mts";
 
 :root {
   /* RGB tokens (Tailwind /opacity 지원용) */
