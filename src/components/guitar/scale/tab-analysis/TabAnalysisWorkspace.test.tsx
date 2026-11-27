@@ -343,3 +343,51 @@ describe('score-first explicit analysis workflow', () => {
         expect(screen.getByText(/new.txt/)).toBeTruthy();
     });
 });
+
+describe('project replacement', () => {
+    it('preserves the current score on invalid files and cancel, and clears history only after confirmed replacement', async () => {
+        const user = userEvent.setup();
+        const { encodeTabProject } = await import('@/features/tab-analysis/project');
+        const saved = encodeTabProject(createTabAnalysisState());
+        render(<Harness/>);
+        await parseInput(user);
+        const projectInput = screen.getByLabelText('Open a THE MODUS project file');
+        const open = (content: string) => fireEvent.change(projectInput, {
+            target: { files: [textFile('saved.modus.json', () => Promise.resolve(content))] },
+        });
+        open('{}');
+        await screen.findByText('Choose a THE MODUS project file.');
+        expect((screen.getByRole('button', { name: 'Undo' }) as HTMLButtonElement).disabled).toBe(false);
+        open(saved);
+        await screen.findByRole('button', { name: 'Replace current project' });
+        await user.click(screen.getByRole('button', { name: 'Cancel' }));
+        expect(onset(3)).toBeTruthy();
+        open(saved);
+        await user.click(await screen.findByRole('button', { name: 'Replace current project' }));
+        expect((screen.getByRole('button', { name: 'Undo' }) as HTMLButtonElement).disabled).toBe(true);
+        expect(screen.getByRole('button', { name: 'String 1, onset 1, empty' })).toBeTruthy();
+    });
+
+    it('protects uncommitted fraction, IME and chord inputs at the file controls', async () => {
+        const user = userEvent.setup();
+        render(<Harness/>);
+        const choose = vi.spyOn(screen.getByLabelText('Open a THE MODUS project file'), 'click');
+        const open = screen.getByRole('button', { name: 'Open project' });
+        await user.click(screen.getByRole('button', { name: 'Edit position 1, bar 1, string 1' }));
+        const numerator = screen.getByRole('textbox', { name: 'Start numerator' }) as HTMLInputElement;
+        await user.type(numerator, '2');
+        fireEvent.compositionStart(numerator);
+        await user.click(open);
+        expect(numerator.value).toBe('2');
+        expect(document.activeElement).toBe(numerator);
+        fireEvent.compositionEnd(numerator);
+        await user.click(open);
+        expect(choose).not.toHaveBeenCalled();
+        await user.click(screen.getByRole('button', { name: 'Cancel start input' }));
+        await user.click(screen.getByRole('button', { name: 'Close position editor' }));
+        await user.click(screen.getByRole('button', { name: 'Add chord to selection' }));
+        await user.click(open);
+        expect(choose).not.toHaveBeenCalled();
+        expect(screen.getByRole('heading', { name: 'Add supplied chord' })).toBeTruthy();
+    });
+});

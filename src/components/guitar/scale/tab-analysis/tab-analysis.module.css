@@ -17,7 +17,7 @@
 .primary { min-height: 48px; min-width: 132px; padding: 10px 24px; border: 0; border-radius: 5px; background: #f4f4f5; color: #0a0a0a; font-weight: 650 !important; }
 .primary:hover { background: #fff; }
 .fileInput { display: none; }
-.fileStatus { display: flex; gap: 12px; align-items: center; }
+.fileStatus { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; overflow-wrap: anywhere; }
 .inputArea { margin-bottom: 24px; }
 .inputLabel { display: block; color: var(--workspace-muted); margin-bottom: 10px; }
 .sourceInput { display: block; width: 100%; height: 184px; min-height: 160px; resize: vertical; border: 1px solid var(--workspace-border); border-radius: 4px; padding: 12px; background: var(--workspace-panel); color: #f4f4f5; font: 13px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre; overflow-x: auto; tab-size: 4; }

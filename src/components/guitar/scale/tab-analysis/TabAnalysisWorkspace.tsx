@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { parseAsciiTab, MAX_TAB_SOURCE_LENGTH } from '@/domain/tab/ascii';
 import { buildTabScoreAnnotations } from '@/domain/tab/annotations';
-import { TAB_TUNINGS } from '@/domain/tab/types';
+import type { ProjectReading, TabProject } from '@/features/tab-analysis/project';
+import { TAB_TUNINGS, type TabDocument } from '@/domain/tab/types';
 import type { TabAnalysisAction, TabAnalysisState } from '@/features/tab-analysis/state';
 import { createScaleRef, resolveScaleRef, type ScaleRef } from '@/domain/scale/scale-ref';
 import { SCALE_REGISTRY } from '@/domain/scale/scales';
@@ -49,6 +50,16 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
     const [readingFile, setReadingFile] = useState(false);
     const [fileError, setFileError] = useState<string | null>(null);
     const readRevision = useRef(0);
+    const projectInput = useRef<HTMLInputElement>(null);
+    const workspace = useRef<HTMLElement>(null);
+    const projectGuard = useRef<() => boolean>(null);
+    const composing = useRef(false);
+    const [pendingProject, setPendingProject] = useState<{ file: string; project: TabProject } | null>(null);
+    const [projectName, setProjectName] = useState('');
+    const [projectStatus, setProjectStatus] = useState('');
+    const [projectGeneration, setProjectGeneration] = useState(0);
+    const reportReading = useCallback((document: TabDocument, reading: ProjectReading) =>
+        dispatch({ type: 'set-project-reading', document, reading }), [dispatch]);
     const fileInput = useRef<HTMLInputElement>(null);
     const sourceInput = useRef<HTMLTextAreaElement>(null);
     const contextElement = useRef<HTMLDetailsElement>(null);
@@ -77,10 +88,58 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
     };
 
     useEffect(() => () => { readRevision.current += 1; }, []);
-    const cancelRead = () => { readRevision.current += 1; setReadingFile(false); setFileError(null); };
+    const cancelRead = () => { readRevision.current += 1; setReadingFile(false); setFileError(null); setPendingProject(null); };
+    const canUseProject = () => {
+        if (!composing.current && !projectGuard.current?.() && !workspace.current?.querySelector('[data-project-draft]')) return true;
+        setFileError('Finish or cancel the current input before using a project file.');
+        return false;
+    };
+    const guardPointer = (event: React.PointerEvent | React.MouseEvent) => { if (!canUseProject()) event.preventDefault(); };
+    const saveProject = async () => {
+        if (!canUseProject()) return;
+        setFileError(null);
+        try {
+            const { encodeTabProject, PROJECT_EXTENSION } = await import('@/features/tab-analysis/project');
+            const blob = new Blob([encodeTabProject(state)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            const base = projectName || state.documentName.replace(/\.(txt|tab)$/i, '') || 'Untitled';
+            link.href = url;
+            link.download = base.replace(/[\/\\:*?"<>|]/g, '_') + PROJECT_EXTENSION;
+            try { link.click(); } finally { window.setTimeout(() => URL.revokeObjectURL(url), 1000); }
+            setProjectStatus(`Download started · ${link.download}`);
+        } catch (error) { setFileError(error instanceof Error ? error.message : 'The project could not be saved.'); }
+    };
+    const readProject = async (file?: File) => {
+        if (!file || !canUseProject()) return;
+        cancelRead();
+        const revision = ++readRevision.current;
+        setProjectStatus('');
+        setReadingFile(true);
+        try {
+            const { decodeTabProject, MAX_PROJECT_BYTES } = await import('@/features/tab-analysis/project');
+            if (file.size > MAX_PROJECT_BYTES) throw new Error('The project exceeds the 8 MB file limit.');
+            const project = decodeTabProject(await file.text());
+            if (revision === readRevision.current) setPendingProject({ file: file.name, project });
+        } catch (error) {
+            if (revision === readRevision.current) setFileError(error instanceof Error ? error.message : 'The project could not be opened.');
+        } finally { if (revision === readRevision.current) setReadingFile(false); }
+    };
+    const replaceProject = () => {
+        if (!pendingProject || !canUseProject()) return;
+        dispatch({ type: 'open-project', project: pendingProject.project });
+        setProjectGeneration(generation => generation + 1);
+        setProjectName(pendingProject.file.replace(/(?:\.modus)?\.json$/i, ''));
+        setProjectStatus(`Opened · ${pendingProject.file}`);
+        setDraftStatus(null);
+        setAnnotationsVisible(true);
+        cancelRead();
+        requestAnimationFrame(() => scoreHeading.current?.focus({ preventScroll: true }));
+    };
     const loadFile = async (file: File | undefined) => {
         if (!file) return;
         const revision = ++readRevision.current;
+        setPendingProject(null);
         setFileError(null);
         if (!/\.(txt|tab)$/i.test(file.name)) { setFileError('Open a plain-text .txt or .tab file. Guitar Pro, MusicXML and images are not supported yet.'); setReadingFile(false); return; }
         if (file.size > MAX_TAB_SOURCE_LENGTH) { setFileError('This file is too large. Open a text excerpt smaller than 64 KB.'); setReadingFile(false); return; }
@@ -109,15 +168,29 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
         dispatch({ type: 'set-source', source, name: 'Melody & harmony study' });
         dispatch({ type: 'parsed', result });
     };
-    return <section className={styles.workspace} aria-label="Tab analysis workspace">
+    return <section ref={workspace} className={styles.workspace} aria-label="Tab analysis workspace"
+        onCompositionStartCapture={() => { composing.current = true; }} onCompositionEndCapture={() => { composing.current = false; }}>
         <div className={styles.headingRow}>
             <div><p className={styles.eyebrow}>TAB ANALYSIS</p><h1>Your music, note by note</h1></div>
             <div className={styles.actions}>
+                <span className={styles.actions} role="group" aria-label="Project files" data-timing-controls
+                    onPointerDownCapture={guardPointer} onMouseDownCapture={guardPointer}>
+                    <button type="button" className={styles.textAction} onClick={() => { if (canUseProject()) projectInput.current?.click(); }}>Open project</button>
+                    <button type="button" className={styles.textAction} onClick={() => void saveProject()}>Save project</button>
+                </span>
                 <button type="button" className={styles.textAction} onClick={() => fileInput.current?.click()}>Open text file</button>
                 <button type="button" className={styles.textAction} onClick={() => dispatch({ type: 'set-editor-open', open: !state.editorOpen })} aria-expanded={state.editorOpen}>Import text</button>
                 <button className={styles.textAction} type="button" onClick={example}>Try an example</button>
             </div>
         </div>
+        <input ref={projectInput} type="file" accept=".modus.json,.json,application/json" aria-label="Open a THE MODUS project file" className={styles.fileInput}
+            onChange={event => { const file = event.target.files?.[0]; event.target.value = ''; void readProject(file); }} />
+        {pendingProject && <div className={styles.fileStatus} data-timing-controls onPointerDownCapture={guardPointer} onMouseDownCapture={guardPointer}>
+            <span role="status">Open {pendingProject.file}? This replaces the current project and its undo history.</span>
+            <button className={styles.textAction} type="button" onClick={replaceProject}>Replace current project</button>
+            <button className={styles.textAction} type="button" onClick={cancelRead}>Cancel</button>
+        </div>}
+        {projectStatus && <p role="status" className={styles.meta}>{projectStatus}</p>}
         <input ref={fileInput} type="file" accept=".txt,.tab,text/plain" aria-label="Open a text tab file" className={styles.fileInput}
             onChange={event => { const file = event.target.files?.[0]; event.target.value = ''; void loadFile(file); }} />
         {readingFile && <div className={styles.fileStatus} role="status">Reading file… <button className={styles.textAction} type="button" onClick={cancelRead}>Cancel</button></div>}
@@ -192,7 +265,7 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
                         : state.analysisStatus === 'fresh' ? `Analyzed whole score. ${annotations.length ? 'Select a score annotation for its evidence.' : 'No supported pattern found in this score.'}`
                             : 'Ready to read TAB patterns across the score.'}</p>
                 </div>
-                <TabScoreView document={state.document} selection={state.selection} extend={false} focusedNoteId={null}
+                <TabScoreView key={projectGeneration} projectGuard={projectGuard} onReadingChange={reportReading} document={state.document} selection={state.selection} extend={false} focusedNoteId={null}
                     readingReferences={readingReferences}
                     harmony={state}
                     patternActions={<div className={styles.actions}>

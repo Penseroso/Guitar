@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef,
 import { Trash2 } from 'lucide-react';
 import type { TabDocument, TabFraction, TabMoment, TabNote, TabSelection } from '@/domain/tab/types';
 import type { TabScoreAnnotation } from '@/domain/tab/annotations';
+import type { ProjectReading } from '@/features/tab-analysis/project';
 import type { TabAnalysisAction } from '@/features/tab-analysis/state';
 import { TabMeasureEditor, TabNotationEditor, type TabNotationDraftState } from './TabNotationEditor';
 import { inspectTabTiming, type TabTimingInspection, type TabTimingTarget } from '@/domain/tab/timing-inspection';
@@ -60,7 +61,7 @@ function techniquePresentation(note: TabNote, notes: ReadonlyMap<string, TabNote
 
 export function TabScoreView({ document, selection, onSelect, extend, focusedNoteId,
     activeCell, onActiveCellChange, onSetFret, onUndo, onRedo,
-    annotations = [], onInsertMoment, onDeleteMoments, onDraftStatusChange, onSetMute, onEdit, readingReferences, harmony, patternActions, scoreFooter,
+    annotations = [], onInsertMoment, onDeleteMoments, onDraftStatusChange, onSetMute, onEdit, readingReferences, harmony, patternActions, scoreFooter, projectGuard, onReadingChange,
 }: {
     document: TabDocument;
     selection: TabSelection;
@@ -79,7 +80,9 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     onDraftStatusChange?: (status: TabDraftStatus) => void;
     onEdit?: (action: TabAnalysisAction) => void;
     readingReferences?: TabWrittenPointReferences;
-    harmony?: { scoreId: number; originsRevision: number; suppliedHarmony: readonly SuppliedTabChord[] };
+    projectGuard?: React.Ref<() => boolean>;
+    onReadingChange?: (document: TabDocument, reading: ProjectReading) => void;
+    harmony?: { reading?: ProjectReading; scoreId: number; originsRevision: number; suppliedHarmony: readonly SuppliedTabChord[] };
     patternActions?: React.ReactNode;
     scoreFooter?: React.ReactNode;
 }) {
@@ -221,6 +224,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         return composing.current || notationDraft.current.composing || notationDraft.current.dirty
             || Boolean(edit && edit.text !== originalText);
     };
+    React.useImperativeHandle(projectGuard, () => () => timingBlocked() || !!choosingMelody);
     const guardTiming = () => {
         if (!timingBlocked()) return true;
         setTimingNotice('Finish or cancel this input first.');
@@ -1034,6 +1038,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         }}>
         {harmony && onEdit
             ? <SuppliedHarmonyPanel document={document} selection={selection} harmony={harmony} onEdit={onEdit}
+                initialReading={harmony.reading} onReadingChange={onReadingChange}
                 rows={suppliedRows} references={readingReferences} requestedChord={currentChordRequest} renderLayout={layout}
                 onChooseMelody={chooseMelodyOnScore}
                 onSetKeyReference={frame => onEdit({ type: 'set-frame', frame })}

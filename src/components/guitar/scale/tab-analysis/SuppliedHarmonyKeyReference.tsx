@@ -37,7 +37,7 @@ export function SuppliedHarmonyKeyReference({ frame, onApply }: {
         <button type="button" ref={trigger} className={shared.action} aria-expanded={open} disabled={open}
             onClick={() => { setDraft(frame ? { ...frame } : { tonic: 'C', mode: 'major', lens: 'jazz-pop' }); setOpen(true); }}>
             {frame ? 'Change key reference' : 'Set key reference'}</button>
-        {open && <section className={styles.keyDraft} aria-label="Key reference draft" onKeyDown={event => {
+        {open && <section data-project-draft className={styles.keyDraft} aria-label="Key reference draft" onKeyDown={event => {
             if (event.key !== 'Escape' || event.nativeEvent.isComposing) return;
             event.preventDefault(); event.stopPropagation(); cancel();
         }}>

@@ -1,3 +1,4 @@
+import type { ProjectReading, TabProject } from './project';
 import {
     TAB_TUNINGS,
     type TabAnalysisContext, type TabDiagnostic, type TabDocument, type TabParseResult, type TabSelection, type TabFraction, type TabMeter,
@@ -31,6 +32,7 @@ export interface TabEditSnapshot {
 export interface TabAnalysisState extends TabEditSnapshot {
     source: string;
     sourceName: string;
+    reading: ProjectReading;
     diagnostics: TabDiagnostic[];
     context: TabAnalysisContext;
     editorOpen: boolean;
@@ -42,6 +44,8 @@ export interface TabAnalysisState extends TabEditSnapshot {
 }
 
 export type TabAnalysisAction =
+    | { type: 'open-project'; project: TabProject }
+    | { type: 'set-project-reading'; document: TabDocument; reading: ProjectReading }
     | { type: 'edit-source'; source: string }
     | { type: 'set-source'; source: string; name: string }
     | { type: 'set-tuning'; id: string }
@@ -74,7 +78,7 @@ export type TabAnalysisAction =
 export function createTabAnalysisState(scoreId = 0): TabAnalysisState {
     const document = createEmptyTabDocument();
     return {
-        source: '', sourceName: '', documentName: '', tuningId: 'standard', capo: 0,
+        source: '', sourceName: '', reading: { mode: 'positions', ids: [] }, documentName: '', tuningId: 'standard', capo: 0,
         document, diagnostics: [], selection: { start: 0, end: 0 },
         scoreId, originsRevision: scoreId, suppliedHarmony: [],
         activeCell: { momentId: document.moments[0].id, string: 0 },
@@ -91,7 +95,7 @@ function snapshot(state: TabAnalysisState): TabEditSnapshot {
 
 function commit(state: TabAnalysisState, patch: Partial<TabAnalysisState>): TabAnalysisState {
     return {
-        ...state, ...patch, diagnostics: [], context: { ...state.context, chord: null },
+        ...state, ...patch, reading: { ...state.reading, ids: [] }, diagnostics: [], context: { ...state.context, chord: null },
         past: [...state.past, snapshot(state)].slice(-100), future: [],
         analysisStatus: state.analysis ? 'stale' : 'idle',
     };
@@ -149,6 +153,16 @@ function normalizeImportedMeasures(document: TabDocument, nextId: number): { doc
 
 export function reduceTabAnalysis(state: TabAnalysisState, action: TabAnalysisAction): TabAnalysisState {
     switch (action.type) {
+        case 'open-project': {
+            const p = action.project;
+            const scoreId = Math.max(state.nextId, p.nextId);
+            return { ...createTabAnalysisState(scoreId), ...p, scoreId, capo: p.document.capo,
+                suppliedHarmony: p.suppliedHarmony.map(entry => ({ ...entry, scoreId })), nextId: scoreId + 1 };
+        }
+        case 'set-project-reading':
+            if (state.document !== action.document || (action.reading.mode === state.reading.mode
+                && (action.reading.ids === state.reading.ids || (!action.reading.ids.length && !state.reading.ids.length)))) return state;
+            return { ...state, reading: action.reading };
         case 'edit-source':
             return action.source === state.source ? state : { ...state, source: action.source, diagnostics: [], editorOpen: true };
         case 'set-source':
@@ -282,13 +296,13 @@ export function reduceTabAnalysis(state: TabAnalysisState, action: TabAnalysisAc
             return { ...state, activeCell: { ...action.cell } };
         case 'undo': {
             const previous = state.past.at(-1);
-            return previous ? { ...state, ...previous, diagnostics: [], context: { ...state.context, chord: null },
+            return previous ? { ...state, ...previous, reading: previous.document === state.document ? state.reading : { ...state.reading, ids: [] }, diagnostics: [], context: { ...state.context, chord: null },
                 analysisStatus: state.analysis ? 'stale' : 'idle',
                 past: state.past.slice(0, -1), future: [snapshot(state), ...state.future].slice(0, 100) } : state;
         }
         case 'redo': {
             const next = state.future[0];
-            return next ? { ...state, ...next, diagnostics: [], context: { ...state.context, chord: null },
+            return next ? { ...state, ...next, reading: next.document === state.document ? state.reading : { ...state.reading, ids: [] }, diagnostics: [], context: { ...state.context, chord: null },
                 analysisStatus: state.analysis ? 'stale' : 'idle',
                 past: [...state.past, snapshot(state)].slice(-100), future: state.future.slice(1) } : state;
         }

@@ -15,6 +15,7 @@ import {
 import type { TabDocument, TabSelection } from '@/domain/tab/types';
 import { SwipePicker } from '../../harmony/SwipePicker';
 import type { TabWrittenPointReferences } from '@/domain/tab/written-point-analysis';
+import type { ProjectReading } from '@/features/tab-analysis/project';
 import type { TabAnalysisAction } from '@/features/tab-analysis/state';
 import { PageControls } from './PageControls';
 import { SuppliedHarmonyAnalysis } from './SuppliedHarmonyAnalysis';
@@ -71,7 +72,9 @@ function compareRows(a: SuppliedChordRow, b: SuppliedChordRow) {
     return Number(!!right) - Number(!!left);
 }
 
-export function SuppliedHarmonyPanel({ document, selection, harmony, rows, references, onEdit, onRevealEvidence, requestedChord, renderLayout, onSetKeyReference, onChooseMelody }: {
+export function SuppliedHarmonyPanel({ document, selection, harmony, rows, references, onEdit, onRevealEvidence, requestedChord, renderLayout, onSetKeyReference, onChooseMelody, initialReading, onReadingChange }: {
+    initialReading?: ProjectReading;
+    onReadingChange?: (document: TabDocument, reading: ProjectReading) => void;
     document: TabDocument;
     selection: TabSelection;
     harmony: HarmonyState;
@@ -85,7 +88,7 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
     onChooseMelody?: (origin: HTMLButtonElement, read: (ids: string[]) => void) => void;
 }) {
     const [open, setOpen] = useState(false);
-    const [mode, setMode] = useState<Mode>('positions');
+    const [mode, setMode] = useState<Mode>(initialReading?.mode ?? 'positions');
     const [draft, setDraft] = useState<Draft | null>(null);
     const [chosenId, setChosenId] = useState<string | null>(null);
     const [listPage, setListPage] = useState(0);
@@ -95,9 +98,10 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
     const [openingSource, setOpeningSource] = useState<'trigger' | 'score'>('trigger');
     const [handledRequest, setHandledRequest] = useState<{ id: string; request: number; accepted: boolean } | null>(null);
     const [requestNotice, setRequestNotice] = useState<string | null>(null);
-    const [melody, setMelody] = useState<{ document: TabDocument; ids: string[] }>({ document, ids: [] });
+    const [melody, setMelody] = useState<{ document: TabDocument; ids: string[] }>({ document, ids: initialReading?.ids ?? [] });
     const currentMelody = melody.document === document ? melody : { document, ids: [] };
     if (melody !== currentMelody) setMelody(currentMelody);
+    useLayoutEffect(() => { onReadingChange?.(document, { mode, ids: currentMelody.ids }); }, [document, mode, currentMelody.ids, onReadingChange]);
     const composing = useRef(false);
     const toggle = useRef<HTMLButtonElement>(null);
     const add = useRef<HTMLButtonElement>(null);
@@ -308,7 +312,7 @@ export function SuppliedHarmonyPanel({ document, selection, harmony, rows, refer
                 {!draft && entries.length > 0 && <button type="button" ref={analysisButton} className={shared.action}
                     aria-expanded={readingOpen} onClick={toggleReadings}>Read progression{currentMelody.ids.length ? ` · ${currentMelody.ids.length} notes` : ''}</button>}
             </div>
-            {draft && <div className={styles.editor} onPointerDownCapture={event => {
+            {draft && <div data-project-draft className={styles.editor} onPointerDownCapture={event => {
                 if (composing.current && event.target !== event.currentTarget.ownerDocument.activeElement) {
                     event.preventDefault();
                     event.stopPropagation();
