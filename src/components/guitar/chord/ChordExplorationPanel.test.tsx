@@ -66,7 +66,10 @@ describe('integrated engine presentation', () => {
     it('distinguishes incomplete progress, pause, cancellation and exact emptiness', () => {
         const progress = session.begin().summary();
         const partial = render(state({ phase: 'running', selected: null, page: null, summary: progress }));
-        expect(partial).toContain('Finding voicings'); expect(partial).toContain('At least 0 matching voicings found; search incomplete.');
+        expect(partial).toContain('Finding voicings'); expect(partial).not.toContain('0 matching voicings');
+        const counting = render(state({ phase: 'running', page: null, summary: { ...progress, matching: 2 } }));
+        expect(counting).toContain('2 matching voicings so far');
+        expect(counting).not.toContain('Finding voicings');
         expect(partial).not.toContain('data-results-count='); expect(partial).not.toContain('No voicings match');
         const paused = render(state({ phase: 'paused', page: null, summary: progress }));
         expect(paused).toContain('Continue search'); expect(paused).toContain('Counts are incomplete.');

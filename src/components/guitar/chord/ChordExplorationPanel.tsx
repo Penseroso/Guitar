@@ -54,6 +54,8 @@ export function ChordExplorationPanel({ engine, context, onContextChange, onSele
     const cancelSearch = () => { cancelAudio(); engine.cancel(); };
     const { selected, view, summary } = engine, page = engine.phase === 'ready' ? engine.page : null;
     const busy = ['idle', 'loading', 'running'].includes(engine.phase);
+    const provisionalCount = summary?.completeness === 'partial' && summary.matching > 0
+        ? `${summary.matching} matching voicing${summary.matching === 1 ? '' : 's'} so far` : null;
     const degreeOptions = [{ value: '', label: 'Any' }, ...toneChoices];
     const outsideView = !!selected && !engine.selectionStale && !!engine.request && (!createViewMatcher(engine.request, view).matches(selected.candidate.states, selected.physical.status)||engine.surface==='recommended'&&!selected.recommendation.eligible);
     const chips: { label: string; value: string; clear: Partial<ViewRequest> }[] = [];
@@ -89,14 +91,14 @@ export function ChordExplorationPanel({ engine, context, onContextChange, onSele
             <div className={styles.selectedTools}>
                 <button ref={neckTrigger} className={styles.action} aria-haspopup="dialog" onClick={() => setNeckOpen(true)}>Full fretboard</button>
             </div>
-        </aside> : <div className={styles.selected}>{busy && <p role="status">Finding voicings…</p>}{engine.selectionNotice && <p role="status" className={styles.warning}>{engine.selectionNotice}</p>}{page?.outcome === 'structurally-empty' && <p role="status">No allocations satisfy this structural request.</p>}</div>}
+        </aside> : <div className={styles.selected}>{engine.selectionNotice && <p role="status" className={styles.warning}>{engine.selectionNotice}</p>}{page?.outcome === 'structurally-empty' && <p role="status">No allocations satisfy this structural request.</p>}</div>}
         <div className={styles.browser}>
             <div className={styles.row}><h2 className="text-lg font-semibold">Voicings</h2><button className={styles.action} aria-expanded={filtersOpen} aria-controls={id + '-filters'} onClick={() => setFiltersOpen(open => !open)}>Filters{activeFilterCount ? ` (${activeFilterCount})` : ''}</button></div>
             {context === 'accompaniment' && <div className={styles.chips}><button className={styles.action + ' ' + styles.chip} aria-label="Exclude accompaniment shapes" onClick={() => onContextChange('standalone')}>Accompaniment included ×</button></div>}
             {chips.length > 0 && <div className={styles.chips} aria-label="Active filters">{chips.map(chip => <button className={styles.action + ' ' + styles.chip} key={chip.label} aria-label={`Remove ${chip.label} filter`} onClick={() => engine.setView(chip.clear)}>{chip.label}: {chip.value} ×</button>)}<button className={styles.action} onClick={reset}>Clear filters</button></div>}
-            {!page && summary?.completeness === 'partial' && <p role="status" aria-live="polite">At least {summary.matching} matching voicings found; search incomplete.</p>}
+            {busy && <p role="status">{provisionalCount ?? 'Finding voicings…'}</p>}
             {busy && <button className={styles.action} onClick={cancelSearch}>Cancel search</button>}
-            {engine.phase === 'paused' && <div role="status"><p>Search paused at its time budget. Counts are incomplete.</p><button className={styles.action} onClick={() => engine.continueSearch()}>Continue search</button><button className={styles.action} onClick={cancelSearch}>Cancel search</button></div>}
+            {engine.phase === 'paused' && <div role="status"><p>Search paused. {provisionalCount ?? 'Counts are incomplete.'}</p><button className={styles.action} onClick={() => engine.continueSearch()}>Continue search</button><button className={styles.action} onClick={cancelSearch}>Cancel search</button></div>}
             {engine.phase === 'cancelled' && <div role="status"><p>Search cancelled. No exact result has been committed.</p><button className={styles.action} onClick={engine.retry}>Retry search</button></div>}
             {page && <><h3 className={styles.small} aria-live="polite" data-results-count={page.summary.matching}>{page.summary.matching} matching voicings · {page.rows.length} on this page</h3>
                 {page.outcome==='no-matches'&&engine.surface==='recommended'&&<p>No voicings meet this recommendation policy for these filters. <button className={styles.action} onClick={()=>engine.setSurface('all')}>All voicings</button></p>}
