@@ -130,7 +130,8 @@ export default function ClientApp() {
 
     // --- State: Chord Mode ---
     const [chordType, setChordType] = useState('major');
-    const [chordBassTone, setChordBassTone] = useState<string | null | undefined>(undefined);
+    const [chordFromHarmony, setChordFromHarmony] = useState<ChordRef | null>(null);
+    const chordBassTone = useMemo(() => chordFromHarmony ? chordRefBassTone(chordFromHarmony) : undefined, [chordFromHarmony]);
     const [chordPlayingContext, setChordPlayingContext] = useState<ResolvedRequest['interpretation']['context']>('standalone');
 
     // --- State: Chord Mode — Reverse ("Name a shape") ---
@@ -267,8 +268,9 @@ export default function ClientApp() {
     // --- Handlers ---
     const fretboardContainerRef = useRef<HTMLDivElement>(null);
     const openHarmonyFromChord = useCallback((chord: ChordRef) => {
-        setHarmonyQuery(linkChordToHarmony(harmonyQuery, chord));
-        setHarmonySourceScaleRef(null);
+        const next = linkChordToHarmony(harmonyQuery, chord);
+        setHarmonyQuery(next);
+        if (next !== harmonyQuery) setHarmonySourceScaleRef(null);
         setHarmonyReturnMode(null);
         setMode('harmony');
     }, [harmonyQuery, setHarmonyQuery]);
@@ -304,7 +306,8 @@ export default function ClientApp() {
         if (pitchClass === null) return;
         setSelectedKey(pitchClass);
         setChordType(chord.chordId);
-        setChordBassTone(chordRefBassTone(chord));
+        const { root, chordId, bass } = chord;
+        setChordFromHarmony({ root, chordId, ...(bass ? { bass } : {}) });
         setChordIntent('forward');
         setHarmonyReturnMode('chord');
         setMode('chord');
@@ -340,7 +343,12 @@ export default function ClientApp() {
                     // Mount the TAB reader before handing this file to its normal validation and replacement flow.
                     flushSync(() => { setMode('scale'); setScaleWorkflow('analyze'); setHarmonyReturnMode(null); });
                     projectReader.current?.(file);
-                }} onModeChange={(next) => { setHarmonyReturnMode(null); if (next === 'chord') setChordBassTone(undefined); setMode(next); }} /></div>
+                }} onModeChange={(next) => {
+                    if (next === mode) return;
+                    setHarmonyReturnMode(null);
+                    if (next === 'chord') setChordFromHarmony(null);
+                    setMode(next);
+                }} /></div>
 
                 {mode === 'scale' && (
                     <div className="col-span-1 lg:col-span-12 min-w-0">
@@ -399,11 +407,15 @@ export default function ClientApp() {
                     <div className="col-span-1 lg:col-span-12 min-w-0">
                         <ChordModeWorkspace
                             intent={chordIntent} onIntentChange={setChordIntent}
-                            onExploreHarmony={() => openHarmonyFromChord({ root: getKeyName(selectedKey), chordId: chordType })}
+                            onExploreHarmony={() => openHarmonyFromChord(chordFromHarmony ?? { root: getKeyName(selectedKey), chordId: chordType })}
                             onReturnToHarmony={harmonyReturnMode === 'chord' ? () => { setHarmonyReturnMode(null); setMode('harmony'); } : undefined}
-                            chordType={chordType} onChordTypeChange={(next) => { setChordBassTone(undefined); setChordType(next); }}
+                            chordType={chordType} onChordTypeChange={(next) => {
+                                if (next !== chordType) { setChordFromHarmony(null); setChordType(next); }
+                            }}
                             chordSelectorGroups={CHORD_SELECTOR_GROUPS}
-                            root={selectedKey} onRootChange={(next) => { setChordBassTone(undefined); setSelectedKey(next); }}
+                            root={selectedKey} onRootChange={(next) => {
+                                if (next !== selectedKey) { setChordFromHarmony(null); setSelectedKey(next); }
+                            }}
                             explorationPanel={<ChordExplorationPanel
                                 key={`${chordType}:${selectedKey}`}
                                 context={chordPlayingContext} engine={exploration}

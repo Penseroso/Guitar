@@ -113,6 +113,23 @@ describe('supplied harmony source controls', () => {
         expect(screen.getByRole('button', { name: 'Read progression' }).getAttribute('aria-expanded')).toBe('false');
         expect(screen.queryByRole('region', { name: 'Progression reading' })).toBeNull();
     });
+    it('distinguishes a missing written start from a known onset outside a supplied chord', () => {
+        const { document } = fixture();
+        delete document.moments[0].notes[0].duration;
+        delete document.moments[1].beatOffset;
+        const rows = resolveSuppliedHarmony(document, 1, 0, [{
+            id: 'chord', scoreId: 1, chord: { root: 'G', chordId: 'dominant-7' },
+            binding: { kind: 'written-time', originsRevision: 0,
+                start: { numerator: '0', denominator: '1' }, end: { numerator: '2', denominator: '1' } },
+        }]);
+        render(<SuppliedHarmonyAnalysis document={document} rows={rows} mode="written-time" frame={frame}
+            selected={['source-0', 'source-1', 'source-2']} onToggleNote={vi.fn()}
+            written={observeTabAcrossBarsWrittenTime(document, 1, { model: 'regular-bar-origins' })} />);
+        const notes = within(screen.getByRole('list', { name: 'Selected melody notes' })).getAllByRole('listitem');
+        expect(within(notes[0]).getByText('G7 · 3')).toBeTruthy();
+        expect(within(notes[1]).getByText('Written start unknown')).toBeTruthy();
+        expect(within(notes[2]).getByText('No chord at onset')).toBeTruthy();
+    });
     it('maps written relationships only to known overlaps, including a carry-in source', () => {
         const { document } = fixture(); document.moments[0].notes[0].duration = { numerator: 3, denominator: 1 };
         const entries: SuppliedTabChord[] = [0, 1].map(index => ({ id: `w${index}`, scoreId: 1,

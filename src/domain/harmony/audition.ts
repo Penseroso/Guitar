@@ -57,10 +57,18 @@ export function linePitches(example: RelationExample): Map<string, number>[] {
     return pitches;
 }
 export interface HarmonyPlaybackState { playing: boolean; error: string | null; step: number | null }
-interface Engine { start(): Promise<void>; playChord(notes: string[]): void }
+interface Engine { start(): Promise<void>; playChord(notes: string[]): (() => void) | undefined }
 export function createHarmonyPlayback(loadEngine: () => Promise<Engine>, onState: (state: HarmonyPlaybackState) => void) {
     let revision = 0, timer: ReturnType<typeof setTimeout> | undefined, finish: (() => void) | undefined;
-    const clear = () => { if (timer !== undefined) clearTimeout(timer); timer = undefined; finish?.(); finish = undefined; };
+    let stopStrum: (() => void) | undefined;
+    const clear = () => {
+        stopStrum?.();
+        stopStrum = undefined;
+        if (timer !== undefined) clearTimeout(timer);
+        timer = undefined;
+        finish?.();
+        finish = undefined;
+    };
     return {
         cancel() { revision++; clear(); onState({ playing: false, error: null, step: null }); },
         async play(example: RelationExample, linesOnly = false) {
@@ -74,7 +82,7 @@ export function createHarmonyPlayback(loadEngine: () => Promise<Engine>, onState
                 for (let i = 0; i < frames.length; i++) {
                     if (token !== revision) return;
                     onState({ playing: true, error: null, step: i });
-                    if (frames[i].midi.length) engine.playChord(frames[i].midi.map(midiNoteLabel));
+                    if (frames[i].midi.length) stopStrum = engine.playChord(frames[i].midi.map(midiNoteLabel));
                     await new Promise<void>(resolve => { finish = resolve; timer = setTimeout(() => { finish = undefined; timer = undefined; resolve(); }, frames[i].durationMs); });
                 }
                 if (token === revision) onState({ playing: false, error: null, step: null });

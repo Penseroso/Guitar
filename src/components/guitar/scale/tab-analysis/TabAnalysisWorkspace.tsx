@@ -172,8 +172,7 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale, projectRe
         cancelRead();
         const source = MIXED_EXAMPLE.split('\n').map((line, index) => `${getKeyName(tuning.midi[index] % 12)}${line.slice(1)}`).join('\n');
         const result = parseAsciiTab(source, { tuningMidi: tuning.midi, capo: state.capo });
-        dispatch({ type: 'set-source', source, name: 'Melody & harmony study' });
-        dispatch({ type: 'parsed', result });
+        dispatch({ type: 'load-example', result, name: 'Melody & harmony study' });
     };
     const analysisContext = <>
         <p className={styles.meta}>{hasNotation ? 'TAB patterns follow score order. View written time to inspect notation.' : 'Free timing · Positions are not beats.'}</p>

@@ -29,6 +29,10 @@ export interface TabEditSnapshot {
     activeCell: TabActiveCell | null;
     analyzedSource: string | null;
 }
+type TabSourceDraft = { source: string; sourceName: string };
+type ExampleDraftChange = { before: TabSourceDraft; after: TabSourceDraft };
+type TabHistoryEntry = TabEditSnapshot & { draftChange?: ExampleDraftChange };
+
 export interface TabAnalysisState extends TabEditSnapshot {
     source: string;
     sourceName: string;
@@ -37,8 +41,8 @@ export interface TabAnalysisState extends TabEditSnapshot {
     context: TabAnalysisContext;
     editorOpen: boolean;
     nextId: number;
-    past: TabEditSnapshot[];
-    future: TabEditSnapshot[];
+    past: TabHistoryEntry[];
+    future: TabHistoryEntry[];
     analysis: TabAnalysisSnapshot | null;
     analysisStatus: 'idle' | 'fresh' | 'stale';
 }
@@ -51,6 +55,7 @@ export type TabAnalysisAction =
     | { type: 'set-tuning'; id: string }
     | { type: 'set-capo'; capo: number }
     | { type: 'parsed'; result: TabParseResult }
+    | { type: 'load-example'; result: TabParseResult; name: string }
     | { type: 'select'; selection: TabSelection | null }
     | { type: 'set-active-cell'; cell: TabActiveCell }
     | { type: 'set-fret'; momentId: string; string: number; fret: number | null }
@@ -87,16 +92,16 @@ export function createTabAnalysisState(scoreId = 0): TabAnalysisState {
     };
 }
 
-function snapshot(state: TabAnalysisState): TabEditSnapshot {
+function snapshot(state: TabAnalysisState, draftChange?: ExampleDraftChange): TabHistoryEntry {
     const { document, documentName, tuningId, capo, selection, activeCell, analyzedSource } = state;
     const { scoreId, originsRevision, suppliedHarmony } = state;
-    return { document, documentName, tuningId, capo, selection, activeCell, analyzedSource, scoreId, originsRevision, suppliedHarmony };
+    return { document, documentName, tuningId, capo, selection, activeCell, analyzedSource, scoreId, originsRevision, suppliedHarmony, ...(draftChange && { draftChange }) };
 }
 
-function commit(state: TabAnalysisState, patch: Partial<TabAnalysisState>): TabAnalysisState {
+function commit(state: TabAnalysisState, patch: Partial<TabAnalysisState>, draftChange?: ExampleDraftChange): TabAnalysisState {
     return {
         ...state, ...patch, reading: { ...state.reading, ids: [] }, diagnostics: [], context: { ...state.context, chord: null },
-        past: [...state.past, snapshot(state)].slice(-100), future: [],
+        past: [...state.past, snapshot(state, draftChange)].slice(-100), future: [],
         analysisStatus: state.analysis ? 'stale' : 'idle',
     };
 }
@@ -156,7 +161,10 @@ export function reduceTabAnalysis(state: TabAnalysisState, action: TabAnalysisAc
         case 'open-project': {
             const p = action.project;
             const scoreId = Math.max(state.nextId, p.nextId);
-            return { ...createTabAnalysisState(scoreId), ...p, scoreId, capo: p.document.capo,
+            const activeCell = p.activeCell ?? { momentId: p.document.moments[p.selection?.start ?? 0].id, string: 0 };
+            const cursor = p.document.moments.findIndex(moment => moment.id === activeCell.momentId);
+            const selection = p.selection ?? { start: cursor, end: cursor };
+            return { ...createTabAnalysisState(scoreId), ...p, scoreId, activeCell, selection, capo: p.document.capo,
                 suppliedHarmony: p.suppliedHarmony.map(entry => ({ ...entry, scoreId })), nextId: scoreId + 1 };
         }
         case 'set-project-reading':
@@ -178,11 +186,12 @@ export function reduceTabAnalysis(state: TabAnalysisState, action: TabAnalysisAc
             const document = retuneTabDocument(state.document, state.document.tuningMidi, action.capo);
             return document === state.document ? state : commit(state, { document, capo: action.capo, analyzedSource: null });
         }
-        case 'parsed': {
+        case 'parsed':
+        case 'load-example': {
             if (!action.result.ok) return { ...state, diagnostics: action.result.diagnostics, editorOpen: true };
             const { document: imported, diagnostics } = action.result;
             const tuning = TAB_TUNINGS.find(candidate => candidate.id === state.tuningId)!;
-            if (imported.source !== state.source || imported.capo !== state.capo
+            if ((action.type === 'parsed' && imported.source !== state.source) || imported.capo !== state.capo
                 || imported.tuningMidi.length !== tuning.midi.length
                 || imported.tuningMidi.some((pitch, index) => pitch !== tuning.midi[index])
                 || imported.moments.length === 0 || imported.moments.length > 1_024) return state;
@@ -190,11 +199,13 @@ export function reduceTabAnalysis(state: TabAnalysisState, action: TabAnalysisAc
             if (!normalized) return state;
             const { document, nextId } = normalized;
             const first = document.moments[0];
+            const draft = { source: imported.source, sourceName: action.type === 'load-example' ? action.name : state.sourceName };
+            const change = action.type === 'load-example' ? { before: { source: state.source, sourceName: state.sourceName }, after: draft } : undefined;
             return {
-                ...commit(state, { document, documentName: state.sourceName,
+                ...commit(state, { document, documentName: draft.sourceName, ...draft,
                     scoreId: nextId, originsRevision: nextId, suppliedHarmony: [],
                     selection: { start: 0, end: 0 }, activeCell: { momentId: first.id, string: 0 },
-                    analyzedSource: state.source, editorOpen: false, nextId: nextId + 1 }), diagnostics,
+                    analyzedSource: imported.source, editorOpen: false, nextId: nextId + 1 }, change), diagnostics,
             };
         }
         case 'set-fret': {
@@ -294,17 +305,21 @@ export function reduceTabAnalysis(state: TabAnalysisState, action: TabAnalysisAc
             if (!state.document || !Number.isInteger(action.cell.string) || action.cell.string < 0 || action.cell.string >= 6
                 || !state.document.moments.some(moment => moment.id === action.cell.momentId)) return state;
             return { ...state, activeCell: { ...action.cell } };
-        case 'undo': {
-            const previous = state.past.at(-1);
-            return previous ? { ...state, ...previous, reading: previous.document === state.document ? state.reading : { ...state.reading, ids: [] }, diagnostics: [], context: { ...state.context, chord: null },
-                analysisStatus: state.analysis ? 'stale' : 'idle',
-                past: state.past.slice(0, -1), future: [snapshot(state), ...state.future].slice(0, 100) } : state;
-        }
+        case 'undo':
         case 'redo': {
-            const next = state.future[0];
-            return next ? { ...state, ...next, reading: next.document === state.document ? state.reading : { ...state.reading, ids: [] }, diagnostics: [], context: { ...state.context, chord: null },
-                analysisStatus: state.analysis ? 'stale' : 'idle',
-                past: [...state.past, snapshot(state)].slice(-100), future: state.future.slice(1) } : state;
+            const undo = action.type === 'undo';
+            const entry = undo ? state.past.at(-1) : state.future[0];
+            if (!entry) return state;
+            const { draftChange, ...score } = entry;
+            // Only the example changes both score and draft. Keep any newer pasted or opened text.
+            const expected = undo ? draftChange?.after : draftChange?.before;
+            const restoreDraft = expected?.source === state.source && expected.sourceName === state.sourceName;
+            const draft = restoreDraft ? (undo ? draftChange?.before : draftChange?.after) : undefined;
+            const inverse = snapshot(state, restoreDraft ? draftChange : undefined);
+            return { ...state, ...score, ...draft, reading: score.document === state.document ? state.reading : { ...state.reading, ids: [] },
+                diagnostics: [], context: { ...state.context, chord: null }, analysisStatus: state.analysis ? 'stale' : 'idle',
+                past: undo ? state.past.slice(0, -1) : [...state.past, inverse].slice(-100),
+                future: undo ? [inverse, ...state.future].slice(0, 100) : state.future.slice(1) };
         }
         case 'select': {
             const analysisStatus = state.analysis?.scope === 'selection' && state.context.chord

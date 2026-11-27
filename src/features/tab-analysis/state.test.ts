@@ -241,6 +241,27 @@ describe('editable tab session', () => {
         expect(reduceTabAnalysis(undone, { type: 'redo' }).document).toBe(imported.document);
     });
 
+    it('restores the independent source draft and filename across example undo and redo', () => {
+        const score = put(createTabAnalysisState(), 7);
+        const draft = reduceTabAnalysis(score, { type: 'set-source', source: 'pending text', name: 'my.tab' });
+        const example = reduceTabAnalysis(draft, { type: 'load-example', result: parseAsciiTab(TAB_MIXED_EXAMPLE), name: 'Study' });
+        expect(example.past.length).toBe(draft.past.length + 1);
+        expect(example).toMatchObject({ source: TAB_MIXED_EXAMPLE, documentName: 'Study', sourceName: 'Study' });
+        const undone = reduceTabAnalysis(example, { type: 'undo' });
+        expect(undone.document).toBe(score.document);
+        expect(undone).toMatchObject({ source: 'pending text', sourceName: 'my.tab' });
+        const redo = reduceTabAnalysis(undone, { type: 'redo' });
+        expect(redo.document).toBe(example.document);
+        expect(redo).toMatchObject({ source: TAB_MIXED_EXAMPLE, sourceName: 'Study' });
+
+        const changedBeforeUndo = reduceTabAnalysis(example, { type: 'edit-source', source: 'new text' });
+        const undoWithDraft = reduceTabAnalysis(changedBeforeUndo, { type: 'undo' });
+        expect(undoWithDraft.source).toBe('new text');
+        expect(reduceTabAnalysis(undoWithDraft, { type: 'redo' }).source).toBe('new text');
+        const changedBeforeRedo = reduceTabAnalysis(undone, { type: 'set-source', source: undone.source, name: 'other.tab' });
+        expect(reduceTabAnalysis(changedBeforeRedo, { type: 'redo' })).toMatchObject({ source: undone.source, sourceName: 'other.tab' });
+    });
+
     it('bounds history and keeps generated IDs unique across undo and branches', () => {
         let state = createTabAnalysisState();
         for (let index = 0; index < 105; index++) state = put(state, index % 37);

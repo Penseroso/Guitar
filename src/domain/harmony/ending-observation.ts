@@ -68,8 +68,10 @@ export function observeEnding(frame: TonalFrame, before: ResolvedHarmonyChord, t
         output.status = 'unsupported'; output.observations = ['No supported cadence pattern established by this pair'];
         return finish('Unclassified motion');
     }
-    const motion = authentic ? (picardy ? 'V–I · major tonic in minor' : 'V–I motion')
-        : plagal ? 'IV/iv–I motion' : deceptive ? `V–${frame.mode === 'major' ? 'vi' : '♭VI'} motion`
+    const tonicNumeral = policy.minor ? 'i' : 'I';
+    const subdominantNumeral = before.tones.some(tone => tone.degree === 'b3') ? 'iv' : 'IV';
+    const motion = authentic ? (picardy ? 'V–I · major tonic in minor' : `V–${tonicNumeral} motion`)
+        : plagal ? `${subdominantNumeral}–${tonicNumeral} motion` : deceptive ? `V–${frame.mode === 'major' ? 'vi' : '♭VI'} motion`
             : phrygian ? 'iv6–V · ♭6–5 bass' : 'Arrival on V';
     if (context.phraseEnding === false) {
         checks.push({ id: 'phrase-ending', label: 'Phrase ending', state: 'fail' });

@@ -155,4 +155,23 @@ describe('melody against supplied chords', () => {
         const result = analyzeSuppliedMelody(document, progression, 'written-time', [noteId(0), noteId(1), noteId(2)], written(document));
         expect(result).toMatchObject({ timing: 'missing-time', held: [{ note: { id: noteId(0) } }], suspensions: [] });
     });
+
+    it('places known starts without lengths and keeps missing starts distinct from uncovered starts', () => {
+        const document = score([71, 64, 64, 64], true);
+        for (const moment of document.moments) delete moment.notes[0].duration;
+        document.measureCount = 2;
+        for (const moment of document.moments) moment.measure = 2;
+        delete document.moments[3].beatOffset;
+        const progression = observeSuppliedProgression(rows(document, time(g7, '4', '5'), time(c, '5', '6')), 'written-time', frame);
+        const ids = document.moments.map(moment => moment.notes[0].id);
+        const read = (snapshot: ReturnType<typeof written>) => analyzeSuppliedMelody(document, progression, 'written-time', ids, snapshot);
+        const result = read(written(document));
+        expect(result.notes.map(note => [note.writtenStart?.numerator, note.chord?.chord.name, note.degree])).toEqual([
+            [4n, 'G7', '3'], [5n, 'C', '3'], [6n, undefined, null], [undefined, undefined, null],
+        ]);
+        expect(result.notes.every(note => note.interval === null)).toBe(true);
+        expect(result).toMatchObject({ timing: 'missing-time', held: [], shapes: [], suspensions: [] });
+        expect(result.motions.every(motion => !motion.guide && !motion.commonChordTone)).toBe(true);
+        expect(read(written({ ...document })).notes.every(note => note.writtenStart === null && note.chord === null)).toBe(true);
+    });
 });

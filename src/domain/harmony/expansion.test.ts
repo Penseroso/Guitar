@@ -92,6 +92,20 @@ describe('Harmony expansion: scoped approaches and voice leading', () => {
 describe('Harmony expansion: observations do not overclaim endings', () => {
     const minorFrame: TonalFrame = { ...frame, mode: 'minor', lens: 'classical' };
 
+    it.each([
+        [minorFrame, 'G', 'dominant-7', 'minor', 'V–i motion'],
+        [minorFrame, 'G', 'dominant-7', 'major', 'V–I · major tonic in minor'],
+        [frame, 'G', 'dominant-7', 'major', 'V–I motion'],
+        [minorFrame, 'F', 'minor', 'minor', 'iv–i motion'],
+        [frame, 'F', 'minor', 'major', 'iv–I motion'],
+        [frame, 'F', 'major', 'major', 'IV–I motion'],
+    ] as const)('reflects chord quality in observed motion: %s %s %s to %s', (key, root, quality, tonicQuality, label) => {
+        const result = exploreRelation(query({ kind: 'cadence', frame: key, target: { root: 'C', chordId: tonicQuality },
+            context: { before: { root, chordId: quality }, phraseEnding: false } }));
+        expect(result.interpretations?.[0]).toMatchObject({ label, status: 'possible' });
+        expect(result.observations).toContain(label);
+    });
+
     it('recognizes the bounded V–VI deceptive pattern but excludes a dominant-quality destination', () => {
         const context = { before: { root: 'G', chordId: 'dominant-7' }, phraseEnding: true, bassConfirmed: true, soprano: 'Ab' };
         const valid = exploreRelation(query({ kind: 'cadence', frame: minorFrame, target: { root: 'Ab', chordId: 'major' }, context }));

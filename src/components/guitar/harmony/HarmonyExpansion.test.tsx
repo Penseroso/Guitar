@@ -52,7 +52,7 @@ describe('Harmony expansion interactions', () => {
         expect(phrase.indeterminate).toBe(false);
         expect(changed.mock.lastCall?.[0].context.phraseEnding).toBe(false);
         expect(screen.queryByText('Unknown')).toBeNull();
-        expect(screen.getByRole('heading', { name: /IV\/iv–I motion/ })).toBeTruthy();
+        expect(screen.getByRole('heading', { name: 'iv–I motion' })).toBeTruthy();
         await user.click(screen.getByLabelText('Relationship details'));
         expect(screen.getByLabelText('Phrase ending: not met')).toBeTruthy();
         expect(screen.getByText('Supplied chords in C major', { exact: true })).toBeTruthy();

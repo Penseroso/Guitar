@@ -46,6 +46,28 @@ describe('portable TAB project v1', () => {
         expect(edited.document!.moments).toHaveLength(4);
         expect(reduceTabAnalysis(edited, { type: 'undo' }).document).toEqual(loaded.document);
     });
+    it('recovers missing editor navigation from portable projects while preserving supplied positions', () => {
+        const state = study();
+        const [first, second, third] = state.document!.moments;
+        const range = { start: 1, end: 2 };
+        const cursor = { momentId: third.id, string: 4 };
+        for (const [selection, activeCell, expectedRange, expectedCell] of [
+            [null, null, { start: 0, end: 0 }, { momentId: first.id, string: 0 }],
+            [null, cursor, { start: 2, end: 2 }, cursor],
+            [range, null, range, { momentId: second.id, string: 0 }],
+            [range, cursor, range, cursor],
+        ] as const) {
+            const project = decodeTabProject(encodeTabProject({ ...state, selection, activeCell }));
+            const loaded = reduceTabAnalysis(state, { type: 'open-project', project });
+            expect(loaded.selection).toEqual(expectedRange);
+            expect(loaded.activeCell).toEqual(expectedCell);
+            expect(loaded.document).toEqual(state.document);
+            const edited = reduceTabAnalysis(loaded, { type: 'set-fret', ...expectedCell, fret: 8 });
+            expect(edited.document).not.toBe(loaded.document);
+            expect(reduceTabAnalysis(edited, { type: 'undo' }).activeCell).toEqual(expectedCell);
+        }
+    });
+
     it('keeps unresolved position and obsolete written bindings unresolved across reopen and later edits', () => {
         let state = study();
         state = reduceTabAnalysis(state, { type: 'delete-moment', momentId: state.document!.moments[1].id });

@@ -49,6 +49,7 @@ export function SuppliedHarmonyAnalysis({ document, rows, mode, frame, written, 
     const [selectionPage, setSelectionPage] = useState(0);
     const [melodyPage, setMelodyPage] = useState(0);
     const progression = useMemo(() => observeSuppliedProgression(rows, mode, frame), [rows, mode, frame]);
+    const unassignedLabel = progression.conflict || progression.needsReview ? 'Chord placement unresolved' : 'No chord at onset';
     const melody = useMemo(() => analyzeSuppliedMelody(document, progression, mode, selected, written),
         [document, progression, mode, selected, written]);
     const progressionPageIndex = pageFor(progressionPage, progression.transitions.length);
@@ -128,7 +129,8 @@ export function SuppliedHarmonyAnalysis({ document, rows, mode, frame, written, 
                     <button type="button" className={`${shared.action} ${styles.sourceChoice}`} aria-label={`Remove ${note.name} from melody, position ${note.position + 1}, string ${note.string + 1}`}
                         onClick={() => onToggleNote(note.id)}>
                         <strong>{note.name} · Position {note.position + 1} · String {note.string + 1}</strong>
-                        <span>{note.chord ? `${note.chord.chord.name} · ${formattedDegree(note.degree)}` : 'No chord at onset'}</span>
+                        <span>{note.chord ? `${note.chord.chord.name} · ${formattedDegree(note.degree)}`
+                            : mode === 'written-time' && !note.writtenStart ? 'Written start unknown' : unassignedLabel}</span>
                     </button>
                     {onRevealEvidence && <button type="button" className={`${shared.action} ${styles.evidenceAction}`} data-evidence-action="true"
                         aria-label={`Show on tab: ${note.name}, position ${note.position + 1}, string ${note.string + 1}`}

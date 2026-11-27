@@ -1,7 +1,7 @@
 /**
  * audioEngine.ts
  * Singleton audio engine powered by Tone.js.
- * Manages a single shared Sampler playing FreePats "Clean Electric Guitar" recordings
+ * Shares decoded FreePats "Clean Electric Guitar" recordings between guitar strums
  * (CC0 1.0; source and license documented in public/audio/clean-electric-guitar/SOURCE.md).
  */
 
@@ -24,26 +24,23 @@ const SAMPLER_VOLUME_DB = -14;
 const LIMITER_THRESHOLD_DB = -1;
 
 class AudioEngine {
+    private samples: Record<string, AudioBuffer> | null = null;
+    private limiter: Tone.Limiter | null = null;
     private sampler: Tone.Sampler | null = null;
     private starting: Promise<void> | null = null;
-    private initialized = false;
 
     /** Must be called after the first user interaction (browser AudioContext policy).
-     *  Lazily creates the sampler and loads samples on first call only; concurrent callers
+     *  Lazily loads samples on first call only; concurrent callers
      *  await the same in-flight load rather than triggering duplicate fetches. */
     async start(): Promise<void> {
-        if (this.initialized) return;
+        if (this.isReady) return;
         if (!this.starting) {
             this.starting = (async () => {
                 await Tone.start();
-                const limiter = new Tone.Limiter(LIMITER_THRESHOLD_DB).toDestination();
-                this.sampler = new Tone.Sampler({
-                    urls: SAMPLE_URLS,
-                    baseUrl: SAMPLE_BASE_URL,
-                    volume: SAMPLER_VOLUME_DB,
-                }).connect(limiter);
-                await Tone.loaded();
-                this.initialized = true;
+                const samples = await Promise.all(Object.entries(SAMPLE_URLS).map(async ([note, file]) =>
+                    [note, await Tone.ToneAudioBuffer.load(SAMPLE_BASE_URL + file)] as const));
+                this.limiter = new Tone.Limiter(LIMITER_THRESHOLD_DB).toDestination();
+                this.samples = Object.fromEntries(samples);
             })();
         }
         try {
@@ -57,22 +54,29 @@ class AudioEngine {
      * Plays an array of Tone.js pitch strings with a guitar strum effect.
      * Notes are triggered sequentially at 30 ms intervals (low → high).
      */
-    playChord(notes: string[]): void {
-        if (!this.sampler) return;
-
-        // Cleanly release any currently held notes
-        this.sampler.releaseAll(Tone.now());
-
-        const STRUM_INTERVAL = 0.03; // seconds between each string pick
-        notes.forEach((note, index) => {
-            const triggerTime = Tone.now() + index * STRUM_INTERVAL;
-            // '2n' = half note duration — lets the natural decay shape the sound
-            this.sampler!.triggerAttackRelease(note, '2n', triggerTime);
-        });
+    playChord(notes: string[]): (() => void) | undefined {
+        if (!this.samples || !this.limiter) return;
+        this.sampler?.dispose();
+        const sampler = new Tone.Sampler({ urls: this.samples, volume: SAMPLER_VOLUME_DB }).connect(this.limiter);
+        this.sampler = sampler;
+        const stop = () => {
+            if (this.sampler !== sampler) return;
+            // Disposing this output silences even picks already queued in Web Audio.
+            sampler.dispose();
+            this.sampler = null;
+        };
+        try {
+            const start = Tone.now();
+            notes.forEach((note, index) => sampler.triggerAttackRelease(note, '2n', start + index * 0.03));
+        } catch (error) {
+            stop();
+            throw error;
+        }
+        return stop;
     }
 
     get isReady(): boolean {
-        return this.initialized;
+        return this.samples !== null;
     }
 }
 

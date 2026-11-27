@@ -53,9 +53,10 @@ describe('Harmony audition uses the resolved example identity', () => {
         expect(states.at(-1)).toEqual({ playing: false, error: null, step: null });
     });
 
-    it('cancels the remaining sequence after its first chord', async () => {
+    it('stops the current strum and cancels the remaining sequence', async () => {
         vi.useFakeTimers();
-        const engine = { start: vi.fn(async () => {}), playChord: vi.fn() };
+        const stopStrum = vi.fn();
+        const engine = { start: vi.fn(async () => {}), playChord: vi.fn(() => stopStrum) };
         const states: HarmonyPlaybackState[] = [];
         const playback = createHarmonyPlayback(async () => engine, state => states.push(state));
         const playing = playback.play(tritone().examples[0]);
@@ -64,8 +65,24 @@ describe('Harmony audition uses the resolved example identity', () => {
         playback.cancel();
         await playing;
         await vi.runAllTimersAsync();
+        expect(stopStrum).toHaveBeenCalledOnce();
         expect(engine.playChord).toHaveBeenCalledTimes(1);
         expect(states.at(-1)).toEqual({ playing: false, error: null, step: null });
+    });
+
+    it('keeps a cancelled audition silent when sample decoding finishes', async () => {
+        let ready!: () => void;
+        const engine = {
+            start: () => new Promise<void>(resolve => { ready = resolve; }),
+            playChord: vi.fn(),
+        };
+        const playback = createHarmonyPlayback(async () => engine, vi.fn());
+        const playing = playback.play(tritone().examples[0]);
+        await Promise.resolve();
+        playback.cancel();
+        ready();
+        await playing;
+        expect(engine.playChord).not.toHaveBeenCalled();
     });
 
     it('exposes an audio failure and allows a subsequent retry', async () => {

@@ -5,7 +5,7 @@ import { formatAccidentals, parseNoteName } from '@/domain/shared/spelling';
 import { compareExactTimes, parseExactTime, type ExactTime } from './exact-time';
 import type { PlacedChord, observeSuppliedProgression } from './progression-observation';
 import type { TabDocument } from './types';
-import type { TabAcrossBarsWrittenNoteInterval, TabAcrossBarsWrittenTimeSnapshot } from './written-time-across-bars';
+import type { TabAcrossBarsWrittenTimeSnapshot } from './written-time-across-bars';
 
 type Progression = ReturnType<typeof observeSuppliedProgression>;
 type Transition = Progression['transitions'][number];
@@ -19,6 +19,7 @@ interface MelodyNote {
     name: string;
     chord: PlacedChord | null;
     degree: string | null;
+    writtenStart: ExactTime | null;
     interval: { start: ExactTime; end: ExactTime } | null;
     technique: boolean;
 }
@@ -27,7 +28,7 @@ function degreeAt(chord: PlacedChord | null, midi: number) {
     return chord?.chord.tones.find(tone => tone.pitchClass === midi % 12) ?? null;
 }
 
-function chordAt(chords: readonly PlacedChord[], position: number, start: ExactTime | undefined) {
+function chordAt(chords: readonly PlacedChord[], position: number, start: ExactTime | null) {
     // The sequence has already been sorted and checked for overlap.
     let lower = 0, upper = chords.length;
     while (lower < upper) {
@@ -84,8 +85,15 @@ export function analyzeSuppliedMelody(document: TabDocument, progression: Progre
     selectedIds: readonly string[], written?: TabAcrossBarsWrittenTimeSnapshot) {
     const selected = new Set(selectedIds);
     const timed = mode === 'written-time';
-    const intervals = timed && written?.sourceDocument === document && written.data.status === 'ready'
-        ? new Map(written.data.intervals.map(note => [note.noteId, note])) : new Map<string, TabAcrossBarsWrittenNoteInterval>();
+    const data = timed && written?.sourceDocument === document && written.data.status === 'ready' ? written.data : null;
+    const intervals = new Map(data?.intervals.map(note => [note.noteId, note]));
+    const startsWithoutDuration = new Map<string, ExactTime>();
+    for (const fact of data?.coverageFacts ?? []) {
+        if (fact.kind === 'known-global-start') {
+            const note = document.moments[fact.momentIndex].notes[fact.noteIndex];
+            startsWithoutDuration.set(note.id, parseExactTime(fact.start)!);
+        }
+    }
     const notes: MelodyNote[] = [];
     const seen = new Set<string>();
     const duplicates = new Set<string>();
@@ -97,10 +105,11 @@ export function analyzeSuppliedMelody(document: TabDocument, progression: Progre
             if (!Number.isInteger(note.midi) || note.midi < 0 || note.midi > 127) continue;
             const known = intervals.get(note.id);
             const interval = known ? { start: parseExactTime(known.start)!, end: parseExactTime(known.end)! } : null;
-            const chord = chordAt(progression.chords, position, interval?.start);
+            const writtenStart = interval?.start ?? startsWithoutDuration.get(note.id) ?? null;
+            const chord = chordAt(progression.chords, position, writtenStart);
             const tone = degreeAt(chord, note.midi);
             notes.push({ id: note.id, position, bar: moment.measure, string: note.string, midi: note.midi,
-                name: nameAt(note.midi, tone?.name), chord, degree: tone?.degree ?? null, interval, technique: !!note.techniques?.length });
+                name: nameAt(note.midi, tone?.name), chord, degree: tone?.degree ?? null, writtenStart, interval, technique: !!note.techniques?.length });
         }
     });
     const unique = notes.filter(note => !duplicates.has(note.id));
@@ -108,12 +117,12 @@ export function analyzeSuppliedMelody(document: TabDocument, progression: Progre
     const hasMissingTime = timed && unique.some(note => !note.interval);
     const orderConflict = timed && unique.some((note, i) => {
         const prior = unique[i - 1];
-        return !!(note.interval && prior?.interval && compareExactTimes(prior.interval.start, note.interval.start) >= 0);
+        return !!(note.writtenStart && prior?.writtenStart && compareExactTimes(prior.writtenStart, note.writtenStart) >= 0);
     });
     const verifiedTime = timed && !hasMissingTime && !orderConflict;
     const byPair = new Map(progression.transitions.map(transition => [transition.from.entry.id, transition]));
     const moving = (from: MelodyNote, to: MelodyNote) => !sameSource.has(from.position) && !sameSource.has(to.position)
-        && (!from.interval || !to.interval || compareExactTimes(from.interval.start, to.interval.start) !== 0);
+        && (!from.writtenStart || !to.writtenStart || compareExactTimes(from.writtenStart, to.writtenStart) !== 0);
     const motions = unique.slice(1).flatMap((to, i) => {
         const from = unique[i];
         if (!moving(from, to)) return [];

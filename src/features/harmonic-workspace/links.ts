@@ -14,7 +14,7 @@ export interface ScaleHarmonySelection {
 /** A link changes the explored target, never the established tonal frame. */
 export function linkChordToHarmony(query: RelationQuery, chord: ChordRef): RelationQuery {
     const sameTarget = query.target.root === chord.root && query.target.chordId === chord.chordId && query.target.bass === chord.bass;
-    if (sameTarget) return { ...query, target: { ...chord } };
+    if (sameTarget) return query;
     const next = { ...query, target: { ...chord } };
     delete next.context;
     return next;

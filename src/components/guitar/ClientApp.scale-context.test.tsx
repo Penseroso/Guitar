@@ -6,6 +6,7 @@ import ClientApp from './ClientApp';
 import { reduceHarmonicWorkspaceState } from '@/features/harmonic-workspace/state';
 import { createScaleRef } from '@/domain/scale/scale-ref';
 import { getKeyName } from '@/domain/shared/keys';
+import { resolveChord } from '@/domain/harmony/roman';
 import type { ScaleModeWorkspace } from './scale/ScaleModeWorkspace';
 import type { ChordModeWorkspace } from './chord/ChordModeWorkspace';
 import type { HarmonyModeWorkspace } from './harmony/HarmonyModeWorkspace';
@@ -48,6 +49,8 @@ vi.mock('./chord/ChordModeWorkspace', () => ({
         <output data-testid="chord-root">{props.root}</output>
         <output data-testid="chord-type">{props.chordType}</output>
         <button onClick={() => props.onRootChange(4)}>Chord root E</button>
+        <button onClick={() => props.onChordTypeChange('minor')}>Minor quality</button>
+        <button onClick={() => { props.onRootChange(props.root); props.onChordTypeChange(props.chordType); }}>Reselect chord</button>
         <button onClick={props.onExploreHarmony}>Open chord in Harmony</button>
         {props.onReturnToHarmony && <button onClick={props.onReturnToHarmony}>Return from Chord</button>}
     </section>,
@@ -59,7 +62,8 @@ vi.mock('./harmony/HarmonyModeWorkspace', () => ({
         <output data-testid="harmony-source">{JSON.stringify(props.sourceScaleRef ?? null)}</output>
         <button onClick={() => props.onQueryChange({ ...props.query, frame: { ...props.query.frame, tonic: 'G', mode: 'minor' }, target: { root: 'D', chordId: 'minor' } })}>Harmony G minor</button>
         <button onClick={props.onUseScaleFrame}>Use source tonal frame</button>
-        <button onClick={() => props.onOpenChord({ root: 'Db', chordId: 'dominant-7' })}>Open substitute in Chord</button>
+        <button onClick={() => props.onOpenChord(resolveChord(props.query.target))}>Open destination in Chord</button>
+        <button onClick={() => props.onOpenChord(resolveChord({ root: 'C#', chordId: 'dominant-7', bass: 'G#' }))}>Open substitute in Chord</button>
         <button onClick={() => props.onOpenScale(createScaleRef('Diatonic Modes', 'Aeolian', 9))}>Open local collection in Scale</button>
         <button onClick={() => props.onQueryChange({ ...props.query, kind: 'passing', context: { before: { root: 'C', chordId: 'major' }, middle: { root: 'C#', chordId: 'diminished-7' } } })}>Observe passing chords</button>
         <button onClick={() => props.onQueryChange({ ...props.query, context: { ...props.query.context, bassConfirmed: true, rhythmConfirmed: true } })}>Verify observed path</button>
@@ -89,6 +93,43 @@ describe('ClientApp Scale context boundary', () => {
         expect(snapshot('harmony-context')).toMatchObject({ target: { root: 'C', bass: 'E' }, context: { before: { root: 'C' }, middle: { root: 'C#' } } });
         expect(snapshot('harmony-context').context.bassConfirmed).toBeUndefined();
         expect(snapshot('harmony-context').context.rhythmConfirmed).toBeUndefined();
+    });
+    it('keeps a supplied inversion, observations and source scale on an unchanged forward round trip', () => {
+        render(<ClientApp />);
+        click('Open scale chord in Harmony');
+        click('Observe passing chords');
+        click('Change target bass');
+        click('Verify observed path');
+        const query = snapshot('harmony-context'), source = snapshot('harmony-source');
+        click('Open destination in Chord');
+        click('Reselect chord');
+        click('Open chord in Harmony');
+        expect(snapshot('harmony-context')).toEqual(query);
+        expect(snapshot('harmony-source')).toEqual(source);
+        click('Open substitute in Chord');
+        click('Open chord in Harmony');
+        expect(snapshot('harmony-context').target).toEqual({ root: 'C#', chordId: 'dominant-7', bass: 'G#' });
+        expect(snapshot('harmony-context').context).toBeUndefined();
+        expect(snapshot('harmony-source')).toBeNull();
+    });
+    it.each([
+        ['Chord root E', { root: 'E', chordId: 'major' }],
+        ['Minor quality', { root: 'C', chordId: 'minor' }],
+    ])('uses the edited forward target after %s, while explicit Return keeps the original query', (edit, target) => {
+        render(<ClientApp />);
+        switchMode('Harmony');
+        click('Observe passing chords');
+        click('Change target bass');
+        const original = snapshot('harmony-context');
+        click('Open destination in Chord');
+        click(edit);
+        click('Return from Chord');
+        expect(snapshot('harmony-context')).toEqual(original);
+        click('Open destination in Chord');
+        click(edit);
+        click('Open chord in Harmony');
+        expect(snapshot('harmony-context').target).toEqual(target);
+        expect(snapshot('harmony-context').context).toBeUndefined();
     });
     it('carries an exact ScaleRef into Harmony and changes the frame only through an explicit compatible source action', () => {
         render(<ClientApp />);
