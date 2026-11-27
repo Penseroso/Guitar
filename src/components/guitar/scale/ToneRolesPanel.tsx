@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { flushSync } from 'react-dom';
 import type { ScaleToneAnalysis } from '@/domain/chord/scale-tone-analysis';
 import { formatAccidentals, formatNoteName, parseDegreeLabel, parseNoteName, spellDegree } from '@/domain/shared/spelling';
 import { resolveScaleRef } from '@/domain/scale/scale-ref';
@@ -16,6 +17,7 @@ export function ToneRolesPanel({ analysis, onClear, focusedInterval, onFocusTone
     canLocateTone?: boolean;
     onFocusTone?: (interval: number | null) => void;
 }) {
+    const relationshipRef = React.useRef<HTMLDivElement>(null);
     if (!analysis) return null;
     const { chord, identity, tones } = analysis;
     const scale = resolveScaleRef(analysis.scaleRef);
@@ -62,7 +64,15 @@ export function ToneRolesPanel({ analysis, onClear, focusedInterval, onFocusTone
                 <button type="button" className={styles.toneButton}
                     aria-label={`Focus ${formatNoteName(tone.scaleNoteName)} on fretboard`}
                     aria-pressed={focusedInterval === tone.interval}
-                    onClick={() => onFocusTone?.(focusedInterval === tone.interval ? null : tone.interval)}>
+                    onClick={event => {
+                        if (!onFocusTone) return;
+                        if (focusedInterval === tone.interval) { onFocusTone(null); return; }
+                        // Measure the newly selected relationship only on activation from this list.
+                        flushSync(() => onFocusTone(tone.interval));
+                        if (event.currentTarget.getAttribute('aria-pressed') === 'true') {
+                            relationshipRef.current?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
+                        }
+                    }}>
                     <span className={styles.toneName}>{formatNoteName(tone.scaleNoteName)}</span>
                     <span className={styles.degree}>{formatAccidentals(tone.scaleDegree)}</span>
                     {chord && <span className={tone.chordMembership === 'member' ? styles.member : styles.nonMember} aria-label={tone.chordMembership === 'member' ? 'Chord tone' : 'Not a chord tone'}>{tone.chordMembership === 'member' ? '●' : '○'}</span>}
@@ -85,7 +95,7 @@ export function ToneRolesPanel({ analysis, onClear, focusedInterval, onFocusTone
                         aria-label={focusedTone.chordMembership === 'member' ? 'Chord tone' : 'Other scale tone'}>{focusedTone.chordMembership === 'member' ? '●' : '○'}</span>
                 </dd></div>}
             </dl>
-            {showPair && <div className={styles.relationship} role="group" aria-label="Chord tone relationship">
+            {showPair && <div ref={relationshipRef} className={styles.relationship} role="group" aria-label="Chord tone relationship">
                 <div className={styles.pair}>
                     <span><strong>{formatNoteName(referenceTone.chordNoteName)}</strong> <small>{referenceDegree === '1' ? 'Root' : formatAccidentals(referenceTone.chordDegree)}</small></span>
                     <span className={styles.between}>{sustainedAgainst ? 'Semitone' : 'Extension'}</span>

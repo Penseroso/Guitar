@@ -89,6 +89,26 @@ describe('Scale harmonic analysis interactions', () => {
         expect(within(group).queryByText('When sustained') !== null).toBe(relation === 'Semitone');
     });
 
+    it('reveals the relationship only when a list button explicitly selects a tone', async () => {
+        const user = userEvent.setup();
+        render(<BridgeHarness name="Ionian" />);
+        await user.click(screen.getByRole('button', { name: 'Analyze Cmaj7' }));
+        await user.click(screen.getByRole('button', { name: 'Focus F on fretboard' }));
+        const pair = screen.getByRole('group', { name: 'Chord tone relationship' });
+        const reveal = vi.fn();
+        pair.scrollIntoView = reveal;
+        await user.click(screen.getByRole('button', { name: 'Analyze C6' }));
+        expect(reveal).not.toHaveBeenCalled();
+        const d = screen.getByRole('button', { name: 'Focus D on fretboard' });
+        d.focus();
+        expect(reveal).not.toHaveBeenCalled();
+        await user.keyboard('{Enter}');
+        expect(reveal).toHaveBeenCalledExactlyOnceWith({ block: 'nearest', inline: 'nearest' });
+        expect(document.activeElement).toBe(d);
+        await user.keyboard('{Enter}');
+        expect(reveal).toHaveBeenCalledOnce();
+    });
+
     it('requires explicit selection and updates chord membership without losing structural degree', async () => {
         const user = userEvent.setup();
         render(<BridgeHarness />);
