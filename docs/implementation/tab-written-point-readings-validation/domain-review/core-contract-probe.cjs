@@ -1,4 +1,4 @@
-const assert=require('node:assert/strict');const fs=require('node:fs');const crypto=require('node:crypto');const path=require('node:path');const{createRequire}=require('node:module');
+const assert=require('node:assert/strict');const fs=require('node:fs');const crypto=require('node:crypto');const{createRequire}=require('node:module');
 const req=createRequire('/workspace/Guitar-p2/package.json');
 const{CHORD_REGISTRY_LIST}=req('./src/domain/chord/registry');const{SCALES}=req('./src/domain/scale/scales');
 const{observeTabAcrossBarsWrittenTime}=req('./src/domain/tab/written-time-across-bars');
@@ -8,7 +8,7 @@ const hash=v=>crypto.createHash('sha256').update(v).digest('hex');
 const time={numerator:'0',denominator:'1'};
 function snapshot(midis){return observeTabAcrossBarsWrittenTime({format:'authored',timing:'order-only',source:'contract probe',tuningMidi:[64,59,55,50,45,40],capo:0,measureCount:1,meter:{numerator:4,denominator:4},moments:midis.map((midi,index)=>({id:'p'+index,index,measure:1,column:index+1,beatOffset:{numerator:0,denominator:1},notes:[{id:'n'+index,string:index%6,fret:0,midi,pitchClass:midi%12,source:null,duration:{numerator:1,denominator:1}}]}))},1,{model:'regular-bar-origins'})}
 const duplicatePCChordFormulas=CHORD_REGISTRY_LIST.filter(e=>new Set(e.formula.intervals.map(v=>v%12)).size<e.formula.intervals.length).map(e=>e.id);
-const duplicatePCScales=Object.entries(SCALES).flatMap(([group,scales])=>Object.entries(scales).filter(([_,ivs])=>new Set(ivs.map(v=>v%12)).size<ivs.length).map(([name])=>group+'/'+name));assert.equal(duplicatePCChordFormulas.length,0);assert.equal(duplicatePCScales.length,0);
+const duplicatePCScales=Object.entries(SCALES).flatMap(([group,scales])=>Object.entries(scales).filter(([,ivs])=>new Set(ivs.map(v=>v%12)).size<ivs.length).map(([name])=>group+'/'+name));assert.equal(duplicatePCChordFormulas.length,0);assert.equal(duplicatePCScales.length,0);
 const cases=[];
 for(const [tonic,midis,key,expected]of[['B#',[60,64,67],'0:major','B♯3'],['Cb',[59,63,66],'11:major','C♭4']]){
  const a=analyzeTabWrittenPoint(snapshot(midis),time,{scale:null,frame:{tonic,mode:'major',lens:'jazz-pop'}});assert.equal(a.status,'complete');const d=describeTabWrittenPointCandidate(a,key);assert.equal(d.notes[0].chordNoteName,expected);assert.equal(d.notes[0].midi,midis[0]);cases.push({id:tonic+'-written-octave',expected,actual:d.notes[0].chordNoteName});

@@ -18,7 +18,11 @@ const observe = document => observeTabAcrossBarsWrittenTime(document, 1, { model
 const complete = observe(score);
 const partial = observe({
     ...score, moments: score.moments.map((position, i) => i === 0 ? position
-        : { ...position, notes: position.notes.map(({ duration, ...note }) => note) }),
+        : { ...position, notes: position.notes.map(note => {
+            const untimedNote = { ...note };
+            delete untimedNote.duration;
+            return untimedNote;
+        }) }),
 });
 const untimed = observe({ ...parse.document });
 assert.equal(complete.data.populationCoverage, 'complete');
