@@ -22,6 +22,14 @@
 .sourceScale { display: flex; flex-wrap: wrap; align-items: center; gap: 3px 14px; color: var(--muted); font-size: 12px; }
 .sourceScale button { color: var(--ink); border: 0; border-bottom: 1px solid var(--ink); background: none; padding: 10px 0; min-height: 44px; font: inherit; cursor: pointer; }
 
+.settings { min-width: 0; border-bottom: 1px solid var(--line); }
+.settingsToggle { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; width: 100%; min-height: 44px; padding: 6px 2px; border: 0; background: transparent; text-align: left; cursor: pointer; font-size: 12px; color: var(--muted); }
+.settingsToggle strong { color: var(--ink); font-weight: 550; }
+.currentRelation { color: var(--ink); }
+.settingsAction { font-size: 13px; color: var(--ink); }
+.chevron { margin-left: auto; width: 7px; height: 7px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: rotate(45deg); }
+.settingsToggle[aria-expanded="true"] .chevron { transform: rotate(225deg); }
+.settingsBody:not([hidden]) { display: grid; gap: 20px; padding: 15px 0 20px; }
 .setup { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 28px; padding: 0 0 24px; border-bottom: 1px solid var(--line); }
 .fieldGroup { display: grid; align-content: start; gap: 8px; min-width: 0; }
 .contextFields { display: flex; flex-wrap: wrap; align-items: end; gap: 10px 15px; min-width: 0; }
@@ -116,7 +124,7 @@
 .scaleLinks button:hover { text-decoration: underline; text-underline-offset: 4px; }
 .scaleLinks button span { color: var(--muted); font-size: 11px; }
 .workspace button:focus-visible, .workspace input:focus-visible, .workspace summary:focus-visible, .checkField:focus-within { outline: 2px solid var(--workspace-focus); outline-offset: 3px; }
-@media (max-width: 760px) { .setup { grid-template-columns: minmax(0, 1fr); gap: 20px; } .workspace { gap: 26px; } }
+@media (max-width: 760px) { .setup { grid-template-columns: minmax(0, 1fr); gap: 20px; } .workspace { gap: 12px; } .resultSection { gap: 10px; } .resultHeading { row-gap: 8px; } }
 @media (max-width: 420px) { .familyTabs { gap: 15px; } }
 @media (prefers-reduced-motion: reduce) { .tab { transition: none; } }
 
@@ -129,6 +137,6 @@
 .copyUnit { display: block; }
 .copyUnit + .copyUnit { margin-top: 3px; }
 .summaryNote { display: inline-block; margin-left: 12px; color: var(--muted); font-size: 11px; }
-.detailCopy { display: grid; gap: 12px; margin-bottom: 12px; color: var(--muted); font-size: 12px; }
+.detailCopy { display: grid; gap: 6px; margin: 0 0 12px; padding-inline-start: 1rem; list-style: disc; color: var(--muted); font-size: 12px; }
 .detailCopy:empty { display: none; }
-.detailCopy p { margin: 0; line-height: 1.5; }
+.detailCopy li { margin: 0; line-height: 1.5; }

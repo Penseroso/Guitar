@@ -2,7 +2,7 @@
 
 import React from 'react';
 import type { ScaleToneAnalysis } from '@/domain/chord/scale-tone-analysis';
-import { formatAccidentals, formatNoteName } from '@/domain/shared/spelling';
+import { formatAccidentals, formatNoteName, parseDegreeLabel, parseNoteName, spellDegree } from '@/domain/shared/spelling';
 import { resolveScaleRef } from '@/domain/scale/scale-ref';
 import { getScalePresentationName } from '@/domain/scale/scaleSelector';
 import { getKeyName } from '@/domain/shared/keys';
@@ -23,6 +23,18 @@ export function ToneRolesPanel({ analysis, onClear, focusedInterval, onFocusTone
     const chordName = chord && formatAccidentals(chord.rootNoteName + chord.chordSuffix);
     const focusedTone = tones.find(tone => tone.interval === focusedInterval);
     const reviewed = focusedTone?.interpretations.filter(item => item.status === 'reviewed') ?? [];
+
+    const hasCharacteristic = identity.status === 'reviewed' && reviewed.some(item => item.kind === 'characteristic');
+    const tonic = scale && parseNoteName(getKeyName(scale.tonic));
+    const markers = hasCharacteristic && tonic ? identity.markers.flatMap(marker => {
+        const tone = tones.find(tone => tone.interval === marker.interval);
+        const degree = parseDegreeLabel(marker.degree);
+        if (!tone || !degree) return [];
+        const name = spellDegree(tonic, degree.number, tone.pitchClass)?.name;
+        if (!name) return [];
+        return [{ ...marker, name, tone }];
+    }) : [];
+    const chordReadings = reviewed.filter(item => item.kind !== 'characteristic');
 
     return <section className={styles.panel} aria-label="Tone roles">
         <div className={styles.header}>
@@ -68,12 +80,22 @@ export function ToneRolesPanel({ analysis, onClear, focusedInterval, onFocusTone
                 </dd></div>}
             </dl>
             {reviewed.length > 0 && <ul className={styles.roleList}>{reviewed.map((item, index) => <li key={`${item.kind}:${index}`} className={styles.kind}>{item.kind}</li>)}</ul>}
-            {reviewed.some(item => item.kind !== 'characteristic' || item.conditions.length > 0) && <details className={styles.context}>
+            {(markers.length > 0 || chordReadings.length > 0) && <details className={styles.context}>
                 <summary>Context</summary>
-                <ul>{reviewed.map((item, index) => <li key={`${item.kind}:${index}`}>
-                    <strong>{item.kind}</strong> · {item.explanation}
-                    {item.conditions.length > 0 && <span className={styles.meta}> {item.conditions.join(' ')}</span>}
-                </li>)}</ul>
+                {markers.length > 0 && <div className={styles.interpretation}>
+                    <h4>{scaleName} · Characteristic tones</h4>
+                    <ul className={styles.markerRow} aria-label={`Characteristic tones of ${scaleName}`}>
+                        {markers.map(marker => <li key={marker.interval} aria-current={marker.interval === focusedInterval ? 'true' : undefined}>
+                            <strong>{formatNoteName(marker.name)}</strong> <span>{formatAccidentals(marker.degree)}</span>
+                            {marker.name !== marker.tone.scaleNoteName && <small>{formatNoteName(marker.tone.scaleNoteName)} · {formatAccidentals(marker.tone.scaleDegree)} in scale</small>}
+                        </li>)}
+                    </ul>
+                </div>}
+                {chordReadings.map(item => <section className={styles.interpretation} key={item.kind}>
+                    <h4><span>{item.kind}</span>{chordName && ` · ${chordName}`}</h4>
+                    <p>{item.explanation}</p>
+                    {item.conditions.length > 0 && <ul className={styles.conditions}>{item.conditions.map(condition => <li key={condition}>{condition}</li>)}</ul>}
+                </section>)}
             </details>}
         </div>}
         {chord && chord.tonesOutsideScale.length > 0 && <p className={styles.meta}>Outside scale · {chord.tonesOutsideScale.map(formatNoteName).join(' · ')}</p>}

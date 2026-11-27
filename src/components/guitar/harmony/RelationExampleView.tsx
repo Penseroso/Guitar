@@ -8,9 +8,9 @@ import { pitchMotion, rootMotionLabel, voiceMap } from './voice-map';
 import styles from './relation-diagram.module.css';
 
 const degreeName = (degree: string) => ({ '1': 'root', '3': '3rd', b3: '♭3rd', '7': '7th', b7: '♭7', '5': '5th' }[degree] ?? accidental(degree));
-type Props = { example: RelationExample; onOpenChord: (chord: ChordRef) => void; activeStep: number | null };
+type Props = { example: RelationExample; onOpenChord: (chord: ChordRef) => void; activeStep: number | null; previewGuide?: boolean };
 
-function VoiceDiagram({ example, onOpenChord, activeStep, label }: Props & { label?: string }) {
+function VoiceDiagram({ example, onOpenChord, activeStep, previewGuide, label }: Props & { label?: string }) {
     const [focused, setFocused] = useState<{ step: number; degree: string } | null>(null);
     const { edges, lanes, rows } = voiceMap(example), count = example.steps.length;
     const surface = useRef<HTMLDivElement>(null);
@@ -37,8 +37,9 @@ function VoiceDiagram({ example, onOpenChord, activeStep, label }: Props & { lab
         if (selected(e.from, e.fromDegree)) linked.add(`${e.to}:${e.toDegree}`);
         if (selected(e.to, e.toDegree)) linked.add(`${e.from}:${e.fromDegree}`);
     });
+    const preview = previewGuide && !focused ? edges.find(edge => edge.guide && !edge.held) ?? edges.find(edge => edge.guide) : undefined;
     const captions = edges.map(edge => {
-        if (!selected(edge.from, edge.fromDegree) && !selected(edge.to, edge.toDegree)) return null;
+        if (edge !== preview && !selected(edge.from, edge.fromDegree) && !selected(edge.to, edge.toDegree)) return null;
         const from = toneLabel(example.steps[edge.from], edge.fromDegree);
         const to = toneLabel(example.steps[edge.to], edge.toDegree);
         const a = accidental(from.name), b = accidental(to.name);
@@ -92,8 +93,8 @@ function VoiceDiagram({ example, onOpenChord, activeStep, label }: Props & { lab
         </div>
         <div className={styles.motionLabels}>{example.facts.map((fact, i) => <p key={i}>{accidental(example.steps[i].chord.root)} {example.kind === 'comparison' ? '↔' : '→'} {accidental(example.steps[i + 1].chord.root)}<span>{rootMotionLabel(example.steps[i].chord.root, example.steps[i + 1].chord.root, fact.rootMotion)}</span></p>)}</div>
         <ul className={styles.srOnly} aria-label="Tone correspondence">{edges.map((edge, i) => <li key={i}>{toneLabel(example.steps[edge.from], edge.fromDegree).name} {edge.held ? 'held as' : example.kind === 'comparison' ? 'compared with' : 'to'} {toneLabel(example.steps[edge.to], edge.toDegree).name}</li>)}</ul>
-        <div className={styles.srOnly} role="status">{unlinked ? 'No linked tone' : captions.flatMap(caption => caption ? [caption.spoken] : []).join('. ')}</div>
-        <details className={styles.details}><summary>Details</summary>
+        <div className={styles.srOnly} role="status">{!focused ? '' : unlinked ? 'No linked tone' : captions.flatMap(caption => caption ? [caption.spoken] : []).join('. ')}</div>
+        <details className={styles.details}><summary>Common and changed tones</summary>
             <p>Rows · chord roles, root at bottom</p>
             <p>{example.kind === 'comparison' ? 'Pitch comparison' : nearest ? 'Nearest agreed pitch-class motion' : 'Illustrative voice leading'}</p>
             {example.facts.map((fact, i) => <div key={i}><h5>{example.steps[i].chord.name} / {example.steps[i + 1].chord.name}</h5><p>Root distance: {fact.rootMotion} semitones up</p><p>Common tones: {fact.shared.map(pc => accidental(example.steps[i].chord.tones.find(t => t.pitchClass === pc)!.name)).join(', ') || 'None'}</p><p>Changed tones: {fact.removed.length} out, {fact.added.length} in</p></div>)}
@@ -101,13 +102,54 @@ function VoiceDiagram({ example, onOpenChord, activeStep, label }: Props & { lab
     </section>;
 }
 
-export function RelationExampleView({ example, alternative, onOpenChord, activeStep }: Props & { alternative?: RelationExample }) {
-    const label = (item: RelationExample) => item.id === 'original' ? 'A — Original dominant' : 'B — Tritone substitute';
+function TritoneComparison({ original, substitute, selectedId }: {
+    original: RelationExample; substitute: RelationExample; selectedId: string;
+}) {
+    const approaches = [original, substitute];
+    const a = original.steps[0], b = substitute.steps[0];
+    const guidePairs = a.chord.tones.flatMap(tone => {
+        if (tone.degree !== '3' && tone.degree !== 'b7') return [];
+        const partner = b.chord.tones.find(other => other.pitchClass === tone.pitchClass
+            && (other.degree === '3' || other.degree === 'b7'));
+        return partner ? [[toneLabel(a, tone.degree), toneLabel(b, partner.degree)]] : [];
+    });
+    return <table className={styles.tritoneTable} aria-label="Tritone substitution comparison">
+        <thead><tr>{approaches.map(item => <th key={item.id} scope="col" aria-current={item.id === selectedId ? 'true' : undefined}>
+            <small>{item.id === 'original' ? 'A · Original dominant' : 'B · Tritone substitute'}</small>
+            {item.steps.map(step => step.chord.name).join(' → ')}
+        </th>)}</tr></thead>
+        <tbody>
+            <tr><th colSpan={2} scope="rowgroup">Shared guide tones</th></tr>
+            {guidePairs.map(pair => <tr key={pair[0].degree}>{pair.map((tone, index) => <td key={index}>
+                {accidental(tone.name)} <small>{degreeName(tone.degree)}</small>
+            </td>)}</tr>)}
+        </tbody>
+        <tbody>
+            <tr><th colSpan={2} scope="rowgroup">Root motion</th></tr>
+            <tr>{approaches.map(item => {
+                const [from, to] = item.steps;
+                return <td key={item.id}>{accidental(from.chord.root)} → {accidental(to.chord.root)}
+                    <small className={styles.rootInterval}>{rootMotionLabel(from.chord.root, to.chord.root, item.facts[0].rootMotion)}</small>
+                </td>;
+            })}</tr>
+        </tbody>
+    </table>;
+}
+
+export function RelationExampleView({ example, alternative, onOpenChord, activeStep, previewGuide }: Props & { alternative?: RelationExample }) {
     if (alternative) {
-        const pair = [example, alternative].sort((a, b) => Number(b.id === 'original') - Number(a.id === 'original'));
-        return <div className={styles.alternatives}>{pair.map(item => <VoiceDiagram key={item.id} example={item} onOpenChord={onOpenChord} activeStep={item.id === example.id ? activeStep : null} label={label(item)} />)}</div>;
+        const original = example.id === 'original' ? example : alternative;
+        const substitute = example.id === 'original' ? alternative : example;
+        return <>
+            <TritoneComparison original={original} substitute={substitute} selectedId={example.id} />
+            <details className={styles.details}>
+                <summary>Compare voice leading</summary>
+                <div className={styles.alternatives}>{[original, substitute].map(item =>
+                    <VoiceDiagram key={item.id} example={item} onOpenChord={onOpenChord}
+                        activeStep={item.id === example.id ? activeStep : null}
+                        label={item.id === 'original' ? 'A — Original dominant' : 'B — Tritone substitute'} />)}</div>
+            </details>
+        </>;
     }
-    return <div>
-        <VoiceDiagram example={example} onOpenChord={onOpenChord} activeStep={activeStep} />
-    </div>;
+    return <VoiceDiagram example={example} onOpenChord={onOpenChord} activeStep={activeStep} previewGuide={previewGuide} />;
 }

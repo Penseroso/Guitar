@@ -20,6 +20,7 @@ describe('Harmony expansion interactions', () => {
         const user = userEvent.setup();
         const changed = vi.fn();
         render(<Harness initial={DEFAULT_HARMONY_QUERY} changed={changed} />);
+        await user.click(screen.getByRole('button', { name: /^Edit harmony/ }));
         await user.click(screen.getByRole('tab', { name: 'Modal interchange' }));
         expect(screen.getByRole('tab', { name: 'Borrowed chords' }).getAttribute('aria-selected')).toBe('true');
         const minorSub = screen.getByRole('tab', { name: 'Subdominant minor' });
@@ -41,6 +42,7 @@ describe('Harmony expansion interactions', () => {
         const user = userEvent.setup();
         const changed = vi.fn();
         render(<Harness initial={{ ...DEFAULT_HARMONY_QUERY, kind: 'cadence', context: { before: { root: 'F', chordId: 'minor' } } }} changed={changed} />);
+        await user.click(screen.getByRole('button', { name: /^Edit harmony/ }));
         const phrase = screen.getByRole('checkbox', { name: 'Phrase ending' }) as HTMLInputElement;
         expect(phrase.indeterminate).toBe(true);
         expect(screen.getByText('Unknown')).toBeTruthy();
@@ -53,7 +55,7 @@ describe('Harmony expansion interactions', () => {
         expect(changed.mock.lastCall?.[0].context.phraseEnding).toBe(false);
         expect(screen.queryByText('Unknown')).toBeNull();
         expect(screen.getByRole('heading', { name: 'iv–I motion' })).toBeTruthy();
-        await user.click(screen.getByLabelText('Relationship details'));
+        await user.click(screen.getByText('Cadence evidence'));
         expect(screen.getByLabelText('Phrase ending: not met')).toBeTruthy();
         expect(screen.getByText('Supplied chords in C major', { exact: true })).toBeTruthy();
     });
@@ -64,13 +66,14 @@ describe('Harmony expansion interactions', () => {
         render(<Harness initial={{ ...DEFAULT_HARMONY_QUERY, kind: 'passing', target: { root: 'D', chordId: 'minor' }, context: {
             before: { root: 'C', chordId: 'major' }, middle: { root: 'C#', chordId: 'diminished-7' },
         } }} changed={changed} />);
+        await user.click(screen.getByRole('button', { name: /^Edit harmony/ }));
         for (const label of ['Before bass', 'Middle bass', 'Destination bass']) expect(screen.getByRole('spinbutton', { name: label })).toBeTruthy();
         await user.click(screen.getByRole('checkbox', { name: 'Passing rhythm verified' }));
         expect(changed.mock.lastCall?.[0].context.rhythmConfirmed).toBe(true);
         expect(changed.mock.lastCall?.[0].context.bassConfirmed).toBeUndefined();
         await user.click(screen.getByRole('checkbox', { name: 'Bass / inversions verified' }));
         expect(changed.mock.lastCall?.[0].context).toMatchObject({ bassConfirmed: true, rhythmConfirmed: true });
-        await user.click(screen.getByLabelText('Relationship details'));
+        await user.click(screen.getByText('Passing chord evidence'));
         expect(screen.getByLabelText('Observed conditions')).toBeTruthy();
         expect(screen.getByLabelText('Possible readings')).toBeTruthy();
     });
@@ -84,6 +87,7 @@ describe('Harmony expansion interactions', () => {
         expect(screen.getByRole('button', { name: /^F#, .*connected to selected tone$/ }).getAttribute('data-linked')).toBe('true');
         expect(screen.getByRole('button', { name: /^A, .*connected to selected tone$/ }).getAttribute('data-linked')).toBe('true');
         expect(screen.getByRole('button', { name: /^D#, degree/ }).getAttribute('data-linked')).toBe('false');
+        await user.click(screen.getByRole('button', { name: /^Edit harmony/ }));
         await user.click(screen.getByRole('tab', { name: 'Leading-tone diminished' }));
         await user.click(screen.getByRole('tab', { name: 'Common-tone diminished' }));
         expect(screen.queryByRole('button', { name: /connected to selected tone/ })).toBeNull();
@@ -92,6 +96,7 @@ describe('Harmony expansion interactions', () => {
     it('shows dominant colours as separate examples with their own tone facts', async () => {
         const user = userEvent.setup();
         render(<Harness initial={DEFAULT_HARMONY_QUERY} />);
+        await user.click(screen.getByRole('button', { name: /^Edit harmony/ }));
         await user.click(screen.getByRole('tab', { name: 'Dominant colours' }));
         const colours = within(screen.getByRole('tablist', { name: 'Dominant colour' })).getAllByRole('tab');
         expect(colours.map(tab => tab.textContent)).toEqual(['9', '13', '7♭9', '7♯9', '7♭5', '7♯5', '7sus4']);
@@ -108,6 +113,7 @@ describe('Harmony expansion interactions', () => {
     it('offers borrowed chords as comparisons before the functional interchange readings', async () => {
         const user = userEvent.setup();
         render(<Harness initial={DEFAULT_HARMONY_QUERY} />);
+        await user.click(screen.getByRole('button', { name: /^Edit harmony/ }));
         await user.click(screen.getByRole('tab', { name: 'Modal interchange' }));
         expect(within(screen.getByRole('tablist', { name: 'Modal interchange relationships' })).getAllByRole('tab').map(tab => tab.textContent)).toEqual(['Borrowed chords', 'Subdominant minor', 'Backdoor']);
         expect(within(screen.getByRole('tablist', { name: 'Examples' })).getAllByRole('tab').map(tab => tab.textContent)).toEqual(['iiø7', '♭III', 'iv', '♭VI', '♭VII']);
@@ -125,6 +131,7 @@ describe('Harmony expansion interactions', () => {
         expect(screen.getByText('Outside current scope')).toBeTruthy();
         cleanup();
         render(<Harness initial={{ ...minorC, frame: { tonic: 'C', mode: 'minor', lens: 'classical' } }} />);
+        await user.click(screen.getByRole('button', { name: /^Edit harmony/ }));
         expect(screen.getByRole('tab', { name: 'Neapolitan ♭II6' }).getAttribute('aria-selected')).toBe('true');
         expect(screen.getByRole('button', { name: 'Open D♭/F in Chord' })).toBeTruthy();
         await user.click(screen.getByRole('tab', { name: 'ii°6 / ♭II6' }));

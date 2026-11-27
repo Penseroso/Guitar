@@ -27,11 +27,11 @@ describe('Harmony musical diagrams', () => {
     it('keeps numerical diagnostics collapsed and exposes them on demand', async () => {
         const user = userEvent.setup();
         render(<RelationExampleView example={examples('dominant')[0]} onOpenChord={vi.fn()} activeStep={null} />);
-        const details = screen.getByText('Details').closest('details')!;
+        const details = screen.getByText('Common and changed tones').closest('details')!;
         expect(details.open).toBe(false);
         expect(within(details).getByText(/Root distance:/)).toBeTruthy();
         expect(screen.getByText('P5 down / P4 up')).toBeTruthy();
-        await user.click(screen.getByText('Details'));
+        await user.click(screen.getByText('Common and changed tones'));
         expect(details.open).toBe(true);
     });
 
@@ -97,12 +97,25 @@ describe('Harmony musical diagrams', () => {
         expect(screen.getByRole('status').textContent).toContain('C to B, ½ step down. B to C, ½ step up');
     });
 
-    it('keeps A above B when the substitute is selected, with playing state on B only', () => {
+    it('keeps A above B when the substitute is selected, with playing state on B only', async () => {
+        const user = userEvent.setup();
         const [original, substitute] = examples('tritone');
         const { rerender } = render(<RelationExampleView example={original} alternative={substitute} onOpenChord={vi.fn()} activeStep={1} />);
+        const comparison = screen.getByRole('table', { name: 'Tritone substitution comparison' });
+        const approachTitles = within(comparison).getAllByRole('columnheader');
+        expect(approachTitles.map(title => title.textContent)).toEqual(['A · Original dominantG7 → C', 'B · Tritone substituteD♭7 → C']);
+        expect(approachTitles[0].getAttribute('aria-current')).toBe('true');
+        expect([...comparison.querySelectorAll('tbody:first-of-type td')].map(cell => cell.textContent))
+            .toEqual(['B 3rd', 'C♭ ♭7', 'F ♭7', 'F 3rd']);
+        const disclosure = screen.getByText('Compare voice leading');
+        expect(disclosure.closest('details')!.open).toBe(false);
+        await user.click(disclosure);
+        expect(disclosure.closest('details')!.open).toBe(true);
         expect(screen.getAllByRole('heading', { level: 4 }).map(heading => heading.textContent)).toEqual(['A — Original dominant', 'B — Tritone substitute']);
         rerender(<RelationExampleView example={substitute} alternative={original} onOpenChord={vi.fn()} activeStep={1} />);
         expect(screen.getAllByRole('heading', { level: 4 }).map(heading => heading.textContent)).toEqual(['A — Original dominant', 'B — Tritone substitute']);
+        expect(approachTitles[1].getAttribute('aria-current')).toBe('true');
+        expect(disclosure.closest('details')!.open).toBe(true);
         const originalDiagram = screen.getByRole('region', { name: 'A — Original dominant' });
         const substituteDiagram = screen.getByRole('region', { name: 'B — Tritone substitute' });
         const originalB = within(originalDiagram).getByRole('button', { name: /^B, degree 3 in G7$/ });
@@ -116,6 +129,18 @@ describe('Harmony musical diagrams', () => {
         expect(destination(substituteDiagram)).toEqual(destination(originalDiagram));
         expect(originalDiagram.querySelectorAll('[data-playing="true"]')).toHaveLength(0);
         expect(substituteDiagram.querySelectorAll('[data-playing="true"]').length).toBeGreaterThan(0);
+    });
+
+    it('aligns the actual enharmonic guide pairs and root paths of the transposed examples', () => {
+        const [original, substitute] = exploreRelation({
+            kind: 'tritone', frame: { tonic: 'D', mode: 'major', lens: 'jazz-pop' }, target: { root: 'D', chordId: 'minor-7' },
+        }).examples;
+        render(<RelationExampleView example={substitute} alternative={original} onOpenChord={vi.fn()} activeStep={null} />);
+        const table = screen.getByRole('table');
+        expect(within(table).getAllByRole('columnheader').map(cell => cell.textContent))
+            .toEqual(['A · Original dominantA7 → Dm7', 'B · Tritone substituteE♭7 → Dm7']);
+        expect(within(table).getAllByRole('cell').map(cell => cell.textContent))
+            .toEqual(['C♯ 3rd', 'D♭ ♭7', 'G ♭7', 'G 3rd', 'A → DP5 down / P4 up', 'E♭ → Dm2 down']);
     });
 
     it('badges an analytical slash bass in its own role row instead of moving it to the bottom', () => {

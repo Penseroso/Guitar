@@ -90,9 +90,14 @@ export function AcrossBarsWrittenTimePanel({ snapshot, onClose, onAction, readin
                 <p>Across full bars{data.model ? ` · ${data.model.meter.numerator}/${data.model.meter.denominator}` : ''}</p></div>
             <details className={styles.about}>
                 <summary onClick={disclosure}>About across bars</summary>
-                <p>Regular full bars spaced by the selected meter. All source notes are considered, including earlier bars.
-                    Nominal written lengths only; no pickup or performance timing is inferred. Rest, mute, continuation and technique markers are not realized.
-                    The drawing is approximate; Details keeps original and projected values.</p>
+                <dl className={acrossStyles.modelRows}>
+                    <dt>Bar spacing</dt>
+                    <dd>{data.model ? `Regular full bars · ${data.model.meter.numerator}/${data.model.meter.denominator}`
+                        : data.reason === 'invalid-meter' ? 'Regular full bars · invalid meter'
+                            : data.reason === 'missing-meter' ? 'Regular full bars · meter needed' : 'Regular full bars'}</dd>
+                    <dt>Notes shown</dt><dd>Written intervals overlapping this bar, including earlier notes</dd>
+                    <dt>Time unit</dt><dd>Written starts and lengths in quarter notes</dd>
+                </dl>
             </details>
             <button type="button" className={styles.action} aria-label="Close written time" onClick={close}>Close</button>
         </div>
@@ -143,7 +148,10 @@ export function AcrossBarsWrittenTimePanel({ snapshot, onClose, onAction, readin
         {data.status === 'ready' && !empty && data.intervals.length > 0 && displayNotes.length === 0 && <p className={styles.hint}>No known intervals in this window</p>}
         <details className={styles.details}>
             <summary onClick={disclosure}>Details</summary>
-            <p className={styles.hint}>Nominal source-note intervals under regular full-bar origins. This model does not establish performed sound.</p>
+            <dl className={acrossStyles.modelRows}>
+                <dt>Outside the model</dt><dd>Pickup bars, meter changes and performed timing</dd>
+                <dt>Markers only</dt><dd>Rests, mutes, continuations and techniques</dd>
+            </dl>
             {data.model && <p>Model · Regular full-bar origins · {data.model.meter.numerator}/{data.model.meter.denominator} · Bar length {exactLabel(data.model.barLength)}</p>}
             {window && <p>Global window · {exactLabel(window.start)} to {exactLabel(window.end)}</p>}
             {time && <p>Current global point · {exactLabel(time)}</p>}

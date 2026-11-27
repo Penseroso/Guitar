@@ -27,7 +27,7 @@ export function ContextWindow({ query, onQueryChange }: { query: RelationQuery; 
         <div className={styles.sectionHeading}><h3>{query.kind === 'cadence' ? 'Ending' : 'Observed motion'}</h3></div>
         <p className={styles.endpointSummary} aria-label="Observed chord path">{chordName(query.context?.before)} <span aria-hidden="true">→</span> {query.kind === 'passing' && <>{chordName(query.context?.middle)} <span aria-hidden="true">→</span> </>}{chordName(query.target)} <span className={styles.endpointRole}>Resolve to</span></p>
         <div className={styles.observationFields}>
-            <HarmonyChordFields label="Before" optional allowBass defaultQuality={query.kind === 'cadence' ? 'dominant-7' : 'major'} value={query.context?.before} onChange={before => updateContext({ before })} />
+            <HarmonyChordFields label="Before" optional allowBass emptyHint={query.kind === 'cadence' ? 'Choose preceding chord' : undefined} defaultQuality={query.kind === 'cadence' ? 'dominant-7' : 'major'} value={query.context?.before} onChange={before => updateContext({ before })} />
             {query.kind === 'passing' && <HarmonyChordFields label="Middle" optional allowBass defaultQuality="diminished-7" value={query.context?.middle} onChange={middle => updateContext({ middle })} />}
         </div>
         {query.kind === 'cadence' && <div className={styles.cadenceFields}>

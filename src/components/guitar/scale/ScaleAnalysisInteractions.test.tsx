@@ -37,6 +37,43 @@ describe('Scale harmonic analysis interactions', () => {
         expect(screen.queryByText(/No chord selected/)).toBeNull();
         expect(screen.queryByRole('button', { name: 'Clear tone focus' })).toBeNull();
     });
+    it('shows registered characteristic notes in the current key and marks the focused one', async () => {
+        const user = userEvent.setup();
+        render(<BridgeHarness name="Ionian" tonic={2} />);
+        await user.click(screen.getByRole('button', { name: 'Focus C♯ on fretboard' }));
+        await user.click(screen.getByText('Context', { exact: true }));
+        const row = screen.getByRole('list', { name: 'Characteristic tones of D Ionian' });
+        expect(Array.from(row.children, item => item.textContent)).toEqual(['F♯ 3', 'C♯ 7']);
+        expect(row.querySelector('[aria-current="true"]')?.textContent).toBe('C♯ 7');
+        await user.click(screen.getByRole('button', { name: 'Focus F♯ on fretboard' }));
+        expect(row.querySelector('[aria-current="true"]')?.textContent).toBe('F♯ 3');
+    });
+
+    it('preserves both the authored altered-tension spelling and the structural spelling', async () => {
+        const user = userEvent.setup();
+        const analysis = getScaleToneAnalysis(createScaleRef('Jazz Minor Modes', 'Altered scale', 0))!;
+        render(<ToneRolesPanel analysis={analysis} onClear={() => undefined} focusedInterval={3} />);
+        await user.click(screen.getByText('Context', { exact: true }));
+        const row = screen.getByRole('list', { name: /Characteristic tones of C Altered/ });
+        expect(row.children).toHaveLength(4);
+        const current = row.querySelector('[aria-current="true"]')!;
+        expect(current.querySelector('strong')?.textContent).toBe('D♯');
+        expect(current.querySelector('span')?.textContent).toBe('♯9');
+        expect(current.querySelector('small')?.textContent).toBe('E♭ · ♭3 in scale');
+    });
+
+    it('retains the chord conditions when the selected tone is not a characteristic marker', async () => {
+        const user = userEvent.setup();
+        const analysis = getScaleToneAnalysis(createScaleRef('Diatonic Modes', 'Ionian', 0), 'major-7')!;
+        render(<ToneRolesPanel analysis={analysis} onClear={() => undefined} focusedInterval={5} />);
+        await user.click(screen.getByText('Context', { exact: true }));
+        expect(screen.queryByRole('list', { name: /Characteristic tones of/ })).toBeNull();
+        for (const reading of analysis.tones.find(tone => tone.interval === 5)!.interpretations) {
+            expect(screen.getByRole('heading', { name: `${reading.kind} · Cmaj7` })).toBeTruthy();
+            for (const condition of reading.conditions) expect(screen.getByText(condition)).toBeTruthy();
+        }
+    });
+
     it('requires explicit selection and updates chord membership without losing structural degree', async () => {
         const user = userEvent.setup();
         render(<BridgeHarness />);

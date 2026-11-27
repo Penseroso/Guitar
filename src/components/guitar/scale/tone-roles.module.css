@@ -32,7 +32,16 @@
 .context summary::-webkit-details-marker { display: none; }
 .context summary::before { content: '›'; color: var(--ink); margin-right: 8px; font-size: 18px; transition: transform 180ms ease; }
 .context[open] summary::before { transform: rotate(90deg); }
-.context ul { display: grid; gap: 8px; padding: 0; margin: 0; list-style: none; line-height: 1.5; }
-.context li strong { color: var(--ink); font-weight: 600; text-transform: capitalize; }
+.interpretation { padding: 8px 0; }
+.interpretation + .interpretation { border-top: 1px solid var(--line); }
+.interpretation h4 { margin: 0 0 6px; color: var(--ink); font-size: 12px; font-weight: 600; }
+.interpretation h4 span { text-transform: capitalize; }
+.markerRow { display: flex; flex-wrap: wrap; align-items: start; gap: 6px 16px; list-style: none; margin: 0; padding: 0; }
+.markerRow li { padding: 3px 0; border-bottom: 2px solid transparent; }
+.markerRow li[aria-current] { border-color: currentColor; color: var(--ink); }
+.markerRow strong { color: var(--ink); }
+.markerRow small { display: block; font-size: 12px; }
+.interpretation p { margin: 4px 0; line-height: 1.5; }
+.conditions { margin: 4px 0; padding-left: 18px; line-height: 1.5; }
 .toneButton:focus-visible, .textButton:focus-visible, .context summary:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) { .toneButton, .context summary::before { transition: none; } }

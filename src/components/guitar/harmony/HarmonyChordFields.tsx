@@ -18,11 +18,12 @@ function nameForChordRoot(pitchClass: number, quality: string) {
     return minor ? getMinorKeyName(pitchClass) : getKeyName(pitchClass);
 }
 
-export function HarmonyChordFields({ label, value, onChange, optional = false, allowBass = false, defaultQuality = 'major' }: {
+export function HarmonyChordFields({ label, value, onChange, optional = false, emptyHint = 'Choose chord', allowBass = false, defaultQuality = 'major' }: {
     label: string;
     value?: ChordRef;
     onChange: (chord: ChordRef | undefined) => void;
     optional?: boolean;
+    emptyHint?: string;
     allowBass?: boolean;
     defaultQuality?: string;
 }) {
@@ -40,7 +41,7 @@ export function HarmonyChordFields({ label, value, onChange, optional = false, a
         <div className={styles.chordPrimaryRow}>
             <div className={styles.chordRootRow}>
                 <RootDial label={`${label} root`} value={rootPitchClass} displayName={value ? formatAccidentals(value.root) : '+'} onChange={pitchClass => onChange({ root: nameForChordRoot(pitchClass, value?.chordId ?? defaultQuality), chordId: value?.chordId ?? defaultQuality })} />
-                {!value && <span className={styles.chooseHint}>Choose chord</span>}
+                {!value && <span className={styles.chooseHint}>{emptyHint}</span>}
                 {optional && value && <button type="button" className={styles.clearChord} onClick={() => onChange(undefined)}>Clear {label.toLowerCase()}</button>}
             </div>
             {value && <SwipePicker label={`${label} quality`} value={value.chordId} options={QUALITY_OPTIONS} onChange={chordId => onChange({ root: value.root, chordId })} />}

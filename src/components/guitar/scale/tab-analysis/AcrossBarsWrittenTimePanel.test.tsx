@@ -61,8 +61,16 @@ describe('explicit across-bars written-time panel', () => {
         expect(queried.status).toBe('complete');
         if (queried.status === 'complete') expect(queried.notes.map(note => note.noteId)).toEqual(['A', 'B']);
         expect(origins()).toEqual(['Bar 2 · Position 2 · String 1', 'Bar 3 · Position 3 · String 1', 'Bar 1 · Position 1 · String 1']);
+        const about = screen.getByText('About across bars').closest('details')!;
+        expect(about.open).toBe(false);
+        await user.click(within(about).getByText('About across bars'));
+        expect(about.open).toBe(true);
+        expect(Array.from(about.querySelectorAll('dt'), term => term.textContent)).toEqual(['Bar spacing', 'Notes shown', 'Time unit']);
+        expect(within(about).getByText('Regular full bars · 4/4')).toBeTruthy();
+        expect(within(about).queryByText('Outside the model')).toBeNull();
         await user.click(screen.getByText('Details'));
         const details = screen.getByText('Details').closest('details')!;
+        expect(within(details).getByText('Pickup bars, meter changes and performed timing')).toBeTruthy();
         expect(within(details).getByText('Current global point · 9/1')).toBeTruthy();
         expect(within(details).getAllByText('Original local start')).toHaveLength(3);
         expect(within(details).getAllByText('Global start')).toHaveLength(3);
@@ -125,6 +133,7 @@ describe('explicit across-bars written-time panel', () => {
         const unavailable = createEmptyTabDocument(); mount(snapshotFor(unavailable));
         expect(screen.getByText('Projection unavailable')).toBeTruthy();
         expect(screen.getByText('Set meter to compare bars')).toBeTruthy();
+        expect(screen.getByText('Regular full bars · meter needed')).toBeTruthy();
         expect(screen.queryByText('No written notes')).toBeNull();
         cleanup();
         const metered = setTabMeter(unavailable, { numerator: 4, denominator: 4 });
