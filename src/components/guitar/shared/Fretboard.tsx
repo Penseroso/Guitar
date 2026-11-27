@@ -261,11 +261,7 @@ export const Fretboard: React.FC<FretboardProps> = ({
 
                                     // Determine Style
                                     let dotClass = styles.noteScale;
-                                    let label = NOTES[noteIdx];
-
-                                    if (showIntervals) {
-                                        label = noteLabelsByPosition?.[`${s}:${f}`] ?? getIntervalLabel(noteIdx);
-                                    }
+                                    let label = noteLabelsByPosition?.[`${s}:${f}`] ?? (showIntervals ? getIntervalLabel(noteIdx) : NOTES[noteIdx]);
 
                                     const annotation = noteAnnotations?.[noteIdx];
 
@@ -273,10 +269,6 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                         if (specificFinger.label === 'X') {
                                             label = 'X';
                                             dotClass = styles.noteMute;
-                                        } else if (specificFinger.label && !showIntervals) {
-                                            label = NOTES[noteIdx];
-                                        } else if (showIntervals) {
-                                            label = noteLabelsByPosition?.[`${s}:${f}`] ?? getIntervalLabel(noteIdx);
                                         }
 
                                         if (label !== 'X') {
@@ -341,9 +333,9 @@ export const Fretboard: React.FC<FretboardProps> = ({
                                             ref={onCellClick ? setCellRef(s, f) : undefined}
                                             className={styles.noteCell}
                                             style={{ gridRow: s + 1, gridColumn: f + 1, cursor: onCellClick ? 'pointer' : undefined }}
-                                            role={onCellClick ? 'button' : undefined}
-                                            tabIndex={onCellClick ? (isActive(s, f) ? 0 : -1) : undefined}
-                                            aria-label={onCellClick ? `String ${s + 1}, fret ${f} (currently placed) — click to remove` : undefined}
+                                            role={onCellClick ? 'button' : noteIdx === focusedPitchClass ? 'img' : undefined}
+                                            tabIndex={onCellClick ? (isActive(s, f) ? 0 : -1) : noteIdx === focusedPitchClass ? -1 : undefined}
+                                            aria-label={onCellClick ? `String ${s + 1}, fret ${f} (currently placed) — click to remove` : noteIdx === focusedPitchClass ? `${annotation?.noteName ?? label}, string ${s + 1}, fret ${f}` : undefined}
                                             onClick={onCellClick ? () => activate(s, f) : undefined}
                                             onKeyDown={onCellClick ? cellKeyDown(s, f) : undefined}
                                         >

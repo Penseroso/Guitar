@@ -189,8 +189,11 @@ describe('score-first explicit analysis workflow', () => {
         expect(screen.getByRole('button', { name: 'Key: C major' })).toBeTruthy();
         await user.click(screen.getByRole('button', { name: 'Next Key mode' }));
         expect(screen.getByRole('button', { name: 'Key: C minor' })).toBeTruthy();
-        expect(screen.getByText(/Pinned reference for this score, not a detected key/)).toBeTruthy();
-        expect(screen.getByText(/minor V–i, iv–i/)).toBeTruthy();
+        const patterns = screen.getByText('Roman numerals & patterns');
+        expect(patterns.closest('details')?.open).toBe(false);
+        await user.click(patterns);
+        expect(patterns.closest('details')?.open).toBe(true);
+        expect(screen.getByText('Minor · V–i, iv–i')).toBeTruthy();
         await user.click(screen.getByRole('button', { name: 'Clear key' }));
         expect(screen.getByRole('button', { name: 'Add key for Roman / progression' })).toBeTruthy();
     });

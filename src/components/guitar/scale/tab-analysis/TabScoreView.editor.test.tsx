@@ -6,7 +6,8 @@ import userEvent from '@testing-library/user-event';
 import { createEmptyTabDocument } from '@/domain/tab/editing';
 import { parseAsciiTab } from '@/domain/tab/ascii';
 import type { TabDocument, TabSelection } from '@/domain/tab/types';
-import type { TabScoreAnnotation } from '@/domain/tab/annotations';
+import { buildTabScoreAnnotations, type TabScoreAnnotation } from '@/domain/tab/annotations';
+import { analyzeTabSelection } from '@/domain/tab/analysis';
 import { createTabAnalysisState, reduceTabAnalysis } from '@/features/tab-analysis/state';
 import { TabScoreView, type TabActiveCell } from './TabScoreView';
 
@@ -316,6 +317,26 @@ describe('editable tab score', () => {
         expect(screen.getByRole('note', { name: 'Annotation detail' }).textContent).toContain('A pitch collection candidate.');
         await user.click(screen.getByRole('button', { name: 'Close annotation detail' }));
         expect(screen.queryByRole('note', { name: 'Annotation detail' })).toBeNull();
+    });
+
+    it('marks melodic steps at their destination frets and clears them with the selection', async () => {
+        const user = userEvent.setup();
+        const parsed = parseAsciiTab(['e|5-8-1-1|', ...['B', 'G', 'D', 'A', 'E'].map(label => `${label}|-------|`)].join('\n'));
+        if (!parsed.ok) throw new Error('Invalid melody fixture');
+        const context = { scale: null, frame: null, chord: null };
+        const analysis = analyzeTabSelection(parsed.document, { start: 0, end: 3 }, context);
+        render(<Harness initialScore={parsed.document} annotations={buildTabScoreAnnotations(analysis, context)} />);
+        const trigger = screen.getByRole('button', { name: 'Melodic line, melody annotation' });
+        trigger.focus();
+        await user.keyboard('{Enter}');
+        const steps = screen.getByRole('group', { name: 'Melodic intervals in semitones' });
+        expect(within(steps).getByRole('img', { name: 'Position 2, up 3 semitones' }).textContent).toBe('↑3');
+        expect(within(steps).getByRole('img', { name: 'Position 3, down 7 semitones' }).textContent).toBe('↓7');
+        expect(within(steps).getByRole('img', { name: 'Position 4, same pitch' }).textContent).toBe('=0');
+        expect(document.querySelectorAll('[role="gridcell"][data-evidence]')).toHaveLength(4);
+        await user.keyboard('{Escape}');
+        expect(screen.queryByRole('group', { name: 'Melodic intervals in semitones' })).toBeNull();
+        expect(document.querySelectorAll('[role="gridcell"][data-evidence]')).toHaveLength(0);
     });
 
     it('highlights all repeat frets across systems, retains the cursor and clears evidence on hide or edit', async () => {

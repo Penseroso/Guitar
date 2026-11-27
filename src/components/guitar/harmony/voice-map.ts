@@ -41,11 +41,14 @@ function roleLanes(example: RelationExample) {
 }
 
 /** Pitch direction of one connection, shown in selection detail instead of by line slope. */
-export function motionLabel(fromPitchClass: number, toPitchClass: number) {
+export function pitchMotion(fromPitchClass: number, toPitchClass: number) {
     const up = ((toPitchClass - fromPitchClass) % 12 + 12) % 12, signed = up > 6 ? up - 12 : up;
-    if (signed === 0) return 'Common tone';
+    if (signed === 0) return { symbol: '=', spoken: 'Common tone' };
     const size = Math.abs(signed), direction = signed > 0 ? 'up' : 'down';
-    return `${size === 1 ? '½ step' : size === 2 ? 'whole step' : `${size} semitones`} ${direction}`;
+    return {
+        symbol: `${signed > 0 ? '↑' : '↓'}${size === 1 ? '½' : size === 2 ? '1' : `${size} st`}`,
+        spoken: `${size === 1 ? '½ step' : size === 2 ? 'whole step' : `${size} semitones`} ${direction}`,
+    };
 }
 
 /** Spelled direction, rather than a pitch-class distance disguised as an interval. */

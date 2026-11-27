@@ -8,14 +8,28 @@ import { integer } from './validation';
 import type { PhysicalReason, PresentationCandidate } from './types';
 
 export function formatDegreeLabel(degree:string):string{return degree.replace(/b/g,'♭').replace(/#/g,'♯');}
-/** Bare note name for a chord tone, letter-cycle spelled from the chord's own root and degree. */
-export function spellChordToneName(rootPitchClass:number,degree:string,interval:number):string {
-    const parsed=parseDegreeLabel(degree);
-    if(!parsed||parsed.number<1)throw new RangeError(`Invalid chord degree: ${degree}`);
-    const root=parseNoteName(getKeyName(rootPitchClass));
-    const spelled=root&&spellDegree(root,parsed.number,rootPitchClass+interval);
-    if(!spelled)throw new RangeError(`Unspellable chord tone: ${degree} over ${rootPitchClass}`);
-    return spelled.name;
+function spellVoicingTone(rootPitchClass: number, degree: string, pitch: number) {
+    const root = parseNoteName(getKeyName(rootPitchClass));
+    const parsed = parseDegreeLabel(degree);
+    if (!parsed || parsed.number < 1) throw new RangeError(`Invalid chord degree: ${degree}`);
+    const spelled = root && spellDegree(root, parsed.number, pitch);
+    if (!spelled) throw new RangeError(`Unspellable chord tone: ${degree} over ${rootPitchClass}`);
+    return spelled;
+}
+
+/** Bare ASCII name for a chord formula degree, relative to its root. */
+export function spellChordToneName(rootPitchClass: number, degree: string, interval: number): string {
+    return spellVoicingTone(rootPitchClass, degree, rootPitchClass + interval).name;
+}
+
+/** Display spelling for a sounding pitch. An octave label requires the complete MIDI pitch. */
+export function formatVoicingTone(rootPitchClass: number, degree: string, pitch: number, withOctave = false): string {
+    const spelled = spellVoicingTone(rootPitchClass, degree, pitch);
+    const name = formatNoteName(spelled.name);
+    if (!withOctave) return name;
+    // Removing the written accidental locates B♯ and C♭ in their letter's octave.
+    const writtenOctave = Math.floor((pitch - spelled.alteration) / 12) - 1;
+    return name + writtenOctave;
 }
 export function formatChordToneLabel(rootPitchClass:number,degree:string,interval:number):string {
     return `${formatNoteName(spellChordToneName(rootPitchClass,degree,interval))} · ${formatDegreeLabel(degree)}`;

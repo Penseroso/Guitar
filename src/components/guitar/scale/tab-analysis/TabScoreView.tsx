@@ -140,6 +140,8 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
         const noteIds = currentAnnotation?.annotation.evidenceNoteIds;
         return noteIds && resolveTabEvidence(document, { noteIds })?.noteIds;
     }, [document, currentAnnotation]);
+    const selectedSteps = useMemo(() => new Map(currentAnnotation?.annotation.melodicSteps?.map(step =>
+        [step.to, step.interval.semitones])), [currentAnnotation]);
     const [columnMode, setColumnMode] = useState(false);
     const [insertionCursor, setInsertionCursor] = useState<string | null>(null);
     const [touchActions, setTouchActions] = useState<string | null>(null);
@@ -968,6 +970,18 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                             </div>)}
                         </div>
                         </div>
+                        {slots.some(slot => selectedSteps.has(slot.index)) && <div className={styles.melodicSteps} role="group" aria-label="Melodic intervals in semitones">
+                            <small className={styles.insertionLabel} aria-hidden="true">Semitones</small>
+                            {slots.map(({ index }, column) => {
+                                const step = selectedSteps.get(index);
+                                if (step === undefined) return null;
+                                const direction = step > 0 ? 'up' : step < 0 ? 'down' : 'same pitch';
+                                return <span key={index} style={{ gridColumn: column + 2 }} role="img"
+                                    aria-label={`Position ${index + 1}, ${direction}${step ? ` ${Math.abs(step)} semitones` : ''}`}>
+                                    {step > 0 ? '↑' : step < 0 ? '↓' : '='}{Math.abs(step)}
+                                </span>;
+                            })}
+                        </div>}
                         {onInsertMoment && <div className={styles.insertions} role="group" aria-label="Insert positions">
                             <span className={styles.insertionLabel} aria-hidden="true">Position</span>
                             {slots.map(({ moment, index }, slotIndex) => <div key={moment?.id ?? `empty-insert-${slotIndex}`}

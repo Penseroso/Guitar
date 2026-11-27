@@ -20,7 +20,11 @@
 .nonMember { color: #66717b; }
 .detail { border-top: 1px solid var(--line); padding-top: 14px; display: grid; gap: 10px; }
 .detail h3 { margin: 0; font-size: 16px; font-weight: 650; }
-.detail h3 span { color: var(--muted); font-size: 12px; font-weight: 400; }
+.detail .header { align-items: center; }
+.degreeFrames { display: flex; flex-wrap: wrap; column-gap: 26px; row-gap: 6px; margin: 0; }
+.degreeFrames > div { display: flex; align-items: baseline; gap: 7px; }
+.degreeFrames dt { color: var(--muted); font-size: 12px; }
+.degreeFrames dd { margin: 0; font-weight: 600; }
 .roleList { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .kind { padding: 4px 8px; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); text-transform: capitalize; font-size: 12px; }
 .context { color: var(--muted); font-size: 12px; }

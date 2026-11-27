@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import React from 'react';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ScaleModeWorkspace } from './ScaleModeWorkspace';
@@ -69,6 +69,25 @@ describe('Scale workspace analysis to fretboard contract', () => {
             expect(Number(location.getAttribute('data-fret'))).toBeLessThanOrEqual(5);
             expect(location.getAttribute('data-string')).not.toBe('0');
         }
+    });
+
+    it('locates a focused tone by keyboard and respects a practice range without that pitch', async () => {
+        const user = userEvent.setup();
+        const { container } = render(<WorkspaceHarness />);
+        await user.click(screen.getByRole('button', { name: 'Focus E♭ on fretboard' }));
+        const cell = container.querySelector<HTMLElement>('[data-focused="true"]')!;
+        cell.scrollIntoView = vi.fn();
+        const locate = screen.getByRole('button', { name: 'Show E♭ on fretboard' });
+        locate.focus();
+        await user.keyboard('{Enter}');
+        expect(document.activeElement).toBe(cell);
+        expect(cell.scrollIntoView).toHaveBeenCalledOnce();
+        expect(cell.getAttribute('aria-label')).toMatch(/string [1-6], fret [0-9]+/);
+
+        fireEvent.keyDown(screen.getByRole('slider', { name: 'Maximum fret' }), { key: 'Home' });
+        expect(container.querySelector('[data-focused="true"]')).toBeNull();
+        expect(screen.queryByRole('button', { name: 'Show E♭ on fretboard' })).toBeNull();
+        expect(screen.getByText('Outside practice range')).toBeTruthy();
     });
 
     it('opens and closes the single mobile navigation disclosure without duplicating navigators', async () => {

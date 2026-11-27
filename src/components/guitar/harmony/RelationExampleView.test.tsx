@@ -43,7 +43,7 @@ describe('Harmony musical diagrams', () => {
         await user.keyboard('{Enter}');
         expect(leadingTone.getAttribute('aria-pressed')).toBe('true');
         expect(screen.getByRole('button', { name: /^C, degree 1 in C, connected to selected tone$/ }).getAttribute('data-linked')).toBe('true');
-        expect(screen.getByText('B → C')).toBeTruthy();
+        expect(screen.getByText('B → C ↑½')).toBeTruthy();
         await user.keyboard('{Enter}');
         expect(leadingTone.getAttribute('aria-pressed')).toBe('false');
         expect(screen.queryByRole('button', { name: /connected to selected tone/ })).toBeNull();
@@ -56,6 +56,8 @@ describe('Harmony musical diagrams', () => {
         expect(screen.getByRole('button', { name: /^F#, .*connected to selected tone$/ }).getAttribute('data-linked')).toBe('true');
         expect(screen.getByRole('button', { name: /^A, .*connected to selected tone$/ }).getAttribute('data-linked')).toBe('true');
         expect(screen.getByRole('button', { name: /^D#, degree/ }).getAttribute('data-linked')).toBe('false');
+        expect(screen.getByText('F♯ → G ↑½')).toBeTruthy();
+        expect(screen.getByText('A → G ↓1')).toBeTruthy();
     });
 
     it('opens the canonical chord even when analysis notes use enharmonic aliases', async () => {
@@ -74,6 +76,25 @@ describe('Harmony musical diagrams', () => {
         expect(screen.getByRole('region', { name: 'Chord comparison' })).toBeTruthy();
         expect(screen.queryByText('→ Resolving tones')).toBeNull();
         expect(screen.getByLabelText('Tone correspondence').textContent).not.toContain(' to ');
+    });
+
+    it('shows a non-directional label for changed comparison tones', async () => {
+        const user = userEvent.setup();
+        const example = examples('minor-sub').find(item => item.id === 'mixture')!;
+        render(<RelationExampleView example={example} onOpenChord={vi.fn()} activeStep={null} />);
+        await user.click(screen.getByRole('button', { name: 'A, degree 3 in Fmaj7' }));
+        expect(screen.getByText('A ↔ A♭')).toBeTruthy();
+        expect(screen.getByRole('status').textContent).toBe('A compared with A♭');
+    });
+
+    it('places both captions on their own side of a selected middle chord', async () => {
+        const user = userEvent.setup();
+        render(<RelationExampleView example={examples('ii-v')[0]} onOpenChord={vi.fn()} activeStep={null} />);
+        const middle = screen.getByRole('button', { name: 'B, degree 3 in G7' });
+        await user.click(middle);
+        const arrival = screen.getByText('C → B ↓½'), departure = screen.getByText('B → C ↑½');
+        expect(parseFloat(arrival.style.left)).toBeLessThan(parseFloat(departure.style.left));
+        expect(screen.getByRole('status').textContent).toContain('C to B, ½ step down. B to C, ½ step up');
     });
 
     it('keeps A above B when the substitute is selected, with playing state on B only', () => {
@@ -123,15 +144,18 @@ describe('Harmony musical diagrams', () => {
         const user = userEvent.setup();
         render(<RelationExampleView example={examples('dominant')[0]} onOpenChord={vi.fn()} activeStep={null} />);
         await user.click(screen.getByRole('button', { name: /^B, degree 3 in G7$/ }));
-        expect(screen.getByText('3rd → root · ½ step up')).toBeTruthy();
+        expect(screen.getByText('B → C ↑½')).toBeTruthy();
         await user.click(screen.getByRole('button', { name: /^B, degree 3 in G7/ }));
         await user.click(screen.getByRole('button', { name: /^G, degree 1 in G7$/ }));
-        expect(screen.getByText('Common tone')).toBeTruthy();
+        expect(screen.getByText('G = G')).toBeTruthy();
+        expect(screen.getByRole('status').textContent).toBe('G held as G');
+        await user.click(screen.getByRole('button', { name: /^D, degree 5 in G7/ }));
+        expect(screen.getByText('No link')).toBeTruthy();
+        expect(screen.queryByText('G = G')).toBeNull();
     });
 
     it('explains that rows are chord roles, not register', () => {
         render(<RelationExampleView example={examples('fifths')[0]} onOpenChord={vi.fn()} activeStep={null} />);
-        expect(screen.getByText(/Rows show each chord’s tone roles \(root at the bottom\), not pitch or register/)).toBeTruthy();
-        expect(screen.getByText(/their slope is not melodic direction/)).toBeTruthy();
+        expect(screen.getByText('Rows · chord roles, root at bottom')).toBeTruthy();
     });
 });

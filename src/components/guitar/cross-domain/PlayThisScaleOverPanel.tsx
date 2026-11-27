@@ -39,6 +39,7 @@ export function PlayThisScaleOverPanel({ scaleGroup, scaleName, tonicPitchClass,
         ? `${formatNoteName(chords[0].rootNoteName)} ${getScalePresentationName(scaleName)}`
         : getScalePresentationName(scaleName);
     const hasCurated = primary.length > 0 || characteristic.length > 0;
+    const sharedGroupLabel = `Shared notes · ${containment.length} ${containment.length === 1 ? 'chord' : 'chords'}`;
     const containmentList = <ChordList chords={containment} selectedChordId={selectedChordId} onSelectChord={onSelectChord} />;
 
     return <div>
@@ -50,25 +51,25 @@ export function PlayThisScaleOverPanel({ scaleGroup, scaleName, tonicPitchClass,
             <h2 className={styles.label}>Color · {scaleLabel}</h2>
             <ChordList chords={characteristic} selectedChordId={selectedChordId} onSelectChord={onSelectChord} />
         </section>}
-        {!hasCurated && <p className={styles.meta}>Curated pairings · none</p>}
+        {chords.length === 0 && <p className={styles.meta}>No matching chords</p>}
         {containment.length > 0 && (hasCurated
             ? <details className={styles.disclosure} open={selected?.basis === 'containment' ? true : undefined}>
-                <summary>Other contained chords · {containment.length}</summary>
-                <p className={styles.meta}>Shared notes only · pairing unverified</p>
+                <summary>{sharedGroupLabel}</summary>
                 {containmentList}
             </details>
             : <section className={styles.section}>
-                <h2 className={styles.label}>Other contained chords · {containment.length}</h2>
-                <p className={styles.meta}>Shared notes only · pairing unverified</p>
+                <h2 className={styles.label}>{sharedGroupLabel}</h2>
                 {containmentList}
             </section>)}
         {selected && <div className={styles.selectedSummary} aria-live="polite">
-            <h3>{chordName(selected)} <span className={styles.meta}>· {selected.basis === 'containment' ? 'note containment' : selected.basis} pairing</span></h3>
-            <p className={styles.description}>Chord tones · {selected.toneNames.map(formatNoteName).join(' · ')}</p>
+            {selected.basis !== 'containment' && <>
+                <h3>{chordName(selected)} <span className={styles.meta}>· {selected.basis} pairing</span></h3>
+                <p className={styles.description}>Chord tones · {selected.toneNames.map(formatNoteName).join(' · ')}</p>
+            </>}
             {selected.tonesOutsideScale.length > 0 && <p className={styles.meta}>Outside scale · {selected.tonesOutsideScale.map(formatNoteName).join(' · ')}</p>}
             {onExploreHarmony && <button type="button" className={styles.quietLink}
                 onClick={() => onExploreHarmony({ root: selected.rootNoteName, chordId: selected.chordId })}>
-                Explore in Harmony →
+                Explore {selected.basis === 'containment' ? `${chordName(selected)} ` : ''}in Harmony →
             </button>}
         </div>}
     </div>;

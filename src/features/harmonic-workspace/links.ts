@@ -3,6 +3,7 @@ import type { ScaleRef } from '@/domain/scale/scale-ref';
 import { resolveScaleRef } from '@/domain/scale/scale-ref';
 import { getKeyName } from '@/domain/shared/keys';
 import { parseNoteName } from '@/domain/shared/spelling';
+import { spellChordToneName } from '@/domain/chord/engine/presentation';
 import type { ChordReading } from '@/domain/chord/reverse/readings';
 import { engineEntry } from '@/domain/chord/engine/catalog';
 
@@ -41,9 +42,12 @@ export function frameForScaleRef(source: ScaleRef, current: TonalFrame): TonalFr
 }
 
 export function chordRefFromReading(reading: ChordReading): ChordRef {
-    const root = getKeyName(reading.rootPitchClass);
-    const bass = reading.bassPitchClass === reading.rootPitchClass ? undefined : getKeyName(reading.bassPitchClass);
-    return { root, chordId: reading.chordId, ...(bass ? { bass } : {}) };
+    const ref = { root: getKeyName(reading.rootPitchClass), chordId: reading.chordId };
+    if (reading.bassPitchClass === reading.rootPitchClass) return ref;
+    const bass = reading.bass.degree
+        ? spellChordToneName(reading.rootPitchClass, reading.bass.degree, reading.bassPitchClass - reading.rootPitchClass)
+        : getKeyName(reading.bassPitchClass);
+    return { ...ref, bass };
 }
 
 export function chordRefPitchClass(chord: ChordRef): number | null {

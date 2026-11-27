@@ -75,7 +75,9 @@ describe('score annotation evidence adapter', () => {
         expect(candidate?.label).toContain('C6');
         expect(result.some(item => item.kind === 'chord')).toBe(false);
         expect(result.find(item => item.kind === 'roman')).toMatchObject({ source: 'candidate' });
-        expect(result.find(item => item.kind === 'roman')?.detail).toContain('Only if this complete single-note bar');
+        expect(result.find(item => item.kind === 'roman')).toMatchObject({
+            detail: expect.stringContaining('Whole bar as one chord'), evidenceNoteIds: candidate!.evidenceNoteIds,
+        });
     });
 
     it('groups equal dyad intervals within a measure and separates bar boundaries', () => {
@@ -93,7 +95,7 @@ describe('score annotation evidence adapter', () => {
         const result = annotations([[65], [60], [64], [67]], noContext, undefined, 1);
         const arpeggio = result.find(item => item.kind === 'arpeggio');
         expect(arpeggio).toMatchObject({ start: 1, end: 3, startMomentId: 'moment-1', endMomentId: 'moment-3', source: 'candidate' });
-        expect(arpeggio?.detail).toContain('not an assertion of the actual accompaniment');
+        expect(arpeggio).toMatchObject({ detail: 'C · E · G', evidenceNoteIds: ['note-1-0', 'note-2-0', 'note-3-0'] });
         expect(result.every(item => item.start >= 1)).toBe(true);
     });
 
@@ -106,7 +108,10 @@ describe('score annotation evidence adapter', () => {
 
     it('keeps melodic and repetition evidence independent of inferred harmony', () => {
         const result = annotations([[60], [62], [64], [], [65], [67], [69]]);
-        expect(result.find(item => item.kind === 'melody')?.label).toBe('Ascending line');
+        expect(result.find(item => item.kind === 'melody')).toMatchObject({ label: 'Ascending line',
+            evidenceNoteIds: ['note-0-0', 'note-1-0', 'note-2-0'],
+            melodicSteps: [{ to: 1, interval: { semitones: 2 } }, { to: 2, interval: { semitones: 2 } }],
+        });
         expect(result.filter(item => item.kind === 'repeat')).toHaveLength(2);
         for (const item of result.filter(item => item.kind === 'repeat')) {
             expect(item).toMatchObject({ label: 'Repeated intervals', detail: '+2 → +2 semitones · 2 occurrences · Positions 1–3, 5–7',

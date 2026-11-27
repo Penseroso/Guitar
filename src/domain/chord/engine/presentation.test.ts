@@ -1,7 +1,7 @@
 import { expect,it } from 'vitest';
 import { EngineSession } from './session';
 import { allocationId } from './identity';
-import { diagramVoicing,getPlaybackMidi,getChordToneChoices,physicalReasonText,positionLabel } from './presentation';
+import { diagramVoicing,formatVoicingTone,getPlaybackMidi,getChordToneChoices,physicalReasonText,positionLabel } from './presentation';
 import { engineEntry } from './catalog';
 
 it('prepares authoritative notes without a feasibility boolean and verifies identity before audio',()=>{
@@ -22,4 +22,15 @@ it('spells the canonical diminished seventh and presents all-open position truth
     expect(positionLabel(row)).toBe('All open');
     expect(physicalReasonText('unsupported-damping')).toContain('not analyzed');
     expect(physicalReasonText('groups-over-five')).toContain('contact groups');
+});
+
+it.each([
+    [0, 'b3', 63, 'E♭4'],
+    [0, '#9', 63, 'D♯4'],
+    [6, '#4', 60, 'B♯3'],
+    [3, 'b6', 59, 'C♭4'],
+    [0, 'bb7', 57, 'B♭♭3'],
+] as const)('spells root %i degree %s at MIDI %i as %s', (root, degree, midi, name) => {
+    expect(formatVoicingTone(root, degree, midi, true)).toBe(name);
+    expect(formatVoicingTone(root, degree, midi % 12)).toBe(name.slice(0, -1));
 });

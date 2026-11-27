@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from 'react';
+import React, { useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Play } from 'lucide-react';
 import { deriveEnteredShape, SILENT_SHAPE_STATES, type ShapeStates } from '@/domain/chord/reverse/enteredShape';
 import { inferChordReadings, type ChordReading } from '@/domain/chord/reverse/readings';
@@ -8,8 +8,7 @@ import { midiNoteLabel } from '@/domain/chord/engine/presentation';
 import { STANDARD_GUITAR_STRING_MIDI_PITCHES } from '@/domain/shared/tuning';
 import { useVoicingAudio } from '../useVoicingAudio';
 import { ShapeEntry } from './ShapeEntry';
-import { ChordReadingCard } from './ChordReadingCard';
-import { buildTitleIndex, describeDyad } from './reading-labels';
+import { badgeFor, describeDyad, playedTone, titleFor } from './reading-labels';
 import styles from '../chord-ui.module.css';
 import type { ChordRef } from '@/domain/harmony/types';
 import { chordRefFromReading } from '@/features/harmonic-workspace/links';
@@ -24,23 +23,6 @@ export interface ReverseChordPanelProps {
     onExploreHarmony?: (chord: ChordRef) => void;
 }
 
-function readingGroup(
-    title: string,
-    readings: readonly ChordReading[],
-    titleByKey: ReadonlyMap<string, string>,
-    focusedKey: string | null,
-    onToggleFocus: (reading: ChordReading) => void,
-) {
-    if (readings.length === 0) return null;
-    return <section aria-label={title}>
-        <h3 className={styles.groupHeading}>{title}</h3>
-        <div className={styles.cards}>
-            {readings.map((reading) => <ChordReadingCard key={reading.key} reading={reading} titleByKey={titleByKey}
-                focused={focusedKey === reading.key} onToggleFocus={() => onToggleFocus(reading)} />)}
-        </div>
-    </section>;
-}
-
 export function ReverseChordPanel({ states, onStatesChange, onStartFromVoicing, onExploreHarmony }: ReverseChordPanelProps) {
     const audio = useVoicingAudio();
     const [focusedReadingKey, setFocusedReadingKey] = useState<string | null>(null);
@@ -50,17 +32,43 @@ export function ReverseChordPanel({ states, onStatesChange, onStartFromVoicing, 
         () => inference.status === 'named' ? [...inference.best, ...inference.other, ...inference.looser] : [],
         [inference],
     );
-    const titleByKey = useMemo(() => buildTitleIndex(allReadings), [allReadings]);
+    const stripId = useId();
+    const noteStrip = useRef<HTMLOListElement>(null);
+    const activatedChoice = useRef<HTMLButtonElement | null>(null);
     const shapeMidi = shape.notes.map((note) => note.midi);
     const focusedReading = allReadings.find((reading) => reading.key === focusedReadingKey) ?? null;
+
+    useLayoutEffect(() => {
+        const choice = activatedChoice.current;
+        activatedChoice.current = null;
+        if (!choice || !noteStrip.current || !focusedReadingKey) return;
+        const notes = noteStrip.current.getBoundingClientRect();
+        const button = choice.getBoundingClientRect();
+        const top = Math.min(notes.top, button.top);
+        const bottom = Math.max(notes.bottom, button.bottom);
+        if (bottom - top > window.innerHeight) return;
+        const shift = top < 0 ? top : Math.max(0, bottom - window.innerHeight);
+        if (shift) window.scrollBy({ top: shift, behavior: 'instant' });
+    }, [focusedReadingKey]);
 
     const playShape = () => { if (shapeMidi.length > 0) void audio.playMidi(SHAPE_PLAYBACK_ID, shapeMidi); };
     const playSingleNote = (string: number, fret: number) => {
         void audio.playMidi(`reverse-note-${string}`, [STANDARD_GUITAR_STRING_MIDI_PITCHES[string] + fret]);
     };
-    const toggleFocus = (reading: ChordReading) => {
+    const toggleFocus = (reading: ChordReading, button: HTMLButtonElement) => {
+        activatedChoice.current = button;
         setFocusedReadingKey((current) => (current === reading.key ? null : reading.key));
     };
+
+    const readingChoices = (label: string, readings: readonly ChordReading[]) => <div className={styles.readingChoices} role="group" aria-label={label}>
+        {readings.map(reading => {
+            const badge = badgeFor(reading);
+            return <button key={reading.key} type="button" className={styles.readingTitle}
+                aria-pressed={reading.key === focusedReading?.key} aria-controls={stripId} onClick={event => toggleFocus(reading, event.currentTarget)}>
+                {titleFor(reading)}{badge && <small>{badge}</small>}
+            </button>;
+        })}
+    </div>;
 
     return <section aria-label="Name a shape" className={styles.reversePanel}>
         <ShapeEntry states={states} onChange={onStatesChange} onSelectFret={playSingleNote} focusedReading={focusedReading} />
@@ -73,10 +81,10 @@ export function ReverseChordPanel({ states, onStatesChange, onStartFromVoicing, 
             <button type="button" className={styles.action} onClick={() => onStatesChange(SILENT_SHAPE_STATES)}>Clear</button>
             {onStartFromVoicing && shape.notes.length === 0 &&
                 <button type="button" className={styles.action} onClick={onStartFromVoicing}>Start from current voicing</button>}
-            <p className={styles.small} style={{ marginLeft: 'auto' }}>
+            {inference.status !== 'named' && <p className={styles.small} style={{ marginLeft: 'auto' }}>
                 {shape.notes.length > 0 ? shape.notes.map((note) => midiNoteLabel(note.midi)).join(' · ') : 'No notes selected.'}
                 {shape.bass && ` · Bass ${midiNoteLabel(shape.bass.midi)}`}
-            </p>
+            </p>}
         </div>
 
         <div>
@@ -93,16 +101,29 @@ export function ReverseChordPanel({ states, onStatesChange, onStartFromVoicing, 
                 </div>;
             })()}
             {inference.status === 'named' && <>
-                <p className={styles.small}>Select a name → intervals on fretboard</p>
-                {readingGroup('Best match', inference.best, titleByKey, focusedReadingKey, toggleFocus)}
-                {readingGroup('Other names', inference.other, titleByKey, focusedReadingKey, toggleFocus)}
+                <div id={stripId} aria-live="polite" aria-atomic="true">
+                    <ol ref={noteStrip} className={styles.playedNotes} aria-label="Played notes">
+                        {shape.notes.map((note, index) => {
+                            const { name, degree } = playedTone(note, focusedReading);
+                            return <li key={note.string}>
+                                <strong>{name}</strong>
+                                {degree && <span>{degree}</span>}
+                                {index === 0 && <small>Bass</small>}
+                            </li>;
+                        })}
+                    </ol>
+                </div>
+                <div className={styles.readingGroups}>
+                    <div><h3 className={styles.groupHeading}>Best match</h3>
+                        {readingChoices('Best match', inference.best)}</div>
+                    {inference.other.length > 0 && <div><h3 className={styles.groupHeading}>Other names</h3>
+                        {readingChoices('Other names', inference.other)}</div>}
+                </div>
                 {inference.looser.length > 0 && <details>
-                    <summary className={styles.groupHeading} style={{ cursor: 'pointer' }}>Looser readings ({inference.looser.length})</summary>
-                    <div className={styles.cards}>
-                        {inference.looser.map((reading) => <ChordReadingCard key={reading.key} reading={reading} titleByKey={titleByKey}
-                            focused={focusedReadingKey === reading.key} onToggleFocus={() => toggleFocus(reading)} />)}
-                    </div>
+                    <summary className={styles.groupHeading}>Looser readings ({inference.looser.length})</summary>
+                    {readingChoices('Looser readings', inference.looser)}
                 </details>}
+                {focusedReading?.bass.inversion && <p className={styles.small}>{focusedReading.bass.inversion} inversion</p>}
                 {focusedReading && onExploreHarmony && <button type="button" className={styles.action}
                     onClick={() => onExploreHarmony(chordRefFromReading(focusedReading))}>Explore selected name in Harmony →</button>}
             </>}

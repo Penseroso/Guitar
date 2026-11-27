@@ -46,7 +46,7 @@ describe('PlayThisScaleOverPanel states only what the domain computed', () => {
     it('separates the practice claim from the note-containment claim', () => {
         const markup = playOver('Diatonic Modes', 'Ionian', 0);
         expect(markup).toContain('Primary · C Ionian');
-        expect(markup).toContain('Shared notes only · pairing unverified');
+        expect(markup).toContain('Shared notes · 5 chords');
         expect(markup).toContain('Cmaj7');
         expect(markup).toContain('Csus4');
     });
@@ -75,8 +75,10 @@ describe('PlayThisScaleOverPanel states only what the domain computed', () => {
         expect(markup).not.toContain('The scale replaces G');
     });
 
-    it('says plainly when no curated chord pairing exists for the scale', () => {
-        expect(playOver('Harmonic Minor Modes', 'Lydian #2', 0)).toContain('Curated pairings · none');
+    it('shows shared notes as their own group in a scale with no curated pairing', () => {
+        const markup = playOver('Harmonic Minor Modes', 'Lydian #2', 0);
+        expect(markup).toContain('Shared notes');
+        expect(markup).not.toMatch(/Primary ·|Color ·|unverified/);
     });
 
     it('renders chord tones in the chord\'s own spelling', () => {

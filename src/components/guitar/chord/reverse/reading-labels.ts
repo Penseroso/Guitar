@@ -1,57 +1,31 @@
-import { getChordRegistryEntry, getChordTypeSuffix } from '@/domain/chord';
-import { formatChordToneLabel, formatDegreeLabel } from '@/domain/chord/engine/presentation';
+import { chordRefFromReading } from '@/features/harmonic-workspace/links';
+import { getChordTypeSuffix } from '@/domain/chord';
+import { formatDegreeLabel, formatVoicingTone } from '@/domain/chord/engine/presentation';
+import type { EnteredShapeNote } from '@/domain/chord/reverse/enteredShape';
+import type { ChordReading, DyadInterval, IntervalQuality } from '@/domain/chord/reverse/readings';
 import { getKeyName } from '@/domain/shared/keys';
-import type { ChordReading, ChordReadingInversion, DyadInterval, IntervalQuality } from '@/domain/chord/reverse/readings';
-
-// Player-facing text only — reuses the same spelling primitives the forward panel already uses
-// (formatChordToneLabel/formatDegreeLabel/getKeyName). No engine metadata, scores, ids or tiers
-// are ever rendered; that boundary is enforced by a static-markup regression test.
-
-function noteLetter(rootPitchClass: number, degree: string, pitchClass: number): string {
-    // formatChordToneLabel returns "<letter> · <degree>"; the letter alone is the player-facing part.
-    return formatChordToneLabel(rootPitchClass, degree, pitchClass - rootPitchClass).split(' · ')[0];
-}
-
-/** The formula degree itself (Root, 3, ♭5, ♯5, ♭7…) — never a role word like "5th", which would
- *  hide an alteration (a ♯5 tone is still "the 5th" by role, but showing "5th" for it silently
- *  drops the sharp that makes the chord what it is). */
-function degreeLabel(degree: string): string {
-    return degree === '1' ? 'Root' : formatDegreeLabel(degree);
-}
-
-function baseName(reading: ChordReading): string {
-    return `${getKeyName(reading.rootPitchClass)}${getChordTypeSuffix(reading.chordId)}`;
-}
+import { formatNoteName } from '@/domain/shared/spelling';
 
 export function titleFor(reading: ChordReading): string {
-    const base = baseName(reading);
-    return reading.bass.relation === 'root' ? base : `${base}/${getKeyName(reading.bassPitchClass)}`;
+    const { root, chordId, bass } = chordRefFromReading(reading);
+    const name = formatNoteName(root) + getChordTypeSuffix(chordId);
+    return bass ? `${name}/${formatNoteName(bass)}` : name;
 }
 
-export function soundingNoteLetters(reading: ChordReading): string[] {
-    return reading.tones
-        .filter((tone) => tone.sounding)
-        .map((tone) => noteLetter(reading.rootPitchClass, tone.degree, tone.pitchClass));
+/** Map a played string to its role without reordering the shape or adding absent formula tones. */
+export function playedTone(note: EnteredShapeNote, reading: ChordReading | null) {
+    const tone = reading?.tones.find(item => item.pitchClass === note.pitchClass && item.sounding);
+    if (tone && reading) return {
+        name: formatVoicingTone(reading.rootPitchClass, tone.degree, note.midi, true),
+        degree: tone.degree === '1' ? 'Root' : formatDegreeLabel(tone.degree),
+    };
+    return { name: formatVoicingTone(note.pitchClass, '1', note.midi, true), degree: reading ? 'Added' : null };
 }
 
-export function bassNoteLetter(reading: ChordReading): string {
-    return getKeyName(reading.bassPitchClass);
-}
-
-/** Degree labels for the same sounding tones soundingNoteLetters() lists, in the same order — the
- *  literal formula degree (Root/3/♭5/♯5/♭7…), not a role word, so an altered tone never silently
- *  reads as its unaltered role (e.g. a ♯5 must never show as "5th"). */
-export function soundingIntervalLabels(reading: ChordReading): string[] {
-    return reading.tones.filter((tone) => tone.sounding).map((tone) => degreeLabel(tone.degree));
-}
-
-/** Per-(string,fret) degree-label overrides for Fretboard's showIntervals rendering — Fretboard's
- *  own generic chromatic table (INTERVAL_NAMES) always canonicalizes a semitone distance to one
- *  fixed spelling (e.g. 8 semitones is always "b6"), which would mislabel a ♯5 tone. Every sounding
- *  formula tone gets its literal degree instead; a non-formula (added) note is left to the generic
- *  fallback, since it has no degree of its own. */
+/** Keep formula spellings and identify the extra pitch of an added-tone reading. */
 export function fretboardDegreeOverrides(reading: ChordReading, fingering: readonly { string: number; fret: number; noteIdx: number }[]): Partial<Record<string, string>> {
     const labelByPitchClass = new Map(reading.tones.map((tone) => [tone.pitchClass, tone.degree === '1' ? 'R' : formatDegreeLabel(tone.degree)]));
+    if (reading.added !== null) labelByPitchClass.set(reading.added, '+');
     const overrides: Partial<Record<string, string>> = {};
     for (const { string, fret, noteIdx } of fingering) {
         const label = labelByPitchClass.get(noteIdx);
@@ -62,51 +36,11 @@ export function fretboardDegreeOverrides(reading: ChordReading, fingering: reado
 
 /** A short, primary-surface label — "Omits 5" (matching the forward panel's own wording) or "Added F#". */
 export function badgeFor(reading: ChordReading): string | null {
-    if (reading.tier === 'added-tone' && reading.added !== null) return `Added ${getKeyName(reading.added)}`;
+    if (reading.tier === 'added-tone' && reading.added !== null) return `Added ${formatNoteName(getKeyName(reading.added))}`;
     if (reading.tier === 'incomplete' && reading.omitted.length > 0) {
         return `Omits ${reading.omitted.map(formatDegreeLabel).join(', ')}`;
     }
     return null;
-}
-
-const INVERSION_WORDS: Record<NonNullable<ChordReadingInversion>, string> = {
-    first: 'first', second: 'second', third: 'third',
-};
-
-function bassLine(reading: ChordReading): string | null {
-    if (reading.bass.relation === 'root') return null;
-    const letter = bassNoteLetter(reading);
-    return reading.bass.inversion
-        ? `${letter} in bass → ${INVERSION_WORDS[reading.bass.inversion]} inversion`
-        : `${letter} in bass`;
-}
-
-function sameNotesLine(reading: ChordReading, titleByKey: ReadonlyMap<string, string>): string | null {
-    if (reading.sameNotesAs.length === 0) return null;
-    const titles = reading.sameNotesAs.map((key) => titleByKey.get(key)).filter((title): title is string => !!title);
-    return titles.length > 0 ? `Same notes also named: ${titles.join(', ')}` : null;
-}
-
-export interface ReadingExplanation {
-    bassLine: string | null;
-    sameNotesLine: string | null;
-}
-
-/** `titleByKey` should map every reading in the current result set (best + other + looser) to its
- *  titleFor() output, so the same-notes cross-link can name the readings it points to. */
-export function explainReading(reading: ChordReading, titleByKey: ReadonlyMap<string, string>): ReadingExplanation {
-    return {
-        bassLine: bassLine(reading),
-        sameNotesLine: sameNotesLine(reading, titleByKey),
-    };
-}
-
-export function buildTitleIndex(readings: readonly ChordReading[]): Map<string, string> {
-    return new Map(readings.map((reading) => [reading.key, titleFor(reading)]));
-}
-
-export function isKnownChordId(chordId: string): boolean {
-    return getChordRegistryEntry(chordId) !== undefined;
 }
 
 const INTERVAL_QUALITY_LABELS: Record<IntervalQuality, string> = {

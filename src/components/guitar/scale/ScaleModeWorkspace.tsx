@@ -120,6 +120,29 @@ export function ScaleModeWorkspace({
     const navigationTrigger = React.useRef<HTMLButtonElement>(null);
     const [fretRange, setFretRange] = React.useState<[number, number]>([0, 24]);
     const [visibleStrings, setVisibleStrings] = React.useState([0, 1, 2, 3, 4, 5]);
+    const focusedPitchClass = focusedInterval === null ? null : (rootNote + focusedInterval) % 12;
+    const canLocateTone = focusedPitchClass !== null && visibleStrings.some(string => {
+        for (let fret = fretRange[0]; fret <= fretRange[1]; fret++) {
+            if ((tuning[string] + fret) % 12 !== focusedPitchClass) continue;
+            if (fingering ? fingering.some(note => note.string === string && note.fret === fret)
+                : activeNotes.includes(focusedPitchClass) || modifierNotes.includes(focusedPitchClass)) return true;
+        }
+        return false;
+    });
+    const locateTone = () => {
+        const board = fretboardContainerRef.current;
+        if (!board) return;
+        const locations = Array.from(board.querySelectorAll<HTMLElement>('[data-focused="true"][data-fret]'));
+        const bounds = board.getBoundingClientRect();
+        const target = locations.find(cell => {
+            const rect = cell.getBoundingClientRect();
+            return rect.left >= bounds.left && rect.right <= bounds.right;
+        }) ?? locations[0];
+        if (target) {
+            target.focus({ preventScroll: true });
+            target.scrollIntoView({ block: 'center', inline: 'nearest' });
+        }
+    };
     const defaultChord = React.useMemo(() => getScaleCompatibleChords(scaleGroup, scaleName, rootNote)[0], [scaleGroup, scaleName, rootNote]);
     const chordTones = analysis?.chord ? analysis.tones.filter(tone => tone.chordMembership === 'member').map(tone => tone.pitchClass) : [];
     const noteAnnotations: NonNullable<FretboardProps['noteAnnotations']> = {};
@@ -204,7 +227,7 @@ export function ScaleModeWorkspace({
                                 fingering={fingering}
                                 doubleStops={doubleStops}
                                 noteAnnotations={noteAnnotations}
-                                focusedPitchClass={focusedInterval === null ? null : (rootNote + focusedInterval) % 12}
+                                focusedPitchClass={focusedPitchClass}
                                 fretRange={fretRange}
                                 visibleStrings={visibleStrings}
                             />
@@ -225,6 +248,8 @@ export function ScaleModeWorkspace({
                         analysis={analysis}
                         focusedInterval={focusedInterval}
                         onFocusTone={focusTone}
+                        onLocateTone={locateTone}
+                        canLocateTone={canLocateTone}
                         onExploreHarmony={onExploreHarmony ? (chord: ChordRef) => onExploreHarmony({ scaleRef, chord }) : undefined}
                     />
                     <ScaleRelationsPanel key={identity} scaleRef={scaleRef} onNavigateScale={onNavigateScale} />

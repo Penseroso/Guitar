@@ -2,11 +2,12 @@
 
 import React from 'react';
 
-import { getNoteName } from '@/domain/shared/notes';
+import { formatDegreeLabel, formatVoicingTone } from '@/domain/chord/engine/presentation';
 import type { ResolvedVoicing } from '@/domain/chord';
 
 interface CompactVoicingDiagramProps {
     voicing: Pick<ResolvedVoicing,'notes'>;
+    rootPitchClass: number;
     labelMode?: 'degree' | 'note' | 'none';
 }
 
@@ -19,6 +20,7 @@ export function describeVoicingShape(voicing: Pick<ResolvedVoicing,'notes'>): st
 
 export function CompactVoicingDiagram({
     voicing,
+    rootPitchClass,
     labelMode = 'degree',
 }: CompactVoicingDiagramProps) {
     const frettedNotes = voicing.notes.filter((note) => !note.isMuted && note.fret > 0);
@@ -150,10 +152,10 @@ export function CompactVoicingDiagram({
                 })}
 
                 {frettedNotes.map((note) => {
-                    const label = labelMode === 'note'
-                        ? getNoteName(note.pitchClass)
+                    const label = labelMode === 'note' && note.degree
+                        ? formatVoicingTone(rootPitchClass, note.degree, note.pitchClass)
                         : labelMode === 'degree'
-                            ? (note.isRoot ? 'R' : (note.degree ?? ''))
+                            ? (note.isRoot ? 'R' : formatDegreeLabel(note.degree ?? ''))
                             : '';
                     const isRoot = note.isRoot;
 

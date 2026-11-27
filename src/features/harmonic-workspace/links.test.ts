@@ -46,6 +46,15 @@ describe('explicit cross-workspace Harmony links', () => {
         expect(chordRefFromReading(reading)).toEqual({ root: 'C', chordId: 'major', bass: 'D' });
     });
 
+    it('carries the written seventh of a reverse diminished reading into Harmony', () => {
+        const reading: ChordReading = {
+            key: 'diminished-7@0', chordId: 'diminished-7', rootPitchClass: 0, bassPitchClass: 9,
+            tier: 'direct', bass: { relation: 'chord-tone', degree: 'bb7', inversion: 'third' },
+            tones: [], omitted: [], added: null, sameNotesAs: [],
+        };
+        expect(chordRefFromReading(reading)).toEqual({ root: 'C', chordId: 'diminished-7', bass: 'Bbb' });
+    });
+
     it.each([
         ['Diatonic Modes', 'Dorian'],
         ['Diatonic Modes', 'Aeolian'],

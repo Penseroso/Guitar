@@ -2,9 +2,9 @@
 
 import React, { useEffect, useId, useRef, useState } from 'react';
 import { Play } from 'lucide-react';
-import type { PresentationCandidate, ResolvedRequest, ViewRequest } from '@/domain/chord/engine/types';
+import type { PresentationCandidate, ViewRequest } from '@/domain/chord/engine/types';
 import { createViewMatcher } from '@/domain/chord/engine/view';
-import { diagramVoicing, midiNoteLabel, positionLabel } from '@/domain/chord/engine/presentation';
+import { diagramVoicing, formatVoicingTone, positionLabel } from '@/domain/chord/engine/presentation';
 import type { EngineExploration } from './useChordExploration';
 import { CompactVoicingDiagram, describeVoicingShape } from './CompactVoicingDiagram';
 import { useVoicingAudio } from './useVoicingAudio';
@@ -21,12 +21,11 @@ interface Props {
     engine: EngineExploration; context: 'standalone' | 'accompaniment';
     onContextChange: (context: 'standalone' | 'accompaniment') => void;
     onSelect?: (id: string) => void; showIntervals: boolean; onToggleIntervals: () => void;
-    toneChoices: ChordChoice[]; title: string;
+    toneChoices: ChordChoice[]; title: string; rootPitchClass: number;
 }
-function ends(row: PresentationCandidate, request: ResolvedRequest | null) {
-    const label = (end: PresentationCandidate['facts']['bass']) => request
-        ? formatChordToneLabel(request.interpretation.rootPitchClass, end.tone, end.midi - request.interpretation.rootPitchClass)
-        : midiNoteLabel(end.midi) + ' · ' + formatDegreeLabel(end.tone);
+function ends(row: PresentationCandidate, rootPitchClass: number) {
+    const label = (end: PresentationCandidate['facts']['bass']) =>
+        formatChordToneLabel(rootPitchClass, end.tone, end.midi - rootPitchClass);
     return { bass: label(row.facts.bass), top: label(row.facts.top) };
 }
 function OmittedFormulaNote({ candidate }: { candidate: PresentationCandidate }) {
@@ -39,7 +38,7 @@ const coverageOptions = [{ value: 'any', label: 'Any' }, { value: 'complete', la
 const defaultView: ViewRequest = { schema: 'view-v1', position: null, soundingCount: null, stringSet: null, open: 'any', root: 'any', coverage: 'any', bass: null, top: null, statuses: ['PASS', 'UNCERTAIN'], order: { kind: 'classic' } };
 const toneValue = (extreme: ViewRequest['bass']) => extreme && 'tone' in extreme ? extreme.tone : '';
 
-export function ChordExplorationPanel({ engine, context, onContextChange, onSelect, showIntervals, onToggleIntervals, toneChoices, title }: Props) {
+export function ChordExplorationPanel({ engine, context, onContextChange, onSelect, showIntervals, onToggleIntervals, toneChoices, title, rootPitchClass }: Props) {
     const [filtersOpen, setFiltersOpen] = useState(false), [neckOpen, setNeckOpen] = useState(false);
     const neckTrigger = useRef<HTMLButtonElement>(null), filtersRail = useRef<HTMLElement>(null), id = useId();
     const audio = useVoicingAudio();
@@ -74,7 +73,7 @@ export function ChordExplorationPanel({ engine, context, onContextChange, onSele
             <Play size={16} aria-hidden="true" />{primary ? audio.loadingCandidateId === candidateId ? 'Loading…' : 'Play voicing' : <span className={styles.srOnly}>Play</span>}
         </button>;
     };
-    const selectedEnds = selected ? ends(selected, engine.request) : null;
+    const selectedEnds = selected ? ends(selected, rootPitchClass) : null;
     return <section aria-label="Chord voicings" className={styles.layout} data-filters-open={filtersOpen}>
         <div className={styles.panelToolbar} style={{ gridColumn: '1 / -1' }}>
             <ChoiceGroup label="Voicing surface" segmented value={engine.surface} options={[{ value: 'recommended', label: 'Recommended' }, { value: 'all', label: 'All voicings' }]} onChange={value => engine.setSurface(value as 'recommended' | 'all')} />
@@ -82,8 +81,8 @@ export function ChordExplorationPanel({ engine, context, onContextChange, onSele
         </div>
         {engine.error && <div role="alert" className={styles.warning} style={{ gridColumn: '1 / -1' }}><p>{engine.error.message}</p><button className={styles.action} onClick={engine.retry}>Retry search</button></div>}
         {selected ? <aside className={styles.selected} aria-label="Selected voicing" data-selected-id={selected.candidate.allocationId} data-selection-stale={engine.selectionStale}>
-            <div className={styles.hero}><CompactVoicingDiagram voicing={diagramVoicing(selected)} labelMode={showIntervals ? 'degree' : 'note'} /><div className={styles.heroInfo}>
-                <h2 className="text-2xl font-semibold">{title}</h2><p className={styles.small}>{selected.candidate.sounding.map(note => midiNoteLabel(note.midi)).join(' · ')}</p><p className={styles.small}>{positionLabel(selected)}</p><div className={styles.endNotes}><p>Bass {selectedEnds!.bass}</p><p>Top {selectedEnds!.top}</p></div>{playButton(selected, true)}</div></div>
+            <div className={styles.hero}><CompactVoicingDiagram rootPitchClass={rootPitchClass} voicing={diagramVoicing(selected)} labelMode={showIntervals ? 'degree' : 'note'} /><div className={styles.heroInfo}>
+                <h2 className="text-2xl font-semibold">{title}</h2><p className={styles.small}>{selected.candidate.sounding.map(note => formatVoicingTone(rootPitchClass, note.tone, note.midi, true)).join(' · ')}</p><p className={styles.small}>{positionLabel(selected)}</p><div className={styles.endNotes}><p>Bass {selectedEnds!.bass}</p><p>Top {selectedEnds!.top}</p></div>{playButton(selected, true)}</div></div>
             <OmittedFormulaNote candidate={selected} />
             {engine.selectionStale && <p role="status" className={styles.warning}>Previous selection awaits validation for this request. Playback is unavailable.</p>}
             {outsideView && <p role="status" className={styles.warning}>Selected voicing is outside this surface or these filters. Choose another to change it.</p>}
@@ -103,9 +102,9 @@ export function ChordExplorationPanel({ engine, context, onContextChange, onSele
             {page && <><h3 className={styles.small} aria-live="polite" data-results-count={page.summary.matching}>{page.summary.matching} matching voicings · {page.rows.length} on this page</h3>
                 {page.outcome==='no-matches'&&engine.surface==='recommended'&&<p>No voicings meet this recommendation policy for these filters. <button className={styles.action} onClick={()=>engine.setSurface('all')}>All voicings</button></p>}
                 {page.outcome === 'no-matches' && <div className={styles.empty} role="status"><p>No voicings match these conditions.</p>{context === 'standalone' && (view.root === 'omit' || view.soundingCount === 2) && <><p>Accompaniment permits an optional root and a two-tone floor; required identity tones still apply.</p><button className={styles.action} onClick={() => onContextChange('accompaniment')}>Enable accompaniment</button></>}<button className={styles.action} onClick={reset}>Reset conditions</button></div>}
-                <div className={styles.cards}>{page.rows.map(candidate => { const labels = ends(candidate, engine.request), candidateId = candidate.candidate.allocationId, isSelected = candidateId === selected?.candidate.allocationId;
+                <div className={styles.cards}>{page.rows.map(candidate => { const labels = ends(candidate, rootPitchClass), candidateId = candidate.candidate.allocationId, isSelected = candidateId === selected?.candidate.allocationId;
                     return <article key={candidateId} className={styles.card + (isSelected ? ' ' + styles.cardSelected : '')}><button className={styles.cardSelect} data-voicing-id={candidateId} aria-pressed={isSelected} aria-label={'Select voicing: ' + describeVoicingShape(diagramVoicing(candidate))} onClick={() => select(candidate)}>
-                        <CompactVoicingDiagram voicing={diagramVoicing(candidate)} labelMode={showIntervals ? 'degree' : 'note'} /><div className={styles.cardInfo}>{isSelected && <span className={styles.selectionMark}>✓ Selected</span>}<p>{positionLabel(candidate)}</p><p className={styles.small}>{candidate.facts.soundingCount} strings</p><div className={styles.endNotes}><p>Bass {labels.bass}</p><p>Top {labels.top}</p></div><OmittedFormulaNote candidate={candidate} /></div>
+                        <CompactVoicingDiagram rootPitchClass={rootPitchClass} voicing={diagramVoicing(candidate)} labelMode={showIntervals ? 'degree' : 'note'} /><div className={styles.cardInfo}>{isSelected && <span className={styles.selectionMark}>✓ Selected</span>}<p>{positionLabel(candidate)}</p><p className={styles.small}>{candidate.facts.soundingCount} strings</p><div className={styles.endNotes}><p>Bass {labels.bass}</p><p>Top {labels.top}</p></div><OmittedFormulaNote candidate={candidate} /></div>
                     </button>{playButton(candidate)}</article>;
                 })}</div><nav aria-label="Voicing result pages" className={styles.row}><button className={styles.action} onClick={engine.firstPage}>First page</button><button className={styles.action} disabled={!engine.canPrevious} onClick={engine.previousPage}>Previous page</button><button className={styles.action} disabled={!page.summary.hasMore || !page.nextCursor} onClick={engine.nextPage}>Next page</button></nav>
             </>}

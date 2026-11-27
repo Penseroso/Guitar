@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import type { PresentationCandidate } from '@/domain/chord/engine/types';
 import { Fretboard } from '../shared/Fretboard';
 import styles from './chord-ui.module.css';
-import { midiNoteLabel,diagramVoicing } from '@/domain/chord/engine/presentation';
+import { diagramVoicing, formatDegreeLabel, formatVoicingTone } from '@/domain/chord/engine/presentation';
 
 export function ChordNeckView({ candidate, showIntervals,rootPitchClass }: { candidate: PresentationCandidate; showIntervals: boolean;rootPitchClass:number }) {
     const ref = useRef<HTMLDivElement>(null);
@@ -22,11 +22,15 @@ export function ChordNeckView({ candidate, showIntervals,rootPitchClass }: { can
     return <>
         <p className={styles.small}>Scroll across the neck to explore other frets.</p>
         {candidate.facts.openCount > 0 && <p className={styles.small}>Open strings: {played.filter(note => note.fret === 0)
-            .map(note => 'string ' + (note.string + 1) + ' (' + midiNoteLabel(note.midiNote!) + ')').join(' · ')}</p>}
+            .map(note => 'string ' + (note.string + 1) + ' (' + formatVoicingTone(rootPitchClass, note.degree!, note.midiNote!, true) + ')').join(' · ')}</p>}
         <div ref={ref} className={styles.neckScroll} tabIndex={0} aria-label="Full guitar fretboard, scroll horizontally">
         <Fretboard activeNotes={candidate.candidate.sounding.map(note=>note.midi%12)} rootNote={rootPitchClass}
             chordTones={[]} modifierNotes={[]} showChordTones={false} showIntervals={showIntervals}
-            noteLabelsByPosition={Object.fromEntries(played.map(note => [`${note.string}:${note.fret}`, note.degree ?? '']))}
+            noteLabelsByPosition={Object.fromEntries(played.map(note => [
+                `${note.string}:${note.fret}`, showIntervals
+                    ? formatDegreeLabel(note.degree!)
+                    : formatVoicingTone(rootPitchClass, note.degree!, note.pitchClass),
+            ]))}
             fingering={played.map(note => ({ string: note.string, fret: note.fret, noteIdx: note.pitchClass, label: note.isRoot ? 'R' : undefined }))} />
         </div>
     </>;

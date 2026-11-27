@@ -19,6 +19,8 @@ interface ScaleHarmonicBridgePanelProps {
     analysis?: ScaleToneAnalysis | null;
     focusedInterval?: number | null;
     onFocusTone?: (interval: number | null) => void;
+    onLocateTone?: () => void;
+    canLocateTone?: boolean;
     onExploreHarmony?: (chord: ChordRef) => void;
 }
 
@@ -43,7 +45,8 @@ export function ScaleHarmonicBridgePanel(props: ScaleHarmonicBridgePanelProps) {
             <div role="tabpanel" id={`${tabId}-panel`} aria-labelledby={`${tabId}-${tab}`} className={styles.tabPanel}>
                 {tab === 'play-over' ? <>
                     <PlayThisScaleOverPanel {...props} />
-                    <ToneRolesPanel analysis={props.analysis ?? null} onClear={() => props.onSelectChord?.(null)} focusedInterval={props.focusedInterval} onFocusTone={props.onFocusTone} />
+                    <ToneRolesPanel analysis={props.analysis ?? null} onClear={() => props.onSelectChord?.(null)} focusedInterval={props.focusedInterval} onFocusTone={props.onFocusTone}
+                        onLocateTone={props.onLocateTone} canLocateTone={props.canLocateTone} />
                 </> : <ChordsBuiltFromScalePanel {...props} />}
             </div>
         </div>

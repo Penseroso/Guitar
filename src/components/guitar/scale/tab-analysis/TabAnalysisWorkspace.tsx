@@ -247,10 +247,10 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale, projectRe
                             const [group, name] = value.split('::'); dispatch({ type: 'set-scale', scale: createScaleRef(group, name, scale.tonic) });
                         }} />
                     </div>}
-                    <p className={styles.meta}>A comparison collection. It does not establish the key of the music.</p>
+                    <p className={styles.meta}>For comparing scale degrees.</p>
                 </div>
                 <div ref={keyControls} className={styles.contextGroup}>
-                    <div className={styles.sectionHeading}><h2>Key reference</h2>{state.context.frame && <button type="button" className={styles.textAction} onClick={() => dispatch({ type: 'set-frame', frame: null })}>Clear key</button>}</div>
+                    <div className={styles.sectionHeading}><h2>Supplied key</h2>{state.context.frame && <button type="button" className={styles.textAction} onClick={() => dispatch({ type: 'set-frame', frame: null })}>Clear key</button>}</div>
                     {state.context.frame ? <div className={styles.pitchControls}>
                         <RootDial label="Key tonic" displayName={state.context.frame.tonic} value={parseNoteName(state.context.frame.tonic)?.pitchClass ?? 0} onChange={tonic => dispatch({ type: 'set-frame', frame: { ...state.context.frame!, tonic: (state.context.frame!.mode === 'minor' ? getMinorKeyName : getKeyName)(tonic) } })} />
                         <SwipePicker label="Key mode" value={state.context.frame.mode} options={[{ value: 'major', label: 'Major' }, { value: 'minor', label: 'Minor' }]}
@@ -260,7 +260,12 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale, projectRe
                                     tonic: (mode === 'minor' ? getMinorKeyName : getKeyName)(tonic.pitchClass) } });
                             }} />
                     </div> : <button className={styles.textAction} type="button" onClick={() => dispatch({ type: 'set-frame', frame: { tonic: 'C', mode: 'major', lens: 'jazz-pop' } })}>Set a key</button>}
-                    <p className={styles.meta}>Pinned reference for this score, not a detected key. Patterns: major ii–V–I, V–I, IV–I; minor V–i, iv–i. Roman labels are conditional; accidentals use a major-scale reference in both modes.</p>
+                    <details className={styles.disclosure}>
+                        <summary>Roman numerals &amp; patterns</summary>
+                        <p className={styles.meta}>Major · ii–V–I, V–I, IV–I</p>
+                        <p className={styles.meta}>Minor · V–i, iv–i</p>
+                        <p className={styles.meta}>Numerals use your key. Accidentals follow the major scale in both modes.</p>
+                    </details>
                 </div>
             </div>
         </details>

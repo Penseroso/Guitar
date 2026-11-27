@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { exploreRelation } from '@/domain/harmony/relations';
 import { degreeNumber } from '@/domain/harmony/roman';
 import type { ChordRef, RelationExample, RelationKind } from '@/domain/harmony/types';
-import { motionLabel, rootMotionLabel, voiceMap } from './voice-map';
+import { pitchMotion, rootMotionLabel, voiceMap } from './voice-map';
 
 const explore = (kind: RelationKind, tonic = 'C', mode: 'major' | 'minor' = 'major', target: ChordRef = { root: tonic, chordId: mode }) =>
     exploreRelation({ kind, frame: { tonic, mode, lens: 'jazz-pop' }, target }).examples;
@@ -66,7 +66,7 @@ describe('Formula-role lanes', () => {
         [11, 0, '½ step up'], [5, 4, '½ step down'], [2, 4, 'whole step up'], [5, 3, 'whole step down'],
         [7, 7, 'Common tone'], [0, 3, '3 semitones up'], [2, 11, '3 semitones down'],
     ])('labels %i → %i as %s', (from, to, label) => {
-        expect(motionLabel(from, to)).toBe(label);
+        expect(pitchMotion(from, to).spoken).toBe(label);
     });
 });
 

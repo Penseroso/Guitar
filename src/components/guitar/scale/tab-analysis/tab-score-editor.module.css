@@ -73,6 +73,8 @@
 }
 .suppliedLabel:hover { text-decoration: underline; text-underline-offset: 4px; }
 .suppliedLabel:focus-visible { outline: 2px solid var(--workspace-focus); outline-offset: -2px; }
+.melodicSteps { display: grid; grid-template-columns: var(--score-columns); align-items: center; min-height: 24px; text-align: center; font-size: 12px; font-variant-numeric: tabular-nums; }
+.melodicSteps small { font-size: 9px; color: var(--workspace-muted); }
 .annotations { grid-auto-rows: minmax(44px, auto); gap: 0; }
 .annotation { position: relative; min-width: 44px; min-height: 44px; display: flex; align-items: center; gap: 5px; padding: 0 8px; border: 0; color: #f4f4f5; background: transparent; text-align: left; font: inherit; font-size: 12px; cursor: pointer; }
 .annotation > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

@@ -109,10 +109,16 @@
 .cards { display: grid; grid-template-columns: 1fr; gap: 0 20px; margin-top: 12px; }
 .reversePanel { display: flex; flex-direction: column; gap: 20px; }
 .reverseControls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-.readingCard { display: flex; flex-direction: column; gap: 4px; padding: 14px 4px; border-bottom: 1px solid var(--chord-border); min-width: 0; }
-.readingCard ul { margin: 4px 0; padding-left: 18px; display: flex; flex-direction: column; gap: 2px; }
-.readingTitle { background: none; border: 0; padding: 0; margin: 0; text-align: left; cursor: pointer; color: #f4f4f5; }
-.readingTitle[aria-pressed="true"] { text-decoration: underline; text-underline-offset: 3px; color: #fff; }
+.readingGroups, .readingChoices, .playedNotes { display: flex; flex-wrap: wrap; align-items: flex-start; }
+.readingGroups { gap: 8px 24px; margin: 12px 0 4px; }
+.readingChoices { gap: 0 10px; }
+.workspace .readingTitle { min-width: 44px; min-height: 44px; padding: 4px; background: none; border: 0; cursor: pointer; }
+.readingTitle small, .playedNotes small { display: block; color: var(--chord-muted); font-size: 11px; }
+.readingTitle[aria-pressed="true"] { text-decoration: underline; text-underline-offset: 5px; }
+.playedNotes { gap: 8px 12px; padding: 12px 0; margin: 0; border-top: 1px solid var(--chord-border); list-style: none; }
+.playedNotes li { display: grid; grid-template-rows: auto 1.2rem auto; min-width: 38px; gap: 2px; }
+.playedNotes small { grid-row: 3; }
+.playedNotes span { font-size: 12px; color: var(--chord-muted); }
 .card { display: grid; grid-template-columns: minmax(0, 1fr) 44px; align-items: center; gap: 4px; padding: 10px 4px; border-bottom: 1px solid var(--chord-border); min-width: 0; }
 .cardSelected { border-bottom-color: rgba(255, 255, 255, 0.4); }
 .workspace .cardSelect { display: grid; grid-template-columns: 136px minmax(0, 1fr); align-items: center; gap: 4px; width: 100%; padding: 0; border: 0; background: transparent; text-align: left; border-radius: 12px; min-width: 0; }

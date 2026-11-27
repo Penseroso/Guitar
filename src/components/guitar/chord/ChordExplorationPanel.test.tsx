@@ -6,6 +6,7 @@ import { allocationId } from '@/domain/chord/engine/identity';
 import { createViewMatcher } from '@/domain/chord/engine/view';
 import { physicalReasonText } from '@/domain/chord/engine/presentation';
 import { ChordExplorationPanel } from './ChordExplorationPanel';
+import { ChordNeckView } from './ChordNeckView';
 import type { EngineExploration } from './useChordExploration';
 import { INITIAL_ENGINE_STATE } from './explorationController';
 
@@ -21,11 +22,22 @@ function state(patch: Partial<EngineExploration> = {}): EngineExploration {
         continueSearch: noop, cancel: noop, ...patch };
 }
 function render(engine: EngineExploration) {
-    return renderToStaticMarkup(<ChordExplorationPanel engine={engine} context="standalone" onContextChange={noop} title="C"
+    return renderToStaticMarkup(<ChordExplorationPanel rootPitchClass={engine.request?.interpretation.rootPitchClass ?? 0} engine={engine} context="standalone" onContextChange={noop} title="C"
         onToggleIntervals={noop} showIntervals={false} toneChoices={[{ value: '1', label: 'C · 1' }, { value: '3', label: 'E · 3' }, { value: '5', label: 'G · 5' }]} />);
 }
 
 describe('integrated engine presentation', () => {
+    it('uses the minor third spelling on the compact and full fretboards and in the sounding list', () => {
+        const minor = new EngineSession({ ...intent, chordId: 'minor' });
+        const selected = minor.lookup(allocationId([64, 59, 55, 50, 45, 40], [3, 4, 5, 5, 3, -1]));
+        const hero = render(state({ request: minor.request, page: null, selected }));
+        expect(hero).toContain('>E♭</text>');
+        expect(hero).toContain('G4 · E♭4 · C4 · G3 · C3');
+        const neck = renderToStaticMarkup(<ChordNeckView candidate={selected} rootPitchClass={0} showIntervals={false} />);
+        expect(neck).toContain('>E♭<');
+        const degrees = renderToStaticMarkup(<ChordNeckView candidate={selected} rootPitchClass={0} showIntervals />);
+        expect(degrees).toContain('>♭3<');
+    });
     it('allows a Recommended selection with an UNCERTAIN physical status without exposing raw physical status',()=>{
         const uncertain=new EngineSession({...intent,physical:{warningSpanUm:0,severeSpanUm:180000}});
         const selected=uncertain.lookup('shape-v1:64,59,55,50,45,40:0,1,0,2,3,-1');

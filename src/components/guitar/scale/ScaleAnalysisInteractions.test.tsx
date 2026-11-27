@@ -46,9 +46,9 @@ describe('Scale harmonic analysis interactions', () => {
         const tone = screen.getByRole('button', { name: 'Focus D on fretboard' });
         expect(tone.getAttribute('aria-label')).toBe('Focus D on fretboard');
         await user.click(tone);
-        expect(within(screen.getByRole('region', { name: 'Selected tone detail' })).getByText(/Not a chord tone/).textContent).toContain('9');
+        expect(within(screen.getByRole('region', { name: 'Selected tone detail' })).getByRole('img', { name: 'Other scale tone' }).closest('dd')?.textContent).toContain('9');
         await user.click(screen.getByRole('button', { name: 'Analyze Cm9' }));
-        expect(within(screen.getByRole('region', { name: 'Selected tone detail' })).getByText(/Chord tone/).textContent).toContain('9');
+        expect(within(screen.getByRole('region', { name: 'Selected tone detail' })).getByRole('img', { name: 'Chord tone' }).closest('dd')?.textContent).toContain('9');
         expect(screen.getByRole('button', { name: 'Analyze Cm9' }).getAttribute('aria-pressed')).toBe('true');
     });
 
@@ -91,11 +91,16 @@ describe('Scale harmonic analysis interactions', () => {
         await user.click(screen.getByRole('button', { name: 'Analyze Cmaj7' }));
         await user.click(screen.getByRole('button', { name: 'Focus F on fretboard' }));
         expect(screen.getAllByText('caution').length).toBeGreaterThan(0);
-        await user.click(screen.getByText(/Other contained chords/));
+        await user.click(screen.getByText(/Shared notes ·/));
         await user.click(screen.getByRole('button', { name: 'Analyze Csus4' }));
-        expect(within(screen.getByRole('region', { name: 'Selected tone detail' })).getByText(/Chord tone/)).toBeTruthy();
+        expect(within(screen.getByRole('region', { name: 'Selected tone detail' })).getByRole('img', { name: 'Chord tone' })).toBeTruthy();
         expect(screen.queryAllByText('caution')).toHaveLength(0);
-        expect(screen.getByText(/Note containment · pairing and tensions unverified/)).toBeTruthy();
+        expect(screen.getByText(/Shared with Csus4/)).toBeTruthy();
+        const tones = within(screen.getByRole('list', { name: 'Scale tones' }));
+        expect(tones.getAllByLabelText('Chord tone').map(marker => marker.closest('button')?.getAttribute('aria-label'))).toEqual([
+            'Focus C on fretboard', 'Focus F on fretboard', 'Focus G on fretboard',
+        ]);
+        expect(screen.queryByText(/unverified/i)).toBeNull();
     });
 
     it('lets a tone focus be toggled and cleared independently of chord selection', async () => {

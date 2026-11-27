@@ -418,7 +418,7 @@ export default function ClientApp() {
                             }}
                             explorationPanel={<ChordExplorationPanel
                                 key={`${chordType}:${selectedKey}`}
-                                context={chordPlayingContext} engine={exploration}
+                                rootPitchClass={selectedKey} context={chordPlayingContext} engine={exploration}
                                 onContextChange={(context) => {
                                     if (activeFutureVoicingId) handleSelectFutureVoicing(activeFutureVoicingId);
                                     setChordPlayingContext(context);
