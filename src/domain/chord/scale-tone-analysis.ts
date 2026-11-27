@@ -78,13 +78,13 @@ function getCautions(group: string, name: string, interval: number, member: bool
     if (interval === 5 && chordIntervals.includes(4)
         && ['Ionian', 'Mixolydian', 'Ionian #5', 'Phrygian Dominant', 'Mixolydian b6'].includes(name)) {
         return [{ kind: 'caution', status: 'reviewed', sourceRefs: ['modes', 'context'],
-            explanation: 'A sustained natural 11 can rub against the major third. Passing motion or deliberate spacing can use that sound.',
-            conditions: ['The selected chord includes a major third.', 'Judge duration and voicing; this is not a forbidden note.'] }];
+            sustainedAgainst: '3', explanation: 'Holding the 11 can bring out friction with the major third.',
+            conditions: ['Try it as a passing tone.', 'Compare closer and wider voicings.'] }];
     }
     if (group === 'Diatonic Modes' && name === 'Phrygian' && interval === 1) {
         return [{ kind: 'caution', status: 'reviewed', sourceRefs: ['modes', 'context'],
-            explanation: 'The b9 is central to Phrygian colour; sustaining it against the root deliberately emphasizes that tension.',
-            conditions: ['A Phrygian modal colour is intended.', 'Compare a held tone with a passing or resolving use.'] }];
+            sustainedAgainst: '1', explanation: 'Holding the ♭9 against the root brings out the Phrygian colour.',
+            conditions: ['Listen for the modal colour.', 'Compare a held tone with a passing or resolving tone.'] }];
     }
     return [];
 }
@@ -121,10 +121,10 @@ export function getScaleToneAnalysis(ref: ScaleRef, chordId: string | null = nul
         if (tensionProfile && chordDegree && (parseDegreeLabel(chordDegree)?.number ?? 0) >= 9) {
             interpretations.push({ kind: 'tension', status: 'reviewed', sourceRefs: [...tensionProfile.sourceRefs],
                 explanation: scale.name === 'Dorian' && interval === 2
-                    ? '9 is an available Dorian tension in this minor context.'
-                    : `${chordDegree} is a colour in this chord-scale interpretation.`,
-                conditions: [member ? 'Already included in the selected chord formula.' : 'Not included in the selected chord formula.',
-                    'Voicing, duration and musical context determine how strongly to emphasize it.'] });
+                    ? 'A Dorian 9 colours this minor chord.'
+                    : 'Colour over the selected chord.',
+                conditions: [member ? 'In the chord formula.' : 'Outside the chord formula.',
+                    'Emphasis depends on voicing and duration.'] });
         }
         if (entry && tensionProfile) interpretations.push(...getCautions(scale.group, scale.name, interval, member, entry.formula.intervals));
         const chordSpelling: ChordSpelling = chordDegree !== null && chordNoteName !== null

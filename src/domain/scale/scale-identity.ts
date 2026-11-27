@@ -57,6 +57,8 @@ export interface IdentityInterpretation extends InterpretationProvenance {
 }
 export interface ToneInterpretation extends InterpretationProvenance {
     kind: 'characteristic' | 'tension' | 'caution';
+    /** Chord degree involved in this reviewed sustained-tone caution. */
+    sustainedAgainst?: '1' | '3';
     explanation: string;
     conditions: string[];
 }

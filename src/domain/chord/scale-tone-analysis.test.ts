@@ -33,6 +33,12 @@ describe('scale tone analysis', () => {
                             expect(interpretation.status).toBe('reviewed');
                             expect(interpretation.sourceRefs.length).toBeGreaterThan(0);
                             expect(interpretation.conditions.length).toBeGreaterThan(0);
+                            if (interpretation.sustainedAgainst) {
+                                const reference = analysis!.tones.find(item => item.chordDegree === interpretation.sustainedAgainst);
+                                expect(interpretation.kind).toBe('caution');
+                                expect(reference?.chordMembership).toBe('member');
+                                expect((tone.pitchClass - reference!.pitchClass + 12) % 12).toBe(1);
+                            }
                             for (const source of interpretation.sourceRefs) expect(SOURCE_CATALOG[source]).toBeDefined();
                         }
                     }

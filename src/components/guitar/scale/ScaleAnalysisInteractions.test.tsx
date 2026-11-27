@@ -74,6 +74,21 @@ describe('Scale harmonic analysis interactions', () => {
         }
     });
 
+    it.each([
+        ['Ionian', 0, 'major-7', 5, 'E 3', 'Semitone', 'F 11'],
+        ['Mixolydian', 2, 'dominant-7', 5, 'F♯ 3', 'Semitone', 'G 11'],
+        ['Phrygian', 4, 'minor-7', 1, 'E Root', 'Semitone', 'F ♭9'],
+        ['Lydian', 5, 'major-7', 6, 'F Root', 'Extension', 'B ♯11'],
+        ['Dorian', 2, 'minor-9', 2, 'D Root', 'Extension', 'E 9'],
+    ] as const)('shows the reviewed %s relationship in key %s before opening Context', (mode, tonic, chord, interval, from, relation, to) => {
+        const analysis = getScaleToneAnalysis(createScaleRef('Diatonic Modes', mode, tonic), chord)!;
+        render(<ToneRolesPanel analysis={analysis} onClear={() => undefined} focusedInterval={interval} />);
+        expect(screen.getByText('Context').closest('details')?.open).toBe(false);
+        const group = screen.getByRole('group', { name: 'Chord tone relationship' });
+        expect(group.textContent).toContain(`${from}${relation}${to}`);
+        expect(within(group).queryByText('When sustained') !== null).toBe(relation === 'Semitone');
+    });
+
     it('requires explicit selection and updates chord membership without losing structural degree', async () => {
         const user = userEvent.setup();
         render(<BridgeHarness />);
@@ -132,6 +147,7 @@ describe('Scale harmonic analysis interactions', () => {
         await user.click(screen.getByRole('button', { name: 'Analyze Csus4' }));
         expect(within(screen.getByRole('region', { name: 'Selected tone detail' })).getByRole('img', { name: 'Chord tone' })).toBeTruthy();
         expect(screen.queryAllByText('caution')).toHaveLength(0);
+        expect(screen.queryByRole('group', { name: 'Chord tone relationship' })).toBeNull();
         expect(screen.getByText(/Shared with Csus4/)).toBeTruthy();
         const tones = within(screen.getByRole('list', { name: 'Scale tones' }));
         expect(tones.getAllByLabelText('Chord tone').map(marker => marker.closest('button')?.getAttribute('aria-label'))).toEqual([

@@ -25,6 +25,13 @@
 .degreeFrames > div { display: flex; align-items: baseline; gap: 7px; }
 .degreeFrames dt { color: var(--muted); font-size: 12px; }
 .degreeFrames dd { margin: 0; font-weight: 600; }
+.relationship { width: fit-content; max-width: 100%; }
+.pair { display: flex; align-items: baseline; gap: 8px; color: var(--ink); }
+.pair > span { white-space: nowrap; }
+.pair small, .between, .relationship p { font-size: 12px; color: var(--muted); }
+.between { display: flex; align-items: center; gap: 5px; }
+.between::before, .between::after { content: ''; width: 12px; height: 1px; background: currentColor; }
+.relationship p { margin: 3px 0 0; }
 .roleList { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .kind { padding: 4px 8px; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); text-transform: capitalize; font-size: 12px; }
 .context { color: var(--muted); font-size: 12px; }

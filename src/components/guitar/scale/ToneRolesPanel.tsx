@@ -36,6 +36,12 @@ export function ToneRolesPanel({ analysis, onClear, focusedInterval, onFocusTone
     }) : [];
     const chordReadings = reviewed.filter(item => item.kind !== 'characteristic');
 
+    const sustainedAgainst = chordReadings.find(item => item.kind === 'caution')?.sustainedAgainst;
+    const referenceDegree = sustainedAgainst ?? (chordReadings.some(item => item.kind === 'tension') ? '1' : null);
+    const referenceTone = referenceDegree && tones.find(tone => tone.chordMembership === 'member' && tone.chordDegree === referenceDegree);
+    const showPair = referenceTone?.chordNoteName && focusedTone?.chordNoteName;
+    const roleLabels = showPair ? reviewed.filter(item => item.kind === 'characteristic') : reviewed;
+
     return <section className={styles.panel} aria-label="Tone roles">
         <div className={styles.header}>
             <div>
@@ -79,7 +85,15 @@ export function ToneRolesPanel({ analysis, onClear, focusedInterval, onFocusTone
                         aria-label={focusedTone.chordMembership === 'member' ? 'Chord tone' : 'Other scale tone'}>{focusedTone.chordMembership === 'member' ? '●' : '○'}</span>
                 </dd></div>}
             </dl>
-            {reviewed.length > 0 && <ul className={styles.roleList}>{reviewed.map((item, index) => <li key={`${item.kind}:${index}`} className={styles.kind}>{item.kind}</li>)}</ul>}
+            {showPair && <div className={styles.relationship} role="group" aria-label="Chord tone relationship">
+                <div className={styles.pair}>
+                    <span><strong>{formatNoteName(referenceTone.chordNoteName)}</strong> <small>{referenceDegree === '1' ? 'Root' : formatAccidentals(referenceTone.chordDegree)}</small></span>
+                    <span className={styles.between}>{sustainedAgainst ? 'Semitone' : 'Extension'}</span>
+                    <span><strong>{formatNoteName(focusedTone.chordNoteName)}</strong> <small>{formatAccidentals(focusedTone.chordDegree)}</small></span>
+                </div>
+                {sustainedAgainst && <p>When sustained</p>}
+            </div>}
+            {roleLabels.length > 0 && <ul className={styles.roleList}>{roleLabels.map((item, index) => <li key={`${item.kind}:${index}`} className={styles.kind}>{item.kind}</li>)}</ul>}
             {(markers.length > 0 || chordReadings.length > 0) && <details className={styles.context} onToggle={({ currentTarget }) => {
                 if (currentTarget.open) currentTarget.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
             }}>
