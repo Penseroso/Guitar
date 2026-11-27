@@ -159,8 +159,8 @@ export function ScaleModeWorkspace({
                 </aside>
                 <div className={styles.main}>
                     {onReturnToHarmony && <button type="button" className={styles.harmonyReturn} onClick={onReturnToHarmony}>← Return to Harmony</button>}
-                    <section className={controlStyles.controls} aria-label="Visualization Overrides">
-                        <div className={controlStyles.header}><SlidersHorizontal size={14} aria-hidden="true" /> Visualization Overrides</div>
+                    <section className={controlStyles.controls} aria-label="Fretboard display">
+                        <div className={controlStyles.header}><SlidersHorizontal size={14} aria-hidden="true" /> Fretboard display</div>
                         <div className={controlStyles.row}>
                             <DiagramLabelSwitch showIntervals={showIntervals} onToggle={onToggleIntervals} />
                             <button type="button" className={controlStyles.toggle} aria-pressed={showChordTones && !!analysis?.chord}

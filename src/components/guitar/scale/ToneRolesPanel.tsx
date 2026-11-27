@@ -31,7 +31,7 @@ export function ToneRolesPanel({ analysis, onClear, focusedInterval, onFocusTone
                 {focusedTone && <button type="button" className={styles.textButton} onClick={() => onFocusTone?.(null)}>Clear tone focus</button>}
             </div>
         </div>
-        {identity.status === 'reviewed' && identity.markers.length > 0 && <p className={styles.meta}>Signature · {identity.markers.map(marker => formatAccidentals(marker.degree)).join(' · ')}</p>}
+        {identity.status === 'reviewed' && identity.markers.length > 0 && <p className={styles.meta}>Characteristic degrees · {identity.markers.map(marker => formatAccidentals(marker.degree)).join(' · ')}</p>}
         {!chord && !focusedTone && <p className={styles.meta}>Select a note for its role</p>}
         {chord && <p className={styles.chordContext} aria-live="polite">Analyzing {formatAccidentals(chord.rootNoteName + chord.chordSuffix)}</p>}
         {chord && <p className={styles.legend}><span className={styles.member}>●</span> Chord tone <span className={styles.nonMember}>○</span> Other scale tone</p>}
