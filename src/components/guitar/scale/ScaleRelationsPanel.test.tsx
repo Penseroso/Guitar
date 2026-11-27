@@ -56,14 +56,18 @@ describe('ScaleRelationsPanel', () => {
         expect(screen.queryByText('Origin')).toBeNull();
     });
 
-    it('navigates sibling with both tonic and mode', async () => {
+    it.each([
+        ['Diatonic Modes', 'Ionian', 0, 'D Dorian', 'Dorian', 2],
+        ['Pentatonic', 'Major Pentatonic', 0, 'A Minor Pent', 'Minor Pentatonic', 9],
+        ['Pentatonic', 'Minor Pentatonic', 9, 'C Major Pent', 'Major Pentatonic', 0],
+    ] as const)('opens the relative scale from %s %s at %i', async (group, name, tonic, label, relativeName, relativeTonic) => {
         const user = userEvent.setup();
         const navigate = vi.fn();
-        render(<ScaleRelationsPanel scaleRef={createScaleRef('Diatonic Modes', 'Ionian', 0)} onNavigateScale={navigate} />);
+        render(<ScaleRelationsPanel scaleRef={createScaleRef(group, name, tonic)} onNavigateScale={navigate} />);
         await user.click(screen.getByText('Related scales'));
         expect(screen.getByText('Same notes · new root')).toBeTruthy();
-        await user.click(screen.getByRole('button', { name: 'D Dorian' }));
-        expect(navigate).toHaveBeenCalledExactlyOnceWith(createScaleRef('Diatonic Modes', 'Dorian', 2));
+        await user.click(screen.getByRole('button', { name: label }));
+        expect(navigate).toHaveBeenCalledExactlyOnceWith(createScaleRef(group, relativeName, relativeTonic));
     });
 
     it('shows only meaningful subset and symmetry provenance', async () => {

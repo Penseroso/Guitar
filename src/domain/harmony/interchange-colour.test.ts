@@ -152,6 +152,7 @@ describe('Neapolitan sixth (classical)', () => {
         const result = neapolitan();
         expect(result.status).toBe('matched');
         const example = byId(result.examples, 'neapolitan');
+        expect(example.label).toBe('♭II6–V7–i');
         expect(example.steps.map(step => `${step.roman}:${step.chord.name}`)).toEqual(['♭II6:D♭/F', 'V7:G7', 'i:Cm']);
         expect(lines(example)[0]).toEqual(['Ab→G', 'Db→B', 'F=F']);
         // The V7–i step keeps the dominant relation's own correspondence.
@@ -162,6 +163,7 @@ describe('Neapolitan sixth (classical)', () => {
 
     it.each(KEYS)('keeps 4̂ in the bass when transposed to %s major', tonic => {
         const result = neapolitan({ frame: { ...classical, tonic }, target: { root: tonic, chordId: 'major' } });
+        expect(result.examples[0].label).toBe('♭II6–V7–I');
         const chord = result.examples[0].steps[0].chord;
         expect((chord.rootPitchClass - note(tonic).pitchClass + 12) % 12).toBe(1);
         expect((chord.bassPitchClass - note(tonic).pitchClass + 12) % 12).toBe(5);

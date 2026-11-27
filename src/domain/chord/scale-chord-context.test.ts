@@ -23,7 +23,7 @@ describe('getModalSiblingChordsForScale', () => {
         expect(byRoot.has(0)).toBe(false);
     });
 
-    it('returns nothing for a pentatonic scale (subset scales have no complete sibling concept yet)', () => {
+    it('limits sibling chord suggestions to full parent rotations', () => {
         expect(getModalSiblingChordsForScale('Pentatonic', 'Major Pentatonic', 0)).toEqual([]);
     });
 

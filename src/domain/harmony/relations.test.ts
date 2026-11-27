@@ -9,6 +9,17 @@ const query = (kind: RelationKind, changes: Partial<RelationQuery> = {}): Relati
 });
 
 describe('Harmony relation conditions', () => {
+    it.each([
+        ['major', 'B → C · F → E'],
+        ['major-7', 'B held · F → E'],
+        ['major-9', 'B held · F → E'],
+        ['minor-major-7', 'B held · F → E♭'],
+        ['minor-11', 'B → C · F held'],
+    ])('describes the illustrated guide tones into C %s', (chordId, expected) => {
+        const result = exploreRelation(query('dominant', { target: { root: 'C', chordId } }));
+        expect(result.observations).toContain(expected);
+    });
+
     it.each(['dominant-7', 'dominant-9', 'dominant-7-flat-9', 'dominant-11', 'dominant-13'])('does not infer tonic function from the root and major third of %s', chordId => {
         for (const tonic of ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B']) {
             const changes = { frame: { ...frame, tonic }, target: { root: tonic, chordId } };

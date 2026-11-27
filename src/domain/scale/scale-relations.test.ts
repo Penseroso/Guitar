@@ -26,13 +26,21 @@ describe('structural scale relations', () => {
         }
     });
 
-    it('locates the actual parent tonic and identifies pentatonic subsets without invented siblings', () => {
+    it('locates the actual parent tonic and identifies pentatonic subsets', () => {
         const dorian = getScaleRelations(createScaleRef('Diatonic Modes', 'Dorian', 0))!;
         expect(dorian.parent).toEqual({ name: 'Ionian', scaleRef: createScaleRef('Diatonic Modes', 'Ionian', 10), subset: false });
         const minorPent = getScaleRelations(createScaleRef('Pentatonic', 'Minor Pentatonic', 0))!;
-        expect(minorPent.siblings).toEqual([]);
         expect(minorPent.parent).toEqual({ name: 'Ionian', scaleRef: createScaleRef('Diatonic Modes', 'Ionian', 3), subset: true });
         expect(notes(createScaleRef('Pentatonic', 'Minor Pentatonic', 0)).every(note => notes(minorPent.parent!.scaleRef).includes(note))).toBe(true);
+    });
+
+    it('links only the registered relative pentatonic in both directions at every tonic', () => {
+        for (let tonic = 0; tonic < 12; tonic++) {
+            const major = createScaleRef('Pentatonic', 'Major Pentatonic', tonic);
+            const minor = createScaleRef('Pentatonic', 'Minor Pentatonic', (tonic + 9) % 12);
+            expect(getScaleRelations(major)!.siblings).toEqual([{ name: 'Minor Pentatonic', scaleRef: minor }]);
+            expect(getScaleRelations(minor)!.siblings).toEqual([{ name: 'Major Pentatonic', scaleRef: major }]);
+        }
     });
 
     it('compares parallel pitch classes at the current tonic without assigning characteristics', () => {

@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { createScaleRef } from '@/domain/scale/scale-ref';
+import { getScaleCompatibleChords } from '@/domain/chord/chord-scale-compatibility';
+import { exploreRelation } from '@/domain/harmony/relations';
 import type { RelationQuery } from '@/domain/harmony/types';
 import type { ChordReading } from '@/domain/chord/reverse/readings';
 import { chordRefBassTone, chordRefFromReading, frameForScaleRef, linkChordToHarmony, linkScaleToHarmony } from './links';
@@ -66,4 +68,18 @@ describe('explicit cross-workspace Harmony links', () => {
         expect(frameForScaleRef({ group: 'Diatonic Modes', scaleId: 'missing', tonic: 0 }, query.frame)).toBeNull();
         expect(query.frame).toEqual({ tonic: 'Eb', mode: 'minor', lens: 'classical' });
     });
+
+    it.each([[1, 'Db'], [3, 'Eb'], [8, 'Ab']] as const)(
+        'keeps the Scale spelling when adopting Aeolian at pitch class %i (%s minor)',
+        (tonic, spelling) => {
+            const scaleRef = createScaleRef('Diatonic Modes', 'Aeolian', tonic);
+            const triad = getScaleCompatibleChords(scaleRef.group, 'Aeolian', tonic).find(chord => chord.chordId === 'minor')!;
+            const linked = linkScaleToHarmony(query, { scaleRef, chord: { root: triad.rootNoteName, chordId: triad.chordId } });
+            const frame = frameForScaleRef(linked.sourceScaleRef, linked.query.frame)!;
+
+            expect(frame).toEqual({ tonic: spelling, mode: 'minor', lens: 'classical' });
+            const result = exploreRelation({ ...linked.query, frame });
+            expect(result.examples[0].steps.map(step => step.roman)).toEqual(['V7', 'i']);
+        },
+    );
 });

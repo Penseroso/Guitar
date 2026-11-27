@@ -93,10 +93,6 @@ export function HarmonyModeWorkspace({ query, result, onQueryChange, onOpenChord
     const observations = [...new Set(result.observations)].filter(item => !readingLabels.has(item) && item !== cadenceReading?.label).map(item => {
         if (query.kind === 'predominant' && example && /^(Major|Minor) · ii/.test(item)) return `${example.steps[0].roman} → ${example.steps[1].roman}`;
         if (item === 'Target · key center') return 'Tonic destination';
-        if (item === '3 → root · ♭7 → third') {
-            const destination = result.observations.includes('Target · key center') ? 'tonic' : 'destination';
-            return `3rd → ${destination} root · ♭7 → ${destination} 3rd`;
-        }
         if (item === 'Same guides · different bass') return 'Same guide-tone tritone · Different root approach';
         return item.replace(/^Local target · /, 'Destination: ');
     });

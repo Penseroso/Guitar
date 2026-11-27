@@ -6,7 +6,7 @@ import { formatAccidentals, spellDegree } from '@/domain/shared/spelling';
 import { getKeyName } from '@/domain/shared/keys';
 import { targetPolicy } from './target-policy';
 import { endingConnections, observeEnding } from './ending-observation';
-import { completeCommonTones, connectChords, exampleTransitions } from './connections';
+import { completeCommonTones, connectChords, exampleTransitions, toneLabel } from './connections';
 import type { ChordRef, RelationExample, RelationQuery, RelationResult, RelationStep, RelationTransition, TonalFrame } from './types';
 
 const FUNCTIONAL_APPROACHES = new Set(['dominant', 'dominant-colour', 'ii-v', 'predominant', 'leading', 'tritone']);
@@ -87,10 +87,20 @@ export function exploreRelation(query: RelationQuery): RelationResult {
         // A tonic reference is not a claim that this collection fits every chord in the example.
         result.scaleLinks.push({ label: `${target.root} ${minor ? 'Aeolian' : 'Ionian'} · tonic reference`, ref: localScale });
         switch (query.kind) {
-            case 'dominant':
-                example('dominant', tonicHarmony ? 'Dominant resolution' : tonicFamilyTarget ? 'Local tonicization' : appliedTarget ? 'Possible applied dominant' : `Approach to ${target.name}`, [dom(), end()]);
-                result.observations = [tonicHarmony ? 'Target · key center' : `Local target · ${target.name}`, '3 → root · ♭7 → third'];
+            case 'dominant': {
+                const steps = [dom(), end()];
+                const transition = derive(steps, 0);
+                example('dominant', tonicHarmony ? 'Dominant resolution' : tonicFamilyTarget ? 'Local tonicization' : appliedTarget ? 'Possible applied dominant' : `Approach to ${target.name}`, steps, 'motion', [transition]);
+                result.observations = [tonicHarmony ? 'Target · key center' : `Local target · ${target.name}`];
+                const guides = transition.voices.filter(voice => voice.guide).map(voice => {
+                    const from = formatAccidentals(toneLabel(steps[0], voice.fromDegree).name);
+                    const to = formatAccidentals(toneLabel(steps[1], voice.toDegree).name);
+                    if (voice.kind === 'held') return from === to ? `${from} held` : `${from} held as ${to}`;
+                    return `${from} → ${to}`;
+                });
+                if (guides.length) result.observations.push(guides.join(' · '));
                 break;
+            }
             case 'dominant-colour': {
                 const colours = DOMINANT_COLOURS.filter(colour => (colour.lenses as readonly string[]).includes(query.frame.lens));
                 result.checks.push({ id: 'colour-vocabulary', label: query.frame.lens === 'classical' ? 'Classical · V9, V♭9, altered 5th' : 'Jazz/pop · extended, altered, sus', state: 'pass' });
@@ -154,7 +164,7 @@ export function exploreRelation(query: RelationQuery): RelationResult {
                 // Curated: ♭2̂ falls to the leading tone, ♭6̂ to 5̂; the shared 4̂ is retained as V7's 7th.
                 const toDominant = { fromStep: 0, toStep: 1, basis: 'supplied' as const, voices: completeCommonTones(neapolitan.chord, dominant7.chord, [{ fromDegree: '1', toDegree: '3', kind: 'resolution' as const }, { fromDegree: '5', toDegree: '1', kind: 'resolution' as const }]) };
                 const cadential = [neapolitan, dominant7, end()];
-                example('neapolitan', '♭II6–V7–I', cadential, 'motion', [toDominant, derive(cadential, 1)]);
+                example('neapolitan', cadential.map(step => step.roman).join('–'), cadential, 'motion', [toDominant, derive(cadential, 1)]);
                 const ii = firstInversion(relativeChord(target.root, 2, 2, minor ? 'diminished' : 'minor'));
                 example('ii-neapolitan', minor ? 'ii°6 / ♭II6' : 'ii6 / ♭II6', [step(ii, 'Diatonic predominant', minor ? 'ii°6' : 'ii6'), step(neapolitan.chord, 'Chromatic predominant', '♭II6')], 'comparison');
                 result.observations = ['♭2 → leading tone · ♭6 → 5', 'Chromatic ii6 · same predominant role', '4̂ in the bass · first inversion'];

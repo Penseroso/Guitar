@@ -339,9 +339,7 @@ export interface ModalSibling {
  * SCALE_REGISTRY's existing parent/rootOffsetIndex, no new data.
  *
  * Subset scales (the two named pentatonics, which reduce a 7-note parent to 5 notes) are
- * excluded on both sides: a pentatonic subset isn't a full rotation of the parent, and only 2 of
- * the 5 possible pentatonic rotations are named in the registry, so "siblings" isn't a complete
- * concept for them yet.
+ * excluded on both sides. Scale navigation compares their five-note collections separately.
  */
 export function getModalSiblings(group: string, name: string): ModalSibling[] {
     const registryGroup = SCALE_REGISTRY[group] || SCALE_REGISTRY['Diatonic Modes'];

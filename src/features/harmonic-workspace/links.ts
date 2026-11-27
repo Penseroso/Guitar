@@ -1,7 +1,7 @@
 import type { ChordRef, RelationQuery, TonalFrame } from '@/domain/harmony/types';
 import type { ScaleRef } from '@/domain/scale/scale-ref';
 import { resolveScaleRef } from '@/domain/scale/scale-ref';
-import { getKeyName, getMinorKeyName } from '@/domain/shared/keys';
+import { getKeyName } from '@/domain/shared/keys';
 import { parseNoteName } from '@/domain/shared/spelling';
 import type { ChordReading } from '@/domain/chord/reverse/readings';
 import { engineEntry } from '@/domain/chord/engine/catalog';
@@ -35,9 +35,9 @@ export function linkScaleToHarmony(query: RelationQuery, selection: ScaleHarmony
 export function frameForScaleRef(source: ScaleRef, current: TonalFrame): TonalFrame | null {
     const scale = resolveScaleRef(source);
     if (!scale || scale.group !== 'Diatonic Modes') return null;
-    if (scale.name === 'Ionian') return { ...current, tonic: getKeyName(source.tonic), mode: 'major' };
-    if (scale.name === 'Aeolian') return { ...current, tonic: getMinorKeyName(source.tonic), mode: 'minor' };
-    return null;
+    if (scale.name !== 'Ionian' && scale.name !== 'Aeolian') return null;
+    // Scale spells both collections with getKeyName, including the chord it sends to Harmony.
+    return { ...current, tonic: getKeyName(scale.tonic), mode: scale.name === 'Ionian' ? 'major' : 'minor' };
 }
 
 export function chordRefFromReading(reading: ChordReading): ChordRef {

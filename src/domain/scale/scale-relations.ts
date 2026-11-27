@@ -40,13 +40,29 @@ export function compareParallelScales(current: ScaleRef, target: ScaleRef): Para
     };
 }
 
+function subsetRelatives(notes: number[], tonic: number): RelatedScale[] {
+    const relatives: RelatedScale[] = [];
+    for (const [group, modes] of Object.entries(SCALE_REGISTRY)) {
+        for (const [name, { subset }] of Object.entries(modes)) {
+            if (!subset || subset.length !== notes.length) continue;
+            for (const root of notes) {
+                if (root !== tonic && subset.every(interval => notes.includes(normalize(root + interval)))) {
+                    relatives.push({ name, scaleRef: createScaleRef(group, name, root) });
+                }
+            }
+        }
+    }
+    return relatives;
+}
+
 /** Registry relationships: no chord recognition, functional ranking, or fallback scale. */
 export function getScaleRelations(ref: ScaleRef): ScaleRelations | null {
     const selected = resolveScaleRef(ref);
     if (!selected) return null;
     const { group, name, tonic } = selected;
     const entry = SCALE_REGISTRY[group][name];
-    const siblings = getModalSiblings(group, name).map((sibling) => ({
+    const notes = pitchClasses(group, name, tonic);
+    const siblings = entry.subset ? subsetRelatives(notes, tonic) : getModalSiblings(group, name).map((sibling) => ({
         name: sibling.name,
         scaleRef: createScaleRef(sibling.group, sibling.name, normalize(tonic + sibling.tonicOffset)),
     }));
@@ -67,7 +83,6 @@ export function getScaleRelations(ref: ScaleRef): ScaleRelations | null {
         break;
     }
 
-    const notes = pitchClasses(group, name, tonic);
     const symmetryOffsets = Array.from({ length: 11 }, (_, index) => index + 1)
         .filter((offset) => notes.every((note) => notes.includes(normalize(note + offset))));
     return { siblings, parent, symmetryOffsets };

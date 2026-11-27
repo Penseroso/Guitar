@@ -1,6 +1,20 @@
 import React from 'react';
 import { getCircleOfFifthsOrder, getRelativeMinor, getKeyName, getMinorKeyName, ENHARMONIC_TIE_PITCH_CLASSES } from '@/domain/shared/keys';
 import { generateModeData } from '@/domain/scale/scales';
+import { createScaleRef } from '@/domain/scale/scale-ref';
+import { getScaleStructuralTones } from '@/domain/scale/scale-tones';
+
+function majorKeyLabel(pitchClass: number) {
+    const name = getKeyName(pitchClass);
+    const alternate = ENHARMONIC_TIE_PITCH_CLASSES[pitchClass]?.major;
+    return alternate ? `${alternate}/${name}` : name;
+}
+
+function minorKeyLabel(pitchClass: number) {
+    const name = getMinorKeyName(pitchClass).toLowerCase();
+    const alternate = ENHARMONIC_TIE_PITCH_CLASSES[pitchClass]?.minor;
+    return alternate ? `${alternate}/${name}` : name;
+}
 
 const polarToCartesian = (centerX: number, centerY: number, radius: number, angleInDegrees: number) => {
     const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
@@ -43,20 +57,14 @@ export const CircleOfFifths: React.FC<CircleOfFifthsProps> = ({ selectedKey, onK
     // case), so the inner ring has no coherent meaning to show outside that family.
     const isDiatonicFamily = (selectedScaleGroup || 'Diatonic Modes') === 'Diatonic Modes';
 
-    // --- [MODUS v2.5] Dynamic Algorithm Pattern ---
-    // 하드코딩된 SCALE_DEFINITIONS 객체를 완전히 폐기하고,
-    // 부모 스케일 역학에 기반한 순환 인터벌 제너레이터를 호출하여 데이터를 렌더링합니다.
-    const modeData = React.useMemo(() => {
-        if (rootOnly) return {};
+    const rolesByPitch = React.useMemo(() => {
+        if (rootOnly) return null;
         const group = selectedScaleGroup || 'Diatonic Modes';
         const name = selectedScaleName || 'Aeolian';
-        return generateModeData(group, name);
-    }, [selectedScaleGroup, selectedScaleName, rootOnly]);
-
-    const getDiatonicRole = (targetKey: number, rootKey: number) => {
-        const diffFromRoot = (targetKey - rootKey + 12) % 12;
-        return modeData[diffFromRoot] || null;
-    };
+        const roles = generateModeData(group, name);
+        const tones = getScaleStructuralTones(createScaleRef(group, name, selectedKey));
+        return new Map(tones?.map(tone => [tone.pitchClass, { ...roles[tone.interval], noteName: tone.scaleNoteName }]));
+    }, [selectedScaleGroup, selectedScaleName, selectedKey, rootOnly]);
 
     // MODUS Design: 얇고 투명한 그리드 라인
     const strokeColor = "#ffffff10";
@@ -73,8 +81,7 @@ export const CircleOfFifths: React.FC<CircleOfFifthsProps> = ({ selectedKey, onK
                     if (rootOnly) {
                         const selected = selectedKey === keyIndex;
                         const notePosition = polarToCartesian(0, 0, 106, i * 30);
-                        const name = ENHARMONIC_TIE_PITCH_CLASSES[keyIndex]?.major
-                            ? `${ENHARMONIC_TIE_PITCH_CLASSES[keyIndex].major}/${getKeyName(keyIndex)}` : getKeyName(keyIndex);
+                        const name = majorKeyLabel(keyIndex);
                         return <g key={`root-${keyIndex}`} id={rootOptionIdPrefix ? `${rootOptionIdPrefix}-${keyIndex}` : undefined}
                             role="option" aria-label={name} aria-selected={selected} onClick={() => onKeySelect(keyIndex)}>
                             <path d={describeWedge(0, 0, 70, 142, i * 30 - 12.5, i * 30 + 12.5)}
@@ -93,8 +100,10 @@ export const CircleOfFifths: React.FC<CircleOfFifthsProps> = ({ selectedKey, onK
                     const startAngle = i * 30 - 15 + gap;
                     const endAngle = i * 30 + 15 - gap;
 
-                    const majorRole = getDiatonicRole(keyIndex, selectedKey);
-                    const minorRole = isDiatonicFamily ? getDiatonicRole(relativeMinorIndex, selectedKey) : null;
+                    const majorRole = rolesByPitch?.get(keyIndex);
+                    const minorRole = isDiatonicFamily ? rolesByPitch?.get(relativeMinorIndex) : null;
+                    const majorName = majorRole?.noteName ?? majorKeyLabel(keyIndex);
+                    const minorName = minorRole?.noteName.toLowerCase() ?? minorKeyLabel(relativeMinorIndex);
                     const isTonicMajor = majorRole?.role === 'I';
 
                     // --- [MODUS v2.4] Radial Spacing 적용 (반경 분리 및 플로팅) ---
@@ -145,10 +154,8 @@ export const CircleOfFifths: React.FC<CircleOfFifthsProps> = ({ selectedKey, onK
                                 className="cursor-pointer hover:fill-white/10 transition-colors duration-300"
                                 onClick={() => onKeySelect(keyIndex)}
                             />
-                            <text x={majorNotePos.x} y={majorNotePos.y} textAnchor="middle" dominantBaseline="central" fill={majorNoteTextColor} fontSize={ENHARMONIC_TIE_PITCH_CLASSES[keyIndex]?.major ? "11" : "14"} fontWeight={isTonicMajor ? "800" : "400"} className="pointer-events-none tracking-widest">
-                                {ENHARMONIC_TIE_PITCH_CLASSES[keyIndex]?.major
-                                    ? `${ENHARMONIC_TIE_PITCH_CLASSES[keyIndex].major}/${getKeyName(keyIndex)}`
-                                    : getKeyName(keyIndex)}
+                            <text x={majorNotePos.x} y={majorNotePos.y} textAnchor="middle" dominantBaseline="central" fill={majorNoteTextColor} fontSize={majorName.length > 2 ? "11" : "14"} fontWeight={isTonicMajor ? "800" : "400"} className="pointer-events-none tracking-widest">
+                                {majorName}
                             </text>
 
                             {/* 3. Inner-Mid Ring: Minor Note (diatonic-family only — see isDiatonicFamily above) */}
@@ -161,10 +168,8 @@ export const CircleOfFifths: React.FC<CircleOfFifthsProps> = ({ selectedKey, onK
                                 onClick={isDiatonicFamily ? () => onKeySelect(relativeMinorIndex) : undefined}
                             />
                             {isDiatonicFamily && (
-                                <text x={minorNotePos.x} y={minorNotePos.y} textAnchor="middle" dominantBaseline="central" fill={minorNoteTextColor} fontSize={ENHARMONIC_TIE_PITCH_CLASSES[relativeMinorIndex]?.minor ? "9" : "12"} fontWeight="300" className="pointer-events-none">
-                                    {ENHARMONIC_TIE_PITCH_CLASSES[relativeMinorIndex]?.minor
-                                        ? `${ENHARMONIC_TIE_PITCH_CLASSES[relativeMinorIndex].minor}/${getMinorKeyName(relativeMinorIndex).toLowerCase()}`
-                                        : getMinorKeyName(relativeMinorIndex).toLowerCase()}
+                                <text x={minorNotePos.x} y={minorNotePos.y} textAnchor="middle" dominantBaseline="central" fill={minorNoteTextColor} fontSize={minorName.length > 2 ? "9" : "12"} fontWeight="300" className="pointer-events-none">
+                                    {minorName}
                                 </text>
                             )}
 
