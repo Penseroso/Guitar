@@ -318,6 +318,44 @@ describe('editable tab score', () => {
         expect(screen.queryByRole('note', { name: 'Annotation detail' })).toBeNull();
     });
 
+    it('highlights all repeat frets across systems, retains the cursor and clears evidence on hide or edit', async () => {
+        const user = userEvent.setup();
+        const parsed = parseAsciiTab(['e|0-1-2|0|0|0|4-5-6|', ...['B', 'G', 'D', 'A', 'E'].map(label => `${label}|-----|-|-|-|-----|`)].join('\n'));
+        if (!parsed.ok) throw new Error('Invalid repeat fixture');
+        const score = parsed.document;
+        const starts = [0, 6];
+        const noteIds = starts.flatMap(index => score.moments.slice(index, index + 3).map(m => m.notes[0].id));
+        const annotations = starts.map((index): TabScoreAnnotation => ({
+            id: `repeat-${index}`, kind: 'repeat', start: index, end: index + 2, startMomentId: score.moments[index].id,
+            endMomentId: score.moments[index + 2].id, label: 'Repeated intervals', source: 'observed', placement: 'below',
+            detail: '+1 → +1 semitones', evidenceNoteIds: noteIds,
+        }));
+        const { rerender } = render(<Harness initialScore={score} annotations={annotations} />);
+        const trigger = () => screen.getAllByRole('button', { name: 'Repeated intervals, repeat annotation' })[1];
+        const highlighted = () => [...document.querySelectorAll('[role="gridcell"][data-evidence]')].map(el => el.querySelector('button')?.getAttribute('aria-label'));
+        trigger().focus();
+        await user.keyboard('{Enter}');
+        expect(highlighted()).toEqual([1, 2, 3, 7, 8, 9].map((onset, i) => `String 1, onset ${onset}, fret ${[0, 1, 2, 4, 5, 6][i]}`));
+        expect(document.activeElement).toBe(trigger());
+        expect(screen.getByTestId('selection').textContent).toBe('0:0');
+        await user.keyboard('{Escape}');
+        expect(highlighted()).toEqual([]);
+        await user.click(trigger());
+        rerender(<Harness initialScore={score} annotations={[]} />);
+        rerender(<Harness initialScore={score} annotations={annotations} />);
+        expect(highlighted()).toEqual([]);
+        await user.click(cell(1, 1));
+        await user.clear(editor()); await user.type(editor(), '8');
+        await user.click(trigger());
+        expect(editor().value).toBe('8');
+        expect(document.activeElement).toBe(editor());
+        expect(highlighted()).toEqual([]);
+        await user.keyboard('{Escape}');
+        await user.click(trigger());
+        await user.click(cell(1, 1)); await user.clear(editor()); await user.type(editor(), '5{Enter}');
+        expect(highlighted()).toEqual([]);
+    });
+
     it('packs disjoint annotations in score order while preserving overlap and visible uncertainty', () => {
         const annotation = (id: string, start: number, end: number): TabScoreAnnotation => ({
             id, start, end, kind: 'arpeggio', startMomentId: `moment-${start}`, endMomentId: `moment-${end}`,

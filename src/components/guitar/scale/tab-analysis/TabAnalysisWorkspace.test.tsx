@@ -18,11 +18,11 @@ function Harness() {
     const [state, dispatch] = useReducer(reduceTabAnalysis, undefined, createTabAnalysisState);
     return <TabAnalysisWorkspace state={state} dispatch={dispatch} exploredScale={createScaleRef('Diatonic Modes', 'Ionian', 0)} />;
 }
-const editor = () => screen.getByRole('textbox', { name: 'Paste or write a six-string tab' });
+const editor = () => screen.getByRole('textbox', { name: 'Paste TAB' });
 const score = () => screen.getByRole('region', { name: 'Tab score — onsets in order' });
 const onset = (index: number) => within(score()).getByRole('button', { name: new RegExp(`^Onset ${index},`) });
 async function parseInput(user: ReturnType<typeof userEvent.setup>) {
-    await user.click(screen.getByRole('button', { name: 'Import text' }));
+    await user.click(screen.getByRole('button', { name: 'Import TAB…' }));
     fireEvent.change(editor(), { target: { value: source } });
     await user.click(screen.getByRole('button', { name: 'Import tab' }));
 }
@@ -34,6 +34,22 @@ function textFile(name: string, text: () => Promise<string>) {
 const chooseFile = (file: File) => fireEvent.change(screen.getByLabelText('Open a text tab file'), { target: { files: [file] } });
 
 describe('score-first explicit analysis workflow', () => {
+    it('keeps the original first grid before analysis controls while authoring and puts later systems after them', async () => {
+        const user = userEvent.setup(); render(<Harness />);
+        const grid = screen.getByRole('grid');
+        const tools = screen.getByRole('group', { name: 'TAB analysis tools' });
+        expect(grid.compareDocumentPosition(tools) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+        for (let bar = 2; bar <= 5; bar++) await user.click(screen.getByRole('button', { name: '+ Add bar' }));
+        await user.click(screen.getByRole('button', { name: 'String 1, onset 1, empty' }));
+        await user.type(screen.getByRole('textbox', { name: 'Fret for string 1, onset 1' }), '5');
+        await user.click(screen.getByRole('button', { name: 'Read TAB patterns' }));
+        expect(screen.getByRole('status', { name: 'Analysis status' }).textContent).toMatch(/Analyzed whole score/);
+        const [first, second] = screen.getAllByRole('grid');
+        expect(first).toBe(grid);
+        expect(first.compareDocumentPosition(tools) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+        expect(tools.compareDocumentPosition(second) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    });
+
     it('opens position input from the score by keyboard and returns focus with Escape or Close', async () => {
         const user = userEvent.setup(); render(<Harness />);
         screen.getByRole('button', { name: 'String 1, onset 1, empty' }).focus();
@@ -85,11 +101,11 @@ describe('score-first explicit analysis workflow', () => {
         expect(screen.getByRole('button', { name: 'Remove barline after position' }).getAttribute('aria-pressed')).toBe('true');
         expect(screen.getByRole('button', { name: 'Bar 2 meter: 2\/4' })).toBeTruthy();
         await user.click(screen.getByRole('button', { name: 'Undo' }));
-        expect(screen.getByText(/1 bars · 3 positions/)).toBeTruthy();
+        expect(screen.getByText(/1 bar · 3 positions/)).toBeTruthy();
         await user.click(screen.getByRole('button', { name: 'Redo' }));
         await user.click(screen.getByRole('button', { name: /^Edit position/ }));
         await user.click(screen.getByRole('button', { name: 'Remove barline after position' }));
-        expect(screen.getByText(/1 bars · 3 positions/)).toBeTruthy();
+        expect(screen.getByText(/1 bar · 3 positions/)).toBeTruthy();
         expect(screen.getByRole('button', { name: 'String 1, onset 2, fret 1' })).toBeTruthy();
         expect(screen.queryByText('Structure', { selector: 'summary' })).toBeNull();
         expect(screen.queryByText('Notation', { selector: 'summary', exact: false })).toBeNull();
@@ -99,7 +115,7 @@ describe('score-first explicit analysis workflow', () => {
         await user.click(screen.getByRole('button', { name: 'String 1, onset 1, empty' }));
         await user.type(screen.getByRole('textbox', { name: 'Fret for string 1, onset 1' }), '5');
         await user.click(screen.getByRole('button', { name: 'Read TAB patterns' }));
-        await user.click(screen.getByRole('button', { name: 'Import text' }));
+        await user.click(screen.getByRole('button', { name: 'Import TAB…' }));
         fireEvent.change(editor(), { target: { value: ['e|x--x|', 'B|----|', 'G|----|', 'D|----|', 'A|----|', 'E|----|'].join('\n') } });
         await user.click(screen.getByRole('button', { name: 'Import tab' }));
         expect(screen.getByRole('button', { name: 'String 1, onset 1, muted x' })).toBeTruthy();
@@ -284,6 +300,7 @@ describe('score-first explicit analysis workflow', () => {
     });
     it('loads an eight-bar example without analyzing and preserves it on failed import', async () => {
         const user = userEvent.setup(); render(<Harness />);
+        await user.click(screen.getByRole('button', { name: 'Import TAB…' }));
         await user.click(screen.getByRole('button', { name: 'Try an example' }));
         expect(screen.getByText(/8 bars/)).toBeTruthy();
         const count = within(score()).getAllByRole('button', { name: /^Onset/ }).length;
@@ -292,7 +309,7 @@ describe('score-first explicit analysis workflow', () => {
         expect(screen.queryByRole('button', { name: 'Delete selected columns' })).toBeNull();
         expect(screen.getByRole('status', { name: 'Analysis status' }).textContent).toMatch(/Ready to read TAB patterns/);
         await user.click(screen.getByRole('button', { name: 'Read TAB patterns' }));
-        await user.click(screen.getByRole('button', { name: 'Import text' }));
+        await user.click(screen.getByRole('button', { name: 'Import TAB…' }));
         fireEvent.change(editor(), { target: { value: 'invalid tab' } });
         await user.click(screen.getByRole('button', { name: 'Import tab' }));
         expect(screen.getByRole('alert')).toBeTruthy();
@@ -303,7 +320,7 @@ describe('score-first explicit analysis workflow', () => {
         const user = userEvent.setup(); render(<Harness />); await parseInput(user);
         await user.click(screen.getByText('Context', { exact: true }));
         await user.click(screen.getByRole('button', { name: 'Next Tuning' }));
-        await user.click(screen.getByRole('button', { name: 'Import text' }));
+        await user.click(screen.getByRole('button', { name: 'Import TAB…' }));
         expect((editor() as HTMLTextAreaElement).value).toBe(source);
         await user.click(screen.getByRole('button', { name: 'Import tab' }));
         expect(screen.getByRole('alert').textContent).toMatch(/튜닝|tuning/i);
@@ -328,7 +345,7 @@ describe('score-first explicit analysis workflow', () => {
         let finish!: (value: string) => void;
         chooseFile(textFile('slow.txt', () => new Promise(resolve => { finish = resolve; })));
         await user.click(screen.getByRole('button', { name: 'Cancel' }));
-        await user.click(screen.getByRole('button', { name: 'Import text' }));
+        await user.click(screen.getByRole('button', { name: 'Import TAB…' }));
         fireEvent.change(editor(), { target: { value: source } });
         await act(async () => { finish('old tab'); });
         expect((editor() as HTMLTextAreaElement).value).toBe(source);

@@ -5,6 +5,8 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-li
 import ClientApp from './ClientApp';
 import { createScaleRef } from '@/domain/scale/scale-ref';
 import { getScalePresentationName } from '@/domain/scale/scaleSelector';
+import { createTabAnalysisState } from '@/features/tab-analysis/state';
+import { encodeTabProject } from '@/features/tab-analysis/project';
 import { TAB_EXAMPLE } from '@/domain/tab/types';
 import type { ScaleModeWorkspace } from './scale/ScaleModeWorkspace';
 import type { ChordModeWorkspace } from './chord/ChordModeWorkspace';
@@ -48,13 +50,31 @@ async function openContext() {
     await waitFor(() => expect(summary.parentElement!.hasAttribute('open')).toBe(true));
 }
 function enterSource(source = TAB_EXAMPLE) {
-    click('Import text');
-    fireEvent.change(tab().getByRole('textbox', { name: 'Paste or write a six-string tab' }), { target: { value: source } });
+    click('Import TAB…');
+    fireEvent.change(tab().getByRole('textbox', { name: 'Paste TAB' }), { target: { value: source } });
     click('Import tab');
     expect(tab().getByRole('heading', { name: 'Your tab' })).toBeTruthy();
 }
 
 describe('ClientApp tab analysis ownership boundary', () => {
+    it('opens a project from each explorer and replaces the score only after confirmation', async () => {
+        render(<ClientApp />);
+        const choose = () => screen.getByLabelText('Choose a TAB project file');
+        expect(screen.getByRole('button', { name: 'Open project' })).toBeTruthy();
+        fireEvent.change(choose(), { target: { files: [] } });
+        expect(screen.getByTestId('explored-scale')).toBeTruthy();
+        click('Harmony');
+        expect(screen.getByRole('button', { name: 'Open project' })).toBeTruthy();
+        click('Chord');
+        const file = new File(['project'], 'exercise.modus.json');
+        Object.defineProperty(file, 'text', { value: async () => encodeTabProject({ ...createTabAnalysisState(), documentName: 'Exercise' }) });
+        fireEvent.change(choose(), { target: { files: [file] } });
+        const replace = await tab().findByRole('button', { name: 'Replace current project' });
+        expect(tab().getByText(/Untitled · 1 bar · 1 position/)).toBeTruthy();
+        fireEvent.click(replace);
+        expect(tab().getByText(/Exercise · 1 bar · 1 position/)).toBeTruthy();
+    });
+
     it('retains the parsed tab, selected onset, source, and analysis context across Chord and Harmony', async () => {
         render(<ClientApp />);
         click('Explore Dorian');
@@ -86,8 +106,8 @@ describe('ClientApp tab analysis ownership boundary', () => {
         expect(tab().queryByRole('region', { name: 'Selected passage analysis' })).toBeNull();
         await openContext();
         expect(tab().getByRole('button', { name: 'Clear key' })).toBeTruthy();
-        click('Import text');
-        expect((tab().getByRole('textbox', { name: 'Paste or write a six-string tab' }) as HTMLTextAreaElement).value).toBe(source);
+        click('Import TAB…');
+        expect((tab().getByRole('textbox', { name: 'Paste TAB' }) as HTMLTextAreaElement).value).toBe(source);
 
         click('Chord');
         expect(screen.getByTestId('chord-root').textContent).toBe('4');
@@ -139,7 +159,7 @@ describe('ClientApp tab analysis ownership boundary', () => {
         workflow('Analyze tab');
         expect(contextSummary().textContent).toBe(summaryBefore);
         expect(tab().getByRole('button', { name: /^Onset 3, bar 1:/ }).getAttribute('aria-pressed')).toBe('true');
-        click('Import text');
-        expect((tab().getByRole('textbox', { name: 'Paste or write a six-string tab' }) as HTMLTextAreaElement).value).toBe(TAB_EXAMPLE);
+        click('Import TAB…');
+        expect((tab().getByRole('textbox', { name: 'Paste TAB' }) as HTMLTextAreaElement).value).toBe(TAB_EXAMPLE);
     });
 });

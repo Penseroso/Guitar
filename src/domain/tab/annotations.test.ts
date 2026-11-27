@@ -83,6 +83,9 @@ describe('score annotation evidence adapter', () => {
         expect(result.filter(item => item.kind === 'interval').map(item => [item.start, item.end, item.label])).toEqual([
             [0, 1, '4 st'], [2, 3, '4 st'],
         ]);
+        expect(result.find(item => item.kind === 'interval')).toMatchObject({
+            detail: '4 semitones apart · C4 + E4 · D4 + F♯4', evidenceNoteIds: ['note-0-0', 'note-0-1', 'note-1-0', 'note-1-1'],
+        });
         expect(result.some(item => item.kind === 'chord')).toBe(false);
     });
 
@@ -102,10 +105,13 @@ describe('score annotation evidence adapter', () => {
     });
 
     it('keeps melodic and repetition evidence independent of inferred harmony', () => {
-        const result = annotations([[60], [62], [64], [65], [67], [69]]);
+        const result = annotations([[60], [62], [64], [], [65], [67], [69]]);
         expect(result.find(item => item.kind === 'melody')?.label).toBe('Ascending line');
         expect(result.filter(item => item.kind === 'repeat')).toHaveLength(2);
-        expect(result.filter(item => item.kind === 'repeat').every(item => item.detail.includes('not a confirmed rhythmic motif'))).toBe(true);
+        for (const item of result.filter(item => item.kind === 'repeat')) {
+            expect(item).toMatchObject({ label: 'Repeated intervals', detail: '+2 → +2 semitones · 2 occurrences · Positions 1–3, 5–7',
+                evidenceNoteIds: ['note-0-0', 'note-1-0', 'note-2-0', 'note-4-0', 'note-5-0', 'note-6-0'] });
+        }
         expect(result.some(item => item.kind === 'chord' || item.kind === 'roman')).toBe(false);
     });
 });

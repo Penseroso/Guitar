@@ -61,7 +61,7 @@ function techniquePresentation(note: TabNote, notes: ReadonlyMap<string, TabNote
 
 export function TabScoreView({ document, selection, onSelect, extend, focusedNoteId,
     activeCell, onActiveCellChange, onSetFret, onUndo, onRedo,
-    annotations = [], onInsertMoment, onDeleteMoments, onDraftStatusChange, onSetMute, onEdit, readingReferences, harmony, patternActions, scoreFooter, projectGuard, onReadingChange,
+    annotations = [], onInsertMoment, onDeleteMoments, onDraftStatusChange, onSetMute, onEdit, readingReferences, harmony, patternActions, scoreFooter, projectGuard, onReadingChange, scoreFirst = false,
 }: {
     document: TabDocument;
     selection: TabSelection;
@@ -85,6 +85,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     harmony?: { reading?: ProjectReading; scoreId: number; originsRevision: number; suppliedHarmony: readonly SuppliedTabChord[] };
     patternActions?: React.ReactNode;
     scoreFooter?: React.ReactNode;
+    scoreFirst?: boolean;
 }) {
     const buttons = useRef(new Map<string, HTMLButtonElement>());
     const headers = useRef(new Map<string, HTMLButtonElement>());
@@ -128,7 +129,17 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
     const draftRef = useRef<Draft | null>(null);
     const [draft, setDraftState] = useState<Draft | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const [openAnnotation, setOpenAnnotation] = useState<string | null>(null);
+    const [openAnnotation, setOpenAnnotation] = useState<{
+        annotation: TabScoreAnnotation; document: TabDocument; systemIndex: number; origin: HTMLButtonElement;
+    } | null>(null);
+    const currentAnnotation = openAnnotation?.document === document && annotations.includes(openAnnotation.annotation) ? openAnnotation : null;
+    useLayoutEffect(() => {
+        if (openAnnotation && !currentAnnotation) setOpenAnnotation(null);
+    }, [openAnnotation, currentAnnotation]);
+    const annotationNotes = useMemo(() => {
+        const noteIds = currentAnnotation?.annotation.evidenceNoteIds;
+        return noteIds && resolveTabEvidence(document, { noteIds })?.noteIds;
+    }, [document, currentAnnotation]);
     const [columnMode, setColumnMode] = useState(false);
     const [insertionCursor, setInsertionCursor] = useState<string | null>(null);
     const [touchActions, setTouchActions] = useState<string | null>(null);
@@ -293,15 +304,16 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
             references: readingReferences, target: resolved, origin,
         });
     };
-    const guardReadClick = (event: React.MouseEvent, from: 'harmony' | 'written') => {
+    const guardReadClick = (event: React.MouseEvent, from: 'harmony' | 'written' | 'annotation') => {
         if (!guardTiming()) {
             event.preventDefault(); event.stopPropagation();
             return;
         }
         const control = event.target instanceof Element ? event.target.closest('button, summary') : null;
+        if (control && from !== 'annotation') setOpenAnnotation(null);
         if (control && !control.hasAttribute('data-evidence-action') && currentEvidence?.from === from) setEvidence(null);
     };
-    const readControls = (from: 'harmony' | 'written') => ({
+    const readControls = (from: 'harmony' | 'written' | 'annotation') => ({
         'data-timing-controls': true,
         onPointerDownCapture: (event: React.PointerEvent) => {
             if (!guardTiming()) { event.preventDefault(); if (from === 'harmony') event.stopPropagation(); }
@@ -748,7 +760,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
             const firstIndex = slots.find(item => item.index >= 0)?.index ?? -1;
             const lastIndex = slots.findLast(item => item.index >= 0)?.index ?? -1;
             const visibleAnnotations = annotations.filter(annotation => firstIndex >= 0 && annotation.start <= lastIndex && annotation.end >= firstIndex);
-            const selectedAnnotation = visibleAnnotations.find(annotation => annotation.id === openAnnotation);
+            const selectedAnnotation = currentAnnotation?.systemIndex === systemIndex ? currentAnnotation.annotation : null;
             const visibleChords = suppliedRows.flatMap(({ entry, chord, placement }) => {
                 if (!chord || placement?.kind !== 'positions' || placement.first > lastIndex || placement.last < firstIndex) return [];
                 const start = slots.findIndex(item => item.index >= placement.first && item.index <= placement.last);
@@ -770,13 +782,22 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                     laneEnds[lane] = end;
                     placed.push({ annotation, start, end, lane });
                 }
-                return placed.length > 0 && <div className={styles.annotations} data-placement={placement}>
+                return placed.length > 0 && <div className={styles.annotations} data-placement={placement} {...readControls('annotation')}>
                     {placed.map(({ annotation, start, end, lane }) => <button key={annotation.id} type="button"
                         disabled={!!choosingMelody}
                         className={styles.annotation} style={{ gridColumn: `${start + 2} / span ${end - start + 1}`, gridRow: lane + 1 }}
                         data-span={end > start} data-source={annotation.source} data-kind={annotation.kind}
-                        aria-label={`${annotation.label}, ${annotation.kind} annotation`} title={annotation.label} aria-expanded={openAnnotation === annotation.id}
-                        onClick={() => { if (commit()) setOpenAnnotation(previous => previous === annotation.id ? null : annotation.id); }}>
+                        aria-label={`${annotation.label}, ${annotation.kind} annotation`} title={annotation.label} aria-expanded={annotation === selectedAnnotation}
+                        aria-describedby={annotation === selectedAnnotation ? `${errorId}-annotation-detail` : undefined}
+                        onKeyDown={event => {
+                            if (event.key === 'Escape' && selectedAnnotation === annotation && !event.nativeEvent.isComposing) {
+                                event.preventDefault(); setOpenAnnotation(null);
+                            }
+                        }}
+                        onClick={event => {
+                            setEvidence(null); setEvidenceNotice(null); setTimingNotice(null);
+                            setOpenAnnotation(annotation === selectedAnnotation ? null : { annotation, document, systemIndex, origin: event.currentTarget });
+                        }}>
                         <span>{annotation.source === 'candidate' ? annotation.label.replace(/\s*\?$/, '') : annotation.label}</span>{annotation.source === 'candidate' && <small aria-label="Candidate">?</small>}
                     </button>)}
                 </div>;
@@ -808,7 +829,7 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                                 style={{ gridColumn: `${chord.start + 2} / span ${chord.end - chord.start + 1}` }}
                                 onClick={event => {
                                     if (!guardTiming()) return;
-                                    setEvidence(null); setEvidenceNotice(null);
+                                    setEvidence(null); setEvidenceNotice(null); setOpenAnnotation(null);
                                     setChordRequest({ document, rows: suppliedRows, id: chord.id,
                                         request: ++chordRequestSerial.current, origin: event.currentTarget });
                                 }}>{chord.name}</button>)}
@@ -901,9 +922,10 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                             return <div role="gridcell" aria-colindex={slotIndex + 2} aria-selected={isActive} className={styles.cell} key={key}
                                 data-active={isActive} data-selected={index >= lower && index <= upper} data-bar-start={startsBar}
                                 data-melody-picked={isMelodyNote || undefined}
-                                data-evidence={Boolean(note && currentEvidence?.target.noteIds.has(note.id)) || undefined}>
+                                data-evidence={Boolean(note && (currentEvidence?.target.noteIds.has(note.id) || annotationNotes?.has(note.id))) || undefined}>
                                 <button ref={element => { if (element) buttons.current.set(key, element); else buttons.current.delete(key); }} type="button"
                                     className={styles.cellButton}
+                                    aria-describedby={note && annotationNotes?.has(note.id) ? `${errorId}-annotation-detail` : undefined}
                                     tabIndex={(choosingMelody ? melodyChoice === melodyCursor : isActive && !isEditing && !columnMode) ? 0 : -1}
                                     disabled={!!choosingMelody && !melodyChoice} aria-pressed={melodyChoice ? isMelodyNote : undefined}
                                     aria-label={label} title={detail || undefined}
@@ -981,38 +1003,45 @@ export function TabScoreView({ document, selection, onSelect, extend, focusedNot
                 {onEdit && systemIndex === systems.length - 1 && <button type="button" className={styles.addBar}
                     disabled={!!choosingMelody || document.moments.length >= 1024 || document.measureCount >= 1024}
                     onClick={() => { if (commit()) { setColumnMode(false); pendingBar.current = document; onEdit({ type: 'add-measures', count: 1 }); } }}>+ Add bar</button>}
-                {selectedAnnotation && <div className={styles.annotationDetail} role="note" aria-label="Annotation detail">
-                    <div><strong>{selectedAnnotation.label}</strong><p>{selectedAnnotation.detail}</p></div>
-                    <button type="button" onClick={() => setOpenAnnotation(null)} aria-label="Close annotation detail">×</button>
+                {selectedAnnotation && <div className={styles.annotationDetail} role="note" aria-label="Annotation detail" {...readControls('annotation')}>
+                    <div><strong>{selectedAnnotation.label}</strong><p id={`${errorId}-annotation-detail`}>{selectedAnnotation.detail}</p></div>
+                    <button type="button" onClick={() => {
+                        setOpenAnnotation(null);
+                        currentAnnotation?.origin.focus({ preventScroll: true });
+                    }} aria-label="Close annotation detail">×</button>
                 </div>}
             </section>;
         });
-    const layout = (chordTrigger?: React.ReactNode, chordBody?: React.ReactNode, selectionActions?: React.ReactNode) => <>
-        <div className={timingStyles.readingTools} role="group" aria-label="TAB analysis tools" inert={!!choosingMelody}>
-            {patternActions}
-            {chordTrigger && <div ref={harmonyControls} {...readControls('harmony')}>{chordTrigger}</div>}
-            {timingTools}
-        </div>
-        {selectionActions && <div className={timingStyles.selectionTools} hidden={!!choosingMelody} {...readControls('harmony')}>{selectionActions}</div>}
-        {choosingMelody && <div className={timingStyles.melodyTools} role="group" aria-label="Melody selection">
-            <span>One note per position</span>
-            <span role="status">{choosingMelody.picked.size} selected</span>
-            <button type="button" className={timingStyles.action} aria-label="Cancel melody selection" onClick={cancelMelody}>Cancel</button>
-            <button type="button" className={timingStyles.action} disabled={!choosingMelody.picked.size} onClick={submitMelody}>Read melody</button>
-        </div>}
-        {(timingNotice || evidenceNotice || timingStale || writtenStale) && <div className={timingStyles.notices}>
-            {timingNotice && <p role="status">{timingNotice}</p>}
-            {evidenceNotice && <p role="status">{evidenceNotice}</p>}
-            {timingStale && <p role="status">Score changed · Check again</p>}
-            {writtenStale && <p role="status">{writtenStale === 'score' ? 'Score changed · View again' : 'Bar changed · View again'}</p>}
-        </div>}
-        {scoreSystems}
-        {scoreFooter}
-        <div inert={!!choosingMelody}>
-            {chordBody && <div {...readControls('harmony')}>{chordBody}</div>}
-            {timeReadings}
-        </div>
-    </>;
+    const layout = (chordTrigger?: React.ReactNode, chordBody?: React.ReactNode, selectionActions?: React.ReactNode) => {
+        const tools = <React.Fragment key="tools">
+            <div className={timingStyles.readingTools} role="group" aria-label="TAB analysis tools" inert={!!choosingMelody}>
+                {patternActions}
+                {chordTrigger && <div ref={harmonyControls} {...readControls('harmony')}>{chordTrigger}</div>}
+                {timingTools}
+            </div>
+            {selectionActions && <div className={timingStyles.selectionTools} hidden={!!choosingMelody} {...readControls('harmony')}>{selectionActions}</div>}
+            {choosingMelody && <div className={timingStyles.melodyTools} role="group" aria-label="Melody selection">
+                <span>One note per position</span>
+                <span role="status">{choosingMelody.picked.size} selected</span>
+                <button type="button" className={timingStyles.action} aria-label="Cancel melody selection" onClick={cancelMelody}>Cancel</button>
+                <button type="button" className={timingStyles.action} disabled={!choosingMelody.picked.size} onClick={submitMelody}>Read melody</button>
+            </div>}
+            {(timingNotice || evidenceNotice || timingStale || writtenStale) && <div className={timingStyles.notices}>
+                {timingNotice && <p role="status">{timingNotice}</p>}
+                {evidenceNotice && <p role="status">{evidenceNotice}</p>}
+                {timingStale && <p role="status">Score changed · Check again</p>}
+                {writtenStale && <p role="status">{writtenStale === 'score' ? 'Score changed · View again' : 'Bar changed · View again'}</p>}
+            </div>}
+        </React.Fragment>;
+        return <>
+            {scoreFirst ? [scoreSystems[0], tools, ...scoreSystems.slice(1)] : [tools, ...scoreSystems]}
+            {scoreFooter}
+            <div inert={!!choosingMelody}>
+                {chordBody && <div {...readControls('harmony')}>{chordBody}</div>}
+                {timeReadings}
+            </div>
+        </>;
+    };
     return <div className={styles.score} role="region" aria-label="Tab score — onsets in order" data-melody-mode={!!choosingMelody || undefined}
         onKeyDownCapture={event => {
             if (event.key !== 'Escape' || event.nativeEvent.isComposing || draftRef.current || timingBlocked()) return;

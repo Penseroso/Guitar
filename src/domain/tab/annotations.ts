@@ -16,6 +16,7 @@ export interface TabScoreAnnotation {
     endMomentId: string;
     label: string;
     detail: string;
+    evidenceNoteIds?: readonly string[];
     source: 'observed' | 'candidate' | 'reference';
     placement: 'above' | 'below';
 }
@@ -36,11 +37,11 @@ export function buildTabScoreAnnotations(
     const annotations: TabScoreAnnotation[] = [];
     const momentsByIndex = new Map(analysis.moments.map(moment => [moment.index, moment]));
     const add = (kind: TabScoreAnnotation['kind'], start: number, end: number, label: string,
-        detail: string, source: TabScoreAnnotation['source'], placement: TabScoreAnnotation['placement']) => {
+        detail: string, source: TabScoreAnnotation['source'], placement: TabScoreAnnotation['placement'], evidenceNoteIds?: readonly string[]) => {
         const first = momentsByIndex.get(start), last = momentsByIndex.get(end);
         if (!first || !last) return;
         annotations.push({ id: `${kind}:${first.id}:${last.id}:${label}`, kind, start, end,
-            startMomentId: first.id, endMomentId: last.id, label, detail, source, placement });
+            startMomentId: first.id, endMomentId: last.id, label, detail, source, placement, ...(evidenceNoteIds && { evidenceNoteIds }) });
     };
     const contextualCandidate = createTabCandidateFormatter(context.frame);
 
@@ -75,21 +76,24 @@ export function buildTabScoreAnnotations(
     }
 
     // Consecutive equal dyad intervals share one quiet label per explicit measure.
-    let dyadStart: number | null = null;
-    let dyadEnd: number | null = null;
-    let dyadLabel = '';
-    let dyadMeasure: number | null = null;
+    let dyads: TabSelectionAnalysis['moments'] = [];
     const flushDyad = () => {
-        if (dyadStart === null || dyadEnd === null) return;
-        add('interval', dyadStart, dyadEnd, dyadLabel,
-            'Observed vertical interval between the lower and upper note; no hidden chord or voice assignment is inferred.', 'observed', 'below');
-        dyadStart = dyadEnd = null;
+        const first = dyads[0];
+        if (!first?.interval) return;
+        const last = dyads[dyads.length - 1];
+        const distance = Math.abs(first.interval.semitones);
+        const pairs = dyads.slice(0, 3).map(moment => [...moment.notes].sort((a, b) => a.midi - b.midi).map(note => note.name).join(' + '));
+        const tail = dyads.length > pairs.length ? ` · +${dyads.length - pairs.length} more pairs` : '';
+        add('interval', first.index, last.index, first.interval.label,
+            `${distance} semitone${distance === 1 ? '' : 's'} apart · ${pairs.join(' · ')}${tail}`,
+            'observed', 'below', dyads.flatMap(moment => moment.notes.map(note => note.id)));
+        dyads = [];
     };
     for (const moment of analysis.moments) {
         if (moment.kind !== 'dyad' || !moment.interval) { flushDyad(); continue; }
-        if (dyadStart !== null && (moment.interval.label !== dyadLabel || moment.measure !== dyadMeasure || moment.index !== dyadEnd! + 1)) flushDyad();
-        if (dyadStart === null) { dyadStart = moment.index; dyadLabel = moment.interval.label; dyadMeasure = moment.measure; }
-        dyadEnd = moment.index;
+        const previous = dyads.at(-1);
+        if (previous && (previous.interval?.label !== moment.interval.label || previous.measure !== moment.measure || previous.index + 1 !== moment.index)) flushDyad();
+        dyads.push(moment);
     }
     flushDyad();
 
@@ -101,12 +105,23 @@ export function buildTabScoreAnnotations(
             `Observed note order: ${run.intervals.map(step => `${step.interval.direction === 'down' ? '−' : step.interval.direction === 'up' ? '+' : ''}${step.interval.label}`).join(' → ')}. Timing metadata is not interpreted by this order-only analysis.`, 'observed', 'below');
     }
     // Keep the score readable; the full ranked pattern set stays in the analysis snapshot.
-    analysis.repeatedPatterns.slice(0, 1).forEach((pattern, patternIndex) => {
+    const pattern = analysis.repeatedPatterns[0];
+    if (pattern) {
+        const ids = new Set<string>();
         for (const occurrence of pattern.occurrences) {
-            add('repeat', occurrence.start, occurrence.end, `Pattern ${patternIndex + 1}`,
-                `Repeated interval pattern (${pattern.semitones.map(interval => `${interval > 0 ? '+' : ''}${interval}`).join(', ')} semitones), observed ${pattern.occurrences.length} times. Timing metadata is not interpreted; this is not a confirmed rhythmic motif.`, 'observed', 'below');
+            for (let index = occurrence.start; index <= occurrence.end; index++) {
+                for (const note of momentsByIndex.get(index)?.notes ?? []) ids.add(note.id);
+            }
         }
-    });
+        const evidenceNoteIds = [...ids];
+        const steps = pattern.semitones.map(interval => interval > 0 ? `+${interval}` : String(interval)).join(' → ');
+        const positions = pattern.occurrences.slice(0, 3).map(({ start, end }) => `${start + 1}–${end + 1}`).join(', ');
+        const extra = pattern.occurrences.length > 3 ? ` · +${pattern.occurrences.length - 3} more` : '';
+        const detail = `${steps} semitones · ${pattern.occurrences.length} occurrences · Positions ${positions}${extra}`;
+        for (const occurrence of pattern.occurrences) {
+            add('repeat', occurrence.start, occurrence.end, 'Repeated intervals', detail, 'observed', 'below', evidenceNoteIds);
+        }
+    }
     for (const arpeggio of analysis.arpeggios) {
         const candidates = arpeggio.candidates.map(contextualCandidate);
         add('arpeggio', arpeggio.start, arpeggio.end, `${namesLabel(candidates.map(candidate => candidate.name))} arpeggio?`,

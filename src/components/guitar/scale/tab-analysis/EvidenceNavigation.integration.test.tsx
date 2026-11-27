@@ -225,8 +225,8 @@ describe('reading evidence navigation through the canonical TAB workspace', () =
 describe('P5.2 task entry and optional key completion', () => {
     it('reads a freshly imported free-timing melody with supplied chords without visiting timing menus', async () => {
         const user = userEvent.setup(); render(<Harness fresh/>);
-        await user.click(screen.getByRole('button', { name: 'Import text' }));
-        fireEvent.change(screen.getByRole('textbox', { name: 'Paste or write a six-string tab' }), { target: {
+        await user.click(screen.getByRole('button', { name: 'Import TAB…' }));
+        fireEvent.change(screen.getByRole('textbox', { name: 'Paste TAB' }), { target: {
             value: ['e|---|', 'B|0-1|', 'G|---|', 'D|---|', 'A|---|', 'E|---|'].join('\n'),
         } });
         await user.click(screen.getByRole('button', { name: 'Import tab' }));

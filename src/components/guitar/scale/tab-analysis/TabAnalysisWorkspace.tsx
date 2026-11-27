@@ -39,10 +39,11 @@ function scaleTitle(ref: ScaleRef | null) {
     return scale ? `${getKeyName(scale.tonic)} ${getScalePresentationName(scale.name)}` : 'No reference scale';
 }
 
-export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
+export function TabAnalysisWorkspace({ state, dispatch, exploredScale, projectReader }: {
     state: TabAnalysisState;
     dispatch: React.Dispatch<TabAnalysisAction>;
     exploredScale: ScaleRef;
+    projectReader?: React.Ref<(file: File) => void>;
 }) {
     const [contextOpen, setContextOpen] = useState(false);
     const [annotationsVisible, setAnnotationsVisible] = useState(true);
@@ -75,6 +76,11 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
     const hasUnpitchedEvents = !!state.document?.moments.some(moment => moment.rest || moment.mutes?.length || moment.sustains?.length);
     const hasNotation = !!state.document?.meter || !!state.document?.moments.some(moment => moment.beatOffset || moment.rest || moment.mutes?.length || moment.sustains?.length
         || moment.notes.some(note => note.duration || note.techniques?.length));
+    // Keep grid and actions in place while a fret commits on pointer-down or blur.
+    const startsEmpty = !hasNotes && !hasNotation && !state.suppliedHarmony.length;
+    const [entryLayout, setEntryLayout] = useState({ scoreId: state.scoreId, scoreFirst: startsEmpty });
+    const scoreFirst = entryLayout.scoreId === state.scoreId ? entryLayout.scoreFirst : startsEmpty;
+    if (entryLayout.scoreId !== state.scoreId) setEntryLayout({ scoreId: state.scoreId, scoreFirst });
     const activeMomentId = state.activeCell?.momentId;
     const activePosition = activeMomentId && state.document ? state.document.moments.findIndex(moment => moment.id === activeMomentId) + 1 : 1;
     const keyTitle = state.context.frame ? `${state.context.frame.tonic} ${state.context.frame.mode}` : 'No key supplied';
@@ -125,6 +131,7 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
             if (revision === readRevision.current) setFileError(error instanceof Error ? error.message : 'The project could not be opened.');
         } finally { if (revision === readRevision.current) setReadingFile(false); }
     };
+    React.useImperativeHandle(projectReader, () => readProject);
     const replaceProject = () => {
         if (!pendingProject || !canUseProject()) return;
         dispatch({ type: 'open-project', project: pendingProject.project });
@@ -168,19 +175,22 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
         dispatch({ type: 'set-source', source, name: 'Melody & harmony study' });
         dispatch({ type: 'parsed', result });
     };
+    const analysisContext = <>
+        <p className={styles.meta}>{hasNotation ? 'TAB patterns follow score order. View written time to inspect notation.' : 'Free timing · Positions are not beats.'}</p>
+        <button type="button" className={styles.textAction} onClick={openKeyContext} aria-expanded={contextOpen}>
+            {state.context.frame ? `Key: ${keyTitle}` : 'Add key for Roman / progression'}
+        </button>
+    </>;
     return <section ref={workspace} className={styles.workspace} aria-label="Tab analysis workspace"
         onCompositionStartCapture={() => { composing.current = true; }} onCompositionEndCapture={() => { composing.current = false; }}>
         <div className={styles.headingRow}>
-            <div><p className={styles.eyebrow}>TAB ANALYSIS</p><h1>Your music, note by note</h1></div>
             <div className={styles.actions}>
                 <span className={styles.actions} role="group" aria-label="Project files" data-timing-controls
                     onPointerDownCapture={guardPointer} onMouseDownCapture={guardPointer}>
                     <button type="button" className={styles.textAction} onClick={() => { if (canUseProject()) projectInput.current?.click(); }}>Open project</button>
                     <button type="button" className={styles.textAction} onClick={() => void saveProject()}>Save project</button>
                 </span>
-                <button type="button" className={styles.textAction} onClick={() => fileInput.current?.click()}>Open text file</button>
-                <button type="button" className={styles.textAction} onClick={() => dispatch({ type: 'set-editor-open', open: !state.editorOpen })} aria-expanded={state.editorOpen}>Import text</button>
-                <button className={styles.textAction} type="button" onClick={example}>Try an example</button>
+                <button type="button" className={styles.textAction} onClick={() => dispatch({ type: 'set-editor-open', open: !state.editorOpen })} aria-expanded={state.editorOpen}>Import TAB…</button>
             </div>
         </div>
         <input ref={projectInput} type="file" accept=".modus.json,.json,application/json" aria-label="Open a THE MODUS project file" className={styles.fileInput}
@@ -196,7 +206,11 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
         {readingFile && <div className={styles.fileStatus} role="status">Reading file… <button className={styles.textAction} type="button" onClick={cancelRead}>Cancel</button></div>}
         {fileError && <p className={styles.error} role="alert">{fileError}</p>}
         {state.editorOpen && <div className={styles.inputArea}>
-            <label className={styles.inputLabel} htmlFor="tab-source">Paste or write a six-string tab</label>
+            <div className={styles.actions}>
+                <button type="button" className={styles.textAction} onClick={() => fileInput.current?.click()}>Import TAB file</button>
+                <button className={styles.textAction} type="button" onClick={example}>Try an example</button>
+            </div>
+            <label className={styles.inputLabel} htmlFor="tab-source">Paste TAB</label>
             <textarea ref={sourceInput} id="tab-source" className={styles.sourceInput} value={state.source} spellCheck={false} autoCapitalize="off" autoCorrect="off"
                 aria-describedby="tab-input-hint" placeholder={'e|----------------|\nB|----------------|\nG|----------------|\nD|----------------|\nA|----------------|\nE|----------------|'}
                 onChange={event => { cancelRead(); dispatch({ type: 'edit-source', source: event.target.value }); }} />
@@ -253,27 +267,27 @@ export function TabAnalysisWorkspace({ state, dispatch, exploredScale }: {
         </details>
         {state.document && state.selection && <div className={styles.resultLayout}>
             <div className={styles.scoreSection}>
-                <div className={styles.sectionHeading}><h2 ref={scoreHeading} tabIndex={-1}>Your tab</h2><span className={styles.meta}>{state.documentName || 'Untitled'} · {state.document.measureCount} bars · {state.document.moments.length} positions</span></div>
-                <p className={styles.meta}>{hasNotation ? 'TAB patterns follow score order. View written time to inspect notation.' : 'Free timing · Positions are not beats.'}</p>
+                <div className={styles.sectionHeading}><h2 ref={scoreHeading} tabIndex={-1}>Your tab</h2><span className={styles.meta}>{state.documentName || 'Untitled'} · {state.document.measureCount} {state.document.measureCount === 1 ? 'bar' : 'bars'} · {state.document.moments.length} {state.document.moments.length === 1 ? 'position' : 'positions'}</span></div>
+                {!scoreFirst && analysisContext}
                 <div className={styles.analysisToolbar}>
-                    <button type="button" className={styles.textAction} onClick={openKeyContext} aria-expanded={contextOpen}>
-                        {state.context.frame ? `Key: ${keyTitle}` : 'Add key for Roman / progression'}
-                    </button>
                     <p className={styles.meta} role="status" aria-label="Analysis status">{!hasNotes
-                        ? hasUnpitchedEvents ? 'No pitched notes to analyze. Notation stays editable.' : 'Click a string and type a fret to begin.'
+                        ? hasUnpitchedEvents ? 'No pitched notes to analyze. Notation stays editable.' : 'Select a string and enter a fret.'
                         : state.analysisStatus === 'stale' ? 'Score or context changed. Read TAB patterns again to update annotations.'
                         : state.analysisStatus === 'fresh' ? `Analyzed whole score. ${annotations.length ? 'Select a score annotation for its evidence.' : 'No supported pattern found in this score.'}`
                             : 'Ready to read TAB patterns across the score.'}</p>
                 </div>
-                <TabScoreView key={projectGeneration} projectGuard={projectGuard} onReadingChange={reportReading} document={state.document} selection={state.selection} extend={false} focusedNoteId={null}
+                <TabScoreView scoreFirst={scoreFirst} key={projectGeneration} projectGuard={projectGuard} onReadingChange={reportReading} document={state.document} selection={state.selection} extend={false} focusedNoteId={null}
                     readingReferences={readingReferences}
                     harmony={state}
-                    patternActions={<div className={styles.actions}>
-                        <button className={styles.primary} type="button" disabled={draftStatus === 'invalid' || (!hasNotes && draftStatus !== 'note')}
-                            onClick={() => { cancelRead(); dispatch({ type: 'analyze', scope: 'all' }); setAnnotationsVisible(true); }}>Read TAB patterns</button>
-                        {state.analysisStatus === 'fresh' && <button className={styles.textAction} type="button" aria-pressed={annotationsVisible}
-                            onClick={() => setAnnotationsVisible(visible => !visible)}>Annotations <span aria-hidden="true">{annotationsVisible ? '●' : '○'}</span></button>}
-                    </div>}
+                    patternActions={<>
+                        {scoreFirst && analysisContext}
+                        <div className={styles.actions}>
+                            <button className={styles.primary} type="button" disabled={draftStatus === 'invalid' || (!hasNotes && draftStatus !== 'note')}
+                                onClick={() => { cancelRead(); dispatch({ type: 'analyze', scope: 'all' }); setAnnotationsVisible(true); }}>Read TAB patterns</button>
+                            {state.analysisStatus === 'fresh' && <button className={styles.textAction} type="button" aria-pressed={annotationsVisible}
+                                onClick={() => setAnnotationsVisible(visible => !visible)}>Annotations <span aria-hidden="true">{annotationsVisible ? '●' : '○'}</span></button>}
+                        </div>
+                    </>}
                     scoreFooter={<>
                         <div className={styles.scoreTools}>
                             <button className={styles.textAction} type="button" disabled={state.past.length === 0} onClick={() => dispatch({ type: 'undo' })}>Undo</button>
