@@ -80,7 +80,9 @@ export function ToneRolesPanel({ analysis, onClear, focusedInterval, onFocusTone
                 </dd></div>}
             </dl>
             {reviewed.length > 0 && <ul className={styles.roleList}>{reviewed.map((item, index) => <li key={`${item.kind}:${index}`} className={styles.kind}>{item.kind}</li>)}</ul>}
-            {(markers.length > 0 || chordReadings.length > 0) && <details className={styles.context}>
+            {(markers.length > 0 || chordReadings.length > 0) && <details className={styles.context} onToggle={({ currentTarget }) => {
+                if (currentTarget.open) currentTarget.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
+            }}>
                 <summary>Context</summary>
                 {markers.length > 0 && <div className={styles.interpretation}>
                     <h4>{scaleName} · Characteristic tones</h4>
